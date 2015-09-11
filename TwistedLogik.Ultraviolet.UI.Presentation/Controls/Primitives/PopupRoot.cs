@@ -116,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (popup == null)
                 return RectangleD.Empty;
 
-            var visualBounds = UntransformedVisualBounds;
+            var visualBounds = VisualBounds;
 
             var popupTransform = popup.PopupTransformToViewWithOrigin;
             RectangleD.TransformAxisAligned(ref visualBounds, ref popupTransform, out visualBounds);

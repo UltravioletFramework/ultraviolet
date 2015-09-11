@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var borderColor     = BorderColor;
             var borderThickness = BorderThickness;
-            var borderArea      = new RectangleD(0, 0, RelativeBounds.Width, RelativeBounds.Height);
+            var borderArea      = new RectangleD(0, 0, UntransformedRelativeBounds.Width, UntransformedRelativeBounds.Height);
 
             var leftSize = Math.Min(borderThickness.Left, borderArea.Width);
             var leftArea = new RectangleD(borderArea.Left, borderArea.Top, leftSize, borderArea.Height);

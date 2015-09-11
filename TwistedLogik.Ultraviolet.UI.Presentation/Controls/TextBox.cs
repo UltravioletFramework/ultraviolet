@@ -1148,7 +1148,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (PART_ContentPresenter == null)
                     return RectangleD.Empty;
 
-                return PART_ContentPresenter.AbsoluteBounds;
+                return PART_ContentPresenter.UntransformedAbsoluteBounds;
             }
         }
 
@@ -1162,7 +1162,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (PART_ContentPresenter == null)
                     return RectangleD.Empty;
 
-                var offset = PART_ContentPresenter.AbsolutePosition - AbsolutePosition;
+                var offset = PART_ContentPresenter.UntransformedAbsolutePosition - UntransformedAbsolutePosition;
                 return PART_ContentPresenter.Bounds + offset;
             }
         }

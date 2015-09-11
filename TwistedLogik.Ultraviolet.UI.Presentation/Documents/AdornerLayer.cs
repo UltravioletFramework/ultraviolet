@@ -72,8 +72,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
                 return;
 
             var state = new AdornerState(adorner);
-            state.LastAbsoluteX = adorner.AdornedElement.AbsolutePosition.X;
-            state.LastAbsoluteY = adorner.AdornedElement.AbsolutePosition.Y;
+            state.LastAbsoluteX = adorner.AdornedElement.UntransformedAbsolutePosition.X;
+            state.LastAbsoluteY = adorner.AdornedElement.UntransformedAbsolutePosition.Y;
             state.LastRenderWidth = adorner.AdornedElement.RenderSize.Width;
             state.LastRenderHeight = adorner.AdornedElement.RenderSize.Height;
 
@@ -233,8 +233,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
                 var adorner = (Adorner)adorners[i];
                 var adornedElement = adorner.AdornedElement;
 
-                state.LastAbsoluteX = adornedElement.AbsolutePosition.X;
-                state.LastAbsoluteY = adornedElement.AbsolutePosition.Y;
+                state.LastAbsoluteX = adornedElement.UntransformedAbsolutePosition.X;
+                state.LastAbsoluteY = adornedElement.UntransformedAbsolutePosition.Y;
                 state.LastRenderWidth = adornedElement.RenderSize.Width;
                 state.LastRenderHeight = adornedElement.RenderSize.Height;
 
@@ -301,8 +301,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
                     var invalidateAdorner = false;
 
                     if (checkForLayoutChanges && (
-                        !MathUtil.AreApproximatelyEqual(state.LastAbsoluteX, adornedElement.AbsolutePosition.X) ||
-                        !MathUtil.AreApproximatelyEqual(state.LastAbsoluteY, adornedElement.AbsolutePosition.Y) ||
+                        !MathUtil.AreApproximatelyEqual(state.LastAbsoluteX, adornedElement.UntransformedAbsolutePosition.X) ||
+                        !MathUtil.AreApproximatelyEqual(state.LastAbsoluteY, adornedElement.UntransformedAbsolutePosition.Y) ||
                         !MathUtil.AreApproximatelyEqual(state.LastRenderWidth, adornedElement.RenderSize.Width) ||
                         !MathUtil.AreApproximatelyEqual(state.LastRenderHeight, adornedElement.RenderSize.Height)))
                     {

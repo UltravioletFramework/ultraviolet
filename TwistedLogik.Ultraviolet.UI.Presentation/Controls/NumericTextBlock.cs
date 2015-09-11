@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 View.Resources.StringFormatter.Format(Format ?? "{0}", View.Resources.StringBuffer);
 
                 var face     = font.Resource.Value.GetFace(FontStyle);
-                var position = (Vector2)Display.PixelsToDips(AbsolutePosition);
+                var position = (Vector2)Display.PixelsToDips(UntransformedAbsolutePosition);
 
                 dc.DrawString(face, View.Resources.StringBuffer, position, Foreground * dc.Opacity);
             }

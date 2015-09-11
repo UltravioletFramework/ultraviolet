@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (textLayoutResult != null && textLayoutResult.Count > 0 && containingControl != null)
             {
-                var position = Display.DipsToPixels(AbsolutePosition + ContentOffset);
+                var position = Display.DipsToPixels(UntransformedAbsolutePosition + ContentOffset);
                 var positionRounded = dc.IsTransformed ? (Vector2)position : (Vector2)(Point2)position;
 
                 var color = containingControl.Foreground;
@@ -199,9 +199,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var contentElement = Content as UIElement;
             if (contentElement != null)
             {
-                if (!Bounds.Contains(contentElement.RelativeBounds))
+                if (!Bounds.Contains(contentElement.UntransformedRelativeBounds))
                 {
-                    return AbsoluteBounds;
+                    return UntransformedAbsoluteBounds;
                 }
             }
 

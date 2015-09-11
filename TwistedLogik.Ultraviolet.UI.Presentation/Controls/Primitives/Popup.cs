@@ -348,11 +348,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
-        protected override RectangleD CalculateUntransformedVisualBounds()
+        protected override RectangleD CalculateVisualBounds()
         {
             if (IsOpen)
             {
-                return root.UntransformedVisualBounds;
+                return root.VisualBounds;
             }
             return RectangleD.Empty;
         }

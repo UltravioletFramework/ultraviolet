@@ -502,14 +502,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             upf.PerformanceStats.PositionCount++;
 
             var parent         = VisualTreeHelper.GetParent(this) as UIElement;
-            var parentPosition = (parent == null) ? Point2D.Zero : parent.AbsolutePosition;
+            var parentPosition = (parent == null) ? Point2D.Zero : parent.UntransformedAbsolutePosition;
 
             var totalOffsetX = mostRecentFinalRect.X + RenderOffset.X + offset.Width;
             var totalOffsetY = mostRecentFinalRect.Y + RenderOffset.Y + offset.Height;
             var totalOffset  = new Size2D(totalOffsetX, totalOffsetY);
 
-            this.relativeBounds = new RectangleD(Point2D.Zero + totalOffset, RenderSize);
-            this.absoluteBounds = new RectangleD(parentPosition + totalOffset, RenderSize);
+            this.untransformedRelativeBounds = new RectangleD(Point2D.Zero + totalOffset, RenderSize);
+            this.untransformedAbsoluteBounds = new RectangleD(parentPosition + totalOffset, RenderSize);
 
             PositionCore();
 
@@ -816,21 +816,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the position of the element relative to its parent as of the
+        /// Gets the untransformed position of the element relative to its parent as of the
         /// last call to the <see cref="Position(Size2D)"/> method.
         /// </summary>
-        public Point2D RelativePosition
+        /// <remarks>Untransformed bounds are computed as if no transforms have been applied to the element or any of its ancestors.</remarks>
+        public Point2D UntransformedRelativePosition
         {
-            get { return relativeBounds.Location; }
+            get { return untransformedRelativeBounds.Location; }
         }
 
         /// <summary>
-        /// Gets the position of the element in absolute screen coordinates as of the
+        /// Gets the untransformed position of the element in absolute screen coordinates as of the
         /// last call to the <see cref="Position(Size2D)"/> method.
         /// </summary>
-        public Point2D AbsolutePosition
+        /// <remarks>Untransformed bounds are computed as if no transforms have been applied to the element or any of its ancestors.</remarks>
+        public Point2D UntransformedAbsolutePosition
         {
-            get { return absoluteBounds.Location; }
+            get { return untransformedAbsoluteBounds.Location; }
         }
         
         /// <summary>
@@ -874,7 +876,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
-        /// Gets the element's bounds in element-local space.
+        /// Gets the element's bounds in client space.
         /// </summary>
         public RectangleD Bounds
         {
@@ -882,38 +884,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element's bounds relative to its parent element.
+        /// Gets the element's untransformed bounds relative to its parent element.
         /// </summary>
-        public RectangleD RelativeBounds
+        /// <remarks>Untransformed bounds are computed as if no transforms have been applied to the element or any of its ancestors.</remarks>
+        public RectangleD UntransformedRelativeBounds
         {
-            get { return relativeBounds; }
+            get { return untransformedRelativeBounds; }
         }
 
         /// <summary>
-        /// Gets the element's bounds in absolute screen space.
+        /// Gets the element's untransformed bounds in absolute screen space.
         /// </summary>
-        public RectangleD AbsoluteBounds
+        /// <remarks>Untransformed bounds are computed as if no transforms have been applied to the element or any of its ancestors.</remarks>
+        public RectangleD UntransformedAbsoluteBounds
         {
-            get { return absoluteBounds; }
+            get { return untransformedAbsoluteBounds; }
         }
 
         /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants in untransformed client-relative coordinates.
+        /// Gets the element's visual bounds in client space.
         /// </summary>
-        public RectangleD UntransformedVisualBounds
+        public RectangleD VisualBounds
         {
             get
             {
-                if (untransformedVisualBounds.HasValue)
-                    return untransformedVisualBounds.Value;
+                if (visualBounds.HasValue)
+                    return visualBounds.Value;
 
-                untransformedVisualBounds = CalculateUntransformedVisualBounds();
-                return untransformedVisualBounds.Value;
+                visualBounds = CalculateVisualBounds();
+                return visualBounds.Value;
             }
         }
         
         /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants in transformed screen-relative coordinates.
+        /// Gets the element's transformed visual bounds in screen space.
         /// </summary>
         public RectangleD TransformedVisualBounds
         {
@@ -1412,7 +1416,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The transformation matrix which is passed into the element's sprite batch prior to rendering the element.</returns>
         internal Matrix GetVisualTransformMatrix(ref Matrix mtxParentTransform)
         {
-            var pixPosition = (Vector2)Display.DipsToPixels(AbsolutePosition);
+            var pixPosition = (Vector2)Display.DipsToPixels(UntransformedAbsolutePosition);
 
             var mtxTranslateToClientSpace = Matrix.CreateTranslation(-pixPosition.X, -pixPosition.Y, 0f);
             var mtxTransform = GetTransformMatrix(true);
@@ -1643,9 +1647,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var invalidated = true;
 
-            if (untransformedVisualBounds.HasValue)
+            if (visualBounds.HasValue)
             {
-                untransformedVisualBounds = null;
+                visualBounds = null;
                 invalidated = true;
             }
             
@@ -2088,10 +2092,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants in untransformed client-relative coordinates.
+        /// Calculates the element's visual bounds in client space.
         /// </summary>
-        /// <returns>The visual bounds of the element and all of its descendants in untransformed client-relative coordinates.</returns>
-        protected virtual RectangleD CalculateUntransformedVisualBounds()
+        /// <returns>The element's visual bounds in client space.</returns>
+        protected virtual RectangleD CalculateVisualBounds()
         {
             var elementBounds = Bounds;
 
@@ -2101,21 +2105,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var child = VisualTreeHelper.GetChild(this, i) as UIElement;
                 if (child != null && !(child is Popup))
                 {
-                    var childBounds = child.UntransformedVisualBounds;
+                    var childBounds = child.VisualBounds;
                     var childTransform = child.GetTransformMatrix();
                     RectangleD.TransformAxisAligned(ref childBounds, ref childTransform, out childBounds);
 
                     if (childBounds.IsEmpty)
                         continue;
 
-                    childBounds = new RectangleD(childBounds.Location + child.RelativePosition, childBounds.Size);
+                    childBounds = new RectangleD(childBounds.Location + child.UntransformedRelativePosition, childBounds.Size);
                     RectangleD.Union(ref elementBounds, ref childBounds, out elementBounds);
                 }
             }
 
             if (ClipRectangle.HasValue)
             {
-                var relativeClip = ClipRectangle.Value - AbsolutePosition;
+                var relativeClip = ClipRectangle.Value - UntransformedAbsolutePosition;
                 RectangleD.Intersect(ref elementBounds, ref relativeClip, out elementBounds);
             }
 
@@ -2123,9 +2127,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the visual bounds of the element and all of its descendants in transformed screen-relative coordinates.
+        /// Calculates the element's transformed visual bounds in screen space.
         /// </summary>
-        /// <returns>The visual bounds of the element and all of its descendants in transformed screen-relative coordinates.</returns>
+        /// <returns>The element's transformed visual bounds in screen space.</returns>
         protected virtual RectangleD CalculateTransformedVisualBounds()
         {
             var visualBounds = Bounds;            
@@ -2289,7 +2293,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             else
             {
                 var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
-                var imageAreaAbs = imageAreaRel + AbsolutePosition;
+                var imageAreaAbs = imageAreaRel + UntransformedAbsolutePosition;
                 var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
                 
                 var origin = new Vector2(
@@ -2335,7 +2339,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
-            var imageAreaAbs = imageAreaRel + AbsolutePosition;
+            var imageAreaAbs = imageAreaRel + UntransformedAbsolutePosition;
             var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
             var origin = new Vector2(
@@ -2612,10 +2616,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.forceInvalidatePosition = false;
 
-            var oldAbsolutePosition = AbsolutePosition;
+            var oldAbsolutePosition = UntransformedAbsolutePosition;
             Position(mostRecentPositionOffset);
 
-            if (forceInvalidatePosition || !oldAbsolutePosition.Equals(AbsolutePosition))
+            if (forceInvalidatePosition || !oldAbsolutePosition.Equals(UntransformedAbsolutePosition))
             {
                 PositionChildren();
             }
@@ -2866,9 +2870,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Point2D renderOffset;
         private Size2D renderSize;
         private Size2D desiredSize;
-        private RectangleD relativeBounds;
-        private RectangleD absoluteBounds;
-        private RectangleD? untransformedVisualBounds;
+        private RectangleD untransformedRelativeBounds;
+        private RectangleD untransformedAbsoluteBounds;
+        private RectangleD? visualBounds;
         private RectangleD? transformedVisualBounds;
         private RectangleD? clipRectangle;
         private event EventHandler layoutUpdated;

@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             if (!element.IsHitTestVisible)
                 return false;
 
-            if (!element.UntransformedVisualBounds.Contains(point))
+            if (!element.VisualBounds.Contains(point))
                 return false;
 
             var clip = element.ClipRectangle;
@@ -26,8 +26,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             {
                 var absoluteClip = clip.Value;
                 var relativeClip = new RectangleD(
-                    absoluteClip.X - element.AbsolutePosition.X,
-                    absoluteClip.Y - element.AbsolutePosition.Y,
+                    absoluteClip.X - element.UntransformedAbsolutePosition.X,
+                    absoluteClip.Y - element.UntransformedAbsolutePosition.Y,
                     absoluteClip.Width,
                     absoluteClip.Height);
 

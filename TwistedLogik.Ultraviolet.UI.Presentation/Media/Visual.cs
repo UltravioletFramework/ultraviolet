@@ -333,8 +333,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
                 {
                     var mtxTransform = uiElement.GetTransformMatrix();
                     var mtxTranslateToClientSpace = Matrix.CreateTranslation(
-                        (Single)uiElement.RelativeBounds.X, 
-                        (Single)uiElement.RelativeBounds.Y, 0f);
+                        (Single)uiElement.UntransformedRelativeBounds.X, 
+                        (Single)uiElement.UntransformedRelativeBounds.Y, 0f);
 
                     Matrix mtxResult;
                     Matrix.Concat(ref mtxFinal, ref mtxTransform, out mtxResult);
