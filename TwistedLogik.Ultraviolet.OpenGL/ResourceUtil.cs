@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using TwistedLogik.Gluon;
@@ -11,6 +12,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL
     /// </summary>
     internal static class ResourceUtil
     {
+        /// <summary>
+        /// Initializes the <see cref="ResourceUtil"/> class.
+        /// </summary>
+        static ResourceUtil()
+        {
+            manifestResourceNames = new HashSet<String>(Assembly.GetExecutingAssembly().GetManifestResourceNames(), StringComparer.OrdinalIgnoreCase);
+        }
+
         /// <summary>
         /// Reads a resource file as a string of text.
         /// </summary>
@@ -40,11 +49,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             if (gl.IsGLES)
             {
-                var ext = Path.GetExtension(name);
-                name = Path.ChangeExtension(Path.GetFileNameWithoutExtension(name) + "ES", ext);
+                var glesName = Path.ChangeExtension(Path.GetFileNameWithoutExtension(name) + "ES", Path.GetExtension(name));
+                if (manifestResourceNames.Contains(glesName))
+                {
+                    name = glesName;
+                }
             }
 
             return ReadResourceString(name);
         }
+
+        // The manifest resource names for this assembly.
+        private static readonly HashSet<String> manifestResourceNames;
     }
 }
