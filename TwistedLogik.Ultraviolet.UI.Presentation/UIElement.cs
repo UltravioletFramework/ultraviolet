@@ -268,8 +268,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             graphics.Clear(Color.Transparent);
 
             var bounds = Display.DipsToPixels(TransformedVisualBounds);
-            var x = (Int32)TransformedVisualBounds.X + (TransformedVisualBounds.Width - target.Width) / 2.0;
-            var y = (Int32)TransformedVisualBounds.Y + (TransformedVisualBounds.Height - target.Height) / 2.0;
+            var x = (Int32)bounds.X + (bounds.Width - target.Width) / 2.0;
+            var y = (Int32)bounds.Y + (bounds.Height - target.Height) / 2.0;
 
             var visualBounds = (Vector2)new Point2D(x, y);
             dc.GlobalTransform = Matrix.CreateTranslation(-visualBounds.X, -visualBounds.Y, 0);
