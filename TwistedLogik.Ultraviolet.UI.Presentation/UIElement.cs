@@ -2157,7 +2157,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The visual bounds of the element and all of its descendants in screen-relative coordinates.</returns>
         protected virtual RectangleD CalculateAbsoluteVisualBounds()
         {
-            var visualBounds = RelativeBounds;            
+            var visualBounds = Bounds;            
 
             var parent = VisualTreeHelper.GetParent(this) as UIElement;
             if (parent == null)
@@ -2166,18 +2166,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var visualTreeRoot = VisualTreeHelper.GetRoot(parent) as UIElement;
             if (visualTreeRoot == null)
                 return visualBounds;
-            
-            var transform = parent.GetTransformToAncestorMatrix(visualTreeRoot);
-            if (visualTreeRoot is PopupRoot)
-            {
-                var popup = visualTreeRoot.Parent as Popup;
-                if (popup != null)
-                {
-                    var popupTransform = popup.PopupTransformToView;
-                    Matrix.Concat(ref transform, ref popupTransform, out transform);
-                }
-            }
-            
+
+            var transform = GetTransformToViewMatrix();
             RectangleD.TransformAxisAligned(ref visualBounds, ref transform, out visualBounds);
 
             return UnionAbsoluteVisualBoundsWithChildrenAndApplyClipping(visualBounds);
