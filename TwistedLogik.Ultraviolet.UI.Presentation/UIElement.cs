@@ -1209,6 +1209,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Performs a union between the specified visual bounds and the visual bounds of the element's children, then
+        /// applies the element's clipping rectangle, if it has one.
+        /// </summary>
+        /// <param name="absoluteVisualBounds">The visual bounds to extend and clip.</param>
+        /// <returns>The extended and clipped visual bounds.</returns>
+        internal RectangleD UnionAbsoluteVisualBoundsWithChildrenAndApplyClipping(RectangleD absoluteVisualBounds)
+        {
+            var childCount = VisualTreeHelper.GetChildrenCount(this);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                if (child != null && !(child is Popup))
+                {
+                    var childBounds = child.AbsoluteVisualBounds;
+                    if (childBounds.IsEmpty)
+                        continue;
+
+                    RectangleD.Union(ref absoluteVisualBounds, ref childBounds, out absoluteVisualBounds);
+                }
+            }
+
+            if (ClipRectangle.HasValue)
+            {
+                var relativeClip = ClipRectangle.Value;
+                RectangleD.Intersect(ref absoluteVisualBounds, ref relativeClip, out absoluteVisualBounds);
+            }
+
+            return absoluteVisualBounds;
+        }
+
+        /// <summary>
         /// Raises the <see cref="LayoutUpdated"/> event.
         /// </summary>
         internal void RaiseLayoutUpdated()
@@ -1797,12 +1828,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return Bounds.Contains(point) ? this : null;
         }
-
-        public Matrix Foo()
-        {
-            return GetTransformMatrix();
-        }
-
+        
         /// <inheritdoc/>
         protected override Matrix GetTransformMatrix(Boolean inDevicePixels = false)
         {
@@ -2131,7 +2157,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The visual bounds of the element and all of its descendants in screen-relative coordinates.</returns>
         protected virtual RectangleD CalculateAbsoluteVisualBounds()
         {
-            var visualBounds = RelativeVisualBounds;            
+            var visualBounds = RelativeBounds;            
 
             var parent = VisualTreeHelper.GetParent(this) as UIElement;
             if (parent == null)
@@ -2140,9 +2166,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var visualTreeRoot = VisualTreeHelper.GetRoot(parent) as UIElement;
             if (visualTreeRoot == null)
                 return visualBounds;
-
-            visualBounds = RectangleD.Offset(visualBounds, RelativePosition);
-
+            
             var transform = parent.GetTransformToAncestorMatrix(visualTreeRoot);
             if (visualTreeRoot is PopupRoot)
             {
@@ -2153,11 +2177,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Matrix.Concat(ref transform, ref popupTransform, out transform);
                 }
             }
-
-            RectangleD bounds;
-            RectangleD.TransformAxisAligned(ref visualBounds, ref transform, out bounds);
             
-            return bounds;
+            RectangleD.TransformAxisAligned(ref visualBounds, ref transform, out visualBounds);
+
+            return UnionAbsoluteVisualBoundsWithChildrenAndApplyClipping(visualBounds);
         }
 
         /// <summary>

@@ -69,6 +69,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
             return (result == this) ? null : result;
         }
 
+        /// <inheritdoc/>
+        protected override RectangleD CalculateAbsoluteVisualBounds()
+        {
+            if (AdornedElement == null)
+                return base.CalculateAbsoluteVisualBounds();
+
+            return UnionAbsoluteVisualBoundsWithChildrenAndApplyClipping(AdornedElement.AbsoluteVisualBounds);
+        }        
+
         // Property values.
         private readonly UIElement adornedElement;
     }
