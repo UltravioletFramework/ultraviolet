@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.EnsureRange(width >= 1, "width");
             Contract.EnsureRange(height >= 1, "height");
             Contract.EnsureNotDisposed(this, Disposed);
-
+            
             this.renderTarget.Resize(width, height);
         }
 
@@ -43,14 +43,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="element">The element for which to resize the render target.</param>
         /// <param name="bounds">The visual bounds of the element in absolute screen coordinates.</param>
-        public void ResizeForElement(UIElement element, out RectangleD bounds)
+        /// <returns><c>true</c> if the element was resized; otherwise, <c>false</c>.</returns>
+        public Boolean ResizeForElement(UIElement element, out RectangleD bounds)
         {
             Contract.Require(element, "element");
 
             if (element.View == null)
             {
                 bounds = RectangleD.Empty;
-                return;
+                return false;
             }
 
             bounds = element.TransformedVisualBounds;
@@ -62,8 +63,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             var display = element.View.Display;
-            var width = (Int32)Math.Ceiling(display.DipsToPixels(bounds.Width));
-            var height = (Int32)Math.Ceiling(display.DipsToPixels(bounds.Height));
+            var width   = Math.Max(1, (Int32)Math.Ceiling(display.DipsToPixels(bounds.Width)));
+            var height  = Math.Max(1, (Int32)Math.Ceiling(display.DipsToPixels(bounds.Height)));
+
+            if (width == renderTarget.Width && height == renderTarget.Height)
+                return false;
 
             if (width < 1 || height < 1)
             {
@@ -74,6 +78,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 Resize(width, height);
             }
+
+            return true;
         }
 
         /// <summary>

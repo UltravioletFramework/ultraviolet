@@ -84,6 +84,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(width >= 1, "width");
             Contract.EnsureRange(height >= 1, "height");
 
+            if (this.width == width && this.height == height)
+                return;
+
             foreach (var buffer in buffers)
             {
                 buffer.ResizeInternal(width, height);

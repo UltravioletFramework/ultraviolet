@@ -213,10 +213,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var effect = element.Effect;
 
                     var rtarget = element.OutOfBandRenderTarget.Value;
-                    rtarget.ResizeForElement(element, out bounds);
-
-                    for (var current = rtarget.Next; current != null; current = current.Next)
-                        current.Resize(rtarget.Width, rtarget.Height);
+                    if (rtarget.ResizeForElement(element, out bounds))
+                    {
+                        for (var current = rtarget.Next; current != null; current = current.Next)
+                            current.Resize(rtarget.Width, rtarget.Height);
+                    }
 
                     graphics.SetRenderTarget(rtarget.RenderTarget);
                     graphics.Clear(Color.Transparent);
