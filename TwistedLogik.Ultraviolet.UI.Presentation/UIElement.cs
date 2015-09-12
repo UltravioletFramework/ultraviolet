@@ -331,7 +331,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             CacheLayoutDepth();
             CacheView();
-            
+
+            if (View != null && View.LayoutRoot.IsLoaded)
+                EnsureOutOfBandRenderTargetsExist();
+
             CacheLayoutParametersCore();
         }
 
@@ -2833,6 +2836,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            if (upf.OutOfBandRenderer.IsDrawingRenderTargets)
+                return;
+
             upf.OutOfBandRenderer.Register(this, RequiredOutOfBandTargets);
         }
 
