@@ -58,6 +58,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Digest(UltravioletTime time)
         {
+            var digestCycleID = PresentationFoundation.Instance.DigestCycleID;
+            if (digestCycleID == lastDigestedCycleID)
+                return;
+
+            lastDigestedCycleID = PresentationFoundation.Instance.DigestCycleID;
+
             foreach (var value in dependencyPropertyValuesOfTypeDependencyObject)
             {
                 var dobj = (DependencyObject)value.Value.GetUntypedValue();
@@ -851,6 +857,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new List<IDependencyPropertyValue>();
 
         // State values.
+        private Int64 lastDigestedCycleID;
         private Int64 invalidatedDigestCount1;
         private Int64 invalidatedDigestCount2;
     }

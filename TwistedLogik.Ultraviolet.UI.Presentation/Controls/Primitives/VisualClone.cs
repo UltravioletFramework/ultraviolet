@@ -30,13 +30,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     return;
 
                 clonedElement = value;
-                if (clonedElement != null)
+
+                if (clonedElement == null)
                 {
-                    InvalidateStyle();
+                    this.Effect = null;
+                }
+                else
+                {
+                    this.Effect = clonedElement.Effect;
+                    this.InvalidateStyle();
                 }
             }
         }
-
+        
         /// <summary>
         /// Called when the Presentation Foundation updates the layout.
         /// </summary>
@@ -45,11 +51,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (clonedElement == null)
                 return;
 
-            if (clonedRenderWidth != clonedElement.RenderSize.Width ||
-                clonedRenderHeight != clonedElement.RenderSize.Height)
+            if (!clonedBounds.Equals(clonedElement.TransformedVisualBounds))
             {
                 InvalidateMeasure();
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void UpdateCore(UltravioletTime time)
+        {
+            var desiredEffect = (clonedElement == null) ? null : clonedElement.Effect;
+            if (desiredEffect != this.Effect)
+            {
+                this.Effect = desiredEffect;
+            }
+
+            base.UpdateCore(time);
         }
 
         /// <inheritdoc/>
@@ -62,8 +79,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
                 var offset = (Vector2)Display.DipsToPixels(clonedElement.UntransformedAbsoluteBounds.Location - clonedElement.UntransformedRelativeBounds.Location);
 
+                var mtxTransform = Matrix.CreateTranslation(-offset.X, -offset.Y, 0);
+                var mtxTransformToView = GetTransformToViewMatrix();
+                var mtxTransformGlobal = dcState.GlobalTransform;
+                Matrix.Concat(ref mtxTransform, ref mtxTransformToView, out mtxTransform);
+                Matrix.Concat(ref mtxTransform, ref mtxTransformGlobal, out mtxTransform);
+
                 dc.IsOutOfBandRenderingSuppressed = true;
-                dc.GlobalTransform = GetTransformToViewMatrix() * Matrix.CreateTranslation(-offset.X, -offset.Y, 0);
+                dc.GlobalTransform = mtxTransform;
 
                 dc.Begin(Graphics.Graphics2D.SpriteSortMode.Deferred, null, Matrix.Identity);
                 clonedElement.Draw(null, dc);
@@ -95,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 {
                     clonedElement.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
                 }
-                return clonedElement.DesiredSize;
+                return clonedElement.TransformedVisualBounds.Size;
             }
             return base.MeasureCore(availableSize);
         }
@@ -109,9 +132,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 {
                     clonedElement.Arrange(new RectangleD(0, 0, clonedElement.DesiredSize.Width, clonedElement.DesiredSize.Height));
                 }
-                clonedRenderWidth = clonedElement.RenderSize.Width;
-                clonedRenderHeight = clonedElement.RenderSize.Height;
-                return clonedElement.RenderSize;
+                clonedBounds = clonedElement.TransformedVisualBounds;
+                return clonedBounds.Size;
             }
             return base.ArrangeCore(finalRect, options);
         }
@@ -125,7 +147,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
         // Property values.
         private UIElement clonedElement;
-        private Double clonedRenderWidth;
-        private Double clonedRenderHeight;        
+
+        // State values.
+        private RectangleD clonedBounds;
     }
 }
