@@ -20,7 +20,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             this.resized = resized;
 
             this.nonLogicalAdornerDecorator = new NonLogicalAdornerDecorator(uv, null);
-            this.nonLogicalAdornerDecorator.ChangeVisualParent(this);
         }
         
         /// <summary>
@@ -138,6 +137,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         internal void UnhookFromVisualTree()
         {
             nonLogicalAdornerDecorator.ChangeVisualParent(null);
+        }
+
+        /// <inheritdoc/>
+        internal override Boolean IsVisuallyConnectedToViewRoot
+        {
+            get { return IsOpen; }
         }
 
         /// <summary>

@@ -327,8 +327,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void CacheLayoutParameters()
         {
-            var view = View;
+            if (suppressCacheLayoutParameters)
+                return;
 
+            var view = View;
+            
             CacheLayoutDepth();
             CacheView();
 
@@ -729,7 +732,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (parent != value)
                 {
                     parent = value;
-                    OnLogicalParentChangedInternal();
+                    OnLogicalParentChanged();
                 }
             }
         }
@@ -1156,7 +1159,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
-            OnLayoutCacheInvalidatedInternal();
+            CacheLayoutParameters();
             
             if (VisualParent != null)
             {
@@ -1180,26 +1183,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
 
         }
-
-        /// <summary>
-        /// Called when something occurs which requires the element to invalidate its cached
-        /// layout information, such as the visual or logical parent changing.
-        /// </summary>
-        internal virtual void OnLayoutCacheInvalidatedInternal()
-        {
-            CacheLayoutParameters();
-            OnLayoutCacheInvalidated();
-        }
-
-        /// <summary>
-        /// Invokes the <see cref="OnLogicalParentChanged()"/> method.
-        /// </summary>
-        internal virtual void OnLogicalParentChangedInternal()
-        {
-            OnLayoutCacheInvalidatedInternal();
-            OnLogicalParentChanged();
-        }
-
+        
         /// <summary>
         /// Performs a union between the specified visual bounds and the visual bounds of the element's children, then
         /// applies the element's clipping rectangle, if it has one.
@@ -1252,22 +1236,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="visualParent">The element's new visual parent.</param>
         internal void ChangeLogicalAndVisualParents(UIElement logicalParent, Visual visualParent)
         {
-            if (this.Parent != logicalParent)
+            suppressCacheLayoutParameters = true;
+            try
             {
-                if (this.Parent != null)
-                    this.Parent = null;
+                if (this.Parent != logicalParent)
+                {
+                    if (this.Parent != null)
+                        this.Parent = null;
 
-                this.Parent = logicalParent;
+                    this.Parent = logicalParent;
+                }
+
+                if (this.VisualParent != visualParent)
+                {
+                    if (this.VisualParent != null)
+                        this.VisualParent.RemoveVisualChild(this);
+
+                    if (visualParent != null)
+                        visualParent.AddVisualChild(this);
+                }
             }
-
-            if (this.VisualParent != visualParent)
+            finally
             {
-                if (this.VisualParent != null)
-                    this.VisualParent.RemoveVisualChild(this);
-
-                if (visualParent != null)
-                    visualParent.AddVisualChild(this);
+                suppressCacheLayoutParameters = false;
             }
+            CacheLayoutParameters();
         }
 
         /// <summary>
@@ -1551,6 +1544,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the element is visually connected to the view's root element.
+        /// </summary>
+        internal virtual Boolean IsVisuallyConnectedToViewRoot
+        {
+            get { return isVisuallyConnectedToViewRoot; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this element has a non-identity layout transform.
         /// </summary>
         internal virtual Boolean HasLayoutTransform
@@ -1572,7 +1573,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal Boolean HasNonIdentityTransform
         {
             get { return HasLayoutTransform || HasRenderTransform; }
-        }
+        }        
 
         /// <inheritdoc/>
         internal override Object DependencyDataSource
@@ -1745,16 +1746,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 temp(this, time);
             }
         }
-
-        /// <summary>
-        /// Occurs when something happens which requires the element to invalidate any
-        /// cached layout information, such as changing the element's visual or logical parent.
-        /// </summary>
-        protected virtual void OnLayoutCacheInvalidated()
-        {
-
-        }
-
+        
         /// <summary>
         /// Occurs when the element's logical parent is changed.
         /// </summary>
@@ -2642,7 +2634,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private void CacheView()
         {
             if (this is PresentationFoundationViewRoot)
+            {
+                isVisuallyConnectedToViewRoot = true;
                 return;
+            }
 
             var oldView = View;
 
@@ -2681,6 +2676,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     this.view = null;
                 }
             }
+
+            var visualParentElement = VisualParent as UIElement;
+            isVisuallyConnectedToViewRoot = (visualParentElement != null && visualParentElement.IsVisuallyConnectedToViewRoot) || this is Popup;
 
             if (oldView != View)
                 OnViewChanged(oldView, View);
@@ -2891,11 +2889,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Size2D mostRecentPositionOffset;
         private Int32 layoutDepth;
         private Boolean forceInvalidatePosition;
+        private Boolean suppressCacheLayoutParameters;
 
         // State values.
         private Boolean isStyling;
         private Boolean isMeasuring;
         private Boolean isArranging;
+        private Boolean isVisuallyConnectedToViewRoot;
         private Int32 requiredOutOfBandTargets;
         
         // The collection of active storyboard instances on this element.
