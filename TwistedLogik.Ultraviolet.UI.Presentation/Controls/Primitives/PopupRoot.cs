@@ -20,6 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             this.resized = resized;
 
             this.nonLogicalAdornerDecorator = new NonLogicalAdornerDecorator(uv, null);
+            this.nonLogicalAdornerDecorator.ChangeLogicalParent(this);
         }
         
         /// <summary>

@@ -101,6 +101,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextBlockBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\ToggleButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\Track.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\VisualClone.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\VScrollBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ProgressBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\RadioButton.cs" />

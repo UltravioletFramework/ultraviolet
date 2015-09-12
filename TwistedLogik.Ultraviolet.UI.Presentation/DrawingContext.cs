@@ -40,6 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.localTransform = Matrix.Identity;
             this.globalTransform = Matrix.Identity;
             this.combinedTransform = Matrix.Identity;
+            this.IsOutOfBandRenderingSuppressed = false;
         }
 
         /// <summary>
@@ -716,6 +717,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsInsideOutOfBandElement
         {
             get { return outOfBand > 0; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether out-of-band rendering is currently being suppressed.
+        /// </summary>
+        public Boolean IsOutOfBandRenderingSuppressed
+        {
+            get;
+            internal set;
         }
 
         /// <summary>

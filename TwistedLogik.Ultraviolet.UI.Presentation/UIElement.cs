@@ -2575,7 +2575,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><c>true</c> if the element's out-of-band texture was drawn; otherwise, <c>false</c>.</returns>
         private Boolean DrawOutOfBandTexture(DrawingContext dc)
         {
-            if (this is Popup)
+            if (this is Popup || dc.IsOutOfBandRenderingSuppressed)
                 return false;
 
             var element = this;

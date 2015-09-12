@@ -34,6 +34,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ComboBox(UltravioletContext uv, String name)
             : base(uv, name)
         {
+            visualClone = new VisualClone(uv);
+
             VisualStateGroups.Create("common", new[] { "normal", "hover", "disabled" });
             VisualStateGroups.Create("opened", new[] { "closed", "open" });
         }
@@ -364,6 +366,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateSelectionBox()
         {
+            visualClone.ClonedElement = null;
+
             var selectionBoxItem             = (Object)null;
             var selectionBoxItemStringFormat = ItemStringFormat;
 
@@ -372,6 +376,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 selectionBoxItem             = contentControl.Content;
                 selectionBoxItemStringFormat = contentControl.ContentStringFormat;
+            }
+
+            if (selectionBoxItem is UIElement)
+            {
+                visualClone.ClonedElement = (UIElement)selectionBoxItem;
+                selectionBoxItem = visualClone;
             }
 
             SetValue<Object>(SelectionBoxItemPropertyKey, selectionBoxItem ?? String.Empty);
@@ -441,6 +451,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         // Component references.
         private readonly UIElement PART_Arrow = null;
+        private readonly VisualClone visualClone;
 
         // State values.
         private Size2 viewSize;
