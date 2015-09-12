@@ -37,6 +37,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
         }
 
+        /// <summary>
+        /// Called when the Presentation Foundation updates the layout.
+        /// </summary>
+        internal void HandleLayoutUpdated()
+        {
+            if (clonedElement == null)
+                return;
+
+            if (clonedRenderWidth != clonedElement.RenderSize.Width ||
+                clonedRenderHeight != clonedElement.RenderSize.Height)
+            {
+                InvalidateMeasure();
+            }
+        }
+
         /// <inheritdoc/>
         protected override void DrawCore(UltravioletTime time, DrawingContext dc)
         {
@@ -88,12 +103,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override Size2D ArrangeCore(RectangleD finalRect, ArrangeOptions options)
         {
-            if (clonedElement == null)
+            if (clonedElement != null)
             {
                 if (!clonedElement.IsVisuallyConnectedToViewRoot)
                 {
                     clonedElement.Arrange(new RectangleD(0, 0, clonedElement.DesiredSize.Width, clonedElement.DesiredSize.Height));
                 }
+                clonedRenderWidth = clonedElement.RenderSize.Width;
+                clonedRenderHeight = clonedElement.RenderSize.Height;
                 return clonedElement.RenderSize;
             }
             return base.ArrangeCore(finalRect, options);
@@ -108,5 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
         // Property values.
         private UIElement clonedElement;
+        private Double clonedRenderWidth;
+        private Double clonedRenderHeight;        
     }
 }

@@ -1746,7 +1746,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 temp(this, time);
             }
         }
-        
+
+        /// <summary>
+        /// Occurs when the view to which the element is connected changes.
+        /// </summary>
+        /// <param name="oldView">The view to which the element was previously connected.</param>
+        /// <param name="newView">The view to which the element is now connected.</param>
+        protected virtual void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+
+        }
+
         /// <summary>
         /// Occurs when the element's logical parent is changed.
         /// </summary>
@@ -2681,7 +2691,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             isVisuallyConnectedToViewRoot = (visualParentElement != null && visualParentElement.IsVisuallyConnectedToViewRoot) || this is Popup;
 
             if (oldView != View)
-                OnViewChanged(oldView, View);
+                HandleViewChanged(oldView, View);
         }
 
         /// <summary>
@@ -2770,8 +2780,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the element's associated view changes.
         /// </summary>
-        private void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        private void HandleViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
         {
+            OnViewChanged(oldView, newView);
+
             if (oldView == null)
             {
                 if (newView.LayoutRoot.IsLoaded)

@@ -216,7 +216,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
             }
             base.UpdateOverride(time);
-        }        
+        }
+        
+        /// <inheritdoc/>
+        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+            if (oldView == null && newView != null)
+            {
+                LayoutUpdated += ComboBox_LayoutUpdated;
+            }
+
+            if (oldView != null && newView == null)
+            {
+                LayoutUpdated -= ComboBox_LayoutUpdated;
+            }
+
+            base.OnViewChanged(oldView, newView);
+        }
 
         /// <inheritdoc/>
         protected override void OnSelectionChanged()
@@ -362,6 +378,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Handles the <see cref="UIElement.LayoutUpdated"/> event.
+        /// </summary>
+        private void ComboBox_LayoutUpdated(Object sender, EventArgs e)
+        {
+            var selectedVisualClone = SelectionBoxItem as VisualClone;
+            if (selectedVisualClone != null)
+            {
+                selectedVisualClone.HandleLayoutUpdated();
+            }
+        }
+
+        /// <summary>
         /// Updates the selection box.
         /// </summary>
         private void UpdateSelectionBox()
@@ -384,8 +412,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 selectionBoxItem = visualClone;
             }
 
-            SetValue<Object>(SelectionBoxItemPropertyKey, selectionBoxItem ?? String.Empty);
-            SetValue<String>(SelectionBoxItemStringFormatPropertyKey, selectionBoxItemStringFormat);
+            SetValue(SelectionBoxItemPropertyKey, selectionBoxItem ?? String.Empty);
+            SetValue(SelectionBoxItemStringFormatPropertyKey, selectionBoxItemStringFormat);
         }
 
         /// <summary>

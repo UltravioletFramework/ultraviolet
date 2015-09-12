@@ -162,21 +162,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
 
             return matches.Any() ? matches.ToArray() : null;
         }
-        
+
         /// <inheritdoc/>
-        protected override void OnVisualParentChanged(Visual oldParent, Visual newParent)
+        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
         {
-            if (oldParent == null && newParent != null)
+            if (oldView == null && newView != null)
             {
                 LayoutUpdated += CheckAdornersForChangedOnLayoutUpdated;
             }
 
-            if (oldParent != null && newParent == null)
+            if (oldView != null && newView == null)
             {
                 LayoutUpdated -= CheckAdornersForChangedOnLayoutUpdated;
             }
 
-            base.OnVisualParentChanged(oldParent, newParent);
+            base.OnViewChanged(oldView, newView);
         }
 
         /// <inheritdoc/>
