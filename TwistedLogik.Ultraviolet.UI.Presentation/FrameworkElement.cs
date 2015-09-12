@@ -554,12 +554,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var desiredWidth = DesiredSize.Width;
             var desiredHeight = DesiredSize.Height;
 
-            if (isLayoutTransformed)
-            {
-                desiredWidth = layoutTransformSizeDesiredBeforeTransform.Width;
-                desiredHeight = layoutTransformSizeDesiredBeforeTransform.Height;
-            }
-
             var fill   = (options & ArrangeOptions.Fill) == ArrangeOptions.Fill;
             var hAlign = fill ? HorizontalAlignment.Stretch : HorizontalAlignment;
             var vAlign = fill ? VerticalAlignment.Stretch : VerticalAlignment;
@@ -572,6 +566,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (isLayoutTransformed)
             {
+                desiredWidth = layoutTransformSizeDesiredBeforeTransform.Width;
+                desiredHeight = layoutTransformSizeDesiredBeforeTransform.Height;
+
                 var arrangedSizeAfterLayoutTransform = 
                     CalculateMaximumAvailableSizeBeforeLayoutTransform(desiredWidth, desiredHeight, layoutTransformUsedDuringLayout);
 
