@@ -1209,7 +1209,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (ClipRectangle.HasValue)
             {
-                var relativeClip = ClipRectangle.Value;
+                var relativeClip = ClipRectangle.Value - UntransformedAbsolutePosition;
                 RectangleD.TransformAxisAligned(ref relativeClip, ref clipTransformMatrix, out relativeClip);
                 RectangleD.Intersect(ref absoluteVisualBounds, ref relativeClip, out absoluteVisualBounds);
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
@@ -114,11 +115,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             if (clonedElement != null)
             {
+                var clonedParent = VisualTreeHelper.GetParent(clonedElement) as UIElement;
+                var clonedTransform = (clonedParent == null) ? Matrix.Identity : clonedElement.GetTransformToAncestorMatrix(clonedParent);
+
                 if (!clonedElement.IsVisuallyConnectedToViewRoot)
                 {
                     clonedElement.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
                 }
-                return clonedElement.TransformedVisualBounds.Size;
+
+                RectangleD bounds = clonedElement.VisualBounds;
+                RectangleD.TransformAxisAligned(ref bounds, ref clonedTransform, out bounds);
+
+                return bounds.Size;
             }
             return base.MeasureCore(availableSize);
         }
@@ -133,9 +141,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     clonedElement.Arrange(new RectangleD(0, 0, clonedElement.DesiredSize.Width, clonedElement.DesiredSize.Height));
                 }
                 clonedBounds = clonedElement.TransformedVisualBounds;
-                return clonedBounds.Size;
+                return finalRect.Size;
             }
             return base.ArrangeCore(finalRect, options);
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleD? ClipCore()
+        {
+            if (clonedBounds.Size.Width > RenderSize.Width ||
+                clonedBounds.Size.Height > RenderSize.Height)
+            {
+                return UntransformedAbsoluteBounds;
+            }
+            return base.ClipCore();
         }
 
         /// <inheritdoc/>
