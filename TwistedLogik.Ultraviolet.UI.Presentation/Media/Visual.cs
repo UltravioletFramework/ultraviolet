@@ -55,10 +55,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 
         /// <summary>
         /// Returns a transformation matrix which can be used to transform coordinates from this visual to
-        /// the layout root of the visual's view, irrespective of whether this 
+        /// the layout root of the visual's view.
         /// </summary>
-        /// <returns></returns>
-        public Matrix GetTransformToViewMatrix()
+        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<c>true</c>) or device-independent pixels (<c>false</c>).</param>
+        /// <returns>A transformation matrix which can be used to transform coordinates from this visual to the layout root of the visual's view.</returns>
+        public Matrix GetTransformToViewMatrix(Boolean inDevicePixels = false)
         {
             var element = this as UIElement;
             if (element == null)
@@ -69,13 +70,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
                 return Matrix.Identity;
 
             var mtxTransform = Matrix.Identity;
-            var mtxElement = element.GetTransformToAncestorMatrix(root);
+            var mtxElement = element.GetTransformToAncestorMatrix(root, inDevicePixels);
             Matrix.Concat(ref mtxElement, ref mtxTransform, out mtxTransform);
 
             if (root is PopupRoot)
             {
                 var popup = root.Parent as Popup;
-                var popupMatrix = (popup == null) ? Matrix.Identity : popup.PopupTransformToView;
+                var popupMatrix = (popup == null) ? Matrix.Identity : (inDevicePixels ? popup.PopupTransformToViewInDevicePixels : popup.PopupTransformToView);
                 Matrix.Concat(ref mtxTransform, ref popupMatrix, out mtxTransform);
             }
 
@@ -87,12 +88,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// the specified ancestor of this visual.
         /// </summary>
         /// <param name="ancestor">The ancestor to which coordinates will be transformed.</param>
+        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<c>true</c>) or device-independent pixels (<c>false</c>).</param>
         /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
-        public Matrix GetTransformToAncestorMatrix(Visual ancestor)
+        public Matrix GetTransformToAncestorMatrix(Visual ancestor, Boolean inDevicePixels = false)
         {
             Contract.Require(ancestor, "ancestor");
 
-            return this.MatrixTransformToAncestorInternal(ancestor, false);
+            return this.MatrixTransformToAncestorInternal(ancestor, false, inDevicePixels);
         }
 
         /// <summary>
@@ -100,12 +102,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// the specified descendant of this visual.
         /// </summary>
         /// <param name="descendant">The descendnat to which coordinates will be transformed.</param>
+        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<c>true</c>) or device-independent pixels (<c>false</c>).</param>
         /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
-        public Matrix GetTransformToDescendantMatrix(Visual descendant)
+        public Matrix GetTransformToDescendantMatrix(Visual descendant, Boolean inDevicePixels = false)
         {
             Contract.Require(descendant, "descendant");
 
-            return descendant.MatrixTransformToAncestorInternal(this, true);
+            return descendant.MatrixTransformToAncestorInternal(this, true, inDevicePixels);
         }
 
         /// <summary>
@@ -320,8 +323,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         /// <param name="ancestor">The ancestor to which coordinates will be transformed.</param>
         /// <param name="invert">A value indicating whether to invert the resulting matrix.</param>
+        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<c>true</c>) or device-independent pixels (<c>false</c>).</param>
         /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
-        private Matrix MatrixTransformToAncestorInternal(Visual ancestor, Boolean invert)
+        private Matrix MatrixTransformToAncestorInternal(Visual ancestor, Boolean invert, Boolean inDevicePixels = false)
         {
             var mtxFinal = Matrix.Identity;
 
@@ -331,10 +335,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
                 var uiElement = current as UIElement;
                 if (uiElement != null)
                 {
-                    var mtxTransform = uiElement.GetTransformMatrix();
+                    var bounds = uiElement.UntransformedRelativeBounds.Location;
+                    if (inDevicePixels)
+                    {
+                        bounds = uiElement.View.Display.DipsToPixels(bounds);
+                    }
+
+                    var mtxTransform = uiElement.GetTransformMatrix(inDevicePixels);
                     var mtxTranslateToClientSpace = Matrix.CreateTranslation(
-                        (Single)uiElement.UntransformedRelativeBounds.X, 
-                        (Single)uiElement.UntransformedRelativeBounds.Y, 0f);
+                        (Single)bounds.X, 
+                        (Single)bounds.Y, 0f);
 
                     Matrix mtxResult;
                     Matrix.Concat(ref mtxFinal, ref mtxTransform, out mtxResult);

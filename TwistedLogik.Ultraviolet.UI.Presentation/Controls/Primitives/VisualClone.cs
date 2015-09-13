@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 var offset = (Vector2)Display.DipsToPixels(clonedElement.UntransformedAbsoluteBounds.Location - clonedElement.UntransformedRelativeBounds.Location);
 
                 var mtxTransform = Matrix.CreateTranslation(-offset.X, -offset.Y, 0);
-                var mtxTransformToView = GetTransformToViewMatrix();
+                var mtxTransformToView = GetTransformToViewMatrix(true);
                 var mtxTransformGlobal = dcState.GlobalTransform;
                 Matrix.Concat(ref mtxTransform, ref mtxTransformToView, out mtxTransform);
                 Matrix.Concat(ref mtxTransform, ref mtxTransformGlobal, out mtxTransform);
