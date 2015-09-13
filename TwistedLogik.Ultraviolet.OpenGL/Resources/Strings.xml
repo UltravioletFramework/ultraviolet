@@ -180,4 +180,9 @@
       <Variant>The render buffer cannot be resized because it has been attached to a render target. Resize the render target instead.</Variant>
     </en-US>
   </String>
+  <String Key="TEXTURE_IS_IMMUTABLE">
+    <en-US>
+      <Variant>The specified operation is invalid for this texture because it is using immutable storage.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

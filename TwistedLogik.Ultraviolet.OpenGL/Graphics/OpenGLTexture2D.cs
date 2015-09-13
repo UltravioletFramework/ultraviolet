@@ -82,31 +82,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             if (BoundForReading || BoundForWriting)
                 throw new InvalidOperationException(OpenGLStrings.InvalidOperationWhileBound);
-            
-            this.width  = width;
+
+            this.width = width;
             this.height = height;
 
             if (immutable)
+                throw new InvalidOperationException(OpenGLStrings.TextureIsImmutable);
+
+            if (Ultraviolet.IsExecutingOnCurrentThread)
             {
-                if (Ultraviolet.IsExecutingOnCurrentThread)
-                {
-                    ProcessResizeImmutable();
-                }
-                else
-                {
-                    Ultraviolet.QueueWorkItem((state) => { ((OpenGLTexture2D)state).ProcessResizeImmutable(); }, this);
-                }
+                ProcessResize();
             }
             else
             {
-                if (Ultraviolet.IsExecutingOnCurrentThread)
-                {
-                    ProcessResizeMutable();
-                }
-                else
-                {
-                    Ultraviolet.QueueWorkItem((state) => { ((OpenGLTexture2D)state).ProcessResizeMutable(); }, this);
-                }
+                Ultraviolet.QueueWorkItem((state) => { ((OpenGLTexture2D)state).ProcessResize(); }, this);
             }
         }
 
@@ -472,23 +461,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
-        /// Processes a resize operation for an immutable texture.
+        /// Processes a resize operation for this texture.
         /// </summary>
-        private void ProcessResizeImmutable()
-        {
-            gl.DeleteTexture(OpenGLName);
-            gl.ThrowIfError();
-
-            OpenGLState.DeleteTexture2D(OpenGLName);
-
-            CreateNativeTexture(Ultraviolet, internalformat,
-                width, height, format, type, null, true);
-        }
-
-        /// <summary>
-        /// Processes a resize operation for an immutable texture.
-        /// </summary>
-        private void ProcessResizeMutable()
+        private void ProcessResize()
         {
             using (OpenGLState.ScopedBindTexture2D(texture, true))
             {
