@@ -617,6 +617,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Left))
                 {
                     alignmentX -= transformedPopupArea.X;
+
+                    transformedPopupArea = new RectangleD(
+                        0, transformedPopupArea.Y,
+                        transformedPopupArea.Width,
+                        transformedPopupArea.Height);
+
                     ComputeTransformationMatrices();
                 }
             }
@@ -626,6 +632,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Top))
                 {
                     alignmentY -= transformedPopupArea.Y;
+                    
+                    transformedPopupArea = new RectangleD(
+                        transformedPopupArea.X, 0,
+                        transformedPopupArea.Width,
+                        transformedPopupArea.Height);
+
                     ComputeTransformationMatrices();
                 }
             }
@@ -635,6 +647,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Right))
                 {
                     alignmentX -= transformedPopupArea.Right - screenArea.Width;
+
+                    transformedPopupArea = new RectangleD(
+                        screenArea.Width - transformedPopupArea.Width, transformedPopupArea.Y,
+                        transformedPopupArea.Width,
+                        transformedPopupArea.Height);
+
                     ComputeTransformationMatrices();
                 }
             }
@@ -644,6 +662,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 if (IsCrossingScreenEdge(ref screenArea, ref popupArea, PopupScreenEdges.Bottom))
                 {
                     alignmentY -= transformedPopupArea.Bottom - screenArea.Height;
+                    
+                    transformedPopupArea = new RectangleD(
+                        transformedPopupArea.X,
+                        screenArea.Height - transformedPopupArea.Height,
+                        transformedPopupArea.Width,
+                        transformedPopupArea.Height);
+
                     ComputeTransformationMatrices();
                 }
             }
