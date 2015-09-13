@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             if (root is PopupRoot)
             {
                 var popup = root.Parent as Popup;
-                var popupMatrix = (popup == null) ? Matrix.Identity : (inDevicePixels ? popup.PopupTransformToViewInDevicePixels : popup.PopupTransformToView);
+                var popupMatrix = (popup == null) ? Matrix.Identity : (inDevicePixels ? popup.PopupTransformToViewWithOriginInDevicePixels : popup.PopupTransformToViewWithOrigin);
                 Matrix.Concat(ref mtxTransform, ref popupMatrix, out mtxTransform);
             }
 

@@ -247,6 +247,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
         }
 
+        /// <summary>
+        /// Gets the matrix which transforms coordinates in popup space to view space, offset by the popup's transform origin.
+        /// </summary>
+        internal Matrix PopupTransformToViewWithOriginInDevicePixels
+        {
+            get
+            {
+                var mtxDips = transformToViewWithOrigin;
+                var mtxPixs = new Matrix(
+                    mtxDips.M11, mtxDips.M12, mtxDips.M13, (Int32)Display.DipsToPixels(mtxDips.M14),
+                    mtxDips.M21, mtxDips.M22, mtxDips.M23, (Int32)Display.DipsToPixels(mtxDips.M24),
+                    mtxDips.M31, mtxDips.M32, mtxDips.M33, mtxDips.M34,
+                    mtxDips.M41, mtxDips.M42, mtxDips.M43, mtxDips.M44);
+                return mtxPixs;
+            }
+        }
+
         /// <inheritdoc/>
         protected internal override void InvalidateVisualBounds()
         {
@@ -807,7 +824,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             else
             {
                 popupPosition = new Point2D(
-                    PlacementRectangle.X + HorizontalOffset + resultX, 
+                    PlacementRectangle.X + HorizontalOffset + resultX,
                     PlacementRectangle.Y + VerticalOffset + resultY);
             }
 
