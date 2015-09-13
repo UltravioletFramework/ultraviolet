@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'max-dropdown-height'.</remarks>
         public static readonly DependencyProperty MaxDropDownHeightProperty = DependencyProperty.Register("MaxDropDownHeight", "max-dropdown-height", typeof(Double), typeof(ComboBox),
-            new PropertyMetadata<Double>(1080.0 / 3.0, PropertyMetadataOptions.None));
+            new PropertyMetadata<Double>(Double.NaN, PropertyMetadataOptions.None));
         
         /// <summary>
         /// The private access key for the <see cref="ActualMaxDropDownHeight"/> read-only dependency property.
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 var primary = comboBox.Ultraviolet.GetPlatform().Windows.GetPrimary();
 
-                var actualMaxDropDownHeight = Math.Min(comboBox.MaxDropDownHeight, comboBox.Display.PixelsToDips(primary.ClientSize.Height) / 3.0);
+                var actualMaxDropDownHeight = Double.IsNaN(comboBox.MaxDropDownHeight) ? comboBox.Display.PixelsToDips(primary.ClientSize.Height) / 3.0 : comboBox.MaxDropDownHeight;
                 if (actualMaxDropDownHeight != comboBox.GetValue<Double>(ActualMaxDropDownHeightProperty))
                 {
                     comboBox.SetValue(ActualMaxDropDownHeightPropertyKey, actualMaxDropDownHeight);
