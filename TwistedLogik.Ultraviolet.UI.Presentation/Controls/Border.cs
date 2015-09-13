@@ -85,8 +85,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var childArrangeRect = new RectangleD(
                     totalPadding.Left, 
                     totalPadding.Right,
-                    finalSize.Width - totalPaddingWidth, 
-                    finalSize.Height - totalPaddingHeight);
+                    Math.Max(0, finalSize.Width - totalPaddingWidth), 
+                    Math.Max(0, finalSize.Height - totalPaddingHeight));
 
                 child.Arrange(childArrangeRect, options);
             }
