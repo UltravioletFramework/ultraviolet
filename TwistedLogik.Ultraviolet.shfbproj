@@ -25,12 +25,12 @@
     <CppCommentsFixup>False</CppCommentsFixup>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Nucleus.dll" />
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Nucleus.XML" />
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.dll" />
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.dll" />
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.xml" />
-      <DocumentationSource sourceFile="Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.XML" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.dll" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.XML" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.dll" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.dll" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.xml" />
+      <DocumentationSource sourceFile="Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.XML" />
     </DocumentationSources>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
@@ -85,13 +85,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="TwistedLogik.Nucleus">
-      <HintPath>Binaries\AnyCPU\Production\TwistedLogik.Nucleus.dll</HintPath>
+      <HintPath>Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet">
-      <HintPath>Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.dll</HintPath>
+      <HintPath>Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation">
-      <HintPath>Binaries\AnyCPU\Production\TwistedLogik.Ultraviolet.UI.Presentation.dll</HintPath>
+      <HintPath>Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <!-- Import the SHFB build targets -->
