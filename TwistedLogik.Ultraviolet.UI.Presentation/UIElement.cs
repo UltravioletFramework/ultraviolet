@@ -1440,7 +1440,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (popup == null)
                     return Matrix.Identity;
 
-                return popup.PopupTransformToView;
+                return popup.PopupTransformToViewInDevicePixels;
             }
             else
             {
