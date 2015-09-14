@@ -158,7 +158,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void PART_Input_PreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
-            if (PART_Input != null && PART_Input.IsFocused)
+            if (PART_Input != null && PART_Input.IsKeyboardFocused)
             {
                 Value += y;
             }

@@ -787,11 +787,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets a value indicating whether this element has input focus.
+        /// Gets a value indicating whether this element has logical focus.
         /// </summary>
         public Boolean IsFocused
         {
-            get { return (View == null) ? false : View.ElementWithFocus == this; }
+            get { return GetValue<Boolean>(IsFocusedProperty); }
         }
 
         /// <summary>
@@ -1116,7 +1116,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <remarks>The styling name of this dependency property is 'hit-test-visible'.</remarks>
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, HandleIsHitTestVisibleChanged));
-        
+
+        /// <summary>
+        /// The private access key for the <see cref="IsFocused"/> read-only dependency property.
+        /// </summary>
+        internal static readonly DependencyPropertyKey IsFocusedPropertyKey = DependencyProperty.RegisterReadOnly("IsFocused", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="IsFocused"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name for this dependency property is 'focused'.</remarks>
+        public static readonly DependencyProperty IsFocusedProperty = IsFocusedPropertyKey.DependencyProperty;
+
         /// <summary>
         /// Identifies the <see cref="Focusable"/> dependency property.
         /// </summary>
