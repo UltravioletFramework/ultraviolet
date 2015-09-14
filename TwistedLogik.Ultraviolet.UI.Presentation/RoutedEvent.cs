@@ -45,6 +45,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Adds a new owning type to this routed event.
+        /// </summary>
+        /// <param name="ownerType">The owner type to add to this routed event.</param>
+        /// <returns>A reference to this routed event instance.</returns>
+        public RoutedEvent AddOwner(Type ownerType)
+        {
+            return RoutedEventSystem.AddOwner(this, ownerType);
+        }
+
+        /// <summary>
         /// Registers the specified subscriber to receive routed event notifications for the specified routed event.
         /// </summary>
         /// <param name="dobj">The dependency object to monitor for changes.</param>

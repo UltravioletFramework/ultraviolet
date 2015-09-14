@@ -1156,6 +1156,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly DependencyProperty EffectProperty = DependencyProperty.Register("Effect", typeof(Effect), typeof(UIElement),
             new PropertyMetadata<Effect>(null, PropertyMetadataOptions.None, HandleEffectChanged));
 
+        /// <summary>
+        /// Identifies the GotFocus routed event.
+        /// </summary>
+        public static readonly RoutedEvent GotFocusEvent = FocusManager.GotFocusEvent.AddOwner(typeof(UIElement));
+
+        /// <summary>
+        /// Identifies the LostFocus routed event.
+        /// </summary>
+        public static readonly RoutedEvent LostFocusEvent = FocusManager.LostFocusEvent.AddOwner(typeof(UIElement));
+
+        /// <summary>
+        /// Occurs when the element receives logical focus.
+        /// </summary>
+        public event UpfRoutedEventHandler GotFocus
+        {
+            add { AddHandler(GotFocusEvent, value); }
+            remove { RemoveHandler(GotFocusEvent, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the element loses logical focus.
+        /// </summary>
+        public event UpfRoutedEventHandler LostFocus
+        {
+            add { AddHandler(LostFocusEvent, value); }
+            remove { RemoveHandler(LostFocusEvent, value); }
+        }
+
         /// <inheritdoc/>
         internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
