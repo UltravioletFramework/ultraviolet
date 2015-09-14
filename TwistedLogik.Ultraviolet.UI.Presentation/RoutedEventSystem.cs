@@ -82,6 +82,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Adds a new owning type to the specified routed event.
+        /// </summary>
+        /// <param name="routedEvent">The routed event to which to add an owner type.</param>
+        /// <param name="ownerType">The owner type to add to the specified routed event.</param>
+        internal static RoutedEvent AddOwner(RoutedEvent routedEvent, Type ownerType)
+        {
+            Contract.Require(routedEvent, "routedEvent");
+            Contract.Require(ownerType, "ownerType");
+
+            RegisterInternal(routedEvent, ownerType);
+
+            return routedEvent;
+        }
+
+        /// <summary>
         /// Registers the specified routed event.
         /// </summary>
         /// <param name="evt">The routed event to register.</param>
