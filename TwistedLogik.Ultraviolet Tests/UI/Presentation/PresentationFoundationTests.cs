@@ -261,6 +261,26 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect.png");
         }
 
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that a VisualClone element is drawn correctly when cloning elements with and without shader effects.")]
+        public void UPF_VisualClone_DrawsCorrectly()
+        {
+            var result = RunPresentationTestFor(content => new UPF_VisualClone_DrawsCorrectly(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_VisualClone_DrawsCorrectly.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that a VisualClone element with a transformed parent is drawn correctly when cloning elements with and without shader effects.")]
+        public void UPF_VisualClone_DrawsCorrectly_WhenParentIsTransformed()
+        {
+            var result = RunPresentationTestFor(content => new UPF_VisualClone_DrawsCorrectly_WithTransformedParent(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_VisualClone_DrawsCorrectly_WhenParentIsTransformed.png");
+        }
+
         /// <summary>
         /// Runs a standard test by spinning up an Ultraviolet application and displaying the specified UPF screen.
         /// </summary>

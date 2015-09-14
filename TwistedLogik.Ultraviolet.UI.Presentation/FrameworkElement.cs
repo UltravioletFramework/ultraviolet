@@ -578,6 +578,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     desiredWidth = arrangedSizeAfterLayoutTransform.Width;
                     desiredHeight = arrangedSizeAfterLayoutTransform.Height;
                 }
+
+                desiredWidth = desiredWidth + margin.Left + margin.Right;
+                desiredHeight = desiredHeight + margin.Top + margin.Bottom;                
             }
 
             var desiredSize = new Size2D(desiredWidth, desiredHeight);

@@ -139,6 +139,10 @@
     <Compile Include="Size3DTests.cs" />
     <Compile Include="Size3FTests.cs" />
     <Compile Include="MatrixTests.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_VisualClone_DrawsCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_VisualClone_DrawsCorrectly_VM.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup.cs" />
@@ -468,6 +472,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Resources\Expected\UI\Presentation\UPF_VisualClone_DrawsCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_VisualClone_DrawsCorrectly_WhenParentIsTransformed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
