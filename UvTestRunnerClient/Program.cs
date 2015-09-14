@@ -75,6 +75,7 @@ namespace UvTestRunnerClient
         {
             using (var client = new HttpClient())
             {
+                client.Timeout = TimeSpan.FromMinutes(15);
                 client.BaseAddress = new Uri(testRunnerUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -101,6 +102,7 @@ namespace UvTestRunnerClient
         {
             using (var client = new HttpClient())
             {
+                client.Timeout = TimeSpan.FromMinutes(15);
                 client.BaseAddress = new Uri(testRunnerUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -131,6 +133,7 @@ namespace UvTestRunnerClient
 
             using (var client = new HttpClient())
             {
+                client.Timeout = TimeSpan.FromMinutes(15);
                 client.BaseAddress = new Uri(Settings.Default.UvTestViewerUrl);
 
                 var request  = Path.Combine("TestResults/" + vendor + "/" + id + "/Result.trx");
