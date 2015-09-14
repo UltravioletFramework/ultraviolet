@@ -36,9 +36,15 @@ The Ultraviolet Framework's source code is [available on GitHub](https://github.
 Known Issues
 ============
 
+* __The imported project "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\CodeSharing\Microsoft.CodeSharing.CSharp.targets" was not found...__
+
+  As of version 1.2.1, Ultraviolet makes use of Shared Projects in order to share code between its Desktop and Android builds (and potentially a future iOS build). This error means that Visual Studio is not configured to understand this project type, and as a result, Ultraviolet will not load or compile correctly. If you encounter this error, please consult [this blog post](http://blogs.msdn.com/b/smondal/archive/2015/08/24/the-imported-project-quot-c-program-files-x86-msbuild-microsoft-windowsxaml-v14-0-8-1-microsoft-windows-ui-xaml-csharp-targets-quot-was-not-found.aspx) for potential workarounds.
+
+  If you're using Visual Studio 2013, make sure you're using the latest update. If you continue to have issues, try installing the [Shared Project Reference Manager](https://visualstudiogallery.msdn.microsoft.com/315c13a7-2787-4f57-bdf7-adae6ed54450) extension.
+
 * __Building the Samples__
 
-  If you encounter errors when attempting to build ``Ultraviolet Framework Samples.sln``, make sure that you've previously built the corresponding configuration (i.e. ``Debug``, ``Release``, or ``Production``) of ``TwistedLogik.Ultraviolet.sln``. The first sample project runs a script which copies the latest versions of the Ultraviolet assemblies from the ``Binaries`` folder to the ``Ultraviolet Framework Samples\Dependencies`` folder, and this script will fail if they don't exist.
+  If you encounter errors when attempting to build ``Ultraviolet Framework Samples.sln``, make sure that you've previously built the corresponding configuration (i.e. ``Debug``, ``Release``, or ``Signed``) of ``TwistedLogik.Ultraviolet.sln``. The first sample project runs a script which copies the latest versions of the Ultraviolet assemblies from the ``Binaries`` folder to the ``Ultraviolet Framework Samples\Dependencies`` folder, and this script will fail if they don't exist.
   
 * __General Compatibility__
 
