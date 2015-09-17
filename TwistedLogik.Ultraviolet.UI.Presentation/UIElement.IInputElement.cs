@@ -151,6 +151,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UpfEventHandler IsMouseDirectlyOverChanged;
 
         /// <inheritdoc/>
+        public event UpfRoutedEventHandler PreviewGotKeyboardFocus
+        {
+            add { AddHandler(Keyboard.PreviewGotKeyboardFocusEvent, value); }
+            remove { RemoveHandler(Keyboard.PreviewGotKeyboardFocusEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfRoutedEventHandler PreviewLostKeyboardFocus
+        {
+            add { AddHandler(Keyboard.PreviewLostKeyboardFocusEvent, value); }
+            remove { RemoveHandler(Keyboard.PreviewLostKeyboardFocusEvent, value); }
+        }
+
+        /// <inheritdoc/>
         public event UpfRoutedEventHandler GotKeyboardFocus
         {
             add { AddHandler(Keyboard.GotKeyboardFocusEvent, value); }
@@ -447,6 +461,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invoked when a <see cref="Keyboard.PreviewGotKeyboardFocusEvent"/> attached routed event occurs.
+        /// </summary>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewGotKeyboardFocus(ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked when a <see cref="Keyboard.PreviewLostKeyboardFocusEvent"/> attached routed event occurs.
+        /// </summary>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewLostKeyboardFocus(ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
         /// Invoked when a <see cref="Keyboard.GotKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
@@ -682,6 +714,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void RegisterInputClassHandlers()
         {
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewGotKeyboardFocusEvent, new UpfRoutedEventHandler(OnPreviewGotKeyboardFocusProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewLostKeyboardFocusEvent, new UpfRoutedEventHandler(OnPreviewLostKeyboardFocusProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.GotKeyboardFocusEvent, new UpfRoutedEventHandler(OnGotKeyboardFocusProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.LostKeyboardFocusEvent, new UpfRoutedEventHandler(OnLostKeyboardFocusProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.KeyDownEvent, new UpfKeyDownEventHandler(OnKeyDownProxy));
@@ -705,6 +739,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerMotionEvent, new UpfTouchMotionEventHandler(OnFingerMotionProxy));
 
             EventManager.RegisterClassHandler(typeof(UIElement), Generic.GenericInteractionEvent, new UpfGenericInteractionEventHandler(OnGenericInteractionProxy));
+        }
+        
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewGotKeyboardFocus"/> method.
+        /// </summary>
+        private static void OnPreviewGotKeyboardFocusProxy(DependencyObject element, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewGotKeyboardFocus(ref data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewGotKeyboardFocus"/> method.
+        /// </summary>
+        private static void OnPreviewLostKeyboardFocusProxy(DependencyObject element, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewLostKeyboardFocus(ref data);
         }
 
         /// <summary>

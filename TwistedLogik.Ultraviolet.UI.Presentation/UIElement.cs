@@ -647,16 +647,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             routedEventManager.Remove(evt, handler);
         }
 
-        /// <summary>
-        /// Sets focus on this element.
-        /// </summary>
-        /// <returns><c>true</c> if focus was successfully moved to this element; otherwise, <c>false</c>.</returns>
+        /// <inheritdoc/>
         public Boolean Focus()
         {
             if (View == null)
                 return false;
 
-            View.FocusElement(this);
+            if (!View.FocusElement(this))
+            {
+                if (Keyboard.IsFocusable(this))
+                {
+                    var focusScope = FocusManager.GetFocusScope(this);
+                    var focusScopeElement = FocusManager.GetFocusedElement(focusScope);
+                    if (focusScopeElement == null)
+                    {
+                        FocusManager.SetFocusedElement(focusScope, this);
+                    }
+                }
+                return false;
+            }
             return true;
         }
         

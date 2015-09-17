@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
@@ -13,6 +14,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     [UvmlKnownType("element")]
     public abstract class FrameworkElement : UIElement, ISupportInitialize
     {
+        /// <summary>
+        /// Initializes the <see cref="FrameworkElement"/> type.
+        /// </summary>
+        static FrameworkElement()
+        {
+            EventManager.RegisterClassHandler(typeof(FrameworkElement), Keyboard.PreviewGotKeyboardFocusEvent, new UpfRoutedEventHandler(HandlePreviewGotKeyboardFocus));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FrameworkElement"/> class.
         /// </summary>
@@ -893,6 +902,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             return new Size2D(w, h);
+        }
+
+        /// <summary>
+        /// Occurs when the <see cref="Keyboard.PreviewGotKeyboardFocusEvent"/> attached event is raised on an instance of <see cref="FrameworkElement"/>.
+        /// </summary>
+        private static void HandlePreviewGotKeyboardFocus(DependencyObject dobj, ref RoutedEventData data)
+        {
+            if (data.OriginalSource != dobj)
+                return;
+
+            var element = (FrameworkElement)dobj;
+
+            var scopeFocusedElement = FocusManager.GetFocusedElement(element);
+            if (scopeFocusedElement == null || scopeFocusedElement == element)
+                return;
+
+            if (!Keyboard.IsFocusable(scopeFocusedElement as UIElement))
+                return;
+
+            var viewFocusedElementPrevious = element.View.ElementWithFocus;
+            scopeFocusedElement.Focus();
+            var viewFocusedElementChanged = element.View.ElementWithFocus != viewFocusedElementPrevious;
+
+            if (viewFocusedElementChanged || element.View.ElementWithFocus == scopeFocusedElement)
+            {
+                data.Handled = true;
+                return;
+            }
         }
 
         /// <summary>
