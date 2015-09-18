@@ -262,21 +262,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnGotKeyboardFocus(ref RoutedEventData data)
+        protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
             Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode);
 
-            base.OnGotKeyboardFocus(ref data);
+            base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(ref RoutedEventData data)
+        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
             Ultraviolet.GetInput().HideSoftwareKeyboard();
 
             textSelectionLength = 0;
 
-            base.OnLostKeyboardFocus(ref data);
+            base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
         /// <inheritdoc/>
@@ -487,7 +487,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 var textCenteringOffset = (Display.DipsToPixels(textArea.Height) - Font.Resource.Value.Regular.LineSpacing) / 2.0;
                 var textPos             = Display.DipsToPixels(textArea.Location + new Point2D(textScrollOffset, textCenteringOffset));
-                dc.DrawString(Font.Resource.Value.Regular, Text, (Vector2)textPos, Foreground * dc.Opacity);
+                var textPosRounded      = dc.IsTransformed ? (Vector2)textPos : (Vector2)(Point2)textPos;
+                dc.DrawString(Font.Resource.Value.Regular, Text, textPosRounded, Foreground * dc.Opacity);
             }
 
             DrawTextCaret(dc);

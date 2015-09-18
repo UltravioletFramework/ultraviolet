@@ -647,16 +647,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             routedEventManager.Remove(evt, handler);
         }
 
-        /// <summary>
-        /// Sets focus on this element.
-        /// </summary>
-        /// <returns><c>true</c> if focus was successfully moved to this element; otherwise, <c>false</c>.</returns>
+        /// <inheritdoc/>
         public Boolean Focus()
         {
             if (View == null)
                 return false;
 
-            View.FocusElement(this);
+            if (!View.FocusElement(this))
+            {
+                if (Keyboard.IsFocusable(this))
+                {
+                    var focusScope = FocusManager.GetFocusScope(this);
+                    var focusScopeElement = FocusManager.GetFocusedElement(focusScope);
+                    if (focusScopeElement == null)
+                    {
+                        FocusManager.SetFocusedElement(focusScope, this);
+                    }
+                }
+                return false;
+            }
             return true;
         }
         
@@ -787,11 +796,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets a value indicating whether this element has input focus.
+        /// Gets a value indicating whether this element has logical focus.
         /// </summary>
         public Boolean IsFocused
         {
-            get { return (View == null) ? false : View.ElementWithFocus == this; }
+            get { return GetValue<Boolean>(IsFocusedProperty); }
         }
 
         /// <summary>
@@ -1116,7 +1125,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <remarks>The styling name of this dependency property is 'hit-test-visible'.</remarks>
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, HandleIsHitTestVisibleChanged));
-        
+
+        /// <summary>
+        /// The private access key for the <see cref="IsFocused"/> read-only dependency property.
+        /// </summary>
+        internal static readonly DependencyPropertyKey IsFocusedPropertyKey = DependencyProperty.RegisterReadOnly("IsFocused", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="IsFocused"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name for this dependency property is 'focused'.</remarks>
+        public static readonly DependencyProperty IsFocusedProperty = IsFocusedPropertyKey.DependencyProperty;
+
         /// <summary>
         /// Identifies the <see cref="Focusable"/> dependency property.
         /// </summary>
@@ -1155,6 +1176,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public static readonly DependencyProperty EffectProperty = DependencyProperty.Register("Effect", typeof(Effect), typeof(UIElement),
             new PropertyMetadata<Effect>(null, PropertyMetadataOptions.None, HandleEffectChanged));
+
+        /// <summary>
+        /// Identifies the GotFocus routed event.
+        /// </summary>
+        public static readonly RoutedEvent GotFocusEvent = FocusManager.GotFocusEvent.AddOwner(typeof(UIElement));
+
+        /// <summary>
+        /// Identifies the LostFocus routed event.
+        /// </summary>
+        public static readonly RoutedEvent LostFocusEvent = FocusManager.LostFocusEvent.AddOwner(typeof(UIElement));
+
+        /// <summary>
+        /// Occurs when the element receives logical focus.
+        /// </summary>
+        public event UpfRoutedEventHandler GotFocus
+        {
+            add { AddHandler(GotFocusEvent, value); }
+            remove { RemoveHandler(GotFocusEvent, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the element loses logical focus.
+        /// </summary>
+        public event UpfRoutedEventHandler LostFocus
+        {
+            add { AddHandler(LostFocusEvent, value); }
+            remove { RemoveHandler(LostFocusEvent, value); }
+        }
 
         /// <inheritdoc/>
         internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)

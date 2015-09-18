@@ -62,14 +62,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(ref RoutedEventData data)
+        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
             if (PART_Input != null)
             {
                 PART_Input.InvalidateDisplayCache(TextBox.TextProperty);
                 PART_Input.MoveHome();
             }
-            base.OnLostKeyboardFocus(ref data);
+            base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
         /// <inheritdoc/>
@@ -158,7 +158,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void PART_Input_PreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
         {
-            if (PART_Input != null && PART_Input.IsFocused)
+            if (PART_Input != null && PART_Input.IsKeyboardFocused)
             {
                 Value += y;
             }

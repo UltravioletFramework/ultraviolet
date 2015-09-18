@@ -252,19 +252,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Grants input focus within this view to the specified element.
         /// </summary>
         /// <param name="element">The element to which to grant input focus.</param>
-        public void FocusElement(IInputElement element)
+        /// <returns><c>true</c> if the element was successfully focused; otherwise, <c>false</c>.</returns>
+        public Boolean FocusElement(IInputElement element)
         {
             Contract.Require(element, "element");
 
-            if (elementWithFocus == element || !element.Focusable)
-                return;
+            if (elementWithFocus == element || !Keyboard.IsFocusable(element))
+                return false;
+
+            var keyboard = Ultraviolet.GetInput().GetKeyboard();
+            var oldFocus = elementWithFocus;
+            var newFocus = element;
+
+            var elementWithFocusAgreesToChange = true;
+            if (elementWithFocus != null)
+            {
+                var data = new RoutedEventData((DependencyObject)elementWithFocus);
+                Keyboard.RaisePreviewLostKeyboardFocus((DependencyObject)elementWithFocus, keyboard, oldFocus, newFocus, ref data);
+
+                if (data.Handled)
+                    elementWithFocusAgreesToChange = false;
+            }
+            
+            var elementAgreesToChange = true;
+            if (element != null)
+            {
+                var data = new RoutedEventData((DependencyObject)element);
+                Keyboard.RaisePreviewGotKeyboardFocus((DependencyObject)element, keyboard, oldFocus, newFocus, ref data);
+
+                if (data.Handled)
+                    elementAgreesToChange = false;
+            }
+
+            if (!elementWithFocusAgreesToChange || !elementAgreesToChange)
+                return false;
 
             if (elementWithFocus != null)
             {
                 BlurElement(elementWithFocus);
             }
-
+            
             elementWithFocus = element;
+
+            if (elementWithFocus != null)
+            {
+                var focusScope = FocusManager.GetFocusScope((DependencyObject)elementWithFocus);
+                if (focusScope != null && focusScope != elementWithFocus)
+                {
+                    FocusManager.SetFocusedElement(focusScope, elementWithFocus);
+                }
+            }
             
             SetIsKeyboardFocusWithin(elementWithFocus, true);
 
@@ -272,8 +309,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (dobj != null)
             {
                 var gotFocusData = new RoutedEventData(dobj);
-                Keyboard.RaiseGotKeyboardFocus(dobj, ref gotFocusData);
+                Keyboard.RaiseGotKeyboardFocus(dobj, keyboard, oldFocus, newFocus, ref gotFocusData);
             }
+
+            return true;
         }
 
         /// <summary>
@@ -295,8 +334,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dobj = elementWithFocusOld as DependencyObject;
             if (dobj != null)
             {
+                var keyboard = Ultraviolet.GetInput().GetKeyboard();
+
                 var lostFocusData = new RoutedEventData(dobj);
-                Keyboard.RaiseLostKeyboardFocus(dobj, ref lostFocusData);
+                Keyboard.RaiseLostKeyboardFocus(dobj, keyboard, elementWithFocusOld, null, ref lostFocusData);
             }
         }
 
@@ -1344,22 +1385,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             UpdateElementUnderMouse();
 
-            var recipient = elementUnderMouse;
-
-            var focusable = GetNearestFocusableElement(elementUnderMouse);
-            if (focusable != elementWithFocus)
-            {
-                if (elementWithFocus != null)
-                {
-                    BlurElement(elementWithFocus);
-                }
-
-                if (focusable != null)
-                {
-                    FocusElement(focusable);
-                }
-            }
-
+            var recipient = elementUnderMouse;            
             if (recipient != null)
             {
                 var dobj = recipient as DependencyObject;

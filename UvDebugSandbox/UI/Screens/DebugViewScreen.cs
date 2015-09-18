@@ -116,9 +116,14 @@ namespace UvDebugSandbox.UI.Screens
             view.Ultraviolet.Host.Exit();
         }
 
-        public void HandleClick(DependencyObject dobj, ref RoutedEventData data)
+        public void HandleClick1(DependencyObject dobj, ref RoutedEventData data)
         {
-            asdf.IsOpen = !asdf.IsOpen;
+            sp1.Focus();
+        }
+
+        public void HandleClick2(DependencyObject dobj, ref RoutedEventData data)
+        {
+            sp2.Focus();
         }
 
         public void Loading(DependencyObject dobj, ref RoutedEventData data)
@@ -127,7 +132,9 @@ namespace UvDebugSandbox.UI.Screens
             adornerLayer.Add(new SimpleCircleAdorner(btn));
         }
 
-        private readonly Popup asdf = null;
+        private readonly StackPanel sp1 = null;
+        private readonly StackPanel sp2 = null;
+        
         private readonly Button btn = null;
     }
 

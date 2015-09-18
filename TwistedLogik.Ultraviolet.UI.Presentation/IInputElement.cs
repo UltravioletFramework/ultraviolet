@@ -23,6 +23,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         void RemoveHandler(RoutedEvent evt, Delegate handler);
 
         /// <summary>
+        /// Sets focus on this element.
+        /// </summary>
+        /// <returns><c>true</c> if focus was successfully moved to this element; otherwise, <c>false</c>.</returns>
+        Boolean Focus();
+
+        /// <summary>
         /// Gets or sets a value that indicates whether this element can receive focus.
         /// </summary>
         Boolean Focusable { get; set; }
@@ -61,6 +67,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether this element is the topmost element which is directly under the mouse cursor.
         /// </summary>
         Boolean IsMouseDirectlyOver { get; }
+
+        /// <summary>
+        /// Occurs when the element gains keyboard focus.
+        /// </summary>
+        event UpfRoutedEventHandler PreviewGotKeyboardFocus;
+
+        /// <summary>
+        /// Occurs when the element loses keyboard focus.
+        /// </summary>
+        event UpfRoutedEventHandler PreviewLostKeyboardFocus;
 
         /// <summary>
         /// Occurs when the element gains keyboard focus.
