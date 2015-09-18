@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
@@ -19,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         static FrameworkElement()
         {
-            EventManager.RegisterClassHandler(typeof(FrameworkElement), Keyboard.PreviewGotKeyboardFocusEvent, new UpfRoutedEventHandler(HandlePreviewGotKeyboardFocus));
+            EventManager.RegisterClassHandler(typeof(FrameworkElement), Keyboard.PreviewGotKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(HandlePreviewGotKeyboardFocus));
         }
 
         /// <summary>
@@ -662,23 +663,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected override void OnGotKeyboardFocus(ref RoutedEventData data)
+        protected override void OnGotFocus(ref RoutedEventData data)
         {
             if (data.OriginalSource == this)
             {
                 VisualStateGroups.GoToState("focus", "focused");
             }
-            base.OnGotKeyboardFocus(ref data);
+            base.OnGotFocus(ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(ref RoutedEventData data)
+        protected override void OnLostFocus(ref RoutedEventData data)
         {
             if (data.OriginalSource == this)
             {
                 VisualStateGroups.GoToState("focus", "blurred");
             }
-            base.OnLostKeyboardFocus(ref data);
+            base.OnLostFocus(ref data);
         }
 
         /// <summary>
@@ -907,7 +908,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the <see cref="Keyboard.PreviewGotKeyboardFocusEvent"/> attached event is raised on an instance of <see cref="FrameworkElement"/>.
         /// </summary>
-        private static void HandlePreviewGotKeyboardFocus(DependencyObject dobj, ref RoutedEventData data)
+        private static void HandlePreviewGotKeyboardFocus(DependencyObject dobj, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
             if (data.OriginalSource != dobj)
                 return;

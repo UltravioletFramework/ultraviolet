@@ -32,6 +32,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     public delegate void UpfKeyEventHandler(DependencyObject element, KeyboardDevice device, Key key, ref RoutedEventData data);
 
     /// <summary>
+    /// Represents the method that is called when keyboard focus is changed.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+    /// <param name="oldFocus">The element that previously had focus.</param>
+    /// <param name="newFocus">The element that currently has focus.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
+    public delegate void UpfKeyboardFocusChangedEventHandler(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data);
+
+    /// <summary>
     /// Represents the keyboard device.
     /// </summary>
     [UvmlKnownType]
@@ -82,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewGotKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        public static void AddPreviewGotKeyboardFocusHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
@@ -95,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewLostKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        public static void AddPreviewLostKeyboardFocusHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
@@ -212,7 +222,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewGotKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        public static void RemovePreviewGotKeyboardFocusHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
@@ -225,7 +235,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewLostKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        public static void RemovePreviewLostKeyboardFocusHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
@@ -364,27 +374,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Identifies the PreviewGotKeyboardFocus routed event.
         /// </summary>
         public static readonly RoutedEvent PreviewGotKeyboardFocusEvent = EventManager.RegisterRoutedEvent("PreviewGotKeyboardFocus", RoutingStrategy.Tunnel,
-            typeof(UpfRoutedEventHandler), typeof(Keyboard));
+            typeof(UpfKeyboardFocusChangedEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the PreviewLostKeyboardFocus routed event.
         /// </summary>
         public static readonly RoutedEvent PreviewLostKeyboardFocusEvent = EventManager.RegisterRoutedEvent("PreviewLostKeyboardFocus", RoutingStrategy.Tunnel,
-            typeof(UpfRoutedEventHandler), typeof(Keyboard));
+            typeof(UpfKeyboardFocusChangedEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the GotKeyboardFocus attached event.
         /// </summary>
         /// <remarks>The styling name of this routed event is got-keyboard-focus.</remarks>
         public static readonly RoutedEvent GotKeyboardFocusEvent = EventManager.RegisterRoutedEvent("GotKeyboardFocus", RoutingStrategy.Bubble,
-            typeof(UpfRoutedEventHandler), typeof(Keyboard));
+            typeof(UpfKeyboardFocusChangedEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the LostKeyboardFocus attached event.
         /// </summary>
         /// <remarks>The styling name of this routed event is lost-keyboard-focus.</remarks>
         public static readonly RoutedEvent LostKeyboardFocusEvent = EventManager.RegisterRoutedEvent("LostKeyboardFocus", RoutingStrategy.Bubble,
-            typeof(UpfRoutedEventHandler), typeof(Keyboard));
+            typeof(UpfKeyboardFocusChangedEventHandler), typeof(Keyboard));
 
         /// <summary>
         /// Identifies the PreviewTextInput attached event.
@@ -431,48 +441,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the PreviewGotKeyboardFocus attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewGotKeyboardFocus(DependencyObject element, ref RoutedEventData data)
+        internal static void RaisePreviewGotKeyboardFocus(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(PreviewGotKeyboardFocusEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfKeyboardFocusChangedEventHandler>(PreviewGotKeyboardFocusEvent);
             if (temp != null)
             {
-                temp(element, ref data);
+                temp(element, device, oldFocus, newFocus, ref data);
             }
         }
 
         /// <summary>
         /// Raises the PreviewLostKeyboardFocus attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewLostKeyboardFocus(DependencyObject element, ref RoutedEventData data)
+        internal static void RaisePreviewLostKeyboardFocus(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(PreviewLostKeyboardFocusEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfKeyboardFocusChangedEventHandler>(PreviewLostKeyboardFocusEvent);
             if (temp != null)
             {
-                temp(element, ref data);
+                temp(element, device, oldFocus, newFocus, ref data);
             }
         }
 
         /// <summary>
         /// Raises the GotKeyboardFocus attached event for the specified element.
         /// </summary>
-        internal static void RaiseGotKeyboardFocus(DependencyObject element, ref RoutedEventData data)
+        internal static void RaiseGotKeyboardFocus(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(GotKeyboardFocusEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfKeyboardFocusChangedEventHandler>(GotKeyboardFocusEvent);
             if (temp != null)
             {
-                temp(element, ref data);
+                temp(element, device, oldFocus, newFocus, ref data);
             }
         }
 
         /// <summary>
         /// Raises the LostKeyboardFocus attached event for the specified element.
         /// </summary>
-        internal static void RaiseLostKeyboardFocus(DependencyObject element, ref RoutedEventData data)
+        internal static void RaiseLostKeyboardFocus(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(LostKeyboardFocusEvent);
+            var temp = EventManager.GetInvocationDelegate<UpfKeyboardFocusChangedEventHandler>(LostKeyboardFocusEvent);
             if (temp != null)
             {
-                temp(element, ref data);
+                temp(element, device, oldFocus, newFocus, ref data);
             }
         }
 
