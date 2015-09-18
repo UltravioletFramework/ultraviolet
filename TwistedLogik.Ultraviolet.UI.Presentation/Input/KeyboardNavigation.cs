@@ -1,12 +1,14 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
     /// <summary>
     /// Contains methods and attached properties used for performing keyboard navigation.
     /// </summary>
+    [UvmlKnownType]
     public static class KeyboardNavigation
     {
         /// <summary>
@@ -193,15 +195,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Identifies the DirectionalNavigation attached property.
         /// </summary>
         public static readonly DependencyProperty DirectionalNavigationProperty = DependencyProperty.RegisterAttached("DirectionalNavigation", typeof(KeyboardNavigationMode), typeof(KeyboardNavigation),
-            new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Continue, PropertyMetadataOptions.None));
-
-        /// <summary>
-        /// Attempts to perform navigation as a result of the specified key press.
-        /// </summary>
-        /// <returns><c>true</c> if navigation was performed; otherwise, <c>false</c>.</returns>
-        internal static Boolean PerformNavigation(KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
-        {
-            return false;
-        }
+            new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Continue, PropertyMetadataOptions.None));        
     }
 }
