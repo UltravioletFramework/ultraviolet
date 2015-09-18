@@ -464,7 +464,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates a renderbuffer.
         /// </summary>
-        /// <param name="framebuffer">The identifier of the renderbuffer that was created.</param>
+        /// <param name="renderbuffer">The identifier of the renderbuffer that was created.</param>
         public static OpenGLState ScopedCreateRenderbuffer(out UInt32 renderbuffer)
         {
             var state = pool.Retrieve();
