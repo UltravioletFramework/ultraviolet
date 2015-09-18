@@ -304,27 +304,30 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <typeparam name="T">The type of item contained by <paramref name="source"/>.</typeparam>
         /// <param name="source">The <see cref="Dictionary{TKey, TValue}"/> to evaluate.</param>
         /// <returns>The maximum item in the dictionary.</returns>
-        public static KeyValuePair<TKey, TValue> Max<TKey, TValue>(this Dictionary<TKey, TValue> source)
+        public static TResult Max<TKey, TValue, TResult>(this Dictionary<TKey, TValue> source, Func<KeyValuePair<TKey, TValue>, TResult> selector)
         {
             Contract.Require(source, "source");
+            Contract.Require(selector, "selector");
 
-            var comparer = Comparer<KeyValuePair<TKey, TValue>>.Default;
+            var comparer = Comparer<TResult>.Default;
 
-            var value = default(KeyValuePair<TKey, TValue>);
+            var value = default(TResult);
             var valueFound = false;
 
             foreach (var item in source)
             {
+                var result = selector(item);
+
                 if (!valueFound)
                 {
-                    value = item;
+                    value = result;
                     valueFound = true;
                 }
                 else
                 {
-                    if (comparer.Compare(item, value) > 0)
+                    if (comparer.Compare(result, value) > 0)
                     {
-                        value = item;
+                        value = result;
                     }
                 }
             }
@@ -341,27 +344,30 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <typeparam name="T">The type of item contained by <paramref name="source"/>.</typeparam>
         /// <param name="source">The <see cref="Dictionary{TKey, TValue}"/> to evaluate.</param>
         /// <returns>The minimum item in the dictionary.</returns>
-        public static KeyValuePair<TKey, TValue> Min<TKey, TValue>(this Dictionary<TKey, TValue> source)
+        public static TResult Min<TKey, TValue, TResult>(this Dictionary<TKey, TValue> source, Func<KeyValuePair<TKey, TValue>, TResult> selector)
         {
             Contract.Require(source, "source");
+            Contract.Require(selector, "selector");
 
-            var comparer = Comparer<KeyValuePair<TKey, TValue>>.Default;
+            var comparer = Comparer<TResult>.Default;
 
-            var value = default(KeyValuePair<TKey, TValue>);
+            var value = default(TResult);
             var valueFound = false;
 
             foreach (var item in source)
             {
+                var result = selector(item);
+
                 if (!valueFound)
                 {
-                    value = item;
+                    value = result;
                     valueFound = true;
                 }
                 else
                 {
-                    if (comparer.Compare(item, value) < 0)
+                    if (comparer.Compare(result, value) < 0)
                     {
-                        value = item;
+                        value = result;
                     }
                 }
             }

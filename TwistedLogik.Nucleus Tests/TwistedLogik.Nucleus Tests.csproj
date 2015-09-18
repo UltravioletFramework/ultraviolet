@@ -162,6 +162,15 @@
     <Compile Include="Data\MersenneTwisterTest.cs" />
     <Compile Include="Messages\LocalMessageQueueTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Splinq\HashSetExtensionsTest.cs" />
+    <Compile Include="Splinq\StackExtensionsTest.cs" />
+    <Compile Include="Splinq\QueueExtensionsTest.cs" />
+    <Compile Include="Splinq\PooledLinkedListExtensionsTest.cs" />
+    <Compile Include="Splinq\LinkedListExtensionsTest.cs" />
+    <Compile Include="Splinq\ObservableListExtensionsTest.cs" />
+    <Compile Include="Splinq\ObservableDictionaryExtensionsTest.cs" />
+    <Compile Include="Splinq\DictionaryExtensionsTest.cs" />
+    <Compile Include="Splinq\ListExtensionsTest.cs" />
     <Compile Include="Text\LocalizationTest.cs" />
     <Compile Include="Text\StringPtr16Test.cs" />
     <Compile Include="Text\StringSegmentTest.cs" />
