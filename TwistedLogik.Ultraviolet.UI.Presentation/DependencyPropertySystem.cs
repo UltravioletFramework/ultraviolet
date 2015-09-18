@@ -38,8 +38,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="ownerType">The type to add as an owner for the specified dependency property.</param>
         public static void AddOwner(DependencyProperty dp, Type ownerType)
         {
-            Contract.Require(ownerType, "ownerType");
             Contract.Require(dp, "dp");
+            Contract.Require(ownerType, "ownerType");
 
             RegisterInternal(dp, ownerType);
         }
