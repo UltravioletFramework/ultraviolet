@@ -1388,22 +1388,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             UpdateElementUnderMouse();
 
-            var recipient = elementUnderMouse;
-
-            var focusable = GetNearestFocusableElement(elementUnderMouse);
-            if (focusable != elementWithFocus)
-            {
-                if (elementWithFocus != null)
-                {
-                    BlurElement(elementWithFocus);
-                }
-
-                if (focusable != null)
-                {
-                    FocusElement(focusable);
-                }
-            }
-
+            var recipient = elementUnderMouse;            
             if (recipient != null)
             {
                 var dobj = recipient as DependencyObject;
