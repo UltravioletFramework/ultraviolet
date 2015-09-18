@@ -32,9 +32,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             if (willNotBeSampled)
             {
-                this.renderbuffer = gl.GenRenderbuffer();
-                gl.ThrowIfError();
-
+                OpenGLState.CreateRenderbuffer(out renderbuffer);
                 AllocateRenderbufferStorage(width, height);
             }
             else

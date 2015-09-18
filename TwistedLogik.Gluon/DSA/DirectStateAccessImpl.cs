@@ -17,6 +17,8 @@ namespace TwistedLogik.Gluon
 
             public abstract void NamedFramebufferTexture(uint framebuffer, uint target, uint attachment, uint texture, int level);
 
+            public abstract void NamedFramebufferRenderbuffer(uint framebuffer, uint target, uint attachment, uint renderbuffertarget, uint renderbuffer);
+
             public abstract uint CheckNamedFramebufferStatus(uint framebuffer, uint target);
 
             public abstract void TextureParameteri(uint texture, uint target, uint pname, int param);

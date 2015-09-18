@@ -28,20 +28,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             uv.QueueWorkItemAndWait(() =>
             {
-                var forceBindFramebuffer = false;
-                if (buffers != null)
-                {
-                    foreach (var buffer in buffers)
-                    {
-                        if (buffer.WillNotBeSampled)
-                        {
-                            forceBindFramebuffer = true;
-                            break;
-                        }
-                    }
-                }
-
-                using (OpenGLState.ScopedCreateFramebuffer(out framebuffer, forceBindFramebuffer))
+                using (OpenGLState.ScopedCreateFramebuffer(out framebuffer))
                 {
                     if (buffers != null)
                     {
@@ -76,8 +63,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             Ultraviolet.QueueWorkItemAndWait(() =>
             {
-                var forceBindFramebuffer = buffer.WillNotBeSampled;
-                using (OpenGLState.ScopedBindFramebuffer(framebuffer, forceBindFramebuffer))
+                using (OpenGLState.ScopedBindFramebuffer(framebuffer))
                 {
                     AttachRenderBuffer(sdlBuffer);
 
@@ -386,26 +372,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             if (buffer.WillNotBeSampled)
             {
-                gl.FramebufferRenderbuffer(gl.GL_FRAMEBUFFER,
+                gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER,
                     (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), gl.GL_RENDERBUFFER, buffer.OpenGLName);
                 gl.ThrowIfError();
             }
             else
             {
-                if (!gl.IsDirectStateAccessAvailable)
-                {
-                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER,
-                        (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
-                }
-                else
-                {
-                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER,
-                        (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
-                }
+                gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER,
+                    (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), buffer.OpenGLName, 0);
+                gl.ThrowIfError();
             }
-            
+                        
             colorAttachments++;
         }
 
@@ -419,21 +396,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             if (buffer.WillNotBeSampled)
             {
-                gl.FramebufferRenderbuffer(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
+                gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
                 gl.ThrowIfError();
             }
             else
             {
-                if (!gl.IsDirectStateAccessAvailable)
-                {
-                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
-                }
-                else
-                {
-                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
-                }
+                gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, buffer.OpenGLName, 0);
+                gl.ThrowIfError();
             }
 
             depthStencilAttachments++;
@@ -449,21 +418,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             if (buffer.WillNotBeSampled)
             {
-                gl.FramebufferRenderbuffer(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
+                gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
                 gl.ThrowIfError();
             }
             else
             {
-                if (!gl.IsDirectStateAccessAvailable)
-                {
-                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
-                }
-                else
-                {
-                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
-                }
+                gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
+                gl.ThrowIfError();
             }
 
             depthStencilAttachments++;
