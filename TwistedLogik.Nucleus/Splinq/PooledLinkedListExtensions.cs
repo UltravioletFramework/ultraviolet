@@ -5,7 +5,7 @@ using TwistedLogik.Nucleus.Collections;
 namespace TwistedLogik.Nucleus.Splinq
 {
     /// <summary>
-    /// Contains SpLINQ extension methods for the <see cref="PooledLinkedPooledLinkedList{T}"/> class.
+    /// Contains SpLINQ extension methods for the <see cref="PooledLinkedList{T}"/> class.
     /// </summary>
     public static class PooledLinkedListExtensions
     {
