@@ -4,6 +4,9 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
+    /// <summary>
+    /// Contains attached properties relating to logical focus and focus scopes.
+    /// </summary>
     [UvmlKnownType]
     public static class FocusManager
     {
