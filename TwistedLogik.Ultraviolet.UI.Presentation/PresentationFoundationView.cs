@@ -259,12 +259,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus == element || !Keyboard.IsFocusable(element))
                 return false;
-            
+
+            var keyboard = Ultraviolet.GetInput().GetKeyboard();
+            var oldFocus = elementWithFocus;
+            var newFocus = element;
+
             var elementWithFocusAgreesToChange = true;
             if (elementWithFocus != null)
             {
                 var data = new RoutedEventData((DependencyObject)elementWithFocus);
-                Keyboard.RaisePreviewLostKeyboardFocus((DependencyObject)elementWithFocus, ref data);
+                Keyboard.RaisePreviewLostKeyboardFocus((DependencyObject)elementWithFocus, keyboard, oldFocus, newFocus, ref data);
 
                 if (data.Handled)
                     elementWithFocusAgreesToChange = false;
@@ -274,7 +278,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (element != null)
             {
                 var data = new RoutedEventData((DependencyObject)element);
-                Keyboard.RaisePreviewGotKeyboardFocus((DependencyObject)element, ref data);
+                Keyboard.RaisePreviewGotKeyboardFocus((DependencyObject)element, keyboard, oldFocus, newFocus, ref data);
 
                 if (data.Handled)
                     elementAgreesToChange = false;
@@ -305,7 +309,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (dobj != null)
             {
                 var gotFocusData = new RoutedEventData(dobj);
-                Keyboard.RaiseGotKeyboardFocus(dobj, ref gotFocusData);
+                Keyboard.RaiseGotKeyboardFocus(dobj, keyboard, oldFocus, newFocus, ref gotFocusData);
             }
 
             return true;
@@ -330,8 +334,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dobj = elementWithFocusOld as DependencyObject;
             if (dobj != null)
             {
+                var keyboard = Ultraviolet.GetInput().GetKeyboard();
+
                 var lostFocusData = new RoutedEventData(dobj);
-                Keyboard.RaiseLostKeyboardFocus(dobj, ref lostFocusData);
+                Keyboard.RaiseLostKeyboardFocus(dobj, keyboard, elementWithFocusOld, null, ref lostFocusData);
             }
         }
 

@@ -459,12 +459,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 temp(this);
             }
         }
+        
+        /// <summary>
+        /// Invoked whien the <see cref="FocusManager.GotFocusEvent"/> attached routed event occurs.
+        /// </summary>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnGotFocus(ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked whien the <see cref="FocusManager.LostFocusEvent"/> attached routed event occurs.
+        /// </summary>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnLostFocus(ref RoutedEventData data)
+        {
+
+        }
 
         /// <summary>
         /// Invoked when a <see cref="Keyboard.PreviewGotKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
+        /// <param name="device">The keyboard device that raised the event.</param>
+        /// <param name="oldFocus">The element that previously had focus.</param>
+        /// <param name="newFocus">The element that currently has focus.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnPreviewGotKeyboardFocus(ref RoutedEventData data)
+        protected virtual void OnPreviewGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
 
         }
@@ -472,8 +493,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invoked when a <see cref="Keyboard.PreviewLostKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
+        /// <param name="device">The keyboard device that raised the event.</param>
+        /// <param name="oldFocus">The element that previously had focus.</param>
+        /// <param name="newFocus">The element that currently has focus.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnPreviewLostKeyboardFocus(ref RoutedEventData data)
+        protected virtual void OnPreviewLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
 
         }
@@ -481,8 +505,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invoked when a <see cref="Keyboard.GotKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
+        /// <param name="device">The keyboard device that raised the event.</param>
+        /// <param name="oldFocus">The element that previously had focus.</param>
+        /// <param name="newFocus">The element that currently has focus.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGotKeyboardFocus(ref RoutedEventData data)
+        protected virtual void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
 
         }
@@ -490,8 +517,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invoked when a <see cref="Keyboard.LostKeyboardFocusEvent"/> attached routed event occurs.
         /// </summary>
+        /// <param name="device">The keyboard device that raised the event.</param>
+        /// <param name="oldFocus">The element that previously had focus.</param>
+        /// <param name="newFocus">The element that currently has focus.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnLostKeyboardFocus(ref RoutedEventData data)
+        protected virtual void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
 
         }
@@ -714,10 +744,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void RegisterInputClassHandlers()
         {
-            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewGotKeyboardFocusEvent, new UpfRoutedEventHandler(OnPreviewGotKeyboardFocusProxy));
-            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewLostKeyboardFocusEvent, new UpfRoutedEventHandler(OnPreviewLostKeyboardFocusProxy));
-            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.GotKeyboardFocusEvent, new UpfRoutedEventHandler(OnGotKeyboardFocusProxy));
-            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.LostKeyboardFocusEvent, new UpfRoutedEventHandler(OnLostKeyboardFocusProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewGotKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(OnPreviewGotKeyboardFocusProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewLostKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(OnPreviewLostKeyboardFocusProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.GotKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(OnGotKeyboardFocusProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.LostKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(OnLostKeyboardFocusProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.KeyDownEvent, new UpfKeyDownEventHandler(OnKeyDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.KeyUpEvent, new UpfKeyEventHandler(OnKeyUpProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.TextInputEvent, new UpfKeyboardEventHandler(OnTextInputProxy));
@@ -744,33 +774,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invokes the <see cref="OnPreviewGotKeyboardFocus"/> method.
         /// </summary>
-        private static void OnPreviewGotKeyboardFocusProxy(DependencyObject element, ref RoutedEventData data)
+        private static void OnPreviewGotKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
-            ((UIElement)element).OnPreviewGotKeyboardFocus(ref data);
+            ((UIElement)element).OnPreviewGotKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnPreviewGotKeyboardFocus"/> method.
         /// </summary>
-        private static void OnPreviewLostKeyboardFocusProxy(DependencyObject element, ref RoutedEventData data)
+        private static void OnPreviewLostKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
-            ((UIElement)element).OnPreviewLostKeyboardFocus(ref data);
+            ((UIElement)element).OnPreviewLostKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGotKeyboardFocus"/> method.
         /// </summary>
-        private static void OnGotKeyboardFocusProxy(DependencyObject element, ref RoutedEventData data)
+        private static void OnGotKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
-            ((UIElement)element).OnGotKeyboardFocus(ref data);
+            ((UIElement)element).OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnLostKeyboardFocus"/> method.
         /// </summary>
-        private static void OnLostKeyboardFocusProxy(DependencyObject element, ref RoutedEventData data)
+        private static void OnLostKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
-            ((UIElement)element).OnLostKeyboardFocus(ref data);
+            ((UIElement)element).OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
         /// <summary>
