@@ -165,5 +165,14 @@ namespace TwistedLogik.Ultraviolet.Graphics
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the texture is optimized with the assumption that it will not be sampled. Textures
+        /// which are thus optimized cannot be bound to a sampler or have their data set via the SetData() method.
+        /// </summary>
+        public abstract Boolean WillNotBeSampled
+        {
+            get;
+        }
     }
 }

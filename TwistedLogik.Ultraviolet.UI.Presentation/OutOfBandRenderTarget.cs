@@ -16,8 +16,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal OutOfBandRenderTarget(UltravioletContext uv)
             : base(uv)
         {
-            this.colorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, 1, 1, false);
-            this.depthBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, 1, 1, false);
+            this.colorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, 1, 1, RenderBufferOptions.None);
+            this.depthBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, 1, 1, RenderBufferOptions.WillNotBeSampled);
 
             this.renderTarget = RenderTarget2D.Create(1, 1);
             this.renderTarget.Attach(this.colorBuffer);

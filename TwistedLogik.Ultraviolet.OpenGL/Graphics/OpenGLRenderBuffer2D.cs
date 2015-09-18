@@ -17,38 +17,49 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="format">The render buffer's format.</param>
         /// <param name="width">The render buffer's width in pixels.</param>
         /// <param name="height">The render buffer's height in pixels.</param>
-        /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
-        public OpenGLRenderBuffer2D(UltravioletContext uv, RenderBufferFormat format, Int32 width, Int32 height, Boolean immutable)
+        /// <param name="options">The render buffer's configuration options.</param>
+        public OpenGLRenderBuffer2D(UltravioletContext uv, RenderBufferFormat format, Int32 width, Int32 height, RenderBufferOptions options)
             : base(uv)
         {
             Contract.EnsureRange(width > 0, "width");
             Contract.EnsureRange(height > 0, "height");
 
-            this.format    = format;
-            this.width     = width;
-            this.height    = height;
-            this.immutable = immutable;
+            this.format           = format;
+            this.width            = width;
+            this.height           = height;
+            this.immutable        = (options & RenderBufferOptions.ImmutableStorage) == RenderBufferOptions.ImmutableStorage;
+            this.willNotBeSampled = (options & RenderBufferOptions.WillNotBeSampled) == RenderBufferOptions.WillNotBeSampled;
 
-            switch (format)
+            if (willNotBeSampled)
             {
-                case RenderBufferFormat.Color:
-                    this.texture = new OpenGLTexture2D(uv, gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable);
-                    break;
+                this.renderbuffer = gl.GenRenderbuffer();
+                gl.ThrowIfError();
 
-                case RenderBufferFormat.Depth24Stencil8:
-                    this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH24_STENCIL8, width, height, gl.GL_DEPTH_STENCIL, gl.GL_UNSIGNED_INT_24_8, IntPtr.Zero, immutable);
-                    break;
+                AllocateRenderbufferStorage(width, height);
+            }
+            else
+            {
+                switch (format)
+                {
+                    case RenderBufferFormat.Color:
+                        this.texture = new OpenGLTexture2D(uv, gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable);
+                        break;
 
-                case RenderBufferFormat.Depth32:
-                    this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT32, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_INT, IntPtr.Zero, immutable);
-                    break;
+                    case RenderBufferFormat.Depth24Stencil8:
+                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH24_STENCIL8, width, height, gl.GL_DEPTH_STENCIL, gl.GL_UNSIGNED_INT_24_8, IntPtr.Zero, immutable);
+                        break;
 
-                case RenderBufferFormat.Depth16:
-                    this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT16, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_SHORT, IntPtr.Zero, immutable);
-                    break;
+                    case RenderBufferFormat.Depth32:
+                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT32, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_INT, IntPtr.Zero, immutable);
+                        break;
 
-                default:
-                    throw new NotSupportedException("format");
+                    case RenderBufferFormat.Depth16:
+                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT16, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_SHORT, IntPtr.Zero, immutable);
+                        break;
+
+                    default:
+                        throw new NotSupportedException("format");
+                }
             }
         }
 
@@ -64,8 +75,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(attached, OpenGLStrings.CannotResizeAttachedRenderBuffer);
 
-            this.texture.Resize(width, height);
+            if (willNotBeSampled)
+                throw new NotImplementedException(OpenGLStrings.RenderBufferWillNotBeSampled);
 
+            this.texture.Resize(width, height);
+            
             this.width  = width;
             this.height = height;
         }
@@ -73,30 +87,45 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetData<T>(T[] data, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
+            if (willNotBeSampled)
+                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
+
             texture.SetData<T>(data, origin);
         }
 
         /// <inheritdoc/>
         public override void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
+            if (willNotBeSampled)
+                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
+
             texture.SetData(data, offset, count, origin);
         }
 
         /// <inheritdoc/>
         public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
+            if (willNotBeSampled)
+                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
+
             texture.SetData(level, rect, data, offset, count, 0, origin);
         }
 
         /// <inheritdoc/>
         public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
+            if (willNotBeSampled)
+                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
+
             texture.SetData(level, rect, data, offset, count, stride, origin);
         }
 
         /// <inheritdoc/>
         public override void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format, SetDataOrigin origin = SetDataOrigin.TopLeft)
         {
+            if (willNotBeSampled)
+                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
+
             texture.SetData(level, rect, data, offset, count, stride, format, origin);
         }
 
@@ -154,7 +183,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return texture.OpenGLName;
+                return willNotBeSampled ? renderbuffer : texture.OpenGLName;
             }
         }
 
@@ -190,18 +219,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 return height;
             }
         }
-
-        /// <inheritdoc/>
-        public override Boolean ImmutableStorage
-        {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                
-                return immutable;
-            }
-        }
-
+        
         /// <inheritdoc/>
         public override Boolean BoundForReading
         {
@@ -225,6 +243,28 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override Boolean ImmutableStorage
+        {
+            get 
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                
+                return immutable;
+            }
+        }
+        
+        /// <inheritdoc/>
+        public override Boolean WillNotBeSampled
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return willNotBeSampled;
+            }
+        }
+
+        /// <inheritdoc/>
         public override Boolean Attached
         {
             get { return attached; }
@@ -240,7 +280,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            this.texture.Resize(width, height);
+            if (willNotBeSampled)
+            {
+                AllocateRenderbufferStorage(width, height);
+            }
+            else
+            {
+                this.texture.Resize(width, height);
+            }
 
             this.width  = width;
             this.height = height;
@@ -257,22 +304,75 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             if (disposing)
             {
-                SafeDispose.Dispose(texture);
+                if (willNotBeSampled)
+                {
+                    if (!Ultraviolet.Disposed && renderbuffer != 0)
+                    {
+                        Ultraviolet.QueueWorkItem((state) =>
+                        {
+                            gl.DeleteRenderBuffers(((OpenGLRenderBuffer2D)state).renderbuffer);
+                            gl.ThrowIfError();
+                        }, this);
+                    }
+                }
+                else
+                {
+                    SafeDispose.Dispose(texture);
+                }
             }
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Reallocates the renderbuffer's storage.
+        /// </summary>
+        /// <param name="width">The renderbuffer's width in pixels.</param>
+        /// <param name="height">The renderbuffer's height in pixels.</param>
+        private void AllocateRenderbufferStorage(Int32 width, Int32 height)
+        {
+            using (OpenGLState.ScopedBindRenderbuffer(renderbuffer, true))
+            {
+                switch (format)
+                {
+                    case RenderBufferFormat.Color:
+                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_RGBA8, width, height);
+                        gl.ThrowIfError();
+                        break;
+
+                    case RenderBufferFormat.Depth24Stencil8:
+                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH24_STENCIL8, width, height);
+                        gl.ThrowIfError();
+                        break;
+
+                    case RenderBufferFormat.Depth32:
+                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH_COMPONENT32, width, height);
+                        gl.ThrowIfError();
+                        break;
+
+                    case RenderBufferFormat.Depth16:
+                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH_COMPONENT16, width, height);
+                        gl.ThrowIfError();
+                        break;
+
+                    default:
+                        throw new NotSupportedException("format");
+                }
+            }
         }
 
         // Property values.
         private readonly RenderBufferFormat format;
         private Int32 width;
         private Int32 height;
-        private readonly Boolean immutable;
         private Boolean boundRead;
         private Boolean boundWrite;
         private Boolean attached;
+        private readonly Boolean immutable;
+        private readonly Boolean willNotBeSampled;
 
         // State values.
         private readonly OpenGLTexture2D texture;
+        private readonly UInt32 renderbuffer;
     }
 }

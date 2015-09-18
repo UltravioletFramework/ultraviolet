@@ -248,7 +248,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Ultraviolet.ValidateResource(texture);
 
             if (texture != null && texture.BoundForWriting)
-                throw new InvalidOperationException(OpenGLStrings.RenderTargetCannotBeUsedAsTexture);
+                throw new InvalidOperationException(OpenGLStrings.RenderBufferCannotBeUsedAsTexture);
+
+            if (texture != null && texture.WillNotBeSampled)
+                throw new InvalidOperationException(OpenGLStrings.RenderBufferWillNotBeSampled);
 
             if (this.textures[sampler] != texture)
             {

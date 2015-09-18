@@ -23,11 +23,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             BindArrayBuffer,
             BindElementArrayBuffer,
             BindFramebuffer,
+            BindRenderbuffer,
             UseProgram,
             CreateTexture2D,
             CreateArrayBuffer,
             CreateElementArrayBuffer,
             CreateFramebuffer,
+            CreateRenderbuffer,
         }
 
         /// <summary>
@@ -210,7 +212,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Creates an instance of <see cref="OpenGLState"/> which binds a framebuffer to the context.
         /// </summary>
         /// <param name="framebuffer">The framebuffer to bind to the OpenGL context.</param>
-        /// <param name="force">A value indicating whether to force-bind the array buffer, even if DSA is available.</param>
+        /// <param name="force">A value indicating whether to force-bind the framebuffer, even if DSA is available.</param>
         public static OpenGLState ScopedBindFramebuffer(UInt32 framebuffer, Boolean force = false)
         {
             var state = pool.Retrieve();
@@ -235,6 +237,38 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.ThrowIfError();
 
             OpenGLState.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
+            OpenGLState.VerifyCache();
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which binds a renderbuffer to the context.
+        /// </summary>
+        /// <param name="renderbuffer">The renderbuffer to bind to the OpenGL context.</param>
+        /// <param name="force">A value indicating whether to force-bind the renderbuffer, even if DSA is available.</param>
+        public static OpenGLState ScopedBindRenderbuffer(UInt32 renderbuffer, Boolean force = false)
+        {
+            var state = pool.Retrieve();
+
+            state.stateType = OpenGLStateType.BindRenderbuffer;
+            state.disposed = false;
+            state.forced = force;
+            state.newGL_RENDERBUFFER_BINDING = renderbuffer;
+
+            state.Apply();
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately binds a renderbuffer to the OpenGL context and updates the state cache.
+        /// </summary>
+        /// <param name="renderbuffer">The renderbuffer to bind to the OpenGL context.</param>
+        public static void BindRenderbuffer(UInt32 renderbuffer)
+        {
+            gl.BindRenderbuffer(gl.GL_RENDERBUFFER, renderbuffer);
+            gl.ThrowIfError();
+
+            OpenGLState.GL_RENDERBUFFER_BINDING.Update(renderbuffer);
             OpenGLState.VerifyCache();
         }
 
@@ -400,14 +434,45 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Creates an instance of <see cref="OpenGLState"/> which creates a framebuffer.
         /// </summary>
         /// <param name="framebuffer">The identifier of the framebuffer that was created.</param>
-        public static OpenGLState ScopedCreateFramebuffer(out UInt32 framebuffer)
+        /// <param name="force">A value indicating whether to force-bind the framebuffer, even if DSA is available.</param>
+        public static OpenGLState ScopedCreateFramebuffer(out UInt32 framebuffer, Boolean force = false)
         {
             var state = pool.Retrieve();
 
-            state.stateType             = OpenGLStateType.CreateFramebuffer;
-            state.disposed              = false;
+            state.stateType = OpenGLStateType.CreateFramebuffer;
+            state.forced    = force;
+            state.disposed  = false;
 
             state.Apply_CreateFramebuffer(out framebuffer);
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately creates a renderbuffer and updates the state cache.
+        /// </summary>
+        /// <param name="renderbuffer">The identifier of the renderbuffer that was created.</param>
+        public static void CreateRenderbuffer(out UInt32 renderbuffer)
+        {
+            renderbuffer = gl.GenRenderbuffer();
+            gl.BindRenderbuffer(gl.GL_RENDERBUFFER, renderbuffer);
+
+            OpenGLState.GL_RENDERBUFFER_BINDING.Update(renderbuffer);
+            OpenGLState.VerifyCache();
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which creates a renderbuffer.
+        /// </summary>
+        /// <param name="framebuffer">The identifier of the renderbuffer that was created.</param>
+        public static OpenGLState ScopedCreateRenderbuffer(out UInt32 renderbuffer)
+        {
+            var state = pool.Retrieve();
+
+            state.stateType = OpenGLStateType.CreateRenderbuffer;
+            state.disposed = false;
+
+            state.Apply_CreateRenderbuffer(out renderbuffer);
 
             return state;
         }
@@ -472,6 +537,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 case OpenGLStateType.BindFramebuffer:
                     Apply_BindFramebuffer();
+                    break;
+
+                case OpenGLStateType.BindRenderbuffer:
+                    Apply_BindRenderbuffer();
                     break;
 
                 case OpenGLStateType.UseProgram:
@@ -540,6 +609,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 oldGL_FRAMEBUFFER_BINDING = OpenGLState.GL_FRAMEBUFFER_BINDING.Update(newGL_FRAMEBUFFER_BINDING);
             }
+        }
+
+        private void Apply_BindRenderbuffer()
+        {
+            gl.BindRenderbuffer(gl.GL_RENDERBUFFER, newGL_RENDERBUFFER_BINDING);
+            gl.ThrowIfError();
+
+            oldGL_RENDERBUFFER_BINDING = OpenGLState.GL_RENDERBUFFER_BINDING.Update(newGL_RENDERBUFFER_BINDING);
         }
 
         private void Apply_UseProgram()
@@ -612,6 +689,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateFramebuffer(out UInt32 framebuffer)
         {
+            var bind = forced;
+
             if (gl.IsARBDirectStateAccessAvailable)
             {
                 framebuffer = gl.CreateFramebuffer();
@@ -621,12 +700,29 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 framebuffer = gl.GenFramebuffer();
                 gl.ThrowIfError();
 
+                bind = true;
+            }
+
+            if (bind)
+            {
                 gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
                 gl.ThrowIfError();
 
                 newGL_FRAMEBUFFER_BINDING = framebuffer;
                 oldGL_FRAMEBUFFER_BINDING = OpenGLState.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
             }
+        }
+
+        private void Apply_CreateRenderbuffer(out UInt32 renderbuffer)
+        {
+            renderbuffer = gl.GenRenderbuffer();
+            gl.ThrowIfError();
+
+            gl.BindRenderbuffer(gl.GL_RENDERBUFFER, renderbuffer);
+            gl.ThrowIfError();
+
+            newGL_RENDERBUFFER_BINDING = renderbuffer;
+            oldGL_RENDERBUFFER_BINDING = OpenGLState.GL_RENDERBUFFER_BINDING.Update(renderbuffer);
         }
 
         /// <summary>
@@ -662,6 +758,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     Dispose_BindFramebuffer();
                     break;
 
+                case OpenGLStateType.BindRenderbuffer:
+                    Dispose_BindRenderbuffer();
+                    break;
+
                 case OpenGLStateType.UseProgram:
                     Dispose_UseProgram();
                     break;
@@ -680,6 +780,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 case OpenGLStateType.CreateFramebuffer:
                     Dispose_CreateFramebuffer();
+                    break;
+
+                case OpenGLStateType.CreateRenderbuffer:
+                    Dispose_CreateRenderbuffer();
                     break;
 
                 default:
@@ -749,6 +853,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
+        private void Dispose_BindRenderbuffer()
+        {
+            gl.BindRenderbuffer(gl.GL_RENDERBUFFER, oldGL_RENDERBUFFER_BINDING);
+            gl.ThrowIfError();
+
+            OpenGLState.GL_RENDERBUFFER_BINDING.Update(oldGL_RENDERBUFFER_BINDING);
+        }
+
         private void Dispose_UseProgram()
         {
             gl.UseProgram(oldGL_CURRENT_PROGRAM);
@@ -801,6 +913,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
+        private void Dispose_CreateRenderbuffer()
+        {
+            gl.BindRenderbuffer(gl.GL_RENDER, oldGL_RENDERBUFFER_BINDING);
+            gl.ThrowIfError();
+
+            OpenGLState.GL_RENDERBUFFER_BINDING.Update(oldGL_RENDERBUFFER_BINDING);
+        }
+
         /// <summary>
         /// Gets the cached value of GL_TEXTURE_BINDING_2D.
         /// </summary>
@@ -827,6 +947,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public static OpenGLStateInteger GL_FRAMEBUFFER_BINDING { get { return glFramebufferBinding; } }
 
         /// <summary>
+        /// Gets the cached value of GL_RENDERBUFFER_BINDING.
+        /// </summary>
+        public static OpenGLStateInteger GL_RENDERBUFFER_BINDING { get { return glRenderbufferBinding; } }
+
+        /// <summary>
         /// Gets the cached value of GL_CURRENT_PROGRAM.
         /// </summary>
         public static OpenGLStateInteger GL_CURRENT_PROGRAM { get { return glCurrentProgram; } }
@@ -846,6 +971,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private UInt32 newGL_ARRAY_BUFFER_BINDING;
         private UInt32 newGL_ELEMENT_ARRAY_BUFFER_BINDING;
         private UInt32 newGL_FRAMEBUFFER_BINDING;
+        private UInt32 newGL_RENDERBUFFER_BINDING;
         private UInt32 newGL_CURRENT_PROGRAM;
 
         private UInt32 oldGL_TEXTURE_BINDING_2D;
@@ -853,6 +979,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private UInt32 oldGL_ARRAY_BUFFER_BINDING;
         private UInt32 oldGL_ELEMENT_ARRAY_BUFFER_BINDING;
         private UInt32 oldGL_FRAMEBUFFER_BINDING;
+        private UInt32 oldGL_RENDERBUFFER_BINDING;
         private UInt32 oldGL_CURRENT_PROGRAM;
 
         // Cached OpenGL state values.
@@ -862,6 +989,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private static readonly OpenGLStateInteger glArrayBufferBinding        = new OpenGLStateInteger("GL_ARRAY_BUFFER_BINDING", gl.GL_ARRAY_BUFFER_BINDING);
         private static readonly OpenGLStateInteger glElementArrayBufferBinding = new OpenGLStateInteger("GL_ELEMENT_ARRAY_BUFFER_BINDING", gl.GL_ELEMENT_ARRAY_BUFFER_BINDING);
         private static readonly OpenGLStateInteger glFramebufferBinding        = new OpenGLStateInteger("GL_FRAMEBUFFER_BINDING", gl.GL_FRAMEBUFFER_BINDING);
+        private static readonly OpenGLStateInteger glRenderbufferBinding       = new OpenGLStateInteger("GL_RENDERBUFFER_BINDING", gl.GL_RENDERBUFFER_BINDING);
         private static readonly OpenGLStateInteger glCurrentProgram            = new OpenGLStateInteger("GL_CURRENT_PROGRAM", gl.GL_CURRENT_PROGRAM);
 
         // The pool of state objects.

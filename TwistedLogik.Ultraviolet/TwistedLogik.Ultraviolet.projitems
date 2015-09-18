@@ -176,6 +176,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RasterizerState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderBuffer2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderBufferFormat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderBufferOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderTarget2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SamplerState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SetDataOptions.cs" />

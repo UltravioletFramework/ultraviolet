@@ -260,6 +260,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override Boolean WillNotBeSampled
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return false;
+            }
+        }
+
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)

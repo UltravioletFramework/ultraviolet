@@ -10,9 +10,9 @@ namespace TwistedLogik.Ultraviolet.Graphics
     /// <param name="format">The render buffer's format.</param>
     /// <param name="width">The render buffer's width in pixels.</param>
     /// <param name="height">The render buffer's height in pixels.</param>
-    /// <param name="immutable">A value indicating whether the render buffer should use immutable storage.</param>
+    /// <param name="options">The render buffer's configuration options.</param>
     /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
-    public delegate RenderBuffer2D RenderBuffer2DFactory(UltravioletContext uv, RenderBufferFormat format, Int32 width, Int32 height, Boolean immutable);
+    public delegate RenderBuffer2D RenderBuffer2DFactory(UltravioletContext uv, RenderBufferFormat format, Int32 width, Int32 height, RenderBufferOptions options);
 
     /// <summary>
     /// Represents a two-dimensional render buffer containing color, depth, or stencil data.
@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
         public static new RenderBuffer2D Create(Int32 width, Int32 height)
         {
-            return Create(RenderBufferFormat.Color, width, height, true);
+            return Create(RenderBufferFormat.Color, width, height, RenderBufferOptions.ImmutableStorage);
         }
 
         /// <summary>
@@ -45,11 +45,11 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// </summary>
         /// <param name="width">The render buffer's width in pixels.</param>
         /// <param name="height">The render buffer's height in pixels.</param>
-        /// <param name="immutable">A value indicating whether the render buffer should use immutable storage.</param>
+        /// <param name="options">The render buffer's configuration options.</param>
         /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
-        public static new RenderBuffer2D Create(Int32 width, Int32 height, Boolean immutable)
+        public static RenderBuffer2D Create(Int32 width, Int32 height, RenderBufferOptions options)
         {
-            return Create(RenderBufferFormat.Color, width, height, immutable);
+            return Create(RenderBufferFormat.Color, width, height, options);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
         public static RenderBuffer2D Create(RenderBufferFormat format, Int32 width, Int32 height)
         {
-            return Create(format, width, height, true);
+            return Create(format, width, height, RenderBufferOptions.ImmutableStorage);
         }
 
         /// <summary>
@@ -70,15 +70,15 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="format">A <see cref="RenderBufferFormat"/> value specifying the render buffer's data format.</param>
         /// <param name="width">The render buffer's width in pixels.</param>
         /// <param name="height">The render buffer's height in pixels.</param>
-        /// <param name="immutable">A value indicating whether the render buffer should use immutable storage.</param>
+        /// <param name="options">The render buffer's configuration options.</param>
         /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
-        public static RenderBuffer2D Create(RenderBufferFormat format, Int32 width, Int32 height, Boolean immutable)
+        public static RenderBuffer2D Create(RenderBufferFormat format, Int32 width, Int32 height, RenderBufferOptions options)
         {
             Contract.EnsureRange(width > 0, "width");
             Contract.EnsureRange(height > 0, "height");
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<RenderBuffer2DFactory>()(uv, format, width, height, immutable);
+            return uv.GetFactoryMethod<RenderBuffer2DFactory>()(uv, format, width, height, options);
         }
 
         /// <summary>
