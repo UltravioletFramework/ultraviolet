@@ -76,6 +76,8 @@ namespace TwistedLogik.Nucleus
         public static readonly StringResource LocalizedStringMissingKey              = new StringResource(StringDatabase, "LOCALIZED_STRING_MISSING_KEY");
         public static readonly StringResource DataObjectFailedValidation             = new StringResource(StringDatabase, "DATA_OBJECT_FAILED_VALIDATION");
         public static readonly StringResource TypeMetadataAlreadyLoaded              = new StringResource(StringDatabase, "TYPE_METADATA_ALREADY_LOADED");
+        public static readonly StringResource SequenceHasNoElements                  = new StringResource(StringDatabase, "SEQUENCE_HAS_NO_ELEMENTS");
+        public static readonly StringResource SequenceHasMoreThanOneElement          = new StringResource(StringDatabase, "SEQUENCE_HAS_MORE_THAN_ONE_ELEMENT");
 #pragma warning restore 1591
     }
 }

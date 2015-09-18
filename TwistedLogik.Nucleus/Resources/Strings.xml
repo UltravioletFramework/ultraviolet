@@ -270,4 +270,14 @@
       <Variant>Type metadata has already been loaded for this assembly.</Variant>
     </en-US>
   </String>
+  <String Key="SEQUENCE_HAS_NO_ELEMENTS">
+    <en-US>
+      <Variant>Sequence contains no elements.</Variant>
+    </en-US>
+  </String>
+  <String Key="SEQUENCE_HAS_MORE_THAN_ONE_ELEMENT">
+    <en-US>
+      <Variant>Sequence contains more than one element.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
