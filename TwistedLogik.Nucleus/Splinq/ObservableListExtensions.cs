@@ -5,7 +5,7 @@ using TwistedLogik.Nucleus.Collections;
 namespace TwistedLogik.Nucleus.Splinq
 {
     /// <summary>
-    /// Contains SpLINQ extension methods for the <see cref="ObservableObservableList{T}"/> class.
+    /// Contains SpLINQ extension methods for the <see cref="ObservableList{T}"/> class.
     /// </summary>
     public static class ObservableListExtensions
     {

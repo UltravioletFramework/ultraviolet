@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace TwistedLogik.Nucleus.Splinq
 {
     /// <summary>
-    /// Contains SpLINQ extension methods for the <see cref="LinkedLinkedList{T}"/> class.
+    /// Contains SpLINQ extension methods for the <see cref="LinkedList{T}"/> class.
     /// </summary>
     public static class LinkedListExtensions
     {
