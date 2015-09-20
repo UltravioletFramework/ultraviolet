@@ -1297,7 +1297,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!Focused)
                 return;
 
-            if (KeyboardNavigation.PerformNavigation(device, key, ctrl, alt, shift, repeat))
+            if (KeyboardNavigator.PerformNavigation(this, device, key, ctrl, alt, shift, repeat))
                 return;
 
             if (elementWithFocus != null)
