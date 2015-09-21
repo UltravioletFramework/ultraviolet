@@ -116,16 +116,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             if (button == MouseButton.Left)
             {
-                Focus();
-                CaptureMouse();
-
-                IsPressed = true;
-
-                if (ClickMode == ClickMode.Press)
-                {
-                    OnClick();
-                }
-
+                HandlePressed();
                 data.Handled = true;
             }
             base.OnMouseDown(device, button, ref data);
@@ -136,21 +127,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             if (button == MouseButton.Left)
             {
-                var clicked = IsPressed;
-
-                ReleaseMouseCapture();
-
-                IsPressed = false;
-
-                if (clicked && ClickMode == ClickMode.Release)
-                {
-                    var position = Mouse.GetPosition(this);
-                    if (Bounds.Contains(position))
-                    {
-                        OnClick();
-                    }
-                }
-
+                HandleReleased();
                 data.Handled = true;
             }
             base.OnMouseUp(device, button, ref data);
@@ -164,6 +141,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 OnClick();
             }
             base.OnMouseEnter(device, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        {
+            if (key == Key.Return)
+            {
+                HandlePressed();
+                data.Handled = true;
+            }
+            base.OnKeyDown(device, key, modifiers, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnKeyUp(KeyboardDevice device, Key key, ref RoutedEventData data)
+        {
+            if (key == Key.Return)
+            {
+                HandleReleased(false);
+                data.Handled = true;
+            }
+            base.OnKeyUp(device, key, ref data);
         }
 
         /// <summary>
@@ -192,6 +191,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             var buttonBase = (ButtonBase)dobj;
             buttonBase.UpdateCommonState();
+        }
+
+        /// <summary>
+        /// Modifies state and raises events relating to the button being pressed.
+        /// </summary>
+        private void HandlePressed()
+        {
+            Focus();
+            CaptureMouse();
+
+            IsPressed = true;
+
+            if (ClickMode == ClickMode.Press)
+            {
+                OnClick();
+            }
+        }
+
+        /// <summary>
+        /// Modifies state and raises events relating to the button being released.
+        /// </summary>
+        /// <param name="checkMousePosition">A value indicating whether to confirm that the mouse is inside of the button before calling <see cref="OnClick()"/>.</param>
+        private void HandleReleased(Boolean checkMousePosition = true)
+        {
+            var clicked = IsPressed;
+
+            ReleaseMouseCapture();
+
+            IsPressed = false;
+
+            if (clicked && ClickMode == ClickMode.Release)
+            {
+                if (checkMousePosition)
+                {
+                    var position = Mouse.GetPosition(this);
+                    if (Bounds.Contains(position))
+                    {
+                        OnClick();
+                    }
+                }
+                else
+                {
+                    OnClick();
+                }
+            }
         }
 
         /// <summary>
