@@ -139,6 +139,10 @@
     <Compile Include="Size3DTests.cs" />
     <Compile Include="Size3FTests.cs" />
     <Compile Include="MatrixTests.cs" />
+    <Compile Include="UI\Presentation\Input\KeyboardNavigationTests.cs" />
+    <Compile Include="UI\Presentation\PresentationFoundationTestFramework.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Simple.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Simple_VM.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_VisualClone_DrawsCorrectly.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent_VM.cs" />
@@ -472,6 +476,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_KeyNav_Simple\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -541,6 +548,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

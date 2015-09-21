@@ -3,36 +3,22 @@ using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Testing;
 using TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens;
 using TwistedLogik.Ultraviolet.UI;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 {
     [TestClass]
-    [DeploymentItem(@"TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll")]
-    public class PresentationFoundationTests : UltravioletApplicationTestFramework
+    public class PresentationFoundationTests : PresentationFoundationTestFramework
     {
         [ClassInitialize]
-        public static void Initialize(TestContext textContext)
+        public static void Initialize(TestContext testContext)
         {
-            var application = GivenAThrowawayUltravioletApplicationWithNoWindow()
-               .WithPresentationFoundationConfigured()
-               .WithInitialization(uv =>
-               {
-                   var upf = uv.GetUI().GetPresentationFoundation();
-                   upf.CompileExpressions("Content");
-               });
-
-            application.RunForOneFrame();
-
-            DestroyUltravioletApplication(application);
+            StandardInitialization(testContext);
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that a reasonably complex screen featuring multiple control types is correctly laid out by the Presentation Foundation.")]
         public void UPF_ArrangesComplexScreenCorrectly()
         {
@@ -42,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that a UIElement with a non-identity RenderTransform is drawn correctly.")]
         public void UPF_UIElement_DrawsCorrectly_WithRenderTransform()
         {
@@ -52,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that a UIElement with an Effect is drawn correctly.")]
         public void UPF_UIElement_DrawsCorrectly_WithEffect()
         {
@@ -62,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that a UIElement with a non-identity RenderTransform and an Effect is drawn correctly.")]
         public void UPF_UIElement_DrawsCorrectly_WithEffectAndTransform()
         {
@@ -72,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that a UIElement with a non-identity LayoutTransform is correctly arranged relative to other elements.")]
         public void UPF_UIElement_ArrangesCorrectly_WithLayoutTransform()
         {
@@ -82,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that a UIElement with a non-identity LayoutTransform and a non-identity RenderTransform is correctly arranged relative to other elements.")]
         public void UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform()
         {
@@ -92,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Canvas container correctly arranges its child elements.")]
         public void UPF_Canvas_ArrangesChildrenCorrectly()
         {
@@ -102,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Grid container correctly arranges its child elements.")]
         public void UPF_Grid_ArrangesChildrenCorrectly()
         {
@@ -112,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the StackPanel container correctly arranges its child elements when its Orientation property is set to Vertical.")]
         public void UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation()
         {
@@ -122,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the StackPanel container correctly arranges its child elements when its Orientation property is set to Horizontal.")]
         public void UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation()
         {
@@ -132,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the WrapPanel container correctly arranges its child elements when its Orientation property is set to Vertical.")]
         public void UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation()
         {
@@ -142,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the StackPanel container correctly arranges its child elements when its Orientation property is set to Horizontal.")]
         public void UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation()
         {
@@ -152,7 +138,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the DockPanel container correctly arranges its child elements.")]
         public void UPF_DockPanel_ArrangesChildrenCorrectly()
         {
@@ -162,7 +148,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Adorner control is drawn correctly when applied to an element.")]
         public void UPF_Adorner_DrawsCorrectly()
         {
@@ -172,7 +158,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Adorner control is drawn correctly when applied to an element inside of a Popup.")]
         public void UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup()
         {
@@ -182,7 +168,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Popup control is laid out correctly when it has a placement target.")]
         public void UPF_Popup_LaidOutCorrectly_WithPlacementTarget()
         {
@@ -192,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Popup control is laid out correctly when it has a placement target and the Popup is transformed.")]
         public void UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform()
         {
@@ -202,7 +188,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Popup control is laid out correctly when it has a placement target which is inside of another Popup.")]
         public void UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup()
         {
@@ -212,7 +198,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Popup control is laid out correctly when it has a placement target which is transformed.")]
         public void UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget()
         {
@@ -222,7 +208,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Popup control is laid out correctly when it has a placement target which is transformed and it is inested inside of another Popup.")]
         public void UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup()
         {
@@ -232,7 +218,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Popup control is laid out correctly when it has a placement rectangle.")]
         public void UPF_Popup_LaidOutCorrectly_WithPlacementRectangle()
         {
@@ -242,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Popup control is laid out correctly when it is nested inside of another Popup.")]
         public void UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup()
         {
@@ -252,7 +238,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Popup control is drawn correctly when it has a placement target which is inside of another popup and it also has an Effect.")]
         public void UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect()
         {
@@ -262,7 +248,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that a VisualClone element is drawn correctly when cloning elements with and without shader effects.")]
         public void UPF_VisualClone_DrawsCorrectly()
         {
@@ -272,7 +258,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that a VisualClone element with a transformed parent is drawn correctly when cloning elements with and without shader effects.")]
         public void UPF_VisualClone_DrawsCorrectly_WhenParentIsTransformed()
         {
@@ -286,24 +272,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         /// </summary>
         private Bitmap RunPresentationTestFor<T>(Func<ContentManager, T> ctor) where T : UIScreen
         {
-            return GivenAnUltravioletApplication()
-                .WithPresentationFoundationConfigured()
-                .WithInitialization(uv =>
-                {
-                    var upf = uv.GetUI().GetPresentationFoundation();
-                    upf.LoadCompiledExpressions();
-                })
-                .WithContent(content =>
-                {
-                    var contentManifestFiles = content.GetAssetFilePathsInDirectory("Manifests");
-                    content.Ultraviolet.GetContent().Manifests.Load(contentManifestFiles);
-
-                    var globalStyleSheet = content.Load<UvssDocument>(@"UI\DefaultUIStyles");
-                    content.Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStyleSheet(globalStyleSheet);
-
-                    var screen = ctor(content);
-                    content.Ultraviolet.GetUI().GetScreens().Open(screen);
-                })
+            return GivenAPresentationFoundationTestFor<T>(ctor)
                 .Render(uv =>
                 {
                     using (var spriteBatch = SpriteBatch.Create())
