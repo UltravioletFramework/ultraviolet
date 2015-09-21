@@ -282,9 +282,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             if (navElement == null && IsNavigationStop(navContainer))
                 return navContainer;
 
-            var navmode = navContainer.GetValue<KeyboardNavigationMode>(navProp);
+            var navMode = navContainer.GetValue<KeyboardNavigationMode>(navProp);
 
-            if (navElement != null && (navmode == KeyboardNavigationMode.None || navmode == KeyboardNavigationMode.Once))
+            if (navElement != null && (navMode == KeyboardNavigationMode.None || navMode == KeyboardNavigationMode.Once))
             {
                 if (local || navContainer == view.LayoutRoot)
                     return null;
@@ -298,7 +298,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             while (true)
             {
-                next = FindNextVisualElementWithinContainer(navContainer, next, navProp, navmode);
+                next = FindNextVisualElementWithinContainer(navContainer, next, navProp, navMode);
 
                 if (next == null || next == first)
                     break;
@@ -310,14 +310,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 if (descendant != null)
                     return descendant;
 
-                if (navmode == KeyboardNavigationMode.Once)
-                    navmode = KeyboardNavigationMode.Contained;
+                if (navMode == KeyboardNavigationMode.Once)
+                    navMode = KeyboardNavigationMode.Contained;
             }
 
             if (local)
                 return null;
 
-            if (navmode != KeyboardNavigationMode.Contained)
+            if (navMode != KeyboardNavigationMode.Contained)
             {
                 if (VisualTreeHelper.GetParent(navContainer) != null)
                 {
@@ -390,9 +390,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navContainer">The navigation container that contains <paramref name="navElement"/>.</param>
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
-        /// <param name="navmode">The currently active navigation mode.</param>
+        /// <param name="navMode">The currently active navigation mode.</param>
         /// <returns>The next element in the tab order after <paramref name="navElement"/> which has a higher tab index, or <c>null</c>.</returns>
-        private static DependencyObject FindNextVisualElementWithHigherTabIndex(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, KeyboardNavigationMode navmode)
+        private static DependencyObject FindNextVisualElementWithHigherTabIndex(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, KeyboardNavigationMode navMode)
         {
             var targetTabIndex = KeyboardNavigation.GetTabIndex(navElement);
 
@@ -427,9 +427,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 }
             }
             
-            return (minElement == null && navmode == KeyboardNavigationMode.Cycle) ? firstElement : minElement;
+            return (minElement == null && navMode == KeyboardNavigationMode.Cycle) ? firstElement : minElement;
         }
-        
+
         /// <summary>
         /// Moves backwards through the visual tree, returning the previous element before <paramref name="navElement"/>.
         /// </summary>
@@ -439,7 +439,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns>The previous element in the visual tree before <paramref name="navElement"/>, or <c>null</c>.</returns>
         private static DependencyObject TraverseVisualTreePrev(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp)
         {
-            return null;
+            if (navContainer == navElement)
+                return null;
+
+            var sibling = VisualTreeHelper.GetPreviousSibling<UIElement>(navElement, x => x.IsVisible);
+            if (sibling != null)
+            {
+                return IsNavigationContainer(sibling, navProp) ? sibling : FindLastVisualElementInTree(sibling, navProp);
+            }
+
+            return VisualTreeHelper.GetParent(navElement);
+        }
+
+        /// <summary>
+        /// Gets the last navigation stop within the specified navigation container.
+        /// </summary>
+        /// <param name="navContainer">The navigation container to search for a navigation stop.</param>
+        /// <param name="navProp">The navigation property to evaluate.</param>
+        /// <returns>The last navigation stop within the specified navigation container, or <c>null</c>.</returns>
+        private static DependencyObject GetLastNavigationStop(DependencyObject navContainer, DependencyProperty navProp)
+        {
+            var max = Int32.MinValue;
+
+            var match = default(DependencyObject);
+            var current = FindLastVisualElementInTree(navContainer, navProp);
+
+            while (true)
+            {
+                if (current == null || current == navContainer)
+                    break;
+
+                if (IsNavigationStop(current) || IsNavigationContainer(current, navProp))
+                {
+                    var index = KeyboardNavigation.GetTabIndex(current);
+                    if (index > max || match == null)
+                    {
+                        max = index;
+                        match = current;
+                    }
+                }
+
+                current = TraverseVisualTreePrev(navContainer, current, navProp);
+            }
+
+            return match;
         }
 
         /// <summary>
@@ -453,6 +496,79 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns>The previous element in the tab order before <paramref name="navElement"/>, or <c>null</c>.</returns>
         private static DependencyObject FindPrevNavigationStop(PresentationFoundationView view, DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, Boolean local)
         {
+            var navMode = navContainer.GetValue<KeyboardNavigationMode>(navProp);
+
+            if (navElement != null && (navMode == KeyboardNavigationMode.Once || navMode == KeyboardNavigationMode.None))
+            {
+                if (local || navContainer == navElement)
+                    return null;
+
+                if (IsNavigationStop(navContainer))
+                    return navContainer;
+
+                var navContainerContainer = FindNavigationContainer(navContainer, navProp, false);
+                return FindPrevNavigationStop(view, navContainerContainer, navContainer, navProp, false);
+            }
+
+            if (navElement == null && (navMode == KeyboardNavigationMode.Once))
+            {
+                var descendant = FindNextVisualElementWithinContainer(navContainer, null, navProp, navMode);
+                if (descendant != null)
+                {
+                    return FindPrevNavigationStop(view, descendant, null, navProp, true);
+                }
+                else
+                {
+                    if (IsNavigationStop(navContainer))
+                        return navContainer;
+
+                    if (local)
+                        return null;
+                    
+                    var navContainerContainer = FindNavigationContainer(navContainer, navProp, false);
+                    return FindPrevNavigationStop(view, navContainerContainer, navContainer, navProp, false);
+                }
+            }
+
+            var first = default(DependencyObject);
+            var prev = navElement;
+
+            while (true)
+            {
+                prev = FindPrevVisualElementWithinContainer(navContainer, prev, navProp, navMode);
+                if (prev == null || (prev == navContainer && (navMode == KeyboardNavigationMode.Local || navMode == KeyboardNavigationMode.Contained)))
+                    break;
+
+                if (IsNavigationStop(prev) && !IsNavigationContainer(prev, navProp))
+                    return prev;
+
+                if (first == prev)
+                    break;
+
+                if (first == null)
+                    first = prev;
+
+                var last = FindPrevNavigationStop(view, prev, null, navProp, true);
+                if (last != null)
+                    return last;
+            }
+
+            if (navMode != KeyboardNavigationMode.Contained)
+            {
+                if (navElement != navContainer && IsNavigationStop(navContainer))
+                    return navContainer;
+
+                if (local)
+                    return null;
+
+                if (VisualTreeHelper.GetParent(navContainer) != null)
+                {
+                    var navContainerContainer = FindNavigationContainer(navContainer, navProp, false);
+                    return FindPrevNavigationStop(view, navContainerContainer, navContainer, navProp, false);
+                }
+                return GetLastNavigationStop(navContainer, navProp);
+            }
+
             return null;
         }
 
@@ -463,9 +579,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
         /// <returns>The previous element in the tab order before <paramref name="navElement"/>, or <c>null</c>.</returns>
-        private static DependencyObject FindPrevVisualElementWithinContainer(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp)
+        private static DependencyObject FindPrevVisualElementWithinContainer(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, KeyboardNavigationMode navMode)
         {
-            return null;
+            if (navMode == KeyboardNavigationMode.None)
+                return null;
+
+            if (navElement == null)
+                return GetLastNavigationStop(navContainer, navProp);
+
+            if (navMode == KeyboardNavigationMode.Once || navElement == navContainer)
+                return null;
+
+            return
+                FindPrevVisualElementWithSameTabIndex(navContainer, navElement, navProp) ??
+                FindPrevVisualElementWithLowerTabIndex(navContainer, navElement, navProp, navMode);
         }
 
         /// <summary>
@@ -478,6 +605,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns>The previous element in the tab order before <paramref name="navElement"/> which has the same tab index, or <c>null</c>.</returns>
         private static DependencyObject FindPrevVisualElementWithSameTabIndex(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp)
         {
+            var targetTabIndex = KeyboardNavigation.GetTabIndex(navElement);
+
+            var current = navElement;
+
+            while (true)
+            {
+                current = TraverseVisualTreePrev(navContainer, current, navProp);
+                if (current == null)
+                    break;
+
+                if ((IsNavigationStop(current) || IsNavigationContainer(current, navProp)) && KeyboardNavigation.GetTabIndex(current) == targetTabIndex)
+                {
+                    return current;
+                }
+            }
+
             return null;
         }
 
@@ -488,10 +631,67 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navContainer">The navigation container that contains <paramref name="navElement"/>.</param>
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
+        /// <param name="navMode">The currently active navigation mode.</param>
         /// <returns>The previous element in the tab order before <paramref name="navElement"/> which has a lower tab index, or <c>null</c>.</returns>
-        private static DependencyObject FindPrevVisualElementWithLowerTabIndex(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp)
+        private static DependencyObject FindPrevVisualElementWithLowerTabIndex(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, KeyboardNavigationMode navMode)
         {
-            return null;
+            var targetTabIndex = KeyboardNavigation.GetTabIndex(navElement);
+
+            var maxIndex = Int32.MinValue;
+            var maxElement = default(DependencyObject);
+
+            var firstIndex = Int32.MinValue;
+            var firstElement = default(DependencyObject);
+
+            var current = navContainer;
+
+            while (true)
+            {
+                current = TraverseVisualTreeNext(navContainer, current, navProp);
+                if (current == null)
+                    break;
+
+                if (IsNavigationStop(current) || IsNavigationContainer(current, navProp))
+                {
+                    var currentTabIndex = KeyboardNavigation.GetTabIndex(current);
+                    if (currentTabIndex < targetTabIndex && (maxElement == null || currentTabIndex > maxIndex))
+                    {
+                        maxIndex = currentTabIndex;
+                        maxElement = current;
+                    }
+
+                    if (firstElement == null || currentTabIndex > firstIndex)
+                    {
+                        firstIndex = currentTabIndex;
+                        firstElement = current;
+                    }
+                }
+            }
+
+            return (maxElement == null && navMode == KeyboardNavigationMode.Cycle) ? firstElement : maxElement;
+        }
+
+        /// <summary>
+        /// Finds the last visual element within the specified visual subtree.
+        /// </summary>
+        /// <param name="navElement">The element at the root of the visual subtree to evaluate.</param>
+        /// <param name="navProp">The navigation property to evaluate.</param>
+        /// <returns>The last visual element within the specified visual subtree.</returns>
+        private static DependencyObject FindLastVisualElementInTree(DependencyObject navElement, DependencyProperty navProp)
+        {
+            var previous = navElement;
+            var current = navElement;
+
+            while (true)
+            {
+                previous = current;
+                current = VisualTreeHelper.GetLastChild<UIElement>(current, x => x.IsVisible);
+
+                if (current == null || IsNavigationContainer(current, navProp))
+                    break;
+            }
+
+            return current ?? previous;
         }
 
         /// <summary>
