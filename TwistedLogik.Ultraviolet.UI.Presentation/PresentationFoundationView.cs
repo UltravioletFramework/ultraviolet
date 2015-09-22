@@ -1297,8 +1297,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!Focused)
                 return;
 
-            if (KeyboardNavigator.PerformNavigation(this, device, key, ctrl, alt, shift, repeat))
-                return;
+            var suppressKeyNav = false;
 
             if (elementWithFocus != null)
             {
@@ -1308,8 +1307,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var keyDownData = new RoutedEventData(dobj);
                     Keyboard.RaisePreviewKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownData);
                     Keyboard.RaiseKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownData);
+
+                    suppressKeyNav = keyDownData.Handled;
                 }
             }
+            
+            if (!suppressKeyNav)
+                KeyboardNavigator.PerformNavigation(this, device, key, ctrl, alt, shift, repeat);
         }
 
         /// <summary>
