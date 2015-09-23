@@ -141,6 +141,12 @@
     <Compile Include="MatrixTests.cs" />
     <Compile Include="UI\Presentation\Input\KeyboardNavigationTests.cs" />
     <Compile Include="UI\Presentation\PresentationFoundationTestFramework.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_None.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Once.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_None_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Once_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Cycle_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Cycle.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_KeyNav_SuppressTab.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Simple.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_KeyNav_SuppressTab_VM.cs" />
@@ -482,6 +488,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\UI\Screens\UPF_KeyNav_SuppressTab\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_KeyNav_Cycle\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_KeyNav_Once\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_KeyNav_None\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">
