@@ -566,7 +566,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                     var navContainerContainer = FindNavigationContainer(navContainer, navProp, false);
                     return FindPrevNavigationStop(view, navContainerContainer, navContainer, navProp, false);
                 }
-                return GetLastNavigationStop(navContainer, navProp);
+
+                var lastNavStopInContainer = GetLastNavigationStop(navContainer, navProp);
+                return ((lastNavStopInContainer == null) ? null : FindPrevVisualElementWithinContainer(lastNavStopInContainer, null, navProp, navMode)) ?? lastNavStopInContainer;
             }
 
             return null;
@@ -615,6 +617,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 if (current == null)
                     break;
 
+                if (current == navContainer)
+                    continue;
+
                 if ((IsNavigationStop(current) || IsNavigationContainer(current, navProp)) && KeyboardNavigation.GetTabIndex(current) == targetTabIndex)
                 {
                     return current;
@@ -640,17 +645,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             var maxIndex = Int32.MinValue;
             var maxElement = default(DependencyObject);
 
-            var firstIndex = Int32.MinValue;
-            var firstElement = default(DependencyObject);
+            var lastIndex = Int32.MinValue;
+            var lastElement = default(DependencyObject);
 
-            var current = navContainer;
+            var current = FindLastVisualElementInTree(navContainer, navProp);
 
             while (true)
             {
-                current = TraverseVisualTreeNext(navContainer, current, navProp);
-                if (current == null)
-                    break;
-
                 if (IsNavigationStop(current) || IsNavigationContainer(current, navProp))
                 {
                     var currentTabIndex = KeyboardNavigation.GetTabIndex(current);
@@ -660,15 +661,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                         maxElement = current;
                     }
 
-                    if (firstElement == null || currentTabIndex > firstIndex)
+                    if (lastElement == null || currentTabIndex > lastIndex)
                     {
-                        firstIndex = currentTabIndex;
-                        firstElement = current;
+                        lastIndex = currentTabIndex;
+                        lastElement = current;
                     }
                 }
+                
+                current = TraverseVisualTreePrev(navContainer, current, navProp);
+                if (current == null)
+                    break;
             }
 
-            return (maxElement == null && navMode == KeyboardNavigationMode.Cycle) ? firstElement : maxElement;
+            return (maxElement == null && navMode == KeyboardNavigationMode.Cycle) ? lastElement : maxElement;
         }
 
         /// <summary>
