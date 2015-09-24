@@ -187,6 +187,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var configuration = new OpenGLUltravioletConfiguration() { Headless = headless };
+            configuration.IsHardwareInputDisabled = true;
             configuration.Debug = true;
             configuration.DebugLevels = DebugLevels.Error | DebugLevels.Warning;
             configuration.DebugCallback = (uv, level, message) =>

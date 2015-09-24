@@ -563,6 +563,26 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the context is currently processing messages
+        /// from the physical input devices.
+        /// </summary>
+        public Boolean IsHardwareInputDisabled
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return isHardwareInputDisabled;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                isHardwareInputDisabled = value;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the context is running in service mode.
         /// </summary>
         public Boolean IsRunningInServiceMode
@@ -1150,6 +1170,7 @@ namespace TwistedLogik.Ultraviolet
         private readonly UltravioletFactory factory = new UltravioletFactory();
         private readonly ConcurrentQueue<Task> queuedWorkItems = new ConcurrentQueue<Task>();
         private readonly Thread thread;
+        private Boolean isHardwareInputDisabled;
         private Boolean isRunningInServiceMode;
         private Boolean isInitialized;
         private Boolean disposed;
