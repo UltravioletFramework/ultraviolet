@@ -91,7 +91,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 case FocusNavigationDirection.Right:
                 case FocusNavigationDirection.Up:
                 case FocusNavigationDirection.Down:
-                    return false; // TODO
+                    navContainer = FindNavigationContainer(element, navprop);
+                    destination  = FindNavigationStopInDirection(view, navContainer, element, navprop, direction) as IInputElement;
+                    break;
             }            
 
             if (destination != null)
@@ -180,6 +182,76 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         private static Boolean IsNavigationContainer(DependencyObject navElement, DependencyProperty navProp)
         {
             return navElement.GetValue<KeyboardNavigationMode>(navProp) != KeyboardNavigationMode.Continue;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified candidate element is in the specified direction from the current element.
+        /// </summary>
+        /// <param name="navElement">The element from which navigation is being moved.</param>
+        /// <param name="navCandidate">The candidate to which navigation might be moved.</param>
+        /// <param name="direction">The direction in which focus is moving.</param>
+        /// <returns><c>true</c> if the candidate is in the specified direction; otherwise, <c>false</c>.</returns>
+        private static Boolean IsInDirection(DependencyObject navElement, DependencyObject navCandidate, FocusNavigationDirection direction)
+        {
+            var uiElement = navElement as UIElement;
+            if (uiElement == null)
+                return false;
+
+            var uiCandidate = navCandidate as UIElement;
+            if (uiCandidate == null)
+                return false;
+
+            switch (direction)
+            {
+                case FocusNavigationDirection.Left:
+                    return uiCandidate.TransformedVisualBounds.Left < uiElement.TransformedVisualBounds.Left;
+
+                case FocusNavigationDirection.Right:
+                    return uiCandidate.TransformedVisualBounds.Right > uiElement.TransformedVisualBounds.Right;
+
+                case FocusNavigationDirection.Up:
+                    return uiCandidate.TransformedVisualBounds.Top < uiElement.TransformedVisualBounds.Top;
+
+                case FocusNavigationDirection.Down:
+                    return uiCandidate.TransformedVisualBounds.Bottom > uiElement.TransformedVisualBounds.Bottom;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified candidate is a better match for directional navigation than the current best match.
+        /// </summary>
+        /// <param name="navElement">The element from which focus is being moved.</param>
+        /// <param name="navCurrentBest">The current best match for directional navigation.</param>
+        /// <param name="navCandidate">The candidate match for directional navigation.</param>
+        /// <returns><c>true</c> if the specified candidate is a better match than the current best match; otherwise, <c>false</c>.</returns>
+        private static Boolean IsBetterDirectionalMatch(DependencyObject navElement, DependencyObject navCurrentBest, DependencyObject navCandidate)
+        {
+            var uiElement = navElement as UIElement;
+            if (uiElement == null)
+                return false;
+
+            var uiCurrentBest = navCurrentBest as UIElement;
+            if (uiCurrentBest == null)
+                return false;
+
+            var uiCandidate = navCandidate as UIElement;
+            if (uiCandidate == null)
+                return false;
+
+            var boundsElement = uiElement.TransformedVisualBounds;
+            var boundsCurrentBest = uiCurrentBest.TransformedVisualBounds;
+            var boundsCandidate = uiCandidate.TransformedVisualBounds; 
+
+            var distCurrentBest = 
+                Math.Pow(boundsElement.Center.X - boundsCurrentBest.Center.X, 2) + 
+                Math.Pow(boundsElement.Center.Y - boundsCurrentBest.Center.Y, 2);
+            var distCandidate = 
+                Math.Pow(boundsElement.Center.X - boundsCandidate.Center.X, 2) +
+                Math.Pow(boundsElement.Center.Y - boundsCandidate.Center.Y, 2);
+
+            return distCandidate < distCurrentBest;
         }
 
         /// <summary>
@@ -722,5 +794,83 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             return previous;
         }
+
+        /// <summary>
+        /// Finds the next navigation stop in the specified direction.
+        /// </summary>
+        /// <param name="view">The view for which navigation is being performed.</param>
+        /// <param name="navContainer">The navigation container that contains <paramref name="navElement"/>.</param>
+        /// <param name="navElement">The element at which to begin the search.</param>
+        /// <param name="navProp">The navigation property to evaluate.</param>
+        /// <param name="direction">The direction in which to navigate.</param>
+        /// <returns>The next navigation stop in the specified direction, or <c>null</c>.</returns>
+        private static DependencyObject FindNavigationStopInDirection(PresentationFoundationView view, DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, FocusNavigationDirection direction)
+        {
+            var bestMatch = default(DependencyObject);
+            var bestMatchScore = Int32.MaxValue;
+
+            var navMode = navContainer.GetValue<KeyboardNavigationMode>(navProp);
+            var current = FindNextVisualElementWithinContainer(navContainer, null, navProp, navMode);
+
+            while (current != null)
+            {
+                if (IsInDirection(navElement, current, direction) && (IsNavigationStop(current) || IsNavigationContainer(current, navProp)))
+                {
+                    var score = EvaluateDistanceScore(navElement, current, direction);
+                    if (score < bestMatchScore)
+                    {
+                        bestMatch = current;
+                        bestMatchScore = score;
+                    }
+                    else
+                    {
+                        if (score == bestMatchScore && IsBetterDirectionalMatch(navElement, bestMatch, current))
+                        {
+                            bestMatch = current;
+                        }
+                    }
+                }
+                current = FindNextVisualElementWithinContainer(navContainer, current, navProp, navMode);
+            }
+
+            // TODO: Look outside of container
+
+            return bestMatch;
+        }
+
+        /// <summary>
+        /// Calculates the directional navigation score of the specified candidate element. Lower is better.
+        /// </summary>
+        /// <param name="navElement">The element from which navigation is being moved.</param>
+        /// <param name="navCandidate">The candidate to which navigation might be moved.</param>
+        /// <param name="direction">The direction in which focus is moving.</param>
+        /// <returns>A score used to rank potential navigation candidates.</returns>
+        private static Int32 EvaluateDistanceScore(DependencyObject navElement, DependencyObject navCandidate, FocusNavigationDirection direction)
+        {
+            var uiElement = navElement as UIElement;
+            if (uiElement == null)
+                return Int32.MaxValue;
+
+            var uiCandidate = navCandidate as UIElement;
+            if (uiCandidate == null)
+                return Int32.MaxValue;
+
+            switch (direction)
+            {
+                case FocusNavigationDirection.Left:
+                    return (Int32)Math.Abs(uiCandidate.TransformedVisualBounds.Right - uiElement.TransformedVisualBounds.Left);
+
+                case FocusNavigationDirection.Right:
+                    return (Int32)Math.Abs(uiCandidate.TransformedVisualBounds.Left - uiElement.TransformedVisualBounds.Right);
+
+                case FocusNavigationDirection.Up:
+                    return (Int32)Math.Abs(uiCandidate.TransformedVisualBounds.Bottom - uiElement.TransformedVisualBounds.Top);
+
+                case FocusNavigationDirection.Down:
+                    return (Int32)Math.Abs(uiCandidate.TransformedVisualBounds.Top - uiElement.TransformedVisualBounds.Bottom);
+            }
+
+            return Int32.MaxValue;
+        }        
     }
 }
