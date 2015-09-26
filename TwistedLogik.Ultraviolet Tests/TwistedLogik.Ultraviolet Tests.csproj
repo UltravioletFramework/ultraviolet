@@ -141,6 +141,16 @@
     <Compile Include="MatrixTests.cs" />
     <Compile Include="UI\Presentation\Input\KeyboardNavigationTests.cs" />
     <Compile Include="UI\Presentation\PresentationFoundationTestFramework.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Cycle.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Continue.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Contained.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Cycle_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Continue_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Once.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_None.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Contained_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Once_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_None_VM.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_KeyNav_TabIndicesLocal.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_KeyNav_TabIndices.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_KeyNav_TabIndicesLocal_VM.cs" />
@@ -512,6 +522,21 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\UI\Screens\UPF_KeyNav_TabIndices\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_DirNav_Cycle\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_DirNav_Continue\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_DirNav_Contained\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_DirNav_Once\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_DirNav_None\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">

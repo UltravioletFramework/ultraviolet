@@ -839,6 +839,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns>The next navigation stop in the specified direction, or <c>null</c>.</returns>
         private static DependencyObject FindNavigationStopInDirection(PresentationFoundationView view, DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, FocusNavigationDirection direction)
         {
+            if (navContainer != null && navContainer.GetValue<KeyboardNavigationMode>(navProp) == KeyboardNavigationMode.Once)
+            {
+                navElement = navContainer;
+                navContainer = FindNavigationContainer(navElement, navProp, false);
+            }
+
             var uiElement = navElement as UIElement;
             if (uiElement == null)
                 return null;
@@ -866,17 +872,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             {
                 if (IsInDirection(navElementBounds, current, direction) && (IsNavigationStop(current) || IsNavigationContainer(current, navProp)))
                 {
-                    var score = EvaluateDistanceScore(navElementBounds, current, direction);
-                    if (score < bestMatchScore)
+                    if (!IsNavigationContainer(current, navProp) || current.GetValue<KeyboardNavigationMode>(navProp) != KeyboardNavigationMode.None)
                     {
-                        bestMatch = current;
-                        bestMatchScore = score;
-                    }
-                    else
-                    {
-                        if (score == bestMatchScore && IsBetterDirectionalMatch(navElementBounds, bestMatch, current))
+                        var score = EvaluateDistanceScore(navElementBounds, current, direction);
+                        if (score < bestMatchScore)
                         {
                             bestMatch = current;
+                            bestMatchScore = score;
+                        }
+                        else
+                        {
+                            if (score == bestMatchScore && IsBetterDirectionalMatch(navElementBounds, bestMatch, current))
+                            {
+                                bestMatch = current;
+                            }
                         }
                     }
                 }
@@ -905,6 +914,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                             return null;
                         }
                         return FindNavigationStopInDirection(view, navContainerContainer, navElementBounds, navProp, direction);
+                }
+            }
+            else
+            {
+                if (IsNavigationContainer(bestMatch, navProp))
+                {
+                    return FindNavigationStopInDirection(view, bestMatch, navElementBounds, navProp, direction) ?? bestMatch;
                 }
             }
 

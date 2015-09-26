@@ -57,6 +57,15 @@ ToggleButton > Grid > .button-background
 	source-image: #Global:Textures:DefaultUI 1 305 71 33 4 4 4 4;
 }
 
+	  Button > Grid > .button-focus-image, 
+RepeatButton > Grid > .button-focus-image,
+ToggleButton > Grid > .button-focus-image
+{
+	margin: 8;
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
+}
+
 @button-to-normal
 {
 	target Control (*:storyboard-root)
