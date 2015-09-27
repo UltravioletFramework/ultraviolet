@@ -1,6 +1,9 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -10,6 +13,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.ListBox.xml")]
     public class ListBox : Selector
     {
+        /// <summary>
+        /// Initializes the <see cref="ListBox"/> type.
+        /// </summary>
+        static ListBox()
+        {
+            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(ListBox), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Contained));
+            KeyboardNavigation.TabNavigationProperty.OverrideMetadata(typeof(ListBox), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Once));
+            KeyboardNavigation.IsTabStopProperty.OverrideMetadata(typeof(ListBox), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ListBox"/> class.
         /// </summary>
@@ -137,29 +150,105 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnSelectedItemsChanged();
         }
 
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        {
+            var selection = Keyboard.GetFocusedElement(View) as UIElement;
+            var navdir = (FocusNavigationDirection?)null;
+
+            switch (key)
+            {
+                case Key.Space:
+                case Key.Return:
+                    var listBoxItem = data.OriginalSource as ListBoxItem;
+                    if (listBoxItem != null && ItemsControlFromItemContainer(listBoxItem) == this)
+                    {
+                        HandleItemClicked(listBoxItem);
+                        data.Handled = true;
+                    }
+                    break;
+
+                case Key.Up:
+                    if (SelectionMode == SelectionMode.Single)
+                    {
+                        navdir = FocusNavigationDirection.Up;
+                    }
+                    break;
+
+                case Key.Down:
+                    if (SelectionMode == SelectionMode.Single)
+                    {
+                        navdir = FocusNavigationDirection.Down;
+                    }
+                    break;
+            }
+
+            if (navdir.HasValue)
+            {
+                if (selection != null && selection.MoveFocus(navdir.Value))
+                {
+                    var focused = Keyboard.GetFocusedElement(View) as UIElement;
+                    var listBoxItem = FindContainer(focused);
+                    if (listBoxItem != null && (modifiers & ModifierKeys.Control) != ModifierKeys.Control)
+                    {
+                        HandleItemClicked(listBoxItem);
+                    }
+                    data.Handled = true;
+                }
+            }
+
+            base.OnKeyDown(device, key, modifiers, ref data);
+        }
+
+        /// <summary>
+        /// Finds the <see cref="ListBoxItem"/> that contains the specified object.
+        /// </summary>
+        /// <param name="item">The object for which to find a container.</param>
+        /// <returns>The <see cref="ListBoxItem"/> that contains the specified object, or <c>null</c>.</returns>
+        private ListBoxItem FindContainer(Object item)
+        {
+            var current = item as DependencyObject;
+
+            while (current != null)
+            {
+                if (current == this)
+                    return null;
+
+                if (current is ListBoxItem)
+                    return ItemsControlFromItemContainer((ListBoxItem)current) == this ? (ListBoxItem)current : null;
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Handles clicking on an item when the list box is in single selection mode.
         /// </summary>
         /// <param name="item">The item that was clicked.</param>
         private void HandleItemClickedSingle(Object item)
         {
-            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            var dobj = item as DependencyObject;
+            if (dobj == null)
+                return;
+
+            BeginChangeSelection();
+
+            if (GetIsSelected(dobj))
             {
-                UnselectItem(item);
+                if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                {
+                    UnselectItem(item);
+                }
             }
             else
             {
-                var dobj = item as DependencyObject;
-                if (dobj == null || !GetIsSelected(dobj))
-                {
-                    BeginChangeSelection(); 
-                    
-                    UnselectAllItems();
-                    SelectItem(item);
-
-                    EndChangeSelection();
-                }
+                UnselectAllItems();
+                SelectItem(item);
             }
+
+            EndChangeSelection();
         }
 
         /// <summary>
@@ -181,7 +270,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 SelectItem(item);
             }
-        }
+        }        
 
         // Property values.
         private readonly ListBoxSelectedItems selectedItems = 

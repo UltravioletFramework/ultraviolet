@@ -429,7 +429,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                     var navContainerContainer = FindNavigationContainer(navContainer, navProp, false);
                     return FindNextNavigationStop(view, navContainerContainer, navContainer, navProp, false);
                 }
-                return GetFirstNavigationStop(navContainer, navProp);
+                
+                var firstNavStopInContainer = GetFirstNavigationStop(navContainer, navProp);
+                return ((firstNavStopInContainer == null) ? null : FindNextVisualElementWithinContainer(firstNavStopInContainer, null, navProp, navMode)) ?? firstNavStopInContainer;
             }
 
             return null;
@@ -861,7 +863,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navProp">The navigation property to evaluate.</param>
         /// <param name="direction">The direction in which to navigate.</param>
         /// <returns>The next navigation stop in the specified direction, or <c>null</c>.</returns>
-        private static DependencyObject FindNavigationStopInDirection(PresentationFoundationView view, DependencyObject navContainer, RectangleD navElementBounds, DependencyProperty navProp, FocusNavigationDirection direction)
+        private static DependencyObject FindNavigationStopInDirection(PresentationFoundationView view, DependencyObject navContainer, RectangleD navElementBounds, DependencyProperty navProp, FocusNavigationDirection direction, Boolean local = false)
         {
             var bestMatch = default(DependencyObject);
             var bestMatchScore = Int32.MaxValue;
@@ -908,23 +910,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                         return null;
 
                     default:
-                        var navContainerContainer = FindNavigationContainer(navContainer, navProp, false);
-                        if (navContainerContainer == null)
+                        if (!local)
                         {
-                            return null;
+                            var navContainerContainer = FindNavigationContainer(navContainer, navProp, false);
+                            if (navContainerContainer == null)
+                            {
+                                return null;
+                            }
+                            return FindNavigationStopInDirection(view, navContainerContainer, navElementBounds, navProp, direction);
                         }
-                        return FindNavigationStopInDirection(view, navContainerContainer, navElementBounds, navProp, direction);
+                        return null;
                 }
             }
             else
             {
                 if (IsNavigationContainer(bestMatch, navProp))
                 {
-                    return FindNavigationStopInDirection(view, bestMatch, navElementBounds, navProp, direction) ?? bestMatch;
+                    bestMatch = FindNavigationStopInDirection(view, bestMatch, navElementBounds, navProp, direction, true) ?? bestMatch;
                 }
             }
 
-            return bestMatch;
+            return IsNavigationStop(bestMatch) ? bestMatch : null;
         }
 
         /// <summary>

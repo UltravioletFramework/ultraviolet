@@ -159,7 +159,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (children == 0)
                 return null;
 
-            for (int i = children - 1; i >= 0; i++)
+            for (int i = children - 1; i >= 0; i--)
             {
                 var child = GetChild(dobj, i) as T;
                 if (child != null && (predicate == null || predicate(child)))

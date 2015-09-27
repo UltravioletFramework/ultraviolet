@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
@@ -11,6 +12,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.ScrollViewer.xml")]
     public class ScrollViewer : ContentControl
     {
+        /// <summary>
+        /// Initializes the <see cref="ScrollViewer"/> type.
+        /// </summary>
+        static ScrollViewer()
+        {
+            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(ScrollViewer), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Local));
+            KeyboardNavigation.IsTabStopProperty.OverrideMetadata(typeof(ScrollViewer), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ScrollViewer"/> class.
         /// </summary>
@@ -234,23 +244,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             switch (key)
             {
                 case Key.Up:
-                    PART_VScroll.Value -= ScrollDeltaKey;
-                    data.Handled = true;
+                    if (PART_VScroll.Value > PART_VScroll.Minimum)
+                    {
+                        PART_VScroll.Value -= ScrollDeltaKey;
+                        data.Handled = true;
+                    }
                     break;
 
                 case Key.Down:
-                    PART_VScroll.Value += ScrollDeltaKey;
-                    data.Handled = true;
+                    if (PART_VScroll.Value < PART_VScroll.Maximum)
+                    {
+                        PART_VScroll.Value += ScrollDeltaKey;
+                        data.Handled = true;
+                    }
                     break;
 
                 case Key.Left:
-                    PART_HScroll.Value -= ScrollDeltaKey;
-                    data.Handled = true;
+                    if (PART_HScroll.Value > PART_HScroll.Minimum)
+                    {
+                        PART_HScroll.Value -= ScrollDeltaKey;
+                        data.Handled = true;
+                    }
                     break;
 
                 case Key.Right:
-                    PART_HScroll.Value += ScrollDeltaKey;
-                    data.Handled = true;
+                    if (PART_HScroll.Value < PART_HScroll.Maximum)
+                    {
+                        PART_HScroll.Value += ScrollDeltaKey;
+                        data.Handled = true;
+                    }
                     break;
             }
 

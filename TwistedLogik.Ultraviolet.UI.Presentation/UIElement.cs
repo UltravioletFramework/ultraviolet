@@ -647,6 +647,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             routedEventManager.Remove(evt, handler);
         }
 
+        /// <summary>
+        /// Requests that focus be moved from this element to another element.
+        /// </summary>
+        /// <param name="direction">The direction in which to move focus.</param>
+        /// <returns><c>true</c> if focus was moved successfully; otherwise, <c>false</c>.</returns>
+        public virtual Boolean MoveFocus(FocusNavigationDirection direction)
+        {
+            return false;
+        }
+
         /// <inheritdoc/>
         public Boolean Focus()
         {

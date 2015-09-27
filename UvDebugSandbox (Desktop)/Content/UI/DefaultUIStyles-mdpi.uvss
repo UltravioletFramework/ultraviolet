@@ -444,6 +444,13 @@ ListBoxItem
 	source-image: #Global:Textures:DefaultUI 431 632 30 50;
 }
 
+.listboxitem-focus-image
+{
+	margin: 2;
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+}
+
 ComboBox
 {
 	transition (opened, open): combobox-to-open;
