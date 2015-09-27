@@ -682,11 +682,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Searches the visual subtree contained by <paramref name="navcontainer"/> for the previous element in the tab order before <paramref name="navElement"/>.
+        /// Searches the visual subtree contained by <paramref name="navContainer"/> for the previous element in the tab order before <paramref name="navElement"/>.
         /// </summary>
         /// <param name="navContainer">The navigation container that contains <paramref name="navElement"/>.</param>
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
+        /// <param name="navMode">The currently active navigation mode.</param>
         /// <returns>The previous element in the tab order before <paramref name="navElement"/>, or <c>null</c>.</returns>
         private static DependencyObject FindPrevVisualElementWithinContainer(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, KeyboardNavigationMode navMode)
         {
@@ -858,10 +859,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Finds the next navigation stop in the specified direction.
         /// </summary>
         /// <param name="view">The view for which navigation is being performed.</param>
-        /// <param name="navContainer">The navigation container that contains <paramref name="navElement"/>.</param>
+        /// <param name="navContainer">The navigation container within which to search.</param>
         /// <param name="navElementBounds">The bounding box of the element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
         /// <param name="direction">The direction in which to navigate.</param>
+        /// <param name="local">A value indicating whether the search is restricted only to the visual subtree of <paramref name="navContainer"/>.</param>
         /// <returns>The next navigation stop in the specified direction, or <c>null</c>.</returns>
         private static DependencyObject FindNavigationStopInDirection(PresentationFoundationView view, DependencyObject navContainer, RectangleD navElementBounds, DependencyProperty navProp, FocusNavigationDirection direction, Boolean local = false)
         {
