@@ -1,5 +1,4 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using System.Reflection;
 using System.Text;
 using TwistedLogik.Nucleus;
@@ -7,6 +6,7 @@ using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {

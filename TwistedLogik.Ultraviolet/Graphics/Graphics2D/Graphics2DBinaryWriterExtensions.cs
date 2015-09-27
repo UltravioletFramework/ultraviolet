@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D

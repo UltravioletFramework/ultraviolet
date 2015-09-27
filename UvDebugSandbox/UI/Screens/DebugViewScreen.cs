@@ -1,14 +1,13 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
-using TwistedLogik.Ultraviolet;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace UvDebugSandbox.UI.Screens
-{    
+{
     // Adorners must subclass the abstract base class Adorner.
     public class SimpleCircleAdorner : Adorner
     {
