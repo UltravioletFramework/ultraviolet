@@ -17,7 +17,8 @@
       <Image Class="listboxitem-focus-image"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
-             Opacity="{{IsKeyboardFocused ? 1 : 0}}"/>
+             Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+             IsHitTestVisible="false"/>
 
     </Grid>
   </View>

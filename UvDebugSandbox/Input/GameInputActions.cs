@@ -106,7 +106,7 @@ namespace UvDebugSandbox.Input
 #if ANDROID
             ExitApplication.Primary = CreateKeyboardBinding(Key.AppControlBack);
 #else
-            ExitApplication.Primary = CreateKeyboardBinding(Key.Escape);
+            ExitApplication.Primary = CreateKeyboardBinding(Key.F4, alt: true);
 
             NavigateUp.Primary              = CreateKeyboardBinding(Key.Up);
             NavigateDown.Primary            = CreateKeyboardBinding(Key.Down);

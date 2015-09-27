@@ -10,6 +10,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public class ComboBoxItem : ListBoxItem
     {
         /// <summary>
+        /// Initializes the <see cref="ComboBoxItem"/> type.
+        /// </summary>
+        static ComboBoxItem()
+        {
+            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(ComboBoxItem), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Once));
+            KeyboardNavigation.TabNavigationProperty.OverrideMetadata(typeof(ComboBoxItem), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Local));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ComboBoxItem"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>

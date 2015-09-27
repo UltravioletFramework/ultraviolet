@@ -128,14 +128,12 @@ namespace UvDebugSandbox.UI.Screens
 
         public void Loading(DependencyObject dobj, ref RoutedEventData data)
         {
-            var adornerLayer = AdornerLayer.GetAdornerLayer(btn);
-            adornerLayer.Add(new SimpleCircleAdorner(btn));
+
+
         }
 
         private readonly StackPanel sp1 = null;
         private readonly StackPanel sp2 = null;
-        
-        private readonly Button btn = null;
     }
 
     public class DebugViewScreen : UvDebugScreen

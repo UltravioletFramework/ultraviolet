@@ -61,7 +61,7 @@ ToggleButton > Grid > .button-background
 RepeatButton > Grid > .button-focus-image,
 ToggleButton > Grid > .button-focus-image
 {
-	margin: 8;
+	margin: 4;
 	source-color: #ff000000;
 	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
@@ -457,6 +457,18 @@ ComboBox
 	transition (opened, closed): combobox-to-closed;
 }
 
+.combobox-focus-image
+{
+	margin: 4;
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
+}
+
+.comboboxitem-focus-border
+{
+	border-color: #ff5b9bd1;
+}
+
 ComboBoxItem
 {
 	min-height: 25;
@@ -467,6 +479,13 @@ ComboBoxItem
 	{
 		play-sfx { #Global:SoundEffects:Click1 }
 	}
+}
+
+.comboboxitem-focus-image
+{
+	margin: 2;
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 ComboBox > Grid > ContentPresenter

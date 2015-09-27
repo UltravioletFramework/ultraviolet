@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <remarks>The styling name of this dependency property is 'max-dropdown-height'.</remarks>
         public static readonly DependencyProperty MaxDropDownHeightProperty = DependencyProperty.Register("MaxDropDownHeight", "max-dropdown-height", typeof(Double), typeof(ComboBox),
             new PropertyMetadata<Double>(Double.NaN, PropertyMetadataOptions.None));
-        
+
         /// <summary>
         /// The private access key for the <see cref="ActualMaxDropDownHeight"/> read-only dependency property.
         /// </summary>
@@ -183,6 +183,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected internal override Boolean HandlesScrolling
+        {
+            get { return true; }
+        }
+
+        /// <inheritdoc/>
         protected override DependencyObject GetContainerForItemOverride()
         {
             return new ComboBoxItem(Ultraviolet, null);
@@ -217,7 +223,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             base.UpdateOverride(time);
         }
-        
+
         /// <inheritdoc/>
         protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
         {
@@ -250,7 +256,122 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             UpdateVisualState();
             base.OnIsMouseOverChanged();
         }
-        
+
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        {
+            OnKeyDown_General(device, key, modifiers, ref data);
+
+            if (!data.Handled)
+            {
+                if (IsDropDownOpen)
+                {
+                    OnKeyDown_DropDownOpen(device, key, modifiers, ref data);
+                }
+                else
+                {
+                    OnKeyDown_DropDownClosed(device, key, modifiers, ref data);
+                }
+            }
+
+            base.OnKeyDown(device, key, modifiers, ref data);
+        }
+
+        /// <summary>
+        /// Handles <see cref="Keyboard.KeyDownEvent"/> both when the drop down is open and when it is closed.
+        /// </summary>
+        private void OnKeyDown_General(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        {
+            switch (key)
+            {
+                case Key.F4:
+                    if ((modifiers & ModifierKeys.Alt) != ModifierKeys.Alt)
+                    {
+                        IsDropDownOpen = !IsDropDownOpen;
+                        data.Handled = true;
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Handles <see cref="Keyboard.KeyDownEvent"/> when the drop down is open.
+        /// </summary>
+        private void OnKeyDown_DropDownOpen(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        {
+            switch (key)
+            {
+                case Key.Escape:
+                    IsDropDownOpen = false;
+                    break;
+
+                case Key.Return:
+                    SelectFocusedItem();
+                    IsDropDownOpen = false;
+                    data.Handled = true;
+                    break;
+
+                case Key.Up:
+                    MoveItemFocus(-1);
+                    data.Handled = true;
+                    break;
+
+                case Key.Down:
+                    MoveItemFocus(1);
+                    data.Handled = true;
+                    break;
+
+                case Key.PageUp:
+                    break;
+
+                case Key.PageDown:
+                    break;
+
+                case Key.Home:
+                    break;
+
+                case Key.End:
+                    break;
+
+                case Key.Left:
+                case Key.Right:
+                    if (PART_ScrollViewer != null)
+                    {
+                        PART_ScrollViewer.HandleKeyScrolling(device, key, modifiers, ref data);
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Handles <see cref="Keyboard.KeyDownEvent"/> both when the drop down is closed and when it is closed.
+        /// </summary>
+        private void OnKeyDown_DropDownClosed(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        {
+            switch (key)
+            {
+                case Key.Home:
+                    MoveItemSelection(Int32.MinValue);
+                    break;
+
+                case Key.End:
+                    MoveItemSelection(Int32.MaxValue);
+                    break;
+
+                case Key.Up:
+                case Key.Left:
+                    MoveItemSelection(-1);
+                    data.Handled = true;
+                    break;
+
+                case Key.Down:
+                case Key.Right:
+                    MoveItemSelection(1);
+                    data.Handled = true;
+                    break;
+            }
+        }
+
         /// <summary>
         /// Raises the <see cref="DropDownOpened"/> event.
         /// </summary>
@@ -313,6 +434,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 comboBox.OnDropDownOpened();
 
                 comboBox.viewSize = comboBox.View.Area.Size;
+
+                var focused = (comboBox.SelectedIndex >= 0) ? comboBox.ItemContainers[comboBox.SelectedIndex] as UIElement : comboBox;
+                if (focused != null)
+                    focused.Focus();
             }
             else
             {
@@ -327,6 +452,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 comboBox.UpdateVisualState();
                 comboBox.OnDropDownClosed();
+
+                if (comboBox.PART_Popup != null && comboBox.PART_Popup.Root.IsKeyboardFocusWithin)
+                    comboBox.Focus();
             }
         }
         
@@ -388,6 +516,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 selectedVisualClone.HandleLayoutUpdated();
             }
         }
+        
+        /// <summary>
+        /// Finds the <see cref="ComboBoxItem"/> that contains the specified object.
+        /// </summary>
+        /// <param name="item">The object for which to find a container.</param>
+        /// <returns>The <see cref="ComboBoxItem"/> that contains the specified object, or <c>null</c>.</returns>
+        private ComboBoxItem FindContainer(Object item)
+        {
+            var current = item as DependencyObject;
+
+            while (current != null)
+            {
+                if (current == this)
+                    return null;
+
+                if (current is ComboBoxItem)
+                    return ItemsControlFromItemContainer((ComboBoxItem)current) == this ? (ComboBoxItem)current : null;
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the item container which is currently focused, if any.
+        /// </summary>
+        /// <returns>The item container which is currently focused, or <c>null</c>.</returns>
+        private ComboBoxItem FindFocusedContainer()
+        {
+            var focused = Keyboard.GetFocusedElement(View);
+            return (focused == null) ? null : FindContainer(focused);
+        }
 
         /// <summary>
         /// Updates the selection box.
@@ -448,6 +609,55 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Moves keyboard focus the specified number of steps away from the currently focused item.
+        /// </summary>
+        /// <param name="step">The number of steps by which to move focus.</param>
+        private void MoveItemFocus(Int32 step)
+        {
+            var selectedContainer = FindFocusedContainer();
+            var selectedIndex = (selectedContainer == null) ? -1 : ItemContainers.IndexOf(selectedContainer);
+
+            var targetIndex = selectedIndex + step;
+            if (targetIndex < 0 || targetIndex + 1 >= Items.Count)
+                return;
+
+            var targetContainer = ItemContainers[targetIndex] as UIElement;
+            if (targetContainer == null)
+                return;
+
+            targetContainer.Focus();
+        }
+
+        /// <summary>
+        /// Moves item selection the specified number of steps away from the currently selected item.
+        /// </summary>
+        /// <param name="steps">The number of steps to move the selection.</param>
+        private void MoveItemSelection(Int32 steps)
+        {
+            var index = SelectedIndex;
+            if (steps < 0)
+            {
+                if (index >= 0)
+                {
+                    SelectedIndex = Math.Max(0, index + steps);
+                }
+            }
+            else
+            {
+                SelectedIndex = Math.Min(Items.Count - 1, index + steps);
+            }
+        }
+
+        /// <summary>
+        /// Selects the item which currently has keyboard focus.
+        /// </summary>
+        private void SelectFocusedItem()
+        {
+            var container = FindFocusedContainer();
+            SelectedIndex = (container == null) ? -1 : ItemContainers.IndexOf(container);
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this combo box contains the specified object as a descendant.
         /// </summary>
         /// <param name="dobj">The object to evaluate.</param>
@@ -479,6 +689,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         // Component references.
         private readonly UIElement PART_Arrow = null;
+        private readonly ScrollViewer PART_ScrollViewer = null;
+        private readonly Popup PART_Popup = null;
         private readonly VisualClone visualClone;
 
         // State values.
