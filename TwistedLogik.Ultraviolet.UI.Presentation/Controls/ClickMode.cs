@@ -1,7 +1,7 @@
 ﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents the time at which a button should raise its <see cref="ButtonBase.Click"/> event.
+    /// Represents the time at which a button should raise its <see cref="Primitives.ButtonBase.Click"/> event.
     /// </summary>
     public enum ClickMode
     {

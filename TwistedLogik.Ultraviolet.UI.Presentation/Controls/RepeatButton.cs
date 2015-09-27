@@ -7,7 +7,7 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents a button that raises its <see cref="ButtonBase.Click"/> event repeatedly while it is pressed.
+    /// Represents a button that raises its <see cref="Primitives.ButtonBase.Click"/> event repeatedly while it is pressed.
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.RepeatButton.xml")]
     public class RepeatButton : Button
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets the interval between repeated <see cref="ButtonBase.Click"/> events, in milliseconds.
+        /// Gets or sets the interval between repeated <see cref="Primitives.ButtonBase.Click"/> events, in milliseconds.
         /// </summary>
         public Double Interval
         {

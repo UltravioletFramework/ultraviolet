@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// belonging to the current Ultraviolet context.
         /// </summary>
         /// <param name="reader">The binary reader from which to read the asset identifier.</param>
-        /// <returns>An instance of the <see cref="Nullable{AssetID}"/> structure representing the 
+        /// <returns>An instance of the <see cref="System.Nullable{AssetID}"/> structure representing the 
         /// asset identifier that was read from the stream.</returns>
         public static AssetID? ReadNullableAssetID(this BinaryReader reader)
         {
@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="reader">The binary reader from which to read the asset identifier.</param>
         /// <param name="manifests">The registry that contains the application's loaded manifests.</param>
-        /// <returns>An instance of the <see cref="Nullable{AssetID}"/> structure representing the
+        /// <returns>An instance of the <see cref="System.Nullable{AssetID}"/> structure representing the
         /// asset identifier that was read from the stream.</returns>
         public static AssetID? ReadNullableAssetID(this BinaryReader reader, ContentManifestRegistry manifests)
         {
