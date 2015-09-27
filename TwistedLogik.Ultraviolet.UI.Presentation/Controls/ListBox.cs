@@ -160,6 +160,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 case Key.Space:
                 case Key.Return:
+                    if (key == Key.Return && !GetValue<Boolean>(KeyboardNavigation.AcceptsReturnProperty))
+                        break;
+
                     var listBoxItem = data.OriginalSource as ListBoxItem;
                     if (listBoxItem != null && ItemsControlFromItemContainer(listBoxItem) == this)
                     {
