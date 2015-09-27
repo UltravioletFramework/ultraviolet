@@ -14,6 +14,16 @@
                         HorizontalAlignment="{{HorizontalContentAlignment}}"
                         VerticalAlignment="{{VerticalContentAlignment}}"
                         Margin="{{Padding}}"/>
+      <Image Class="comboboxitem-focus-image"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+             IsHitTestVisible="false"/>
+      <Border Class="comboboxitem-focus-border"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
+              Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+              IsHitTestVisible="false"/>
 
     </Grid>
   </View>

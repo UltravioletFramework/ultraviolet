@@ -39,6 +39,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             Contract.Require(configuration, "configuration");
 
+            this.IsHardwareInputDisabled = configuration.IsHardwareInputDisabled;
+
             var sdlFlags = configuration.EnableServiceMode ?
                 SDL_Init.TIMER | SDL_Init.EVENTS :
                 SDL_Init.TIMER | SDL_Init.VIDEO | SDL_Init.JOYSTICK | SDL_Init.GAMECONTROLLER | SDL_Init.EVENTS;
@@ -321,10 +323,30 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                         }
                         break;
 
+                    case SDL_EventType.KEYDOWN:
+                    case SDL_EventType.KEYUP:
+                    case SDL_EventType.MOUSEBUTTONDOWN:
+                    case SDL_EventType.MOUSEBUTTONUP:
+                    case SDL_EventType.MOUSEMOTION:
+                    case SDL_EventType.MOUSEWHEEL:
+                    case SDL_EventType.JOYAXISMOTION:
+                    case SDL_EventType.JOYBALLMOTION:
+                    case SDL_EventType.JOYBUTTONDOWN:
+                    case SDL_EventType.JOYBUTTONUP:
+                    case SDL_EventType.JOYHATMOTION:
+                    case SDL_EventType.CONTROLLERAXISMOTION:
+                    case SDL_EventType.CONTROLLERBUTTONDOWN:
+                    case SDL_EventType.CONTROLLERBUTTONUP:
+                        if (IsHardwareInputDisabled)
+                        {
+                            continue;
+                        }
+                        break;
+
                     case SDL_EventType.QUIT:
                         Messages.Publish(UltravioletMessages.Quit, null);
                         return true;
-                }
+                }                
 
                 // Publish any SDL events to the message queue.
                 var data = Messages.CreateMessageData<SDL2EventMessageData>();

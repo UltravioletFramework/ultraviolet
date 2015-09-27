@@ -9,7 +9,7 @@
       </Grid.ColumnDefinitions>
 
       <RepeatButton Class="scroll-button scroll-button-left" Grid.Column="0" VerticalAlignment="Stretch"
-                    Click="HandleClickLineLeft">
+                    Click="HandleClickLineLeft" KeyboardNavigation.IsTabStop="false">
 
         <Image Class="scroll-button-left-arrow"/>
 
@@ -20,7 +20,7 @@
              Class="scroll-track" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal" />
 
       <RepeatButton Class="scroll-button scroll-button-right" Grid.Column="2" VerticalAlignment="Stretch"
-                    Click="HandleClickLineRight">
+                    Click="HandleClickLineRight" KeyboardNavigation.IsTabStop="false">
 
         <Image Class="scroll-button-right-arrow"/>
 

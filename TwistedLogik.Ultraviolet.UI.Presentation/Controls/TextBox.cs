@@ -266,6 +266,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode);
 
+            caretBlinkTimer = 0;
+
             base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 

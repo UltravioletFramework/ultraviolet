@@ -97,6 +97,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the context will disable hardware input by default.
+        /// </summary>
+        public Boolean IsHardwareInputDisabled
+        {
+            get { return isHardwareInputDisabled; }
+            set { isHardwareInputDisabled = value; }
+        }
+
+        /// <summary>
         /// The default configuration for the OpenGL/SDL2 implementation.
         /// </summary>
         public static readonly OpenGLUltravioletConfiguration Default = new OpenGLUltravioletConfiguration();
@@ -108,5 +117,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         private Int32 backBufferStencilSize = 1;
         private Int32 multiSampleBuffers = 1;
         private Int32 multiSampleSamples = 4;
+        private Boolean isHardwareInputDisabled;
     }
 }

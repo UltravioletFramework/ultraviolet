@@ -65,6 +65,7 @@
     <Compile Include="Size3DResult.cs" />
     <Compile Include="UltravioletApplicationTestFramework.cs" />
     <Compile Include="UltravioletTestApplication.cs" />
+    <Compile Include="UltravioletTestApplication.FrameAction.cs" />
     <Compile Include="Vector4Result.cs" />
     <Compile Include="Vector3Result.cs" />
     <Compile Include="Vector2Result.cs" />

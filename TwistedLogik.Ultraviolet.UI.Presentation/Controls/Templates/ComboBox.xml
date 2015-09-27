@@ -10,6 +10,7 @@
       <!-- Selection box -->
       <ToggleButton Name="PART_SelectionBox"
                     Class="combobox-selectionbox"
+                    KeyboardNavigation.IsTabStop="false"
                     Grid.Row="0"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
@@ -30,6 +31,12 @@
              VerticalAlignment="Center"
              Grid.Row="0"
              Grid.Column="1"
+             IsHitTestVisible="false"/>
+      <Image Class="combobox-focus-image"
+             Grid.Row="0"
+             Grid.Column="0"
+             Grid.ColumnSpan="2"
+             Opacity="{{IsKeyboardFocused ? 1 : 0}}"
              IsHitTestVisible="false"/>
 
       <!-- Popup list -->
@@ -52,7 +59,8 @@
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
 
-            <ScrollViewer Class="combobox-dropdown-scrollviewer"
+            <ScrollViewer Name="PART_ScrollViewer" 
+                          Class="combobox-dropdown-scrollviewer"
                           HorizontalAlignment="Stretch"
                           HorizontalContentAlignment="Stretch"
                           HorizontalScrollBarVisibility="Disabled"
@@ -61,7 +69,9 @@
                           VerticalScrollBarVisibility="Auto"
                           MaxHeight="{{ActualMaxDropDownHeight}}">
 
-              <ItemsPanel HorizontalAlignment="Stretch"/>
+              <ItemsPanel Name="PART_ItemsPanel" 
+                          HorizontalAlignment="Stretch"
+                          KeyboardNavigation.DirectionalNavigation="Contained"/>
 
             </ScrollViewer>
 

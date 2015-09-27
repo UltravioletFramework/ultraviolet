@@ -38,6 +38,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        public override Boolean MoveFocus(FocusNavigationDirection direction)
+        {
+            return KeyboardNavigator.PerformNavigation(View, this, direction, false);
+        }
+
+        /// <inheritdoc/>
         public void BeginInit()
         {
             Contract.EnsureNot(isInitializing, PresentationStrings.BeginInitAlreadyCalled);

@@ -2,6 +2,7 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -11,6 +12,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.ListBoxItem.xml")]
     public class ListBoxItem : ContentControl
     {
+        /// <summary>
+        /// Initializes the <see cref="ListBoxItem"/> type.
+        /// </summary>
+        static ListBoxItem()
+        {
+            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(ListBoxItem), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Once));
+            KeyboardNavigation.TabNavigationProperty.OverrideMetadata(typeof(ListBoxItem), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Local));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ListBoxItem"/> class.
         /// </summary>
@@ -64,11 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (!data.Handled)
             {
-                var list = ItemsControl.ItemsControlFromItemContainer(this) as ListBox;
-                if (list != null)
-                {
-                    list.HandleItemClicked(this);
-                }
+                Select();
                 data.Handled = true;
             }
             base.OnGenericInteraction(device, ref data);
@@ -149,6 +155,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (item.HighlightOnSelect)
                 item.HighlightOpacity = newValue ? 1.0 : 0.0;
+        }
+
+        /// <summary>
+        /// Selects the item.
+        /// </summary>
+        private void Select()
+        {
+            var list = ItemsControl.ItemsControlFromItemContainer(this) as ListBox;
+            if (list != null)
+            {
+                Focus();
+                list.HandleItemClicked(this);
+            }
         }
     }
 }

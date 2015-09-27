@@ -13,6 +13,11 @@
                         HorizontalAlignment="{{HorizontalContentAlignment}}"
                         VerticalAlignment="{{VerticalContentAlignment}}"
                         Margin="{{Padding}}"/>
+      <Image Class="button-focus-image"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+             IsHitTestVisible="false"/>
 
     </Grid>
   </View>

@@ -1,5 +1,4 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics

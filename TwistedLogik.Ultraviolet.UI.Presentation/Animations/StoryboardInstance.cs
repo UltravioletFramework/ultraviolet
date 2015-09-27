@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
