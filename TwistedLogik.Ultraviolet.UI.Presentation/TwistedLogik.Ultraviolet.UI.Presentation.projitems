@@ -74,6 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ItemCollection.IList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ItemContainerGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ItemsControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ItemsControlUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ListBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ListBoxItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ListBoxSelectedItems.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ScrollBarVisibility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ScrollContentPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ScrollViewer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ScrollViewerUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\SelectionMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Shape.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\StackPanel.cs" />

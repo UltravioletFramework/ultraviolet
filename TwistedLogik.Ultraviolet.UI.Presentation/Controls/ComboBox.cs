@@ -301,8 +301,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             switch (key)
             {
+                case Key.Tab:
+                    PerformTabNavigation(key, modifiers);
+                    data.Handled = true;
+                    break;
+
                 case Key.Escape:
                     IsDropDownOpen = false;
+                    data.Handled = true;
                     break;
 
                 case Key.Return:
@@ -322,15 +328,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
 
                 case Key.PageUp:
+                    var pageUpTarget = ItemsControlUtil.GetPageUpNext<ComboBoxItem>(this, PART_ScrollViewer);
+                    if (pageUpTarget != null && pageUpTarget.Focus())
+                    {
+                        ItemsControlUtil.ScrollItemIntoView<ComboBoxItem>(this, PART_ScrollViewer, pageUpTarget, false);
+                    }
+                    data.Handled = true;
                     break;
 
                 case Key.PageDown:
+                    var pageDownTarget = ItemsControlUtil.GetPageDownNext<ComboBoxItem>(this, PART_ScrollViewer);
+                    if (pageDownTarget != null && pageDownTarget.Focus())
+                    {
+                        ItemsControlUtil.ScrollItemIntoView<ComboBoxItem>(this, PART_ScrollViewer, pageDownTarget, false);
+                    }
+                    data.Handled = true;
                     break;
 
                 case Key.Home:
+                    var firstItem = ItemsControlUtil.GetFirstItem<ComboBoxItem>(this, PART_ScrollViewer);
+                    if (firstItem != null && firstItem.Focus())
+                    {
+                        ItemsControlUtil.ScrollItemIntoView<ComboBoxItem>(this, PART_ScrollViewer, firstItem);
+                    }
+                    data.Handled = true;
                     break;
 
                 case Key.End:
+                    var lastItem = ItemsControlUtil.GetLastItem<ComboBoxItem>(this, PART_ScrollViewer);
+                    if (lastItem != null && lastItem.Focus())
+                    {
+                        ItemsControlUtil.ScrollItemIntoView<ComboBoxItem>(this, PART_ScrollViewer, lastItem);
+                    }
+                    data.Handled = true;
                     break;
 
                 case Key.Left:
@@ -339,6 +369,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     {
                         PART_ScrollViewer.HandleKeyScrolling(device, key, modifiers, ref data);
                     }
+                    data.Handled = true;
                     break;
             }
         }
@@ -518,39 +549,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
         
         /// <summary>
-        /// Finds the <see cref="ComboBoxItem"/> that contains the specified object.
-        /// </summary>
-        /// <param name="item">The object for which to find a container.</param>
-        /// <returns>The <see cref="ComboBoxItem"/> that contains the specified object, or <c>null</c>.</returns>
-        private ComboBoxItem FindContainer(Object item)
-        {
-            var current = item as DependencyObject;
-
-            while (current != null)
-            {
-                if (current == this)
-                    return null;
-
-                if (current is ComboBoxItem)
-                    return ItemsControlFromItemContainer((ComboBoxItem)current) == this ? (ComboBoxItem)current : null;
-
-                current = VisualTreeHelper.GetParent(current);
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the item container which is currently focused, if any.
-        /// </summary>
-        /// <returns>The item container which is currently focused, or <c>null</c>.</returns>
-        private ComboBoxItem FindFocusedContainer()
-        {
-            var focused = Keyboard.GetFocusedElement(View);
-            return (focused == null) ? null : FindContainer(focused);
-        }
-
-        /// <summary>
         /// Updates the selection box.
         /// </summary>
         private void UpdateSelectionBox()
@@ -609,16 +607,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Performs tab navigation while focus is within the drop down.
+        /// </summary>
+        private void PerformTabNavigation(Key key, ModifierKeys modifiers)
+        {
+            var shift = ((modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);
+            var ctrl  = ((modifiers & ModifierKeys.Control) == ModifierKeys.Control);
+
+            var focused = Keyboard.GetFocusedElement(View) as UIElement;
+            if (KeyboardNavigator.PerformNavigation(View, focused, shift ? FocusNavigationDirection.Previous : FocusNavigationDirection.Next, ctrl))
+            {
+                focused = Keyboard.GetFocusedElement(View) as UIElement;
+
+                var container = (focused == null) ? null : ItemsControlUtil.FindContainer<ComboBoxItem>(this, focused);
+                if (container != null)
+                {
+                    ItemsControlUtil.ScrollItemIntoView<ComboBoxItem>(this, PART_ScrollViewer, container);
+                }
+            }
+        }
+
+        /// <summary>
         /// Moves keyboard focus the specified number of steps away from the currently focused item.
         /// </summary>
         /// <param name="step">The number of steps by which to move focus.</param>
         private void MoveItemFocus(Int32 step)
         {
-            var selectedContainer = FindFocusedContainer();
+            var selectedContainer = ItemsControlUtil.FindFocusedContainer<ComboBoxItem>(this);
             var selectedIndex = (selectedContainer == null) ? -1 : ItemContainers.IndexOf(selectedContainer);
 
             var targetIndex = selectedIndex + step;
-            if (targetIndex < 0 || targetIndex + 1 >= Items.Count)
+            if (targetIndex < 0 || targetIndex >= Items.Count)
                 return;
 
             var targetContainer = ItemContainers[targetIndex] as UIElement;
@@ -626,6 +645,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 return;
 
             targetContainer.Focus();
+
+            ItemsControlUtil.ScrollItemIntoView<ComboBoxItem>(this, PART_ScrollViewer, targetContainer);
         }
 
         /// <summary>
@@ -653,7 +674,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void SelectFocusedItem()
         {
-            var container = FindFocusedContainer();
+            var container = ItemsControlUtil.FindFocusedContainer<ComboBoxItem>(this);
             SelectedIndex = (container == null) ? -1 : ItemContainers.IndexOf(container);
         }
 
@@ -686,7 +707,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             return false;
         }
-
+        
         // Component references.
         private readonly UIElement PART_Arrow = null;
         private readonly ScrollViewer PART_ScrollViewer = null;
