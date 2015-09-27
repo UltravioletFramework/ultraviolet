@@ -33,6 +33,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Moves the scroll viewer to the specified horizontal offset.
+        /// </summary>
+        /// <param name="offset">The horizontal offset to which to move the scroll viewer.</param>
+        public void ScrollToHorizontalOffset(Double offset)
+        {
+            if (PART_HScroll == null)
+                return;
+
+            PART_HScroll.Value = offset;
+        }
+
+        /// <summary>
+        /// Moves the scroll viewer to the specified vertical offset.
+        /// </summary>
+        /// <param name="offset">The vertical offset to which to move the scroll viewer.</param>
+        public void ScrollToVerticalOffset(Double offset)
+        {
+            if (PART_VScroll == null)
+                return;
+
+            PART_VScroll.Value = offset;
+        }
+
+        /// <summary>
         /// Gets the width of the content which is being displayed by the scroll viewer.
         /// </summary>
         public Double ExtentWidth
@@ -79,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ViewportHeight; }
         }
-
+         
         /// <summary>
         /// Gets the horizontal offset of the scrolled content.
         /// </summary>
@@ -127,6 +151,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <remarks>The styling name of this dependency property is 'vscrollbar-visibility'.</remarks>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", "vscrollbar-visibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
             new PropertyMetadata<ScrollBarVisibility>(PresentationBoxedValues.ScrollBarVisibility.Visible, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Scrolls in response to keyboard input.
+        /// </summary>
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+        /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        internal void HandleKeyScrolling(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        {
+            switch (key)
+            {
+                case Key.Up:
+                    if (PART_VScroll.Value > PART_VScroll.Minimum)
+                    {
+                        PART_VScroll.Value -= ScrollDeltaKey;
+                        data.Handled = true;
+                    }
+                    break;
+
+                case Key.Down:
+                    if (PART_VScroll.Value < PART_VScroll.Maximum)
+                    {
+                        PART_VScroll.Value += ScrollDeltaKey;
+                        data.Handled = true;
+                    }
+                    break;
+
+                case Key.Left:
+                    if (PART_HScroll.Value > PART_HScroll.Minimum)
+                    {
+                        PART_HScroll.Value -= ScrollDeltaKey;
+                        data.Handled = true;
+                    }
+                    break;
+
+                case Key.Right:
+                    if (PART_HScroll.Value < PART_HScroll.Maximum)
+                    {
+                        PART_HScroll.Value += ScrollDeltaKey;
+                        data.Handled = true;
+                    }
+                    break;
+            }
+        }
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
@@ -241,39 +310,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
-            switch (key)
+            var templatedParent = TemplatedParent as Control;
+            if (templatedParent == null || !templatedParent.HandlesScrolling)
             {
-                case Key.Up:
-                    if (PART_VScroll.Value > PART_VScroll.Minimum)
-                    {
-                        PART_VScroll.Value -= ScrollDeltaKey;
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Down:
-                    if (PART_VScroll.Value < PART_VScroll.Maximum)
-                    {
-                        PART_VScroll.Value += ScrollDeltaKey;
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Left:
-                    if (PART_HScroll.Value > PART_HScroll.Minimum)
-                    {
-                        PART_HScroll.Value -= ScrollDeltaKey;
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Right:
-                    if (PART_HScroll.Value < PART_HScroll.Maximum)
-                    {
-                        PART_HScroll.Value += ScrollDeltaKey;
-                        data.Handled = true;
-                    }
-                    break;
+                HandleKeyScrolling(device, key, modifiers, ref data);
             }
 
             base.OnKeyDown(device, key, modifiers, ref data);

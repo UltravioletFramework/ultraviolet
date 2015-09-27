@@ -26,6 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             };
             this.Thumb.Classes.Add("track-thumb");
             this.Thumb.ChangeLogicalAndVisualParents(this, this);
+            KeyboardNavigation.SetIsTabStop(this.Thumb, false);
 
             this.IncreaseButton = new RepeatButton(uv, null) 
             { 
@@ -36,6 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             this.IncreaseButton.Classes.Add("track-increase");
             this.IncreaseButton.Click += HandleIncreaseButtonClick;
             this.IncreaseButton.ChangeLogicalAndVisualParents(this, this);
+            KeyboardNavigation.SetIsTabStop(this.IncreaseButton, false);
 
             this.DecreaseButton = new RepeatButton(uv, null) 
             { 
@@ -46,6 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             this.DecreaseButton.Classes.Add("track-decrease");
             this.DecreaseButton.Click += HandleDecreaseButtonClick;
             this.DecreaseButton.ChangeLogicalAndVisualParents(this, this);
+            KeyboardNavigation.SetIsTabStop(this.DecreaseButton, false);
 
             Mouse.AddPreviewMouseMoveHandler(this.Thumb, HandleThumbPreviewMouseMove);
             Mouse.AddPreviewMouseDownHandler(this.Thumb, HandleThumbPreviewMouseDown);

@@ -99,6 +99,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected internal override Boolean HandlesScrolling
+        {
+            get { return true; }
+        }
+
+        /// <inheritdoc/>
         protected override DependencyObject GetContainerForItemOverride()
         {
             return new ListBoxItem(Ultraviolet, null);
@@ -171,6 +177,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     }
                     break;
 
+                case Key.Left:
+                case Key.Right:
+                    if (PART_ScrollViewer != null)
+                    {
+                        PART_ScrollViewer.HandleKeyScrolling(device, key, modifiers, ref data);
+                    }
+                    break;
+
                 case Key.Up:
                     if (SelectionMode == SelectionMode.Single)
                     {
@@ -184,6 +198,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         navdir = FocusNavigationDirection.Down;
                     }
                     break;
+
+                case Key.Home:
+                    var firstItem = GetFirstItem();
+                    if (firstItem != null && firstItem.Focus())
+                    {
+                        HandleItemClickedAndScrollIntoView(firstItem);
+                    }
+                    break;
+
+                case Key.End:
+                    var lastItem = GetLastItem();
+                    if (lastItem != null && lastItem.Focus())
+                    {
+                        HandleItemClickedAndScrollIntoView(lastItem);
+                    }
+                    break;
+
+                case Key.PageUp:
+                    var firstItemOnPage = GetFirstItemOnCurrentPage();
+                    if (firstItemOnPage != null)
+                    {
+                        if (Keyboard.GetFocusedElement(View) == firstItemOnPage)
+                            firstItemOnPage = GetFirstItemOnPreviousPage();
+
+                        if (firstItemOnPage.Focus())
+                        {
+                            HandleItemClickedAndScrollIntoView(firstItemOnPage, false);
+                        }
+                    }
+                    break;
+
+                case Key.PageDown:
+                    var lastItemOnPage = GetLastItemOnCurrentPage();
+                    if (lastItemOnPage != null)
+                    {
+                        if (Keyboard.GetFocusedElement(View) == lastItemOnPage)
+                            lastItemOnPage = GetLastItemOnNextPage();
+
+                        if (lastItemOnPage.Focus())
+                        {
+                            HandleItemClickedAndScrollIntoView(lastItemOnPage, false);
+                        }
+                    }
+                    break;
             }
 
             if (navdir.HasValue)
@@ -194,7 +252,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     var listBoxItem = FindContainer(focused);
                     if (listBoxItem != null && (modifiers & ModifierKeys.Control) != ModifierKeys.Control)
                     {
-                        HandleItemClicked(listBoxItem);
+                        HandleItemClickedAndScrollIntoView(listBoxItem);
                     }
                     data.Handled = true;
                 }
@@ -224,6 +282,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Selects the specified item and scrolls it into view.
+        /// </summary>
+        private void HandleItemClickedAndScrollIntoView(ListBoxItem item, Boolean buffer = true)
+        {
+            HandleItemClicked(item);
+            ScrollItemIntoView(item, buffer);
         }
 
         /// <summary>
@@ -273,10 +340,185 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 SelectItem(item);
             }
-        }        
+        }
+        
+        /// <summary>
+        /// Adjusts the scrolling position so that the specified item is in view.
+        /// </summary>
+        /// <param name="item">The item to scroll into view.</param>
+        private void ScrollItemIntoView(Object item, Boolean buffer = true)
+        {
+            var listBoxItem = FindContainer(item);
+            if (listBoxItem == null)
+                return;
+
+            if (PART_ScrollViewer == null)
+                return;
+
+            var minVisible = PART_ScrollViewer.VerticalOffset;
+            var maxVisible = minVisible + PART_ScrollViewer.ViewportHeight;
+
+            var prev = buffer ? (VisualTreeHelper.GetPreviousSibling(listBoxItem) as UIElement ?? listBoxItem) : listBoxItem;
+            if (prev.UntransformedRelativeBounds.Top < minVisible)
+            {
+                PART_ScrollViewer.ScrollToVerticalOffset(prev.UntransformedRelativeBounds.Top);
+                return;
+            }
+
+            var next = buffer ? (VisualTreeHelper.GetNextSibling(listBoxItem) as UIElement ?? listBoxItem) : listBoxItem;
+            if (next.UntransformedRelativeBounds.Bottom > maxVisible)
+            {
+                PART_ScrollViewer.ScrollToVerticalOffset(next.UntransformedRelativeBounds.Bottom - PART_ScrollViewer.ViewportHeight);
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Gets the first item in the list.
+        /// </summary>
+        /// <returns>The first item in the list, or <c>null</c> if the list is empty.</returns>
+        private ListBoxItem GetFirstItem()
+        {
+            if (Items.Count == 0)
+                return null;
+
+            return FindContainer(Items[0]);
+        }
+
+        /// <summary>
+        /// Gets the last item in the list.
+        /// </summary>
+        /// <returns>The last item in the list, or <c>null</c> if the list is empty.</returns>
+        private ListBoxItem GetLastItem()
+        {
+            if (Items.Count == 0)
+                return null;
+
+            return FindContainer(Items[Items.Count - 1]);
+        }
+
+        /// <summary>
+        /// Gets the item at the specified offset which is displayed on the specified page.
+        /// </summary>
+        /// <param name="min">The minimum offset of the page.</param>
+        /// <param name="max">The maximum offset of the page.</param>
+        /// <param name="offset">The offset of the item to retrieve.</param>
+        /// <returns>The item at the specified offset which is displayed on the specified page, or <c>null</c> if the list is empty.</returns>
+        private ListBoxItem GetFirstItemOnPage(Double min, Double max, Double offset)
+        {
+            if (Items.Count == 0)
+                return null;
+
+            var firstCandidate = default(ListBoxItem);
+
+            foreach (var item in Items)
+            {
+                var container = FindContainer(item);
+
+                if (container.UntransformedRelativeBounds.Top < min || container.UntransformedRelativeBounds.Bottom > max)
+                    continue;
+
+                if (firstCandidate == null)
+                    firstCandidate = container;
+
+                if (container.UntransformedRelativeBounds.Top <= offset && container.UntransformedRelativeBounds.Bottom > offset)
+                    return container;
+            }
+
+            return firstCandidate ?? FindContainer(Items[0]);
+        }
+
+        /// <summary>
+        /// Gets the first item which is displayed on the current page.
+        /// </summary>
+        /// <returns>The first item which is displayed on the current page, or <c>null</c> if the list is empty.</returns>
+        private ListBoxItem GetFirstItemOnCurrentPage()
+        {
+            if (Items.Count == 0)
+                return null;
+
+            var min = PART_ScrollViewer.VerticalOffset;
+            var max = min + PART_ScrollViewer.ViewportHeight;
+            return GetFirstItemOnPage(min, max, min);
+        }
+
+        /// <summary>
+        /// Gets the first item which is displayed on the previous page.
+        /// </summary>
+        /// <returns>The first item which is displayed on the previous page, or <c>null</c> if the list is empty.</returns>
+        private ListBoxItem GetFirstItemOnPreviousPage()
+        {
+            if (Items.Count == 0)
+                return null;
+
+            var min = PART_ScrollViewer.VerticalOffset - PART_ScrollViewer.ViewportHeight;
+            var max = min + PART_ScrollViewer.ViewportHeight;
+            return GetFirstItemOnPage(min, max, min);
+        }
+
+        /// <summary>
+        /// Gets the item at the specified offset which is displayed on the specified page.
+        /// </summary>
+        /// <param name="min">The minimum offset of the page.</param>
+        /// <param name="max">The maximum offset of the page.</param>
+        /// <param name="offset">The offset of the item to retrieve.</param>
+        /// <returns>The item at the specified offset which is displayed on the specified page, or <c>null</c> if the list is empty.</returns>
+        private ListBoxItem GetLastItemOnPage(Double min, Double max, Double offset)
+        {
+            if (Items.Count == 0)
+                return null;
+
+            var lastCandidate = default(ListBoxItem);
+
+            foreach (var item in Items)
+            {
+                var container = FindContainer(item);
+
+                if (container.UntransformedRelativeBounds.Top < min || container.UntransformedRelativeBounds.Bottom > max)
+                    continue;
+
+                lastCandidate = container;
+
+                if (container.UntransformedRelativeBounds.Top < offset && container.UntransformedRelativeBounds.Bottom >= offset)
+                    return container;
+            }
+
+            return lastCandidate ?? FindContainer(Items[Items.Count - 1]);
+        }
+
+        /// <summary>
+        /// Gets the last item which is displayed on the current page.
+        /// </summary>
+        /// <returns>The last item which is displayed on the current page, or <c>null</c> if the list is empty.</returns>
+        private ListBoxItem GetLastItemOnCurrentPage()
+        {
+            if (PART_ScrollViewer == null)
+                return null;
+
+            var min = PART_ScrollViewer.VerticalOffset;
+            var max = min + PART_ScrollViewer.ViewportHeight;
+            return GetLastItemOnPage(min, max, max);
+        }
+
+        /// <summary>
+        /// Gets the last item which is displayed on the next page.
+        /// </summary>
+        /// <returns>The last item which is displayed on the next page, or <c>null</c> if the list is empty.</returns>
+        private ListBoxItem GetLastItemOnNextPage()
+        {
+            if (PART_ScrollViewer == null)
+                return null;
+
+            var min = PART_ScrollViewer.VerticalOffset + PART_ScrollViewer.ViewportHeight;
+            var max = min + PART_ScrollViewer.ViewportHeight;
+            return GetLastItemOnPage(min, max, max);
+        }
 
         // Property values.
         private readonly ListBoxSelectedItems selectedItems = 
             new ListBoxSelectedItems();
+
+        // Component references.
+        private readonly ScrollViewer PART_ScrollViewer = null;
     }
 }

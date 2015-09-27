@@ -222,6 +222,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the control supports custom scrolling behavior.
+        /// </summary>
+        protected internal virtual Boolean HandlesScrolling
+        {
+            get { return false; }
+        }
+
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {

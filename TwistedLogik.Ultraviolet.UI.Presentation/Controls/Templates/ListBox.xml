@@ -13,13 +13,15 @@
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch">
 
-        <ScrollViewer Class="listbox-scrollviewer"
+        <ScrollViewer Name="PART_ScrollViewer" 
+                      Class="listbox-scrollviewer"
                       HorizontalAlignment="Stretch"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalAlignment="Stretch"
                       VerticalScrollBarVisibility="Auto">
 
-          <ItemsPanel HorizontalAlignment="Stretch"/>
+          <ItemsPanel HorizontalAlignment="Stretch"
+                      KeyboardNavigation.DirectionalNavigation="Contained"/>
 
         </ScrollViewer>
 
