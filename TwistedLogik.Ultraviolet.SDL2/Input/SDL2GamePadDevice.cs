@@ -69,7 +69,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                         {
                             var button = SDLToUltravioletButton((SDL_GameControllerButton)evt.cbutton.button);
                             states[(int)button].OnDown(false);
-                            OnButtonPressed(button);
+                            OnButtonPressed(button, false);
                         }
                     }
                     break;
@@ -572,7 +572,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             if (Math.Sign(currentValue) != Math.Sign(previousValue))
             {
                 OnAxisReleased(axis, 0f);
-                OnAxisPressed(axis, currentValue);
+                OnAxisPressed(axis, currentValue, false);
                 return;
             }
 
@@ -581,7 +581,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             {
                 if (axisIsPressed)
                 {
-                    OnAxisPressed(axis, currentValue);
+                    OnAxisPressed(axis, currentValue, false);
                 }
                 else
                 {

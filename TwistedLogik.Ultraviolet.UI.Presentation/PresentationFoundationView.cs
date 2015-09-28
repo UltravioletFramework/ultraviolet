@@ -1705,7 +1705,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Handles the <see cref="GamePadDevice.ButtonPressed"/> event.
         /// </summary>
-        private void gamePad_ButtonPressed(GamePadDevice device, GamePadButton button)
+        private void gamePad_ButtonPressed(GamePadDevice device, GamePadButton button, Boolean repeat)
         {
             if (device.PlayerIndex != 0)
                 return;
