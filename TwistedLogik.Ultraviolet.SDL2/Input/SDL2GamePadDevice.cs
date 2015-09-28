@@ -193,6 +193,117 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
+        public override GamePadJoystickDirection GetJoystickDirection(GamePadJoystick joystick, Single? threshold = null)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var thresholdValue = Math.Abs(threshold ?? AxisDownThreshold);
+
+            var hAxis = GamePadAxis.None;
+            var vAxis = GamePadAxis.None;
+
+            switch (joystick)
+            {
+                case GamePadJoystick.None:
+                    return GamePadJoystickDirection.None;
+
+                case GamePadJoystick.Left:
+                    hAxis = GamePadAxis.LeftJoystickX;
+                    vAxis = GamePadAxis.LeftJoystickY;
+                    break;
+
+                case GamePadJoystick.Right:
+                    hAxis = GamePadAxis.RightJoystickX;
+                    vAxis = GamePadAxis.RightJoystickY;
+                    break;
+
+                default:
+                    throw new ArgumentException("joystick");
+            }
+
+            var hAxisValue = GetAxisValue(hAxis);
+            var vAxisValue = GetAxisValue(vAxis);
+
+            var result = GamePadJoystickDirection.None;
+
+            if (hAxisValue <= -thresholdValue)
+                result |= GamePadJoystickDirection.Left;
+            else if (hAxisValue >= thresholdValue)
+                result |= GamePadJoystickDirection.Right;
+
+            if (vAxisValue <= -thresholdValue)
+                result |= GamePadJoystickDirection.Up;
+            else if (vAxisValue > thresholdValue)
+                result |= GamePadJoystickDirection.Down;
+
+            return result;
+        }
+
+        /// <inheritdoc/>
+        public override GamePadJoystickDirection GetJoystickDirectionFromAxis(GamePadAxis axis, Single? threshold = null)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var thresholdValue = Math.Abs(threshold ?? AxisDownThreshold);
+
+            switch (axis)
+            {
+                case GamePadAxis.None:
+                    return GamePadJoystickDirection.None;
+
+                case GamePadAxis.LeftTrigger:
+                case GamePadAxis.RightTrigger:
+                    return GamePadJoystickDirection.None;
+
+                case GamePadAxis.LeftJoystickX:
+                    if (leftJoystickX <= -thresholdValue)
+                    {
+                        return GamePadJoystickDirection.Left;
+                    }
+                    if (leftJoystickX >= thresholdValue)
+                    {
+                        return GamePadJoystickDirection.Right;
+                    }
+                    break;
+
+                case GamePadAxis.LeftJoystickY:
+                    if (leftJoystickY <= -thresholdValue)
+                    {
+                        return GamePadJoystickDirection.Up;
+                    }
+                    if (leftJoystickY >= thresholdValue)
+                    {
+                        return GamePadJoystickDirection.Down;
+                    }
+                    break;
+
+                case GamePadAxis.RightJoystickX:
+                    if (rightJoystickX <= -thresholdValue)
+                    {
+                        return GamePadJoystickDirection.Left;
+                    }
+                    if (rightJoystickX >= thresholdValue)
+                    {
+                        return GamePadJoystickDirection.Right;
+                    }
+                    break;
+
+                case GamePadAxis.RightJoystickY:
+                    if (rightJoystickY <= -thresholdValue)
+                    {
+                        return GamePadJoystickDirection.Up;
+                    }
+                    if (rightJoystickY >= thresholdValue)
+                    {
+                        return GamePadJoystickDirection.Down;
+                    }
+                    break;
+            }
+
+            throw new ArgumentException("axis");
+        }
+
+        /// <inheritdoc/>
         public override Single GetAxisValue(GamePadAxis axis)
         {
             Contract.EnsureNotDisposed(this, Disposed);

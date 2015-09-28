@@ -65,6 +65,23 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
+        /// Gets the direction in which the specified joystick is pointed, using the specified minimum threshold value.
+        /// If no threshold is specified, the value of <see cref="AxisDownThreshold"/> is used instead.
+        /// </summary>
+        /// <param name="joystick">A <see cref="GamePadJoystick"/> value that represents the joystick to evaluate.</param>
+        /// <param name="threshold">The threshold value at which the joystick is considered to be pointed in a particular direction.</param>
+        /// <returns>A set of <see cref="GamePadJoystickDirection"/> values which represent the joystick's direction.</returns>
+        public abstract GamePadJoystickDirection GetJoystickDirection(GamePadJoystick joystick, Single? threshold = null);
+
+        /// <summary>
+        /// Gets the <see cref="GamePadJoystickDirection"/> value that corresponds to the state of the specified axis.
+        /// </summary>
+        /// <param name="axis">A <see cref="GamePadAxis"/> value to evaluate.</param>
+        /// <param name="threshold">The threshold value at which an axis is considered to be pointed in a particular direction.</param>
+        /// <returns>A set of <see cref="GamePadJoystickDirection"/> values which represent the specified axis' direction.</returns>
+        public abstract GamePadJoystickDirection GetJoystickDirectionFromAxis(GamePadAxis axis, Single? threshold = null);
+
+        /// <summary>
         /// Gets the value of the specified game pad axis.
         /// </summary>
         /// <param name="axis">The <see cref="GamePadAxis"/> value to retrieve.</param>
