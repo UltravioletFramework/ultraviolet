@@ -615,7 +615,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var ctrl  = ((modifiers & ModifierKeys.Control) == ModifierKeys.Control);
 
             var focused = Keyboard.GetFocusedElement(View) as UIElement;
-            if (KeyboardNavigator.PerformNavigation(View, focused, shift ? FocusNavigationDirection.Previous : FocusNavigationDirection.Next, ctrl))
+            if (FocusNavigator.PerformNavigation(View, focused, shift ? FocusNavigationDirection.Previous : FocusNavigationDirection.Next, ctrl))
             {
                 focused = Keyboard.GetFocusedElement(View) as UIElement;
 

@@ -177,7 +177,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\Keyboard.KeyboardState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\KeyboardNavigation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\KeyboardNavigationMode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\KeyboardNavigator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\FocusNavigator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ModifierKeys.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Mouse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Mouse.MouseState.cs" />

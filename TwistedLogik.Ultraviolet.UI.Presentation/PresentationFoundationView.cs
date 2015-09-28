@@ -1385,7 +1385,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             
             if (!suppressKeyNav)
-                KeyboardNavigator.PerformNavigation(this, device, key, ctrl, alt, shift, repeat);
+                FocusNavigator.PerformNavigation(this, device, key, ctrl, alt, shift, repeat);
         }
 
         /// <summary>
@@ -1720,7 +1720,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             if (!suppressGamePadNav)
-            { /* TODO: Directional nav with game pad axes */ }
+                FocusNavigator.PerformNavigation(this, device, axis);
         }
 
         /// <summary>
@@ -1761,7 +1761,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             if (!suppressGamePadNav)
-                KeyboardNavigator.PerformNavigation(this, device, button);
+                FocusNavigator.PerformNavigation(this, device, button);
         }
 
         /// <summary>

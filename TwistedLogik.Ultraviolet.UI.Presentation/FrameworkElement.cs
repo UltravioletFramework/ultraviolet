@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public override Boolean MoveFocus(FocusNavigationDirection direction)
         {
-            return KeyboardNavigator.PerformNavigation(View, this, direction, false);
+            return FocusNavigator.PerformNavigation(View, this, direction, false);
         }
 
         /// <inheritdoc/>

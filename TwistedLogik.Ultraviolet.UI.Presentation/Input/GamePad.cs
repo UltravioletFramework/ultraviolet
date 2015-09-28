@@ -74,8 +74,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             TabButton = GamePadButton.RightShoulder;
             ShiftTabButton = GamePadButton.LeftShoulder;
             ControlTabButton = GamePadButton.None;
-
-            AxisThreshold = 0.75f;
         }
 
         /// <summary>
@@ -358,16 +356,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             get;
             set;
         }
-
-        /// <summary>
-        /// Gets or sets the magnitude that an axis much reach in order for it to be considered "pressed" for the purposes of directional navigation.
-        /// </summary>
-        public static Single AxisThreshold
-        {
-            get;
-            set;
-        }
-
+        
         /// <summary>
         /// Identifies the PreviewAxisChanged routed event.
         /// </summary>

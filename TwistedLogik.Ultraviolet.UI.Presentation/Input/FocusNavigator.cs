@@ -6,9 +6,9 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
     /// <summary>
-    /// Contains methods for performing keyboard navigation.
+    /// Contains methods for performing focus navigation.
     /// </summary>
-    internal static class KeyboardNavigator
+    internal static class FocusNavigator
     {
         /// <summary>
         /// Attempts to perform navigation as a result of the specified key press.
@@ -90,7 +90,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             }
 
             return false;
-        }        
+        }
+
+        /// <summary>
+        /// Attempts to perform navigation as a result of the specified game pad axis press.
+        /// </summary>
+        /// <param name="view">The view for which to perform navigation.</param>
+        /// <param name="device">The game pad device that raised the button press event.</param>
+        /// <param name="axis">The axis that was pressed.</param>
+        /// <returns><c>true</c> if navigation was performed; otherwise, <c>false</c>.</returns>
+        public static Boolean PerformNavigation(PresentationFoundationView view, GamePadDevice device, GamePadAxis axis)
+        {
+            Contract.Require(view, "view");
+
+            if (GamePad.UseAxisForDirectionalNavigation)
+            {
+                var element = (view.ElementWithFocus ?? view.LayoutRoot) as UIElement;
+                if (element == null)
+                    return false;
+
+                if (GamePad.DirectionalNavigationAxisX == axis || GamePad.DirectionalNavigationAxisY == axis)
+                {
+                    var direction = device.GetJoystickDirectionFromAxis(axis);
+                    var succeeded = false;
+
+                    if ((direction & GamePadJoystickDirection.Up) == GamePadJoystickDirection.Up)
+                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Up, false);
+
+                    if ((direction & GamePadJoystickDirection.Down) == GamePadJoystickDirection.Down)
+                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Down, false);
+
+                    if ((direction & GamePadJoystickDirection.Left) == GamePadJoystickDirection.Left)
+                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Left, false);
+
+                    if ((direction & GamePadJoystickDirection.Right) == GamePadJoystickDirection.Right)
+                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Right, false);
+                }
+            }
+            return false;
+        }
 
         /// <summary>
         /// Attempts to navigate focus in the specified direction.
