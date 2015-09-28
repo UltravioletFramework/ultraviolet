@@ -382,14 +382,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        public event UpfGamePadButtonEventHandler PreviewGamePadButtonDown
+        public event UpfGamePadButtonDownEventHandler PreviewGamePadButtonDown
         {
             add { AddHandler(GamePad.PreviewButtonDownEvent, value); }
             remove { RemoveHandler(GamePad.PreviewButtonDownEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfGamePadButtonEventHandler PreviewGamePadButtonUp
+        public event UpfGamePadButtonUpEventHandler PreviewGamePadButtonUp
         {
             add { AddHandler(GamePad.PreviewButtonUpEvent, value); }
             remove { RemoveHandler(GamePad.PreviewButtonUpEvent, value); }
@@ -403,14 +403,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        public event UpfGamePadButtonEventHandler GamePadButtonDown
+        public event UpfGamePadAxisDownEventHandler GamePadAxisDown
+        {
+            add { AddHandler(GamePad.AxisDownEvent, value); }
+            remove { RemoveHandler(GamePad.AxisDownEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfGamePadAxisUpEventHandler GamePadAxisUp
+        {
+            add { AddHandler(GamePad.AxisUpEvent, value); }
+            remove { RemoveHandler(GamePad.AxisUpEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfGamePadButtonDownEventHandler GamePadButtonDown
         {
             add { AddHandler(GamePad.ButtonDownEvent, value); }
             remove { RemoveHandler(GamePad.ButtonDownEvent, value); }
         }
 
         /// <inheritdoc/>
-        public event UpfGamePadButtonEventHandler GamePadButtonUp
+        public event UpfGamePadButtonUpEventHandler GamePadButtonUp
         {
             add { AddHandler(GamePad.ButtonUpEvent, value); }
             remove { RemoveHandler(GamePad.ButtonUpEvent, value); }
@@ -784,12 +798,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invokes by the <see cref="GamePad.AxisDownEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The game pad device.</param>
+        /// <param name="axis">The axis that was pressed.</param>
+        /// <param name="value">The axis' value when it was pressed.</param>
+        /// <param name="repeat">A value indicating whether this is a repeated axis press.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invokes by the <see cref="GamePad.AxisUpEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The game pad device.</param>
+        /// <param name="axis">The axis that was released.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnGamePadAxisUp(GamePadDevice device, GamePadAxis axis, ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
         /// Invokes by the <see cref="GamePad.ButtonDownEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The game pad device.</param>
         /// <param name="button">The button that was pressed.</param>
+        /// <param name="repeat">A value indicating whether this is a repeated button press.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        protected virtual void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
         {
 
         }
@@ -845,6 +884,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerDownEvent, new UpfTouchEventHandler(OnFingerDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerUpEvent, new UpfTouchEventHandler(OnFingerUpProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerMotionEvent, new UpfTouchMotionEventHandler(OnFingerMotionProxy));
+
+            EventManager.RegisterClassHandler(typeof(UIElement), GamePad.AxisChangedEvent, new UpfGamePadAxisChangedEventHandler(OnGamePadAxisChangedProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), GamePad.AxisDownEvent, new UpfGamePadAxisDownEventHandler(OnGamePadAxisDownProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), GamePad.AxisUpEvent, new UpfGamePadAxisUpEventHandler(OnGamePadAxisUpProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), GamePad.ButtonDownEvent, new UpfGamePadButtonDownEventHandler(OnGamePadButtonDownProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), GamePad.ButtonUpEvent, new UpfGamePadButtonUpEventHandler(OnGamePadButtonUpProxy));
             
             EventManager.RegisterClassHandler(typeof(UIElement), Generic.GenericInteractionEvent, new UpfGenericInteractionEventHandler(OnGenericInteractionProxy));
         }
@@ -1032,11 +1077,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invokes the <see cref="OnGamePadAxisDown"/> method.
+        /// </summary>
+        private static void OnGamePadAxisDownProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnGamePadAxisDown(device, axis, value, repeat, ref data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnGamePadAxisUp"/> method.
+        /// </summary>
+        private static void OnGamePadAxisUpProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnGamePadAxisUp(device, axis, ref data);
+        }
+
+        /// <summary>
         /// Invokes the <see cref="OnGamePadButtonDown"/> method.
         /// </summary>
-        private static void OnGamePadButtonDownProxy(DependencyObject element, GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        private static void OnGamePadButtonDownProxy(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
         {
-            ((UIElement)element).OnGamePadButtonDown(device, button, ref data);
+            ((UIElement)element).OnGamePadButtonDown(device, button, repeat, ref data);
         }
 
         /// <summary>

@@ -962,6 +962,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             gamePad.AxisChanged += gamePad_AxisChanged;
+            gamePad.AxisPressed += gamePad_AxisPressed;
+            gamePad.AxisReleased += gamePad_AxisReleased;
             gamePad.ButtonPressed += gamePad_ButtonPressed;
             gamePad.ButtonReleased += gamePad_ButtonReleased;
 
@@ -1060,6 +1062,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             gamePad.AxisChanged -= gamePad_AxisChanged;
+            gamePad.AxisPressed -= gamePad_AxisPressed;
+            gamePad.AxisReleased -= gamePad_AxisReleased;
             gamePad.ButtonPressed -= gamePad_ButtonPressed;
             gamePad.ButtonReleased -= gamePad_ButtonReleased;
         }
@@ -1686,20 +1690,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (device.PlayerIndex != 0)
                 return;
 
-            var suppressGamePadNav = false;
-
             var recipient = elementWithFocus as DependencyObject;
             if (recipient != null)
             {
                 var gamePadAxisChangedData = new RoutedEventData(recipient);
                 GamePad.RaisePreviewAxisChanged(recipient, device, axis, value, ref gamePadAxisChangedData);
                 GamePad.RaiseAxisChanged(recipient, device, axis, value, ref gamePadAxisChangedData);
+            }
+        }
 
-                suppressGamePadNav = gamePadAxisChangedData.Handled;
+        /// <summary>
+        /// Handles the <see cref="GamePadDevice.AxisPressed"/> event.
+        /// </summary>
+        private void gamePad_AxisPressed(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat)
+        {
+            if (device.PlayerIndex != 0)
+                return;
+
+            var suppressGamePadNav = false;
+
+            var recipient = elementWithFocus as DependencyObject;
+            if (recipient != null)
+            {
+                var gamePadAxisPressedData = new RoutedEventData(recipient);
+                GamePad.RaisePreviewAxisDown(recipient, device, axis, value, repeat, ref gamePadAxisPressedData);
+                GamePad.RaiseAxisDown(recipient, device, axis, value, repeat, ref gamePadAxisPressedData);
+
+                suppressGamePadNav = gamePadAxisPressedData.Handled;
             }
 
             if (!suppressGamePadNav)
             { /* TODO: Directional nav with game pad axes */ }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="GamePadDevice.AxisReleased"/> event.
+        /// </summary>
+        private void gamePad_AxisReleased(GamePadDevice device, GamePadAxis axis, Single value)
+        {
+            if (device.PlayerIndex != 0)
+                return;
+            
+            var recipient = elementWithFocus as DependencyObject;
+            if (recipient != null)
+            {
+                var gamePadAxisPressedData = new RoutedEventData(recipient);
+                GamePad.RaisePreviewAxisUp(recipient, device, axis, ref gamePadAxisPressedData);
+                GamePad.RaiseAxisUp(recipient, device, axis, ref gamePadAxisPressedData);
+            }
         }
 
         /// <summary>
@@ -1716,8 +1754,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (recipient != null)
             {
                 var gamePadAxisChangedData = new RoutedEventData(recipient);
-                GamePad.RaisePreviewButtonDown(recipient, device, button, ref gamePadAxisChangedData);
-                GamePad.RaiseButtonDown(recipient, device, button, ref gamePadAxisChangedData);
+                GamePad.RaisePreviewButtonDown(recipient, device, button, repeat, ref gamePadAxisChangedData);
+                GamePad.RaiseButtonDown(recipient, device, button, repeat, ref gamePadAxisChangedData);
 
                 suppressGamePadNav = gamePadAxisChangedData.Handled;
             }

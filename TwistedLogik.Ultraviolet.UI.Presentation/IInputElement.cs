@@ -236,12 +236,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when a game pad button is pressed while the element has focus.
         /// </summary>
-        event UpfGamePadButtonEventHandler PreviewGamePadButtonDown;
+        event UpfGamePadButtonDownEventHandler PreviewGamePadButtonDown;
 
         /// <summary>
         /// Occurs when a game pad button is released while the element has focus.
         /// </summary>
-        event UpfGamePadButtonEventHandler PreviewGamePadButtonUp;
+        event UpfGamePadButtonUpEventHandler PreviewGamePadButtonUp;
 
         /// <summary>
         /// Occurs when a game pad axis changes value while the element has focus.
@@ -249,14 +249,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         event UpfGamePadAxisChangedEventHandler GamePadAxisChanged;
 
         /// <summary>
+        /// Occurs when a game pad axis is pressed while the element has focus.
+        /// </summary>
+        event UpfGamePadAxisDownEventHandler GamePadAxisDown;
+
+        /// <summary>
+        /// Occurs when a game pad axis is released while the element has focus.
+        /// </summary>
+        event UpfGamePadAxisUpEventHandler GamePadAxisUp;
+
+        /// <summary>
         /// Occurs when a game pad button is pressed while the element has focus.
         /// </summary>
-        event UpfGamePadButtonEventHandler GamePadButtonDown;
+        event UpfGamePadButtonDownEventHandler GamePadButtonDown;
 
         /// <summary>
         /// Occurs when a game pad button is released while the element has focus.
         /// </summary>
-        event UpfGamePadButtonEventHandler GamePadButtonUp;
+        event UpfGamePadButtonUpEventHandler GamePadButtonUp;
 
         /// <summary>
         /// Occurs when the element is tapped (if a touch device is connected) or the primary 
