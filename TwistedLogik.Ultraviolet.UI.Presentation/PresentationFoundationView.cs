@@ -47,6 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             HookKeyboardEvents();
             HookMouseEvents();
             HookTouchEvents();
+            HookGamePadEvents();
         }
 
         /// <summary>
@@ -730,6 +731,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 UnhookGlobalStyleSheetChanged();
                 UnhookKeyboardEvents();
                 UnhookMouseEvents();
+                UnhookTouchEvents();
+                UnhookGamePadEvents();
             }
             base.Dispose(disposing);
         }
@@ -935,6 +938,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Hooks into Ultraviolet's game pad input events.
+        /// </summary>
+        private void HookGamePadEvents()
+        {
+            var input = Ultraviolet.GetInput();
+            if (input.IsGamePadSupported())
+            {
+                HookFirstPlayerGamePadEvents();
+
+                input.GamePadConnected += gamePad_GamePadConnected;
+                input.GamePadDisconnected += gamePad_GamePadDisconnected;
+            }
+        }
+
+        /// <summary>
+        /// Hooks into Ultraviolet's game pad input events for the first player's game pad.
+        /// </summary>
+        private void HookFirstPlayerGamePadEvents()
+        {
+            var gamePad = Ultraviolet.GetInput().GetGamePadForPlayer(0);
+            if (gamePad == null)
+                return;
+
+            gamePad.AxisChanged += gamePad_AxisChanged;
+            gamePad.ButtonPressed += gamePad_ButtonPressed;
+            gamePad.ButtonReleased += gamePad_ButtonReleased;
+
+            hookedFirstPlayerGamePad = true;
+        }
+
+        /// <summary>
         /// Unhooks from the <see cref="PresentationFoundation.GlobalStyleSheetChanged"/> event.
         /// </summary>
         private void UnhookGlobalStyleSheetChanged()
@@ -994,6 +1028,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 touch.FingerDown   -= touch_FingerDown;
                 touch.FingerMotion -= touch_FingerMotion;
             }
+        }
+
+        /// <summary>
+        /// Unhooks from Ultraviolet's game pad input events.
+        /// </summary>
+        private void UnhookGamePadEvents()
+        {
+            var input = Ultraviolet.GetInput();
+            if (input.IsGamePadSupported())
+            {
+                input.GamePadConnected -= gamePad_GamePadConnected;
+                input.GamePadDisconnected -= gamePad_GamePadDisconnected;
+
+                if (hookedFirstPlayerGamePad)
+                {
+                    UnhookFirstPlayerGamePadEvents();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unhooks from Ultraviolet's game pad input events for the first player's game pad.
+        /// </summary>
+        private void UnhookFirstPlayerGamePadEvents()
+        {
+            hookedFirstPlayerGamePad = false;
+
+            var gamePad = Ultraviolet.GetInput().GetGamePadForPlayer(0);
+            if (gamePad == null)
+                return;
+
+            gamePad.AxisChanged -= gamePad_AxisChanged;
+            gamePad.ButtonPressed -= gamePad_ButtonPressed;
+            gamePad.ButtonReleased -= gamePad_ButtonReleased;
         }
 
         /// <summary>
@@ -1589,6 +1657,93 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Handles the <see cref="IUltravioletInput.GamePadConnected"/> event.
+        /// </summary>
+        private void gamePad_GamePadConnected(GamePadDevice device, Int32 playerIndex)
+        {
+            if (device.PlayerIndex != 0)
+                return;
+
+            HookFirstPlayerGamePadEvents();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IUltravioletInput.GamePadDisconnected"/> event.
+        /// </summary>
+        private void gamePad_GamePadDisconnected(GamePadDevice device, Int32 playerIndex)
+        {
+            if (device.PlayerIndex != 0)
+                return;
+
+            UnhookFirstPlayerGamePadEvents();
+        }
+        
+        /// <summary>
+        /// Handles the <see cref="GamePadDevice.AxisChanged"/> event.
+        /// </summary>
+        private void gamePad_AxisChanged(GamePadDevice device, GamePadAxis axis, Single value)
+        {
+            if (device.PlayerIndex != 0)
+                return;
+
+            var suppressGamePadNav = false;
+
+            var recipient = elementWithFocus as DependencyObject;
+            if (recipient != null)
+            {
+                var gamePadAxisChangedData = new RoutedEventData(recipient);
+                GamePad.RaisePreviewAxisChanged(recipient, device, axis, value, ref gamePadAxisChangedData);
+                GamePad.RaiseAxisChanged(recipient, device, axis, value, ref gamePadAxisChangedData);
+
+                suppressGamePadNav = gamePadAxisChangedData.Handled;
+            }
+
+            if (!suppressGamePadNav)
+            { /* TODO: Directional nav with game pad axes */ }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="GamePadDevice.ButtonPressed"/> event.
+        /// </summary>
+        private void gamePad_ButtonPressed(GamePadDevice device, GamePadButton button)
+        {
+            if (device.PlayerIndex != 0)
+                return;
+
+            var suppressGamePadNav = false;
+
+            var recipient = elementWithFocus as DependencyObject;
+            if (recipient != null)
+            {
+                var gamePadAxisChangedData = new RoutedEventData(recipient);
+                GamePad.RaisePreviewButtonDown(recipient, device, button, ref gamePadAxisChangedData);
+                GamePad.RaiseButtonDown(recipient, device, button, ref gamePadAxisChangedData);
+
+                suppressGamePadNav = gamePadAxisChangedData.Handled;
+            }
+
+            if (!suppressGamePadNav)
+                KeyboardNavigator.PerformNavigation(this, device, button);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="GamePadDevice.ButtonReleased"/> event.
+        /// </summary>
+        private void gamePad_ButtonReleased(GamePadDevice device, GamePadButton button)
+        {
+            if (device.PlayerIndex != 0)
+                return;
+            
+            var recipient = elementWithFocus as DependencyObject;
+            if (recipient != null)
+            {
+                var gamePadAxisChangedData = new RoutedEventData(recipient);
+                GamePad.RaisePreviewButtonUp(recipient, device, button, ref gamePadAxisChangedData);
+                GamePad.RaiseButtonUp(recipient, device, button, ref gamePadAxisChangedData);
+            }
+        }
+
+        /// <summary>
         /// Called when the Presentation Foundation's global style sheet is changed.
         /// </summary>
         private void PresentationFoundationView_GlobalStyleSheetChanged(Object sender, EventArgs e)
@@ -1613,6 +1768,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private IInputElement elementLastTouched;
         private CaptureMode mouseCaptureMode;
         private Boolean hookedGlobalStyleSheetChanged;
+        private Boolean hookedFirstPlayerGamePad;
 
         // Popup handling.
         private readonly PopupQueue popupQueue = new PopupQueue();

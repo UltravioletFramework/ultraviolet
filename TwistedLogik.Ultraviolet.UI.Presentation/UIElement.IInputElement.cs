@@ -375,6 +375,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        public event UpfGamePadAxisChangedEventHandler PreviewGamePadAxisChanged
+        {
+            add { AddHandler(GamePad.PreviewAxisChangedEvent, value); }
+            remove { RemoveHandler(GamePad.PreviewAxisChangedEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfGamePadButtonEventHandler PreviewGamePadButtonDown
+        {
+            add { AddHandler(GamePad.PreviewButtonDownEvent, value); }
+            remove { RemoveHandler(GamePad.PreviewButtonDownEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfGamePadButtonEventHandler PreviewGamePadButtonUp
+        {
+            add { AddHandler(GamePad.PreviewButtonUpEvent, value); }
+            remove { RemoveHandler(GamePad.PreviewButtonUpEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfGamePadAxisChangedEventHandler GamePadAxisChanged
+        {
+            add { AddHandler(GamePad.AxisChangedEvent, value); }
+            remove { RemoveHandler(GamePad.AxisChangedEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfGamePadButtonEventHandler GamePadButtonDown
+        {
+            add { AddHandler(GamePad.ButtonDownEvent, value); }
+            remove { RemoveHandler(GamePad.ButtonDownEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfGamePadButtonEventHandler GamePadButtonUp
+        {
+            add { AddHandler(GamePad.ButtonUpEvent, value); }
+            remove { RemoveHandler(GamePad.ButtonUpEvent, value); }
+        }
+
+        /// <inheritdoc/>
         public event UpfGenericInteractionEventHandler PreviewGenericInteraction
         {
             add { AddHandler(Generic.PreviewGenericInteractionEvent, value); }
@@ -730,6 +772,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invokes by the <see cref="GamePad.AxisChangedEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The game pad device.</param>
+        /// <param name="axis">The axis that was changed.</param>
+        /// <param name="value">The value to which the axis was changed.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnGamePadAxisChanged(GamePadDevice device, GamePadAxis axis, Single value, ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invokes by the <see cref="GamePad.ButtonDownEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The game pad device.</param>
+        /// <param name="button">The button that was pressed.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invokes by the <see cref="GamePad.ButtonUpEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The game pad device.</param>
+        /// <param name="button">The button that was released.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnGamePadButtonUp(GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
         /// Invoked by the <see cref="Generic.GenericInteractionEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The input device.</param>
@@ -748,26 +824,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewLostKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(OnPreviewLostKeyboardFocusProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.GotKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(OnGotKeyboardFocusProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.LostKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(OnLostKeyboardFocusProxy));
+            
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.KeyDownEvent, new UpfKeyDownEventHandler(OnKeyDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.KeyUpEvent, new UpfKeyEventHandler(OnKeyUpProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.TextInputEvent, new UpfKeyboardEventHandler(OnTextInputProxy));
 
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.GotMouseCaptureEvent, new UpfRoutedEventHandler(OnGotMouseCaptureProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.LostMouseCaptureEvent, new UpfRoutedEventHandler(OnLostMouseCaptureProxy));
-            EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseMoveEvent, new UpfMouseMoveEventHandler(OnMouseMoveProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseEnterEvent, new UpfMouseEventHandler(OnMouseEnterProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseLeaveEvent, new UpfMouseEventHandler(OnMouseLeaveProxy));
+            
+            EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseMoveEvent, new UpfMouseMoveEventHandler(OnMouseMoveProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseDownEvent, new UpfMouseButtonEventHandler(OnMouseDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseUpEvent, new UpfMouseButtonEventHandler(OnMouseUpProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseClickEvent, new UpfMouseButtonEventHandler(OnMouseClickProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseDoubleClickEvent, new UpfMouseButtonEventHandler(OnMouseDoubleClickProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseWheelEvent, new UpfMouseWheelEventHandler(OnMouseWheelProxy));
-
+            
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TapEvent, new UpfTouchTapEventHandler(OnTapProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerDownEvent, new UpfTouchEventHandler(OnFingerDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerUpEvent, new UpfTouchEventHandler(OnFingerUpProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerMotionEvent, new UpfTouchMotionEventHandler(OnFingerMotionProxy));
-
+            
             EventManager.RegisterClassHandler(typeof(UIElement), Generic.GenericInteractionEvent, new UpfGenericInteractionEventHandler(OnGenericInteractionProxy));
         }
         
@@ -844,14 +922,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Invokes the <see cref="OnMouseMove"/> method.
-        /// </summary>
-        private static void OnMouseMoveProxy(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
-        {
-            ((UIElement)element).OnMouseMove(device, x, y, dx, dy, ref data);
-        }
-
-        /// <summary>
         /// Invokes the <see cref="OnMouseEnter"/> method.
         /// </summary>
         private static void OnMouseEnterProxy(DependencyObject element, MouseDevice device, ref RoutedEventData data)
@@ -867,6 +937,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var uiElement = ((UIElement)element);
             uiElement.OnMouseLeave(device, ref data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnMouseMove"/> method.
+        /// </summary>
+        private static void OnMouseMoveProxy(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnMouseMove(device, x, y, dx, dy, ref data);
         }
 
         /// <summary>
@@ -943,6 +1021,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
         {
             ((UIElement)element).OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, ref data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnGamePadAxisChanged"/> method.
+        /// </summary>
+        private static void OnGamePadAxisChangedProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnGamePadAxisChanged(device, axis, value, ref data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnGamePadButtonDown"/> method.
+        /// </summary>
+        private static void OnGamePadButtonDownProxy(DependencyObject element, GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnGamePadButtonDown(device, button, ref data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnGamePadButtonUp"/> method.
+        /// </summary>
+        private static void OnGamePadButtonUpProxy(DependencyObject element, GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnGamePadButtonUp(device, button, ref data);
         }
 
         /// <summary>

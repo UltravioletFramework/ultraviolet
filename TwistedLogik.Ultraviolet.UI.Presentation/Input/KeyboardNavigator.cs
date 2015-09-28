@@ -51,6 +51,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Attempts to perform navigation as a result of the specified game pad button press.
+        /// </summary>
+        /// <param name="view">The view for which to perform navigation.</param>
+        /// <param name="device">The game pad device that raised the button press event.</param>
+        /// <param name="button">The button that was pressed.</param>
+        /// <returns><c>true</c> if navigation was performed; otherwise, <c>false</c>.</returns>
+        public static Boolean PerformNavigation(PresentationFoundationView view, GamePadDevice device, GamePadButton button)
+        {
+            Contract.Require(view, "view");
+
+            var element = (view.ElementWithFocus ?? view.LayoutRoot) as UIElement;
+            if (element == null)
+                return false;
+
+            if (GamePad.TabButton == button)
+                return PerformNavigation(view, element, FocusNavigationDirection.Next, false);
+
+            if (GamePad.ShiftTabButton == button)
+                return PerformNavigation(view, element, FocusNavigationDirection.Previous, false);
+
+            if (!GamePad.UseAxisForDirectionalNavigation)
+            {
+                switch (button)
+                {
+                    case GamePadButton.DPadUp:
+                        return PerformNavigation(view, element, FocusNavigationDirection.Up, false);
+
+                    case GamePadButton.DPadDown:
+                        return PerformNavigation(view, element, FocusNavigationDirection.Down, false);
+
+                    case GamePadButton.DPadLeft:
+                        return PerformNavigation(view, element, FocusNavigationDirection.Left, false);
+
+                    case GamePadButton.DPadRight:
+                        return PerformNavigation(view, element, FocusNavigationDirection.Right, false);
+                }
+            }
+
+            return false;
+        }        
+
+        /// <summary>
         /// Attempts to navigate focus in the specified direction.
         /// </summary>
         /// <param name="view">The view for which to perform navigation.</param>
