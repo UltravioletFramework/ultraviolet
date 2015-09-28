@@ -30,6 +30,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         public SDL2GamePadDevice(UltravioletContext uv, Int32 joystickIndex, Int32 playerIndex)
             : base(uv)
         {
+            this.timeLastPressAxis = new Double[Enum.GetValues(typeof(GamePadAxis)).Length];
+            this.timeLastPressButton = new Double[Enum.GetValues(typeof(GamePadButton)).Length];
+
+            this.repeatingAxis = new Boolean[this.timeLastPressAxis.Length];
+            this.repeatingButton = new Boolean[this.timeLastPressButton.Length];
+
             if ((this.controller = SDL.GameControllerOpen(joystickIndex)) == IntPtr.Zero)
             {
                 throw new SDL2Exception();
@@ -59,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         {
             if (type != SDL2UltravioletMessages.SDLEvent)
                 return;
-
+            
             var evt = ((SDL2EventMessageData)data).Event;
             switch (evt.type)
             {
@@ -68,7 +74,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                         if (evt.cbutton.which == instanceID)
                         {
                             var button = SDLToUltravioletButton((SDL_GameControllerButton)evt.cbutton.button);
-                            states[(int)button].OnDown(false);
+                            var buttonIndex = (int)button;
+                            states[buttonIndex].OnDown(false);
+                            timeLastPressButton[buttonIndex] = lastUpdateTime;
+                            repeatingButton[buttonIndex] = false;
                             OnButtonPressed(button, false);
                         }
                     }
@@ -79,7 +88,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                         if (evt.cbutton.which == instanceID)
                         {
                             var button = SDLToUltravioletButton((SDL_GameControllerButton)evt.cbutton.button);
+                            var buttonIndex = (int)button;
                             states[(int)button].OnUp();
+                            timeLastPressButton[buttonIndex] = lastUpdateTime;
+                            repeatingButton[buttonIndex] = false;
                             OnButtonReleased(button);
                         }
                     }
@@ -124,7 +136,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         public override void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            
+
+            lastUpdateTime = time.ElapsedTime.TotalMilliseconds;
+
             var leftJoystickVector = LeftJoystickVector;
             if (leftJoystickVector != leftJoystickVectorPrev)
             {
@@ -138,6 +152,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 rightJoystickVectorPrev = rightJoystickVector;
                 OnRightJoystickVectorChanged(rightJoystickVector);
             }
+
+            CheckForRepeatedPresses(time);
         }
 
         /// <inheritdoc/>
@@ -183,6 +199,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
             switch (axis)
             {
+                case GamePadAxis.None:
+                    return 0f;
+
                 case GamePadAxis.LeftJoystickX:
                     return leftJoystickX;
 
@@ -211,6 +230,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
             switch (axis)
             {
+                case GamePadAxis.None:
+                    return false;
+
                 case GamePadAxis.LeftJoystickX:
                     return IsAxisDown(leftJoystickX);
 
@@ -240,6 +262,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
             switch (axis)
             {
+                case GamePadAxis.None:
+                    return true;
+
                 case GamePadAxis.LeftJoystickX:
                     return !IsAxisDown(leftJoystickX);
 
@@ -269,6 +294,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
             switch (axis)
             {
+                case GamePadAxis.None:
+                    return false;
+
                 case GamePadAxis.LeftJoystickX:
                     return IsAxisPressed(prevLeftJoystickX, leftJoystickX);
 
@@ -298,6 +326,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
             switch (axis)
             {
+                case GamePadAxis.None:
+                    return false;
+
                 case GamePadAxis.LeftJoystickX:
                     return IsAxisReleased(prevLeftJoystickX, leftJoystickX);
 
@@ -565,22 +596,30 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <param name="previousValue">The last known value of the axis.</param>
         private void CheckForAxisPresses(GamePadAxis axis, Single previousValue, Single currentValue)
         {
-            var axisWasPressed = IsAxisDown(previousValue);
-            var axisIsPressed = IsAxisDown(currentValue);
+            var axisIndex = (int)axis;
+
+            var axisWasDown = IsAxisDown(previousValue);
+            var axisIsDown = IsAxisDown(currentValue);
 
             // Axis went from pressed->pressed but changed direction.
             if (Math.Sign(currentValue) != Math.Sign(previousValue))
             {
+                timeLastPressAxis[axisIndex] = lastUpdateTime;
+                repeatingAxis[axisIndex] = false;
+
                 OnAxisReleased(axis, 0f);
                 OnAxisPressed(axis, currentValue, false);
                 return;
             }
 
             // Axis went from pressed->released or released->pressed.
-            if (axisWasPressed != axisIsPressed)
+            if (axisWasDown != axisIsDown)
             {
-                if (axisIsPressed)
+                if (axisIsDown)
                 {
+                    timeLastPressAxis[axisIndex] = lastUpdateTime;
+                    repeatingAxis[axisIndex] = false;
+
                     OnAxisPressed(axis, currentValue, false);
                 }
                 else
@@ -588,6 +627,45 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     OnAxisReleased(axis, currentValue);
                 }
                 return;
+            }
+        }
+
+        /// <summary>
+        /// Raises repeated <see cref="GamePadDevice.AxisPressed"/> and <see cref="GamePadDevice.ButtonPressed"/> events as necessary.
+        /// </summary>
+        private void CheckForRepeatedPresses(UltravioletTime time)
+        {
+            for (int i = 0; i < repeatingAxis.Length; i++)
+            {
+                var axis = (GamePadAxis)i;
+                if (!IsAxisDown(axis))
+                    continue;
+
+                var delay = repeatingAxis[i] ? PressRepeatDelay : PressRepeatInitialDelay;
+                if (delay >= time.TotalTime.TotalMilliseconds - timeLastPressAxis[i])
+                {
+                    repeatingAxis[i] = true;
+                    timeLastPressAxis[i] = time.TotalTime.TotalMilliseconds;
+
+                    var value = GetAxisValue(axis);
+                    OnAxisPressed(axis, value, true);
+                }
+            }
+
+            for (int i = 0; i < repeatingButton.Length; i++)
+            {
+                var button = (GamePadButton)i;
+                if (!IsButtonDown(button))
+                    continue;
+
+                var delay = repeatingButton[i] ? PressRepeatDelay : PressRepeatInitialDelay;
+                if (delay >= time.TotalTime.TotalMilliseconds - timeLastPressButton[i])
+                {
+                    repeatingButton[i] = true;
+                    timeLastPressButton[i] = time.TotalTime.TotalMilliseconds;
+
+                    OnButtonPressed(button, true);
+                }
             }
         }
 
@@ -643,7 +721,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private readonly Int32 playerIndex;
         private readonly IntPtr controller;
         private readonly InternalButtonState[] states;
-        
+        private Double lastUpdateTime;
+
         // Property values.
         private readonly String name;
         private Single axisPressThreshold;
@@ -661,5 +740,15 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private Single prevRightJoystickX;
         private Single rightJoystickY;
         private Single prevRightJoystickY;
+
+        // Press timers.
+        private readonly Double[] timeLastPressAxis;
+        private readonly Double[] timeLastPressButton;
+        private readonly Boolean[] repeatingAxis;
+        private readonly Boolean[] repeatingButton;
+
+        // Repeat delays.
+        private const Single PressRepeatInitialDelay = 500.0f;
+        private const Single PressRepeatDelay = 33.0f;
     }
 }
