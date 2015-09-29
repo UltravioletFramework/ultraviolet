@@ -319,6 +319,73 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        {
+            var templatedParent = TemplatedParent as Control;
+            if (templatedParent == null || !templatedParent.HandlesScrolling)
+            {
+                if (GamePad.UseAxisForDirectionalNavigation)
+                {
+                    var direction = device.GetJoystickDirectionFromAxis(axis);
+                    switch (direction)
+                    {
+                        case GamePadJoystickDirection.Up:
+                            HandleKeyScrolling(Key.Up, ModifierKeys.None, ref data);
+                            break;
+
+                        case GamePadJoystickDirection.Down:
+                            HandleKeyScrolling(Key.Down, ModifierKeys.None, ref data);
+                            break;
+
+                        case GamePadJoystickDirection.Left:
+                            HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                            break;
+
+                        case GamePadJoystickDirection.Right:
+                            HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                            break;
+                    }
+                    data.Handled = true;
+                }
+            }
+            
+            base.OnGamePadAxisDown(device, axis, value, repeat, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        {
+            var templatedParent = TemplatedParent as Control;
+            if (templatedParent == null || !templatedParent.HandlesScrolling)
+            {
+                if (!GamePad.UseAxisForDirectionalNavigation)
+                {
+                    switch (button)
+                    {
+                        case GamePadButton.DPadUp:
+                            HandleKeyScrolling(Key.Up, ModifierKeys.None, ref data);
+                            break;
+
+                        case GamePadButton.DPadDown:
+                            HandleKeyScrolling(Key.Down, ModifierKeys.None, ref data);
+                            break;
+
+                        case GamePadButton.DPadLeft:
+                            HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                            break;
+
+                        case GamePadButton.DPadRight:
+                            HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                            break;
+                    }
+                    data.Handled = true;
+                }
+            }
+
+            base.OnGamePadButtonDown(device, button, repeat, ref data);
+        }
+
+        /// <inheritdoc/>
         protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
         {
             if (!data.Handled && fingerID == 0)
