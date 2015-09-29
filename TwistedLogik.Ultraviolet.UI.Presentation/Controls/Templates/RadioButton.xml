@@ -21,6 +21,11 @@
                         Grid.Column="1"
                         Grid.Row="0"
                         VerticalAlignment="Stretch"/>
+      <Image Class="toggle-focus-image"
+             Grid.Row="0"
+             Grid.Column="1"
+             Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+             IsHitTestVisible="false"/>
 
     </Grid>
   </View>

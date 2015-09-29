@@ -153,6 +153,12 @@ RadioButton > Grid > .toggle-content
 	margin: 4 0 0 0;
 }
 
+RadioButton > Grid > .toggle-focus-image
+{
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
+}
+
 CheckBox
 {
 	transition (checkstate, unchecked): checkbox-to-unchecked;
@@ -176,6 +182,12 @@ CheckBox
 CheckBox > Grid > .toggle-content
 {
 	margin: 4 0 0 0;
+}
+
+CheckBox > Grid > .toggle-focus-image
+{
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 .radiobutton-component > .toggle-box
