@@ -13,6 +13,11 @@
              HorizontalAlignment="Center"
              VerticalAlignment="Stretch"
              Orientation="Vertical"/>
+      <Image Class="slider-focus-image"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+             IsHitTestVisible="false"/>
 
     </Grid>
   </View>

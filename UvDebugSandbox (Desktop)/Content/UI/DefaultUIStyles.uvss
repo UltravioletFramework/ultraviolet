@@ -395,6 +395,12 @@ VSlider .slider-track-background
 	width: 10;
 }
 
+HSlider .slider-focus-image, VSlider .slider-focus-image
+{
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
+}
+
 Track Button, Track RepeatButton
 {
 	trigger event Mouse.mouse-enter { }
