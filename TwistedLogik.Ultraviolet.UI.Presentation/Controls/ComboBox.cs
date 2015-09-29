@@ -277,6 +277,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnKeyDown(device, key, modifiers, ref data);
         }
 
+        /// <inheritdoc/>
+        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        {
+            if (IsDropDownOpen)
+            {
+                OnGamePadAxisDown_DropDownOpen(device, axis, value, repeat, ref data);
+            }
+            else
+            {
+                OnGamePadAxisDown_DropDownClosed(device, axis, value, repeat, ref data);
+            }
+
+            base.OnGamePadAxisDown(device, axis, value, repeat, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        {
+            if (IsDropDownOpen)
+            {
+                OnGamePadButtonDown_DropDownOpen(device, button, repeat, ref data);
+            }
+            else
+            {
+                OnGamePadButtonDown_DropDownClosed(device, button, repeat, ref data);
+            }
+
+            base.OnGamePadButtonDown(device, button, repeat, ref data);
+        }
+        
         /// <summary>
         /// Handles <see cref="Keyboard.KeyDownEvent"/> both when the drop down is open and when it is closed.
         /// </summary>
@@ -404,6 +434,162 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Handles <see cref="GamePad.AxisDownEvent"/> when the drop down is open.
+        /// </summary>
+        private void OnGamePadAxisDown_DropDownOpen(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        {
+            if (GamePad.UseAxisForDirectionalNavigation)
+            {
+                if (GamePad.DirectionalNavigationAxisX == axis || GamePad.DirectionalNavigationAxisY == axis)
+                {
+                    var direction = device.GetJoystickDirectionFromAxis(axis);
+                    switch (direction)
+                    {
+                        case GamePadJoystickDirection.Up:
+                            MoveItemFocus(-1);
+                            break;
+
+                        case GamePadJoystickDirection.Down:
+                            MoveItemFocus(1);
+                            break;
+
+                        case GamePadJoystickDirection.Left:
+                            if (PART_ScrollViewer != null)
+                            {
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                            }
+                            break;
+                            
+                        case GamePadJoystickDirection.Right:
+                            if (PART_ScrollViewer != null)
+                            {
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                            }
+                            break;
+                    }
+                    data.Handled = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles <see cref="GamePad.AxisDownEvent"/> when the drop down is closed.
+        /// </summary>
+        private void OnGamePadAxisDown_DropDownClosed(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        {
+            if (GamePad.UseAxisForDirectionalNavigation)
+            {
+                if (GamePad.DirectionalNavigationAxisX == axis || GamePad.DirectionalNavigationAxisY == axis)
+                {
+                    var direction = device.GetJoystickDirectionFromAxis(axis);
+                    switch (direction)
+                    {
+                        case GamePadJoystickDirection.Up:
+                        case GamePadJoystickDirection.Left:
+                            MoveItemSelection(-1);
+                            break;
+
+                        case GamePadJoystickDirection.Down:
+                        case GamePadJoystickDirection.Right:
+                            MoveItemSelection(1);
+                            break;
+                    }
+                    data.Handled = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles <see cref="GamePad.ButtonDownEvent"/> when the drop down is open.
+        /// </summary>
+        private void OnGamePadButtonDown_DropDownOpen(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        {
+            if (GamePad.ConfirmButton == button)
+            {
+                SelectFocusedItem();
+                IsDropDownOpen = false;
+                data.Handled = true;
+            }
+            else if (GamePad.CancelButton == button)
+            {
+                IsDropDownOpen = false;
+                data.Handled = true;
+            }
+            else if (GamePad.TabButton == button)
+            {
+                PerformTabNavigation(Key.Tab, ModifierKeys.None);
+                data.Handled = true;
+            }
+            else if (GamePad.ShiftTabButton == button)
+            {
+                PerformTabNavigation(Key.Tab, ModifierKeys.Shift);
+                data.Handled = true;
+            }
+            else
+            {
+                if (!GamePad.UseAxisForDirectionalNavigation)
+                {
+                    switch (button)
+                    {
+                        case GamePadButton.DPadUp:
+                            MoveItemSelection(-1);
+                            break;
+
+                        case GamePadButton.DPadDown:
+                            MoveItemSelection(1);
+                            break;
+
+                        case GamePadButton.DPadLeft:
+                            if (PART_ScrollViewer != null)
+                            {
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                            }
+                            break;
+
+                        case GamePadButton.DPadRight:
+                            if (PART_ScrollViewer != null)
+                            {
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                            }
+                            break;
+                    }
+                    data.Handled = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles <see cref="GamePad.ButtonDownEvent"/> when the drop down is closed.
+        /// </summary>
+        private void OnGamePadButtonDown_DropDownClosed(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        {
+            if (GamePad.ConfirmButton == button)
+            {
+                IsDropDownOpen = true;
+                data.Handled = true;
+            }
+            else
+            {
+                if (!GamePad.UseAxisForDirectionalNavigation)
+                {
+                    switch (button)
+                    {
+                        case GamePadButton.DPadUp:
+                        case GamePadButton.DPadLeft:
+                            MoveItemSelection(-1);
+                            break;
+
+                        case GamePadButton.DPadDown:
+                        case GamePadButton.DPadRight:
+                            MoveItemSelection(1);
+                            break;
+                    }
+                    data.Handled = true;
+                }
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="DropDownOpened"/> event.
         /// </summary>
         protected virtual void OnDropDownOpened()
@@ -484,7 +670,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 comboBox.UpdateVisualState();
                 comboBox.OnDropDownClosed();
 
-                if (comboBox.PART_Popup != null && comboBox.PART_Popup.Root.IsKeyboardFocusWithin)
+                var focused = Keyboard.GetFocusedElement(comboBox.View) as DependencyObject;
+                if (focused != null && ItemsControlFromItemContainer(focused) == comboBox)
                     comboBox.Focus();
             }
         }
@@ -711,7 +898,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         // Component references.
         private readonly UIElement PART_Arrow = null;
         private readonly ScrollViewer PART_ScrollViewer = null;
-        private readonly Popup PART_Popup = null;
         private readonly VisualClone visualClone;
 
         // State values.

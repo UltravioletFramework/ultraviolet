@@ -251,7 +251,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         {
                             PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
                         }
-                        data.Handled = true;
                         break;
 
                     case GamePadJoystickDirection.Right:
@@ -259,7 +258,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         {
                             PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
                         }
-                        data.Handled = true;
                         break;
 
                     case GamePadJoystickDirection.Up:
@@ -267,7 +265,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         {
                             MoveSelectedItem(FocusNavigationDirection.Up);
                         }
-                        data.Handled = true;
                         break;
 
                     case GamePadJoystickDirection.Down:
@@ -275,9 +272,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         {
                             MoveSelectedItem(FocusNavigationDirection.Down);
                         }
-                        data.Handled = true;
                         break;
                 }
+                data.Handled = true;
             }
             
             base.OnGamePadAxisDown(device, axis, value, repeat, ref data);
