@@ -41,6 +41,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure, HandleTextChanged));
 
         /// <inheritdoc/>
+        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+            UpdateTextParserResult();
+
+            base.OnViewChanged(oldView, newView);
+        }
+
+        /// <inheritdoc/>
         protected override void OnInitialized()
         {
             UpdateTextParserResult();
@@ -62,6 +70,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
+            if (Name == "bar")
+                Console.WriteLine();
+
             UpdateTextLayoutResult(availableSize);
 
             var sizePixels = new Size2D(textLayoutResult.ActualWidth, textLayoutResult.ActualHeight);
@@ -95,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             textParserResult.Clear();
 
             var text = Text;
-            if (!String.IsNullOrEmpty(text))
+            if (!String.IsNullOrEmpty(text) && View != null)
             {
                 View.Resources.TextRenderer.Parse(text, textParserResult);
             }

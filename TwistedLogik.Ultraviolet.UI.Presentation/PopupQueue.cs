@@ -97,11 +97,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             for (var current = queue.Last; current != null; current = current.Previous)
             {
-                var match = current.Value.PopupHitTest(point);
-                if (match != null)
+                if (current.Value.IsHitTestVisible)
                 {
-                    popup = current.Value;
-                    return match;
+                    var match = current.Value.PopupHitTest(point);
+                    if (match != null)
+                    {
+                        popup = current.Value;
+                        return match;
+                    }
                 }
             }
 

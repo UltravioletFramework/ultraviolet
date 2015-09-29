@@ -956,3 +956,18 @@ HScrollBar > Grid > Track > .track-thumb > Grid > .button-background
 {
 	margin: 0 2 0 0;
 }
+
+ToolTip
+{
+	padding: 4;
+}
+
+.tooltip-background
+{
+	fill-color: #ff808080;
+}
+
+.tooltip-border
+{
+	border-color: #ff000000;
+}

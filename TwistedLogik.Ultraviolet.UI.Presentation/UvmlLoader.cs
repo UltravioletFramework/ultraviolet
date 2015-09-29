@@ -703,7 +703,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 // the object using a default constructor. Nucleus will also handle this case.
                 if (element.Elements().Any() || element.IsEmpty)
                 {
-                    PopulateElementPropertyWithSerializer(uiElement, propName, element, context);
+                    if (propType.IsAssignableFrom(typeof(UIElement)) && element.Elements().Count() == 1)
+                    {
+                        var childXml     = element.Elements().Single();
+                        var childElement = InstantiateElement(uv, null, childXml, context);
+                        var childTree    = BuildObjectTree(uv, childXml, childElement, context);
+                        PopulateObjectTree(uv, childTree, context);
+
+                        SetPropertyValue(uv, uiElement, propName, childElement);
+                    }
+                    else
+                    {
+                        PopulateElementPropertyWithSerializer(uiElement, propName, element, context);
+                    }
                     continue;
                 }
 
