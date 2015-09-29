@@ -175,6 +175,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             base.OnKeyUp(device, key, ref data);
         }
 
+        /// <inheritdoc/>
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        {
+            if (GamePad.ConfirmButton == button && !repeat)
+            {
+                HandlePressed();
+                data.Handled = true;
+            }
+            base.OnGamePadButtonDown(device, button, repeat, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnGamePadButtonUp(GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        {
+            if (GamePad.ConfirmButton == button)
+            {
+                HandleReleased(false);
+                data.Handled = true;
+            }
+            base.OnGamePadButtonUp(device, button, ref data);
+        }
+
         /// <summary>
         /// Raises the <see cref="Click"/> event.
         /// </summary>
