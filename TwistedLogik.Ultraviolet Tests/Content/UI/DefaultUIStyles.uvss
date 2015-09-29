@@ -61,7 +61,7 @@ ToggleButton > Grid > .button-background
 RepeatButton > Grid > .button-focus-image,
 ToggleButton > Grid > .button-focus-image
 {
-	margin: 8;
+	margin: 4;
 	source-color: #ff000000;
 	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
@@ -153,6 +153,12 @@ RadioButton > Grid > .toggle-content
 	margin: 4 0 0 0;
 }
 
+RadioButton > Grid > .toggle-focus-image
+{
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
+}
+
 CheckBox
 {
 	transition (checkstate, unchecked): checkbox-to-unchecked;
@@ -176,6 +182,12 @@ CheckBox
 CheckBox > Grid > .toggle-content
 {
 	margin: 4 0 0 0;
+}
+
+CheckBox > Grid > .toggle-focus-image
+{
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 .radiobutton-component > .toggle-box
@@ -307,6 +319,12 @@ TextBox
 	source-image: #Global:Textures:DefaultUI 73 404	 62 31 4 4 4 4;
 }
 
+.textbox-focus-border
+{
+	margin: 2 2 2 3;
+	border-color: #ff5b9bd1;
+}
+
 @textbox-to-focused
 {
 	target (.textbox-focus)
@@ -383,6 +401,12 @@ VSlider .slider-track-background
 	width: 10;
 }
 
+HSlider .slider-focus-image, VSlider .slider-focus-image
+{
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
+}
+
 Track Button, Track RepeatButton
 {
 	trigger event Mouse.mouse-enter { }
@@ -444,10 +468,29 @@ ListBoxItem
 	source-image: #Global:Textures:DefaultUI 154 458 14 25;
 }
 
+.listboxitem-focus-image
+{
+	margin: 2;
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
+}
+
 ComboBox
 {
 	transition (opened, open): combobox-to-open;
 	transition (opened, closed): combobox-to-closed;
+}
+
+.combobox-focus-image
+{
+	margin: 4;
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
+}
+
+.comboboxitem-focus-border
+{
+	border-color: #ff5b9bd1;
 }
 
 ComboBoxItem
@@ -460,6 +503,13 @@ ComboBoxItem
 	{
 		play-sfx { #Global:SoundEffects:Click1 }
 	}
+}
+
+.comboboxitem-focus-image
+{
+	margin: 2;
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 ComboBox > Grid > ContentPresenter
@@ -545,6 +595,11 @@ NumericUpDown
 {
 	min-width: 64;
 	min-height: 32;
+}
+
+NumericUpDown > Grid > TextBox > Grid > .textbox-focus-border
+{
+	margin: 2 2 18 3;
 }
 
 .updown-button

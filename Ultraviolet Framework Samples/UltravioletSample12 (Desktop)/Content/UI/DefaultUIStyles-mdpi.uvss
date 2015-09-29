@@ -61,7 +61,7 @@ ToggleButton > Grid > .button-background
 RepeatButton > Grid > .button-focus-image,
 ToggleButton > Grid > .button-focus-image
 {
-	margin: 8;
+	margin: 4;
 	source-color: #ff000000;
 	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
 }
@@ -153,6 +153,12 @@ RadioButton > Grid > .toggle-content
 	margin: 4 0 0 0;
 }
 
+RadioButton > Grid > .toggle-focus-image
+{
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+}
+
 CheckBox
 {
 	transition (checkstate, unchecked): checkbox-to-unchecked;
@@ -176,6 +182,12 @@ CheckBox
 CheckBox > Grid > .toggle-content
 {
 	margin: 4 0 0 0;
+}
+
+CheckBox > Grid > .toggle-focus-image
+{
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
 }
 
 .radiobutton-component > .toggle-box
@@ -307,6 +319,12 @@ TextBox
 	source-image: #Global:Textures:DefaultUI 144 788 124 62 8 8 8 8;
 }
 
+.textbox-focus-border
+{
+	margin: 2 2 2 3;
+	border-color: #ff5b9bd1;
+}
+
 @textbox-to-focused
 {
 	target (.textbox-focus)
@@ -383,6 +401,12 @@ VSlider .slider-track-background
 	width: 10;
 }
 
+HSlider .slider-focus-image, VSlider .slider-focus-image
+{
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+}
+
 Track Button, Track RepeatButton
 {
 	trigger event Mouse.mouse-enter { }
@@ -442,6 +466,13 @@ ListBoxItem
 .listboxitem-highlight
 {
 	source-image: #Global:Textures:DefaultUI 431 632 30 50;
+}
+
+.listboxitem-focus-image
+{
+	margin: 2;
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
 }
 
 ComboBox
@@ -541,10 +572,22 @@ ComboBox > Grid > ContentPresenter
 	source-image: #Global:Textures:DefaultUI 431 632 30 50;
 }
 
+.comboboxitem-focus-image
+{
+	margin: 2;
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+}
+
 NumericUpDown
 {
 	min-width: 64;
 	min-height: 32;
+}
+
+NumericUpDown > Grid > TextBox > Grid > .textbox-focus-border
+{
+	margin: 2 2 18 3;
 }
 
 .updown-button
