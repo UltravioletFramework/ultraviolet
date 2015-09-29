@@ -319,6 +319,12 @@ TextBox
 	source-image: #Global:Textures:DefaultUI 73 404	 62 31 4 4 4 4;
 }
 
+.textbox-focus-border
+{
+	margin: 2 2 2 3;
+	border-color: #ff5b9bd1;
+}
+
 @textbox-to-focused
 {
 	target (.textbox-focus)
@@ -589,6 +595,11 @@ NumericUpDown
 {
 	min-width: 64;
 	min-height: 32;
+}
+
+NumericUpDown > Grid > TextBox > Grid > .textbox-focus-border
+{
+	margin: 2 2 18 3;
 }
 
 .updown-button

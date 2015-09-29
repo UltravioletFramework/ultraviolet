@@ -62,6 +62,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        {
+            if (PART_Input != null)
+            {
+                PART_Input.Focus();
+            }
+            base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
+        }
+
+        /// <inheritdoc/>
         protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
             if (PART_Input != null)
@@ -89,6 +99,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             base.OnKeyDown(device, key, modifiers, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        {
+            if (GamePad.UseAxisForDirectionalNavigation)
+            {
+                var direction = device.GetJoystickDirectionFromAxis(axis);
+                switch (direction)
+                {
+                    case GamePadJoystickDirection.Up:
+                        IncreaseSmall();
+                        data.Handled = true;
+                        break;
+
+                    case GamePadJoystickDirection.Down:
+                        DecreaseSmall();
+                        data.Handled = true;
+                        break;
+                }
+            }
+
+            base.OnGamePadAxisDown(device, axis, value, repeat, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        {
+            if (!GamePad.UseAxisForDirectionalNavigation)
+            {
+                switch (button)
+                {
+                    case GamePadButton.DPadUp:
+                        IncreaseSmall();
+                        data.Handled = true;
+                        break;
+
+                    case GamePadButton.DPadDown:
+                        DecreaseSmall();
+                        data.Handled = true;
+                        break;
+                }
+            }
+            base.OnGamePadButtonDown(device, button, repeat, ref data);
         }
 
         /// <summary>

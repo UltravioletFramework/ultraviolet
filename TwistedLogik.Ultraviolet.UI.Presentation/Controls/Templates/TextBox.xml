@@ -16,10 +16,12 @@
                                Margin="{{Padding}}"
                                Updating="PresenterUpdate"
                                Drawing="PresenterDraw"/>
-      <Image Class="textbox-focus"
-             HorizontalAlignment="Stretch"
-             VerticalAlignment="Stretch"
+      <Image Class="textbox-focus-image"
+             Opacity="{{IsKeyboardFocused ? 1 : 0}}"
              IsHitTestVisible="false"/>
+      <Border Class="textbox-focus-border"
+              Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+              IsHitTestVisible="false"/>
 
     </Grid>
   </View>
