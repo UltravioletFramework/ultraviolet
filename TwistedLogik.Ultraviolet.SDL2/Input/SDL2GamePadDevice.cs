@@ -705,6 +705,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// </summary>
         /// <param name="axis">The axis to evaluate.</param>
         /// <param name="previousValue">The last known value of the axis.</param>
+        /// <param name="currentValue">The current value of the axis.</param>
         private void CheckForAxisPresses(GamePadAxis axis, Single previousValue, Single currentValue)
         {
             var axisIndex = (int)axis;

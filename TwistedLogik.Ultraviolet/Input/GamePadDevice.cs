@@ -250,6 +250,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Raises the <see cref="ButtonPressed"/> event.
         /// </summary>
         /// <param name="button">The <see cref="GamePadButton"/> value that represents the button that was pressed.</param>
+        /// <param name="repeat">A value indicating whether this is a repeated button press.</param>
         protected virtual void OnButtonPressed(GamePadButton button, Boolean repeat)
         {
             var temp = ButtonPressed;
@@ -291,6 +292,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <param name="axis">The <see cref="GamePadAxis"/> that was pressed.</param>
         /// <param name="value">The axis' value.</param>
+        /// <param name="repeat">A value indicating whether this is a repeated axis press.</param>
         protected virtual void OnAxisPressed(GamePadAxis axis, Single value, Boolean repeat)
         {
             var temp = AxisPressed;
