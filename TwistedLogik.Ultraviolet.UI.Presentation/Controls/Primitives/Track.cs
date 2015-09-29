@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             { 
                 HorizontalAlignment = HorizontalAlignment.Stretch, 
                 VerticalAlignment   = VerticalAlignment.Stretch,
-                Focusable = false,
+                Focusable           = false,
             };
             this.Thumb.Classes.Add("track-thumb");
             this.Thumb.ChangeLogicalAndVisualParents(this, this);
@@ -32,7 +32,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             { 
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment   = VerticalAlignment.Stretch,
-                Opacity             = 0
+                Opacity             = 0,
+                Focusable           = false,
             };
             this.IncreaseButton.Classes.Add("track-increase");
             this.IncreaseButton.Click += HandleIncreaseButtonClick;
@@ -43,7 +44,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             { 
                 HorizontalAlignment = HorizontalAlignment.Stretch, 
                 VerticalAlignment   = VerticalAlignment.Stretch,
-                Opacity             = 0
+                Opacity             = 0,
+                Focusable           = false,
             };
             this.DecreaseButton.Classes.Add("track-decrease");
             this.DecreaseButton.Click += HandleDecreaseButtonClick;

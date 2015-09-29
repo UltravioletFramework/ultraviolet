@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
@@ -8,6 +10,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     [UvmlKnownType]
     public abstract class SliderBase : RangeBase
     {
+        /// <summary>
+        /// Initializes the <see cref="SliderBase"/> class.
+        /// </summary>
+        static SliderBase()
+        {
+            EventManager.RegisterClassHandler(typeof(SliderBase), Mouse.PreviewMouseDownEvent, new UpfMouseButtonEventHandler(HandlePreviewMouseDown));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SliderBase"/> class.
         /// </summary>
@@ -41,6 +51,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 PART_Track.InvalidateArrange();
             }
             base.OnValueChanged();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Mouse.PreviewMouseDownEvent"/>.
+        /// </summary>
+        private static void HandlePreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        {
+            if (button == MouseButton.Left)
+            {
+                ((SliderBase)element).Focus();
+            }
         }
 
         // Component references.
