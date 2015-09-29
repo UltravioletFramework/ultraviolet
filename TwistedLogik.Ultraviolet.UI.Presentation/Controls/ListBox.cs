@@ -158,9 +158,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
-            var selection = Keyboard.GetFocusedElement(View) as UIElement;
-            var navdir = (FocusNavigationDirection?)null;
-
             switch (key)
             {
                 case Key.Space:
@@ -168,8 +165,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     if (key == Key.Return && !GetValue<Boolean>(KeyboardNavigation.AcceptsReturnProperty))
                         break;
 
-                    var listBoxItem = data.OriginalSource as ListBoxItem;
-                    if (listBoxItem != null && ItemsControlFromItemContainer(listBoxItem) == this)
+                    var listBoxItem = ItemsControlUtil.FindContainer<ListBoxItem>(this, data.OriginalSource);
+                    if (listBoxItem != null)
                     {
                         HandleItemClicked(listBoxItem);
                         data.Handled = true;
@@ -180,7 +177,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.Right:
                     if (PART_ScrollViewer != null)
                     {
-                        PART_ScrollViewer.HandleKeyScrolling(device, key, modifiers, ref data);
+                        PART_ScrollViewer.HandleKeyScrolling(key, modifiers, ref data);
                     }
                     data.Handled = true;
                     break;
@@ -188,7 +185,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.Up:
                     if (SelectionMode == SelectionMode.Single)
                     {
-                        navdir = FocusNavigationDirection.Up;
+                        MoveSelectedItem(FocusNavigationDirection.Up, modifiers);
                     }
                     data.Handled = true;
                     break;
@@ -196,7 +193,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.Down:
                     if (SelectionMode == SelectionMode.Single)
                     {
-                        navdir = FocusNavigationDirection.Down;
+                        MoveSelectedItem(FocusNavigationDirection.Down, modifiers);
                     }
                     data.Handled = true;
                     break;
@@ -238,22 +235,110 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
             }
 
-            if (navdir.HasValue)
+            base.OnKeyDown(device, key, modifiers, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        {
+            if (GamePad.UseAxisForDirectionalNavigation && (axis == GamePad.DirectionalNavigationAxisX || axis == GamePad.DirectionalNavigationAxisY))
             {
-                if (selection != null && selection.MoveFocus(navdir.Value))
+                var direction = device.GetJoystickDirectionFromAxis(axis);
+                switch (direction)
                 {
-                    var focused = Keyboard.GetFocusedElement(View) as UIElement;
-                    var listBoxItem = ItemsControlUtil.FindContainer<ListBoxItem>(this, focused);
-                    if (listBoxItem != null && (modifiers & ModifierKeys.Control) != ModifierKeys.Control)
+                    case GamePadJoystickDirection.Left:
+                        if (PART_ScrollViewer != null)
+                        {
+                            PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                        }
+                        data.Handled = true;
+                        break;
+
+                    case GamePadJoystickDirection.Right:
+                        if (PART_ScrollViewer != null)
+                        {
+                            PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                        }
+                        data.Handled = true;
+                        break;
+
+                    case GamePadJoystickDirection.Up:
+                        if (SelectionMode == SelectionMode.Single)
+                        {
+                            MoveSelectedItem(FocusNavigationDirection.Up);
+                        }
+                        data.Handled = true;
+                        break;
+
+                    case GamePadJoystickDirection.Down:
+                        if (SelectionMode == SelectionMode.Single)
+                        {
+                            MoveSelectedItem(FocusNavigationDirection.Down);
+                        }
+                        data.Handled = true;
+                        break;
+                }
+            }
+            
+            base.OnGamePadAxisDown(device, axis, value, repeat, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        {
+            if (GamePad.ConfirmButton == button)
+            {
+                var listBoxItem = ItemsControlUtil.FindContainer<ListBoxItem>(this, data.OriginalSource);
+                if (listBoxItem != null)
+                {
+                    HandleItemClicked(listBoxItem);
+                    data.Handled = true;
+                }
+            }
+            else
+            {
+                if (!GamePad.UseAxisForDirectionalNavigation)
+                {
+                    switch (button)
                     {
-                        HandleItemClickedAndScrollIntoView(listBoxItem);
+                        case GamePadButton.DPadLeft:
+                            if (PART_ScrollViewer != null)
+                            {
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                            }
+                            data.Handled = true;
+                            break;
+
+                        case GamePadButton.DPadRight:
+                            if (PART_ScrollViewer != null)
+                            {
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                            }
+                            data.Handled = true;
+                            break;
+
+                        case GamePadButton.DPadUp:
+                            if (SelectionMode == SelectionMode.Single)
+                            {
+                                MoveSelectedItem(FocusNavigationDirection.Up);
+                            }
+                            data.Handled = true;
+                            break;
+
+                        case GamePadButton.DPadDown:
+                            if (SelectionMode == SelectionMode.Single)
+                            {
+                                MoveSelectedItem(FocusNavigationDirection.Down);
+                            }
+                            data.Handled = true;
+                            break;
                     }
                 }
             }
 
-            base.OnKeyDown(device, key, modifiers, ref data);
+            base.OnGamePadButtonDown(device, button, repeat, ref data);
         }
-        
+
         /// <summary>
         /// Selects the specified item and scrolls it into view.
         /// </summary>
@@ -309,6 +394,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             else
             {
                 SelectItem(item);
+            }
+        }
+
+        /// <summary>
+        /// Moves the selected item in the specified direction.
+        /// </summary>
+        private void MoveSelectedItem(FocusNavigationDirection direction, ModifierKeys modifiers = ModifierKeys.None)
+        {
+            var selection = Keyboard.GetFocusedElement(View) as UIElement;
+            if (selection != null && selection.MoveFocus(direction))
+            {
+                var focused = Keyboard.GetFocusedElement(View) as UIElement;
+                var listBoxItem = ItemsControlUtil.FindContainer<ListBoxItem>(this, focused);
+                if (listBoxItem != null && (modifiers & ModifierKeys.Control) != ModifierKeys.Control)
+                {
+                    HandleItemClickedAndScrollIntoView(listBoxItem);
+                }
             }
         }
 

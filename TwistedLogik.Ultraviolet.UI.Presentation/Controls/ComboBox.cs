@@ -367,7 +367,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.Right:
                     if (PART_ScrollViewer != null)
                     {
-                        PART_ScrollViewer.HandleKeyScrolling(device, key, modifiers, ref data);
+                        PART_ScrollViewer.HandleKeyScrolling(key, modifiers, ref data);
                     }
                     data.Handled = true;
                     break;

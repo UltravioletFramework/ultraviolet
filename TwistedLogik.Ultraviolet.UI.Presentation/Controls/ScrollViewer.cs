@@ -155,11 +155,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Scrolls in response to keyboard input.
         /// </summary>
-        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
         /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        internal void HandleKeyScrolling(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        internal void HandleKeyScrolling(Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
             switch (key)
             {
@@ -313,7 +312,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var templatedParent = TemplatedParent as Control;
             if (templatedParent == null || !templatedParent.HandlesScrolling)
             {
-                HandleKeyScrolling(device, key, modifiers, ref data);
+                HandleKeyScrolling(key, modifiers, ref data);
             }
 
             base.OnKeyDown(device, key, modifiers, ref data);
