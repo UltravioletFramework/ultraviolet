@@ -8,6 +8,7 @@ using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
@@ -43,6 +44,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.layoutRoot.View = this;
             this.layoutRoot.CacheLayoutParameters();
             this.layoutRoot.InvalidateMeasure();
+
+            this.tooltipPopup = new Popup(uv, null);
+            this.tooltipPopup.Child = new ToolTip(uv, null);
 
             HookKeyboardEvents();
             HookMouseEvents();
@@ -179,7 +183,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.BeginUpdate();
 
-            HandleUserInput();
+            HandleUserInput(time);
             layoutRoot.Update(time);
 
             upf.PerformanceStats.EndUpdate();
@@ -1071,7 +1075,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Handles user input by raising input messages on the elements in the view.
         /// </summary>
-        private void HandleUserInput()
+        private void HandleUserInput(UltravioletTime time)
         {
             if (Ultraviolet.GetInput().IsKeyboardSupported())
             {
@@ -1079,7 +1083,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             if (Ultraviolet.GetInput().IsMouseSupported())
             {
-                HandleMouseInput();
+                HandleMouseInput(time);
             }
         }
 
@@ -1094,9 +1098,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Handles mouse input.
         /// </summary>
-        private void HandleMouseInput()
+        private void HandleMouseInput(UltravioletTime time)
         {
             UpdateElementUnderMouse();
+            UpdateToolTip(time);
         }
 
         /// <summary>
@@ -1194,13 +1199,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var mousePos  = Display.PixelsToDips(mouse.Position);
             var mouseView = mouse.Window == Window ? this : null;
 
+            elementHoveringPrev        = elementHovering;
             elementUnderMousePopupPrev = elementUnderMousePopup;
             elementUnderMousePrev      = elementUnderMouse;
             elementUnderMouse          = (mouseView == null) ? null : mouseView.HitTestInternal((Point2)mousePos, out elementUnderMousePopup) as UIElement;
             elementUnderMouse          = RedirectMouseInput(elementUnderMouse);
 
-            if (!IsElementValidForInput(elementUnderMouse))
+            var justDisabled = false;
+            if (!IsElementValidForInput(elementUnderMouse, out justDisabled))
+            {
+                if (justDisabled)
+                {
+                    elementHovering = elementUnderMouse;
+                }
                 elementUnderMouse = null;
+            }
+            else
+            {
+                elementHovering = elementUnderMouse;
+            }
 
             if (mouseCaptureMode != CaptureMode.None && !IsElementValidForInput(elementWithMouseCapture))
                 ReleaseMouse();
@@ -1225,6 +1242,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 UpdateIsMouseOver(elementUnderMouse as UIElement);
+            }
+        }
+
+        /// <summary>
+        /// Updates the display state of the view's tooltip.
+        /// </summary>
+        private void UpdateToolTip(UltravioletTime time)
+        {
+            if (elementHovering != elementHoveringPrev)
+            {
+                tooltipTimer = 0.0;                
+            }
+            else
+            {
+                var uiElementHovering = elementHovering as UIElement;
+                if (uiElementHovering != null && (uiElementHovering.IsEnabled || ToolTipService.GetShowOnDisabled(uiElementHovering)))
+                {
+                    var tooltipInitialDelay = ToolTipService.GetInitialShowDelay(uiElementHovering);
+                    if (tooltipTimer < tooltipInitialDelay)
+                    {
+                        tooltipTimer += time.ElapsedTime.TotalMilliseconds;
+                        if (tooltipTimer >= tooltipInitialDelay)
+                        {
+                            // todo 
+                        }
+                    }
+                }
             }
         }
 
@@ -1264,11 +1308,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><c>true</c> if the specified element is valid for input; otherwise, <c>false</c>.</returns>
         private Boolean IsElementValidForInput(IInputElement element)
         {
+            Boolean justDisabled;
+            return IsElementValidForInput(element, out justDisabled);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified element is valid for receiving input.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <param name="justDisabled">A value indicating whether the element is otherwise valid, but disabled.</param>
+        /// <returns><c>true</c> if the specified element is valid for input; otherwise, <c>false</c>.</returns>
+        private Boolean IsElementValidForInput(IInputElement element, out Boolean justDisabled)
+        {
+            justDisabled = false;
+
             var uiElement = element as UIElement;
             if (uiElement == null)
                 return false;
 
-            return uiElement.IsHitTestVisible && uiElement.IsVisible && uiElement.IsEnabled;
+            if (uiElement.IsHitTestVisible && uiElement.IsVisible)
+            {
+                if (uiElement.IsEnabled)
+                {
+                    return true;
+                }
+                else
+                {
+                    justDisabled = true;
+                    return false;
+                }
+            }
+            return false;
         }
 
         /// <summary>
@@ -1812,6 +1882,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly PopupQueue popupQueue = new PopupQueue();
         private Popup elementUnderMousePopupPrev;
         private Popup elementUnderMousePopup;
+
+        // Tooltip handling.
+        private IInputElement elementHoveringPrev;
+        private IInputElement elementHovering;
+        private Popup tooltipPopup;
+        private Double tooltipTimer;
 
         // View model wrapping.
         private String viewModelWrapperName;

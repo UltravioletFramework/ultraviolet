@@ -384,13 +384,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the InitialShowDelay attached property.
         /// </summary>
-        public static readonly DependencyProperty InitialShowDelayProperty = DependencyProperty.Register("InitialShowDelay", typeof(Int32), typeof(ToolTipService),
+        public static readonly DependencyProperty InitialShowDelayProperty = DependencyProperty.Register("InitialShowDelay", typeof(Double), typeof(ToolTipService),
             new PropertyMetadata<Double>(SystemParameters.MouseHoverTime, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the BetweenShowDelay attached property.
         /// </summary>
-        public static readonly DependencyProperty BetweenShowDelayProperty = DependencyProperty.Register("BetweenShowDelay", typeof(Int32), typeof(ToolTipService),
+        public static readonly DependencyProperty BetweenShowDelayProperty = DependencyProperty.Register("BetweenShowDelay", typeof(Double), typeof(ToolTipService),
             new PropertyMetadata<Double>(100.0, PropertyMetadataOptions.None));
         
         /// <summary>
