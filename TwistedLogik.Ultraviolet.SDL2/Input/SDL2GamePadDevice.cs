@@ -137,7 +137,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            lastUpdateTime = time.ElapsedTime.TotalMilliseconds;
+            lastUpdateTime = time.TotalTime.TotalMilliseconds;
 
             var leftJoystickVector = LeftJoystickVector;
             if (leftJoystickVector != leftJoystickVectorPrev)
@@ -753,7 +753,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     continue;
 
                 var delay = repeatingAxis[i] ? PressRepeatDelay : PressRepeatInitialDelay;
-                if (delay >= time.TotalTime.TotalMilliseconds - timeLastPressAxis[i])
+                if (delay <= time.TotalTime.TotalMilliseconds - timeLastPressAxis[i])
                 {
                     repeatingAxis[i] = true;
                     timeLastPressAxis[i] = time.TotalTime.TotalMilliseconds;
@@ -770,7 +770,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     continue;
 
                 var delay = repeatingButton[i] ? PressRepeatDelay : PressRepeatInitialDelay;
-                if (delay >= time.TotalTime.TotalMilliseconds - timeLastPressButton[i])
+                if (delay <= time.TotalTime.TotalMilliseconds - timeLastPressButton[i])
                 {
                     repeatingButton[i] = true;
                     timeLastPressButton[i] = time.TotalTime.TotalMilliseconds;
