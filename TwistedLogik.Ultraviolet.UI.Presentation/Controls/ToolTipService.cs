@@ -372,37 +372,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the HorizontalOffset attached property.
         /// </summary>
-        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(Double), typeof(ToolTipService),
+        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.RegisterAttached("HorizontalOffset", typeof(Double), typeof(ToolTipService),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
         
         /// <summary>
         /// Identifies the VerticalOffset attached property.
         /// </summary>
-        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", typeof(Double), typeof(ToolTipService),
+        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.RegisterAttached("VerticalOffset", typeof(Double), typeof(ToolTipService),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the InitialShowDelay attached property.
         /// </summary>
-        public static readonly DependencyProperty InitialShowDelayProperty = DependencyProperty.Register("InitialShowDelay", typeof(Double), typeof(ToolTipService),
+        public static readonly DependencyProperty InitialShowDelayProperty = DependencyProperty.RegisterAttached("InitialShowDelay", typeof(Double), typeof(ToolTipService),
             new PropertyMetadata<Double>(SystemParameters.MouseHoverTime, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the BetweenShowDelay attached property.
         /// </summary>
-        public static readonly DependencyProperty BetweenShowDelayProperty = DependencyProperty.Register("BetweenShowDelay", typeof(Double), typeof(ToolTipService),
+        public static readonly DependencyProperty BetweenShowDelayProperty = DependencyProperty.RegisterAttached("BetweenShowDelay", typeof(Double), typeof(ToolTipService),
             new PropertyMetadata<Double>(100.0, PropertyMetadataOptions.None));
         
         /// <summary>
         /// Identifies the ShowDuration attached property.
         /// </summary>
-        public static readonly DependencyProperty ShowDurationProperty = DependencyProperty.Register("ShowDuration", typeof(Double), typeof(ToolTipService),
+        public static readonly DependencyProperty ShowDurationProperty = DependencyProperty.RegisterAttached("ShowDuration", typeof(Double), typeof(ToolTipService),
             new PropertyMetadata<Double>(5000.0, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the IsEnabled attached property.
         /// </summary>
-        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(Boolean), typeof(ToolTipService),
+        public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(Boolean), typeof(ToolTipService),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, PropertyMetadataOptions.None));
 
         /// <summary>
@@ -419,37 +419,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the HasDropShadow attached property.
         /// </summary>
-        public static readonly DependencyProperty HasDropShadowProperty = DependencyProperty.Register("HasDropShadow", typeof(Boolean), typeof(ToolTipService),
+        public static readonly DependencyProperty HasDropShadowProperty = DependencyProperty.RegisterAttached("HasDropShadow", typeof(Boolean), typeof(ToolTipService),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
         
         /// <summary>
         /// Identifies the ShowOnDisabled attached property.
         /// </summary>
-        public static readonly DependencyProperty ShowOnDisabledProperty = DependencyProperty.Register("ShowOnDisabled", typeof(Boolean), typeof(ToolTipService),
+        public static readonly DependencyProperty ShowOnDisabledProperty = DependencyProperty.RegisterAttached("ShowOnDisabled", typeof(Boolean), typeof(ToolTipService),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the Placement attached property.
         /// </summary>
-        public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register("Placement", typeof(PlacementMode), typeof(ToolTipService),
+        public static readonly DependencyProperty PlacementProperty = DependencyProperty.RegisterAttached("Placement", typeof(PlacementMode), typeof(ToolTipService),
             new PropertyMetadata<PlacementMode>(PlacementMode.Mouse, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the PlacementRectangle attached property.
         /// </summary>
-        public static readonly DependencyProperty PlacementRectangleProperty = DependencyProperty.Register("PlacementRectangle", typeof(RectangleD), typeof(ToolTipService),
+        public static readonly DependencyProperty PlacementRectangleProperty = DependencyProperty.RegisterAttached("PlacementRectangle", typeof(RectangleD), typeof(ToolTipService),
             new PropertyMetadata<RectangleD>(RectangleD.Empty, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the PlacementTarget attached property.
         /// </summary>
-        public static readonly DependencyProperty PlacementTargetProperty = DependencyProperty.Register("PlacementTarget", typeof(UIElement), typeof(ToolTipService),
+        public static readonly DependencyProperty PlacementTargetProperty = DependencyProperty.RegisterAttached("PlacementTarget", typeof(UIElement), typeof(ToolTipService),
             new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the ToolTip attached property.
         /// </summary>
-        public static readonly DependencyProperty ToolTipProperty = DependencyProperty.Register("ToolTip", typeof(Object), typeof(ToolTipService),
+        public static readonly DependencyProperty ToolTipProperty = DependencyProperty.RegisterAttached("ToolTip", typeof(Object), typeof(ToolTipService),
             new PropertyMetadata<Object>(null, PropertyMetadataOptions.None));
 
         /// <summary>
