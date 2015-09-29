@@ -123,6 +123,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBox.OffsetPosition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBoxContentPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBoxInsertionMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ToolTipService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\UIElementCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\UIElementCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\UserControl.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPerformanceStats.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SystemParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPool.IPooledObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPoolList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPool.PooledObject.cs" />

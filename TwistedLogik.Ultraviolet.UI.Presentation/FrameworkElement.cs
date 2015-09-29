@@ -21,6 +21,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         static FrameworkElement()
         {
             EventManager.RegisterClassHandler(typeof(FrameworkElement), Keyboard.PreviewGotKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(HandlePreviewGotKeyboardFocus));
+
+            EventManager.RegisterClassHandler(typeof(FrameworkElement), ToolTipService.ToolTipOpeningEvent, new UpfToolTipEventHandler(OnToolTipOpeningProxy));
+            EventManager.RegisterClassHandler(typeof(FrameworkElement), ToolTipService.ToolTipClosingEvent, new UpfToolTipEventHandler(OnToolTipClosingProxy));
         }
 
         /// <summary>
@@ -279,6 +282,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <remarks>The styling name of this dependency property is 'layout-transform'.</remarks>
         public static readonly DependencyProperty LayoutTransformProperty = DependencyProperty.Register("LayoutTransform",
             typeof(Transform), typeof(FrameworkElement), new PropertyMetadata<Transform>(Transform.Identity, PropertyMetadataOptions.AffectsMeasure, HandleLayoutTransformChanged));
+
+        /// <summary>
+        /// Identifies the ToolTip dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ToolTipProperty = ToolTipService.ToolTipProperty.AddOwner(typeof(FrameworkElement));
 
         /// <summary>
         /// Occurs when the element is loaded.
@@ -780,6 +788,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the control's tool tip is opened.
+        /// </summary>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnToolTipOpening(ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Occurs when the control's tool tip is closed.
+        /// </summary>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnToolTipClosing(ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
         /// Gets the element's collection of visual state groups.
         /// </summary>
         protected VisualStateGroupCollection VisualStateGroups
@@ -946,6 +972,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (FrameworkElement)dobj;
             element.OnTransformChanged();
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnToolTipOpening"/> method.
+        /// </summary>
+        private static void OnToolTipOpeningProxy(DependencyObject dobj, ref RoutedEventData data)
+        {
+            ((FrameworkElement)dobj).OnToolTipOpening(ref data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnToolTipClosing"/> method.
+        /// </summary>
+        private static void OnToolTipClosingProxy(DependencyObject dobj, ref RoutedEventData data)
+        {
+            ((FrameworkElement)dobj).OnToolTipClosing(ref data);
         }
 
         // Standard visual state groups.
