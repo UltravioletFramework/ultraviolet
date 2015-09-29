@@ -264,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     {
                         return GamePadJoystickDirection.Right;
                     }
-                    break;
+                    return GamePadJoystickDirection.None;
 
                 case GamePadAxis.LeftJoystickY:
                     if (leftJoystickY <= -thresholdValue)
@@ -275,7 +275,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     {
                         return GamePadJoystickDirection.Down;
                     }
-                    break;
+                    return GamePadJoystickDirection.None;
 
                 case GamePadAxis.RightJoystickX:
                     if (rightJoystickX <= -thresholdValue)
@@ -286,7 +286,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     {
                         return GamePadJoystickDirection.Right;
                     }
-                    break;
+                    return GamePadJoystickDirection.None;
 
                 case GamePadAxis.RightJoystickY:
                     if (rightJoystickY <= -thresholdValue)
@@ -297,7 +297,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     {
                         return GamePadJoystickDirection.Down;
                     }
-                    break;
+                    return GamePadJoystickDirection.None;
             }
 
             throw new ArgumentException("axis");
