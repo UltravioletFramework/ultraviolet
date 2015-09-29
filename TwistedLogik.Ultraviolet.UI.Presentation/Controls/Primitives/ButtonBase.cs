@@ -156,7 +156,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
-            if (key == Key.Return)
+            if (key == Key.Return || key == Key.Space)
             {
                 HandlePressed();
                 data.Handled = true;
@@ -167,7 +167,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void OnKeyUp(KeyboardDevice device, Key key, ref RoutedEventData data)
         {
-            if (key == Key.Return)
+            if (key == Key.Return || key == Key.Space)
             {
                 HandleReleased(false);
                 data.Handled = true;
