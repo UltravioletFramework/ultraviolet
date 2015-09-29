@@ -12,6 +12,7 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -31,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (uv.IsRunningInServiceMode)
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
-
+            
             this.combinedStyleSheet = new UvssDocument(null, null);
 
             this.namescope      = new Namescope();
@@ -44,10 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.layoutRoot.View = this;
             this.layoutRoot.CacheLayoutParameters();
             this.layoutRoot.InvalidateMeasure();
-
-            this.tooltipPopup = new Popup(uv, null);
-            this.tooltipPopup.Child = new ToolTip(uv, null);
-
+            
             HookKeyboardEvents();
             HookMouseEvents();
             HookTouchEvents();
@@ -1199,28 +1197,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var mousePos  = Display.PixelsToDips(mouse.Position);
             var mouseView = mouse.Window == Window ? this : null;
 
-            elementHoveringPrev        = elementHovering;
             elementUnderMousePopupPrev = elementUnderMousePopup;
             elementUnderMousePrev      = elementUnderMouse;
             elementUnderMouse          = (mouseView == null) ? null : mouseView.HitTestInternal((Point2)mousePos, out elementUnderMousePopup) as UIElement;
             elementUnderMouse          = RedirectMouseInput(elementUnderMouse);
 
-            var justDisabled = false;
-            if (!IsElementValidForInput(elementUnderMouse, out justDisabled))
-            {
-                if (justDisabled)
-                {
-                    elementHovering = elementUnderMouse;
-                }
+            elementUnderMouseBeforeValidityCheckPrev = elementUnderMouseBeforeValidityCheck;
+            elementUnderMouseBeforeValidityCheck     = elementUnderMouse;
+
+            if (!IsElementValidForInput(elementUnderMouse))
                 elementUnderMouse = null;
-            }
-            else
-            {
-                elementHovering = elementUnderMouse;
-            }
 
             if (mouseCaptureMode != CaptureMode.None && !IsElementValidForInput(elementWithMouseCapture))
                 ReleaseMouse();
+
+            // Handle tooltips.
+            if (elementUnderMouseBeforeValidityCheck != elementUnderMouseBeforeValidityCheckPrev)
+            {
+                toolTipElementPrev = toolTipElement;
+                toolTipElement = GetToolTipElement(elementUnderMouseBeforeValidityCheck);
+
+                if (toolTipElement != toolTipElementPrev)
+                    HandleToolTipElementChanged(toolTipElementPrev as UIElement, toolTipElement as UIElement);
+            }
 
             // Handle mouse motion events
             if (elementUnderMouse != elementUnderMousePrev)
@@ -1250,25 +1249,100 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void UpdateToolTip(UltravioletTime time)
         {
-            if (elementHovering != elementHoveringPrev)
+            if (toolTipElement != null)
             {
-                tooltipTimer = 0.0;                
-            }
-            else
-            {
-                var uiElementHovering = elementHovering as UIElement;
-                if (uiElementHovering != null && (uiElementHovering.IsEnabled || ToolTipService.GetShowOnDisabled(uiElementHovering)))
+                if (layoutRoot.ToolTipPopup.IsOpen)
                 {
-                    var tooltipInitialDelay = ToolTipService.GetInitialShowDelay(uiElementHovering);
-                    if (tooltipTimer < tooltipInitialDelay)
-                    {
-                        tooltipTimer += time.ElapsedTime.TotalMilliseconds;
-                        if (tooltipTimer >= tooltipInitialDelay)
-                        {
-                            // todo 
-                        }
-                    }
+                    UpdateToolTip_PopupIsOpen(time, toolTipElement);
                 }
+                else
+                {
+                    UpdateToolTip_PopupIsClosed(time, toolTipElement);
+                }
+            }
+
+            if (!layoutRoot.ToolTipPopup.IsOpen)
+                timeSinceToolTipWasClosed += time.ElapsedTime.TotalMilliseconds;
+        }
+        
+        /// <summary>
+        /// Updates the state of the view's tooltip while the tooltip popup is closed.
+        /// </summary>
+        private void UpdateToolTip_PopupIsClosed(UltravioletTime time, UIElement element)
+        {
+            if (toolTipWasShownForCurrentElement)
+                return;
+
+            if (!element.IsEnabled && !ToolTipService.GetShowOnDisabled(element))
+                return;
+
+            var content = ToolTipService.GetToolTip(element);
+            if (content == null)
+                return;
+
+            var tooltipInitialDelay = ToolTipService.GetInitialShowDelay(element);
+            if (timeUntilToolTipWillOpen < tooltipInitialDelay)
+            {
+                timeUntilToolTipWillOpen += time.ElapsedTime.TotalMilliseconds;
+                if (timeUntilToolTipWillOpen >= tooltipInitialDelay)
+                {
+                    ShowToolTipForElement(element);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates the state of the view's tooltip while the tooltip popup is open.
+        /// </summary>
+        private void UpdateToolTip_PopupIsOpen(UltravioletTime time, UIElement element)
+        {
+            timeSinceToolTipWasOpened += time.ElapsedTime.TotalMilliseconds;
+            if (timeSinceToolTipWasOpened >= ToolTipService.GetShowDuration(element))
+            {
+                CloseToolTip();
+            }
+        }
+
+        /// <summary>
+        /// Called when the tooltip element changes due to mouse movement.
+        /// </summary>
+        /// <param name="uiToolTipElementOld">The previous tooltip element.</param>
+        /// <param name="uiToolTipElementNew">The new tooltip element.</param>
+        private void HandleToolTipElementChanged(UIElement uiToolTipElementOld, UIElement uiToolTipElementNew)
+        {
+            toolTipWasShownForCurrentElement = false;
+
+            if (uiToolTipElementNew != null && timeSinceToolTipWasClosed <= ToolTipService.GetBetweenShowDelay(uiToolTipElementNew))
+            {
+                if (ShowToolTipForElement(uiToolTipElementNew))
+                    return;
+            }
+
+            timeUntilToolTipWillOpen = 0.0;
+            timeSinceToolTipWasClosed = 0.0;
+
+            layoutRoot.ToolTip.Content = null;
+            layoutRoot.ToolTipPopup.IsOpen = false;
+        }
+
+        /// <summary>
+        /// Closes the tooltip popup, if it is open.
+        /// </summary>
+        private void CloseToolTip()
+        {
+            if (!layoutRoot.ToolTipPopup.IsOpen)
+                return;
+
+            layoutRoot.ToolTipPopup.IsOpen = false;
+
+            timeSinceToolTipWasOpened = 0.0;
+            timeSinceToolTipWasClosed = 0.0;
+            timeUntilToolTipWillOpen = 0.0;
+
+            if (toolTipElementDisplayed != null)
+            {
+                toolTipElementDisplayed.SetValue(ToolTipService.IsOpenPropertyKey, false);
+                toolTipElementDisplayed = null;
             }
         }
 
@@ -1300,7 +1374,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return (Point2D)Display.PixelsToDips(new Vector2(xPixels, yPixels));
         }
-
+        
         /// <summary>
         /// Gets a value indicating whether the specified element is valid for receiving input.
         /// </summary>
@@ -1308,37 +1382,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><c>true</c> if the specified element is valid for input; otherwise, <c>false</c>.</returns>
         private Boolean IsElementValidForInput(IInputElement element)
         {
-            Boolean justDisabled;
-            return IsElementValidForInput(element, out justDisabled);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified element is valid for receiving input.
-        /// </summary>
-        /// <param name="element">The element to evaluate.</param>
-        /// <param name="justDisabled">A value indicating whether the element is otherwise valid, but disabled.</param>
-        /// <returns><c>true</c> if the specified element is valid for input; otherwise, <c>false</c>.</returns>
-        private Boolean IsElementValidForInput(IInputElement element, out Boolean justDisabled)
-        {
-            justDisabled = false;
-
             var uiElement = element as UIElement;
             if (uiElement == null)
                 return false;
 
-            if (uiElement.IsHitTestVisible && uiElement.IsVisible)
-            {
-                if (uiElement.IsEnabled)
-                {
-                    return true;
-                }
-                else
-                {
-                    justDisabled = true;
-                    return false;
-                }
-            }
-            return false;
+            return uiElement.IsHitTestVisible && uiElement.IsVisible && element.IsEnabled;
         }
 
         /// <summary>
@@ -1368,6 +1416,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 current = VisualTreeHelper.GetParent(current) ?? LogicalTreeHelper.GetParent(current);
             }
             return false;
+        }
+
+        /// <summary>
+        /// Displays the specified element's tooltip.
+        /// </summary>
+        /// <param name="uiToolTipElement">The element for which to display a tooltip.</param>
+        /// <returns><c>true</c> if the element's tooltip was displayed; otherwise, <c>false</c>.</returns>
+        private Boolean ShowToolTipForElement(UIElement uiToolTipElement)
+        {
+            var content = ToolTipService.GetToolTip(uiToolTipElement);
+            if (content == null)
+                return false;
+
+            layoutRoot.ToolTip.Content                 = content;
+            layoutRoot.ToolTipPopup.VerticalOffset     = ToolTipService.GetVerticalOffset(uiToolTipElement);
+            layoutRoot.ToolTipPopup.HorizontalOffset   = ToolTipService.GetHorizontalOffset(uiToolTipElement);
+            layoutRoot.ToolTipPopup.Placement          = ToolTipService.GetPlacement(uiToolTipElement);
+            layoutRoot.ToolTipPopup.PlacementRectangle = ToolTipService.GetPlacementRectangle(uiToolTipElement);
+            layoutRoot.ToolTipPopup.PlacementTarget    = ToolTipService.GetPlacementTarget(uiToolTipElement);
+            layoutRoot.ToolTipPopup.Effect             = ToolTipService.GetHasDropShadow(uiToolTipElement) ? toolTipDropShadow : null;
+            layoutRoot.ToolTipPopup.IsOpen             = false;
+            layoutRoot.ToolTipPopup.IsOpen             = true;
+
+            timeSinceToolTipWasClosed = 0.0;
+            timeSinceToolTipWasOpened = 0.0;
+            timeUntilToolTipWillOpen  = 0.0;
+
+            toolTipElementDisplayed = uiToolTipElement;
+            toolTipElementDisplayed.SetValue(ToolTipService.IsOpenPropertyKey, true);
+
+            toolTipWasShownForCurrentElement = true;
+
+            return true;
         }
 
         /// <summary>
@@ -1403,6 +1484,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return recipient;
 
             return IsMouseCapturedByElement(recipient) ? recipient : elementWithMouseCapture;
+        }
+        
+        /// <summary>
+        /// Navigates the visual tree starting at the specified element until an element is found which has a valid tooltip.
+        /// </summary>
+        /// <param name="start">The element at which to start navigating the visual tree.</param>
+        /// <returns>The nearest ancestor of <paramref name="start"/> which has a valid tooltip that is ready for display.</returns>
+        private UIElement GetToolTipElement(IInputElement start)
+        {
+            var current = start as DependencyObject;
+            while (current != null)
+            {
+                var uiElement = current as UIElement;
+                if (uiElement != null && ToolTipService.GetToolTip(current) != null && (uiElement.IsEnabled || ToolTipService.GetShowOnDisabled(uiElement)))
+                {
+                    return uiElement;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+            return null;
         }
 
         /// <summary>
@@ -1531,6 +1632,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (window != Window)
                 return;
+
+            CloseToolTip();
 
             UpdateElementUnderMouse();
 
@@ -1871,6 +1974,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly DrawingContext drawingContext;
         private IInputElement elementUnderMousePrev;
         private IInputElement elementUnderMouse;
+        private IInputElement elementUnderMouseBeforeValidityCheckPrev;
+        private IInputElement elementUnderMouseBeforeValidityCheck;
         private IInputElement elementWithMouseCapture;
         private IInputElement elementWithFocus;
         private IInputElement elementLastTouched;
@@ -1884,10 +1989,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Popup elementUnderMousePopup;
 
         // Tooltip handling.
-        private IInputElement elementHoveringPrev;
-        private IInputElement elementHovering;
-        private Popup tooltipPopup;
-        private Double tooltipTimer;
+        private readonly DropShadowEffect toolTipDropShadow = new DropShadowEffect();
+        private UIElement toolTipElementDisplayed;
+        private UIElement toolTipElementPrev;
+        private UIElement toolTipElement;
+        private Double timeUntilToolTipWillOpen;
+        private Double timeSinceToolTipWasOpened;
+        private Double timeSinceToolTipWasClosed;
+        private Boolean toolTipWasShownForCurrentElement;
 
         // View model wrapping.
         private String viewModelWrapperName;

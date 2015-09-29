@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             return wrapper.HasDefinedValue;
         }
-
+        
         /// <summary>
         /// Immediately digests the specified dependency property, but only if it is currently data bound.
         /// </summary>
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             OnDigesting(time);
         }
-
+        
         /// <summary>
         /// Initializes the object's dependency properties.
         /// </summary>

@@ -117,6 +117,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
+            DigestDataBoundContentProperties();
+
             var content = Content;
             if (content == null)
                 return Size2D.Zero;
@@ -159,6 +161,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
+            DigestDataBoundContentProperties();
+
             var content = Content;
 
             var contentElement = content as UIElement;
@@ -366,6 +370,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
                 }
             }
+        }
+
+        /// <summary>
+        /// Digests any content-related dependency properties on this control which are currently data bound.
+        /// </summary>
+        private void DigestDataBoundContentProperties()
+        {
+            DigestImmediatelyIfDataBound(ContentSourceProperty);
+            DigestImmediatelyIfDataBound(ContentStringFormatProperty);
+            DigestImmediatelyIfDataBound(ContentProperty);
         }
 
         // Cached parser/layout results for content text.

@@ -2,20 +2,34 @@
 <UIPanelDefinition>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-      <Button Width="128" Height="128" Click="HandleClick1"/>
-      <StackPanel Name="sp1" Orientation="Vertical" FocusManager.IsFocusScope="true">
-        <TextBox Width="200"/>
-        <TextBox Width="200"/>
-        <TextBox Width="200"/>
-      </StackPanel>
-      <StackPanel Name="sp2" Orientation="Vertical" FocusManager.IsFocusScope="true">
-        <TextBox Width="200"/>
-        <TextBox Width="200"/>
-        <TextBox Width="200"/>
-      </StackPanel>
-      <Button Width="128" Height="128" Click="HandleClick2"/>
-    </StackPanel>
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="0" Content="A"/>
+
+      <Button Width="128" Height="128" Grid.Row="0" Grid.Column="1" Content="B"/>
+      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="1" Content="C" ToolTipService.ToolTip="Hello, world!"/>
+      <Button Width="128" Height="128" Grid.Row="2" Grid.Column="1" Content="D">
+        <Button.ToolTip>
+          <StackPanel Orientation="Horizontal">
+            <Button>X</Button>
+            <TextBlock VerticalAlignment="Center" Margin="8 0 0 0">This is an example</TextBlock>
+          </StackPanel>
+        </Button.ToolTip>
+      </Button>
+
+      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="2" Content="E"/>
+
+    </Grid>
         
   </View>
 </UIPanelDefinition>

@@ -147,6 +147,11 @@
       <Link>Resources\Content\Fonts\SegoeUITexture.png</Link>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ToolTip.xml">
+      <Link>Controls\Templates\ToolTip.xml</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

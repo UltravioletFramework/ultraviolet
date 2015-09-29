@@ -469,7 +469,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 root.IsOpen = true;
 
                 root.HookIntoVisualTree();
-
+                
                 popup.UpdatePopupStyle(popup.MostRecentStyleSheet);
                 popup.UpdatePopupMeasure();
                 popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);

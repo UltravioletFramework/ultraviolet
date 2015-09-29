@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a control which displays information about another control when it is hovered over with the mouse.
     /// </summary>
-    [UvmlKnownType]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.ToolTip.xml")]
     public class ToolTip : ContentControl
     {
         /// <summary>
@@ -18,5 +18,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
 
         }
+
+        public ContentPresenter ContentPresenter
+        {
+            get { return PART_ContentPresenter; }
+        }
+
+        private readonly ContentPresenter PART_ContentPresenter = null;
     }
 }

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="tooltip-component">
+
+      <Rectangle Class="tooltip-background"/>
+      <Border Class="tooltip-border">
+
+        <ContentPresenter Name="PART_ContentPresenter" Class="tooltip-content"
+                          HorizontalAlignment="{{HorizontalContentAlignment}}"
+                          VerticalAlignment="{{VerticalContentAlignment}}"
+                          Margin="{{Padding}}"/>
+
+      </Border>
+
+    </Grid>
+  </View>
+</ComponentTemplate>
