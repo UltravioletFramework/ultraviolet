@@ -32,17 +32,28 @@ namespace UvDebugSandbox.UI.Screens
     public class DebugViewModel
     {
         private PresentationFoundationView view;
+        private UvDebugScreen owner;
 
-        public DebugViewModel(PresentationFoundationView view)
+        public DebugViewModel(PresentationFoundationView view, UvDebugScreen owner)
         {
             Enable = true;
             this.view = view;
+            this.owner = owner;
         }
 
         public void PrintVisualTree(UIElement element)
         {
             var root = view.LayoutRoot;
             PrintVisualTreeNode(root, 0);
+        }
+
+        public void Test(DependencyObject dobj, ref RoutedEventData data)
+        {
+            var modal = owner.UIScreenService.Get<DebugModal>();
+            Modal.ShowDialog(modal).ContinueWith(task =>
+            {
+                System.Diagnostics.Debug.WriteLine("continuing...");
+            });
         }
 
         private void PrintVisualTreeNode(DependencyObject dobj, Int32 indentLayer)
@@ -147,7 +158,7 @@ namespace UvDebugSandbox.UI.Screens
         {
             if (View != null)
             {
-                View.SetViewModel(new DebugViewModel((PresentationFoundationView)View));
+                View.SetViewModel(new DebugViewModel((PresentationFoundationView)View, this));
             }
             base.OnViewLoaded();
         }

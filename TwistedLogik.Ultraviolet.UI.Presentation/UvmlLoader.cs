@@ -34,9 +34,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Loads an instance of the <see cref="PresentationFoundationView"/> from an XML node.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="uiPanel">The <see cref="UIPanel"/> that is creating the panel.</param>
         /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view.</param>
         /// <returns>The <see cref="PresentationFoundationView"/> that was loaded from the specified XML element.</returns>
-        public static PresentationFoundationView Load(UltravioletContext uv, UIPanelDefinition uiPanelDefinition)
+        public static PresentationFoundationView Load(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition)
         {
             Contract.Require(uv, "uv");
             Contract.Require(uiPanelDefinition, "uiPanelDefinition");
@@ -59,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 viewModelType = viewModelWrapperType;
             }
 
-            var view    = new PresentationFoundationView(uv, viewModelType);
+            var view    = new PresentationFoundationView(uv, uiPanel, viewModelType);
             var context = new InstantiationContext(uv, view, viewModelType);
             
             var root = view.LayoutRoot;

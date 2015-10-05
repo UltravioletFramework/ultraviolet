@@ -84,6 +84,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             typeof(UpfRoutedEventHandler), typeof(ButtonBase));
 
         /// <inheritdoc/>
+        protected override void UpdateOverride(UltravioletTime time)
+        {
+            if (View != null && !View.IsInputEnabledAndAllowed)
+            {
+                IsPressed = false;
+            }
+            base.UpdateOverride(time);
+        }
+
+        /// <inheritdoc/>
         protected override void OnIsMouseOverChanged()
         {
             UpdateCommonState();

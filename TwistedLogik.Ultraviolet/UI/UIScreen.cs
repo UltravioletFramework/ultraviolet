@@ -180,14 +180,33 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <inheritdoc/>
+        internal override void HandleOpening()
+        {
+            if (View != null)
+            {
+                View.OnOpening();
+            }
+            base.HandleOpening();
+        }
+
+        /// <inheritdoc/>
         internal override void HandleOpened()
         {
             if (View != null)
             {
                 View.OnOpened();
             }
-            Focus();
             base.HandleOpened();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnClosing()
+        {
+            if (View != null)
+            {
+                View.OnClosing();
+            }
+            base.OnClosing();
         }
 
         /// <inheritdoc/>
@@ -197,7 +216,6 @@ namespace TwistedLogik.Ultraviolet.UI
             {
                 View.OnClosed();
             }
-            Blur();
             base.HandleClosed();
         }
 

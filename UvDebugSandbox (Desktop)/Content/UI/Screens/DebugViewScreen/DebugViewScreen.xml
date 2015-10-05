@@ -14,7 +14,7 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
-      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="0" Content="A"/>
+      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="0" Content="A" Click="Test"/>
 
       <Button Width="128" Height="128" Grid.Row="0" Grid.Column="1" Content="B"/>
       <Button Width="128" Height="128" Grid.Row="1" Grid.Column="1" Content="C" ToolTipService.ToolTip="Hello, world!"/>
