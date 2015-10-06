@@ -184,6 +184,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             if (View != null)
             {
+                UpdateViewPosition();
                 View.OnOpening();
             }
             base.HandleOpening();

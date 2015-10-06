@@ -15,6 +15,69 @@ View
 	blank-image: #Global:Textures:DefaultUI 137 459 14 23;
 }
 
+#dialog
+{
+	trigger event view.opening
+	{
+		play-storyboard { dialog-opening }
+	}
+
+	trigger event view.closing
+	{
+		play-storyboard { dialog-closing }
+	}
+}
+
+@dialog-opening
+{
+	target Rectangle (*:storyboard-root > #dialog-background)
+	{
+		animation opacity
+		{
+			keyframe   0 { 0.00 }
+			keyframe 250 { 0.75 }
+		}
+	}
+	target Control (*:storyboard-root > #dialog-box)
+	{
+		animation opacity
+		{
+			keyframe   0 { 0.0 }
+			keyframe 250 { 1.0 }
+		}
+		animation margin
+		{
+			keyframe   0                { 0 250 0 0 }
+			keyframe 500 ease-out-cubic { 0   0 0 0 }
+		}
+	}
+}
+
+@dialog-closing
+{
+	target Rectangle (*:storyboard-root > #dialog-background)
+	{
+		animation opacity
+		{
+			keyframe   0 { 0.75 }
+			keyframe 250 { 0.00 }
+		}
+	}
+	target Control (*:storyboard-root > #dialog-box)
+	{
+		animation opacity
+		{
+			keyframe   0 { 1.0 }
+			keyframe 250 { 0.0 }
+		}
+		animation margin
+		{
+			keyframe   0 { 0   0 0 0 }
+			keyframe 500 ease-out-cubic { 0 500 0 0 }
+		}
+	}
+}
+
 Button, RepeatButton, ToggleButton
 {
 	padding: 10 7 10 9;

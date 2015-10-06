@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (Window == null)
                 return;
 
-            EnsureIsLoaded();
+            EnsureIsLoaded();            
 
             var previousSpriteBatchState = spriteBatch.GetCurrentState();
             spriteBatch.End();
@@ -719,24 +719,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected override void OnOpening()
         {
+            EnsureIsLoaded();
 
+            RaiseViewLifecycleEvent(layoutRoot, View.Opening);
         }
 
         /// <inheritdoc/>
         protected override void OnOpened()
         {
-
+            RaiseViewLifecycleEvent(layoutRoot, View.Opened);
         }
 
         /// <inheritdoc/>
         protected override void OnClosing()
         {
-
+            RaiseViewLifecycleEvent(layoutRoot, View.Closing);
         }
 
         /// <inheritdoc/>
         protected override void OnClosed()
         {
+            RaiseViewLifecycleEvent(layoutRoot, View.Closed);
+
             layoutRoot.Cleanup();
         }
 
@@ -818,6 +822,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     DrawDiagnosticsVisuals((DrawingContext)state, child);
                 });
             }
+        }
+
+        /// <summary>
+        /// Raises the specified view lifecycle event for an object and all of its descendants.
+        /// </summary>
+        /// <param name="dobj">The dependency object for which to raise the event.</param>
+        /// <param name="evt">The routed event to raise for the object.</param>
+        private static void RaiseViewLifecycleEvent(DependencyObject dobj, RoutedEvent evt)
+        {
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(evt);
+            var evtData = new RoutedEventData(dobj);
+            evtDelegate(dobj, ref evtData);
+
+            VisualTreeHelper.ForEachChild(dobj, evt, (child, state) =>
+            {
+                RaiseViewLifecycleEvent(child, (RoutedEvent)state);
+            });
         }
 
         /// <summary>

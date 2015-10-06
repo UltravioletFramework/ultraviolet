@@ -336,6 +336,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvmlName.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VerticalAlignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)View.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visibility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VisualState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VisualStateGroup.cs" />

@@ -544,11 +544,22 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         protected void UpdateView(UltravioletTime time)
         {
-            if (view != null && State == UIPanelState.Open)
+            if (view != null && State != UIPanelState.Closed)
+            {
+                UpdateViewPosition();
+                view.Update(time);
+            }
+        }
+
+        /// <summary>
+        /// Updates the position of the panel's view.
+        /// </summary>
+        protected void UpdateViewPosition()
+        {
+            if (view != null && State != UIPanelState.Closed)
             {
                 var area = new Rectangle(X, Y, Width, Height);
                 view.SetViewPosition(Window, area);
-                view.Update(time);
             }
         }
 

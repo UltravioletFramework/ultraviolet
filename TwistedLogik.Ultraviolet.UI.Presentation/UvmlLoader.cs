@@ -75,6 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             
             var objectTree = BuildObjectTree(uv, xml, rootGrid, context);
             PopulateObjectTree(uv, objectTree, context);
+            root.EndInit();
 
             return view;
         }

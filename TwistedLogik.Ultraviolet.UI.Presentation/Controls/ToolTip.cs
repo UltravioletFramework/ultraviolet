@@ -18,12 +18,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
 
         }
-
-        public ContentPresenter ContentPresenter
-        {
-            get { return PART_ContentPresenter; }
-        }
-
-        private readonly ContentPresenter PART_ContentPresenter = null;
     }
 }
