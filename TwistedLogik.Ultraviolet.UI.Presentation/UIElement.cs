@@ -2487,6 +2487,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Performs layout rounding on the specified margin.
+        /// </summary>
+        /// <param name="thickness">The margin to round.</param>
+        /// <returns>The rounded margin.</returns>
+        protected Thickness PerformLayoutRounding(Thickness thickness)
+        {
+            var left = PerformLayoutRounding(thickness.Left);
+            var top = PerformLayoutRounding(thickness.Top);
+            var right = PerformLayoutRounding(thickness.Right);
+            var bottom = PerformLayoutRounding(thickness.Bottom);
+            return new Thickness(left, top, right, bottom);
+        }
+
+        /// <summary>
         /// Checks to see whether this element, or any of its ancestors, is transformed.
         /// </summary>
         /// <returns></returns>
