@@ -69,10 +69,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             root.Child = rootAdornerDecorator;
             rootAdornerDecorator.BeginInit();
 
-            var rootGrid = new Grid(uv, null);
+            var rootGrid = (Grid)InstantiateElement(uv, null, xml, context, "Grid");
             rootAdornerDecorator.Child = rootGrid;
-            rootGrid.BeginInit();
-
+            
             var objectTree = BuildObjectTree(uv, xml, rootGrid, context);
             PopulateObjectTree(uv, objectTree, context);
 
@@ -236,15 +235,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="parent">The element which is the element's parent.</param>
         /// <param name="xmlElement">The XML element that defines the element to instantiate.</param>
         /// <param name="context">The current instantiation context.</param>
+        /// <param name="typeNameOverride">A type name to use in place of the XML element's name.</param>
         /// <returns>The interface element that was instantiated.</returns>
-        private static UIElement InstantiateElement(UltravioletContext uv, UIElement parent, XElement xmlElement, InstantiationContext context)
+        private static UIElement InstantiateElement(UltravioletContext uv, UIElement parent, XElement xmlElement, InstantiationContext context, String typeNameOverride = null)
         {
             var instance  = default(UIElement);            
             var name      = xmlElement.AttributeValueString("Name");
             var classes   = xmlElement.AttributeValueString("Class");
             var classList = (classes == null) ? Enumerable.Empty<String>() : classes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var typeName = xmlElement.Name.LocalName;
+            var typeName = typeNameOverride ?? xmlElement.Name.LocalName;
             if (String.Equals("ItemsPanel", typeName, StringComparison.InvariantCulture))
             {
                 var itemPresenterControl = context.TemplatedParent as ItemsControl;
