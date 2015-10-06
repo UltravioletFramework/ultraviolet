@@ -106,9 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 var position = Display.DipsToPixels(UntransformedAbsolutePosition + ContentOffset);
                 var positionRounded = dc.IsTransformed ? (Vector2)position : (Vector2)(Point2)position;
-
-                var color = containingControl.Foreground * dc.Opacity;
-                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutResult, positionRounded, color);
+                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutResult, positionRounded, containingControl.Foreground * dc.Opacity);
             }
 
             base.DrawOverride(time, dc);

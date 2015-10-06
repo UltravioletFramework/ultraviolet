@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            DrawBlank(dc, null, FillColor * dc.Opacity);
+            DrawBlank(dc, null, FillColor);
 
             base.DrawOverride(time, dc);
         }

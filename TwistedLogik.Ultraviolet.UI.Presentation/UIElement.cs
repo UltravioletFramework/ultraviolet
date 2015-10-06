@@ -180,7 +180,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     dc.PushDrawingOutOfBand();
                 }
 
-                dc.PushOpacity(Opacity);
+                var forceFullOpacity = false;
+
+                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+                if (upf.OutOfBandRenderer.IsDrawingRenderTargetFor(this))
+                    forceFullOpacity = true;
+
+                if (!forceFullOpacity)
+                    dc.PushOpacity(Opacity);
 
                 var hasNonIdentityTransform = HasNonIdentityTransform;
                 if (hasNonIdentityTransform)
@@ -241,7 +248,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     dc.PopTransform();
                 }
 
-                dc.PopOpacity();
+                if (!forceFullOpacity)
+                    dc.PopOpacity();
 
                 if (drawingOutOfBand)
                     dc.PopDrawingOutOfBand();
@@ -2341,17 +2349,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected void DrawImage(DrawingContext dc, SourcedImage image, RectangleD? area, Color color, Boolean drawBlank = false)
         {
             Contract.Require(dc, "dc");
-
-            var colorPlusOpacity = color * dc.Opacity;
-            if (colorPlusOpacity.Equals(Color.Transparent))
-                return;
-
+            
             var imageResource = image.Resource;
             if (imageResource == null || !imageResource.IsLoaded)
             {
                 if (drawBlank)
                 {
-                    DrawBlank(dc, area, colorPlusOpacity);
+                    DrawBlank(dc, area, color);
                 }
             }
             else
@@ -2379,7 +2383,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 dc.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
-                    colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
+                    color, 0f, origin, SpriteEffects.None, 0f);
             }
         }
 
@@ -2393,11 +2397,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected void DrawBlank(DrawingContext dc, RectangleD? area, Color color)
         {
             Contract.Require(dc, "dc");
-
-            var colorPlusOpacity = color * dc.Opacity;
-            if (colorPlusOpacity.Equals(Color.Transparent))
-                return;
-
+            
             var imageResource = View.Resources.BlankImage.Resource;
             if (imageResource == null || !imageResource.IsLoaded)
                 return;
@@ -2425,7 +2425,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             dc.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
-                colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
+                color, 0f, origin, SpriteEffects.None, 0f);
         }
 
         /// <summary>
@@ -2658,6 +2658,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var target = upf.OutOfBandRenderer.GetElementRenderTarget(element);
                 if (target != null && target.IsReady)
                 {
+                    dc.PushOpacity(Opacity);
+
                     var effect = element.Effect;
                     if (effect != null)
                     {
@@ -2667,6 +2669,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     {
                         Effect.DrawRenderTargetAtVisualBounds(dc, element, target);
                     }
+
+                    dc.PopOpacity();
                 }
                 return true;
             }
