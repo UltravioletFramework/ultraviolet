@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\TestRunnerController.cs" />
     <Compile Include="Models\TestRunCreationResponse.cs" />
     <Compile Include="Models\TestRun.cs" />
