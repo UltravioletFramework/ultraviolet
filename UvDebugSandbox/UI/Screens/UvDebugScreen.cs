@@ -28,7 +28,7 @@ namespace UvDebugSandbox.UI.Screens
         /// <summary>
         /// Gets the screen service which created this screen.
         /// </summary>
-        protected UIScreenService UIScreenService
+        public UIScreenService UIScreenService
         {
             get { return uiScreenService; }
         }

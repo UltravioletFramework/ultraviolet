@@ -148,7 +148,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
 
             var shadowTexture = target.Next.ColorBuffer;
-            dc.Draw(shadowTexture, positionRounded + shadowVector, null, Color * Opacity, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            dc.Draw(shadowTexture, positionRounded + shadowVector, null, Color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             
             dc.End();
 

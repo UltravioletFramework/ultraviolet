@@ -129,9 +129,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             if (part.HasID)
             {
                 var frameworkElement = element as FrameworkElement;
-                if (frameworkElement != null)
+                if (frameworkElement != null && !String.IsNullOrWhiteSpace(frameworkElement.Name))
                 {
-                    if (frameworkElement.TemplatedParent != null && !String.Equals(frameworkElement.Name, part.ID, StringComparison.OrdinalIgnoreCase))
+                    if (!String.Equals(frameworkElement.Name, part.ID, StringComparison.OrdinalIgnoreCase))
                         return false;
                 }
                 else

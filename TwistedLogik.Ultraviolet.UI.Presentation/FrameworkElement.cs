@@ -513,7 +513,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected sealed override Size2D MeasureCore(Size2D availableSize)
         {
-            var margin = this.Margin;
+            var margin = PerformLayoutRounding(this.Margin);
 
             var xMargin = margin.Left + margin.Right;
             var yMargin = margin.Top + margin.Bottom;
@@ -571,7 +571,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected sealed override Size2D ArrangeCore(RectangleD finalRect, ArrangeOptions options)
         {
-            var margin = Margin;
+            var margin = PerformLayoutRounding(Margin);
 
             var finalRectSansMargins = finalRect - margin;
 

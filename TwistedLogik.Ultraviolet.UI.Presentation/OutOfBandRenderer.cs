@@ -28,6 +28,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the renderer is currently drawing the out-of-band render targets for
+        /// the specified element.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the render targets for the specified element are currently being drawn; otherwise, <c>false</c>.</returns>
+        public Boolean IsDrawingRenderTargetFor(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            return element == currentElementDrawingRenderTarget;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified element is rendered out-of-band.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
@@ -242,9 +255,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         rtarget.VisualTransform = visualTransformOfElement;
                         rtarget.VisualBounds = bounds;
 
+                        currentElementDrawingRenderTarget = element;
+
                         element.DrawToRenderTarget(time, drawingContext, rtarget.RenderTarget,
                             (popup != null) ? popup.PopupTransformToViewInDevicePixels : visualTransformOfParent);
-                        
+
                         if (rtarget.Next != null)
                         {
                             if (effect != null)
@@ -252,6 +267,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                                 effect.DrawRenderTargets(drawingContext, element, rtarget);
                             }
                         }
+
+                        currentElementDrawingRenderTarget = null;
 
                         rtarget.IsReady = true;
                     }
@@ -263,6 +280,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             finally
             {
                 isDrawingRenderTargets = false;
+                currentElementDrawingRenderTarget = null;
             }
             deadReferences.Clear();
 
@@ -406,5 +424,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // Property values.
         private bool isDrawingRenderTargets;
+
+        // State values.
+        private UIElement currentElementDrawingRenderTarget;
     }
 }

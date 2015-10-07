@@ -531,7 +531,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var textCenteringOffset = (Display.DipsToPixels(textArea.Height) - Font.Resource.Value.Regular.LineSpacing) / 2.0;
                 var textPos             = Display.DipsToPixels(textArea.Location + new Point2D(textScrollOffset, textCenteringOffset));
                 var textPosRounded      = dc.IsTransformed ? (Vector2)textPos : (Vector2)(Point2)textPos;
-                dc.DrawString(Font.Resource.Value.Regular, Text, textPosRounded, Foreground * dc.Opacity);
+                dc.DrawString(Font.Resource.Value.Regular, Text, textPosRounded, Foreground);
             }
 
             DrawTextCaret(dc);

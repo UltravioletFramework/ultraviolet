@@ -26,9 +26,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="PresentationFoundationView"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="panel">The panel that is creating the view.</param>
         /// <param name="viewModelType">The view's associated model type.</param>
-        public PresentationFoundationView(UltravioletContext uv, Type viewModelType)
-            : base(uv, viewModelType)
+        public PresentationFoundationView(UltravioletContext uv, UIPanel panel, Type viewModelType)
+            : base(uv, panel, viewModelType)
         {
             if (uv.IsRunningInServiceMode)
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
@@ -56,17 +57,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Loads an instance of <see cref="PresentationFoundationView"/> from an XML document.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="uiPanel">The <see cref="UIPanel"/> that is creating the view.</param>
         /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view's containing panel.</param>
         /// <returns>The <see cref="PresentationFoundationView"/> that was loaded from the specified XML document.</returns>
-        public static PresentationFoundationView Load(UltravioletContext uv, UIPanelDefinition uiPanelDefinition)
+        public static PresentationFoundationView Load(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition)
         {
             Contract.Require(uv, "uv");
+            Contract.Require(uiPanel, "uiPanel");
             Contract.Require(uiPanelDefinition, "uiPanelDefinition");
 
             if (uiPanelDefinition.ViewElement == null)
                 return null;
 
-            var view = UvmlLoader.Load(uv, uiPanelDefinition);
+            var view = UvmlLoader.Load(uv, uiPanel, uiPanelDefinition);
 
             var uvss    = String.Join(Environment.NewLine, uiPanelDefinition.StyleSheets);
             var uvssdoc = UvssDocument.Parse(uvss);
@@ -141,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (Window == null)
                 return;
 
-            EnsureIsLoaded();
+            EnsureIsLoaded();            
 
             var previousSpriteBatchState = spriteBatch.GetCurrentState();
             spriteBatch.End();
@@ -714,14 +717,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        protected override void OnOpening()
+        {
+            EnsureIsLoaded();
+
+            RaiseViewLifecycleEvent(layoutRoot, View.Opening);
+        }
+
+        /// <inheritdoc/>
         protected override void OnOpened()
         {
+            RaiseViewLifecycleEvent(layoutRoot, View.Opened);
+        }
 
+        /// <inheritdoc/>
+        protected override void OnClosing()
+        {
+            RaiseViewLifecycleEvent(layoutRoot, View.Closing);
         }
 
         /// <inheritdoc/>
         protected override void OnClosed()
         {
+            RaiseViewLifecycleEvent(layoutRoot, View.Closed);
+
             layoutRoot.Cleanup();
         }
 
@@ -803,6 +822,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     DrawDiagnosticsVisuals((DrawingContext)state, child);
                 });
             }
+        }
+
+        /// <summary>
+        /// Raises the specified view lifecycle event for an object and all of its descendants.
+        /// </summary>
+        /// <param name="dobj">The dependency object for which to raise the event.</param>
+        /// <param name="evt">The routed event to raise for the object.</param>
+        private static void RaiseViewLifecycleEvent(DependencyObject dobj, RoutedEvent evt)
+        {
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(evt);
+            var evtData = new RoutedEventData(dobj);
+            evtDelegate(dobj, ref evtData);
+
+            VisualTreeHelper.ForEachChild(dobj, evt, (child, state) =>
+            {
+                RaiseViewLifecycleEvent(child, (RoutedEvent)state);
+            });
         }
 
         /// <summary>
@@ -1075,6 +1111,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void HandleUserInput(UltravioletTime time)
         {
+            var isInputPossibleThisFrame = IsInputEnabledAndAllowed;
+            if (isInputPossibleThisFrame && !wasInputPossibleLastFrame)
+            {
+                wasInputPossibleLastFrame = isInputPossibleThisFrame;
+                if (!isInputPossibleThisFrame)
+                {
+                    HandleInputDisabledOrDisallowed();
+                }
+            }
+
+            if (!IsInputEnabledAndAllowed)
+                return;
+
             if (Ultraviolet.GetInput().IsKeyboardSupported())
             {
                 HandleKeyboardInput();
@@ -1100,6 +1149,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             UpdateElementUnderMouse();
             UpdateToolTip(time);
+        }
+
+        /// <summary>
+        /// Called when input is disabled or becomes disallowed.
+        /// </summary>
+        private void HandleInputDisabledOrDisallowed()
+        {
+            CloseToolTip();
         }
 
         /// <summary>
@@ -1537,7 +1594,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void keyboard_KeyPressed(IUltravioletWindow window, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
         {
-            if (!Focused)
+            if (!IsInputEnabledAndAllowed)
                 return;
 
             var suppressKeyNav = false;
@@ -1564,7 +1621,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void keyboard_KeyReleased(IUltravioletWindow window, KeyboardDevice device, Key key)
         {
-            if (!Focused)
+            if (!IsInputEnabledAndAllowed)
                 return;
 
             if (elementWithFocus != null)
@@ -1584,7 +1641,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void keyboard_TextInput(IUltravioletWindow window, KeyboardDevice device)
         {
-            if (!Focused)
+            if (!IsInputEnabledAndAllowed)
                 return;
 
             if (elementWithFocus != null)
@@ -1604,7 +1661,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void mouse_Moved(IUltravioletWindow window, MouseDevice device, Int32 x, Int32 y, Int32 dx, Int32 dy)
         {
-            if (window != Window)
+            if (window != Window || !IsInputEnabledAndAllowed)
                 return;
 
             var recipient = elementUnderMouse;
@@ -1630,7 +1687,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void mouse_ButtonPressed(IUltravioletWindow window, MouseDevice device, MouseButton button)
         {
-            if (window != Window)
+            if (window != Window || !IsInputEnabledAndAllowed)
                 return;
 
             CloseToolTip();
@@ -1662,7 +1719,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void mouse_ButtonReleased(IUltravioletWindow window, MouseDevice device, MouseButton button)
         {
-            if (window != Window)
+            if (window != Window || !IsInputEnabledAndAllowed)
                 return;
 
             var recipient = elementUnderMouse;
@@ -1683,7 +1740,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void mouse_Click(IUltravioletWindow window, MouseDevice device, MouseButton button)
         {
-            if (window != Window)
+            if (window != Window || !IsInputEnabledAndAllowed)
                 return;
 
             var recipient = elementUnderMouse;
@@ -1704,7 +1761,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void mouse_DoubleClick(IUltravioletWindow window, MouseDevice device, MouseButton button)
         {
-            if (window != Window)
+            if (window != Window || !IsInputEnabledAndAllowed)
                 return;
 
             var recipient = elementUnderMouse;
@@ -1725,7 +1782,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void mouse_WheelScrolled(IUltravioletWindow window, MouseDevice device, Int32 x, Int32 y)
         {
-            if (window != Window)
+            if (window != Window || !IsInputEnabledAndAllowed)
                 return;
 
             var recipient = elementUnderMouse;
@@ -1749,7 +1806,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_Tap(TouchDevice device, Int64 fingerID, Single x, Single y)
         {
-            if (Window == null)
+            if (Window == null || !IsInputEnabledAndAllowed)
                 return;
 
             var position = GetTouchCoordinates(x, y);
@@ -1775,7 +1832,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_FingerDown(TouchDevice device, Int64 fingerID, Single x, Single y, Single pressure)
         {
-            if (Window == null)
+            if (Window == null || !IsInputEnabledAndAllowed)
                 return;
 
             var position = GetTouchCoordinates(x, y);
@@ -1796,7 +1853,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_FingerUp(TouchDevice device, Int64 fingerID, Single x, Single y, Single pressure)
         {
-            if (Window == null)
+            if (Window == null || !IsInputEnabledAndAllowed)
                 return;
 
             var position = GetTouchCoordinates(x, y);
@@ -1817,7 +1874,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_FingerMotion(TouchDevice device, Int64 fingerID, Single x, Single y, Single dx, Single dy, Single pressure)
         {
-            if (Window == null)
+            if (Window == null || !IsInputEnabledAndAllowed)
                 return;
 
             var position = GetTouchCoordinates(x, y);
@@ -1860,7 +1917,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void gamePad_AxisChanged(GamePadDevice device, GamePadAxis axis, Single value)
         {
-            if (device.PlayerIndex != 0)
+            if (device.PlayerIndex != 0 || !IsInputEnabledAndAllowed)
                 return;
 
             var recipient = elementWithFocus as DependencyObject;
@@ -1877,7 +1934,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void gamePad_AxisPressed(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat)
         {
-            if (device.PlayerIndex != 0)
+            if (device.PlayerIndex != 0 || !IsInputEnabledAndAllowed)
                 return;
 
             var suppressGamePadNav = false;
@@ -1901,7 +1958,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void gamePad_AxisReleased(GamePadDevice device, GamePadAxis axis, Single value)
         {
-            if (device.PlayerIndex != 0)
+            if (device.PlayerIndex != 0 || !IsInputEnabledAndAllowed)
                 return;
             
             var recipient = elementWithFocus as DependencyObject;
@@ -1918,7 +1975,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void gamePad_ButtonPressed(GamePadDevice device, GamePadButton button, Boolean repeat)
         {
-            if (device.PlayerIndex != 0)
+            if (device.PlayerIndex != 0 || !IsInputEnabledAndAllowed)
                 return;
 
             var suppressGamePadNav = false;
@@ -1942,7 +1999,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void gamePad_ButtonReleased(GamePadDevice device, GamePadButton button)
         {
-            if (device.PlayerIndex != 0)
+            if (device.PlayerIndex != 0 || !IsInputEnabledAndAllowed)
                 return;
             
             var recipient = elementWithFocus as DependencyObject;
@@ -1982,6 +2039,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private CaptureMode mouseCaptureMode;
         private Boolean hookedGlobalStyleSheetChanged;
         private Boolean hookedFirstPlayerGamePad;
+        private Boolean wasInputPossibleLastFrame;
 
         // Popup handling.
         private readonly PopupQueue popupQueue = new PopupQueue();

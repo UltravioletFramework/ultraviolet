@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
             factory.SetFactoryMethod<UIViewProviderInitializerFactory>(() => new PresentationFoundationInitializer());
-            factory.SetFactoryMethod<UIViewFactory>((uv, uiPanelDefinition) => PresentationFoundationView.Load(uv, uiPanelDefinition));
+            factory.SetFactoryMethod<UIViewFactory>((uv, uiPanel, uiPanelDefinition) => PresentationFoundationView.Load(uv, uiPanel, uiPanelDefinition));
         }
     }
 }

@@ -216,6 +216,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Media\VisualCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\VisualCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\VisualTreeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Namescope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OutOfBandRenderer.cs" />
@@ -335,6 +336,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvmlName.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VerticalAlignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)View.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visibility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VisualState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VisualStateGroup.cs" />

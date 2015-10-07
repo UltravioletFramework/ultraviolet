@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition
+  DefaultOpenTransitionDuration="500.0"
+  DefaultCloseTransitionDuration="500.0">
+  <View Name="dialog" ViewModelType="UvDebugSandbox.UI.Screens.DebugModalViewModel, UvDebugSandbox">
+
+    <Rectangle Name="dialog-background" FillColor="#FF000000"/>
+    <Grid Name="dialog-box" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+      <Grid.Effect>
+        <DropShadowEffect/>
+      </Grid.Effect>
+
+      <Rectangle Class="dialog-box-background" FillColor="#ff008080"/>
+      <StackPanel Margin="8">
+
+        <TextBlock Class="dialog-header"
+                   Margin="0 0 0 8"
+                   FontStyle="Bold"
+                   HorizontalAlignment="Center">
+          Dialog Header
+        </TextBlock>
+        <TextBlock Class="dialog-text"
+                   Margin="0 0 0 8">
+          This is a test. Hello, world! This is a test. Hello, world! This is a test. Lorem ipsum dolor sit amet etc. etc. etc.
+        </TextBlock>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom">
+
+          <Button Content="OK"
+                  MinWidth="75"
+                  Margin="0 0 8 0"
+                  Click="HandleClickClose"/>
+          <Button Content="Cancel"
+                  MinWidth="75"
+                  Margin="0 0 0 0"
+                  Click="HandleClickClose"/>
+
+        </StackPanel>
+
+      </StackPanel>
+
+    </Grid>
+
+  </View>
+</UIPanelDefinition>
