@@ -49,11 +49,10 @@ namespace UvDebugSandbox.UI.Screens
 
         public void Test(DependencyObject dobj, ref RoutedEventData data)
         {
-            var modal = owner.UIScreenService.Get<DebugModal>();
-            Modal.ShowDialog(modal).ContinueWith(task =>
+            using (var modal = new Modal(owner.UIScreenService.Get<DebugModal>()))
             {
-                System.Diagnostics.Debug.WriteLine("continuing...");
-            });
+                Modal.ShowDialog(modal);
+            }
         }
 
         private void PrintVisualTreeNode(DependencyObject dobj, Int32 indentLayer)
