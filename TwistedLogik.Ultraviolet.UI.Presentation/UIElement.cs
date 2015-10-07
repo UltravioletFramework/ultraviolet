@@ -1462,7 +1462,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             var dp = DependencyProperty.FindByName(Ultraviolet, dpSource, propertyName.Owner, propertyName.Name);
                             if (dp != null)
                             {
-                                EnlistDependencyPropertyInStoryboard(dp, storyboardInstance, animation.Value);
+                                dpSource.EnlistDependencyPropertyInStoryboard(dp, storyboardInstance, animation.Value);
                             }
                         }
                     }
