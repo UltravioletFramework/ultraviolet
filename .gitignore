@@ -162,3 +162,9 @@ $RECYCLE.BIN/
 
 Resource.Designer.cs
 gen/
+
+# =========================
+# Ultraviolet stuff
+# =========================
+*.uvarc
+TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll
