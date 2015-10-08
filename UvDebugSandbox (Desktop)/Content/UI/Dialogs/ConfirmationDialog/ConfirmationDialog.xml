@@ -2,7 +2,7 @@
 <UIPanelDefinition
   DefaultOpenTransitionDuration="500.0"
   DefaultCloseTransitionDuration="500.0">
-  <View Class="dialog" ViewModelType="UvDebugSandbox.UI.Screens.DebugModalViewModel, UvDebugSandbox">
+  <View Class="dialog" ViewModelType="UvDebugSandbox.UI.Dialogs.ConfirmationDialogViewModel, UvDebugSandbox">
 
     <Rectangle Class="dialog-fade"/>
     <Grid Class="dialog-box" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -14,10 +14,10 @@
       <StackPanel Class="dialog-box-content">
 
         <TextBlock Class="dialog-header"
-                   Text="Dialog Header"
+                   Text="{{Header}}"
                    HorizontalAlignment="Center"/>
         <TextBlock Class="dialog-text"
-                   Text="This is a test. Hello, world!"/>
+                   Text="{{Text}}"/>
         <StackPanel Class="btn-btn-panel" 
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
@@ -25,10 +25,10 @@
 
           <Button Class="dialog-btn dialog-btn-ok" 
                   Content="OK"
-                  Click="HandleClickClose"/>
+                  Click="HandleClickOK"/>
           <Button Class="dialog-btn dialog-btn-cancel" 
                   Content="Cancel"
-                  Click="HandleClickClose"/>
+                  Click="HandleClickCancel"/>
 
         </StackPanel>
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using UvDebugSandbox.UI.Dialogs;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.UI.Presentation;
@@ -31,14 +32,17 @@ namespace UvDebugSandbox.UI.Screens
 
     public class DebugViewModel
     {
-        private PresentationFoundationView view;
-        private UvDebugScreen owner;
+        private readonly ConfirmationDialog confirmationDialog;
 
-        public DebugViewModel(PresentationFoundationView view, UvDebugScreen owner)
+        private PresentationFoundationView view;
+        private DebugScreen owner;
+
+        public DebugViewModel(PresentationFoundationView view, DebugScreen owner)
         {
             Enable = true;
             this.view = view;
             this.owner = owner;
+            this.confirmationDialog = new ConfirmationDialog(owner);
         }
 
         public void PrintVisualTree(UIElement element)
@@ -49,11 +53,21 @@ namespace UvDebugSandbox.UI.Screens
 
         public void Test(DependencyObject dobj, ref RoutedEventData data)
         {
-            using (var modal = new Modal(owner.UIScreenService.Get<DebugModal>()))
+            confirmationDialog.Header = "Hello, world!";
+            confirmationDialog.Text = "This is a test of my custom dialog class!!!";
+            Modal.ShowDialogAsync(confirmationDialog).ContinueWith(x =>
             {
-                Modal.ShowDialog(modal);
-            }
+                System.Diagnostics.Debug.WriteLine("Dialog result: " + x.Result);
+
+                if (x.Result ?? false)
+                {
+                    confirmationDialog.Header = "Wowie!!";
+                    confirmationDialog.Text = "You chose OK!!! Can you believe it???";
+                    Modal.ShowDialog(confirmationDialog);
+                }
+            });
         }
+
 
         private void PrintVisualTreeNode(DependencyObject dobj, Int32 indentLayer)
         {
@@ -145,7 +159,7 @@ namespace UvDebugSandbox.UI.Screens
         private readonly StackPanel sp2 = null;
     }
 
-    public class DebugViewScreen : UvDebugScreen
+    public class DebugViewScreen : DebugScreen
     {
         public DebugViewScreen(ContentManager globalContent, UIScreenService uiScreenService)
             : base("Content/UI/Screens/DebugViewScreen", "DebugViewScreen", globalContent, uiScreenService)

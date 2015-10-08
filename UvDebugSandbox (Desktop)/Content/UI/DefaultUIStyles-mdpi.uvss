@@ -79,7 +79,7 @@ View
 
 .dialog-fade
 {
-	fill-color: #ffffffff;
+	fill-color: #ff000000;
 }
 
 .dialog-box

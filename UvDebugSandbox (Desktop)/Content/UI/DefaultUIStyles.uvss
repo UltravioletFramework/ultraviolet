@@ -59,7 +59,8 @@ View
 		animation opacity
 		{
 			keyframe   0                { 0.75 }
-			keyframe 250 ease-out-cubic { 0.00 }
+			keyframe 250                { 0.75 }
+			keyframe 500 ease-out-cubic { 0.00 }
 		}
 	}
 	target Grid (*:storyboard-root > .dialog-box)
@@ -79,7 +80,7 @@ View
 
 .dialog-fade
 {
-	fill-color: #ffffffff;
+	fill-color: #ff000000;
 }
 
 .dialog-box

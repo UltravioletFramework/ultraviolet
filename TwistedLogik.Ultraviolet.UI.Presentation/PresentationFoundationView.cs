@@ -623,6 +623,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        /// <inheritdoc/>
+        public override T GetViewModel<T>()
+        {
+            var vm = ViewModel;
+            var vmWrapper = vm as IDataSourceWrapper;
+            if (vmWrapper != null)
+            {
+                return vmWrapper.WrappedDataSource as T;
+            }
+            return vm as T;
+        }
+
         /// <summary>
         /// Searches the view's associated style sheet for a storyboard with the specified name.
         /// </summary>

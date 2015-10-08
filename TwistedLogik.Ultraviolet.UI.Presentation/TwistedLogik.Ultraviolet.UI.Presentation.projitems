@@ -169,6 +169,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IDependencyPropertyValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IIndexable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IInputElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IModalDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CaptureMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\FocusManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\FocusNavigationDirection.cs" />

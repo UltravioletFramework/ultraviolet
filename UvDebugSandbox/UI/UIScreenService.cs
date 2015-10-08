@@ -17,7 +17,6 @@ namespace UvDebugSandbox.UI
         public UIScreenService(ContentManager globalContent)
         {
             Register(new DebugViewScreen(globalContent, this));
-            Register(new DebugModal(globalContent, this));
         }
 
         /// <summary>

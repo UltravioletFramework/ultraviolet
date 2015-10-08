@@ -213,6 +213,15 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
+        /// Gets the view's view model object.
+        /// </summary>
+        /// <returns>The view's view model object.</returns>
+        public virtual T GetViewModel<T>() where T : class
+        {
+            return ViewModel as T;
+        }
+
+        /// <summary>
         /// Gets the panel that owns the view.
         /// </summary>
         public UIPanel Panel
@@ -415,6 +424,20 @@ namespace TwistedLogik.Ultraviolet.UI
         protected virtual void OnViewModelChanged()
         {
 
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                var vm = GetViewModel<IDisposable>();
+                if (vm != null)
+                {
+                    vm.Dispose();
+                }
+            }
+            base.Dispose(disposing);
         }
 
         // Property values.
