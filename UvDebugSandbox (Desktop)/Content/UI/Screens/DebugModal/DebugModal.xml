@@ -2,38 +2,32 @@
 <UIPanelDefinition
   DefaultOpenTransitionDuration="500.0"
   DefaultCloseTransitionDuration="500.0">
-  <View Name="dialog" ViewModelType="UvDebugSandbox.UI.Screens.DebugModalViewModel, UvDebugSandbox">
+  <View Class="dialog" ViewModelType="UvDebugSandbox.UI.Screens.DebugModalViewModel, UvDebugSandbox">
 
-    <Rectangle Name="dialog-background" FillColor="#FF000000"/>
-    <Grid Name="dialog-box" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+    <Rectangle Class="dialog-fade"/>
+    <Grid Class="dialog-box" HorizontalAlignment="Center" VerticalAlignment="Center">
       <Grid.Effect>
         <DropShadowEffect/>
       </Grid.Effect>
 
-      <Rectangle Class="dialog-box-background" FillColor="#ff008080"/>
-      <StackPanel Margin="8">
+      <Image Class="dialog-box-background"/>
+      <StackPanel Class="dialog-box-content">
 
         <TextBlock Class="dialog-header"
-                   Margin="0 0 0 8"
-                   FontStyle="Bold"
-                   HorizontalAlignment="Center">
-          Dialog Header
-        </TextBlock>
+                   Text="Dialog Header"
+                   HorizontalAlignment="Center"/>
         <TextBlock Class="dialog-text"
-                   Margin="0 0 0 8">
-          This is a test. Hello, world! This is a test. Hello, world! This is a test. Lorem ipsum dolor sit amet etc. etc. etc.
-        </TextBlock>
-        <StackPanel Orientation="Horizontal"
+                   Text="This is a test. Hello, world!"/>
+        <StackPanel Class="btn-btn-panel" 
+                    Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom">
 
-          <Button Content="OK"
-                  MinWidth="75"
-                  Margin="0 0 8 0"
+          <Button Class="dialog-btn dialog-btn-ok" 
+                  Content="OK"
                   Click="HandleClickClose"/>
-          <Button Content="Cancel"
-                  MinWidth="75"
-                  Margin="0 0 0 0"
+          <Button Class="dialog-btn dialog-btn-cancel" 
+                  Content="Cancel"
                   Click="HandleClickClose"/>
 
         </StackPanel>

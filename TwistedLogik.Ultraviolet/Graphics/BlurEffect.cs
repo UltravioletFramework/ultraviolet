@@ -25,7 +25,6 @@ namespace TwistedLogik.Ultraviolet.Graphics
             this.epWorld      = Parameters["World"];
             this.epView       = Parameters["View"];
             this.epProjection = Parameters["Projection"];
-            this.epMix        = Parameters["Mix"];
             this.epRadius     = Parameters["Radius"];
 
             this.Radius = 5f;
@@ -115,26 +114,6 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the blur mixing value. A value of 0f specifies that the output of the blur should consist entirely
-        /// of the texture color; a value of 1f specifies that the output of the blur should consist entirely of the vertex color.
-        /// </summary>
-        public Single Mix
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epMix.GetValueSingle();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epMix.SetValue(value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the blur radius of the drop shadow.
         /// </summary>
         public Single Radius
@@ -209,7 +188,6 @@ namespace TwistedLogik.Ultraviolet.Graphics
         private readonly EffectParameter epWorld;
         private readonly EffectParameter epView;
         private readonly EffectParameter epProjection;
-        private readonly EffectParameter epMix;
         private readonly EffectParameter epRadius;      
     }
 }
