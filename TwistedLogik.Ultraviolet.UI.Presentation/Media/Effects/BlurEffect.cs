@@ -10,6 +10,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
     [UvmlKnownType]
     public sealed class BlurEffect : Effect
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BlurEffect"/> class.
+        /// </summary>
+        public BlurEffect()
+        {
+            var effectValue = effect.Value;
+            if (effectValue != null)
+            {
+                effectValue.Mix = 0f;
+            }
+        }
+
         /// <inheritdoc/>
         public override Int32 AdditionalRenderTargetsRequired
         {

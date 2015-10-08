@@ -7,6 +7,7 @@ uniform sampler2D Texture;
 
 uniform float Resolution;
 uniform float Radius;
+uniform float Mix;
 
 uniform vec2 Direction;
 
@@ -39,7 +40,11 @@ void main()
 		coefficientSum += 2.0 * incrementalGaussian.x;
 		incrementalGaussian.xy *= incrementalGaussian.yz;
 	}
+	
+	vec4 blur = avgValue / coefficientSum;
 
-	vec4 blur = avgValue / coefficientSum;	
-	gl_FragColor = vColor * blur.a;
+	vec4 outBlurred = blur * vColor.a;	
+	vec4 outColored = vColor * blur.a;
+		
+	gl_FragColor = mix(outBlurred, outColored, Mix);
 }

@@ -6,6 +6,7 @@ uniform sampler2D Texture;
 
 uniform float Resolution;
 uniform float Radius;
+uniform float Mix;
 
 uniform vec2 Direction;
 
@@ -41,6 +42,10 @@ void main()
 		incrementalGaussian.xy *= incrementalGaussian.yz;
 	}
 
-	vec4 blur = avgValue / coefficientSum;	
-	fColor = vColor * blur.a;
+	vec4 blur = avgValue / coefficientSum;
+
+	vec4 outBlurred = blur * vColor.a;	
+	vec4 outColored = vColor * blur.a;
+	
+	fColor = mix(outBlurred, outColored, Mix);
 }

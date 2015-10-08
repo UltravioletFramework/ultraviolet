@@ -10,6 +10,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
     [UvmlKnownType]
     public sealed class DropShadowEffect : Effect
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DropShadowEffect"/> class.
+        /// </summary>
+        public DropShadowEffect()
+        {
+            var effectValue = effect.Value;
+            if (effectValue != null)
+            {
+                effectValue.Mix = 1f;
+            }
+        }
+
         /// <inheritdoc/>
         public override Int32 AdditionalRenderTargetsRequired
         {
