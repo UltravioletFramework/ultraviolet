@@ -495,15 +495,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 temp(this);
             }
         }
-
-        /// <summary>
-        /// Occurs when the panel's view is loaded.
-        /// </summary>
-        protected virtual void OnViewLoaded()
-        {
-
-        }
-
+        
         /// <summary>
         /// Loads the view from the specified panel definition.
         /// </summary>
@@ -732,7 +724,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         internal virtual void HandleViewLoaded()
         {
-            OnViewLoaded();
+
         }
 
         /// <summary>

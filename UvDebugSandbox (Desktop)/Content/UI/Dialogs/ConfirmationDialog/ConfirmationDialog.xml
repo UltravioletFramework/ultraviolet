@@ -2,7 +2,7 @@
 <UIPanelDefinition
   DefaultOpenTransitionDuration="500.0"
   DefaultCloseTransitionDuration="500.0">
-  <View Class="dialog" ViewModelType="UvDebugSandbox.UI.Dialogs.ConfirmationDialogViewModel, UvDebugSandbox">
+  <View Class="dialog" ViewModelType="UvDebugSandbox.UI.Dialogs.ConfirmationDialog+DialogScreenVM, UvDebugSandbox">
 
     <Rectangle Class="dialog-fade"/>
     <Grid Class="dialog-box" HorizontalAlignment="Center" VerticalAlignment="Center">

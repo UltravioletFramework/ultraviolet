@@ -8,20 +8,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Contains methods for displaying modal dialogs.
     /// </summary>
-    public class Modal : IDisposable
+    public abstract class Modal : IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Modal"/> class.
         /// </summary>
         /// <param name="screen">The <see cref="UIScreen"/> that the modal represents.</param>
-        public Modal(UIScreen screen)
+        public Modal()
         {
-            Contract.Require(screen, "screen");
-
             this.onClosedHandler = OnClosed;
-
-            this.screen = screen;
-            this.screen.Closed += onClosedHandler;
         }
 
         /// <summary>
@@ -86,15 +81,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Closes the modal.
+        /// </summary>
+        public void Close()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var screen = Screen;
+            if (screen != null)
+            {
+                var uv = screen.Ultraviolet;
+                uv.GetUI().GetScreens(screen.Window).Close(screen);
+            }
+        }
+
+        /// <summary>
         /// Gets the screen that this modal represents.
         /// </summary>
-        public UIScreen Screen
+        public abstract UIScreen Screen
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets or sets the dialog's result value.
+        /// </summary>
+        public Boolean? DialogResult
         {
             get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return screen;
+                return dialogResult;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                if (dialogResult != value)
+                {
+                    dialogResult = value;
+                    Close();
+                }
             }
         }
         
@@ -140,10 +168,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (disposing)
             {
-                if (screen != null)
+                if (Screen != null)
                 {
-                    screen.Closed -= onClosedHandler;
-                    screen = null;
+                    Screen.Closed -= onClosedHandler;
                 }
             }
             disposed = true;
@@ -156,23 +183,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="duration">The amount of time over which to transition the screen's state, or <c>null</c> to use the default transition time.</param>
         private void Show(IUltravioletWindow window, TimeSpan? duration = null)
         {
-            if (open)
+            var screen = Screen;
+            if (screen == null || open)
                 return;
 
             open = true;
-
-            var dialog = this as IModalDialog;
-            if (dialog != null)
-                dialog.DialogResult = false;
-
-            var screenStack = screen.Ultraviolet.GetUI().GetScreens(window);
-
-            if (screen.State != UIPanelState.Closed)
-                screenStack.Close(screen, TimeSpan.Zero);
+            dialogResult = null;
 
             this.taskCompletionSource = null;
 
-            screenStack.Open(screen, duration);
+            Open(window, screen, duration);
         }
 
         /// <summary>
@@ -184,28 +204,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="Task"/> which completes when the modal is closed.</returns>
         private Task<Boolean?> ShowAsync(IUltravioletWindow window, TimeSpan? duration = null)
         {
+            var screen = Screen;
+            if (screen == null)
+                return new Task<Boolean?>(() => true);
+
             var wasOpen = open;
 
             open = true;
+            dialogResult = null;
 
-            var dialog = this as IModalDialog;
-            if (dialog != null)
-                dialog.DialogResult = false;
-
-            if (this.taskCompletionSource == null)
-                this.taskCompletionSource = new TaskCompletionSource<Boolean?>();
+            this.taskCompletionSource = new TaskCompletionSource<Boolean?>();
 
             if (wasOpen)
                 return this.taskCompletionSource.Task;
 
+            Open(window, screen, duration);
+
+            return this.taskCompletionSource.Task;
+        }
+
+        private void Open(IUltravioletWindow window, UIScreen screen, TimeSpan? duration = null)
+        {
             var screenStack = screen.Ultraviolet.GetUI().GetScreens(window);
 
             if (screen.State != UIPanelState.Closed)
                 screenStack.Close(screen, TimeSpan.Zero);
 
-            screenStack.Open(screen, duration);
+            if (!hooked)
+            {
+                screen.Closed += onClosedHandler;
+                hooked = true;
+            }
 
-            return this.taskCompletionSource.Task;
+            screenStack.Open(screen, duration);
         }
 
         /// <summary>
@@ -218,23 +249,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             if (this.taskCompletionSource != null)
-            {
-                var dialog = panel as IModalDialog;
-                var dialogResult = (dialog == null) ? null : dialog.DialogResult;
-                this.taskCompletionSource.SetResult(dialogResult);
-            }
+                this.taskCompletionSource.SetResult(DialogResult);
+
             this.taskCompletionSource = null;
 
             open = false;
         }
 
         // Property values.
-        private UIScreen screen;
+        private Boolean? dialogResult;
         private Boolean open;
         private Boolean disposed;
 
         // State values.
         private TaskCompletionSource<Boolean?> taskCompletionSource;
         private UIPanelEventHandler onClosedHandler;
+        private Boolean hooked;
     }
 }

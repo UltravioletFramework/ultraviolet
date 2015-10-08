@@ -164,16 +164,7 @@ namespace UvDebugSandbox.UI.Screens
         public DebugViewScreen(ContentManager globalContent, UIScreenService uiScreenService)
             : base("Content/UI/Screens/DebugViewScreen", "DebugViewScreen", globalContent, uiScreenService)
         {
-
-        }
-
-        protected override void OnViewLoaded()
-        {
-            if (View != null)
-            {
-                View.SetViewModel(new DebugViewModel((PresentationFoundationView)View, this));
-            }
-            base.OnViewLoaded();
+            View.SetViewModel(new DebugViewModel((PresentationFoundationView)View, this));
         }
     }
 }

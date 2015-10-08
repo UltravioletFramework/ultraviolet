@@ -423,6 +423,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 type = type.GetElementType();
 
             var name = type.IsGenericParameter ? type.Name : type.FullName;
+            name = name.Replace('+', '.');
 
             if (type.IsGenericType)
             {
