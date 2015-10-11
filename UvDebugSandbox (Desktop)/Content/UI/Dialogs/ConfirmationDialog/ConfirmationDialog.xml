@@ -25,9 +25,11 @@
 
           <Button Class="dialog-btn dialog-btn-ok" 
                   Content="OK"
+                  IsDefault="true"
                   Click="HandleClickOK"/>
           <Button Class="dialog-btn dialog-btn-cancel" 
                   Content="Cancel"
+                  IsCancel="true"
                   Click="HandleClickCancel"/>
 
         </StackPanel>

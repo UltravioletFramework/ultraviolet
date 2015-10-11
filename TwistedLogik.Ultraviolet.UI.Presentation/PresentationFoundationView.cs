@@ -318,6 +318,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Keyboard.RaiseGotKeyboardFocus(dobj, keyboard, oldFocus, newFocus, ref gotFocusData);
             }
 
+            UpdateIsDefaulted();
+
             return true;
         }
 
@@ -345,6 +347,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var lostFocusData = new RoutedEventData(dobj);
                 Keyboard.RaiseLostKeyboardFocus(dobj, keyboard, elementWithFocusOld, null, ref lostFocusData);
             }
+
+            UpdateIsDefaulted();
         }
 
         /// <summary>
@@ -713,6 +717,72 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Registers a button as one of the view's default buttons.
+        /// </summary>
+        /// <param name="button">The button to register.</param>
+        internal void RegisterDefaultButton(Button button)
+        {
+            Contract.Require(button, "button");
+
+            var weakReference = WeakReferencePool.Instance.Retrieve();
+            weakReference.Target = button;
+
+            defaultButtons.Add(weakReference);
+        }
+
+        /// <summary>
+        /// Registers a button as one of the view's cancel buttons.
+        /// </summary>
+        /// <param name="button">The button to register.</param>
+        internal void RegisterCancelButton(Button button)
+        {
+            Contract.Require(button, "button");
+
+            var weakReference = WeakReferencePool.Instance.Retrieve();
+            weakReference.Target = button;
+
+            cancelButtons.Add(weakReference);
+        }
+
+        /// <summary>
+        /// Unregisters a button as one of the view's default buttons.
+        /// </summary>
+        /// <param name="button">The button to unregister.</param>
+        internal void UnregisterDefaultButton(Button button)
+        {
+            Contract.Require(button, "button");
+
+            for (int i = 0; i < defaultButtons.Count; i++)
+            {
+                var reference = defaultButtons[i].Target;
+                if (reference == button)
+                {
+                    defaultButtons.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unregisters a button as one of the view's cancel buttons.
+        /// </summary>
+        /// <param name="button">The button to unregister.</param>
+        internal void UnregisterCancelButton(Button button)
+        {
+            Contract.Require(button, "button");
+
+            for (int i = 0; i < cancelButtons.Count; i++)
+            {
+                var reference = cancelButtons[i].Target;
+                if (reference == button)
+                {
+                    cancelButtons.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the namescope for the view layout.
         /// </summary>
         internal Namescope Namescope
@@ -766,6 +836,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 UnhookMouseEvents();
                 UnhookTouchEvents();
                 UnhookGamePadEvents();
+
+                foreach (var weakReference in defaultButtons)
+                    WeakReferencePool.Instance.Release(weakReference);
+
+                foreach (var weakReference in cancelButtons)
+                    WeakReferencePool.Instance.Release(weakReference);
+
+                defaultButtons.Clear();
+                cancelButtons.Clear();
             }
             base.Dispose(disposing);
         }
@@ -1416,6 +1495,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Updates the view's list of default and cancel buttons.
+        /// </summary>
+        private void UpdateDefaultAndCancelButtonReferences()
+        {
+            for (int i = 0; i < defaultButtons.Count; i++)
+            {
+                if (defaultButtons[i].IsAlive)
+                    continue;
+
+                WeakReferencePool.Instance.Release(defaultButtons[i]);
+                defaultButtons.RemoveAt(i--);
+            }
+
+            for (int i = 0; i < cancelButtons.Count; i++)
+            {
+                if (cancelButtons[i].IsAlive)
+                    continue;
+                
+                WeakReferencePool.Instance.Release(cancelButtons[i]);
+                cancelButtons.RemoveAt(i--);
+            }
+        }
+
+        /// <summary>
+        /// Updates the value of <see cref="Button.IsDefaulted"/> for the view's default buttons.
+        /// </summary>
+        private void UpdateIsDefaulted()
+        {
+            foreach (var weakReference in defaultButtons)
+            {
+                var button = weakReference.Target as Button;
+                if (button == null)
+                    continue;
+
+                button.UpdateIsDefaulted();
+            }
+        }
+        
+        /// <summary>
+        /// Activates the next default or cancel button from the specified list of buttons.
+        /// </summary>
+        /// <param name="buttons">The list of buttons that contains the button to activate.</param>
+        private void ActivateDefaultOrCancelButton(List<WeakReference> buttons)
+        {
+            for (int i = 0; i < buttons.Count; i++)
+            {
+                var target = buttons[i].Target as Button;
+                if (target == null)
+                    continue;
+
+                if (target.IsEnabled && target.Visibility == Visibility.Visible)
+                {
+                    target.HandleDefaultOrCancelActivated();
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts normalized touch device coordinates to view-relative coordinates.
         /// </summary>
         private Point2D GetTouchCoordinates(Single x, Single y)
@@ -1623,9 +1760,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     suppressKeyNav = keyDownData.Handled;
                 }
             }
-            
+
             if (!suppressKeyNav)
-                FocusNavigator.PerformNavigation(this, device, key, ctrl, alt, shift, repeat);
+            {
+                if (FocusNavigator.PerformNavigation(this, device, key, ctrl, alt, shift, repeat))
+                    return;
+
+                switch (key)
+                {
+                    case Key.Return:
+                        ActivateDefaultOrCancelButton(defaultButtons);
+                        break;
+
+                    case Key.Escape:
+                        ActivateDefaultOrCancelButton(cancelButtons);
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -2003,7 +2154,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             if (!suppressGamePadNav)
-                FocusNavigator.PerformNavigation(this, device, button);
+            {
+                if (FocusNavigator.PerformNavigation(this, device, button))
+                    return;
+
+                if (GamePad.ConfirmButton == button)
+                {
+                    ActivateDefaultOrCancelButton(defaultButtons);
+                    return;
+                }
+                
+                if (GamePad.CancelButton == button)
+                {
+                    ActivateDefaultOrCancelButton(cancelButtons);
+                    return;
+                }
+            }
         }
 
         /// <summary>
@@ -2070,5 +2236,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // View model wrapping.
         private String viewModelWrapperName;
+
+        // Default/cancel buttons for the view.
+        private readonly List<WeakReference> defaultButtons = new List<WeakReference>(0);
+        private readonly List<WeakReference> cancelButtons = new List<WeakReference>(0);
     }
 }

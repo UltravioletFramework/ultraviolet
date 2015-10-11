@@ -40,6 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             Initialize();
 
+            weakReference.Target = null;
             pool.Release(weakReference);
         }
 
@@ -54,6 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             Initialize();
 
+            weakReference.Target = null;
             pool.Release(weakReference);
 
             weakReference = null;

@@ -1,6 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -72,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// The private access key for the <see cref="IsDefault"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsDefaultedPropertyKey = DependencyProperty.RegisterReadOnly("IsDefaulted", typeof(Boolean), typeof(Button),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsDefaultedChanged));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="IsDefaulted"/> dependency property.
@@ -80,11 +81,75 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty IsDefaultedProperty = IsDefaultedPropertyKey.DependencyProperty;
 
         /// <summary>
+        /// Called when the button is activated because it is either the default or cancel button for its view.
+        /// </summary>
+        internal void HandleDefaultOrCancelActivated()
+        {
+            OnClick();
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="IsDefaulted"/> property for this button.
+        /// </summary>
+        internal void UpdateIsDefaulted()
+        {
+            var defaulted = false;
+            var focused = (View == null) ? null : Keyboard.GetFocusedElement(View);
+            if (IsDefault && IsEnabled && Visibility == Visibility.Visible && focused != null)
+            {
+                var focusedElement = focused as DependencyObject;
+                if (focusedElement == null || !focusedElement.GetValue<Boolean>(KeyboardNavigation.AcceptsReturnProperty))
+                {
+                    defaulted = true;
+                }
+            }
+            SetValue(IsDefaultedPropertyKey, defaulted);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+            if (oldView != null)
+            {
+                if (IsDefault)
+                    oldView.UnregisterDefaultButton(this);
+
+                if (IsCancel)
+                    oldView.UnregisterCancelButton(this);
+            }
+
+            if (newView != null)
+            {
+                if (IsDefault)
+                    newView.RegisterDefaultButton(this);
+
+                if (IsCancel)
+                    newView.RegisterCancelButton(this);
+            }
+
+            UpdateIsDefaulted();
+
+            base.OnViewChanged(oldView, newView);
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsDefault"/> dependency property changes.
         /// </summary>
         private static void HandleIsDefaultChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
-            // TODO
+            var button = (Button)dobj;
+            if (button.View != null)
+            {
+                if (newValue)
+                {
+                    button.View.RegisterDefaultButton(button);
+                }
+                else
+                {
+                    button.View.UnregisterDefaultButton(button);
+                    button.SetValue(IsDefaultedPropertyKey, CommonBoxedValues.Boolean.False);
+                }
+            }
         }
 
         /// <summary>
@@ -92,15 +157,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleIsCancelChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
-            // TODO
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="IsDefaulted"/> dependency property changes.
-        /// </summary>
-        private static void HandleIsDefaultedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
-        {
-            // TODO
-        }
+            var button = (Button)dobj;
+            if (button.View != null)
+            {
+                if (newValue)
+                {
+                    button.View.RegisterCancelButton(button);
+                }
+                else
+                {
+                    button.View.UnregisterCancelButton(button);
+                }
+            }
+        }        
     }
 }
