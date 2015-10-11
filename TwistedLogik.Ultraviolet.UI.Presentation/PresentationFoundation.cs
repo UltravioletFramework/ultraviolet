@@ -513,6 +513,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     case InternalPool.OutOfBandRenderer:
                         OutOfBandRenderer.InitializePools();
                         break;
+
+                    case InternalPool.WeakReferences:
+                        WeakReferencePool.Instance.Initialize();
+                        break;
                 }
             }
         }

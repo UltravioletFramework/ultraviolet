@@ -76,7 +76,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             renderTargetPool = new UpfPool<OutOfBandRenderTarget>(Ultraviolet, 8, 32, () => new OutOfBandRenderTarget(Ultraviolet));
-            weakReferencePool = new ExpandingPool<WeakReference>(4, 32, () => new WeakReference(null));
         }
 
         /// <summary>
@@ -111,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             InitializePools();
 
-            var weakRef = weakReferencePool.Retrieve();
+            var weakRef = WeakReferencePool.Instance.Retrieve();
             weakRef.Target = element;
 
             var target = renderTargetPool.Retrieve(element);
@@ -165,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 element.OutOfBandRenderTarget = null;
 
                 registeredElement.Target = null;
-                weakReferencePool.Release(registeredElement);
+                WeakReferencePool.Instance.Release(registeredElement);
 
                 break;
             }
@@ -346,23 +345,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Int32 AvailableRenderTargets
         {
             get { return (renderTargetPool == null) ? 0 : renderTargetPool.Available; }
-        }
-
-        /// <summary>
-        /// Gets the number of active weak references which have been allocated from the internal pool.
-        /// </summary>
-        public Int32 ActiveWeakRefs
-        {
-            get { return (weakReferencePool == null) ? 0 : weakReferencePool.Count; }
-        }
-
-        /// <summary>
-        /// Gets the number of available weak references in the internal pool.
-        /// </summary>
-        public Int32 AvailableWeakRefs
-        {
-            get { return (weakReferencePool == null) ? 0 : weakReferencePool.Capacity - weakReferencePool.Count; }
-        }
+        }        
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
@@ -410,7 +393,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // Object pools.
         private UpfPool<OutOfBandRenderTarget> renderTargetPool;
-        private ExpandingPool<WeakReference> weakReferencePool;
 
         // The collection of registered elements and their render buffers.
         private readonly List<PresentationFoundationView> viewsNeedingLoading = new List<PresentationFoundationView>();

@@ -345,6 +345,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)VisualStateGroupCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VisualStateTransitionKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WeakLinkedList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WeakReferencePool.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.Licenses.txt">

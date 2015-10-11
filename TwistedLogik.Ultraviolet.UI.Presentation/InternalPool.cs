@@ -1,4 +1,6 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation
+﻿using System;
+
+namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents the Presentation Foundation's internal collection of object pools.
@@ -24,5 +26,10 @@
         /// The set of pools used by the out-of-band renderer, which is responsible for rendering elements with shader effects.
         /// </summary>
         OutOfBandRenderer,
+        
+        /// <summary>
+        /// The pool which contains instances of the <see cref="WeakReference"/> class.
+        /// </summary>
+        WeakReferences,
     }
 }

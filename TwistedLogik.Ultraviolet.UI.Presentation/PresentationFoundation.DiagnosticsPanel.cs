@@ -118,24 +118,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 yLine += font.Regular.LineSpacing;
 
                 spriteBatch.DrawString(font, "OOB Render Target", new Vector2(xCol1, yLine), colorSubheader);
-                spriteBatch.DrawString(font, "OOB Weak Refs", new Vector2(xCol2, yLine), colorSubheader);
+                spriteBatch.DrawString(font, "Weak Refs", new Vector2(xCol2, yLine), colorSubheader);
 
                 yLine += font.Regular.LineSpacing;
-
-                var oobRenderer = upf.OutOfBandRenderer;
-
+                
                 formatter.Reset();
-                formatter.AddArgument(oobRenderer.ActiveRenderTargets);
-                formatter.AddArgument(oobRenderer.AvailableRenderTargets);
-                formatter.AddArgument(oobRenderer.ActiveRenderTargets + oobRenderer.AvailableRenderTargets);
+                formatter.AddArgument(upf.OutOfBandRenderer.ActiveRenderTargets);
+                formatter.AddArgument(upf.OutOfBandRenderer.AvailableRenderTargets);
+                formatter.AddArgument(upf.OutOfBandRenderer.ActiveRenderTargets + upf.OutOfBandRenderer.AvailableRenderTargets);
                 formatter.Format("{0} / {1} [{2}]", buffer);
 
                 spriteBatch.DrawString(font, buffer, new Vector2(xCol1, yLine), Color.White);
 
                 formatter.Reset();
-                formatter.AddArgument(oobRenderer.ActiveWeakRefs);
-                formatter.AddArgument(oobRenderer.AvailableWeakRefs);
-                formatter.AddArgument(oobRenderer.ActiveWeakRefs + oobRenderer.AvailableWeakRefs);
+                formatter.AddArgument(WeakReferencePool.Instance.Active);
+                formatter.AddArgument(WeakReferencePool.Instance.Available);
+                formatter.AddArgument(WeakReferencePool.Instance.Active + WeakReferencePool.Instance.Available);
                 formatter.Format("{0} / {1} [{2}]", buffer);
 
                 spriteBatch.DrawString(font, buffer, new Vector2(xCol2, yLine), Color.White);
