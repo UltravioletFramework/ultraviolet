@@ -360,4 +360,14 @@
       <Variant>The type '{0}' is not assignable from the type '{1}'.</Variant>
     </en-US>
   </String>
+  <String Key="FACTORY_METHOD_MISSING">
+    <en-US>
+      <Variant>The factory method '{0}' could not be found on the current Ultraviolet context.</Variant>
+    </en-US>
+  </String>
+  <String Key="FACTORY_METHOD_INVALID_RESULT">
+    <en-US>
+      <Variant>The factory method '{0}' produced an invalid result.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

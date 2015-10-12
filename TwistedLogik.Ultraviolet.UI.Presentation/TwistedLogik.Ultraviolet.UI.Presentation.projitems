@@ -216,6 +216,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Media\VisualCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\VisualCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\VisualTreeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageBoxButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageBoxImage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageBoxResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Namescope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
