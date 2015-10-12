@@ -558,7 +558,7 @@ namespace TwistedLogik.Ultraviolet
         {
             LoadSettings();
 
-            uv = OnCreatingUltravioletContext();
+            uv = UltravioletContext.EnsureSuccessfulCreation(OnCreatingUltravioletContext);
             if (uv == null)
                 throw new InvalidOperationException(UltravioletStrings.ContextNotCreated);
 
