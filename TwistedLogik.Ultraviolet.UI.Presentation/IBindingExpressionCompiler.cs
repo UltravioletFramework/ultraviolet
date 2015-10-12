@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+﻿namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents an object which can compile an application's UPF binding expressions into a managed assembly.
@@ -12,8 +10,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// expressions of any UPF views which are found therein.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="root">The path to the root directory to search.</param>
-        /// <param name="output">The filename of the file to which to save the resulting assembly.</param>
-        void Compile(UltravioletContext uv, String root, String output);
+        /// <param name="options">The compiler options.</param>
+        /// <returns>A <see cref="BindingExpressionCompilationResult"/> that represents the result of the compilation.</returns>
+        BindingExpressionCompilationResult Compile(UltravioletContext uv, BindingExpressionCompilerOptions options);
+
+        /// <summary>
+        /// Compiles the specified view's binding expressions into a view model wrapper and produces a string
+        /// containing the resulting C# code.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="options">The compiler options.</param>
+        /// <returns>A <see cref="BindingExpressionCompilationResult"/> that represents the result of the compilation.</returns>
+        BindingExpressionCompilationResult CompileSingleView(UltravioletContext uv, BindingExpressionCompilerOptions options);
     }
 }

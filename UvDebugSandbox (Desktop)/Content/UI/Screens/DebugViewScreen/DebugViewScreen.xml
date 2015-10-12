@@ -27,7 +27,7 @@
         </Button.ToolTip>
       </Button>
 
-      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="2" Content="E"/>
+      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="2" Content="E" Click="Test2"/>
 
     </Grid>
         

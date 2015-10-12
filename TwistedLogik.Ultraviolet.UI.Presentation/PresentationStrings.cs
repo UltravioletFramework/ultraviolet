@@ -95,6 +95,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource InvalidBindingExpressionCompilerAsm  = new StringResource(StringDatabase, "INVALID_BINDING_EXPRESSION_COMPILER_ASM");
         public static readonly StringResource AttachablePropertyNotFound           = new StringResource(StringDatabase, "ATTACHABLE_PROPERTY_NOT_FOUND");
         public static readonly StringResource IncompatibleType                     = new StringResource(StringDatabase, "INCOMPATIBLE_TYPE");
+        public static readonly StringResource FactoryMethodMissing                 = new StringResource(StringDatabase, "FACTORY_METHOD_MISSING");
+        public static readonly StringResource FactoryMethodInvalidResult           = new StringResource(StringDatabase, "FACTORY_METHOD_INVALID_RESULT");
+        public static readonly StringResource InvalidCompilerOptions               = new StringResource(StringDatabase, "INVALID_COMPILER_OPTIONS");
 #pragma warning restore 1591
     }
 }

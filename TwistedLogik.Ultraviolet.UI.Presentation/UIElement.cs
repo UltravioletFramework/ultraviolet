@@ -298,7 +298,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Update(UltravioletTime time)
         {
             Digest(time);
-
+            
             UpdateCore(time);
             OnUpdating(time);
         }
@@ -1714,7 +1714,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invalidates the element's cached visual bounds.
         /// </summary>
-        protected internal virtual void InvalidateVisualBounds()
+        /// <param name="invalidateAncestors">A value indicating whether to invalidate the visual bounds of the element's ancestors.</param>
+        protected internal virtual void InvalidateVisualBounds(Boolean invalidateAncestors = true)
         {
             var invalidated = true;
 
@@ -1842,6 +1843,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnTransformChanged()
         {
             var thisElementIsTransformed = HasNonIdentityTransform;
+
+            InvalidateVisualBounds();
             
             VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(thisElementIsTransformed), (child, state) =>
             {
@@ -1856,7 +1859,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnAncestorTransformChanged(Boolean transformed)
         {
             var thisElementIsTransformed = transformed || HasNonIdentityTransform;
-            
+
+            InvalidateVisualBounds(false);
+
             VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(thisElementIsTransformed), (child, state) =>
             {
                 child.OnAncestorTransformChanged((Boolean)state);

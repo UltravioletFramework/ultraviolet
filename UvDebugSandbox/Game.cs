@@ -202,6 +202,8 @@ namespace UvDebugSandbox
 
             CompileBindingExpressions();
             upf.LoadCompiledExpressions();
+
+            Diagnostics.DrawDiagnosticsVisuals = true;
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,62 +21,68 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
     public class ExpressionCompiler : IBindingExpressionCompiler
     {
         /// <inheritdoc/>
-        public void Compile(UltravioletContext uv, String root, String output)
+        public BindingExpressionCompilationResult Compile(UltravioletContext uv, BindingExpressionCompilerOptions options)
         {
             Contract.Require(uv, "uv");
-            Contract.RequireNotEmpty(root, "root");
-            
-            var dataSourceWrapperInfos = GetDataSourceWrapperInfos(uv, root);
+            Contract.Require(options, "options");
 
-            var cacheFile = Path.ChangeExtension(output, "cache");
+            if (String.IsNullOrEmpty(options.Input) || String.IsNullOrEmpty(options.Output))
+                throw new ArgumentException(PresentationStrings.InvalidCompilerOptions);
+
+            var state = CreateCompilerState(uv, options);
+            var dataSourceWrapperInfos = GetDataSourceWrapperInfos(state, uv, options.Input);
+            
+            var cacheFile = Path.ChangeExtension(options.Output, "cache");
             var cacheNew = CompilerCache.FromDataSourceWrappers(dataSourceWrapperInfos);
-            try
+            if (File.Exists(options.Output))
             {
-                if (File.Exists(output))
-                {
-                    var cacheOld = CompilerCache.FromFile(cacheFile);
-                    if (!cacheOld.IsDifferentFrom(cacheNew))
-                        return;
-                }
+                var cacheOld = CompilerCache.TryFromFile(cacheFile);
+                if (cacheOld != null && !cacheOld.IsDifferentFrom(cacheNew))
+                    return BindingExpressionCompilationResult.CreateSucceeded();
             }
-            catch (DirectoryNotFoundException) { }
-            catch (FileNotFoundException) { }
-            catch (InvalidDataException) { }
 
-            var compiler = CreateCodeProvider();
-            DeleteWorkingDirectory();
-
-            var referencedAssemblies = new ConcurrentBag<String>();
-            referencedAssemblies.Add("System.dll");
-            referencedAssemblies.Add("TwistedLogik.Nucleus.dll");
-            referencedAssemblies.Add("TwistedLogik.Ultraviolet.dll");
-            referencedAssemblies.Add("TwistedLogik.Ultraviolet.UI.Presentation.dll"); 
-
-            var expressionVerificationResult = PerformExpressionVerificationCompilationPass(compiler, dataSourceWrapperInfos, referencedAssemblies);
-            if (expressionVerificationResult.Errors.Count > 0)
+            var result = CompileViewModels(state, dataSourceWrapperInfos, options.Output);
+            if (result.Succeeded)
             {
-                WriteErrorsToWorkingDirectory(expressionVerificationResult);
-                throw new InvalidOperationException(CompilerStrings.FailedExpressionValidationPass);
+                cacheNew.Save(cacheFile);
             }
-            
-            var setterEliminationPassResult = 
-                PerformSetterEliminationCompilationPass(compiler, dataSourceWrapperInfos, referencedAssemblies);
-
-            var conversionFixupPassResult =
-                PerformConversionFixupCompilationPass(compiler, dataSourceWrapperInfos, referencedAssemblies, setterEliminationPassResult);
-
-            var finalPassResult = PerformFinalCompilationPass(compiler, output, dataSourceWrapperInfos, referencedAssemblies, conversionFixupPassResult);
-            if (finalPassResult.Errors.Count > 0)
+            else
             {
-                WriteErrorsToWorkingDirectory(finalPassResult);
-                throw new InvalidOperationException(CompilerStrings.FailedFinalPass);
+                DeleteWorkingDirectory(state);
             }
-            
-            cacheNew.Save(cacheFile);
 
-            DeleteWorkingDirectory();
+            return result;
         }
 
+        /// <inheritdoc/>
+        public BindingExpressionCompilationResult CompileSingleView(UltravioletContext uv, BindingExpressionCompilerOptions options)
+        {
+            Contract.Require(options, "options");
+
+            if (String.IsNullOrEmpty(options.Input))
+                throw new ArgumentException(PresentationStrings.InvalidCompilerOptions);
+
+            var definition = CreateDataSourceDefinitionFromXml(options.RequestedViewModelNamespace, options.RequestedViewModelName, options.RequestedViewModelName, options.Input);
+            if (definition == null)
+                return BindingExpressionCompilationResult.CreateSucceeded();
+
+            var state = CreateCompilerState(uv, options);
+            var dataSourceWrapperInfo = GetDataSourceWrapperInfo(state, definition.Value);
+            var dataSourceWrapperInfos = new[] { dataSourceWrapperInfo };
+            
+            var result = CompileViewModels(state, dataSourceWrapperInfos, null);
+            if (result.Succeeded)
+            {
+                options.Output = dataSourceWrapperInfos[0].DataSourceWrapperSourceCode;
+            }
+            else
+            {
+                DeleteWorkingDirectory(state);
+            }
+
+            return result;
+        }
+        
         /// <summary>
         /// Creates the code provider which is used to compile binding expressions.
         /// </summary>
@@ -86,9 +93,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
+        /// Compiles the specified collection of view models.
+        /// </summary>
+        private static BindingExpressionCompilationResult CompileViewModels(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, String output)
+        {
+            DeleteWorkingDirectory(state);
+
+            var referencedAssemblies = GetDefaultReferencedAssemblies();
+
+            var expressionVerificationResult = 
+                PerformExpressionVerificationCompilationPass(state, models, referencedAssemblies);
+
+            if (expressionVerificationResult.Errors.Count > 0)
+            {
+                if (state.WriteErrorsToFile)
+                    WriteErrorsToWorkingDirectory(state, expressionVerificationResult);
+
+                return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedExpressionValidationPass,
+                    CreateBindingExpressionCompilationErrors(models, expressionVerificationResult.Errors));
+            }
+
+            var setterEliminationPassResult =
+                PerformSetterEliminationCompilationPass(state, models, referencedAssemblies);
+
+            var conversionFixupPassResult =
+                PerformConversionFixupCompilationPass(state, models, referencedAssemblies, setterEliminationPassResult);
+
+            var finalPassResult = 
+                PerformFinalCompilationPass(state, output, models, referencedAssemblies, conversionFixupPassResult);
+
+            if (finalPassResult.Errors.Count > 0)
+            {
+                if (state.WriteErrorsToFile)
+                    WriteErrorsToWorkingDirectory(state, finalPassResult);
+
+                return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedFinalPass,
+                    CreateBindingExpressionCompilationErrors(models, finalPassResult.Errors));
+            }
+
+            return BindingExpressionCompilationResult.CreateSucceeded();
+        }
+
+        /// <summary>
         /// Performs the first compilation pass, which generates expression getters in order to verify that the expressions are valid code.
         /// </summary>
-        private static CompilerResults PerformExpressionVerificationCompilationPass(CSharpCodeProvider compiler, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
+        private static CompilerResults PerformExpressionVerificationCompilationPass(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
         {
             Parallel.ForEach(models, model =>
             {
@@ -107,13 +156,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 WriteSourceCodeForDataSourceWrapper(model);
             });
 
-            return CompileDataSourceWrapperSources(compiler, null, models, referencedAssemblies);
+            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
         }
 
         /// <summary>
         /// Performs the second compilation pass, which generates setters in order to determine which expressions support two-way bindings.
         /// </summary>
-        private static CompilerResults PerformSetterEliminationCompilationPass(CSharpCodeProvider compiler, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
+        private static CompilerResults PerformSetterEliminationCompilationPass(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
         {
             Parallel.ForEach(models, model =>
             {
@@ -125,13 +174,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                 WriteSourceCodeForDataSourceWrapper(model);
             });
-            return CompileDataSourceWrapperSources(compiler, null, models, referencedAssemblies);
+            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
         }
 
         /// <summary>
         /// Performs the third compilation pass, which attempts to fix any errors caused by non-implicit conversions and nullable types that need to be cast to non-nullable types.
         /// </summary>
-        private static CompilerResults PerformConversionFixupCompilationPass(CSharpCodeProvider compiler, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults setterEliminationResult)
+        private static CompilerResults PerformConversionFixupCompilationPass(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults setterEliminationResult)
         {
             var errors = setterEliminationResult.Errors.Cast<CompilerError>().ToList();
 
@@ -167,13 +216,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                 WriteSourceCodeForDataSourceWrapper(model);
             });
-            return CompileDataSourceWrapperSources(compiler, null, models, referencedAssemblies);
+            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
         }
 
         /// <summary>
         /// Performs the final compilation pass, which removes invalid expression setters based on the results of the previous pass.
         /// </summary>
-        private static CompilerResults PerformFinalCompilationPass(CSharpCodeProvider compiler, String output, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults nullableFixupResult)
+        private static CompilerResults PerformFinalCompilationPass(ExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults nullableFixupResult)
         {
             var errors = nullableFixupResult.Errors.Cast<CompilerError>().ToList();
 
@@ -193,17 +242,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 WriteSourceCodeForDataSourceWrapper(model);
             });
 
-            return CompileDataSourceWrapperSources(compiler, output, models, referencedAssemblies);
+            return CompileDataSourceWrapperSources(state, output, models, referencedAssemblies);
         }
 
         /// <summary>
         /// Compiles the specified data source wrapper sources into a managed assembly.
         /// </summary>
-        /// <param name="compiler">The compiler with which to compile the data source wrapper sources.</param>
+        /// <param name="state">The expression compiler's current state.</param>
+        /// <param name="output">The path to the assembly file which will be created.</param>
         /// <param name="infos">A collection of <see cref="DataSourceWrapperInfo"/> instances containing the source code to compile.</param>
         /// <param name="references">A collection of assembly locations which should be referenced by the compiled assembly.</param>
         /// <returns>A <see cref="CompilerResults"/> instance that represents the result of compilation.</returns>
-        private static CompilerResults CompileDataSourceWrapperSources(CSharpCodeProvider compiler, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references)
+        private static CompilerResults CompileDataSourceWrapperSources(ExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references)
         {
             var writeToFile = (output != null);
 
@@ -214,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             options.IncludeDebugInformation = false;
             options.ReferencedAssemblies.AddRange(references.Distinct().ToArray());
 
-            var dir = Directory.CreateDirectory(WorkingDirectory);
+            var dir = Directory.CreateDirectory(GetWorkingDirectory(state));
             var files = new List<String>();
 
             foreach (var info in infos)
@@ -224,26 +274,63 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                 File.WriteAllText(path, info.DataSourceWrapperSourceCode);
             }
+            
+            return state.Compiler.CompileAssemblyFromFile(options, files.ToArray());
+        }
 
-            return compiler.CompileAssemblyFromFile(options, files.ToArray());
+        /// <summary>
+        /// Creates a collection containing the assemblies which are referenced by default during compilation.
+        /// </summary>
+        /// <returns>A <see cref="ConcurrentBag{String}"/> which contains the default referenced assemblies.</returns>
+        private static ConcurrentBag<String> GetDefaultReferencedAssemblies()
+        {
+            var referencedAssemblies = new ConcurrentBag<String>();
+            referencedAssemblies.Add("System.dll");
+            referencedAssemblies.Add(typeof(Contract).Assembly.Location);
+            referencedAssemblies.Add(typeof(UltravioletContext).Assembly.Location);
+            referencedAssemblies.Add(typeof(PresentationFoundation).Assembly.Location);
+
+            return referencedAssemblies;
         }
 
         /// <summary>
         /// Gets a collection of <see cref="DataSourceWrapperInfo"/> objects for all of the views defined within the specified root directory
         /// as well as all of the component templates which are currently registered with the Ultraviolet context.
         /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="state">The expression compiler's current state.</param>
         /// <param name="root">The root directory to search for views.</param>
         /// <returns>A collection of <see cref="DataSourceWrapperInfo"/> instances which represent the views and templates which were found.</returns>
-        private static IEnumerable<DataSourceWrapperInfo> GetDataSourceWrapperInfos(UltravioletContext uv, String root)
+        private static IEnumerable<DataSourceWrapperInfo> GetDataSourceWrapperInfos(ExpressionCompilerState state, UltravioletContext uv, String root)
         {
             var viewDefinitions = RecursivelySearchForViews(root, root);
-            var viewModelInfos = RetrieveDataSourceWrapperInfos(uv, viewDefinitions);
+            var viewModelInfos = RetrieveDataSourceWrapperInfos(state, viewDefinitions);
 
-            var templateDefinitions = RetrieveTemplateDefinitions(uv);
-            var templateModelInfos = RetrieveDataSourceWrapperInfos(uv, templateDefinitions);
+            var templateDefinitions = RetrieveTemplateDefinitions(state);
+            var templateModelInfos = RetrieveDataSourceWrapperInfos(state, templateDefinitions);
 
             return Enumerable.Union(viewModelInfos, templateModelInfos);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DataSourceDefinition"/> structure for the specified XML string.
+        /// </summary>
+        /// <param name="namespace">The namespace within which to place the compiled view model.</param>
+        /// <param name="name">The name of the data source's view model.</param>
+        /// <param name="path">The path to the file that defines the data source.</param>
+        /// <param name="xml">The XML string to parse.</param>
+        /// <returns>The instance of <see cref="DataSourceDefinition"/> that was created, or <c>null</c> if the specified
+        /// XML does not contain a valid view.</returns>
+        private static DataSourceDefinition? CreateDataSourceDefinitionFromXml(String @namespace, String name, String path, String xml)
+        {
+            var xdocument = XDocument.Parse(xml);
+            if (xdocument.Root.Name.LocalName != "UIPanelDefinition")
+                return null;
+
+            var viewdef = xdocument.Root.Element("View");
+            if (viewdef == null)
+                return null;
+
+            return DataSourceDefinition.FromView(@namespace, name, path, viewdef);
         }
 
         /// <summary>
@@ -261,16 +348,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             {
                 try
                 {
-                    var xml = XDocument.Load(file);
+                    var fileContent = File.ReadAllText(file);
 
-                    if (xml.Root.Name.LocalName != "UIPanelDefinition")
-                        continue;
-
-                    var viewdef = xml.Root.Element("View");
-                    if (viewdef == null)
-                        continue;
-
-                    result.Add(DataSourceDefinition.FromView(file, viewdef));
+                    var name = PresentationFoundationView.GetDataSourceWrapperNameForView(file);
+                    var definition = CreateDataSourceDefinitionFromXml(null, name, file, fileContent);
+                    if (definition != null)
+                    {
+                        result.Add(definition.Value);
+                    }
                 }
                 catch (XmlException) { continue; }
             }
@@ -288,12 +373,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// Gets a collection of <see cref="DataSourceDefinition"/> instances for any component templates which
         /// are currently registered with the Ultraviolet Presentation Foundation.
         /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
         /// <returns>A collection of <see cref="DataSourceDefinition"/> instances which represent UPF component template definitions.</returns>
-        private static IEnumerable<DataSourceDefinition> RetrieveTemplateDefinitions(UltravioletContext uv)
+        private static IEnumerable<DataSourceDefinition> RetrieveTemplateDefinitions(ExpressionCompilerState state)
         {
-            var templates = uv.GetUI().GetPresentationFoundation().ComponentTemplates;
-            var templateDefs = from template in templates
+            if (state.ComponentTemplateManager == null)
+                return Enumerable.Empty<DataSourceDefinition>();
+
+            var templateDefs = from template in state.ComponentTemplateManager
                                select DataSourceDefinition.FromComponentTemplate(template.Key, template.Value.Root.Element("View"));
             return templateDefs.ToList();
         }
@@ -301,16 +387,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Creates an instance of <see cref="DataSourceWrapperInfo"/> for each of the specified data source definitions.
         /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="state">The expression compiler's current state.</param>
         /// <param name="dataSourceDefinitions">The collection of <see cref="DataSourceDefinition"/> objects for which to create <see cref="DataSourceWrapperInfo"/> instances.</param>
         /// <returns>A collection containing the <see cref="DataSourceWrapperInfo"/> instances which were created.</returns>
-        private static IEnumerable<DataSourceWrapperInfo> RetrieveDataSourceWrapperInfos(UltravioletContext uv, IEnumerable<DataSourceDefinition> dataSourceDefinitions)
+        private static IEnumerable<DataSourceWrapperInfo> RetrieveDataSourceWrapperInfos(ExpressionCompilerState state, IEnumerable<DataSourceDefinition> dataSourceDefinitions)
         {
             var dataSourceWrapperInfos = new ConcurrentBag<DataSourceWrapperInfo>();
 
             Parallel.ForEach(dataSourceDefinitions, viewDefinition =>
             {
-                var dataSourceWrapperInfo = GetDataSourceWrapperInfo(uv, viewDefinition);
+                var dataSourceWrapperInfo = GetDataSourceWrapperInfo(state, viewDefinition);
                 if (dataSourceWrapperInfo == null)
                     return;
 
@@ -323,10 +409,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Creates a new instance of <see cref="DataSourceWrapperInfo"/> that represents the specified data source wrapper.
         /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="state">The expression compiler's current state.</param>
         /// <param name="dataSourceDefinition">The data source definition for which to retrieve data source wrapper info.</param>
         /// <returns>The <see cref="DataSourceWrapperInfo"/> that was created to represent the specified data source.</returns>
-        private static DataSourceWrapperInfo GetDataSourceWrapperInfo(UltravioletContext uv, DataSourceDefinition dataSourceDefinition)
+        private static DataSourceWrapperInfo GetDataSourceWrapperInfo(ExpressionCompilerState state, DataSourceDefinition dataSourceDefinition)
         {
             var dataSourceWrappedType = dataSourceDefinition.TemplatedControl;
             if (dataSourceWrappedType == null)
@@ -353,7 +439,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var dataSourceWrapperExpressions = new List<BindingExpressionInfo>();
             foreach (var element in dataSourceDefinition.Definition.Elements())
             {
-                FindBindingExpressionsInDataSource(uv, element, dataSourceWrapperExpressions);
+                FindBindingExpressionsInDataSource(state, element, dataSourceWrapperExpressions);
             }
 
             dataSourceWrapperExpressions = CollapseDataSourceExpressions(dataSourceWrapperExpressions);
@@ -412,6 +498,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 var @namespace = dataSourceWrapperInfo.DataSourceDefinition.DataSourceWrapperNamespace;
                 writer.WriteLine("namespace " + @namespace);
                 writer.WriteLine("{");
+                writer.WriteLine("[System.CLSCompliant(false)]");
+                writer.WriteLine("[System.CodeDom.Compiler.GeneratedCode(\"UPF Binding Expression Compiler\", \"{0}\")]", FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion);
                 writer.WriteLine("public sealed class {0} : {1}", dataSourceWrapperInfo.DataSourceWrapperName, writer.GetCSharpTypeName(typeof(IDataSourceWrapper)));
                 writer.WriteLine("{");
 
@@ -482,19 +570,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 dataSourceWrapperInfo.DataSourceWrapperSourceCode = writer.ToString();
             }
         }
-
+        
         /// <summary>
         /// Searches the specified XML element tree for binding expressions and adds them to the specified collection.
         /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="state">The expression compiler's current state.</param>
         /// <param name="element">The root of the XML element tree to search.</param>
         /// <param name="expressions">The list to populate with any binding expressions that are found.</param>
-        private static void FindBindingExpressionsInDataSource(UltravioletContext uv, XElement element, List<BindingExpressionInfo> expressions)
+        private static void FindBindingExpressionsInDataSource(ExpressionCompilerState state, XElement element, List<BindingExpressionInfo> expressions)
         {
-            var upf = uv.GetUI().GetPresentationFoundation();
-
             Type elementType;
-            if (upf.GetKnownType(element.Name.LocalName, out elementType))
+            if (state.GetKnownType(element.Name.LocalName, out elementType))
             {
                 var attrs = element.Attributes();
                 foreach (var attr in attrs)
@@ -519,7 +605,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                         if (BindingExpressions.IsBindingExpression(elementValue))
                         {
                             String defaultProperty;
-                            if (!upf.GetElementDefaultProperty(elementType, out defaultProperty))
+                            if (!state.GetElementDefaultProperty(elementType, out defaultProperty))
                                 throw new InvalidOperationException(CompilerStrings.ElementDoesNotHaveDefaultProperty.Format(elementType.Name));
 
                             var dprop = DependencyProperty.FindByName(defaultProperty, elementType);
@@ -535,18 +621,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var children = element.Elements();
             foreach (var child in children)
             {
-                FindBindingExpressionsInDataSource(uv, child, expressions);
+                FindBindingExpressionsInDataSource(state, child, expressions);
             }
         }
 
         /// <summary>
         /// Deletes the compiler's working directory.
         /// </summary>
-        private static void DeleteWorkingDirectory()
+        /// <param name="state">The expression compiler's current state.</param>
+        private static void DeleteWorkingDirectory(ExpressionCompilerState state)
         {
             try
             {
-                Directory.Delete(WorkingDirectory, true);
+                Directory.Delete(GetWorkingDirectory(state), true);
             }
             catch (IOException) { }
         }
@@ -554,9 +641,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Writes any compiler errors to the working directory.
         /// </summary>
-        private static void WriteErrorsToWorkingDirectory(CompilerResults results)
+        /// <param name="state">The expression compiler's current state.</param>
+        /// <param name="results">The results of the previous compilation pass.</param>
+        private static void WriteErrorsToWorkingDirectory(ExpressionCompilerState state, CompilerResults results)
         {
-            var logpath = Path.Combine(WorkingDirectory, "Compilation Errors.txt");
+            var logpath = Path.Combine(GetWorkingDirectory(state), "Compilation Errors.txt");
             File.Delete(logpath);
 
             if (results.Errors.Count > 0)
@@ -564,6 +653,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 var errorStrings = results.Errors.Cast<CompilerError>().Select(x =>
                     String.Format("{0}\t{1}\t{2}\t{3}", x.ErrorNumber, x.ErrorText, Path.GetFileName(x.FileName), x.Line));
 
+//                throw new Exception(String.Join(", ", errorStrings));
                 File.WriteAllLines(logpath, Enumerable.Union(new[] { "Code\tDescription\tFile\tLine" }, errorStrings));
             }
         }
@@ -600,13 +690,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         {
             return true;
         }
-        
+
+        /// <summary>
+        /// Gets the working directory for the specified compilation.
+        /// </summary>
+        /// <param name="state">The expression compiler's current state.</param>
+        /// <returns>The working directory for the specified compilation.</returns>
+        private static String GetWorkingDirectory(ExpressionCompilerState state)
+        {
+            return state.WorkInTemporaryDirectory ? Path.Combine(Path.GetTempPath(), "UV_CompiledExpressions") : "UV_CompiledExpressions";
+        }
+
         /// <summary>
         /// Gets the name of the file in which the specified data source wrapper's source code is saved during compilation.
         /// </summary>
         private static String GetWorkingFileForDataSourceWrapper(DataSourceWrapperInfo dataSourceWrapperInfo)
         {
-            var path = Path.ChangeExtension(Path.Combine(WorkingDirectory, dataSourceWrapperInfo.UniqueID.ToString()), "cs");
+            var path = Path.ChangeExtension(Path.Combine(Path.GetTempPath(), dataSourceWrapperInfo.UniqueID.ToString()), "cs");
             return path;
         }
 
@@ -667,11 +767,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             return collapsed.Select(x => x.First()).ToList();
         }
 
-        // The name of the temporary directory in which the compiler operates.
-        private const String WorkingDirectory = "UV_CompiledExpressions";
+        /// <summary>
+        /// Converts a <see cref="CompilerErrorCollection"/> to a collection of <see cref="BindingExpressionCompilationError"/> objects.
+        /// </summary>
+        /// <param name="models">The list of models which were compiled.</param>
+        /// <param name="errors">The collection of errors produced during compilation.</param>
+        /// <returns>A list containing the converted errors.</returns>
+        private static List<BindingExpressionCompilationError> CreateBindingExpressionCompilationErrors(IEnumerable<DataSourceWrapperInfo> models, CompilerErrorCollection errors)
+        {
+            var result = new List<BindingExpressionCompilationError>();
+
+            var errorsByFile = errors.Cast<CompilerError>()
+                .Where(x => !x.IsWarning).GroupBy(x => x.FileName).ToDictionary(x => x.Key, x => x.ToList());
+
+            foreach (var model in models)
+            {
+                var dataSourceWrapperFilename = Path.GetFileName(GetWorkingFileForDataSourceWrapper(model));
+                var dataSourceErrors = default(List<CompilerError>);
+                if (errorsByFile.TryGetValue(dataSourceWrapperFilename, out dataSourceErrors))
+                {
+                    foreach (var dataSourceError in dataSourceErrors)
+                    {
+                        result.Add(new BindingExpressionCompilationError(model.DataSourceWrapperName,
+                            dataSourceError.Line, dataSourceError.Column, dataSourceError.ErrorNumber, dataSourceError.ErrorText));
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="ExpressionCompilerState"/> from the specified set of compiler options.
+        /// </summary>
+        private ExpressionCompilerState CreateCompilerState(UltravioletContext uv, BindingExpressionCompilerOptions options)
+        {
+            var compiler = CreateCodeProvider();
+            var state = new ExpressionCompilerState(uv, compiler);
+            state.WorkInTemporaryDirectory = options.WorkInTemporaryDirectory;
+            state.WriteErrorsToFile = options.WriteErrorsToFile;
+
+            return state;
+        }
 
         // Regular expressions for error parsing
         private static readonly Regex regexCS0266 = new Regex(@"Cannot implicitly convert type \'(?<source>\S+)\' to \'(?<target>\S+)\'\. An explicit conversion exists \(are you missing a cast\?\)", 
-            RegexOptions.Compiled | RegexOptions.Singleline);
+            RegexOptions.Compiled | RegexOptions.Singleline);        
     }
 }
