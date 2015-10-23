@@ -15,21 +15,21 @@ View
 	blank-image: #Global:Textures:DefaultUI 137 459 14 23;
 }
 
-.dialog
+.msgbox
 {
 	trigger event view.opening
 	{
-		play-storyboard { dialog-opening }
+		play-storyboard { msgbox-opening }
 	}
 	trigger event view.closing
 	{
-		play-storyboard { dialog-closing }
+		play-storyboard { msgbox-closing }
 	}
 }
 
-@dialog-opening
+@msgbox-opening
 {
-	target Rectangle (*:storyboard-root > .dialog-fade)
+	target Rectangle (*:storyboard-root > .msgbox-fade)
 	{
 		animation opacity
 		{
@@ -37,24 +37,24 @@ View
 			keyframe 250 ease-out-cubic { 0.75 }
 		}
 	}
-	target Grid (*:storyboard-root > .dialog-box)
+	target Grid (*:storyboard-root > .msgbox-box)
 	{
 		animation opacity
 		{
 			keyframe   0                { 0.0 }
 			keyframe 250 ease-out-cubic { 1.0 }
 		}
-		animation margin
+		animation y | render-transform as TranslateTransform
 		{
-			keyframe   0                { 0 250 0 0 }
-			keyframe 500 ease-out-cubic { 0   0 0 0 }
+			keyframe   0				{ 250 }
+			keyframe 500 ease-out-cubic {   0 }
 		}
 	}
 }
 
-@dialog-closing
+@msgbox-closing
 {
-	target Rectangle (*:storyboard-root > .dialog-fade)
+	target Rectangle (*:storyboard-root > .msgbox-fade)
 	{
 		animation opacity
 		{
@@ -63,72 +63,90 @@ View
 			keyframe 500 ease-out-cubic { 0.00 }
 		}
 	}
-	target Grid (*:storyboard-root > .dialog-box)
+	target Grid (*:storyboard-root > .msgbox-box)
 	{
 		animation opacity
 		{
 			keyframe   0                { 1.0 }
 			keyframe 250 ease-out-cubic { 0.0 }
 		}
-		animation margin
+		animation y | render-transform as TranslateTransform
 		{
-			keyframe   0                { 0   0 0 0 }
-			keyframe 500 ease-out-cubic { 0 500 0 0 }
+			keyframe   0				{   0 }
+			keyframe 500 ease-out-cubic { 250 }
 		}
 	}
 }
 
-.dialog-fade
+.msgbox-fade
 {
 	fill-color: #ff000000;
 }
 
-.dialog-box
+.msgbox-box
 {
 	min-width: 300;
 	max-width: 400;
 }
 
-.dialog-box | effect as BlurEffect
+.msgbox-box | effect as DropShadowEffect
 {
 	blur-radius: 2.0;
 	shadow-depth: 2.0;
 }
 
-.dialog-box-background
+.msgbox-box-background
 {
 	source-image:  #Global:Textures:DefaultUI 217 305 16 32 4 4 4 4;
 }
 
-.dialog-box-content
+.msgbox-box-content
 {
 	margin: 8;
 }
 
-.dialog-header
+.msgbox-caption
 {
 	margin: 0 0 0 8;
 	font-style: bold;
 }
 
-.dialog-text
+.msgbox-text-panel
 {
 	margin: 0 0 0 8;
 }
 
-.dialog-btn
+.msgbox-img
 {
-	min-width: 75;
-}
-
-.dialog-btn-ok
-{
+	width: 48;
+	height: 48;
 	margin: 0 0 8 0;
 }
 
-.dialog-btn-cancel
+.msgbox-img-hand
 {
-	margin: 0;
+	source-image: #Global:Textures:DefaultUI 234 305 48 48;
+}
+
+.msgbox-img-exclamation
+{
+	source-image: #Global:Textures:DefaultUI 283 354 48 48;
+}
+
+.msgbox-img-question
+{
+	source-image: #Global:Textures:DefaultUI 283 305 48 48;
+}
+
+.msgbox-img-asterisk
+{
+	source-image: #Global:Textures:DefaultUI 234 354 48 48;
+}
+
+.msgbox-btn
+{
+	min-width: 75;
+	margin: 8 0 0 0;
 }
 
 Button, RepeatButton, ToggleButton

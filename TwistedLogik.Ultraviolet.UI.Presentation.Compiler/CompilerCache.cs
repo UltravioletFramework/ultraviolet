@@ -51,6 +51,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
+        /// Attempts to create a new instance of <see cref="CompilerCache"/> by loading the contents of the specified file.
+        /// If the file does not exist, or contains invalid data, this method returns <c>null</c>.
+        /// </summary>
+        /// <param name="path">The path to the file to load.</param>
+        /// <returns>The <see cref="CompilerCache"/> instance that was created, or <c>null</c> if the file could not be loaded.</returns>
+        public static CompilerCache TryFromFile(String path)
+        {
+            try
+            {
+                return FromFile(path);
+            }
+            catch (DirectoryNotFoundException) { }
+            catch (FileNotFoundException) { }
+            catch (InvalidDataException) { }
+
+            return null;
+        }
+
+        /// <summary>
         /// Creates a new instance of <see cref="CompilerCache"/> from the specified collection of data source wrappers.
         /// </summary>
         /// <param name="dataSourceWrappers">A collection of data source wrappers from which to create a cache object.</param>

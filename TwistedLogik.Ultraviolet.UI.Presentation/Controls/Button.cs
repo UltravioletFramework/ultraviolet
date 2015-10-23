@@ -147,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 else
                 {
                     button.View.UnregisterDefaultButton(button);
-                    button.SetValue(IsDefaultedPropertyKey, CommonBoxedValues.Boolean.False);
+                    button.SetValue(IsDefaultedPropertyKey, false);
                 }
             }
         }

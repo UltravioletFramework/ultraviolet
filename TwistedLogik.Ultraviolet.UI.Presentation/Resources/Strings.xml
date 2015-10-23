@@ -370,4 +370,9 @@
       <Variant>The factory method '{0}' produced an invalid result.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_COMPILER_OPTIONS">
+    <en-US>
+      <Variant>The specified compiler options are not valid.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

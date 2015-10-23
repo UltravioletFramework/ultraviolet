@@ -76,10 +76,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             view.SetStyleSheet(uvssdoc);
 
-            if (!String.IsNullOrEmpty(uiPanelDefinition.AssetFilePath))
+            if (String.IsNullOrEmpty(uiPanelDefinition.AssetFilePath))
+            {
+                if (view.ViewModelType != null)
+                {
+                    view.viewModelWrapperName = view.ViewModelType.FullName;
+                }
+            }
+            else
             {
                 view.viewModelWrapperName = GetDataSourceWrapperNameForView(uiPanelDefinition.AssetFilePath);
             }
+            
 
             return view;
         }
@@ -802,6 +810,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected override void OnOpening()
         {
             EnsureIsLoaded();
+            
+            var defaultButton = GetFirstDefaultButton();
+            if (defaultButton != null)
+            {
+                FocusElement(defaultButton);
+            }
+            else
+            {
+                if (elementWithFocus != null)
+                {
+                    BlurElement(elementWithFocus);
+                }
+            }
 
             RaiseViewLifecycleEvent(layoutRoot, View.Opening);
         }
@@ -1708,6 +1729,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return uiElement;
                 }
                 current = VisualTreeHelper.GetParent(current);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the first visible, enabled default button.
+        /// </summary>
+        private Button GetFirstDefaultButton()
+        {
+            return GetFirstDefaultOrCancelButton(defaultButtons);
+        }
+
+        /// <summary>
+        /// Gets the first visible, enabled cancel button.
+        /// </summary>
+        private Button GetFirstCancelButton()
+        {
+            return GetFirstDefaultOrCancelButton(cancelButtons);
+        }
+
+        /// <summary>
+        /// Gets the first visible, enabled button in the specified list of default or cancel buttons.
+        /// </summary>
+        private Button GetFirstDefaultOrCancelButton(List<WeakReference> buttons)
+        {
+            foreach (var weakReference in defaultButtons)
+            {
+                var defaultButton = weakReference.Target as Button;
+                if (defaultButton == null)
+                    continue;
+
+                if (defaultButton.Visibility == Visibility.Visible && defaultButton.IsEnabled)
+                {
+                    return defaultButton;
+                }
             }
             return null;
         }

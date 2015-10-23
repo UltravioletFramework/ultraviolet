@@ -5,44 +5,22 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the <see cref="UIScreen"/> class that implement the <see cref="MessageBox"/> modal.
-    /// </summary>
-    /// <param name="owner">The screen that owns the message box.</param>
-    /// <returns>The instance of <see cref="UIScreen"/> that was created.</returns>
-    public delegate UIScreen MessageBoxScreenFactory(UIScreen owner);
-
-    /// <summary>
     /// Represents a modal message box.
     /// </summary>
-    public class MessageBox : Modal
+    public class MessageBox
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageBox"/> class.
-        /// </summary>
-        /// <param name="owner">The screen that owns the message box.</param>
-        public MessageBox(UIScreen owner)
-        {
-            Contract.Require(owner, "owner");
-
-            var uv = owner.Ultraviolet;
-            var screenFactory = uv.TryGetFactoryMethod<MessageBoxScreenFactory>();
-            if (screenFactory == null)
-                throw new InvalidOperationException(PresentationStrings.FactoryMethodMissing.Format(typeof(MessageBoxScreenFactory).Name));
-
-            screen = screenFactory(owner);
-
-            if (screen == null)
-                throw new InvalidOperationException(PresentationStrings.FactoryMethodInvalidResult.Format(typeof(MessageBoxScreenFactory).Name));
-        }
-
         /// <summary>
         /// Displays the specified message box as a modal dialog.
         /// </summary>
         /// <param name="mb">The message box to display.</param>
         /// <param name="text">The text to display.</param>
-        public static void Show(MessageBox mb, String text)
+        public static void Show(MessageBoxModal mb, String text)
         {
-            throw new NotImplementedException();
+            Contract.Require(mb, "mb");
+            
+            mb.Prepare(text, null, MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None);
+
+            Modal.ShowDialog(mb);
         }
 
         /// <summary>
@@ -51,9 +29,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="mb">The message box to display.</param>
         /// <param name="text">The text to display.</param>
         /// <param name="caption">The caption to display.</param>
-        public static void Show(MessageBox mb, String text, String caption)
+        public static void Show(MessageBoxModal mb, String text, String caption)
         {
-            throw new NotImplementedException();
+            Contract.Require(mb, "mb");
+            
+            mb.Prepare(text, caption, MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None);
+
+            Modal.ShowDialog(mb);
         }
 
         /// <summary>
@@ -63,9 +45,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="text">The text to display.</param>
         /// <param name="caption">The caption to display.</param>
         /// <param name="button">A <see cref="MessageBoxButton"/> value that specifies the set of buttons to display.</param>
-        public static void Show(MessageBox mb, String text, String caption, MessageBoxButton button)
+        public static void Show(MessageBoxModal mb, String text, String caption, MessageBoxButton button)
         {
-            throw new NotImplementedException();
+            Contract.Require(mb, "mb");
+            
+            mb.Prepare(text, caption, button, MessageBoxImage.None, MessageBoxResult.None);
+
+            Modal.ShowDialog(mb);
         }
         
         /// <summary>
@@ -76,9 +62,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="caption">The caption to display.</param>
         /// <param name="button">A <see cref="MessageBoxButton"/> value that specifies the set of buttons to display.</param>
         /// <param name="image">A <see cref="MessageBoxImage"/> value that specifies the image to display.</param>
-        public static void Show(MessageBox mb, String text, String caption, MessageBoxButton button, MessageBoxImage image)
+        public static void Show(MessageBoxModal mb, String text, String caption, MessageBoxButton button, MessageBoxImage image)
         {
-            throw new NotImplementedException();
+            Contract.Require(mb, "mb");
+            
+            mb.Prepare(text, caption, button, image, MessageBoxResult.None);
+
+            Modal.ShowDialog(mb);
+        }
+
+        /// <summary>
+        /// Displays the specified message box as a modal dialog.
+        /// </summary>
+        /// <param name="mb">The message box to display.</param>
+        /// <param name="text">The text to display.</param>
+        /// <param name="caption">The caption to display.</param>
+        /// <param name="button">A <see cref="MessageBoxButton"/> value that specifies the set of buttons to display.</param>
+        /// <param name="image">A <see cref="MessageBoxImage"/> value that specifies the image to display.</param>
+        /// <param name="defaultResult">A <see cref="MessageBoxResult"/> value that specifies the message box's default option.</param>
+        public static void Show(MessageBoxModal mb, String text, String caption, MessageBoxButton button, MessageBoxImage image, MessageBoxResult defaultResult)
+        {
+            Contract.Require(mb, "mb");
+            
+            mb.Prepare(text, caption, button, image, defaultResult);
+
+            Modal.ShowDialog(mb);
         }
 
         /// <summary>
@@ -87,9 +95,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="mb">The message box to display.</param>
         /// <param name="text">The text to display.</param>
         /// <returns>A <see cref="MessageBoxResult"/> value that specifies which message box button was clicked by the user.</returns>
-        public static Task<MessageBoxResult> ShowAsync(MessageBox mb, String text)
+        public static Task<MessageBoxResult> ShowAsync(MessageBoxModal mb, String text)
         {
-            throw new NotImplementedException();
+            Contract.Require(mb, "mb");
+            
+            mb.Prepare(text, null, MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None);
+
+            return WrapShowDialogAsync(mb);
         }
 
         /// <summary>
@@ -99,9 +111,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="text">The text to display.</param>
         /// <param name="caption">The caption to display.</param>
         /// <returns>A <see cref="MessageBoxResult"/> value that specifies which message box button was clicked by the user.</returns>
-        public static Task<MessageBoxResult> ShowAsync(MessageBox mb, String text, String caption)
+        public static Task<MessageBoxResult> ShowAsync(MessageBoxModal mb, String text, String caption)
         {
-            throw new NotImplementedException();
+            Contract.Require(mb, "mb");
+            
+            mb.Prepare(text, caption, MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None);
+
+            return WrapShowDialogAsync(mb);
         }
 
         /// <summary>
@@ -112,9 +128,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="caption">The caption to display.</param>
         /// <param name="button">A <see cref="MessageBoxButton"/> value that specifies the set of buttons to display.</param>
         /// <returns>A <see cref="MessageBoxResult"/> value that specifies which message box button was clicked by the user.</returns>
-        public static Task<MessageBoxResult> ShowAsync(MessageBox mb, String text, String caption, MessageBoxButton button)
+        public static Task<MessageBoxResult> ShowAsync(MessageBoxModal mb, String text, String caption, MessageBoxButton button)
         {
-            throw new NotImplementedException();
+            Contract.Require(mb, "mb");
+            
+            mb.Prepare(text, caption, button, MessageBoxImage.None, MessageBoxResult.None);
+
+            return WrapShowDialogAsync(mb);
         }
 
         /// <summary>
@@ -126,9 +146,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">A <see cref="MessageBoxButton"/> value that specifies the set of buttons to display.</param>
         /// <param name="image">A <see cref="MessageBoxImage"/> value that specifies the image to display.</param>
         /// <returns>A <see cref="MessageBoxResult"/> value that specifies which message box button was clicked by the user.</returns>
-        public static Task<MessageBoxResult> ShowAsync(MessageBox mb, String text, String caption, MessageBoxButton button, MessageBoxImage image)
+        public static Task<MessageBoxResult> ShowAsync(MessageBoxModal mb, String text, String caption, MessageBoxButton button, MessageBoxImage image)
         {
-            throw new NotImplementedException();
+            Contract.Require(mb, "mb");
+            
+            mb.Prepare(text, caption, button, image, MessageBoxResult.None);
+
+            return WrapShowDialogAsync(mb);
         }
 
         /// <summary>
@@ -139,35 +163,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="caption">The caption to display.</param>
         /// <param name="button">A <see cref="MessageBoxButton"/> value that specifies the set of buttons to display.</param>
         /// <param name="image">A <see cref="MessageBoxImage"/> value that specifies the image to display.</param>
-        /// <param name="defaultResult">A <see cref="MessageBoxResult"/> value that specifies the default result.</param>
+        /// <param name="defaultResult">A <see cref="MessageBoxResult"/> value that specifies the message box's default option.</param>
         /// <returns>A <see cref="MessageBoxResult"/> value that specifies which message box button was clicked by the user.</returns>
-        public static Task<MessageBoxResult> ShowAsync(MessageBox mb, String text, String caption, MessageBoxButton button, MessageBoxImage image, MessageBoxResult defaultResult)
+        public static Task<MessageBoxResult> ShowAsync(MessageBoxModal mb, String text, String caption, MessageBoxButton button, MessageBoxImage image, MessageBoxResult defaultResult)
         {
-            throw new NotImplementedException();
-        }
+            Contract.Require(mb, "mb");
+            
+            mb.Prepare(text, caption, button, image, defaultResult);
 
-        /// <inheritdoc/>
-        public override UIScreen Screen
+            return WrapShowDialogAsync(mb);
+        }
+        
+        /// <summary>
+        /// Opens the specified <see cref="MessageBox"/> as a modal dialog and returns a <see cref="Task{MessageBoxResult}"/>
+        /// that represents the result of the message box.
+        /// </summary>
+        private static Task<MessageBoxResult> WrapShowDialogAsync(MessageBoxModal mb)
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
+            var taskCompletionSource = new TaskCompletionSource<MessageBoxResult>();
+            var task = Modal.ShowDialogAsync(mb);
+            task.ContinueWith(dialogResult => taskCompletionSource.SetResult(mb.MessageBoxResult));
 
-                return screen;
-            }
-        }
-
-        /// <inheritdoc/>
-        protected override void Dispose(Boolean disposing)
-        {
-            if (disposing)
-            {
-                SafeDispose.Dispose(screen);
-            }
-            base.Dispose(disposing);
-        }
-
-        // Property values.
-        private readonly UIScreen screen;
+            return taskCompletionSource.Task;
+        }        
     }
 }

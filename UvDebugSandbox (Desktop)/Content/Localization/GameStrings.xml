@@ -5,4 +5,24 @@
       <Variant>My Ultraviolet Game</Variant>
     </en-US>
   </String>
+  <String Key="MSGBOX_YES">
+    <en-US>
+      <Variant>Yes</Variant>
+    </en-US>
+  </String>
+  <String Key="MSGBOX_NO">
+    <en-US>
+      <Variant>No</Variant>
+    </en-US>
+  </String>
+  <String Key="MSGBOX_OK">
+    <en-US>
+      <Variant>OK</Variant>
+    </en-US>
+  </String>
+  <String Key="MSGBOX_CANCEL">
+    <en-US>
+      <Variant>Cancel</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

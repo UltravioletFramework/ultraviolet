@@ -43,6 +43,7 @@ namespace UvDebugSandbox.UI.Screens
             this.view = view;
             this.owner = owner;
             this.confirmationDialog = new ConfirmationDialog(owner);
+            this.mb = new MessageBoxModal(owner);
         }
 
         public void PrintVisualTree(UIElement element)
@@ -51,21 +52,20 @@ namespace UvDebugSandbox.UI.Screens
             PrintVisualTreeNode(root, 0);
         }
 
+        private MessageBoxModal mb;
+
         public void Test(DependencyObject dobj, ref RoutedEventData data)
         {
-            confirmationDialog.Header = "Hello, world!";
-            confirmationDialog.Text = "This is a test of my custom dialog class!!!";
-            Modal.ShowDialogAsync(confirmationDialog).ContinueWith(x =>
+            var task = MessageBox.ShowAsync(mb, "Hello, world!", "Caption Here", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            task.ContinueWith(result =>
             {
-                System.Diagnostics.Debug.WriteLine("Dialog result: " + x.Result);
-
-                if (x.Result ?? false)
-                {
-                    confirmationDialog.Header = "Wowie!!";
-                    confirmationDialog.Text = "You chose OK!!! Can you believe it???";
-                    Modal.ShowDialog(confirmationDialog);
-                }
+                Console.WriteLine(result);
             });
+        }
+
+        public void Test2(DependencyObject dobj, ref RoutedEventData data)
+        {
+            MessageBox.Show(mb, "Hello, world!", "Caption Here", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.No);
         }
 
 

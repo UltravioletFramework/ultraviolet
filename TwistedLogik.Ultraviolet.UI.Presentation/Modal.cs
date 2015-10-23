@@ -177,6 +177,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Called when the modal is being opened.
+        /// </summary>
+        protected virtual void OnOpening()
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the modal is being closed.
+        /// </summary>
+        protected virtual void OnClosing()
+        {
+
+        }
+
+        /// <summary>
         /// Shows the modal.
         /// </summary>
         /// <param name="window">The window in which to show the modal.</param>
@@ -192,6 +208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.taskCompletionSource = null;
 
+            OnOpening();
             Open(window, screen, duration);
         }
 
@@ -218,11 +235,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (wasOpen)
                 return this.taskCompletionSource.Task;
 
+            OnOpening();
             Open(window, screen, duration);
 
             return this.taskCompletionSource.Task;
         }
 
+        /// <summary>
+        /// Shows the modal and returns a <see cref="Task"/> which completes when
+        /// the modal is closed.
+        /// </summary>
+        /// <param name="window">The window in which to show the modal.</param>
+        /// <param name="screen">The screen on which the modal will be opened.</param>
+        /// <param name="duration">The amount of time over which to transition the screen's state, or <c>null</c> to use the default transition time.</param>
+        /// <returns>A <see cref="Task"/> which completes when the modal is closed.</returns>
         private void Open(IUltravioletWindow window, UIScreen screen, TimeSpan? duration = null)
         {
             var screenStack = screen.Ultraviolet.GetUI().GetScreens(window);
@@ -247,6 +273,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (!open)
                 return;
+
+            OnClosing();
 
             if (this.taskCompletionSource != null)
                 this.taskCompletionSource.SetResult(DialogResult);

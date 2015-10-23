@@ -15,6 +15,140 @@ View
 	blank-image: #Global:Textures:DefaultUI 137 459 14 23;
 }
 
+.msgbox
+{
+	trigger event view.opening
+	{
+		play-storyboard { msgbox-opening }
+	}
+	trigger event view.closing
+	{
+		play-storyboard { msgbox-closing }
+	}
+}
+
+@msgbox-opening
+{
+	target Rectangle (*:storyboard-root > .msgbox-fade)
+	{
+		animation opacity
+		{
+			keyframe   0                { 0.00 }
+			keyframe 250 ease-out-cubic { 0.75 }
+		}
+	}
+	target Grid (*:storyboard-root > .msgbox-box)
+	{
+		animation opacity
+		{
+			keyframe   0                { 0.0 }
+			keyframe 250 ease-out-cubic { 1.0 }
+		}
+		animation y | render-transform as TranslateTransform
+		{
+			keyframe   0				{ 250 }
+			keyframe 500 ease-out-cubic {   0 }
+		}
+	}
+}
+
+@msgbox-closing
+{
+	target Rectangle (*:storyboard-root > .msgbox-fade)
+	{
+		animation opacity
+		{
+			keyframe   0                { 0.75 }
+			keyframe 250                { 0.75 }
+			keyframe 500 ease-out-cubic { 0.00 }
+		}
+	}
+	target Grid (*:storyboard-root > .msgbox-box)
+	{
+		animation opacity
+		{
+			keyframe   0                { 1.0 }
+			keyframe 250 ease-out-cubic { 0.0 }
+		}
+		animation y | render-transform as TranslateTransform
+		{
+			keyframe   0				{   0 }
+			keyframe 500 ease-out-cubic { 250 }
+		}
+	}
+}
+
+.msgbox-fade
+{
+	fill-color: #ff000000;
+}
+
+.msgbox-box
+{
+	min-width: 300;
+	max-width: 400;
+}
+
+.msgbox-box | effect as DropShadowEffect
+{
+	blur-radius: 2.0;
+	shadow-depth: 2.0;
+}
+
+.msgbox-box-background
+{
+	source-image:  #Global:Textures:DefaultUI 217 305 16 32 4 4 4 4;
+}
+
+.msgbox-box-content
+{
+	margin: 8;
+}
+
+.msgbox-caption
+{
+	margin: 0 0 0 8;
+	font-style: bold;
+}
+
+.msgbox-text-panel
+{
+	margin: 0 0 0 8;
+}
+
+.msgbox-img
+{
+	width: 48;
+	height: 48;
+	margin: 0 0 8 0;
+}
+
+.msgbox-img-hand
+{
+	source-image: #Global:Textures:DefaultUI 234 305 48 48;
+}
+
+.msgbox-img-exclamation
+{
+	source-image: #Global:Textures:DefaultUI 283 354 48 48;
+}
+
+.msgbox-img-question
+{
+	source-image: #Global:Textures:DefaultUI 283 305 48 48;
+}
+
+.msgbox-img-asterisk
+{
+	source-image: #Global:Textures:DefaultUI 234 354 48 48;
+}
+
+.msgbox-btn
+{
+	min-width: 75;
+	margin: 8 0 0 0;
+}
+
 Button, RepeatButton, ToggleButton
 {
 	padding: 10 7 10 9;
@@ -955,4 +1089,19 @@ HScrollBar > Grid > Track > .track-thumb > Grid > .button-background
 .scrollviewer-hscroll
 {
 	margin: 0 2 0 0;
+}
+
+ToolTip
+{
+	padding: 4;
+}
+
+.tooltip-background
+{
+	fill-color: #ff808080;
+}
+
+.tooltip-border
+{
+	border-color: #ff000000;
 }

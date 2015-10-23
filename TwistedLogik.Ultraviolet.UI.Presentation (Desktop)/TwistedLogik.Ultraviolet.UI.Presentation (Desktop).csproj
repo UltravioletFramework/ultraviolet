@@ -70,6 +70,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxViewModel.cs">
+      <Link>Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxViewModel.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -143,15 +146,22 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Resources\Content\Fonts\SegoeUITexture.png">
-      <Link>Resources\Content\Fonts\SegoeUITexture.png</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation\Controls\Templates\ToolTip.xml">
       <Link>Controls\Templates\ToolTip.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Resources\Content\Fonts\SegoeUITexture.png">
+      <Link>Resources\Content\Fonts\SegoeUITexture.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml">
+      <Link>Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

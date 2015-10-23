@@ -39,6 +39,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ArrangeOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssetSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilationError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilationResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilerOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundEventBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompiledBindingExpressionAttribute.cs" />
@@ -219,7 +222,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)MessageBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageBoxButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageBoxImage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageBoxModal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageBoxResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageBoxScreen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageBoxViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Namescope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
@@ -341,6 +347,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvmlObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VerticalAlignment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)View.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModelWrapperAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visibility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VisualState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VisualStateGroup.cs" />
