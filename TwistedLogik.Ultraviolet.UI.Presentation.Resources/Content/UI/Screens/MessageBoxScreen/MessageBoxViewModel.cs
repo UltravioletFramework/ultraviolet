@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 #pragma warning disable 1591
     [System.CLSCompliant(false)]
     [System.CodeDom.Compiler.GeneratedCode("UPF Binding Expression Compiler", "1.2.0.0")]
-    public sealed class MessageBoxViewModel_Impl : TwistedLogik.Ultraviolet.UI.Presentation.IDataSourceWrapper
+    public sealed partial class MessageBoxViewModel_Impl : TwistedLogik.Ultraviolet.UI.Presentation.IDataSourceWrapper
     {
         #region Constructors
         public MessageBoxViewModel_Impl(TwistedLogik.Ultraviolet.UI.Presentation.MessageBoxViewModel dataSource)
