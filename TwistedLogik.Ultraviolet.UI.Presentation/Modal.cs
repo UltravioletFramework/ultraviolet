@@ -13,7 +13,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="Modal"/> class.
         /// </summary>
-        /// <param name="screen">The <see cref="UIScreen"/> that the modal represents.</param>
         public Modal()
         {
             this.onClosedHandler = OnClosed;

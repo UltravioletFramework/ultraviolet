@@ -75,8 +75,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             if (text == "}")
                 txtWriter.Indent--;
 
+            var storedIndent = txtWriter.Indent;
+
+            var pragma = text.StartsWith("#pragma");
+            if (pragma)
+                txtWriter.Indent = 0;
+
             txtWriter.WriteLine(text);
             LineCount += 1 + text.Count(c => c == '\n');
+
+            if (pragma)
+                txtWriter.Indent = storedIndent;
 
             if (text == "{")
                 txtWriter.Indent++;

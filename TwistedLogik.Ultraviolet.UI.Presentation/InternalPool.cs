@@ -26,7 +26,7 @@
         OutOfBandRenderer,
         
         /// <summary>
-        /// The pool which contains instances of the <see cref="WeakReference"/> class.
+        /// The pool which contains instances of the <see cref="System.WeakReference"/> class.
         /// </summary>
         WeakReferences,
     }

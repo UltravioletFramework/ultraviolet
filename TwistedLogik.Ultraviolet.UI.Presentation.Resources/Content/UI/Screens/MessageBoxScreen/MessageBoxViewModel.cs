@@ -3,6 +3,7 @@ using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
+#pragma warning disable 1591
     [System.CLSCompliant(false)]
     [System.CodeDom.Compiler.GeneratedCode("UPF Binding Expression Compiler", "1.2.0.0")]
     public sealed class MessageBoxViewModel_Impl : TwistedLogik.Ultraviolet.UI.Presentation.IDataSourceWrapper
@@ -148,4 +149,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         #endregion
     }
+#pragma warning restore 1591
 }

@@ -6,7 +6,7 @@
     public interface IBindingExpressionCompiler
     {
         /// <summary>
-        /// Traverses the directory tree rooted in <paramref name="root"/> and builds an assembly containing the compiled binding
+        /// Traverses the directory tree specified by <paramref name="options"/> and builds an assembly containing the compiled binding
         /// expressions of any UPF views which are found therein.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
