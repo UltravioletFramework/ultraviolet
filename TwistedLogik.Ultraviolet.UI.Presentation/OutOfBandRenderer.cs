@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;

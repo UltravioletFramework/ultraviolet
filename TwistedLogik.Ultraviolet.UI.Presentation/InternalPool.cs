@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+﻿namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents the Presentation Foundation's internal collection of object pools.

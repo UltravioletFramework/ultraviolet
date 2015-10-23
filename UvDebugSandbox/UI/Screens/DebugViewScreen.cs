@@ -1,11 +1,11 @@
 ﻿using System;
-using UvDebugSandbox.UI.Dialogs;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using UvDebugSandbox.UI.Dialogs;
 
 namespace UvDebugSandbox.UI.Screens
 {
