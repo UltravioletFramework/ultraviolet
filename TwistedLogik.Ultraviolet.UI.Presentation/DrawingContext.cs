@@ -139,7 +139,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.Draw(texture, destinationRectangle, color);
+            SpriteBatch.Draw(texture, destinationRectangle, color * Opacity);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color);
+            SpriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color * Opacity);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, rotation, origin, effects, layerDepth);
+            SpriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color * Opacity, rotation, origin, effects, layerDepth);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.Draw(texture, position, color);
+            SpriteBatch.Draw(texture, position, color * Opacity);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.Draw(texture, position, sourceRectangle, color);
+            SpriteBatch.Draw(texture, position, sourceRectangle, color * Opacity);
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
+            SpriteBatch.Draw(texture, position, sourceRectangle, color * Opacity, rotation, origin, scale, effects, layerDepth);
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
+            SpriteBatch.Draw(texture, position, sourceRectangle, color * Opacity, rotation, origin, scale, effects, layerDepth);
         }
         
         /// <summary>
@@ -255,7 +255,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawSprite(animation, position);
+            SpriteBatch.DrawSprite(animation, position, null, null, Color.White * Opacity, 0f);
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawSprite(animation, position, width, height);
+            SpriteBatch.DrawSprite(animation, position, width, height, Color.White * Opacity, 0f);
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawSprite(animation, position, width, height, color, rotation);
+            SpriteBatch.DrawSprite(animation, position, width, height, color * Opacity, rotation);
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawSprite(animation, position, width, height, color, rotation, effects, layerDepth);
+            SpriteBatch.DrawSprite(animation, position, width, height, color * Opacity, rotation, effects, layerDepth);
         }
         
         /// <summary>
@@ -320,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawScaledSprite(animation, position, scale);
+            SpriteBatch.DrawScaledSprite(animation, position, scale, Color.White * Opacity, 0f);
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawScaledSprite(animation, position, scale, color, rotation);
+            SpriteBatch.DrawScaledSprite(animation, position, scale, color * Opacity, rotation);
         }
 
         /// <summary>
@@ -354,7 +354,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawScaledSprite(animation, position, scale, color, rotation, effects, layerDepth);
+            SpriteBatch.DrawScaledSprite(animation, position, scale, color * Opacity, rotation, effects, layerDepth);
         }
         
         /// <summary>
@@ -369,7 +369,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawFrame(frame, destinationRectangle, color, rotation);
+            SpriteBatch.DrawFrame(frame, destinationRectangle, color * Opacity, rotation);
         }
 
         /// <summary>
@@ -386,7 +386,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawFrame(frame, destinationRectangle, color, rotation, effects, layerDepth);
+            SpriteBatch.DrawFrame(frame, destinationRectangle, color * Opacity, rotation, effects, layerDepth);
         }
         
         /// <summary>
@@ -401,7 +401,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawString(fontFace, text, position, color);
+            SpriteBatch.DrawString(fontFace, text, position, color * Opacity);
         }
 
         /// <summary>
@@ -421,7 +421,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+            SpriteBatch.DrawString(fontFace, text, position, color * Opacity, rotation, origin, scale, effects, layerDepth);
         }
 
         /// <summary>
@@ -441,7 +441,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+            SpriteBatch.DrawString(fontFace, text, position, color * Opacity, rotation, origin, scale, effects, layerDepth);
         }
         
         /// <summary>
@@ -456,7 +456,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawString(fontFace, text, position, color);
+            SpriteBatch.DrawString(fontFace, text, position, color * Opacity);
         }
 
         /// <summary>
@@ -476,7 +476,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+            SpriteBatch.DrawString(fontFace, text, position, color * Opacity, rotation, origin, scale, effects, layerDepth);
         }
 
         /// <summary>
@@ -496,7 +496,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+            SpriteBatch.DrawString(fontFace, text, position, color * Opacity, rotation, origin, scale, effects, layerDepth);
         }
         
         /// <summary>
@@ -511,7 +511,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawString(fontFace, text, position, color);
+            SpriteBatch.DrawString(fontFace, text, position, color * Opacity);
         }
 
         /// <summary>
@@ -531,7 +531,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+            SpriteBatch.DrawString(fontFace, text, position, color * Opacity, rotation, origin, scale, effects, layerDepth);
         }
 
         /// <summary>
@@ -551,7 +551,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawString(fontFace, text, position, color, rotation, origin, scale, effects, layerDepth);
+            SpriteBatch.DrawString(fontFace, text, position, color * Opacity, rotation, origin, scale, effects, layerDepth);
         }
         
         /// <summary>
@@ -567,7 +567,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawImage(image, position, width, height, color);
+            SpriteBatch.DrawImage(image, position, width, height, color * Opacity);
         }
 
         /// <summary>
@@ -587,7 +587,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawImage(image, position, width, height, color, rotation, origin, effects, layerDepth);
+            SpriteBatch.DrawImage(image, position, width, height, color * Opacity, rotation, origin, effects, layerDepth);
         }
 
         /// <summary>

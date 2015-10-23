@@ -77,12 +77,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return null;
 
             Type wrapperType;
-            if (compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
+            if (!compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
             {
-                viewModel = Activator.CreateInstance(wrapperType, new[] { viewModel });
+                var vmWrapperAttr = viewModel.GetType().GetCustomAttributes(typeof(ViewModelWrapperAttribute), false).Cast<ViewModelWrapperAttribute>().SingleOrDefault();
+                wrapperType = (vmWrapperAttr == null) ? null : vmWrapperAttr.WrapperType;
+                compiledDataSourceWrappers[name] = wrapperType;
             }
-
-            return viewModel;
+            
+            return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new[] { viewModel });
         }
 
         /// <summary>
@@ -134,7 +136,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             
             LoadBindingExpressionCompiler();
 
-            bindingExpressionCompiler.Compile(Ultraviolet, root, CompiledExpressionsAssemblyName);
+            var options = new BindingExpressionCompilerOptions();
+            options.WriteErrorsToFile = true;
+            options.Input = root;
+            options.Output = CompiledExpressionsAssemblyName;
+
+            var result = bindingExpressionCompiler.Compile(Ultraviolet, options);
+            if (result.Failed)
+                throw new InvalidOperationException(result.Message);
+
             GC.Collect(2, GCCollectionMode.Forced);
         }
 
@@ -191,7 +201,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 compiledDataSourceWrappers.Add(dataSourceWrapperType.Name, dataSourceWrapperType);
             }
         }
-        
+
+        /// <summary>
+        /// Gets the collection of types which are known to the Presentation Foundation.
+        /// </summary>
+        /// <returns>A dictionary containing the types which are known to the Presentation Foundation, using
+        /// the UVML names of the types as the dictionary key.</returns>
+        public IDictionary<String, Type> GetKnownTypes()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var types = new Dictionary<String, Type>();
+
+            foreach (var kvp in coreTypes)
+                types[kvp.Key] = kvp.Value.Type;
+
+            foreach (var kvp in registeredTypes)
+                types[kvp.Key] = kvp.Value.Type;
+
+            return types;
+        }
+
         /// <summary>
         /// Attempts to create an instance of the element with the specified name.
         /// </summary>
@@ -512,6 +542,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     case InternalPool.OutOfBandRenderer:
                         OutOfBandRenderer.InitializePools();
+                        break;
+
+                    case InternalPool.WeakReferences:
+                        WeakReferencePool.Instance.Initialize();
                         break;
                 }
             }

@@ -14,8 +14,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Game.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\GameInputActions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\IUltravioletInputExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Dialogs\ConfirmationDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Dialogs\ConfirmationDialog.DialogScreen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Dialogs\ConfirmationDialog.DialogScreenVM.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\DebugViewScreen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\UvDebugScreen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\DebugScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIScreenService.cs" />
   </ItemGroup>
 </Project>

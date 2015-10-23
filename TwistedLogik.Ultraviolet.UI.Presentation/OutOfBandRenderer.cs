@@ -28,6 +28,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the renderer is currently drawing the out-of-band render targets for
+        /// the specified element.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns><c>true</c> if the render targets for the specified element are currently being drawn; otherwise, <c>false</c>.</returns>
+        public Boolean IsDrawingRenderTargetFor(UIElement element)
+        {
+            Contract.Require(element, "element");
+
+            return element == currentElementDrawingRenderTarget;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified element is rendered out-of-band.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
@@ -63,7 +76,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             renderTargetPool = new UpfPool<OutOfBandRenderTarget>(Ultraviolet, 8, 32, () => new OutOfBandRenderTarget(Ultraviolet));
-            weakReferencePool = new ExpandingPool<WeakReference>(4, 32, () => new WeakReference(null));
         }
 
         /// <summary>
@@ -98,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             InitializePools();
 
-            var weakRef = weakReferencePool.Retrieve();
+            var weakRef = WeakReferencePool.Instance.Retrieve();
             weakRef.Target = element;
 
             var target = renderTargetPool.Retrieve(element);
@@ -152,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 element.OutOfBandRenderTarget = null;
 
                 registeredElement.Target = null;
-                weakReferencePool.Release(registeredElement);
+                WeakReferencePool.Instance.Release(registeredElement);
 
                 break;
             }
@@ -242,9 +254,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         rtarget.VisualTransform = visualTransformOfElement;
                         rtarget.VisualBounds = bounds;
 
+                        currentElementDrawingRenderTarget = element;
+
                         element.DrawToRenderTarget(time, drawingContext, rtarget.RenderTarget,
                             (popup != null) ? popup.PopupTransformToViewInDevicePixels : visualTransformOfParent);
-                        
+
                         if (rtarget.Next != null)
                         {
                             if (effect != null)
@@ -252,6 +266,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                                 effect.DrawRenderTargets(drawingContext, element, rtarget);
                             }
                         }
+
+                        currentElementDrawingRenderTarget = null;
 
                         rtarget.IsReady = true;
                     }
@@ -263,6 +279,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             finally
             {
                 isDrawingRenderTargets = false;
+                currentElementDrawingRenderTarget = null;
             }
             deadReferences.Clear();
 
@@ -328,23 +345,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Int32 AvailableRenderTargets
         {
             get { return (renderTargetPool == null) ? 0 : renderTargetPool.Available; }
-        }
-
-        /// <summary>
-        /// Gets the number of active weak references which have been allocated from the internal pool.
-        /// </summary>
-        public Int32 ActiveWeakRefs
-        {
-            get { return (weakReferencePool == null) ? 0 : weakReferencePool.Count; }
-        }
-
-        /// <summary>
-        /// Gets the number of available weak references in the internal pool.
-        /// </summary>
-        public Int32 AvailableWeakRefs
-        {
-            get { return (weakReferencePool == null) ? 0 : weakReferencePool.Capacity - weakReferencePool.Count; }
-        }
+        }        
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
@@ -392,7 +393,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // Object pools.
         private UpfPool<OutOfBandRenderTarget> renderTargetPool;
-        private ExpandingPool<WeakReference> weakReferencePool;
 
         // The collection of registered elements and their render buffers.
         private readonly List<PresentationFoundationView> viewsNeedingLoading = new List<PresentationFoundationView>();
@@ -406,5 +406,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // Property values.
         private bool isDrawingRenderTargets;
+
+        // State values.
+        private UIElement currentElementDrawingRenderTarget;
     }
 }

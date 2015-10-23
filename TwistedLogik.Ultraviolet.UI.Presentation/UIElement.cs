@@ -180,7 +180,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     dc.PushDrawingOutOfBand();
                 }
 
-                dc.PushOpacity(Opacity);
+                var forceFullOpacity = false;
+
+                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+                if (upf.OutOfBandRenderer.IsDrawingRenderTargetFor(this))
+                    forceFullOpacity = true;
+
+                if (!forceFullOpacity)
+                    dc.PushOpacity(Opacity);
 
                 var hasNonIdentityTransform = HasNonIdentityTransform;
                 if (hasNonIdentityTransform)
@@ -241,7 +248,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     dc.PopTransform();
                 }
 
-                dc.PopOpacity();
+                if (!forceFullOpacity)
+                    dc.PopOpacity();
 
                 if (drawingOutOfBand)
                     dc.PopDrawingOutOfBand();
@@ -290,7 +298,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Update(UltravioletTime time)
         {
             Digest(time);
-
+            
             UpdateCore(time);
             OnUpdating(time);
         }
@@ -1454,7 +1462,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             var dp = DependencyProperty.FindByName(Ultraviolet, dpSource, propertyName.Owner, propertyName.Name);
                             if (dp != null)
                             {
-                                EnlistDependencyPropertyInStoryboard(dp, storyboardInstance, animation.Value);
+                                dpSource.EnlistDependencyPropertyInStoryboard(dp, storyboardInstance, animation.Value);
                             }
                         }
                     }
@@ -1706,7 +1714,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invalidates the element's cached visual bounds.
         /// </summary>
-        protected internal virtual void InvalidateVisualBounds()
+        /// <param name="invalidateAncestors">A value indicating whether to invalidate the visual bounds of the element's ancestors.</param>
+        protected internal virtual void InvalidateVisualBounds(Boolean invalidateAncestors = true)
         {
             var invalidated = true;
 
@@ -1834,6 +1843,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnTransformChanged()
         {
             var thisElementIsTransformed = HasNonIdentityTransform;
+
+            InvalidateVisualBounds();
             
             VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(thisElementIsTransformed), (child, state) =>
             {
@@ -1848,7 +1859,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual void OnAncestorTransformChanged(Boolean transformed)
         {
             var thisElementIsTransformed = transformed || HasNonIdentityTransform;
-            
+
+            InvalidateVisualBounds(false);
+
             VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(thisElementIsTransformed), (child, state) =>
             {
                 child.OnAncestorTransformChanged((Boolean)state);
@@ -2341,17 +2354,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected void DrawImage(DrawingContext dc, SourcedImage image, RectangleD? area, Color color, Boolean drawBlank = false)
         {
             Contract.Require(dc, "dc");
-
-            var colorPlusOpacity = color * dc.Opacity;
-            if (colorPlusOpacity.Equals(Color.Transparent))
-                return;
-
+            
             var imageResource = image.Resource;
             if (imageResource == null || !imageResource.IsLoaded)
             {
                 if (drawBlank)
                 {
-                    DrawBlank(dc, area, colorPlusOpacity);
+                    DrawBlank(dc, area, color);
                 }
             }
             else
@@ -2379,7 +2388,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 dc.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
-                    colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
+                    color, 0f, origin, SpriteEffects.None, 0f);
             }
         }
 
@@ -2393,11 +2402,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected void DrawBlank(DrawingContext dc, RectangleD? area, Color color)
         {
             Contract.Require(dc, "dc");
-
-            var colorPlusOpacity = color * dc.Opacity;
-            if (colorPlusOpacity.Equals(Color.Transparent))
-                return;
-
+            
             var imageResource = View.Resources.BlankImage.Resource;
             if (imageResource == null || !imageResource.IsLoaded)
                 return;
@@ -2425,7 +2430,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             dc.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
-                colorPlusOpacity, 0f, origin, SpriteEffects.None, 0f);
+                color, 0f, origin, SpriteEffects.None, 0f);
         }
 
         /// <summary>
@@ -2484,6 +2489,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var width = PerformLayoutRounding(rect.Width);
             var height = PerformLayoutRounding(rect.Height);
             return new RectangleD(x, y, width, height);
+        }
+
+        /// <summary>
+        /// Performs layout rounding on the specified margin.
+        /// </summary>
+        /// <param name="thickness">The margin to round.</param>
+        /// <returns>The rounded margin.</returns>
+        protected Thickness PerformLayoutRounding(Thickness thickness)
+        {
+            var left = PerformLayoutRounding(thickness.Left);
+            var top = PerformLayoutRounding(thickness.Top);
+            var right = PerformLayoutRounding(thickness.Right);
+            var bottom = PerformLayoutRounding(thickness.Bottom);
+            return new Thickness(left, top, right, bottom);
         }
 
         /// <summary>
@@ -2658,6 +2677,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var target = upf.OutOfBandRenderer.GetElementRenderTarget(element);
                 if (target != null && target.IsReady)
                 {
+                    dc.PushOpacity(Opacity);
+
                     var effect = element.Effect;
                     if (effect != null)
                     {
@@ -2667,6 +2688,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     {
                         Effect.DrawRenderTargetAtVisualBounds(dc, element, target);
                     }
+
+                    dc.PopOpacity();
                 }
                 return true;
             }

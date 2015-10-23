@@ -42,8 +42,10 @@ void main()
 		incrementalGaussian.xy *= incrementalGaussian.yz;
 	}
 
-	vec4 outBlurred = avgValue / coefficientSum;	
-	vec4 outColored = vec4((vColor.rgb / vColor.a) / (vColor.a * outBlurred.a), vColor.a * outBlurred.a);
+	vec4 blur = avgValue / coefficientSum;
 
+	vec4 outBlurred = blur * vColor.a;	
+	vec4 outColored = vColor * blur.a;
+	
 	fColor = mix(outBlurred, outColored, Mix);
 }

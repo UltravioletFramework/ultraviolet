@@ -14,7 +14,7 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
-      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="0" Content="A"/>
+      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="0" Content="A" Click="Test"/>
 
       <Button Width="128" Height="128" Grid.Row="0" Grid.Column="1" Content="B"/>
       <Button Width="128" Height="128" Grid.Row="1" Grid.Column="1" Content="C" ToolTipService.ToolTip="Hello, world!"/>
@@ -23,11 +23,11 @@
           <StackPanel Orientation="Horizontal">
             <Button>X</Button>
             <TextBlock VerticalAlignment="Center" Margin="8 0 0 0">This is an example</TextBlock>
-          </StackPanel>
+    </StackPanel>
         </Button.ToolTip>
       </Button>
 
-      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="2" Content="E"/>
+      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="2" Content="E" Click="Test2"/>
 
     </Grid>
         

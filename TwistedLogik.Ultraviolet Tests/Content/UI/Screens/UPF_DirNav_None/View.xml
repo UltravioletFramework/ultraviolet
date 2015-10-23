@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.UPF_DirNav_None_VM, TwistedLogik.Ultraviolet.Tests" Loaded="HandleLoaded">
+  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.UPF_DirNav_None_VM, TwistedLogik.Ultraviolet.Tests" View.Opening="HandleViewOpening">
 
     <Button Name="btnL" Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Center" Content="L"/>
     <Button Name="btnR" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Content="R"/>

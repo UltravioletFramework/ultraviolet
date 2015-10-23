@@ -685,6 +685,36 @@ namespace TwistedLogik.Ultraviolet
         public event UltravioletContextEventHandler Shutdown;
 
         /// <summary>
+        /// Ensures that the specified function produces a valid instance of <see cref="UltravioletContext"/>. If it does not,
+        /// then the current context is immediately disposed.
+        /// </summary>
+        /// <param name="fn">The function which will create the Ultraviolet context.</param>
+        /// <returns>The Ultraviolet context that was created.</returns>
+        internal static UltravioletContext EnsureSuccessfulCreation(Func<UltravioletContext> fn)
+        {
+            Contract.Require(fn, "fn");
+
+            try
+            {
+                var context = fn();
+                if (context == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                return context;
+            }
+            catch
+            {
+                var current = RequestCurrent();
+                if (current != null)
+                {
+                    current.Dispose();
+                }
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Retrieves the current Ultraviolet context, throwing an exception if it does not exist.
         /// </summary>
         /// <returns>The current Ultraviolet context, or <c>null</c> if no contex exists.</returns>

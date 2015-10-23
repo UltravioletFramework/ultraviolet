@@ -62,7 +62,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         private static void HandleTranslationChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
-            ((TranslateTransform)dobj).UpdateValue();
+            var transform = (TranslateTransform)dobj;
+            transform.UpdateValue();
+            transform.InvalidateDependencyObject();
         }
 
         /// <summary>

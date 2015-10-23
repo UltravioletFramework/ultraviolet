@@ -13,13 +13,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public sealed class PresentationFoundationViewResources : DependencyObject
     {
         /// <summary>
+        /// Initializes the <see cref="PresentationFoundationViewResources"/> type.
+        /// </summary>
+        static PresentationFoundationViewResources()
+        {
+            /* required to correctly initialize static fields in Release configuration */
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PresentationFoundationViewResources"/> class.
         /// </summary>
         /// <param name="view">The view that owns this resource collection.</param>
         internal PresentationFoundationViewResources(PresentationFoundationView view)
         {
             Contract.Require(view, "view");
-
+            
             this.view = view;
         }
 

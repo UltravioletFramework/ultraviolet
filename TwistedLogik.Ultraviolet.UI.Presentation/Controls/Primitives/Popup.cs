@@ -265,10 +265,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
-        protected internal override void InvalidateVisualBounds()
+        protected internal override void InvalidateVisualBounds(Boolean invalidateAncestors = true)
         {
-            root.InvalidateVisualBounds();
-            base.InvalidateVisualBounds();
+            root.InvalidateVisualBounds(invalidateAncestors);
+            base.InvalidateVisualBounds(invalidateAncestors);
         }
 
         /// <inheritdoc/>

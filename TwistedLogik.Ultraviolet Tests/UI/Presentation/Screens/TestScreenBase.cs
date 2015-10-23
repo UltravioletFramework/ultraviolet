@@ -10,17 +10,10 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
         public TestScreenBase(String rootDirectory, String definitionAsset, ContentManager globalContent)
             : base(rootDirectory, definitionAsset, globalContent)
         {
-
-        }
-
-        /// <inheritdoc/>
-        protected override void OnViewLoaded()
-        {
             if (View != null)
             {
                 View.SetViewModel(new TViewModel());
             }
-            base.OnViewLoaded();
         }
     }
 }

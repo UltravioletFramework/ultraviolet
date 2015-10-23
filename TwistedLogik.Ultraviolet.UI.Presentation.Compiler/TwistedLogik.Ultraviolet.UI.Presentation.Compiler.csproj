@@ -60,6 +60,7 @@
     <Compile Include="DataSourceWrapperInfo.cs" />
     <Compile Include="DataSourceDefinition.cs" />
     <Compile Include="CompilerStrings.cs" />
+    <Compile Include="ExpressionCompilerState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataSourceWrapperWriter.cs" />
   </ItemGroup>

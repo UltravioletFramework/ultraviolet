@@ -28,14 +28,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Creates a new instance of <see cref="DataSourceDefinition"/> for the specified view.
         /// </summary>
+        /// <param name="namespace">The namespace within which to place the compiled view model.</param>
+        /// <param name="name">The name of the compiled view model class.</param>
         /// <param name="path">The path to the UVML file that defines the view.</param>
         /// <param name="definition">The XML element found in the file at <paramref name="path"/> that defines the view.</param>
         /// <returns>The <see cref="DataSourceDefinition"/> that was created.</returns>
-        public static DataSourceDefinition FromView(String path, XElement definition)
+        public static DataSourceDefinition FromView(String @namespace, String name, String path, XElement definition)
         {
             var dataSourceIdentifier = path;
-            var dataSourceWrapperName = PresentationFoundationView.GetDataSourceWrapperNameForView(path);
-            var dataSourceWrapperNamespace = PresentationFoundationView.DataSourceWrapperNamespaceForViews;
+            var dataSourceWrapperName = name;
+            var dataSourceWrapperNamespace = @namespace ?? PresentationFoundationView.DataSourceWrapperNamespaceForViews;
 
             return new DataSourceDefinition(dataSourceIdentifier, dataSourceWrapperName, dataSourceWrapperNamespace, null, definition);
         }

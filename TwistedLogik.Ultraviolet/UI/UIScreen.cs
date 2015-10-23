@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI
         protected UIScreen(UltravioletContext uv, String rootDirectory, String definitionAsset, ContentManager globalContent)
             : base(uv, rootDirectory, globalContent)
         {            
-            var definition = String.IsNullOrEmpty(definitionAsset) ? null : LocalContent.Load<UIPanelDefinition>(definitionAsset);
+            var definition = LoadPanelDefinition(definitionAsset);
             if (definition != null)
             {
                 DefaultOpenTransitionDuration  = definition.DefaultOpenTransitionDuration;
@@ -180,14 +180,34 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <inheritdoc/>
+        internal override void HandleOpening()
+        {
+            if (View != null)
+            {
+                UpdateViewPosition();
+                View.OnOpening();
+            }
+            base.HandleOpening();
+        }
+
+        /// <inheritdoc/>
         internal override void HandleOpened()
         {
             if (View != null)
             {
                 View.OnOpened();
             }
-            Focus();
             base.HandleOpened();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnClosing()
+        {
+            if (View != null)
+            {
+                View.OnClosing();
+            }
+            base.OnClosing();
         }
 
         /// <inheritdoc/>
@@ -197,7 +217,6 @@ namespace TwistedLogik.Ultraviolet.UI
             {
                 View.OnClosed();
             }
-            Blur();
             base.HandleClosed();
         }
 
@@ -219,6 +238,16 @@ namespace TwistedLogik.Ultraviolet.UI
                 View.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Loads the screen's panel definition from the specified asset.
+        /// </summary>
+        /// <param name="asset">The name of the asset that contains the panel definition.</param>
+        /// <returns>The panel definition that was loaded from the specified asset.</returns>
+        protected virtual UIPanelDefinition LoadPanelDefinition(String asset)
+        {
+            return String.IsNullOrEmpty(asset) ? null : LocalContent.Load<UIPanelDefinition>(asset);
         }
 
         // Property values.

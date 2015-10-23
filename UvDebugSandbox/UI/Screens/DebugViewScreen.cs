@@ -1,4 +1,5 @@
 ﻿using System;
+using UvDebugSandbox.UI.Dialogs;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.UI.Presentation;
@@ -31,12 +32,18 @@ namespace UvDebugSandbox.UI.Screens
 
     public class DebugViewModel
     {
-        private PresentationFoundationView view;
+        private readonly ConfirmationDialog confirmationDialog;
 
-        public DebugViewModel(PresentationFoundationView view)
+        private PresentationFoundationView view;
+        private DebugScreen owner;
+
+        public DebugViewModel(PresentationFoundationView view, DebugScreen owner)
         {
             Enable = true;
             this.view = view;
+            this.owner = owner;
+            this.confirmationDialog = new ConfirmationDialog(owner);
+            this.mb = new MessageBoxModal(owner);
         }
 
         public void PrintVisualTree(UIElement element)
@@ -44,6 +51,23 @@ namespace UvDebugSandbox.UI.Screens
             var root = view.LayoutRoot;
             PrintVisualTreeNode(root, 0);
         }
+
+        private MessageBoxModal mb;
+
+        public void Test(DependencyObject dobj, ref RoutedEventData data)
+        {
+            var task = MessageBox.ShowAsync(mb, "Hello, world!", "Caption Here", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            task.ContinueWith(result =>
+            {
+                Console.WriteLine(result);
+            });
+        }
+
+        public void Test2(DependencyObject dobj, ref RoutedEventData data)
+        {
+            MessageBox.Show(mb, "Hello, world!", "Caption Here", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.No);
+        }
+
 
         private void PrintVisualTreeNode(DependencyObject dobj, Int32 indentLayer)
         {
@@ -135,21 +159,12 @@ namespace UvDebugSandbox.UI.Screens
         private readonly StackPanel sp2 = null;
     }
 
-    public class DebugViewScreen : UvDebugScreen
+    public class DebugViewScreen : DebugScreen
     {
         public DebugViewScreen(ContentManager globalContent, UIScreenService uiScreenService)
             : base("Content/UI/Screens/DebugViewScreen", "DebugViewScreen", globalContent, uiScreenService)
         {
-
-        }
-
-        protected override void OnViewLoaded()
-        {
-            if (View != null)
-            {
-                View.SetViewModel(new DebugViewModel((PresentationFoundationView)View));
-            }
-            base.OnViewLoaded();
+            View.SetViewModel(new DebugViewModel((PresentationFoundationView)View, this));
         }
     }
 }
