@@ -40,10 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\MessageBoxScreen\MessageBoxViewModel.cs">
+    <None Include="Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MessageBoxViewModel.tt</DependentUpon>
+      <DependentUpon>MessageBoxScreen.tt</DependentUpon>
     </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -51,14 +51,22 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\EmbeddedScreenTemplate.t4" />
+    <None Include="BindingExpressionCompilerTemplate.t4" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Fonts\SegoeUITexture.png" />
-    <None Include="Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml" />
-    <None Include="Content\UI\Screens\MessageBoxScreen\MessageBoxViewModel.tt">
+    <None Include="Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml">
+      <Generator>T4Toolbox.ScriptFileGenerator</Generator>
+      <LastGenOutput>MessageBoxScreen.tt</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MessageBoxViewModel.cs</LastGenOutput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessageBoxScreen.xml</DependentUpon>
+      <LastGenOutput>MessageBoxScreen.cs</LastGenOutput>
+      <LastOutputs>.\MessageBoxScreen.cs</LastOutputs>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

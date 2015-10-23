@@ -70,8 +70,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxViewModel.cs">
-      <Link>Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxViewModel.cs</Link>
+    <Compile Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs">
+      <Link>Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
