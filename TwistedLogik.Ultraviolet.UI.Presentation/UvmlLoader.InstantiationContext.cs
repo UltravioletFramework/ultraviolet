@@ -98,6 +98,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var upf = uv.GetUI().GetPresentationFoundation();
                     var wrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(TemplatedParent.GetType());
                     wrapperType = uv.GetUI().GetPresentationFoundation().GetDataSourceWrapperTypeByName(wrapperName);
+
+                    if (wrapperType == null)
+                        throw new InvalidOperationException(PresentationStrings.CannotFindViewModelWrapper.Format(wrapperName));
                 }
 
                 var properties = wrapperType.GetProperties().Where(x => x.Name.StartsWith("__UPF_Expression")).ToList();

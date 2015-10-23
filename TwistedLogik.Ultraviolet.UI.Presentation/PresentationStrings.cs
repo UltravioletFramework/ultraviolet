@@ -98,6 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource FactoryMethodMissing                 = new StringResource(StringDatabase, "FACTORY_METHOD_MISSING");
         public static readonly StringResource FactoryMethodInvalidResult           = new StringResource(StringDatabase, "FACTORY_METHOD_INVALID_RESULT");
         public static readonly StringResource InvalidCompilerOptions               = new StringResource(StringDatabase, "INVALID_COMPILER_OPTIONS");
+        public static readonly StringResource CannotFindViewModelWrapper           = new StringResource(StringDatabase, "CANNOT_FIND_VIEW_MODEL_WRAPPER");
 #pragma warning restore 1591
     }
 }
