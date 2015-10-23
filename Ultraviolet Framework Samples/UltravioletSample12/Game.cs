@@ -116,8 +116,13 @@ namespace UltravioletSample
 
         private void LoadPresentation()
         {
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+
             var globalStylesheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
-            Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStyleSheet(globalStylesheet);
+            upf.SetGlobalStyleSheet(globalStylesheet);
+
+            upf.CompileExpressionsIfSupported("Content");
+            upf.LoadCompiledExpressions();
         }
 
         private void LoadContentManifests()

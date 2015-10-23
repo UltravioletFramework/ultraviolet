@@ -103,6 +103,10 @@
     <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation">
       <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.UI.Presentation.dll</HintPath>
     </Reference>
+    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -215,11 +219,14 @@
       <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" />
+  </ItemGroup>
   <Import Project="..\UltravioletSample12\UltravioletSample12.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="844f907a-e757-4d55-8b66-13a2ca51467d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="844f907a-e757-4d55-8b66-13a2ca51467d" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
