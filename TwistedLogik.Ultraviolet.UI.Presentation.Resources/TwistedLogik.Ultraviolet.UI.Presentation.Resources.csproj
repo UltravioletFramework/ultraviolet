@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs">
+    <None Include="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessageBoxScreen.tt</DependentUpon>
@@ -54,20 +54,39 @@
     <None Include="BindingExpressionCompilerTemplate.t4" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Fonts\SegoeUITexture.png" />
-    <None Include="Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml">
+    <None Include="Resources\Content\Fonts\SegoeUITexture.png" />
+    <None Include="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml">
       <Generator>T4Toolbox.ScriptFileGenerator</Generator>
       <LastGenOutput>MessageBoxScreen.tt</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt">
+    <None Include="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <AutoGen>True</AutoGen>
       <DependentUpon>MessageBoxScreen.xml</DependentUpon>
       <LastGenOutput>MessageBoxScreen.cs</LastGenOutput>
       <LastOutputs>.\MessageBoxScreen.cs</LastOutputs>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Controls\Primitives\Templates\HScrollBar.xml" />
+    <None Include="Controls\Primitives\Templates\ToggleButton.xml" />
+    <None Include="Controls\Primitives\Templates\VScrollBar.xml" />
+    <None Include="Controls\Templates\Button.xml" />
+    <None Include="Controls\Templates\CheckBox.xml" />
+    <None Include="Controls\Templates\ComboBox.xml" />
+    <None Include="Controls\Templates\ComboBoxItem.xml" />
+    <None Include="Controls\Templates\HSlider.xml" />
+    <None Include="Controls\Templates\ListBox.xml" />
+    <None Include="Controls\Templates\ListBoxItem.xml" />
+    <None Include="Controls\Templates\NumericUpDown.xml" />
+    <None Include="Controls\Templates\RadioButton.xml" />
+    <None Include="Controls\Templates\RepeatButton.xml" />
+    <None Include="Controls\Templates\ScrollViewer.xml" />
+    <None Include="Controls\Templates\TextBox.xml" />
+    <None Include="Controls\Templates\ToolTip.xml" />
+    <None Include="Controls\Templates\VSlider.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
