@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Contains identifiers for the Presentation Foundation's profiler sections.
     /// </summary>
-    public static class PresentationProfilerSection
+    public static class PresentationProfilerSections
     {
         /// <summary>
         /// Identifies the profiler section that starts at the beginning of <see cref="PresentationFoundation.PerformLayout"/> and

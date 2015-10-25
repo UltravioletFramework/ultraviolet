@@ -610,12 +610,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         internal void PerformLayout()
         {
-            using (UltravioletProfiler.Section(PresentationProfilerSection.Layout))
+            using (UltravioletProfiler.Section(PresentationProfilerSections.Layout))
             {
                 while (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
                 {
                     // 1. Style
-                    using (UltravioletProfiler.Section(PresentationProfilerSection.Style))
+                    using (UltravioletProfiler.Section(PresentationProfilerSections.Style))
                     {
                         while (ElementNeedsStyle)
                         {
@@ -629,7 +629,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     }
 
                     // 2. Measure
-                    using (UltravioletProfiler.Section(PresentationProfilerSection.Measure))
+                    using (UltravioletProfiler.Section(PresentationProfilerSections.Measure))
                     {
                         while (ElementNeedsMeasure && !ElementNeedsStyle)
                         {
@@ -643,7 +643,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     }
 
                     // 3. Arrange
-                    using (UltravioletProfiler.Section(PresentationProfilerSection.Arrange))
+                    using (UltravioletProfiler.Section(PresentationProfilerSections.Arrange))
                     {
                         while (ElementNeedsArrange && !ElementNeedsStyle && !ElementNeedsMeasure)
                         {

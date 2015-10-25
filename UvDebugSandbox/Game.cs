@@ -92,7 +92,7 @@ namespace UvDebugSandbox
         {
             SetFileSourceFromManifestIfExists("UvDebugSandbox.Content.uvarc");
 
-            UltravioletProfiler.EnableSection(PresentationProfilerSection.Layout);
+            UltravioletProfiler.EnableSection(UltravioletProfilerSections.Frame);
 
             base.OnInitialized();
         }
@@ -218,13 +218,8 @@ namespace UvDebugSandbox
             var kb = Ultraviolet.GetInput().GetKeyboard();
             if (kb.IsKeyPressed(TwistedLogik.Ultraviolet.Input.Key.F2))
             {
-                UltravioletProfiler.BeginSnapshot();
+                UltravioletProfiler.TakeSnapshotOfNextFrame();
             }
-            if (kb.IsKeyReleased(TwistedLogik.Ultraviolet.Input.Key.F2))
-            {
-                UltravioletProfiler.EndSnapshot();
-            }
-
 
             if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
             {

@@ -21,6 +21,18 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Requests that the profiler take a snapshot that contains the entirety of the next frame.
+        /// </summary>
+        public static void TakeSnapshotOfNextFrame()
+        {
+            var impl = instance.Value;
+            if (impl == null)
+                throw new InvalidOperationException(UltravioletStrings.ContextDoesNotHaveProfiler);
+
+            impl.TakeSnapshotOfNextFrame();
+        }
+
+        /// <summary>
         /// Begins a profiler section.
         /// </summary>
         /// <param name="name">The name of the section to begin.</param>
@@ -49,7 +61,7 @@ namespace TwistedLogik.Ultraviolet
         {
             var impl = instance.Value;
             if (impl == null)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.ContextDoesNotHaveProfiler);
 
             impl.BeginSnapshot();
         }
@@ -61,7 +73,7 @@ namespace TwistedLogik.Ultraviolet
         {
             var impl = instance.Value;
             if (impl == null)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.ContextDoesNotHaveProfiler);
 
             impl.EndSnapshot();
         }
@@ -75,7 +87,7 @@ namespace TwistedLogik.Ultraviolet
         {
             var impl = instance.Value;
             if (impl == null)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.ContextDoesNotHaveProfiler);
 
             impl.EnableSection(name);
         }
@@ -89,7 +101,7 @@ namespace TwistedLogik.Ultraviolet
         {
             var impl = instance.Value;
             if (impl == null)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.ContextDoesNotHaveProfiler);
 
             impl.DisableSection(name);
         }

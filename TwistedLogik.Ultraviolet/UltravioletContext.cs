@@ -176,7 +176,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         public void HandleFrameStart()
         {
-            UltravioletProfiler.BeginSection(UltravioletProfilerSection.Frame);
+            UltravioletProfiler.BeginSection(UltravioletProfilerSections.Frame);
             OnFrameStart();
         }
 
@@ -186,7 +186,7 @@ namespace TwistedLogik.Ultraviolet
         public void HandleFrameEnd()
         {
             OnFrameEnd();
-            UltravioletProfiler.EndSection(UltravioletProfilerSection.Frame);
+            UltravioletProfiler.EndSection(UltravioletProfilerSections.Frame);
         }
 
         /// <summary>

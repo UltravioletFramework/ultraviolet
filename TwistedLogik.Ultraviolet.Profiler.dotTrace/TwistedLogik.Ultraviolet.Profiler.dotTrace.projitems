@@ -12,4 +12,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)dotTraceControlState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)dotTraceStrings.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.Profiler.dotTrace.Licenses.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.dotTrace.Api;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
 {
@@ -16,7 +17,30 @@ namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
         public dotTraceProfiler(UltravioletContext uv)
             : base(uv)
         {
+            uv.FrameStart += HandleFrameStart;
+            uv.FrameEnd += HandleFrameEnd;
+        }
 
+        /// <summary>
+        /// Registers <see cref="dotTraceProfiler"/> as the profiler for the current Ultraviolet context.
+        /// </summary>
+        /// <param name="owner">The Ultraviolet context with which to register the profiler.</param>
+        /// <param name="factory">The Ultraviolet factory for the Ultraviolet context.</param>
+        /// <remarks>This method must be called during the application's initialization phase, before any 
+        /// of the static methods on <see cref="UltravioletProfiler"/> have been invoked.</remarks>
+        public static void RegisterProfiler(UltravioletContext owner, UltravioletFactory factory)
+        {
+            Contract.Require(owner, "owner");
+            Contract.Require(factory, "factory");
+
+            factory.RemoveFactoryMethod<UltravioletProfilerFactory>();
+            factory.SetFactoryMethod<UltravioletProfilerFactory>(uv => new dotTraceProfiler(uv));
+        }
+
+        /// <inheritdoc/>
+        public override void TakeSnapshotOfNextFrame()
+        {
+            snapshotNextFrame = true;
         }
 
         /// <inheritdoc/>
@@ -63,9 +87,11 @@ namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
             if (!snapshotting)
                 throw new InvalidOperationException(dotTraceStrings.SnapshotNotInProgress);
 
+            if (snapshotNextFrameInProgress)
+                throw new InvalidOperationException(dotTraceStrings.SnapshottingFrame);
+
             snapshotting = false;
 
-            System.Diagnostics.Debug.WriteLine("Ending snapshot");
             ProfilingControl.Stop();
         }
         
@@ -87,6 +113,18 @@ namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
 
             var controlState = UpdateSectionState(name, null, false);
             HandleControlState(name, controlState);
+        }
+
+        /// <inheritdoc/>
+        public override Boolean IsTakingSnapshot
+        {
+            get { return snapshotting; }
+        }
+
+        /// <inheritdoc/>
+        public override Boolean IsTakingSnapshotNextFrame
+        {
+            get { return snapshotNextFrame; }
         }
 
         /// <summary>
@@ -180,12 +218,39 @@ namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
             }
         }
 
+        /// <summary>
+        /// Called at the start of a frame.
+        /// </summary>
+        public void HandleFrameStart(UltravioletContext uv)
+        {
+            if (snapshotNextFrame && !snapshotting)
+            {
+                snapshotNextFrame = false;
+                snapshotNextFrameInProgress = true;
+                BeginSnapshot();
+            }
+        }
+
+        /// <summary>
+        /// Called at the end of a frame.
+        /// </summary>
+        private void HandleFrameEnd(UltravioletContext uv)
+        {
+            if (snapshotNextFrameInProgress && snapshotting)
+            {
+                snapshotNextFrameInProgress = false;
+                EndSnapshot();
+            }
+        }
+
         // Tracks which sections are currently enabled and active.
         private readonly Dictionary<String, Boolean> enabledSections = new Dictionary<String, Boolean>();
         private readonly Dictionary<String, Boolean> activeSections = new Dictionary<String, Boolean>();
 
         // Profiler state.
         private Boolean snapshotting;
+        private Boolean snapshotNextFrame;
+        private Boolean snapshotNextFrameInProgress;
         private Int32 numberOfActiveEnabledSections;
     }
 }

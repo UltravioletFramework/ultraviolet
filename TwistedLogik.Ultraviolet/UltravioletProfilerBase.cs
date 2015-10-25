@@ -25,6 +25,11 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Requests that the profiler take a snapshot that contains the entirety of the next frame.
+        /// </summary>
+        public abstract void TakeSnapshotOfNextFrame();
+
+        /// <summary>
         /// Begins a profiler section.
         /// </summary>
         /// <param name="name">The name of the section to begin.</param>
@@ -59,5 +64,21 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="name">The name of the section to enable.</param>
         /// <remarks>Only enabled sections will be included in profiler snapshots.</remarks>
         public abstract void DisableSection(String name);
+
+        /// <summary>
+        /// Gets a value indicating whether the profiler is currently taking a snapshot.
+        /// </summary>
+        public abstract Boolean IsTakingSnapshot
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the profiler is going to take a snapshot of the next frame.
+        /// </summary>
+        public abstract Boolean IsTakingSnapshotNextFrame
+        {
+            get;
+        }
     }
 }

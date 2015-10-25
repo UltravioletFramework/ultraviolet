@@ -17,6 +17,24 @@ namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
 
         }
 
+        /// <summary>
+        /// Registers <see cref="dotTraceProfiler"/> as the profiler for the current Ultraviolet context.
+        /// </summary>
+        /// <param name="owner">The Ultraviolet context with which to register the profiler.</param>
+        /// <param name="factory">The Ultraviolet factory for the Ultraviolet context.</param>
+        /// <remarks>This method must be called during the application's initialization phase, before any 
+        /// of the static methods on <see cref="UltravioletProfiler"/> have been invoked.</remarks>
+        public static void RegisterProfiler(UltravioletContext owner, UltravioletFactory factory)
+        {
+
+        }
+
+        /// <inheritdoc/>
+        public override void TakeSnapshotOfNextFrame()
+        {
+            // Not supported on Android
+        }
+
         /// <inheritdoc/>
         public override void BeginSection(String name)
         {
@@ -51,6 +69,18 @@ namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
         public override void DisableSection(String name)
         {
             // Not supported on Android
+        }
+
+        /// <inheritdoc/>
+        public override Boolean IsTakingSnapshot
+        {
+            get { return false; }
+        }
+
+        /// <inheritdoc/>
+        public override Boolean IsTakingSnapshotNextFrame
+        {
+            get { return false; }
         }
     }
 }

@@ -29,6 +29,7 @@ namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
         public static readonly StringResource SectionNotEnabled         = new StringResource(StringDatabase, "SECTION_NOT_ENABLED");
         public static readonly StringResource SnapshotAlreadyInProgress = new StringResource(StringDatabase, "SNAPSHOT_ALREADY_IN_PROGRESS");
         public static readonly StringResource SnapshotNotInProgress     = new StringResource(StringDatabase, "SNAPSHOT_NOT_IN_PROGRESS");
+        public static readonly StringResource SnapshottingFrame         = new StringResource(StringDatabase, "SNAPSHOTTING_FRAME");
 #pragma warning restore 1591
     }
 }

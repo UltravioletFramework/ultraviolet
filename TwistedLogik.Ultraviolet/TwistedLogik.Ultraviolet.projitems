@@ -310,6 +310,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletProfiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletProfilerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletProfilerSection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletProfilerSections.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletSingleton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletStrings.cs" />

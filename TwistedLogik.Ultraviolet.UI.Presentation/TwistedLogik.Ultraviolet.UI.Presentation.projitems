@@ -242,7 +242,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPerformanceStats.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PresentationProfilerSection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PresentationProfilerSections.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SystemParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPool.IPooledObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPoolList.cs" />
