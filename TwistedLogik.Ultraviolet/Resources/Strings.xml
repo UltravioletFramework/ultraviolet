@@ -500,4 +500,9 @@
       <Variant>This operation is not supported because the Ultraviolet context is running in service mode.</Variant>
     </en-US>
   </String>
+  <String Key="CONTEXT_DOES_NOT_HAVE_PROFILER">
+    <en-US>
+      <Variant>This operation is invalid because the Ultraviolet context does not have an associated performance profiler.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

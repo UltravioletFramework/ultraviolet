@@ -48,8 +48,10 @@ namespace TwistedLogik.Ultraviolet
         public static void BeginSnapshot()
         {
             var impl = instance.Value;
-            if (impl != null)
-                impl.BeginSnapshot();
+            if (impl == null)
+                throw new InvalidOperationException("TODO");
+
+            impl.BeginSnapshot();
         }
 
         /// <summary>
@@ -58,8 +60,10 @@ namespace TwistedLogik.Ultraviolet
         public static void EndSnapshot()
         {
             var impl = instance.Value;
-            if (impl != null)
-                impl.EndSnapshot();
+            if (impl == null)
+                throw new InvalidOperationException("TODO");
+
+            impl.EndSnapshot();
         }
 
         /// <summary>
@@ -70,8 +74,10 @@ namespace TwistedLogik.Ultraviolet
         public static void EnableSection(String name)
         {
             var impl = instance.Value;
-            if (impl != null)
-                impl.EnableSection(name);
+            if (impl == null)
+                throw new InvalidOperationException("TODO");
+
+            impl.EnableSection(name);
         }
 
         /// <summary>
@@ -82,8 +88,10 @@ namespace TwistedLogik.Ultraviolet
         public static void DisableSection(String name)
         {
             var impl = instance.Value;
-            if (impl != null)
-                impl.DisableSection(name);
+            if (impl == null)
+                throw new InvalidOperationException("TODO");
+
+            impl.DisableSection(name);
         }
 
         /// <summary>

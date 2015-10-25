@@ -1030,6 +1030,12 @@ namespace TwistedLogik.Ultraviolet
             InitializeFactoryMethodsInAssembly(asmImpl);
             InitializeFactoryMethodsInCompatibilityShim();
             InitializeFactoryMethodsInViewProvider(configuration);
+
+            var asmEntry = Assembly.GetEntryAssembly();
+            if (asmEntry != null)
+            {
+                InitializeFactoryMethodsInAssembly(asmEntry);
+            }
         }
 
         /// <summary>

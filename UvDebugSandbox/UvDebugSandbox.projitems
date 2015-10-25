@@ -20,5 +20,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\DebugViewScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\DebugScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIScreenService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletFactoryInitializer.cs" />
   </ItemGroup>
 </Project>

@@ -92,6 +92,8 @@ namespace UvDebugSandbox
         {
             SetFileSourceFromManifestIfExists("UvDebugSandbox.Content.uvarc");
 
+            UltravioletProfiler.EnableSection(PresentationProfilerSection.Layout);
+
             base.OnInitialized();
         }
 
@@ -213,6 +215,17 @@ namespace UvDebugSandbox
         /// <param name="time">Time elapsed since the last call to Update.</param>
         protected override void OnUpdating(UltravioletTime time)
         {
+            var kb = Ultraviolet.GetInput().GetKeyboard();
+            if (kb.IsKeyPressed(TwistedLogik.Ultraviolet.Input.Key.F2))
+            {
+                UltravioletProfiler.BeginSnapshot();
+            }
+            if (kb.IsKeyReleased(TwistedLogik.Ultraviolet.Input.Key.F2))
+            {
+                UltravioletProfiler.EndSnapshot();
+            }
+
+
             if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
             {
                 Exit();

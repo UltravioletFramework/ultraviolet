@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ENABLE_PROFILING</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -31,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;ENABLE_PROFILING</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -130,6 +130,10 @@
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29.csproj">
       <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
       <Name>TwistedLogik.Ultraviolet.OpenGL %28Desktop%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.Profiler.dotTrace %28Desktop%29\TwistedLogik.Ultraviolet.Profiler.dotTrace %28Desktop%29.csproj">
+      <Project>{e1cd102c-6d6d-4eb2-abed-1fad59c9730f}</Project>
+      <Name>TwistedLogik.Ultraviolet.Profiler.dotTrace %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29.csproj">
       <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
