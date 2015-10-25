@@ -307,6 +307,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletMessages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletNamedCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletPlatform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletProfiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletProfilerBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletProfilerSection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletSingleton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletStrings.cs" />

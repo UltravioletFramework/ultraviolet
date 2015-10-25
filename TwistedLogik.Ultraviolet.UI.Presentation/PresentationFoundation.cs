@@ -610,45 +610,57 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         internal void PerformLayout()
         {
-            while (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
+            using (UltravioletProfiler.Section(PresentationProfilerSection.Layout))
             {
-                // 1. Style
-                while (ElementNeedsStyle)
+                while (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
                 {
-                    var element = styleQueue.Dequeue();
-                    if (element.IsStyleValid)
+                    // 1. Style
+                    using (UltravioletProfiler.Section(PresentationProfilerSection.Style))
+                    {
+                        while (ElementNeedsStyle)
+                        {
+                            var element = styleQueue.Dequeue();
+                            if (element.IsStyleValid)
+                                continue;
+
+                            element.Style(element.View.StyleSheet);
+                            element.InvalidateMeasure();
+                        }
+                    }
+
+                    // 2. Measure
+                    using (UltravioletProfiler.Section(PresentationProfilerSection.Measure))
+                    {
+                        while (ElementNeedsMeasure && !ElementNeedsStyle)
+                        {
+                            var element = measureQueue.Dequeue();
+                            if (element.IsMeasureValid)
+                                continue;
+
+                            element.Measure(element.MostRecentAvailableSize);
+                            element.InvalidateArrange();
+                        }
+                    }
+
+                    // 3. Arrange
+                    using (UltravioletProfiler.Section(PresentationProfilerSection.Arrange))
+                    {
+                        while (ElementNeedsArrange && !ElementNeedsStyle && !ElementNeedsMeasure)
+                        {
+                            var element = arrangeQueue.Dequeue();
+                            if (element.IsArrangeValid)
+                                continue;
+
+                            element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
+                        }
+                    }
+
+                    if (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
                         continue;
 
-                    element.Style(element.View.StyleSheet);
-                    element.InvalidateMeasure();
+                    // 4. Raise LayoutUpdated events
+                    RaiseLayoutUpdated();
                 }
-
-                // 2. Measure
-                while (ElementNeedsMeasure && !ElementNeedsStyle)
-                {
-                    var element = measureQueue.Dequeue();
-                    if (element.IsMeasureValid)
-                        continue;
-
-                    element.Measure(element.MostRecentAvailableSize);
-                    element.InvalidateArrange();
-                }
-
-                // 3. Arrange
-                while (ElementNeedsArrange && !ElementNeedsStyle && !ElementNeedsMeasure)
-                {
-                    var element = arrangeQueue.Dequeue();
-                    if (element.IsArrangeValid)
-                        continue;
-
-                    element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
-                }
-
-                if (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
-                    continue;
-
-                // 4. Raise LayoutUpdated events
-                RaiseLayoutUpdated();
             }
         }
 

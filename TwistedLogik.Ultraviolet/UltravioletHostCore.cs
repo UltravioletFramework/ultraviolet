@@ -106,7 +106,10 @@ namespace TwistedLogik.Ultraviolet
                     }
 
                     var uvTimeDraw = timeTrackerDraw.Increment(targetElapsedTime, isRunningSlowly);
-                    uv.Draw(uvTimeDraw);
+                    using (UltravioletProfiler.Section(UltravioletProfilerSection.Draw))
+                    {
+                        uv.Draw(uvTimeDraw);
+                    }
 
                     uv.HandleFrameEnd();
 
@@ -128,7 +131,10 @@ namespace TwistedLogik.Ultraviolet
                 }
 
                 var uvTimeDraw = uvTimeUpdate;
-                uv.Draw(uvTimeDraw);
+                using (UltravioletProfiler.Section(UltravioletProfilerSection.Draw))
+                {
+                    uv.Draw(uvTimeDraw);
+                }
 
                 uv.HandleFrameEnd();
             }
@@ -202,7 +208,10 @@ namespace TwistedLogik.Ultraviolet
         /// <returns><c>true</c> if the host should continue processing; otherwise, <c>false</c>.</returns>
         private Boolean UpdateContext(UltravioletContext uv, UltravioletTime time)
         {
-            uv.Update(time);
+            using (UltravioletProfiler.Section(UltravioletProfilerSection.Update))
+            {
+                uv.Update(time);
+            }
             return !uv.Disposed;
         }
 
