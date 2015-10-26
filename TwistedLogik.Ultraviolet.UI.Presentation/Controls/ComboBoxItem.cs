@@ -46,14 +46,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
         
         /// <inheritdoc/>
-        protected override void OnContentChanged()
+        protected override void OnContentChanged(Object oldValue, Object newValue)
         {
             var comboBox = ItemsControl.ItemsControlFromItemContainer(this) as ComboBox;
             if (comboBox != null)
             {
                 comboBox.HandleItemChanged(this);
             }
-            base.OnContentChanged();
+            base.OnContentChanged(oldValue, newValue);
         }
     }
 }

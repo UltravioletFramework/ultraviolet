@@ -152,6 +152,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Resources\Controls\Templates\TabControl.xml">
+      <Link>Controls\Templates\TabControl.xml</Link>
+    </EmbeddedResource>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Resources\Resources\Content\Fonts\SegoeUITexture.png">
       <Link>Resources\Content\Fonts\SegoeUITexture.png</Link>
     </Content>

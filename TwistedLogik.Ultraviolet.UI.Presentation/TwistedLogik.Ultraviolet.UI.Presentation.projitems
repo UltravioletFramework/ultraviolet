@@ -57,6 +57,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ColumnDefinitionCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ColumnDefinitionCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\HeaderedContentControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\TabItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBoxItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ContentControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ContentPresenter.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\Selector.SelectionCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\Selector.SelectionMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\SliderBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TabPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextBlockBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\ToggleButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\Track.cs" />
@@ -121,6 +124,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\SelectionMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Shape.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\StackPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\TabControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBox.OffsetPosition.cs" />
