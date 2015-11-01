@@ -2,34 +2,14 @@
 <UIPanelDefinition>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-
-      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="0" Content="A" Click="Test"/>
-
-      <Button Width="128" Height="128" Grid.Row="0" Grid.Column="1" Content="B"/>
-      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="1" Content="C" ToolTipService.ToolTip="Hello, world!"/>
-      <Button Width="128" Height="128" Grid.Row="2" Grid.Column="1" Content="D">
-        <Button.ToolTip>
-          <StackPanel Orientation="Horizontal">
-            <Button>X</Button>
-            <TextBlock VerticalAlignment="Center" Margin="8 0 0 0">This is an example</TextBlock>
-    </StackPanel>
-        </Button.ToolTip>
-      </Button>
-
-      <Button Width="128" Height="128" Grid.Row="1" Grid.Column="2" Content="E" Click="Test2"/>
-
-    </Grid>
-        
+    <TabControl HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="300" TabStripPlacement="Bottom">
+      <TabItem>
+        <TabItem.Header>Foo</TabItem.Header>
+        <TabItem.Content>
+          This is a test
+        </TabItem.Content>
+      </TabItem>
+    </TabControl>
+    
   </View>
 </UIPanelDefinition>

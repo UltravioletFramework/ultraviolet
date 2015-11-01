@@ -350,6 +350,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvmlLoader.UvmlAttributeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlName.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UvmlPlaceholderAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VerticalAlignment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)View.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModelWrapperAttribute.cs" />

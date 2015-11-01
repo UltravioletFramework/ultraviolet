@@ -7,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents a control that contains multiple tabbed pages.
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.TabControl.xml")]
+    [UvmlPlaceholder("ItemsPanel", typeof(TabPanel))]
     public class TabControl : Selector
     {
         /// <summary>
@@ -19,29 +20,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
 
         }
+
+        /// <summary>
+        /// Gets or sets a <see cref="Dock"/> value which specifies how the tab headers are positioned relative to their content.
+        /// </summary>
+        public Dock TabStripPlacement
+        {
+            get { return GetValue<Dock>(TabStripPlacementProperty); }
+            set { SetValue(TabStripPlacementProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="TabStripPlacement"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TabStripPlacementProperty = DependencyProperty.Register("TabStripPlacement", typeof(Dock), typeof(TabControl),
+            new PropertyMetadata<Dock>(Dock.Top));
         
         /// <inheritdoc/>
         protected internal override Panel CreateItemsPanel()
         {
-            throw new NotImplementedException();
+            return new TabPanel(Ultraviolet, null);
         }
 
         /// <inheritdoc/>
         protected override DependencyObject GetContainerForItemOverride()
         {
-            throw new NotImplementedException();
+            return new TabItem(Ultraviolet, null);
         }
 
         /// <inheritdoc/>
         protected override Boolean IsItemContainer(DependencyObject element)
         {
-            throw new NotImplementedException();
+            return element is TabItem;
         }
 
         /// <inheritdoc/>
         protected override Boolean IsItemContainerForItem(DependencyObject container, Object item)
         {
-            throw new NotImplementedException();
+            var ti = container as TabItem;
+            if (ti == null)
+                return false;
+
+            return ti.Content == item;
         }
     }
 }

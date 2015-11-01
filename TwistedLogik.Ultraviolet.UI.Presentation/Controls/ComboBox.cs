@@ -11,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents a combo box with a drop down list of selectable items.
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.ComboBox.xml")]
+    [UvmlPlaceholder("ItemsPanel", typeof(StackPanel))]
     public class ComboBox : Selector
     {
         /// <summary>

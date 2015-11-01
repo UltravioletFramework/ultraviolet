@@ -17,5 +17,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
 
         }
+
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
+        {
+            DrawBlank(dc, null, Color.Lime);
+
+            base.DrawOverride(time, dc);
+        }
     }
 }

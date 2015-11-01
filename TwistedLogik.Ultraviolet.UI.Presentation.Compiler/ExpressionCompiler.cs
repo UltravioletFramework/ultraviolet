@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             var setterEliminationPassResult =
                 PerformSetterEliminationCompilationPass(state, models, referencedAssemblies);
-
+            
             var conversionFixupPassResult =
                 PerformConversionFixupCompilationPass(state, models, referencedAssemblies, setterEliminationPassResult);
 
@@ -434,12 +434,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                 dataSourceWrappedType = definedDataSourceType;
             }
-
+            
             var dataSourceWrapperName = dataSourceDefinition.DataSourceWrapperName;
             var dataSourceWrapperExpressions = new List<BindingExpressionInfo>();
             foreach (var element in dataSourceDefinition.Definition.Elements())
             {
-                FindBindingExpressionsInDataSource(state, element, dataSourceWrapperExpressions);
+                FindBindingExpressionsInDataSource(state, dataSourceWrappedType, element, dataSourceWrapperExpressions);
             }
 
             dataSourceWrapperExpressions = CollapseDataSourceExpressions(dataSourceWrapperExpressions);
@@ -577,12 +577,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// Searches the specified XML element tree for binding expressions and adds them to the specified collection.
         /// </summary>
         /// <param name="state">The expression compiler's current state.</param>
+        /// <param name="dataSourceWrappedType">The type for which a data source wrapper is being compiled.</param>
         /// <param name="element">The root of the XML element tree to search.</param>
         /// <param name="expressions">The list to populate with any binding expressions that are found.</param>
-        private static void FindBindingExpressionsInDataSource(ExpressionCompilerState state, XElement element, List<BindingExpressionInfo> expressions)
+        private static void FindBindingExpressionsInDataSource(ExpressionCompilerState state, Type dataSourceWrappedType, XElement element, List<BindingExpressionInfo> expressions)
         {
-            Type elementType;
-            if (state.GetKnownType(element.Name.LocalName, out elementType))
+            var elementName = element.Name.LocalName;
+            var elementType = GetPlaceholderType(dataSourceWrappedType, elementName);            
+            if (elementType != null || state.GetKnownType(elementName, out elementType))
             {
                 var attrs = element.Attributes();
                 foreach (var attr in attrs)
@@ -591,7 +593,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     if (!BindingExpressions.IsBindingExpression(attrValue))
                         continue;
 
-                    var dprop = DependencyProperty.FindByName(attr.Name.LocalName, elementType);
+                    var dprop = FindDependencyOrAttachedPropertyByName(state, attr.Name.LocalName, elementType);
                     if (dprop == null)
                         throw new InvalidOperationException(CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(attr.Name.LocalName));
 
@@ -610,7 +612,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                             if (!state.GetElementDefaultProperty(elementType, out defaultProperty))
                                 throw new InvalidOperationException(CompilerStrings.ElementDoesNotHaveDefaultProperty.Format(elementType.Name));
 
-                            var dprop = DependencyProperty.FindByName(defaultProperty, elementType);
+                            var dprop = FindDependencyOrAttachedPropertyByName(state, defaultProperty, elementType);
                             if (dprop == null)
                                 throw new InvalidOperationException(CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(defaultProperty));
 
@@ -623,7 +625,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var children = element.Elements();
             foreach (var child in children)
             {
-                FindBindingExpressionsInDataSource(state, child, expressions);
+                FindBindingExpressionsInDataSource(state, dataSourceWrappedType, child, expressions);
             }
         }
 
@@ -654,10 +656,55 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             {
                 var errorStrings = results.Errors.Cast<CompilerError>().Select(x =>
                     String.Format("{0}\t{1}\t{2}\t{3}", x.ErrorNumber, x.ErrorText, Path.GetFileName(x.FileName), x.Line));
-
-//                throw new Exception(String.Join(", ", errorStrings));
+                
                 File.WriteAllLines(logpath, Enumerable.Union(new[] { "Code\tDescription\tFile\tLine" }, errorStrings));
             }
+        }
+
+        /// <summary>
+        /// Attempts to find the dependency or attached property with the specified name.
+        /// </summary>
+        /// <param name="state">The expression compiler's current state.</param>
+        /// <param name="name">The name of the dependency or attached property to retrieve.</param>
+        /// <param name="ownerType">The type that references the dependency or attached property.</param>
+        /// <returns>The <see cref="DependencyProperty"/> referred to by the specified name, or <c>null</c> if there is no such dependency property.</returns>
+        private static DependencyProperty FindDependencyOrAttachedPropertyByName(ExpressionCompilerState state, String name, Type ownerType)
+        {
+            String container;
+            String property;
+            if (IsAttachedProperty(name, out container, out property))
+            {
+                Type containerType;
+                if (!state.GetKnownType(container, out containerType))
+                    return null;
+
+                return DependencyProperty.FindByName(property, containerType);
+            }
+            return DependencyProperty.FindByName(name, ownerType);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified attribute name represents an attached property.
+        /// </summary>
+        /// <param name="name">The attribute name to evaluate.</param>
+        /// <param name="container">The attached property's container type.</param>
+        /// <param name="property">The attached property's property name.</param>
+        /// <returns><c>true</c> if the specified name represents an attached property; otherwise, <c>false</c>.</returns>
+        private static Boolean IsAttachedProperty(String name, out String container, out String property)
+        {
+            container = null;
+            property = null;
+
+            var delimiterIx = name.IndexOf('.');
+            if (delimiterIx >= 0)
+            {
+                container = name.Substring(0, delimiterIx);
+                property = name.Substring(delimiterIx + 1);
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -751,7 +798,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             }
             return parameter.Name;
         }
-        
+
+        /// <summary>
+        /// Gets the type associated with the specified placeholder string in the context of the specified type.
+        /// </summary>
+        /// <param name="type">The type for which to evaluate placeholder substitutions.</param>
+        /// <param name="placeholder">The placeholder string for which to evaluate substitutions.</param>
+        /// <returns>The type associated with the specified placeholder, or <c>null</c> if there is no such placeholder.</returns>
+        private static Type GetPlaceholderType(Type type, String placeholder)
+        {
+            var attr = type.GetCustomAttributes(typeof(UvmlPlaceholderAttribute), true).Cast<UvmlPlaceholderAttribute>()
+                .Where(x => String.Equals(placeholder, x.Placeholder, StringComparison.Ordinal)).SingleOrDefault();
+            if (attr != null)
+            {
+                return attr.Type;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Collapses any redundant expressions in the specified collection into a single instance.
         /// </summary>
