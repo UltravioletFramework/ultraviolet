@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Controls\Templates\TabItem.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

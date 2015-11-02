@@ -331,8 +331,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             if (--suspendSelectionChangedLevel == 0)
             {
-                RaiseSelectedItemsChanged();
                 UpdateSelectionPropertiesAndRaiseSelectionChanged();
+                RaiseSelectedItemsChanged();
             }
         }
 
@@ -474,8 +474,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void selection_CollectionItemAdded(INotifyCollectionChanged collection, Object item)
         {
-            RaiseSelectedItemAdded(item);
             UpdateSelectionPropertiesAndRaiseSelectionChanged();
+            RaiseSelectedItemAdded(item);
         }
 
         /// <summary>
@@ -483,8 +483,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void selection_CollectionItemRemoved(INotifyCollectionChanged collection, Object item)
         {
-            RaiseSelectedItemRemoved(item);
             UpdateSelectionPropertiesAndRaiseSelectionChanged();
+            RaiseSelectedItemRemoved(item);
         }
         
         /// <summary>
@@ -492,8 +492,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void selection_CollectionReset(INotifyCollectionChanged collection)
         {
-            RaiseSelectedItemsChanged();
             UpdateSelectionPropertiesAndRaiseSelectionChanged();
+            RaiseSelectedItemsChanged();
         }
 
         // State values.

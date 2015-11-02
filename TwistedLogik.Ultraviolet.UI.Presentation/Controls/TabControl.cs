@@ -35,7 +35,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public static readonly DependencyProperty TabStripPlacementProperty = DependencyProperty.Register("TabStripPlacement", typeof(Dock), typeof(TabControl),
             new PropertyMetadata<Dock>(Dock.Top));
-        
+
+        /// <summary>
+        /// Called to inform the tab control that one of its items was clicked.
+        /// </summary>
+        /// <param name="container">The item container that was clicked.</param>
+        internal void HandleItemClicked(TabItem container)
+        {
+            var item = ItemContainerGenerator.ItemFromContainer(container);
+            if (item == null)
+                return;
+
+            var dobj = item as DependencyObject;
+            if (dobj == null)
+                return;
+
+            BeginChangeSelection();
+
+            UnselectAllItems();
+            SelectItem(item);
+
+            EndChangeSelection();
+        }
+
         /// <inheritdoc/>
         protected internal override Panel CreateItemsPanel()
         {
@@ -63,5 +85,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             return ti.Content == item;
         }
+
+        /// <inheritdoc/>
+        protected override void OnSelectionChanged()
+        {
+            if (PART_ContentPresenter != null)
+            {
+                var item = SelectedItem as TabItem;
+                if (item != null)
+                {
+                    var content = item.Content;
+                    PART_ContentPresenter.Content = content;
+                }
+                else
+                {
+                    PART_ContentPresenter.Content = null;
+                }
+            }
+
+            base.OnSelectionChanged();
+        }
+
+        // Component references.
+        private readonly ContentPresenter PART_ContentPresenter = null;
     }
 }
