@@ -2,7 +2,7 @@
 <ComponentTemplate>
   <View>
     <DockPanel LastChildFill="true">
-      <ItemsPanel MinWidth="32" MinHeight="32" DockPanel.Dock="{{TabStripPlacement}}"/>
+      <ItemsPanel DockPanel.Dock="{{TabStripPlacement}}"/>
       <Grid>
         <Rectangle FillColor="#ffff0000"/>
         <ContentPresenter Name="PART_ContentPresenter"/>

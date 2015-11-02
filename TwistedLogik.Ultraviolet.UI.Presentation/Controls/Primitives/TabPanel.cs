@@ -29,7 +29,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var placement = ControlTabStripPlacement;
             if (placement == Dock.Top || placement == Dock.Bottom)
             {
-                var rowCount = 1;
+                rowCount = 1;
+
                 var rowWidth = 0.0;
                 var rowWidthMax = 0.0;
                 var rowHeight = 0.0;
@@ -39,10 +40,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     child.Measure(availableSize);
 
                     var childDesiredSize = (child.DesiredSize - child.GetValue<Thickness>(MarginProperty));
+                    maxItemWidth = Math.Max(maxItemWidth, childDesiredSize.Width);
+                    maxItemHeight = Math.Max(maxItemHeight, childDesiredSize.Height);
                     rowHeight = Math.Max(rowHeight, childDesiredSize.Height);
 
                     if (childDesiredSize.Width + rowWidth > availableSize.Width)
                     {
+                        rowWidth = childDesiredSize.Width;
                         rowWidthMax = Math.Max(rowWidthMax, rowWidth);
                         rowCount++;
                     }
@@ -70,6 +74,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
                     desiredSize = new Size2D(maxItemWidth, desiredSize.Height + childDesiredSize.Height);
                 }
+
+                rowCount = Children.Count;
             }
 
             return desiredSize;
@@ -81,7 +87,57 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var placement = ControlTabStripPlacement;
             if (placement == Dock.Top || placement == Dock.Bottom)
             {
-                // TODO
+                var stretchRows = (rowCount > 1);
+
+                var rowStart = 0;
+                var rowEnd = 0;
+                var rowWidth = 0.0;
+
+                var positionX = 0.0;
+                var positionY = 0.0;
+
+                var owner = TemplatedParent as Selector;
+                var ownerSelectedIndex = (owner == null) ? -1 : owner.SelectedIndex;
+
+                var selectedRowHeight = (ownerSelectedIndex >= 0) ? maxItemHeight : 0.0;
+
+                while (rowStart < Children.Count)
+                {
+                    FindNextRowOfTabs(finalSize, rowStart, ref rowEnd, out rowWidth);
+                    var rowIsSelected = ownerSelectedIndex >= rowStart && ownerSelectedIndex <= rowEnd;
+                    var rowTabCount = 1 + (rowEnd - rowStart);
+
+                    var rowWidthExcess = stretchRows ? (finalSize.Width - rowWidth) / rowTabCount : 0.0;
+                    var rowWidthTotal = 0.0;
+
+                    for (int i = rowStart; i <= rowEnd; i++)
+                    {
+                        var actualPositionX = positionX;
+                        var actualPositionY = (placement == Dock.Top) ?
+                            (rowIsSelected ? finalSize.Height - selectedRowHeight : positionY) :
+                            (rowIsSelected ? 0 : positionY + selectedRowHeight);
+
+                        var child = Children[i];
+                        var childWidth = PerformLayoutRounding(child.DesiredSize.Width + rowWidthExcess);
+                        var childHeight = maxItemHeight;
+                        rowWidthTotal += childWidth;
+
+                        var isLastInRow = (i == rowEnd);
+                        if (isLastInRow)
+                        {
+                            childWidth += (finalSize.Width - rowWidthTotal);
+                        }
+
+                        child.Arrange(new RectangleD(actualPositionX, actualPositionY, childWidth, childHeight));
+
+                        positionX += childWidth;
+                    }
+
+                    rowStart = rowEnd + 1;
+
+                    positionX = 0;
+                    positionY = rowIsSelected ? positionY : positionY + maxItemHeight;
+                }
             }
             else
             {
@@ -113,9 +169,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 return parent.TabStripPlacement;
             }
         }
+        
+        /// <summary>
+        /// Calculates the parameters of the next row of tabs, starting at <paramref name="rowStart"/>.
+        /// </summary>
+        /// <param name="finalSize">The final arranged size of the panel.</param>
+        /// <param name="rowStart">The index of the first child in the row.</param>
+        /// <param name="rowEnd">The index of the last child in the row.</param>
+        /// <param name="rowWidth">The width of the tabs in the row.</param>
+        private void FindNextRowOfTabs(Size2D finalSize, Int32 rowStart, ref Int32 rowEnd, out Double rowWidth)
+        {
+            rowWidth = 0.0;
+            
+            for (var ix = 0; rowStart + ix < Children.Count; ix++)
+            {
+                var child = Children[rowStart + ix];
+                var childSize = (child.DesiredSize - child.GetValue<Thickness>(MarginProperty));
+
+                if (ix > 0 && rowWidth + childSize.Width > finalSize.Width)
+                {
+                    rowEnd = ix - 1;
+                    return;
+                }
+
+                rowWidth += childSize.Width;
+            }
+
+            rowEnd = Children.Count - 1;
+        }        
 
         // State values.
         private Double maxItemWidth;
         private Double maxItemHeight;
+        private Int32 rowCount;
     }
 }

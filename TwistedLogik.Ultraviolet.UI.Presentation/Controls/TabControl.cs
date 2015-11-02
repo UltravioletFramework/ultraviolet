@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             base.OnSelectionChanged();
-        }
+        }        
 
         // Component references.
         private readonly ContentPresenter PART_ContentPresenter = null;
