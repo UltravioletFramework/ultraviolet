@@ -222,6 +222,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Media\Visual.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\VisualCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\VisualCollection.IEnumerable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Media\VisualCollection.ZIndexComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\VisualTreeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageBoxButton.cs" />

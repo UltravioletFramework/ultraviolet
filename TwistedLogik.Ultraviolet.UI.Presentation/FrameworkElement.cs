@@ -719,7 +719,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var children = VisualTreeHelper.GetChildrenCount(this);
             for (int i = 0; i < children; i++)
             {
-                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                var child = VisualTreeHelper.GetChildByZOrder(this, i) as UIElement;
                 if (child != null)
                 {
                     child.Draw(time, dc);

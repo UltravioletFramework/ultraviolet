@@ -279,6 +279,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <summary>
+        /// Gets the specified visual child of this element. Children are returned in
+        /// the order in which they are drawn.
+        /// </summary>
+        /// <param name="childIndex">The index of the visual child to retrieve.</param>
+        /// <returns>The visual child of this element at the specified position within the rendering order.</returns>
+        protected internal virtual UIElement GetVisualChildByZOrder(Int32 childIndex)
+        {
+            return GetVisualChild(childIndex);
+        }
+
+        /// <summary>
         /// Gets the number of visual children which belong to this element.
         /// </summary>
         protected internal virtual Int32 VisualChildrenCount

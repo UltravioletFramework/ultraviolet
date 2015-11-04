@@ -1106,14 +1106,26 @@ ToolTip
 	border-color: #ff000000;
 }
 
+TabPanel
+{
+	margin: 2;
+}
+
 TabItem
 {
 	padding: 4;
+	Panel.z-index: 0;
 }
 
 .tabitem-background
 {
 	fill-color: #ff800080;
+}
+
+TabItem.selected
+{
+	margin: -2 -2 -2 0;
+	Panel.z-index: 1;
 }
 
 TabItem.selected .tabitem-background

@@ -192,8 +192,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var clip = (RectangleD?)null;
 
-            foreach (var child in Children)
+            for (int i = 0; i < Children.Count; i++)
             {
+                var child = Children.GetByZOrder(i);
                 if (child.ClipRectangle != clip)
                 {
                     if (clip.HasValue)
@@ -306,8 +307,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             for (int i = Children.Count - 1; i >= 0; i--)
             {
-                var child = Children[i];
-
+                var child = Children.GetByZOrder(i);
+                
                 var childCol = GetColumn(child);
                 var childColSpan = GetColumnSpan(child);
 

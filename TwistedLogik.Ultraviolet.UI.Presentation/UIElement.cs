@@ -1877,7 +1877,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var children = VisualTreeHelper.GetChildrenCount(this);
             for (int i = children - 1; i >= 0; i--)
             {
-                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                var child = VisualTreeHelper.GetChildByZOrder(this, i) as UIElement;
                 if (child == null)
                     continue;
 

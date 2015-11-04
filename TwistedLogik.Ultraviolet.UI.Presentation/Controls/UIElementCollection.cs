@@ -24,6 +24,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             this.logicalParent  = logicalParent;
         }
 
+        /// <summary>
+        /// Gets the <see cref="UIElement"/> with the specified index within the collection.
+        /// </summary>
+        /// <param name="index">The index of the element to retrieve.</param>
+        /// <returns>The <see cref="UIElement"/> with the specified index within the collection.</returns>
+        public UIElement Get(Int32 index)
+        {
+            return (UIElement)visualChildren.Get(index);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="UIElement"/> with the specified position in the collection's z-order.
+        /// </summary>
+        /// <param name="index">The position within the z-order of the visual to retrieve.</param>
+        /// <returns>The <see cref="UIElement"/> with the specified position in the collection's z-order.</returns>
+        public UIElement GetByZOrder(Int32 index)
+        {
+            return (UIElement)visualChildren.GetByZOrder(index);
+        }
+
         /// <inheritdoc/>
         public void CopyTo(UIElement[] array, Int32 arrayIndex)
         {
@@ -140,6 +160,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public Boolean IsReadOnly
         {
             get { return false; }
+        }
+
+        /// <summary>
+        /// Creates a copy of the visual child collection which is sorted by z-index.
+        /// </summary>
+        internal void SortVisualChildrenByZIndex()
+        {
+            visualChildren.SortByZIndex();
         }
 
         /// <summary>
