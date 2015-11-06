@@ -2,7 +2,9 @@
 <ComponentTemplate>
   <View>
     <Grid>
-      <Rectangle Class="tabitem-background"/>
+      <Border BorderColor="#ffffffff">
+        <Rectangle Class="tabitem-background"/>
+      </Border>
       <ContentPresenter Class="tabitem-content"
                         ContentSource="Header"
                         HorizontalAlignment="{{HorizontalContentAlignment}}"

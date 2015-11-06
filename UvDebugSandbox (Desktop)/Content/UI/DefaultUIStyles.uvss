@@ -1106,6 +1106,11 @@ ToolTip
 	border-color: #ff000000;
 }
 
+.tabcontrol-panel
+{
+	margin: 2 2 2 0;
+}
+
 TabPanel
 {
 	margin: 2;

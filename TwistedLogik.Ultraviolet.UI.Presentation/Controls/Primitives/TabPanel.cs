@@ -118,12 +118,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                             (rowIsSelected ? 0 : positionY + selectedRowHeight);
 
                         var child = Children[i];
-                        var childWidth = PerformLayoutRounding(child.DesiredSize.Width + rowWidthExcess);
+                        var childDesiredSize = child.DesiredSize - child.GetValue<Thickness>(MarginProperty);
+                        var childWidth = PerformLayoutRounding(childDesiredSize.Width + rowWidthExcess);
                         var childHeight = maxItemHeight;
                         rowWidthTotal += childWidth;
 
                         var isLastInRow = (i == rowEnd);
-                        if (isLastInRow)
+                        if (isLastInRow && stretchRows)
                         {
                             childWidth += (finalSize.Width - rowWidthTotal);
                         }
