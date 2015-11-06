@@ -109,7 +109,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'item-string-format'.</remarks>
         public static readonly DependencyProperty ItemStringFormatProperty = DependencyProperty.Register("ItemStringFormat", typeof(String), typeof(ItemsControl),
-            new PropertyMetadata<String>());
+            new PropertyMetadata<String>(HandleItemStringFormatChanged));
 
         /// <summary>
         /// The private access key for the <see cref="HasItems"/> read-only dependency property.
@@ -203,12 +203,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected abstract Boolean IsItemContainerForItem(DependencyObject container, Object item);
 
         /// <summary>
+        /// Called when the <see cref="Items"/> property changes.
+        /// </summary>
+        protected virtual void OnItemsChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the <see cref="ItemsSource"/> property changes.
+        /// </summary>
+        /// <param name="oldValue">The property's old value.</param>
+        /// <param name="newValue">The property's new value.</param>
+        protected virtual void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the <see cref="ItemStringFormat"/> property changes.
+        /// </summary>
+        /// <param name="oldValue">The property's old value.</param>
+        /// <param name="newValue">The property's new value.</param>
+        protected virtual void OnItemStringFormatChanged(String oldValue, String newValue)
+        {
+
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="ItemsSource"/> dependency property changes.
         /// </summary>
         private static void HandleItemsSourceChanged(DependencyObject dobj, IEnumerable oldValue, IEnumerable newValue)
         {
             var itemControl = (ItemsControl)dobj;
             itemControl.Items.SetItemsSource(itemControl.ItemsSource);
+            itemControl.OnItemsSourceChanged(oldValue, newValue);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ItemStringFormat"/> dependency property changes.
+        /// </summary>
+        private static void HandleItemStringFormatChanged(DependencyObject dobj, String oldValue, String newValue)
+        {
+            var itemControl = (ItemsControl)dobj;
+            itemControl.OnItemStringFormatChanged(oldValue, newValue);
         }
 
         /// <summary>
@@ -228,6 +266,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 AddItemContainer(item);
             }
+
+            OnItemsChanged();
         }
 
         /// <summary>
@@ -238,6 +278,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private void ItemsCollectionItemAdded(INotifyCollectionChanged collection, Object item)
         {
             AddItemContainer(item);
+            OnItemsChanged();
         }
 
         /// <summary>
@@ -251,6 +292,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (container != null)
             {
                 RemoveItemContainer(container);
+                OnItemsChanged();
             }
         }
 

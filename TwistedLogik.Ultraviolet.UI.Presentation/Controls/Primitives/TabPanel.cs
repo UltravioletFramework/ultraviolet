@@ -197,7 +197,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             rowEnd = Children.Count - 1;
         }        
-
+        
         // State values.
         private Double maxItemWidth;
         private Double maxItemHeight;

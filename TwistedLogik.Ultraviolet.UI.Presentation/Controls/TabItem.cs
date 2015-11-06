@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -56,7 +56,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             base.OnGenericInteraction(device, ref data);
         }
-        
+
+        /// <inheritdoc/>
+        protected override void OnContentChanged(Object oldValue, Object newValue)
+        {
+            var tabControl = ItemsControl.ItemsControlFromItemContainer(this) as TabControl;
+            if (tabControl != null)
+            {
+                tabControl.HandleItemContentChanged(this);
+            }
+            base.OnContentChanged(oldValue, newValue);
+        }
+
         /// <summary>
         /// Occurs when the value of the <see cref="IsSelected"/> dependency property changes.
         /// </summary>
@@ -88,11 +99,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void Select()
         {
-            var list = ItemsControl.ItemsControlFromItemContainer(this) as TabControl;
-            if (list != null)
+            if (IsSelected)
+                return;
+
+            var tabControl = ItemsControl.ItemsControlFromItemContainer(this) as TabControl;
+            if (tabControl != null)
             {
                 Focus();
-                list.HandleItemClicked(this);
+                tabControl.HandleItemClicked(this);
             }
         }
     }

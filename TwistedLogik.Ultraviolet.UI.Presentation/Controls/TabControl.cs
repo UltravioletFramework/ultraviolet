@@ -58,6 +58,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             EndChangeSelection();
         }
 
+        /// <summary>
+        /// Called to inform the tab control that one of its items changed its content.
+        /// </summary>
+        /// <param name="item">The item that was changed.</param>
+        internal void HandleItemContentChanged(TabItem item)
+        {
+            if (SelectedIndex < 0 || SelectedIndex >= Items.Count)
+                return;
+
+            if (item != Items[SelectedIndex])
+                return;
+
+            UpdateTabContent();
+        }
+
         /// <inheritdoc/>
         protected internal override Panel CreateItemsPanel()
         {
@@ -89,6 +104,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnSelectionChanged()
         {
+            UpdateTabContent();
+
+            base.OnSelectionChanged();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnItemsChanged()
+        {
+            if ((SelectedIndex < 0 || SelectedIndex > Items.Count) && Items.Count > 0)
+            {
+                SelectedIndex = 0;
+            }
+            base.OnItemsChanged();
+        }
+
+        /// <summary>
+        /// Updates the displayed tab content.
+        /// </summary>
+        private void UpdateTabContent()
+        {
             if (PART_ContentPresenter != null)
             {
                 var item = SelectedItem as TabItem;
@@ -102,9 +137,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     PART_ContentPresenter.Content = null;
                 }
             }
-
-            base.OnSelectionChanged();
-        }        
+        }
 
         // Component references.
         private readonly ContentPresenter PART_ContentPresenter = null;
