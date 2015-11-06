@@ -58,14 +58,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(uv, "uv");
 
+            var attr = (UvmlKnownTypeAttribute)GetType().GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault();
+
             this.uv = uv;
             this.classes = new UIElementClassCollection(this);
-
-            var attr = (UvmlKnownTypeAttribute)GetType().GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault();
-            if (attr != null)
-            {
-                this.uvmlName = attr.Name ?? GetType().Name;
-            }
+            this.uvmlName = (attr == null || attr.Name == null) ? GetType().Name : attr.Name;
         }
 
         /// <summary>

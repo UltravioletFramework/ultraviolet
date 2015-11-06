@@ -12,18 +12,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelectorPart"/> class.
         /// </summary>
-        /// <param name="child">A value indicating whether this selector must be the immediate child of the previous selector.</param>
+        /// <param name="qualifier">The qualifier value for this selector part, if it has one.</param>
         /// <param name="element">The name of the element type that matches this selector part.</param>
         /// <param name="id">The identifier of the element that matches this selector part.</param>
         /// <param name="pseudoClass">The selector part's pseudo-class, if any.</param>
         /// <param name="classes">The list of classes which match this selector part.</param>
-        internal UvssSelectorPart(Boolean child, String element, String id, String pseudoClass, IEnumerable<String> classes)
+        internal UvssSelectorPart(UvssSelectorPartQualifier qualifier, String element, String id, String pseudoClass, IEnumerable<String> classes)
         {
             var rawID          = (id != null && id.StartsWith("#")) ? id.Substring(1) : id;
             var rawPseudoClass = (pseudoClass != null && pseudoClass.StartsWith(":")) ? pseudoClass.Substring(1) : pseudoClass;
             var rawClassNames  = from c in classes select c.StartsWith(".") ? c.Substring(1) : c;
 
-            this.child       = child;
+            this.qualifier   = qualifier;
             this.element     = element;
             this.id          = rawID;
             this.pseudoClass = rawPseudoClass;
@@ -34,12 +34,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <inheritdoc/>
         public override String ToString()
         {
-            var partChild   = Child ? " > " : String.Empty;
+            var partQualifier = String.Empty;
+
+            switch (qualifier)
+            {
+                case UvssSelectorPartQualifier.VisualChild:
+                    partQualifier = " > ";
+                    break;
+
+                case UvssSelectorPartQualifier.LogicalChild:
+                    partQualifier = " >? ";
+                    break;
+
+                case UvssSelectorPartQualifier.TemplatedChild:
+                    partQualifier = " >> ";
+                    break;
+            }
+
             var partElement = Universal ? "*" : element;
             var partID      = HasID ? "#" + ID : null;
             var partClasses = String.Join(String.Empty, classes.Select(x => "." + x));
 
-            return String.Format("{0}{1}{2}{3}", partChild, partElement, partID, partClasses);
+            return String.Format("{0}{1}{2}{3}", partQualifier, partElement, partID, partClasses);
         }
 
         /// <summary>
@@ -51,11 +67,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Gets a value indicating whether this selector part is an immediate child of its predecessor.
+        /// Gets a <see cref="UvssSelectorPartQualifier"/> value that specifies this selector part's qualifier. This is most commonly used to
+        /// indicate whether this selector part must be a child of the previous part.
         /// </summary>
-        public Boolean Child
+        public UvssSelectorPartQualifier Qualifier
         {
-            get { return child; }
+            get { return qualifier; }
         }
 
         /// <summary>
@@ -166,7 +183,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
         // Property values.
         private readonly Int32 priority;
-        private readonly Boolean child;
+        private readonly UvssSelectorPartQualifier qualifier;
         private readonly String element;
         private readonly String id;
         private readonly String pseudoClass;

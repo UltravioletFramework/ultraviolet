@@ -42,6 +42,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (ConsumeWhiteSpaceAndComments(input, output, ref line, ref ix))
                     return true;
 
+                if (ConsumeTemplatedChildSelector(input, output, line, ref ix))
+                    return true;
+                if (ConsumeLogicalChildSelector(input, output, line, ref ix))
+                    return true;
                 if (ConsumeChildSelector(input, output, line, ref ix))
                     return true;
                 if (ConsumeUniversalSelector(input, output, line, ref ix))

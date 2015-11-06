@@ -400,6 +400,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Attempts to consume a TemplatedChildSelector token.
+        /// </summary>
+        private static Boolean ConsumeTemplatedChildSelector(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
+        {
+            if (IsPastEndOfStream(input, ix + 1))
+                return false;
+
+            if (input[ix] != '>' || input[ix + 1] != '>')
+                return false;
+
+            var token = new UvssLexerToken(UvssLexerTokenType.TemplatedChildSelector, ix, 2, line);
+            output.Add(token);
+
+            ix += 2;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to consume a LogicalChildSelector token.
+        /// </summary>
+        private static Boolean ConsumeLogicalChildSelector(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
+        {
+            if (IsPastEndOfStream(input, ix + 1))
+                return false;
+
+            if (input[ix] != '>' || input[ix + 1] != '?')
+                return false;
+
+            var token = new UvssLexerToken(UvssLexerTokenType.LogicalChildSelector, ix, 2, line);
+            output.Add(token);
+
+            ix += 2;
+
+            return true;
+        }
+
+        /// <summary>
         /// Attempts to consume a ChildSelector token.
         /// </summary>
         private static Boolean ConsumeChildSelector(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
@@ -770,6 +808,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
 
                 if (ConsumeUniversalSelector(input, output, line, ref ix))
+                    continue;
+                if (ConsumeTemplatedChildSelector(input, output, line, ref ix))
+                    continue;
+                if (ConsumeLogicalChildSelector(input, output, line, ref ix))
                     continue;
                 if (ConsumeChildSelector(input, output, line, ref ix))
                     continue;

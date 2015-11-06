@@ -774,14 +774,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var pseudoClass = default(String);
             var classes     = new List<String>();
             var valid       = false;
-            var child       = false;
+            var qualifier   = UvssSelectorPartQualifier.None;
             var universal   = false;
 
             while (true)
             {
                 if (state.IsPastEndOfStream)
                 {
-                    if (allowEOF && (!child || valid))
+                    if (allowEOF && (qualifier == UvssSelectorPartQualifier.None || valid))
                     {
                         break;
                     }
@@ -795,19 +795,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     token.TokenType == UvssLexerTokenType.OpenCurlyBrace ||
                     token.TokenType == UvssLexerTokenType.Pipe)
                 {
-                    if (child && !valid)
+                    if (qualifier != UvssSelectorPartQualifier.None && !valid)
                     {
                         ThrowUnexpectedToken(state, token);
                     }
                     break;
                 }
 
-                if (token.TokenType == UvssLexerTokenType.ChildSelector)
+                if (token.TokenType == UvssLexerTokenType.ChildSelector || token.TokenType == UvssLexerTokenType.LogicalChildSelector || token.TokenType == UvssLexerTokenType.TemplatedChildSelector)
                 {
                     if (!allowChild)
                         ThrowUnexpectedToken(state, token);
 
-                    child = true;
+                    switch (token.TokenType)
+                    {
+                        case UvssLexerTokenType.ChildSelector:
+                            qualifier = UvssSelectorPartQualifier.VisualChild;
+                            break;
+
+                        case UvssLexerTokenType.LogicalChildSelector:
+                            qualifier = UvssSelectorPartQualifier.LogicalChild;
+                            break;
+
+                        case UvssLexerTokenType.TemplatedChildSelector:
+                            qualifier = UvssSelectorPartQualifier.TemplatedChild;
+                            break;
+                    }
 
                     state.Advance();
                     state.AdvanceBeyondWhiteSpace();
@@ -880,7 +893,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 ThrowUnexpectedToken(state, token);
             }
 
-            return valid ? new UvssSelectorPart(child, element, id, pseudoClass, classes) : null;
+            return valid ? new UvssSelectorPart(qualifier, element, id, pseudoClass, classes) : null;
         }
 
         /// <summary>

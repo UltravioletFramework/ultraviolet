@@ -77,6 +77,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         ChildSelector,
 
         /// <summary>
+        /// Represents the logical child selector (>?).
+        /// </summary>
+        LogicalChildSelector,
+
+        /// <summary>
+        /// Represents the templated child selector (>>).
+        /// </summary>
+        TemplatedChildSelector,
+
+        /// <summary>
         /// Represents the universal selector (*).
         /// </summary>
         UniversalSelector,

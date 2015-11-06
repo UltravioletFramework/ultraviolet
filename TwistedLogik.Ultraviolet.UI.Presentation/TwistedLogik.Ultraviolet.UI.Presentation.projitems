@@ -248,6 +248,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPerformanceStats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationProfilerSections.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssSelectorPartQualifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SystemParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPool.IPooledObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPoolList.cs" />

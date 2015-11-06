@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
@@ -100,16 +101,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             if (!ElementMatchesSelectorPart(root, element, firstSelectorPart))
                 return false;
 
-            var current   = element;
-            var immediate = firstSelectorPart.Child;
-
+            var current = element;
+            var qualifier = firstSelectorPart.Qualifier;
             for (var i = parts.Count - 2; i >= 0; i--)
             {
-                if (!AncestorMatchesSelectorPart(ref current, parts[i], root, immediate))
+                if (!AncestorMatchesSelectorPart(ref current, parts[i], root, qualifier))
                 {
                     return false;
                 }
-                immediate = parts[i].Child;
+                qualifier = parts[i].Qualifier;
             }
             return true;
         }
@@ -173,30 +173,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="element">The UI element to evaluate. If a match is found, this variable will be updated to contain the matching element.</param>
         /// <param name="part">The selector part to evaluate.</param>
         /// <param name="root">The topmost root element to consider when tracing ancestors.</param>
-        /// <param name="immediate">A value indicating whether only the immediate ancestor should be considered.</param>
+        /// <param name="qualifier">A qualifier which specifies the relationship between the element and its ancestor.</param>
         /// <returns><c>true</c> if the element matches the selector part; otherwise, <c>false</c>.</returns>
-        private static Boolean AncestorMatchesSelectorPart(ref UIElement element, UvssSelectorPart part, UIElement root, Boolean immediate)
+        private static Boolean AncestorMatchesSelectorPart(ref UIElement element, UvssSelectorPart part, UIElement root, UvssSelectorPartQualifier qualifier)
         {
-            var current = element;
-            while (true)
+            if (qualifier == UvssSelectorPartQualifier.TemplatedChild)
             {
-                if (current == root)
-                    return false;
-
-                current = current.Parent;
-                if (current == null)
-                    break;
-
-                if (ElementMatchesSelectorPart(root, current, part))
+                var fe = element as FrameworkElement;
+                if (fe != null && fe.TemplatedParent != null)
                 {
-                    element = current;
-                    return true;
+                    var feTemplatedParent = (UIElement)fe.TemplatedParent;
+                    if (ElementMatchesSelectorPart(feTemplatedParent, feTemplatedParent, part))
+                    {
+                        element = feTemplatedParent;
+                        return true;
+                    }
                 }
-
-                if (immediate)
-                    break;
+                return false;
             }
-            return false;
+            else
+            {
+                var current = element;
+                while (true)
+                {
+                    if (current == root)
+                        return false;
+
+                    current = ((qualifier == UvssSelectorPartQualifier.LogicalChild) ? LogicalTreeHelper.GetParent(current) : VisualTreeHelper.GetParent(current)) as UIElement;
+                    if (current == null)
+                        break;
+
+                    if (ElementMatchesSelectorPart(root, current, part))
+                    {
+                        element = current;
+                        return true;
+                    }
+
+                    if (qualifier != UvssSelectorPartQualifier.None)
+                        break;
+                }
+                return false;
+            }
         }
 
         // State values.
