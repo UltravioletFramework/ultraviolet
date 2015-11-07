@@ -24,6 +24,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(width > 0, "width");
             Contract.EnsureRange(height > 0, "height");
 
+            // NOTE: If we're in an older version of GLES, we need to use glFramebufferTexture2D()
+            glFramebufferTextureIsSupported = !gl.IsGLES || gl.IsVersionAtLeast(3, 2);
+
             var framebuffer = 0u;
 
             uv.QueueWorkItemAndWait(() =>
@@ -378,9 +381,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
             else
             {
-                gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER,
-                    (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), buffer.OpenGLName, 0);
-                gl.ThrowIfError();
+                if (!glFramebufferTextureIsSupported)
+                {
+                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, 
+                        (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
+                    gl.ThrowIfError();
+                }
+                else
+                {
+                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER,
+                        (uint)(gl.GL_COLOR_ATTACHMENT0 + colorAttachments), buffer.OpenGLName, 0);
+                    gl.ThrowIfError();
+                }
             }
                         
             colorAttachments++;
@@ -401,8 +413,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
             else
             {
-                gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, buffer.OpenGLName, 0);
-                gl.ThrowIfError();
+                if (!glFramebufferTextureIsSupported)
+                {
+                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
+                    gl.ThrowIfError();
+                }
+                else
+                {
+                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_ATTACHMENT, buffer.OpenGLName, 0);
+                    gl.ThrowIfError();
+                }
             }
 
             depthStencilAttachments++;
@@ -423,8 +443,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
             else
             {
-                gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
-                gl.ThrowIfError();
+                if (!glFramebufferTextureIsSupported)
+                {
+                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
+                    gl.ThrowIfError();
+                }
+                else
+                {
+                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_DEPTH_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
+                    gl.ThrowIfError();
+                }
             }
 
             depthStencilAttachments++;
@@ -476,6 +504,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private Int32 height;
 
         // State values.
+        private readonly Boolean glFramebufferTextureIsSupported;
         private readonly UInt32 framebuffer;
         private Int32 colorAttachments;
         private Int32 depthStencilAttachments;
