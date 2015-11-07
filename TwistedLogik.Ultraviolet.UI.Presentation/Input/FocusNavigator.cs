@@ -171,7 +171,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 case FocusNavigationDirection.Right:
                 case FocusNavigationDirection.Up:
                 case FocusNavigationDirection.Down:
-                    navContainer = FindNavigationContainer(element, navprop);
+                    navContainer = FindNavigationContainer(element, navprop, false);
                     destination  = FindNavigationStopInDirection(view, navContainer, element, navprop, direction) as IInputElement;
                     break;
             }            
