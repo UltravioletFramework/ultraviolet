@@ -1078,3 +1078,154 @@ HScrollBar > Grid > Track > .track-thumb > Grid > .button-background
 {
 	margin: 0 2 0 0;
 }
+
+.tabcontrol-background
+{
+	source-image: #Global:Textures:DefaultUI 463 697 32 64 8 8 8 8;
+}
+
+.tabcontrol-content
+{
+	margin: 8;
+}
+
+TabControl.left >> TabPanel
+{
+	margin: 2 2 0 2;
+}
+
+TabControl.top >> TabPanel
+{
+	margin: 2 2 2 0;
+}
+
+TabControl.right >> TabPanel
+{
+	margin: 0 2 2 2;
+}
+
+TabControl.bottom >> TabPanel
+{
+	margin: 2 0 2 2;
+}
+
+TabPanel
+{
+	margin: 2;
+	Panel.z-index: 1;
+}
+
+TabItem
+{
+	padding: 4;
+}
+
+TabItem.selected
+{
+	Panel.z-index: 1;
+}
+
+.tabitem-focus-image
+{
+	margin: 4;
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+}
+
+.tabitem-grid
+{
+	min-width: 50;
+	min-height: 32;
+}
+
+TabControl.left >> TabPanel >? TabItem
+{
+	trigger property Selector.selected = { false }, mouse-over = { true }
+	{
+		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 465 795 64 32 8 8 8 8 }	
+	}
+}
+
+TabControl.left >> TabPanel >? TabItem.selected
+{
+	margin: -2 -2 -1 -2;
+}
+
+TabControl.left >> TabPanel >? TabItem >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 465 762 64 32 8 8 8 8;	
+}
+
+TabControl.left >> TabPanel >? TabItem.selected >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 465 828 64 32 8 8 8 8;	
+}
+
+TabControl.top >> TabPanel >? TabItem
+{
+	trigger property Selector.selected = { false }, mouse-over = { true }
+	{
+		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 529 697 32 64 8 8 8 8 }	
+	}
+}
+
+TabControl.top >> TabPanel >? TabItem.selected
+{
+	margin: -2 -2 -2 -1;
+}
+
+TabControl.top >> TabPanel >? TabItem >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 496 697 32 64 8 8 8 8;	
+}
+
+TabControl.top >> TabPanel >? TabItem.selected >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 562 697 32 64 8 8 8 8;	
+}
+
+TabControl.right >> TabPanel >? TabItem
+{
+	trigger property Selector.selected = { false }, mouse-over = { true }
+	{
+		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 530 795 64 32 8 8 8 8 }	
+	}
+}
+
+TabControl.right >> TabPanel >? TabItem.selected
+{
+	margin: -1 -2 -2 -2;
+}
+
+TabControl.right >> TabPanel >? TabItem >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 530 762 64 32 8 8 8 8;	
+}
+
+TabControl.right >> TabPanel >? TabItem.selected >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 530 828 64 32 8 8 8 8;	
+}
+
+TabControl.bottom >> TabPanel >? TabItem
+{
+	trigger property Selector.selected = { false }, mouse-over = { true }
+	{
+		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 628 697 32 64 8 8 8 8 }	
+	}
+}
+
+TabControl.bottom >> TabPanel >? TabItem.selected
+{
+	margin: -2 -1 -2 -2;
+}
+
+TabControl.bottom >> TabPanel >? TabItem >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 595 697 32 64 8 8 8 8;	
+}
+
+TabControl.bottom >> TabPanel >? TabItem.selected >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 661 697 32 64 8 8 8 8;	
+}
