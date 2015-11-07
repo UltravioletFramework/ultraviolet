@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
@@ -130,6 +131,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnItemsChanged();
         }
 
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        {
+            var target = default(UIElement);
+
+            switch (key)
+            {
+                case Key.Tab:
+                    if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                    {
+                        if ((modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+                        {
+                            target = GetNextEnabledTabItem(SelectedIndex, -1);
+                        }
+                        else
+                        {
+                            target = GetNextEnabledTabItem(SelectedIndex, 1);
+                        }
+                    }
+                    break;
+
+                case Key.Home:
+                    if (Items.Count > 0)
+                    { 
+                        target = GetNextEnabledTabItem(Items.Count - 1, 1);
+                    }
+                    break;
+
+                case Key.End:
+                    if (Items.Count > 0)
+                    {
+                        target = GetNextEnabledTabItem(0, -1);
+                    }
+                    break;
+            }
+
+            if (target != null && !target.IsFocused)
+            {
+                data.Handled = target.Focus();
+            }
+
+            base.OnKeyDown(device, key, modifiers, ref data);
+        }
+
         /// <summary>
         /// Called when the value of the <see cref="TabStripPlacement"/> dependency property changes.
         /// </summary>
@@ -180,6 +225,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     PART_ContentPresenter.Content = null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the next enabled and visible tab after the specified tab.
+        /// </summary>
+        private TabItem GetNextEnabledTabItem(Int32 start, Int32 delta)
+        {
+            if (delta == 0)
+                return null;
+
+            var count = Items.Count;
+            var current = (count + ((start + delta) % count)) % count;
+
+            for (int i = 0; i < Items.Count; i++)
+            {
+                var container = ItemContainerGenerator.ContainerFromIndex(current) as TabItem;
+                if (container != null && container.IsEnabled && container.Visibility == Visibility.Visible)
+                {
+                    return container;
+                }
+
+                current = (count + ((start + delta) % count)) % count;
+            }
+
+            return null;
         }
 
         // Component references.
