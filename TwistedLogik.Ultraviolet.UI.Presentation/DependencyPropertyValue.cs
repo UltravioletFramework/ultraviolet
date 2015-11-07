@@ -74,8 +74,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 Contract.Require(action, "action");
 
+                var oldValue = GetValue();
+
                 triggeredValueSource = action;
                 triggeredValue       = action.GetValue<T>();
+
+                UpdateRequiresDigest(oldValue);
             }
 
             /// <inheritdoc/>

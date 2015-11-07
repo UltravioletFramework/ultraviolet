@@ -1152,6 +1152,20 @@ TabItem.selected
 	Panel.z-index: 1;
 }
 
+.tabitem-grid
+{
+	min-width: 50;
+	min-height: 32;
+}
+
+TabControl.left >> TabPanel >? TabItem
+{
+	trigger property Selector.selected = { false }, mouse-over = { true }
+	{
+		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 237 454 32 16 4 4 4 4 }	
+	}
+}
+
 TabControl.left >> TabPanel >? TabItem.selected
 {
 	margin: -2 -2 -1 -2;
@@ -1164,7 +1178,15 @@ TabControl.left >> TabPanel >? TabItem >> .tabitem-background
 
 TabControl.left >> TabPanel >? TabItem.selected >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 237 454 32 16 4 4 4 4;	
+	source-image: #Global:Textures:DefaultUI 237 471 32 16 4 4 4 4;	
+}
+
+TabControl.top >> TabPanel >? TabItem
+{
+	trigger property Selector.selected = { false }, mouse-over = { true }
+	{
+		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 271 404 16 32 4 4 4 4 }	
+	}
 }
 
 TabControl.top >> TabPanel >? TabItem.selected
@@ -1179,7 +1201,15 @@ TabControl.top >> TabPanel >? TabItem >> .tabitem-background
 
 TabControl.top >> TabPanel >? TabItem.selected >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 271 404 16 32 4 4 4 4;	
+	source-image: #Global:Textures:DefaultUI 288 404 16 32 4 4 4 4;	
+}
+
+TabControl.right >> TabPanel >? TabItem
+{
+	trigger property Selector.selected = { false }, mouse-over = { true }
+	{
+		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 270 454 32 16 4 4 4 4 }	
+	}
 }
 
 TabControl.right >> TabPanel >? TabItem.selected
@@ -1194,7 +1224,15 @@ TabControl.right >> TabPanel >? TabItem >> .tabitem-background
 
 TabControl.right >> TabPanel >? TabItem.selected >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 270 454 32 16 4 4 4 4;	
+	source-image: #Global:Textures:DefaultUI 270 471 32 16 4 4 4 4;	
+}
+
+TabControl.bottom >> TabPanel >? TabItem
+{
+	trigger property Selector.selected = { false }, mouse-over = { true }
+	{
+		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 322 404 16 32 4 4 4 4 }	
+	}
 }
 
 TabControl.bottom >> TabPanel >? TabItem.selected
@@ -1204,10 +1242,10 @@ TabControl.bottom >> TabPanel >? TabItem.selected
 
 TabControl.bottom >> TabPanel >? TabItem >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 288 404 16 32 4 4 4 4;	
+	source-image: #Global:Textures:DefaultUI 305 404 16 32 4 4 4 4;	
 }
 
 TabControl.bottom >> TabPanel >? TabItem.selected >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 305 404 16 32 4 4 4 4;	
+	source-image: #Global:Textures:DefaultUI 339 404 16 32 4 4 4 4;	
 }
