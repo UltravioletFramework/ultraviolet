@@ -8,7 +8,15 @@
         <TabItem.Content>This is a test</TabItem.Content>
       </TabItem>
       <TabItem>
-        <TabItem.Header>Bar baz qux</TabItem.Header>
+        <TabItem.Header>Bar</TabItem.Header>
+        <TabItem.Content>This is another test</TabItem.Content>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>Baz</TabItem.Header>
+        <TabItem.Content>This is a test</TabItem.Content>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>Qux</TabItem.Header>
         <TabItem.Content>This is another test</TabItem.Content>
       </TabItem>
     </TabControl>

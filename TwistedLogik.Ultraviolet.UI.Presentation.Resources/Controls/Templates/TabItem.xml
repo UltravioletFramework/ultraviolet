@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
   <View>
-    <Grid>
-      <Border BorderColor="#ffffffff">
-        <Rectangle Class="tabitem-background"/>
-      </Border>
+    <Grid Class="tabitem-grid">
+
+      <Image Class="tabitem-background"/>
       <ContentPresenter Class="tabitem-content"
                         ContentSource="Header"
                         HorizontalAlignment="{{HorizontalContentAlignment}}"
                         VerticalAlignment="{{VerticalContentAlignment}}"
                         Margin="{{Padding}}"/>
+      
     </Grid>
   </View>
 </ComponentTemplate>

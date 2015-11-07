@@ -1,14 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
   <View>
-    <DockPanel LastChildFill="true">
-      <ItemsPanel Class="tabcontrol-panel" 
+    <DockPanel Class="tabcontrol-dock" 
+               LastChildFill="true">
+
+      <ItemsPanel Name="PART_ItemsPanel" 
+                  Class="tabcontrol-tabs" 
                   DockPanel.Dock="{{TabStripPlacement}}"/>
-      <Grid>
-        <Rectangle FillColor="#ffff0000"/>
+      <Grid Class="tabcontrol-page">
+    
+        <Image Class="tabcontrol-background"/>
         <ContentPresenter Name="PART_ContentPresenter"
                           Class="tabcontrol-content"/>
+      
       </Grid>
+    
     </DockPanel>
   </View>
 </ComponentTemplate>

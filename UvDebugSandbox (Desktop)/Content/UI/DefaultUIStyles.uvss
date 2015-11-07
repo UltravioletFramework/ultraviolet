@@ -97,7 +97,7 @@ View
 
 .msgbox-box-background
 {
-	source-image:  #Global:Textures:DefaultUI 217 305 16 32 4 4 4 4;
+	source-image: #Global:Textures:DefaultUI 217 305 16 32 4 4 4 4;
 }
 
 .msgbox-box-content
@@ -1106,34 +1106,108 @@ ToolTip
 	border-color: #ff000000;
 }
 
-.tabcontrol-panel
+.tabcontrol-background
+{
+	source-image: #Global:Textures:DefaultUI 237 404 16 32 4 4 4 4;
+}
+
+.tabcontrol-content
+{
+	margin: 8;
+}
+
+TabControl.left >> TabPanel
+{
+	margin: 2 2 0 2;
+}
+
+TabControl.top >> TabPanel
 {
 	margin: 2 2 2 0;
+}
+
+TabControl.right >> TabPanel
+{
+	margin: 0 2 2 2;
+}
+
+TabControl.bottom >> TabPanel
+{
+	margin: 2 0 2 2;
 }
 
 TabPanel
 {
 	margin: 2;
+	Panel.z-index: 1;
 }
 
 TabItem
 {
 	padding: 4;
-	Panel.z-index: 0;
-}
-
-.tabitem-background
-{
-	fill-color: #ff800080;
 }
 
 TabItem.selected
 {
-	margin: -2 -2 -2 0;
 	Panel.z-index: 1;
 }
 
-TabItem.selected .tabitem-background
+TabControl.left >> TabPanel >? TabItem.selected
 {
-	fill-color: #ffff0000;
+	margin: -2 -2 -1 -2;
+}
+
+TabControl.left >> TabPanel >? TabItem >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 237 437 32 16 4 4 4 4;	
+}
+
+TabControl.left >> TabPanel >? TabItem.selected >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 237 454 32 16 4 4 4 4;	
+}
+
+TabControl.top >> TabPanel >? TabItem.selected
+{
+	margin: -2 -2 -2 -1;
+}
+
+TabControl.top >> TabPanel >? TabItem >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 254 404 16 32 4 4 4 4;	
+}
+
+TabControl.top >> TabPanel >? TabItem.selected >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 271 404 16 32 4 4 4 4;	
+}
+
+TabControl.right >> TabPanel >? TabItem.selected
+{
+	margin: -1 -2 -2 -2;
+}
+
+TabControl.right >> TabPanel >? TabItem >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 270 437 32 16 4 4 4 4;	
+}
+
+TabControl.right >> TabPanel >? TabItem.selected >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 270 454 32 16 4 4 4 4;	
+}
+
+TabControl.bottom >> TabPanel >? TabItem.selected
+{
+	margin: -2 -1 -2 -2;
+}
+
+TabControl.bottom >> TabPanel >? TabItem >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 288 404 16 32 4 4 4 4;	
+}
+
+TabControl.bottom >> TabPanel >? TabItem.selected >> .tabitem-background
+{
+	source-image: #Global:Textures:DefaultUI 305 404 16 32 4 4 4 4;	
 }

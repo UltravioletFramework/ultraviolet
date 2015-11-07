@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public TabControl(UltravioletContext uv, String name)
             : base(uv, name)
         {
-
+            Classes.Add("top");
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="TabStripPlacement"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TabStripPlacementProperty = DependencyProperty.Register("TabStripPlacement", typeof(Dock), typeof(TabControl),
-            new PropertyMetadata<Dock>(Dock.Top));
+            new PropertyMetadata<Dock>(Dock.Top, HandleTabStripPlacementPropertyChanged));
 
         /// <summary>
         /// Called to inform the tab control that one of its items was clicked.
@@ -117,6 +117,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 SelectedIndex = 0;
             }
             base.OnItemsChanged();
+        }
+
+        /// <summary>
+        /// Called when the value of the <see cref="TabStripPlacement"/> dependency property changes.
+        /// </summary>
+        private static void HandleTabStripPlacementPropertyChanged(DependencyObject dobj, Dock oldValue, Dock newValue)
+        {
+            var tabControl = (TabControl)dobj;
+
+            tabControl.Classes.Remove("left");
+            tabControl.Classes.Remove("top");
+            tabControl.Classes.Remove("right");
+            tabControl.Classes.Remove("bottom");
+
+            switch (newValue)
+            {
+                case Dock.Left:
+                    tabControl.Classes.Add("left");
+                    break;
+
+                case Dock.Top:
+                    tabControl.Classes.Add("top");
+                    break;
+
+                case Dock.Right:
+                    tabControl.Classes.Add("right");
+                    break;
+
+                case Dock.Bottom:
+                    tabControl.Classes.Add("bottom");
+                    break;
+            }
         }
 
         /// <summary>

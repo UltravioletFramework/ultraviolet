@@ -5,6 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the part of a <see cref="TabControl"/> which displays the tabbed list of items.
     /// </summary>
+    [UvmlKnownType]
     public class TabPanel : Panel
     {
         /// <summary>
