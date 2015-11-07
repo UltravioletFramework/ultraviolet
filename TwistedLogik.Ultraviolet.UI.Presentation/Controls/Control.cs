@@ -2,6 +2,7 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -87,6 +88,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get { return GetValue<VerticalAlignment>(VerticalContentAlignmentProperty); }
             set { SetValue<VerticalAlignment>(VerticalContentAlignmentProperty, value); }
         }
+
+        /// <summary>
+        /// Identifies the IsTabStop dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsTabStopProperty = KeyboardNavigation.IsTabStopProperty.AddOwner(typeof(Control));
 
         /// <summary>
         /// Identifies the <see cref="Font"/> dependency property.

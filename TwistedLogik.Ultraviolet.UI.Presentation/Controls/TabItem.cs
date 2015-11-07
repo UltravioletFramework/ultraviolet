@@ -1,6 +1,8 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -17,6 +19,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             HorizontalContentAlignmentProperty.OverrideMetadata(typeof(TabItem), new PropertyMetadata<HorizontalAlignment>(HorizontalAlignment.Center));
             VerticalContentAlignmentProperty.OverrideMetadata(typeof(TabItem), new PropertyMetadata<VerticalAlignment>(VerticalAlignment.Center));
+
+            KeyboardNavigation.TabNavigationProperty.OverrideMetadata(typeof(TabItem), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Local));
+            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(TabItem), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Contained));
         }
 
         /// <summary>
@@ -51,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (!data.Handled)
             {
-                Select();
+                Focus();
                 data.Handled = true;
             }
             base.OnGenericInteraction(device, ref data);
@@ -66,6 +71,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 tabControl.HandleItemContentChanged(this);
             }
             base.OnContentChanged(oldValue, newValue);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPreviewGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        {
+            if (!data.Handled && newFocus == this)
+            {
+                Select();
+            }
+            base.OnPreviewGotKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
         /// <summary>
@@ -105,7 +120,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var tabControl = ItemsControl.ItemsControlFromItemContainer(this) as TabControl;
             if (tabControl != null)
             {
-                Focus();
                 tabControl.HandleItemClicked(this);
             }
         }

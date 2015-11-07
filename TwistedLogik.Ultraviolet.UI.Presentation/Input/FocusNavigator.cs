@@ -1,6 +1,8 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
@@ -464,6 +466,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns>The next element in the tab order after <paramref name="navElement"/>, or <c>null</c>.</returns>
         private static DependencyObject FindNextNavigationStop(PresentationFoundationView view, DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, Boolean local)
         {
+            if (navElement == null)
+            {
+                if (IsNavigationStop(navContainer))
+                    return navContainer;
+
+                var selectedTab = GetSelectedTab(navContainer as UIElement);
+                if (selectedTab != null)
+                    return FindNextNavigationStop(view, selectedTab, null, navProp, local);
+            }
+
             if (navElement == null && IsNavigationStop(navContainer))
                 return navContainer;
 
@@ -685,6 +697,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         {
             var navMode = navContainer.GetValue<KeyboardNavigationMode>(navProp);
 
+            if (navElement == null)
+            {
+                var selectedTab = GetSelectedTab(navContainer as UIElement);
+                if (selectedTab != null)
+                    return FindPrevNavigationStop(view, selectedTab, null, navProp, local);
+            }
+
             if (navElement != null && (navMode == KeyboardNavigationMode.Once || navMode == KeyboardNavigationMode.None))
             {
                 if (local || navContainer == navElement)
@@ -754,8 +773,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                     return FindPrevNavigationStop(view, navContainerContainer, navContainer, navProp, false);
                 }
 
-                var lastNavStopInContainer = GetLastNavigationStop(navContainer, navProp);
-                return ((lastNavStopInContainer == null) ? null : FindPrevVisualElementWithinContainer(lastNavStopInContainer, null, navProp, navMode)) ?? lastNavStopInContainer;
+                return FindPrevNavigationStop(view, navContainer, null, navProp, true);
             }
 
             return null;
@@ -1013,6 +1031,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             }
 
             return IsNavigationStop(bestMatch) ? bestMatch : null;
+        }
+
+        /// <summary>
+        /// If the specified element is a <see cref="TabPanel"/>, this method returns the currently-selected <see cref="TabItem"/> for that panel.
+        /// </summary>
+        private static UIElement GetSelectedTab(UIElement element)
+        {
+            if (element == null)
+                return null;
+
+            var tabPanel = element as TabPanel;
+            if (tabPanel == null)
+                return null;
+
+            var tabControl = tabPanel.TemplatedParent as TabControl;
+            if (tabControl == null)
+                return null;
+
+            var index = tabControl.SelectedIndex;
+            if (index >= 0)
+            {
+                var container = tabControl.ItemContainerGenerator.ContainerFromIndex(index);
+                if (container != null)
+                {
+                    return (container as UIElement) ?? element;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

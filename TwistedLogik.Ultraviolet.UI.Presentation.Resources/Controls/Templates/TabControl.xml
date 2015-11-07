@@ -7,7 +7,9 @@
       <ItemsPanel Name="PART_ItemsPanel" 
                   Class="tabcontrol-tabs" 
                   DockPanel.Dock="{{TabStripPlacement}}"/>
-      <Grid Class="tabcontrol-page">
+      <Grid Class="tabcontrol-page" 
+            KeyboardNavigation.DirectionalNavigation="Contained"
+            KeyboardNavigation.TabNavigation="Local">
     
         <Image Class="tabcontrol-background"/>
         <ContentPresenter Name="PART_ContentPresenter"

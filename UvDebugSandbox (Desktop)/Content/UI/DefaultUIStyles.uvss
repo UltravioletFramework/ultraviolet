@@ -1152,6 +1152,13 @@ TabItem.selected
 	Panel.z-index: 1;
 }
 
+.tabitem-focus-image
+{
+	margin: 4;
+	source-color: #ff000000;
+	source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
+}
+
 .tabitem-grid
 {
 	min-width: 50;

@@ -1,5 +1,7 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -10,6 +12,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     [UvmlPlaceholder("ItemsPanel", typeof(TabPanel))]
     public class TabControl : Selector
     {
+        /// <summary>
+        /// Initializes the <see cref="TabControl"/> type.
+        /// </summary>
+        static TabControl()
+        {
+            IsTabStopProperty.OverrideMetadata(typeof(TabControl), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(TabControl), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Contained));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TabControl"/> class.
         /// </summary>

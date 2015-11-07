@@ -9,7 +9,13 @@
                         HorizontalAlignment="{{HorizontalContentAlignment}}"
                         VerticalAlignment="{{VerticalContentAlignment}}"
                         Margin="{{Padding}}"/>
-      
+      <Image Class="tabitem-focus-image"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+             IsHitTestVisible="false"/>
+
+
     </Grid>
   </View>
 </ComponentTemplate>

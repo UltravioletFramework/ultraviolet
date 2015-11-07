@@ -1,11 +1,12 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents the part of a <see cref="TabControl"/> which displays the tabbed list of items.
     /// </summary>
-    [UvmlKnownType]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Templates.TabPanel.xml")]
     public class TabPanel : Panel
     {
         /// <summary>
@@ -16,7 +17,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public TabPanel(UltravioletContext uv, String name)
             : base(uv, name)
         {
-
+            KeyboardNavigation.TabNavigationProperty.OverrideMetadata(typeof(TabPanel), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Once));
+            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(TabPanel), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Cycle));
         }
 
         /// <inheritdoc/>
