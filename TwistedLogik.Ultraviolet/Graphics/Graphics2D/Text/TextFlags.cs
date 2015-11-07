@@ -42,5 +42,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Vertically aligns the text against the bottom edge of the layout area.
         /// </summary>
         AlignBottom = 0x0040,
+
+        /// <summary>
+        /// Specifies that the layout engine should render any command codes as if they were raw text.
+        /// </summary>
+        IgnoreCommandCodes = 0x0080,
     }
 }

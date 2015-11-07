@@ -171,7 +171,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(input, "input");
 
             lexer.Lex(input, lexerResult);
-            parser.Parse(lexerResult, parserResult);
+
+            var parserOptions = GetParserOptions(ref settings);
+            parser.Parse(lexerResult, parserResult, parserOptions);
+
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return Draw(spriteBatch, layoutResult, position, color);
@@ -192,7 +195,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(input, "input");
 
             lexer.Lex(input, lexerResult);
-            parser.Parse(lexerResult, parserResult);
+
+            var parserOptions = GetParserOptions(ref settings);
+            parser.Parse(lexerResult, parserResult, parserOptions);
+
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return Draw(spriteBatch, layoutResult, position, color);
@@ -212,7 +218,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
 
-            parser.Parse(input, parserResult);
+            var parserOptions = GetParserOptions(ref settings);
+            parser.Parse(input, parserResult, parserOptions);
+
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return Draw(spriteBatch, layoutResult, position, color);
@@ -312,6 +320,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 matrix.M21 == 0 && matrix.M22 == 1 && matrix.M23 == 0 &&
                 matrix.M31 == 0 && matrix.M32 == 0 && matrix.M33 == 1 &&
                 matrix.M41 == 0 && matrix.M42 == 0 && matrix.M43 == 0 && matrix.M44 == 1;
+        }
+
+        /// <summary>
+        /// Gets a set of <see cref="TextParserOptions"/> values that correspond to the specified layout settings.
+        /// </summary>
+        private static TextParserOptions GetParserOptions(ref TextLayoutSettings settings)
+        {
+            var options = TextParserOptions.None;
+
+            if ((settings.Flags & TextFlags.IgnoreCommandCodes) == TextFlags.IgnoreCommandCodes)
+                options |= TextParserOptions.IgnoreCommandCodes;
+
+            return options;
         }
 
         // The lexer and parser used to process input text.

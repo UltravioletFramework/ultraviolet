@@ -27,7 +27,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The token stream to parse.</param>
         /// <param name="output">The parsed token stream.</param>
-        public void Parse(TextLexerResult input, TextParserResult output)
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        public void Parse(TextLexerResult input, TextParserResult output, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
@@ -50,7 +51,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         break;
 
                     case TextLexerTokenType.Command:
-                        InterpretCommand(output, token, ref style);
+                        if ((options & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes)
+                        {
+                            output.Add(new TextParserToken(token.TokenText, output.Styles.Count - 1));
+                        }
+                        else
+                        {
+                            InterpretCommand(output, token, ref style);
+                        }
                         break;
                 }
             }
