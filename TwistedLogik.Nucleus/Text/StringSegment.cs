@@ -412,6 +412,25 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
+        /// Gets the number of characters in the segment's source string.
+        /// </summary>
+        public Int32 SourceLength
+        {
+            get
+            {
+                if (sourceString != null)
+                {
+                    return sourceString.Length;
+                }
+                if (sourceBuilder != null)
+                {
+                    return sourceBuilder.Length;
+                }
+                return 0;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this is an empty string segment.
         /// </summary>
         public Boolean IsEmpty

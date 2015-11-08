@@ -34,6 +34,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public TextLexerTokenType TokenType
         {
             get { return tokenType; }
+            internal set { tokenType = value; }
         }
 
         /// <summary>
@@ -42,10 +43,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public StringSegment TokenText
         {
             get { return tokenText; }
+            internal set { tokenText = value; }
         }
 
         // Property values.
-        private readonly TextLexerTokenType tokenType;
-        private readonly StringSegment tokenText;
+        private TextLexerTokenType tokenType;
+        private StringSegment tokenText;
     }
 }

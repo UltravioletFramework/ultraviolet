@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
 
@@ -20,7 +21,28 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(input, "input");
             Contract.Require(output, "output");
 
-            Lex(new StringSource(input), output);
+            output.Clear();
+            Lex(new StringSource(input), output, 0, input.Length);
+        }
+
+        /// <summary>
+        /// Incrementally lexes the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="String"/> to lex.</param>
+        /// <param name="start">The index of the first character that was changed.</param>
+        /// <param name="count">The number of characters that were changed.</param>
+        /// <param name="result">The lexed token stream.</param>
+        /// <remarks>Incremental lexing provides a performance benefit when relatively small changes are being made
+        /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
+        /// of the source text are re-lexed by this operation.</remarks>
+        public void LexIncremental(String input, Int32 start, Int32 count, TextLexerResult result)
+        {
+            Contract.Require(input, "input");
+            Contract.Require(result, "output");
+            Contract.EnsureRange(start >= 0, "start");
+            Contract.EnsureRange(count >= 0 && start + count <= input.Length, "count");
+
+            LexIncremental(new StringSource(input), start, count, result);
         }
 
         /// <summary>
@@ -33,7 +55,28 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(input, "input");
             Contract.Require(output, "output");
 
-            Lex(new StringSource(input), output);
+            output.Clear();
+            Lex(new StringSource(input), output, 0, input.Length);
+        }
+
+        /// <summary>
+        /// Incrementally lexes the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="StringBuilder"/> to lex.</param>
+        /// <param name="start">The index of the first character that was changed.</param>
+        /// <param name="count">The number of characters that were changed.</param>
+        /// <param name="result">The lexed token stream.</param>
+        /// <remarks>Incremental lexing provides a performance benefit when relatively small changes are being made
+        /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
+        /// of the source text are re-lexed by this operation.</remarks>
+        internal void LexIncremental(StringBuilder input, Int32 start, Int32 count, TextLexerResult result)
+        {
+            Contract.Require(input, "input");
+            Contract.Require(result, "output");
+            Contract.EnsureRange(start >= 0, "start");
+            Contract.EnsureRange(count >= 0 && start + count <= input.Length, "count");
+
+            LexIncremental(new StringSource(input), start, count, result);
         }
 
         /// <summary>
@@ -41,40 +84,95 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The <see cref="StringSource"/> to lex.</param>
         /// <param name="output">The lexed token stream.</param>
-        private void Lex(StringSource input, TextLexerResult output)
+        /// <param name="index">The index at which to begin lexing the input string.</param>
+        private void Lex(StringSource input, TextLexerResult output, Int32 index, Int32 count)
         {
-            output.Clear();
-
-            var ix = 0;
-            while (ix < input.Length)
+            var bound = index + count;
+            while (index < bound)
             {
-                if (IsStartOfNewline(input, ix))
+                if (IsStartOfNewline(input, index))
                 {
-                    output.Add(ConsumeNewlineToken(input, ref ix));
+                    output.Add(ConsumeNewlineToken(input, ref index));
                     continue;
                 }
-                if (IsStartOfWhitespace(input, ix))
+                if (IsStartOfWhitespace(input, index))
                 {
-                    output.Add(ConsumeWhitespaceToken(input, ref ix));
+                    output.Add(ConsumeWhitespaceToken(input, ref index));
                     continue;
                 }
-                if (IsEscapedPipe(input, ix))
+                if (IsEscapedPipe(input, index))
                 {
-                    output.Add(ConsumeEscapedPipeToken(input, ref ix));
+                    output.Add(ConsumeEscapedPipeToken(input, ref index));
                     continue;
                 }
-                if (IsStartOfCommand(input, ix))
+                if (IsStartOfCommand(input, index))
                 {
-                    output.Add(ConsumeCommandToken(input, ref ix));
+                    output.Add(ConsumeCommandToken(input, ref index));
                     continue;
                 }
-                if (IsStartOfWord(input, ix))
+                if (IsStartOfWord(input, index))
                 {
-                    output.Add(ConsumeWordToken(input, ref ix));
+                    output.Add(ConsumeWordToken(input, ref index));
                     continue;
                 }
-                ix++;
+                index++;
             }
+        }
+
+        /// <summary>
+        /// Incrementally lexes the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="StringSource"/> to lex.</param>
+        /// <param name="start">The index of the first character that was changed.</param>
+        /// <param name="count">The number of characters that were changed.</param>
+        /// <param name="result">The lexed token stream.</param>
+        /// <remarks>Incremental lexing provides a performance benefit when relatively small changes are being made
+        /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
+        /// of the source text are re-lexed by this operation.</remarks>
+        private void LexIncremental(StringSource input, Int32 start, Int32 count, TextLexerResult result)
+        {
+            var inputLengthOld = (result.Count == 0) ? 0 : result[0].TokenText.SourceLength;
+            var inputLengthNew = input.Length;
+            var inputLengthDiff = inputLengthNew - inputLengthOld;
+
+            Int32 ix1, ix2;
+            FindTokensInfluencedBySubstring(result, start, count, out ix1, out ix2);
+
+            var token1 = result[ix1];
+            var token2 = result[ix2];
+            
+            var invalidatedTokenCount = 1 + (ix2 - ix1);
+            result.RemoveRange(ix1, invalidatedTokenCount);
+            
+            var lexStart = token1.TokenText.Start;
+            var lexCount = inputLengthDiff + (token2.TokenText.Start + token2.TokenText.Length) - lexStart;
+            var lexBuffer = incrementalLexerBuffer.Value;
+            Lex(input, lexBuffer, lexStart, lexCount);
+
+            // NOTE: We still have to touch all of the old tokens for memory reasons.
+            // If we don't update them to reference the new source text, then they'll continue to maintain a reference
+            // to the old one, and therefore prevent it from being garbage collected. If lots of small edits are being
+            // performed on a very large source text, this could quickly suck up a lot of heap memory!
+
+            for (int i = 0; i < ix1; i++)
+            {
+                var token = result[i];
+                token.TokenText = (input.String == null) ?
+                    new StringSegment(input.StringBuilder, token.TokenText.Start, token.TokenText.Length) :
+                    new StringSegment(input.String, token.TokenText.Start, token.TokenText.Length);
+            }
+
+            for (int i = ix1; i < result.Count; i++)
+            {
+                var token = result[i];
+                token.TokenText = (input.String == null) ?
+                    new StringSegment(input.StringBuilder, inputLengthDiff + token.TokenText.Start, token.TokenText.Length) :
+                    new StringSegment(input.String, inputLengthDiff + token.TokenText.Start, token.TokenText.Length);
+            }
+
+            result.InsertRange(ix1, lexBuffer);
+
+            lexBuffer.Clear();
         }
 
         /// <summary>
@@ -266,5 +364,48 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
             return StringSegment.Empty;
         }
+
+        /// <summary>
+        /// Finds the index of the first and last tokens which are potentially affected by changes in the specified substring of the source text.
+        /// </summary>
+        private void FindTokensInfluencedBySubstring(TextLexerResult result, Int32 start, Int32 count, out Int32 ix1, out Int32 ix2)
+        {
+            var position = 0;
+            var end = start + count;
+
+            var ix1Found = false;
+            var ix2Found = false;
+
+            ix1 = 0;
+            ix2 = result.Count - 1;
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                var token = result[i];
+                var tokenStart = token.TokenText.Start;
+                var tokenEnd = tokenStart + token.TokenText.Length;
+
+                if (!ix1Found && (start >= tokenStart && start <= tokenEnd))
+                {
+                    ix1 = i;
+                    ix1Found = true;
+                }
+
+                if (!ix2Found && (end >= tokenStart && end < tokenEnd))
+                {
+                    ix2 = i;
+                    ix2Found = true;
+                }
+
+                if (ix1Found && ix2Found)
+                    break;
+
+                position += token.TokenText.Length;
+            }
+        }
+
+        // A temporary buffer used by the incremental lexer.
+        private static readonly ThreadLocal<TextLexerResult> incrementalLexerBuffer = 
+            new ThreadLocal<TextLexerResult>(() => new TextLexerResult());
     }
 }

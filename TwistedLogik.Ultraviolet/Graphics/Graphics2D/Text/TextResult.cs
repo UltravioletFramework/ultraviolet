@@ -60,6 +60,35 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Removes the item at the specified index from the result.
+        /// </summary>
+        /// <param name="index">The index of the item to remove from the result.</param>
+        internal void RemoveAt(Int32 index)
+        {
+            storage.RemoveAt(index);
+        }
+        
+        /// <summary>
+        /// Removes the specified range of items from the result.
+        /// </summary>
+        /// <param name="index">The index of the first element to remove from the result.</param>
+        /// <param name="count">The number of items to remove from the result.</param>
+        internal void RemoveRange(Int32 index, Int32 count)
+        {
+            storage.RemoveRange(index, count);
+        }
+
+        /// <summary>
+        /// Inserts a range of elements into the result at the specified index.
+        /// </summary>
+        /// <param name="index">The index at which to begin inserting elements.</param>
+        /// <param name="collection">The collection of elements to insert into the result.</param>
+        internal void InsertRange(Int32 index, IEnumerable<T> collection)
+        {
+            storage.InsertRange(index, collection);
+        }
+        
+        /// <summary>
         /// Gets the item at the specified index.
         /// </summary>
         /// <param name="ix">The item of the token to retrieve.</param>
