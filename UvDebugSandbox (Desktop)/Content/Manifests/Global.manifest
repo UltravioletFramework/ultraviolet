@@ -14,4 +14,7 @@
     <Asset Name="Rollover2">rollover2</Asset>
     <Asset Name="Rollover3">rollover3</Asset>
   </ContentGroup>
+  <ContentGroup Name="Sprites" Directory="Sprites" Type="TwistedLogik.Ultraviolet.Graphics.Graphics2D.Sprite">
+    <Asset Name="InterfaceIcons">InterfaceIcons</Asset>
+  </ContentGroup>
 </ContentManifest>
