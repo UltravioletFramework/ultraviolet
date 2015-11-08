@@ -54,6 +54,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Gets or sets the name of the token's associated glyph shader.
+        /// </summary>
+        public StringSegment? GlyphShader
+        {
+            get { return glyphShader; }
+            set { glyphShader = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the name of the token's associated style preset.
         /// </summary>
         public StringSegment? Style
@@ -68,6 +77,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private Boolean? italic;
         private StringSegment? font;
         private StringSegment? icon;
+        private StringSegment? glyphShader;
         private StringSegment? style;
     }
 }

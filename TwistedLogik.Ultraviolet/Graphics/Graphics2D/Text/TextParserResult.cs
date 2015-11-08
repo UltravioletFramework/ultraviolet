@@ -92,6 +92,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Adds a style to the result with the specified glyph shader.
+        /// </summary>
+        /// <param name="style">The base style to add to the result.</param>
+        /// <param name="glyphShader">The glyph shader to set on the style.</param>
+        internal void AddStyleWithGlyphShader(ref TextStyle style, StringSegment? glyphShader)
+        {
+            style.GlyphShader = glyphShader;
+            styles.Add(style);
+        }
+
+        /// <summary>
         /// Adds a style to the result with the specified style preset.
         /// </summary>
         /// <param name="style">The base style to add to the result.</param>

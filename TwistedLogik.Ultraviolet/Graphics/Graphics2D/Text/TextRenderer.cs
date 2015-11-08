@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the style to unregister.</param>
         /// <returns><c>true</c> if the style was unregistered; otherwise, <c>false</c>.</returns>
-        public bool UnregisterStyle(String name)
+        public Boolean UnregisterStyle(String name)
         {
             return layoutEngine.UnregisterStyle(name);
         }
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the font to unregister.</param>
         /// <returns><c>true</c> if the font was unregistered; otherwise, <c>false</c>.</returns>
-        public bool UnregisterFont(String name)
+        public Boolean UnregisterFont(String name)
         {
             return layoutEngine.UnregisterFont(name);
         }
@@ -67,9 +67,29 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the icon to unregister.</param>
         /// <returns><c>true</c> if the icon was unregistered; otherwise, <c>false</c>.</returns>
-        public bool UnregisterIcon(String name)
+        public Boolean UnregisterIcon(String name)
         {
             return layoutEngine.UnregisterIcon(name);
+        }
+
+        /// <summary>
+        /// Registers the glyph shader with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the glyph shader to register.</param>
+        /// <param name="shader">The glyph shader to register.</param>
+        public void RegisterGlyphShader(String name, GlyphShader shader)
+        {
+            layoutEngine.RegisterGlyphShader(name, shader);
+        }
+
+        /// <summary>
+        /// Unregisters the glyph shader with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the glyph shader to unregister.</param>
+        /// <returns><c>true</c> if the glyph shader was unregistered; otherwise, <c>false</c>.</returns>
+        public Boolean UnregisterGlyphShader(String name)
+        {
+            return layoutEngine.UnregisterGlyphShader(name);
         }
 
         /// <summary>
@@ -389,6 +409,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             foreach (var token in input)
             {
+                var skipToken = false;
+
+                var tokenIndexInSource = glyphsSeen;
                 var tokenStart = 0;
                 var tokenLength = token.Text.Length;
                 var tokenBounds = token.Bounds;
@@ -400,8 +423,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     if (token.Icon == null)
                     {
-                        var processToken = (glyphsSeen + tokenLength > start);
-                        if (processToken)
+                        if (glyphsSeen + tokenLength > start)
                         {
                             if (glyphsSeen < start && glyphsSeen + tokenLength >= start)
                             {
@@ -414,13 +436,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                                 tokenLength = count - glyphsDrawn;
                             }
                         }
-
-                        glyphsSeen += token.Text.Length;
-
-                        if (!processToken)
-                            continue;
+                        else
+                        {
+                            skipToken = true;
+                        }
                     }
                 }
+
+                glyphsSeen += token.Text.Length;
+
+                if (skipToken)
+                    continue;
 
                 if (scissorClipping)
                 {
@@ -437,13 +463,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 if (token.Icon != null)
                 {
                     var iconInfo  = token.Icon.Value;
-                    var animation = iconInfo.Icon;
+                    var iconAnimation = iconInfo.Icon;
+                    var iconOrigin = iconAnimation.Controller.GetFrame().Origin;
+                    var iconX = position.X + tokenBounds.X + iconOrigin.X;
+                    var iconY = position.Y + tokenBounds.Y + iconOrigin.Y;
+                    var iconColor = color;
 
-                    var tokenOrigin = animation.Controller.GetFrame().Origin;
-                    var tokenPosition = new Vector2(
-                        position.X + tokenBounds.X + tokenOrigin.X,
-                        position.Y + tokenBounds.Y + tokenOrigin.Y);
-                    spriteBatch.DrawSprite(animation.Controller, tokenPosition, iconInfo.Width, iconInfo.Height, Color.White * alpha, 0f);
+                    var tokenGlyphShaderContext = token.GlyphShader == null ? GlyphShaderContext.Invalid :
+                        new GlyphShaderContext(token.GlyphShader, tokenIndexInSource, layoutResult.TotalLength);
+
+                    if (token.GlyphShader != null)
+                    {
+                        var iconGlyph = (char)0;
+                        token.GlyphShader.Execute(ref tokenGlyphShaderContext, ref iconGlyph, ref iconX, ref iconY, ref iconColor, 0);
+                    }
+
+                    var tokenPosition = new Vector2(iconX, iconY);
+                    spriteBatch.DrawSprite(iconAnimation.Controller, tokenPosition, iconInfo.Width, iconInfo.Height, iconColor * alpha, 0f);
                 }
                 else
                 {
@@ -451,14 +487,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     var tokenY = position.Y + tokenBounds.Y;
                     var tokenPosition = new Vector2(tokenX, tokenY);
 
+                    var tokenGlyphShaderContext = token.GlyphShader == null ? GlyphShaderContext.Invalid :
+                        new GlyphShaderContext(token.GlyphShader, tokenIndexInSource, layoutResult.TotalLength);
+
                     if (tokenLength != token.Text.Length)
                     {
                         var tokenText = new StringSegment(token.Text, tokenStart, tokenLength);
-                        spriteBatch.DrawString(token.FontFace, tokenText, tokenPosition, (token.Color * alpha) ?? color);
+                        spriteBatch.DrawString(tokenGlyphShaderContext, token.FontFace, tokenText, tokenPosition, (token.Color * alpha) ?? color);
                     }
                     else
                     {
-                        spriteBatch.DrawString(token.FontFace, token.Text, tokenPosition, (token.Color * alpha) ?? color);
+                        spriteBatch.DrawString(tokenGlyphShaderContext, token.FontFace, token.Text, tokenPosition, (token.Color * alpha) ?? color);
                     }
 
                     glyphsDrawn += tokenLength;

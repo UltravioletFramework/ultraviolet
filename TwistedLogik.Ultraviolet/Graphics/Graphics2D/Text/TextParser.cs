@@ -190,6 +190,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 return;
             }
 
+            // Set the current glyph shader.
+            if (token.TokenText.Length >= 10 && token.TokenText.Substring(0, 8) == "|shader:")
+            {
+                var name = token.TokenText.Substring(8, token.TokenText.Length - 9);
+                PushGlyphShader(output, ref style, name);
+                return;
+            }
+
+            // Clear the current glyph shader.
+            if (token.TokenText == "|shader|")
+            {
+                PopGlyphShader(output, ref style);
+                return;
+            }
+
             // Set the preset style.
             if (token.TokenText.Length >= 9 && token.TokenText.Substring(0, 7) == "|style:")
             {
@@ -232,7 +247,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Pushes a color onto the style stack.
+        /// Pushes a font onto the style stack.
         /// </summary>
         /// <param name="output">The parser output stream.</param>
         /// <param name="style">The current style.</param>
@@ -241,6 +256,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             fontStack.Push(font);
             output.AddStyleWithFont(ref style, font);
+        }
+
+        /// <summary>
+        /// Pushes a glyph shader onto the style stack.
+        /// </summary>
+        /// <param name="output">The parser output stream.</param>
+        /// <param name="style">The current style.</param>
+        /// <param name="glyphShader">The font to push onto the stack.</param>
+        private void PushGlyphShader(TextParserResult output, ref TextStyle style, StringSegment glyphShader)
+        {
+            glyphShaderStack.Push(glyphShader);
+            output.AddStyleWithGlyphShader(ref style, glyphShader);
         }
 
         /// <summary>
@@ -288,6 +315,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Pops a glyphShader off of the style stack.
+        /// </summary>
+        /// <param name="output">The parser output stream.</param>
+        /// <param name="style">The current style.</param>
+        private void PopGlyphShader(TextParserResult output, ref TextStyle style)
+        {
+            if (glyphShaderStack.Count > 0)
+            {
+                glyphShaderStack.Pop();
+                var glyphShader = (glyphShaderStack.Count > 0) ? glyphShaderStack.Peek() : (StringSegment?)null;
+                style.GlyphShader = glyphShader;
+                output.AddStyleWithGlyphShader(ref style, glyphShader);
+            }
+        }
+
+        /// <summary>
         /// Pops a style preset off of the style stack.
         /// </summary>
         /// <param name="output">The parser output stream.</param>
@@ -320,6 +363,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         // State stacks for the current parse.
         private readonly Stack<Color> colorStack = new Stack<Color>();
         private readonly Stack<StringSegment> fontStack = new Stack<StringSegment>();
+        private readonly Stack<StringSegment> glyphShaderStack = new Stack<StringSegment>();
         private readonly Stack<StringSegment> styleStack = new Stack<StringSegment>();
     }
 }

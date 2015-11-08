@@ -190,6 +190,11 @@
       <Variant>Unrecognized icon '{0}'</Variant>
     </en-US>
   </String>
+  <String Key="UNRECOGNIZED_GLYPH_SHADER">
+    <en-US>
+      <Variant>Unrecognized glyph shader '{0}'</Variant>
+    </en-US>
+  </String>
   <String Key="UNRECOGNIZED_STYLE">
     <en-US>
       <Variant>Unrecognized style '{0}'</Variant>

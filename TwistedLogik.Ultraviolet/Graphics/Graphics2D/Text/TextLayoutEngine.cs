@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the style to unregister.</param>
         /// <returns><c>true</c> if the style was unregistered; otherwise, <c>false</c>.</returns>
-        public bool UnregisterStyle(String name)
+        public Boolean UnregisterStyle(String name)
         {
             Contract.RequireNotEmpty(name, "name");
 
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the font to unregister.</param>
         /// <returns><c>true</c> if the font was unregistered; otherwise, <c>false</c>.</returns>
-        public bool UnregisterFont(String name)
+        public Boolean UnregisterFont(String name)
         {
             Contract.RequireNotEmpty(name, "name");
 
@@ -79,11 +79,36 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the icon to unregister.</param>
         /// <returns><c>true</c> if the icon was unregistered; otherwise, <c>false</c>.</returns>
-        public bool UnregisterIcon(String name)
+        public Boolean UnregisterIcon(String name)
         {
             Contract.RequireNotEmpty(name, "name");
 
             return registeredIcons.Remove(name);
+        }
+
+        /// <summary>
+        /// Registers the glyph shader with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the glyph shader to register.</param>
+        /// <param name="shader">The glyph shader to register.</param>
+        public void RegisterGlyphShader(String name, GlyphShader shader)
+        {
+            Contract.RequireNotEmpty(name, "name");
+            Contract.Require(shader, "shader");
+
+            registeredGlyphShaders.Add(name, shader);
+        }
+
+        /// <summary>
+        /// Unregisters the glyph shader with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the glyph shader to unregister.</param>
+        /// <returns><c>true</c> if the glyph shader was unregistered; otherwise, <c>false</c>.</returns>
+        public Boolean UnregisterGlyphShader(String name)
+        {
+            Contract.RequireNotEmpty(name, "name");
+
+            return registeredGlyphShaders.Remove(name);
         }
 
         /// <summary>
@@ -107,12 +132,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var thisToken = input[i];
                 var nextToken = (i + 1 < input.Count) ? (TextParserToken?)input[i + 1] : null;
 
+                textTotalLength += thisToken.Text.Length;
+
                 TextStyle tokenStyleBase;
                 TextStyle tokenStyleActive;
                 GetStyle(thisToken.Style, out tokenStyleBase, out tokenStyleActive);
 
                 var tokenFont = (thisToken.Style == 0) ? settings.Font.GetFace(settings.Style) : 
                     GetFontFace(ref tokenStyleBase, ref tokenStyleActive);
+                var tokenGlyphShader = (thisToken.Style == 0) ? null : GetGlyphShader(ref tokenStyleBase);
 
                 if (thisToken.IsNewLine)
                 {
@@ -136,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var tokenBounds = new Rectangle(cx, cy, tokenSize.Width, tokenSize.Height);
                 var tokenColor = tokenStyleActive.Color ?? tokenStyleBase.Color;
 
-                var result = new TextLayoutToken(thisToken.Text, tokenBounds, tokenFont, tokenIcon, tokenColor);
+                var result = new TextLayoutToken(thisToken.Text, tokenBounds, tokenFont, tokenIcon, tokenGlyphShader, tokenColor);
                 if (AccumulateToken(ref result, thisToken.IsWhiteSpace, nextToken))
                 {
                     AdvanceToken(tokenSize, thisToken.IsWhiteSpace);
@@ -220,6 +248,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             this.textMinX        = Int32.MaxValue;
             this.textMinY        = 0;
+            this.textTotalLength = 0;
             this.textTotalWidth  = 0;
             this.textTotalHeight = 0;
 
@@ -300,7 +329,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     var text = StringSegment.CombineSegments(existing.Text, token.Text);
                     var size = MeasureToken(text, token.FontFace, token.Icon, next);
                     var bounds = new Rectangle(existing.Bounds.X, existing.Bounds.Y, size.Width, size.Height);
-                    accumulator = new TextLayoutToken(text, bounds, token.FontFace, token.Icon, token.Color);
+                    accumulator = new TextLayoutToken(text, bounds, token.FontFace, token.Icon, token.GlyphShader, token.Color);
                 }
             }
             lineWidth += token.Bounds.Width;
@@ -371,6 +400,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             output.Settings     = settings;
             output.ActualWidth  = textTotalWidth;
             output.ActualHeight = textTotalHeight;
+            output.TotalLength  = textTotalLength;
 
             // Determine the text's starting position.
             var tokenPosition = 0;
@@ -484,6 +514,25 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Gets the glyph shader that corresponds to the specified style.
+        /// </summary>
+        /// <param name="style">The style for which to retrieve an icon.</param>
+        /// <returns>The glyph shader that corresponds to the specified style.</returns>
+        private GlyphShader GetGlyphShader(ref TextStyle style)
+        {
+            GlyphShader glyphShader;
+            if (style.GlyphShader.HasValue)
+            {
+                if (registeredGlyphShaders.TryGetValue(style.GlyphShader.Value, out glyphShader))
+                {
+                    return glyphShader;
+                }
+                throw new ArgumentException(UltravioletStrings.UnrecognizedGlyphShader.Format(style.GlyphShader.Value));
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Gets the bounds of the laid-out text relative to the layout area..
         /// </summary>
         /// <returns>The bounds of the laid-out text relative to the layout area.</returns>
@@ -501,6 +550,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             new Dictionary<StringSegment, SpriteFont>();
         private readonly Dictionary<StringSegment, InlineIconInfo> registeredIcons = 
             new Dictionary<StringSegment, InlineIconInfo>();
+        private readonly Dictionary<StringSegment, GlyphShader> registeredGlyphShaders =
+            new Dictionary<StringSegment, GlyphShader>();
 
         // Layout state.
         private TextParserResult input;
@@ -514,6 +565,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private Int32 lineWhiteSpace;
         private Int32 textMinX;
         private Int32 textMinY;
+        private Int32 textTotalLength;
         private Int32 textTotalWidth;
         private Int32 textTotalHeight;
         private TextLayoutToken? accumulator;

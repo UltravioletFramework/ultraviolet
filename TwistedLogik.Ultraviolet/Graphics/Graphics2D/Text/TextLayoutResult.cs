@@ -14,6 +14,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             ActualWidth = 0;
             ActualHeight = 0;
+            TotalLength = 0;
             base.Clear();
         }
 
@@ -39,6 +40,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Gets the layout's actual height.
         /// </summary>
         public Int32 ActualHeight
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the total length of the laid out text.
+        /// </summary>
+        public Int32 TotalLength
         {
             get;
             internal set;

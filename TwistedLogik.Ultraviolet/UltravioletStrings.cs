@@ -61,6 +61,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource InvalidToken                         = new StringResource(StringDatabase, "INVALID_TOKEN");
         public static readonly StringResource UnrecognizedFont                     = new StringResource(StringDatabase, "UNRECOGNIZED_FONT");
         public static readonly StringResource UnrecognizedIcon                     = new StringResource(StringDatabase, "UNRECOGNIZED_ICON");
+        public static readonly StringResource UnrecognizedGlyphShader              = new StringResource(StringDatabase, "UNRECOGNIZED_GLYPH_SHADER");
         public static readonly StringResource UnrecognizedStyle                    = new StringResource(StringDatabase, "UNRECOGNIZED_STYLE");
         public static readonly StringResource InvalidLayoutSettings                = new StringResource(StringDatabase, "INVALID_LAYOUT_SETTINGS");
         public static readonly StringResource InvalidFontTexture                   = new StringResource(StringDatabase, "INVALID_FONT_TEXTURE");
