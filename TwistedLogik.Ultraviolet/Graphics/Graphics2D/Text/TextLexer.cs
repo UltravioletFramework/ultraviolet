@@ -85,6 +85,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The <see cref="StringSource"/> to lex.</param>
         /// <param name="output">The lexed token stream.</param>
         /// <param name="index">The index at which to begin lexing the input string.</param>
+        /// <param name="count">the number of characters to lex.</param>
         private void Lex(StringSource input, TextLexerResult output, Int32 index, Int32 count)
         {
             var bound = index + count;
