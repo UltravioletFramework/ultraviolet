@@ -39,7 +39,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
-        /// <param name="source">The <see cref="SourceString"/> that contains this segment.</param>
+        /// <param name="source">The source <see cref="String"/> that contains this segment.</param>
         /// <param name="start">The index of the string segment's first character within its parent string.</param>
         /// <param name="length">The number of characters in the string segment.</param>
         public StringSegment(String source, Int32 start, Int32 length)
@@ -57,7 +57,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
-        /// <param name="source">The <see cref="SourceStringBuilder"/> that contains this segment.</param>
+        /// <param name="source">The source <see cref="StringBuilder"/> that contains this segment.</param>
         /// <param name="start">The index of the string segment's first character within its parent string.</param>
         /// <param name="length">The number of characters in the string segment.</param>
         public StringSegment(StringBuilder source, Int32 start, Int32 length)
@@ -70,6 +70,23 @@ namespace TwistedLogik.Nucleus.Text
             this.sourceBuilder = source;
             this.start         = start;
             this.length        = length;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StringSegment"/> structure.
+        /// </summary>
+        /// <param name="source">The source <see cref="StringSegment"/> that contains this segment.</param>
+        /// <param name="start">The index of the string segment's first character within its parent string.</param>
+        /// <param name="length">The number of characters in the string segment.</param>
+        public StringSegment(StringSegment source, Int32 start, Int32 length)
+        {
+            Contract.EnsureRange(start >= 0 && start < source.Length, "start");
+            Contract.EnsureRange(length >= 0 && start + length <= source.Length, "length");
+
+            this.sourceString = source.sourceString;
+            this.sourceBuilder = source.sourceBuilder;
+            this.start = source.start + start;
+            this.length = length;
         }
 
         /// <summary>

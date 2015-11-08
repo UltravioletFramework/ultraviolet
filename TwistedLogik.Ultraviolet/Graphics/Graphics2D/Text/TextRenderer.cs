@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
@@ -177,7 +178,33 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
-            return Draw(spriteBatch, layoutResult, position, color);
+            return Draw(spriteBatch, layoutResult, position, color, 0, Int32.MaxValue);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw the text.</param>
+        /// <param name="input">The string to draw.</param>
+        /// <param name="position">The position in screen coordinates at which to draw.</param>
+        /// <param name="color">The color with which to draw the text.</param>
+        /// <param name="start">The index of the first glyph to render.</param>
+        /// <param name="count">The number of glyphs to render.</param>
+        /// <param name="settings">The layout settings.</param>
+        /// <returns>A <see cref="RectangleF"/> representing area in which the text was drawn.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, String input, Vector2 position, Color color, Int32 start, Int32 count, TextLayoutSettings settings)
+        {
+            Contract.Require(spriteBatch, "spriteBatch");
+            Contract.Require(input, "input");
+
+            lexer.Lex(input, lexerResult);
+
+            var parserOptions = GetParserOptions(ref settings);
+            parser.Parse(lexerResult, parserResult, parserOptions);
+
+            layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+
+            return Draw(spriteBatch, layoutResult, position, color, start, count);
         }
 
         /// <summary>
@@ -201,7 +228,33 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
-            return Draw(spriteBatch, layoutResult, position, color);
+            return Draw(spriteBatch, layoutResult, position, color, 0, Int32.MaxValue);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw the text.</param>
+        /// <param name="input">The string to draw.</param>
+        /// <param name="position">The position in screen coordinates at which to draw.</param>
+        /// <param name="color">The color with which to draw the text.</param>
+        /// <param name="start">The index of the first glyph to render.</param>
+        /// <param name="count">The number of glyphs to render.</param>
+        /// <param name="settings">The layout settings.</param>
+        /// <returns>A <see cref="RectangleF"/> representing area in which the text was drawn.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Color color, Int32 start, Int32 count, TextLayoutSettings settings)
+        {
+            Contract.Require(spriteBatch, "spriteBatch");
+            Contract.Require(input, "input");
+
+            lexer.Lex(input, lexerResult);
+
+            var parserOptions = GetParserOptions(ref settings);
+            parser.Parse(lexerResult, parserResult, parserOptions);
+
+            layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+
+            return Draw(spriteBatch, layoutResult, position, color, start, count);
         }
 
         /// <summary>
@@ -223,7 +276,31 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
-            return Draw(spriteBatch, layoutResult, position, color);
+            return Draw(spriteBatch, layoutResult, position, color, 0, Int32.MaxValue);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw the text.</param>
+        /// <param name="input">The token stream to draw.</param>
+        /// <param name="position">The position in screen coordinates at which to draw.</param>
+        /// <param name="color">The color with which to draw the text.</param>
+        /// <param name="start">The index of the first glyph to render.</param>
+        /// <param name="count">The number of glyphs to render.</param>
+        /// <param name="settings">The layout settings.</param>
+        /// <returns>A <see cref="RectangleF"/> representing area in which the text was drawn.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, TextLexerResult input, Vector2 position, Color color, Int32 start, Int32 count, TextLayoutSettings settings)
+        {
+            Contract.Require(spriteBatch, "spriteBatch");
+            Contract.Require(input, "input");
+
+            var parserOptions = GetParserOptions(ref settings);
+            parser.Parse(input, parserResult, parserOptions);
+
+            layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
+
+            return Draw(spriteBatch, layoutResult, position, color, start, count);
         }
 
         /// <summary>
@@ -242,7 +319,28 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             layoutEngine.CalculateLayout(input, layoutResult, settings);
 
-            return Draw(spriteBatch, layoutResult, position, color);
+            return Draw(spriteBatch, layoutResult, position, color, 0, Int32.MaxValue);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw the text.</param>
+        /// <param name="input">The token stream to draw.</param>
+        /// <param name="position">The position in screen coordinates at which to draw.</param>
+        /// <param name="color">The color with which to draw the text.</param>
+        /// <param name="start">The index of the first glyph to render.</param>
+        /// <param name="count">The number of glyphs to render.</param>
+        /// <param name="settings">The layout settings.</param>
+        /// <returns>A <see cref="RectangleF"/> representing area in which the text was drawn.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, TextParserResult input, Vector2 position, Color color, Int32 start, Int32 count, TextLayoutSettings settings)
+        {
+            Contract.Require(spriteBatch, "spriteBatch");
+            Contract.Require(input, "input");
+
+            layoutEngine.CalculateLayout(input, layoutResult, settings);
+
+            return Draw(spriteBatch, layoutResult, position, color, start, count);
         }
 
         /// <summary>
@@ -255,8 +353,26 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="RectangleF"/> representing area in which the text was drawn.</returns>
         public RectangleF Draw(SpriteBatch spriteBatch, TextLayoutResult input, Vector2 position, Color color)
         {
+            return Draw(spriteBatch, input, position, color, 0, Int32.MaxValue);
+        }
+
+        /// <summary>
+        /// Draws a string of formatted text.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch with which to draw the text.</param>
+        /// <param name="input">The token stream to draw.</param>
+        /// <param name="position">The position in screen coordinates at which to draw.</param>
+        /// <param name="color">The color with which to draw the text.</param>
+        /// <param name="start">The index of the first glyph to render.</param>
+        /// <param name="count">The number of glyphs to render.</param>
+        /// <returns>A <see cref="RectangleF"/> representing area in which the text was drawn.</returns>
+        public RectangleF Draw(SpriteBatch spriteBatch, TextLayoutResult input, Vector2 position, Color color, Int32 start, Int32 count)
+        {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
+
+            if (count <= 0)
+                return RectangleF.Empty;
 
             var alpha = color.A / (float)Byte.MaxValue;
 
@@ -267,16 +383,51 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (scissorClipping && !IsScissorClippingOptimizationPossibleForTransform(spriteBatch.CurrentTransformMatrix))
                 scissorClipping = false;
 
+            var glyphClipping = (start > 0 || count < Int32.MaxValue);
+            var glyphsSeen = 0;
+            var glyphsDrawn = 0;
+
             foreach (var token in input)
             {
+                var tokenStart = 0;
+                var tokenLength = token.Text.Length;
                 var tokenBounds = token.Bounds;
+
+                if (glyphClipping)
+                {
+                    if (glyphsDrawn >= count)
+                        break;
+
+                    if (token.Icon == null)
+                    {
+                        var processToken = (glyphsSeen + tokenLength > start);
+                        if (processToken)
+                        {
+                            if (glyphsSeen < start && glyphsSeen + tokenLength >= start)
+                            {
+                                tokenStart = start - glyphsSeen;
+                                tokenLength = tokenLength - tokenStart;
+                            }
+
+                            if (glyphsDrawn + tokenLength > count)
+                            {
+                                tokenLength = count - glyphsDrawn;
+                            }
+                        }
+
+                        glyphsSeen += token.Text.Length;
+
+                        if (!processToken)
+                            continue;
+                    }
+                }
 
                 if (scissorClipping)
                 {
                     var translation = spriteBatch.CurrentTransformMatrix.Translation;
-                    if (translation.Y + position.Y + tokenBounds.Bottom < scissorRect.Top || 
+                    if (translation.Y + position.Y + tokenBounds.Bottom < scissorRect.Top ||
                         translation.Y + position.Y + tokenBounds.Top > scissorRect.Bottom ||
-                        translation.X + position.X + tokenBounds.Right < scissorRect.Left || 
+                        translation.X + position.X + tokenBounds.Right < scissorRect.Left ||
                         translation.X + position.X + tokenBounds.Left > scissorRect.Right)
                     {
                         continue;
@@ -290,16 +441,27 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     var tokenOrigin = animation.Controller.GetFrame().Origin;
                     var tokenPosition = new Vector2(
-                        position.X + tokenBounds.X + tokenOrigin.X, 
+                        position.X + tokenBounds.X + tokenOrigin.X,
                         position.Y + tokenBounds.Y + tokenOrigin.Y);
                     spriteBatch.DrawSprite(animation.Controller, tokenPosition, iconInfo.Width, iconInfo.Height, Color.White * alpha, 0f);
                 }
                 else
                 {
-                    var tokenPosition = new Vector2(
-                        position.X + tokenBounds.X, 
-                        position.Y + tokenBounds.Y);
-                    spriteBatch.DrawString(token.FontFace, token.Text, tokenPosition, (token.Color * alpha) ?? color);
+                    var tokenX = position.X + tokenBounds.X + (tokenStart == 0 ? 0 : token.FontFace.MeasureString(new StringSegment(token.Text, 0, tokenStart)).Width);
+                    var tokenY = position.Y + tokenBounds.Y;
+                    var tokenPosition = new Vector2(tokenX, tokenY);
+
+                    if (tokenLength != token.Text.Length)
+                    {
+                        var tokenText = new StringSegment(token.Text, tokenStart, tokenLength);
+                        spriteBatch.DrawString(token.FontFace, tokenText, tokenPosition, (token.Color * alpha) ?? color);
+                    }
+                    else
+                    {
+                        spriteBatch.DrawString(token.FontFace, token.Text, tokenPosition, (token.Color * alpha) ?? color);
+                    }
+
+                    glyphsDrawn += tokenLength;
                 }
             }
 
