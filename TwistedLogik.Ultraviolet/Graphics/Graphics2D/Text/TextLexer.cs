@@ -32,17 +32,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="start">The index of the first character that was changed.</param>
         /// <param name="count">The number of characters that were changed.</param>
         /// <param name="result">The lexed token stream.</param>
+        /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
         /// <remarks>Incremental lexing provides a performance benefit when relatively small changes are being made
         /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
         /// of the source text are re-lexed by this operation.</remarks>
-        public void LexIncremental(String input, Int32 start, Int32 count, TextLexerResult result)
+        public IncrementalResult LexIncremental(String input, Int32 start, Int32 count, TextLexerResult result)
         {
             Contract.Require(input, "input");
             Contract.Require(result, "output");
             Contract.EnsureRange(start >= 0, "start");
             Contract.EnsureRange(count >= 0 && start + count <= input.Length, "count");
 
-            LexIncremental(new StringSource(input), start, count, result);
+            return LexIncremental(new StringSource(input), start, count, result);
         }
 
         /// <summary>
@@ -66,17 +67,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="start">The index of the first character that was changed.</param>
         /// <param name="count">The number of characters that were changed.</param>
         /// <param name="result">The lexed token stream.</param>
+        /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
         /// <remarks>Incremental lexing provides a performance benefit when relatively small changes are being made
         /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
         /// of the source text are re-lexed by this operation.</remarks>
-        internal void LexIncremental(StringBuilder input, Int32 start, Int32 count, TextLexerResult result)
+        internal IncrementalResult LexIncremental(StringBuilder input, Int32 start, Int32 count, TextLexerResult result)
         {
             Contract.Require(input, "input");
             Contract.Require(result, "output");
             Contract.EnsureRange(start >= 0, "start");
             Contract.EnsureRange(count >= 0 && start + count <= input.Length, "count");
 
-            LexIncremental(new StringSource(input), start, count, result);
+            return LexIncremental(new StringSource(input), start, count, result);
         }
 
         /// <summary>
@@ -118,6 +120,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 }
                 index++;
             }
+
+            output.Source = input;
         }
 
         /// <summary>
@@ -126,24 +130,25 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The <see cref="StringSource"/> to lex.</param>
         /// <param name="start">The index of the first character that was changed.</param>
         /// <param name="count">The number of characters that were changed.</param>
-        /// <param name="result">The lexed token stream.</param>
+        /// <param name="output">The lexed token stream.</param>
+        /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
         /// <remarks>Incremental lexing provides a performance benefit when relatively small changes are being made
         /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
         /// of the source text are re-lexed by this operation.</remarks>
-        private void LexIncremental(StringSource input, Int32 start, Int32 count, TextLexerResult result)
+        private IncrementalResult LexIncremental(StringSource input, Int32 start, Int32 count, TextLexerResult output)
         {
-            var inputLengthOld = (result.Count == 0) ? 0 : result[0].TokenText.SourceLength;
+            var inputLengthOld = output.Source.GetValueOrDefault().Length;
             var inputLengthNew = input.Length;
             var inputLengthDiff = inputLengthNew - inputLengthOld;
 
             Int32 ix1, ix2;
-            FindTokensInfluencedBySubstring(result, start, count, out ix1, out ix2);
+            FindTokensInfluencedBySubstring(output, start, count - inputLengthDiff, out ix1, out ix2);
 
-            var token1 = result[ix1];
-            var token2 = result[ix2];
+            var token1 = output[ix1];
+            var token2 = output[ix2];
             
             var invalidatedTokenCount = 1 + (ix2 - ix1);
-            result.RemoveRange(ix1, invalidatedTokenCount);
+            output.RemoveRange(ix1, invalidatedTokenCount);
             
             var lexStart = token1.TokenText.Start;
             var lexCount = inputLengthDiff + (token2.TokenText.Start + token2.TokenText.Length) - lexStart;
@@ -157,23 +162,29 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             for (int i = 0; i < ix1; i++)
             {
-                var token = result[i];
+                var token = output[i];
                 token.TokenText = (input.String == null) ?
                     new StringSegment(input.StringBuilder, token.TokenText.Start, token.TokenText.Length) :
                     new StringSegment(input.String, token.TokenText.Start, token.TokenText.Length);
             }
 
-            for (int i = ix1; i < result.Count; i++)
+            for (int i = ix1; i < output.Count; i++)
             {
-                var token = result[i];
+                var token = output[i];
                 token.TokenText = (input.String == null) ?
                     new StringSegment(input.StringBuilder, inputLengthDiff + token.TokenText.Start, token.TokenText.Length) :
                     new StringSegment(input.String, inputLengthDiff + token.TokenText.Start, token.TokenText.Length);
             }
 
-            result.InsertRange(ix1, lexBuffer);
+            output.Source = input;
+            output.InsertRange(ix1, lexBuffer);
+
+            var affectedOffset = ix1;
+            var affectedCount = lexBuffer.Count;
 
             lexBuffer.Clear();
+
+            return new IncrementalResult(affectedOffset, affectedCount);
         }
 
         /// <summary>
@@ -317,16 +328,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The token that was created.</returns>
         private static TextLexerToken ConsumeCommandToken(StringSource input, ref Int32 ix)
         {
+            var valid = false;
             var start = ix++;
             while (ix < input.Length)
             {
+                if (Char.IsWhiteSpace(input[ix]))
+                    break;
+
                 if (IsEndOfCommand(input, ix++)) 
                 {
+                    valid = true;
                     break; 
                 }
             }
             var segment = CreateStringSegmentFromStringSource(input, start, ix - start);
-            return new TextLexerToken(TextLexerTokenType.Command, segment);
+            return new TextLexerToken(valid ? TextLexerTokenType.Command : TextLexerTokenType.Word, segment);
         }
 
         /// <summary>

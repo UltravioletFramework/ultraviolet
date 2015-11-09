@@ -382,16 +382,26 @@ namespace UvDebugSandbox
 
             var lexer = new TextLexer();
             var lexerOutput = new TextLexerResult();
-            lexer.Lex("foo bar baz", lexerOutput);
+            lexer.Lex("Let's test |shader:wavy||icon:foo| glyph |shader:rainbow|shaders|shader| it'll be totally awesome and cool and fun|shader|!", lexerOutput);
 
-            lexer.LexIncremental("foo barb! baz", 7, 2, lexerOutput);
+            var parser2 = new TextParser2();
+            var parser2Output = new TextParserResult2();
+            parser2.Parse(lexerOutput, parser2Output);
 
-//            spriteBatch.DrawString(spriteFont, textBuffer, Vector2.One * 8f, Color.White);
+            var offset = "Let's test |shader:wavy||icon:foo| glyph |shader:rainbow|shaders|shader| it'll be totally ".Length;
+            var count = "amazing".Length;
+
+            var lexerResult = lexer.LexIncremental("Let's test |shader:wavy||icon:foo| glyph |shader:rainbow|shaders|shader| it'll be totally amazing|shader|!", offset, count, lexerOutput);
+
+            parser2.ParseIncremental(lexerOutput, lexerResult.AffectedOffset, lexerResult.AffectedCount, parser2Output);
+
+            //            spriteBatch.DrawString(spriteFont, textBuffer, Vector2.One * 8f, Color.White);
 
             var size = Ultraviolet.GetPlatform().Windows.GetCurrent().ClientSize;
             var settings = new TextLayoutSettings(spriteFont, size.Width / 2, size.Height / 2, TextFlags.AlignLeft | TextFlags.AlignTop);
 
             var text = "Let's test |shader:wavy||icon:foo| glyph |shader:rainbow|shaders|shader| it'll be totally awesome and cool and fun|shader|!";
+            
 
             scroll += time.ElapsedTime.TotalSeconds * 10.0;
             if ((int)scroll > text.Length)

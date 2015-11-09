@@ -17,11 +17,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         WhiteSpace,
 
         /// <summary>
-        /// The token represents a parser command.
-        /// </summary>
-        Command,
-
-        /// <summary>
         /// The token represents a word containing letters, numbers, or other characters.
         /// </summary>
         Word,
@@ -30,5 +25,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// The token represents an escaped pipe (|) symbol.
         /// </summary>
         Pipe,
+
+        /// <summary>
+        /// The token represents a parser command.
+        /// </summary>
+        Command,
     }
 }
