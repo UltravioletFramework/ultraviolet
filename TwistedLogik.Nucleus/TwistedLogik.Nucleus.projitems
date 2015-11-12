@@ -25,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Collections\PooledLinkedList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\PooledObjectScope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\PriorityQueue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\Specialized\UnsafeObjectStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommonBoxedValues.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contract.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataAttribute.cs" />

@@ -78,6 +78,8 @@ namespace TwistedLogik.Nucleus
         public static readonly StringResource TypeMetadataAlreadyLoaded              = new StringResource(StringDatabase, "TYPE_METADATA_ALREADY_LOADED");
         public static readonly StringResource SequenceHasNoElements                  = new StringResource(StringDatabase, "SEQUENCE_HAS_NO_ELEMENTS");
         public static readonly StringResource SequenceHasMoreThanOneElement          = new StringResource(StringDatabase, "SEQUENCE_HAS_MORE_THAN_ONE_ELEMENT");
+        public static readonly StringResource UnsafeStreamMustAcquirePointers        = new StringResource(StringDatabase, "UNSAFE_STREAM_MUST_ACQUIRE_POINTERS");
+        public static readonly StringResource UnsafeStreamHasAlreadyAcquiredPointers = new StringResource(StringDatabase, "UNSAFE_STREAM_HAS_ALREADY_ACQUIRED_POINTERS");
 #pragma warning restore 1591
     }
 }

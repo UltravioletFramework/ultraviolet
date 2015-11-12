@@ -128,6 +128,10 @@
     <Compile Include="Collections\PooledObjectScopeTest.cs" />
     <Compile Include="Collections\PriorityQueueTest.cs" />
     <Compile Include="Collections\ExpandingPoolTest.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.UnsafeObjectTypeTwo.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.UnsafeObjectTypeOne.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.UnsafeObjectType.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.cs" />
     <Compile Include="Data\ObjectLoaderTest.ArrayComplexModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.EnumerableComplexModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.EnumerableModel.cs" />

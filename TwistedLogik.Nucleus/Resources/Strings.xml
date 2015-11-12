@@ -280,4 +280,14 @@
       <Variant>Sequence contains more than one element.</Variant>
     </en-US>
   </String>
+  <String Key="UNSAFE_STREAM_MUST_ACQUIRE_POINTERS">
+    <en-US>
+      <Variant>You must call AcquirePointers() before performing this operation on this stream.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSAFE_STREAM_HAS_ALREADY_ACQUIRED_POINTERS">
+    <en-US>
+      <Variant>AcquirePointers() cannot be called again until ReleasePointers() is called.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
