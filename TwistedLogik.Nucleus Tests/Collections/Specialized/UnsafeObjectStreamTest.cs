@@ -19,11 +19,11 @@ namespace TwistedLogik.Nucleus.Tests.IO
                 {
                     stream.Reserve(sizeof(UnsafeObjectTypeOne));
                     *(UnsafeObjectTypeOne*)stream.Data = new UnsafeObjectTypeOne() { ObjectType = UnsafeObjectType.TypeOne, Value1 = 123 };
-                    stream.Advance(sizeof(UnsafeObjectTypeOne));
+                    stream.FinalizeObject(sizeof(UnsafeObjectTypeOne));
 
                     stream.Reserve(sizeof(UnsafeObjectTypeTwo));
                     *(UnsafeObjectTypeTwo*)stream.Data = new UnsafeObjectTypeTwo() { ObjectType = UnsafeObjectType.TypeTwo, Value1 = 234, Value2 = 345 };
-                    stream.Advance(sizeof(UnsafeObjectTypeTwo));
+                    stream.FinalizeObject(sizeof(UnsafeObjectTypeTwo));
                     
                     TheResultingValue(stream.LengthInBytes).ShouldBe(sizeof(UnsafeObjectTypeOne) + sizeof(UnsafeObjectTypeTwo));
                     TheResultingValue(stream.LengthInObjects).ShouldBe(2);

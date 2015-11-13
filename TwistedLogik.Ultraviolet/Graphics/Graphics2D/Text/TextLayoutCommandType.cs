@@ -1,0 +1,63 @@
+﻿namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+{
+    /// <summary>
+    /// Represents the types of commands produced by the text layout engine.
+    /// </summary>
+    public enum TextLayoutCommandType
+    {
+        /// <summary>
+        /// No command type.
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Represents a command to print a string of text.
+        /// </summary>
+        Text,
+
+        /// <summary>
+        /// Represents a command to print an icon.
+        /// </summary>
+        Icon,
+
+        /// <summary>
+        /// Represents a command to toggle the bold font style.
+        /// </summary>
+        ToggleBold,
+
+        /// <summary>
+        /// Represents a command to toggle the italic font style.
+        /// </summary>
+        ToggleItalic,
+
+        /// <summary>
+        /// Represents a command to push a font onto the font stack.
+        /// </summary>
+        PushFont,
+
+        /// <summary>
+        /// Represents a command to push a color onto the color stack.
+        /// </summary>
+        PushColor,
+        
+        /// <summary>
+        /// Represents a command to push a glyph shader onto the glyph shader stack.
+        /// </summary>
+        PushGlyphShader,
+
+        /// <summary>
+        /// Represents a command to pop a font off of the font stack.
+        /// </summary>
+        PopFont,
+
+        /// <summary>
+        /// Represents a command to pop a color off of the color stack.
+        /// </summary>
+        PopColor,
+
+        /// <summary>
+        /// Represents a command to pop a glyph shader off of the glyph shader stack.
+        /// </summary>
+        PopGlyphShader,
+    }
+}

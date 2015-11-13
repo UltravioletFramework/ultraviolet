@@ -14,12 +14,7 @@
         /// The token contains an icon to be drawn.
         /// </summary>
         Icon,
-
-        /// <summary>
-        /// The token pushes a font onto the font stack.
-        /// </summary>
-        PushFont,
-
+        
         /// <summary>
         /// The token toggles whether the current font is bold.
         /// </summary>
@@ -29,6 +24,11 @@
         /// The token toggles whether the current font is italic.
         /// </summary>
         ToggleItalic,
+
+        /// <summary>
+        /// The token pushes a font onto the font stack.
+        /// </summary>
+        PushFont,
 
         /// <summary>
         /// The token pushes a color onto the color stack.
