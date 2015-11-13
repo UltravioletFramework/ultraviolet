@@ -93,7 +93,7 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
             Contract.Ensure(hasAcquiredPointers, NucleusStrings.UnsafeStreamMustAcquirePointers);
 
             var target = GetPositionFromSeek(offset, origin);
-            if (target < 0 || target >= lengthInBytes)
+            if (target < 0 || target > lengthInBytes)
                 throw new ArgumentOutOfRangeException("offset");
             
             position = target;
@@ -111,9 +111,9 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         public void* SeekObject(Int32 offset)
         {
             Contract.Ensure(hasAcquiredPointers, NucleusStrings.UnsafeStreamMustAcquirePointers);
-            Contract.EnsureRange(offset >= 0 && offset < lengthInObjects, "offset");
+            Contract.EnsureRange(offset >= 0 && offset <= lengthInObjects, "offset");
 
-            position = index[offset];
+            position = (offset == lengthInObjects) ? lengthInBytes : index[offset];
             pData = pData0 + position;
 
             return pData;

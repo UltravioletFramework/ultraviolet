@@ -121,7 +121,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 index++;
             }
 
-            output.Source = input;
+            output.SourceText = input.ToStringSegment();
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// of the source text are re-lexed by this operation.</remarks>
         private IncrementalResult LexIncremental(StringSource input, Int32 start, Int32 count, TextLexerResult output)
         {
-            var inputLengthOld = output.Source.GetValueOrDefault().Length;
+            var inputLengthOld = output.SourceText.Length;
             var inputLengthNew = input.Length;
             var inputLengthDiff = inputLengthNew - inputLengthOld;
 
@@ -176,7 +176,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     new StringSegment(input.String, inputLengthDiff + token.TokenText.Start, token.TokenText.Length);
             }
 
-            output.Source = input;
+            output.SourceText = input.ToStringSegment();
             output.InsertRange(ix1, lexBuffer);
 
             var affectedOffset = ix1;

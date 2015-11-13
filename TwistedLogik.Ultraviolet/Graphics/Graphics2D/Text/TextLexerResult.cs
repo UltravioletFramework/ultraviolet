@@ -1,4 +1,4 @@
-﻿using System;
+﻿using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
@@ -10,17 +10,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <inheritdoc/>
         public override void Clear()
         {
-            Source = null;
+            SourceText = StringSegment.Empty;
             base.Clear();
         }
         
         /// <summary>
-        /// Gets or sets the lexer's source string.
+        /// Gets the source text that was lexed.
         /// </summary>
-        internal StringSource? Source
+        public StringSegment SourceText
         {
             get;
-            set;
+            internal set;
         }
     }
 }

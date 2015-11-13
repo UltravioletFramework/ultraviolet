@@ -380,41 +380,65 @@ namespace UvDebugSandbox
             textFormatter.AddArgument(upf.PerformanceStats.PositionCountLastFrame);
             textFormatter.Format("FPS: {0:decimals:2} FPS\nStyle: {1} / {2}\nMeasure: {3} / {4}\nArrange: {5} / {6}\nPosition: {7}", textBuffer);
 
+            textRenderer.Draw(spriteBatch, "The quick brown |c:ffff0000|    fox|c| jumps over the lazy dog.", 
+                Vector2.Zero, Color.White, new TextLayoutSettings(spriteFont, 100, 100, TextFlags.Standard));
+
             var lexer = new TextLexer();
-            var lexerOutput = new TextLexerResult();
-            lexer.Lex("Let's test |shader:wavy||icon:foo| glyph |shader:rainbow|shaders|shader| it'll be totally awesome and cool and fun|shader|!", lexerOutput);
+            var lexerResult = new TextLexerResult();
+            var parser = new TextParser2();
+            var parserResult = new TextParserResult2();
+            var layout = new TextLayoutEngine2();
+            var layoutResult = new TextLayoutCommandStream();
 
-            var parser2 = new TextParser2();
-            var parser2Output = new TextParserResult2();
-            parser2.Parse(lexerOutput, parser2Output);
+            lexer.Lex("The quick brown |c:ffff0000|    fox|c| jumps over the lazy dog.", lexerResult);
+            parser.Parse(lexerResult, parserResult);
+            layout.CalculateLayout(parserResult, layoutResult, new TextLayoutSettings(spriteFont, 100, 100, TextFlags.AlignRight | TextFlags.AlignTop));
 
-            var offset = "Let's test |shader:wavy||icon:foo| glyph |shader:rainbow|shaders|shader| it'll be totally ".Length;
-            var count = "amazing".Length;
+            layoutResult.AcquirePointers();
+            for (int i = 0; i < layoutResult.Count; i++)
+            {
+                var type = layoutResult.Seek(i);
+                switch (type)
+                {
+                    case TextLayoutCommandType.BlockInfo:
+                        {
+                            var cmd = layoutResult.ReadBlockInfoCommand();
+                            System.Diagnostics.Debug.WriteLine("BLOCK " + cmd.Offset + " / " + cmd.LengthInLines);
+                        }
+                        break;
 
-            var lexerResult = lexer.LexIncremental("Let's test |shader:wavy||icon:foo| glyph |shader:rainbow|shaders|shader| it'll be totally amazing|shader|!", offset, count, lexerOutput);
+                    case TextLayoutCommandType.LineInfo:
+                        {
+                            var cmd = layoutResult.ReadLineInfoCommand();
+                            System.Diagnostics.Debug.WriteLine("LINE " + cmd.Offset + " / " + cmd.LengthInCommands);
+                        }
+                        break;
 
-            parser2.ParseIncremental(lexerOutput, lexerResult.AffectedOffset, lexerResult.AffectedCount, parser2Output);
+                    case TextLayoutCommandType.Text:
+                        {
+                            var cmd = layoutResult.ReadTextCommand();
+                            var txt = layoutResult.SourceText.Substring(cmd.TextOffset, cmd.TextLength);
+                            System.Diagnostics.Debug.WriteLine("|" + txt.ToString() + "| @ " + cmd.Bounds);
+                        }
+                        break;
 
-            //            spriteBatch.DrawString(spriteFont, textBuffer, Vector2.One * 8f, Color.White);
+                    case TextLayoutCommandType.ToggleBold:
+                        {
+                            layoutResult.ReadToggleBoldCommand();
+                        }
+                        break;
 
-            var size = Ultraviolet.GetPlatform().Windows.GetCurrent().ClientSize;
-            var settings = new TextLayoutSettings(spriteFont, size.Width / 2, size.Height / 2, TextFlags.AlignLeft | TextFlags.AlignTop);
-
-            var text = "Let's test |shader:wavy||icon:foo| glyph |shader:rainbow|shaders|shader| it'll be totally awesome and cool and fun|shader|!";
-            
-
-            scroll += time.ElapsedTime.TotalSeconds * 10.0;
-            if ((int)scroll > text.Length)
-                scroll = 0;
-
-                textRenderer.Draw(spriteBatch, text, new Vector2((int)(size.Width / 4f), (int)(size.Height / 4f)), Color.White, settings);
+                    default:
+                        System.Diagnostics.Debug.WriteLine(type);
+                        break;
+                }
+            }
+            layoutResult.ReleasePointers();
 
             spriteBatch.End();
 
             base.OnDrawing(time);
         }
-
-        private Double scroll;
 
         /// <summary>
         /// Called when the application is being shut down.

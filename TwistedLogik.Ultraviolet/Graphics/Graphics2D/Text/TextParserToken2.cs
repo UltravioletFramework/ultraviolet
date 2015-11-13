@@ -42,6 +42,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             get { return text; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this token represents a white space character.
+        /// </summary>
+        public Boolean IsWhiteSpace
+        {
+            get { return tokenType == TextParserTokenType.Text && !text.IsEmpty && Char.IsWhiteSpace(text[0]); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this token represents a new line character.
+        /// </summary>
+        public Boolean IsNewLine
+        {
+            get { return tokenType == TextParserTokenType.Text && !text.IsEmpty && text[0] == '\n'; }
+        }
+
         // Property values.
         private readonly TextParserTokenType tokenType;
         private readonly StringSegment text;

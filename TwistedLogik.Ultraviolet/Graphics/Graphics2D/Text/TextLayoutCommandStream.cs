@@ -21,8 +21,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="TextLayoutCommandType"/> that represents the type of command at the stream's new position.</returns>
         public TextLayoutCommandType Seek(Int32 index)
         {
-            Contract.EnsureRange(index >= 0 && index < Count, "index");
-
             var data = stream.SeekObject(index);
             return *(TextLayoutCommandType*)data;
         }
@@ -33,10 +31,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the icon to register.</param>
         /// <param name="icon">The icon to register under the specified name.</param>
         /// <returns>The index of the specified icon within the command stream's internal registry.</returns>
-        public Int32 RegisterIcon(StringSegment name, SpriteAnimation icon)
+        public Int32 RegisterIcon(StringSegment name, InlineIconInfo icon)
         {
-            Contract.Require(icon, "icon");
-
             Int32 index;
             if (iconsByName.TryGetValue(name, out index))
                 return index;
@@ -55,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the font to register.</param>
         /// <param name="font">The font to register under the specified name.</param>
         /// <returns>The index of the specified font within the command stream's internal registry.</returns>
-        public Int32 RegisterFont(StringSegment name, SpriteFontFace font)
+        public Int32 RegisterFont(StringSegment name, SpriteFont font)
         {
             Contract.Require(font, "font");
 
@@ -98,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the icon to retrieve.</param>
         /// <returns>The registered icon with the specified name.</returns>
-        public SpriteAnimation GetIcon(StringSegment name)
+        public InlineIconInfo? GetIcon(StringSegment name)
         {
             Int32 index;
             if (!iconsByName.TryGetValue(name, out index))
@@ -112,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered icon to retrieve.</param>
         /// <returns>The registered icon at the specified index within the command stream's internal registry.</returns>
-        public SpriteAnimation GetIcon(Int32 index)
+        public InlineIconInfo GetIcon(Int32 index)
         {
             return icons[index];
         }
@@ -122,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the font to retrieve.</param>
         /// <returns>The registered font with the specified name.</returns>
-        public SpriteFontFace GetFont(StringSegment name)
+        public SpriteFont GetFont(StringSegment name)
         {
             Int32 index;
             if (!fontsByName.TryGetValue(name, out index))
@@ -136,7 +132,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered font to retrieve.</param>
         /// <returns>The registered font at the specified index within the command stream's internal registry.</returns>
-        public SpriteFontFace GetFont(Int32 index)
+        public SpriteFont GetFont(Int32 index)
         {
             return fonts[index];
         }
@@ -189,7 +185,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public void Clear()
         {
             stream.Clear();
-            
+
             icons.Clear();
             iconsByName.Clear();
 
@@ -198,6 +194,34 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             glyphShaders.Clear();
             glyphShadersByName.Clear();
+
+            Settings = default(TextLayoutSettings);
+            SourceText = StringSegment.Empty;
+            ActualWidth = 0;
+            ActualHeight = 0;
+            TotalLength = 0;
+        }
+
+        /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.BlockInfo"/> command to the current position in the stream.
+        /// </summary>
+        public void WriteBlockInfo()
+        {
+            stream.Reserve(sizeof(TextLayoutBlockInfoCommand));
+            *(TextLayoutBlockInfoCommand*)stream.Data = new TextLayoutBlockInfoCommand();
+            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.BlockInfo;
+            stream.FinalizeObject(sizeof(TextLayoutBlockInfoCommand));
+        }
+
+        /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.LineInfo"/> command to the current position in the stream.
+        /// </summary>
+        public void WriteLineInfo()
+        {
+            stream.Reserve(sizeof(TextLayoutLineInfoCommand));
+            *(TextLayoutLineInfoCommand*)stream.Data = new TextLayoutLineInfoCommand();
+            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.LineInfo;
+            stream.FinalizeObject(sizeof(TextLayoutLineInfoCommand));
         }
 
         /// <summary>
@@ -314,6 +338,28 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.BlockInfo"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public TextLayoutBlockInfoCommand ReadBlockInfoCommand()
+        {
+            var command = *(TextLayoutBlockInfoCommand*)stream.Data;
+            stream.Seek(sizeof(TextLayoutBlockInfoCommand), SeekOrigin.Current);
+            return command;
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.LineInfo"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public TextLayoutLineInfoCommand ReadLineInfoCommand()
+        {
+            var command = *(TextLayoutLineInfoCommand*)stream.Data;
+            stream.Seek(sizeof(TextLayoutLineInfoCommand), SeekOrigin.Current);
+            return command;
+        }
+
+        /// <summary>
         /// Reads a <see cref="TextLayoutCommandType.Text"/> command from the current position in the command stream.
         /// </summary>
         /// <returns>The command that was read.</returns>
@@ -354,11 +400,78 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Gets the layout settings which were used to produce the command stream.
+        /// </summary>
+        public TextLayoutSettings Settings
+        {
+            get;
+            internal set;
+        }
+        
+        /// <summary>
+        /// Gets the text that was processed by the layout engine.
+        /// </summary>
+        public StringSegment SourceText
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the total width, in pixels, of the text after layout has been performed.
+        /// </summary>
+        public Int32 ActualWidth
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the total height, in pixels, of the text after layout has been performed.
+        /// </summary>
+        public Int32 ActualHeight
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the total length of the text which was laid out.
+        /// </summary>
+        public Int32 TotalLength
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
         /// Gets the number of commands in the stream.
         /// </summary>
         public Int32 Count
         {
             get { return stream.LengthInObjects; }
+        }
+
+        /// <summary>
+        /// Gets a pointer to the stream's current position within its internal data buffer.
+        /// </summary>
+        public IntPtr Data
+        {
+            get
+            {
+                return stream.Data;
+            }
+        }
+
+        /// <summary>
+        /// Gets a pointer to the beginning of the stream's internal data buffer.
+        /// </summary>
+        public IntPtr Data0
+        {
+            get
+            {
+                return stream.Data0;
+            }
         }
 
         // The underlying data stream containing our commands.
@@ -368,8 +481,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private readonly Dictionary<StringSegment, Int32> iconsByName = new Dictionary<StringSegment, Int32>();
         private readonly Dictionary<StringSegment, Int32> fontsByName = new Dictionary<StringSegment, Int32>();
         private readonly Dictionary<StringSegment, Int32> glyphShadersByName = new Dictionary<StringSegment, Int32>();
-        private readonly List<SpriteAnimation> icons = new List<SpriteAnimation>();
-        private readonly List<SpriteFontFace> fonts = new List<SpriteFontFace>();
+        private readonly List<InlineIconInfo> icons = new List<InlineIconInfo>();
+        private readonly List<SpriteFont> fonts = new List<SpriteFont>();
         private readonly List<GlyphShader> glyphShaders = new List<GlyphShader>();
     }
 }

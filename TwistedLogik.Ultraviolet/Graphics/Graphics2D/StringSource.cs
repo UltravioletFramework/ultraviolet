@@ -51,6 +51,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Creates a <see cref="StringSegment"/> structure that represents this string source.
+        /// </summary>
+        /// <returns>The <see cref="StringSegment"/> that was created.</returns>
+        public StringSegment ToStringSegment()
+        {
+            if (str != null)
+                return new StringSegment(str, Start, Length);
+
+            if (builder != null)
+                return new StringSegment(builder, Start, Length);
+
+            return StringSegment.Empty;
+        }
+
+        /// <summary>
         /// Gets the character at the specified index within the string source.
         /// </summary>
         /// <param name="ix">The index of the character to retrieve.</param>

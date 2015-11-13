@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var parseBuffer = incrementalParserBuffer.Value;
             Parse(input, start, count, parseBuffer, options);
 
-            output.Source = input.Source;
+            output.SourceText = input.SourceText;
             output.InsertRange(start, parseBuffer);
 
             var affectedOffset = start;
@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 }
             }
 
-            output.Source = input.Source;
+            output.SourceText = input.SourceText;
         }
 
         /// <summary>

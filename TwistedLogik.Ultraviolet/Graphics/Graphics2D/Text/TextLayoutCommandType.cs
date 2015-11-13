@@ -11,6 +11,16 @@
         None,
 
         /// <summary>
+        /// Represents a command containing the metadata for a block of text.
+        /// </summary>
+        BlockInfo,
+
+        /// <summary>
+        /// Represents a command containing the metadata for a line of text.
+        /// </summary>
+        LineInfo,
+
+        /// <summary>
         /// Represents a command to print a string of text.
         /// </summary>
         Text,

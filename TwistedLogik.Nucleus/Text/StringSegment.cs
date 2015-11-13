@@ -204,6 +204,30 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
+        /// Creates a new <see cref="StringSegment"/> from the same source as the specified segment.
+        /// </summary>
+        /// <param name="segment">The segment from which to retrieve a string source.</param>
+        /// <param name="start">The index of the string segment's first character within its parent string.</param>
+        /// <param name="length">The number of characters in the string segment.</param>
+        /// <returns>The string segment that was created.</returns>
+        public static StringSegment FromSource(StringSegment segment, Int32 start, Int32 length)
+        {
+            if (segment.sourceString != null)
+                return new StringSegment(segment.sourceString, start, length);
+
+            if (segment.sourceBuilder != null)
+                return new StringSegment(segment.sourceBuilder, start, length);
+
+            if (start != 0)
+                throw new ArgumentOutOfRangeException("start");
+
+            if (length != 0)
+                throw new ArgumentOutOfRangeException("length");
+
+            return Empty;
+        }
+
+        /// <summary>
         /// Converts the object to a human-readable string.
         /// </summary>
         /// <returns>A human-readable string that represents the object.</returns>

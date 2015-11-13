@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
-    /// Represents a lyout command to print an icon.
+    /// Represents a layout command to print an icon.
     /// </summary>
     public struct TextLayoutIconCommand
     {
