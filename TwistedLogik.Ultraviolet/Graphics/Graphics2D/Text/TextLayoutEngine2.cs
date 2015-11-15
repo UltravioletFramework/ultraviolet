@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
 
@@ -15,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the style to register.</param>
         /// <param name="style">The style to register.</param>
-        public void RegisterStyle(String name, TextStyle style)
+        public void RegisterStyle(String name, TextStyle2 style)
         {
             Contract.RequireNotEmpty(name, "name");
 
@@ -126,14 +127,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 throw new ArgumentException(UltravioletStrings.InvalidLayoutSettings);
 
             var state = new LayoutState();
-
-            // TODO: Handle initial style
-
+            
             var index = 0;
-            
-            var bold = false;
-            var italic = false;
-            
+
+            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
+            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
+
             try
             {
                 output.Clear();
@@ -211,7 +210,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                                 var pushedFontIndex = RegisterFontWithCommandStream(output, token.Text, out pushedFont);
                                 output.WritePushFont(new TextLayoutFontCommand(pushedFontIndex));
                                 state.AdvanceToNextCommand();
-                                fontStack.Push(pushedFont);
+                                PushFont(pushedFont);
                             }
                             break;
 
@@ -224,8 +223,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             break;
 
                         case TextParserTokenType.PushStyle:
-                            // TODO
-                            state.AdvanceToNextCommand();
+                            {
+                                var pushedStyle = default(TextStyle2);
+                                var pushedStyleIndex = RegisterStyleWithCommandStream(output, token.Text, out pushedStyle);
+                                output.WritePushStyle(new TextLayoutStyleCommand(pushedStyleIndex));
+                                state.AdvanceToNextCommand();
+                                PushStyle(pushedStyle, ref bold, ref italic);
+                            }
                             break;
 
                         case TextParserTokenType.PushGlyphShader:
@@ -241,7 +245,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             {
                                 output.WritePopFont();
                                 state.AdvanceToNextCommand();
-                                fontStack.Pop();
+                                PopFont();
                             }
                             break;
 
@@ -251,8 +255,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             break;
 
                         case TextParserTokenType.PopStyle:
-                            // TODO
-                            state.AdvanceToNextCommand();
+                            {
+                                output.WritePopStyle();
+                                state.AdvanceToNextCommand();
+                                PopStyle(ref bold, ref italic);
+                            }
                             break;
 
                         case TextParserTokenType.PopGlyphShader:
@@ -363,7 +370,81 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         private void ClearLayoutStacks()
         {
+            styleStack.Clear();
             fontStack.Clear();
+
+            sourceString = null;
+            sourceStringBuilder = null;
+        }
+
+        /// <summary>
+        /// Pushes a style onto the style stack.
+        /// </summary>
+        /// <param name="style">The style to push onto the stack.</param>
+        private void PushStyle(TextStyle2 style, ref Boolean bold, ref Boolean italic)
+        {
+            var instance = new TextStyleInstance(style, bold, italic);
+            styleStack.Push(instance);
+
+            if (style.Font != null)
+                PushFont(style.Font);
+
+            if (style.Bold.HasValue)
+                bold = style.Bold.Value;
+
+            if (style.Italic.HasValue)
+                italic = style.Italic.Value;
+        }
+
+        /// <summary>
+        /// Pushes a font onto the font stack.
+        /// </summary>
+        /// <param name="font">The font to push onto the stack.</param>
+        private void PushFont(SpriteFont font)
+        {
+            var scope = styleStack.Count;
+            fontStack.Push(new TextStyleScoped<SpriteFont>(font, scope));
+        }
+
+        /// <summary>
+        /// Pops a style off of the style stack.
+        /// </summary>
+        private void PopStyle(ref Boolean bold, ref Boolean italic)
+        {
+            if (styleStack.Count > 0)
+            {
+                PopStyleScope();
+
+                var instance = styleStack.Pop();
+                bold = instance.Bold;
+                italic = instance.Italic;
+            }
+        }
+
+        /// <summary>
+        /// Pops a font off of the font stack.
+        /// </summary>
+        private void PopFont()
+        {
+            if (fontStack.Count == 0)
+                return;
+
+            var scope = styleStack.Count;
+            if (fontStack.Peek().Scope != scope)
+                return;
+
+            fontStack.Pop();
+        }
+
+        /// <summary>
+        /// Pops the current style scope off of the stacks.
+        /// </summary>
+        private void PopStyleScope()
+        {
+            var scope = styleStack.Count;
+
+            while (fontStack.Count > 0 && fontStack.Peek().Scope == scope)
+                fontStack.Pop();
         }
 
         /// <summary>
@@ -390,16 +471,39 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var y = state.PositionY;
             var width = firstSize.Width;
             var height = firstSize.Height;
-            
+
+            if (!IsSegmentForCurrentSource(first.Text))
+            {
+                var isFirstSource = (sourceString == null && sourceStringBuilder == null);
+
+                sourceString = first.Text.SourceString;
+                sourceStringBuilder = first.Text.SourceStringBuilder;
+
+                // NOTE: To save memory, we can elide the first change source command if it's just going to change to the input source.
+                if (!isFirstSource || input.SourceText.SourceString != sourceString || input.SourceText.SourceStringBuilder != sourceStringBuilder)
+                {
+                    if (sourceString != null)
+                    {
+                        var sourceIndex = output.RegisterSourceString(sourceString);
+                        output.WriteChangeSourceString(new TextLayoutSourceStringCommand(sourceIndex));
+                    }
+                    else
+                    {
+                        var sourceIndex = output.RegisterSourceStringBuilder(sourceStringBuilder);
+                        output.WriteChangeSourceStringBuilder(new TextLayoutSourceStringBuilderCommand(sourceIndex));
+                    }
+                }
+            }
+
             state.AdvanceToNextCommand(firstSize.Width, firstSize.Height, first.Text.Length, first.IsWhiteSpace);
             state.LineLengthInCommands--;
 
             while (index + 1 < input.Count)
             {
                 var token = input[index + 1];
-                if (token.TokenType != TextParserTokenType.Text || token.IsNewLine)
+                if (token.TokenType != TextParserTokenType.Text || token.IsNewLine || !IsSegmentForCurrentSource(token.Text))
                     break;
-
+                
                 var tokenSize = MeasureToken(font, token, GetNextTextToken(input, index));
                 if (state.PositionX + tokenSize.Width > (settings.Width ?? Int32.MaxValue))
                     break;
@@ -423,6 +527,20 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified string segment uses the layout engine's current source string as its source.
+        /// </summary>
+        private Boolean IsSegmentForCurrentSource(StringSegment segment)
+        {
+            if (sourceString == null && sourceStringBuilder == null)
+                return false;
+
+            if (sourceString != null)
+                return segment.SourceString == sourceString;
+
+            return segment.SourceStringBuilder == sourceStringBuilder;
         }
 
         /// <summary>
@@ -463,6 +581,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     }
             }
             return Size2.Zero;
+        }
+
+        /// <summary>
+        /// Registers the specified style with the command stream and returns its resulting index.
+        /// </summary>
+        public Int32 RegisterStyleWithCommandStream(TextLayoutCommandStream output, StringSegment name, out TextStyle2 style)
+        {
+            if (!registeredStyles.TryGetValue(name, out style))
+                throw new InvalidOperationException(UltravioletStrings.UnrecognizedStyle.Format(name));
+
+            return output.RegisterStyle(name, style);
         }
 
         /// <summary>
@@ -521,14 +650,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         private SpriteFont GetCurrentFont(ref TextLayoutSettings settings, Boolean bold, Boolean italic, out SpriteFontFace face)
         {
-            var font = (fontStack.Count == 0) ? settings.Font : fontStack.Peek();
+            var font = (fontStack.Count == 0) ? settings.Font : fontStack.Peek().Value;
             face = font.GetFace(bold, italic);
             return font;
         }
 
         // Registered styles, icons, fonts, and glyph shaders.
-        private readonly Dictionary<StringSegment, TextStyle> registeredStyles =
-            new Dictionary<StringSegment, TextStyle>();
+        private readonly Dictionary<StringSegment, TextStyle2> registeredStyles =
+            new Dictionary<StringSegment, TextStyle2>();
         private readonly Dictionary<StringSegment, InlineIconInfo> registeredIcons =
             new Dictionary<StringSegment, InlineIconInfo>();
         private readonly Dictionary<StringSegment, SpriteFont> registeredFonts =
@@ -537,6 +666,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             new Dictionary<StringSegment, GlyphShader>();
 
         // Layout parameter stacks.
-        private readonly Stack<SpriteFont> fontStack = new Stack<SpriteFont>();
+        private readonly Stack<TextStyleInstance> styleStack = new Stack<TextStyleInstance>();
+        private readonly Stack<TextStyleScoped<SpriteFont>> fontStack = new Stack<TextStyleScoped<SpriteFont>>();
+
+        // The current source string.
+        private String sourceString;
+        private StringBuilder sourceStringBuilder;
     }
 }

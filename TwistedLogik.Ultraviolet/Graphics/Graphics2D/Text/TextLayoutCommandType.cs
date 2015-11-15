@@ -41,6 +41,11 @@
         ToggleItalic,
 
         /// <summary>
+        /// Represents a command to push a style onto the style stack.
+        /// </summary>
+        PushStyle,
+
+        /// <summary>
         /// Represents a command to push a font onto the font stack.
         /// </summary>
         PushFont,
@@ -56,6 +61,11 @@
         PushGlyphShader,
 
         /// <summary>
+        /// Represents a command to pop a style off of the style stack.
+        /// </summary>
+        PopStyle,
+
+        /// <summary>
         /// Represents a command to pop a font off of the font stack.
         /// </summary>
         PopFont,
@@ -69,5 +79,15 @@
         /// Represents a command to pop a glyph shader off of the glyph shader stack.
         /// </summary>
         PopGlyphShader,
+
+        /// <summary>
+        /// Represents a command to change the source string.
+        /// </summary>
+        ChangeSourceString,
+
+        /// <summary>
+        /// Represents a command to change the source string builder.
+        /// </summary>
+        ChangeSourceStringBuilder,
     }
 }

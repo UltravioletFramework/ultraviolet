@@ -105,7 +105,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// </summary>
             public void AdvanceToNextLine(TextLayoutCommandStream output, ref TextLayoutSettings settings, Boolean writeLineInfo = true)
             {
-                WriteLineInfo(output, (Int16)(lineWidth - lineTrailingWhiteSpaceWidth), (Int16)lineHeight, lineLengthInCommands, ref settings);
+                lineWidth -= lineTrailingWhiteSpaceWidth;
+
+                WriteLineInfo(output, (Int16)lineWidth, (Int16)lineHeight, lineLengthInCommands, ref settings);
 
                 positionX = 0;
                 positionY += lineHeight;

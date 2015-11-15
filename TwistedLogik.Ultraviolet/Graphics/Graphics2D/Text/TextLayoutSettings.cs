@@ -25,6 +25,20 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Converts the layout settings to the equivalent set of <see cref="TextParserOptions"/> values.
+        /// </summary>
+        /// <returns>A set of <see cref="TextParserOptions"/> values that correspond to the layout settings.</returns>
+        public TextParserOptions GetParserOptions()
+        {
+            var options = TextParserOptions.None;
+
+            if ((Flags & TextFlags.IgnoreCommandCodes) == TextFlags.IgnoreCommandCodes)
+                options |= TextParserOptions.IgnoreCommandCodes;
+
+            return options;
+        }
+
+        /// <summary>
         /// Gets the default font.
         /// </summary>
         public SpriteFont Font

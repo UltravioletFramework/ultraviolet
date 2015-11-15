@@ -119,7 +119,7 @@ namespace UvDebugSandbox
                 LoadPresentation();
 
                 this.spriteBatch = SpriteBatch.Create();
-                this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+                this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.DefaultUI);
 
                 shader = new TestGlyphShader();
                 rainbowShader = new RainbowGlyphShader();
@@ -135,6 +135,14 @@ namespace UvDebugSandbox
                 this.textFormatter = new StringFormatter();
                 this.textBuffer = new StringBuilder();
 
+                this.textRenderer2 = new TextRenderer2();
+                this.textRenderer2.RegisterIcon("foo", icons["foo"]);
+                this.textRenderer2.RegisterGlyphShader("test", shader);
+                this.textRenderer2.RegisterGlyphShader("rainbow", rainbowShader);
+                this.textRenderer2.RegisterGlyphShader("wavy", wavyShader);
+
+                this.textRenderer2.RegisterStyle("bar", new TextStyle2(null, null, null, Color.Lime, rainbowShader, wavyShader));
+
                 GC.Collect(2);
 
                 var screenService = new UIScreenService(content);
@@ -148,10 +156,11 @@ namespace UvDebugSandbox
         TestGlyphShader shader;
         RainbowGlyphShader rainbowShader;
         WavyGlyphShader wavyShader;
+        TextRenderer2 textRenderer2;
 
         private class RainbowGlyphShader : GlyphShader
         {
-            public override void Execute(ref GlyphShaderContext context, ref Char glyph, ref Single x, ref Single y, ref Color color, Int32 index)
+            public override void Execute(ref GlyphShaderContext context, Char glyph, ref Single x, ref Single y, ref Color color, Int32 index)
             {
                 if (glyph == 0)
                     return;
@@ -175,8 +184,9 @@ namespace UvDebugSandbox
 
         private class WavyGlyphShader : GlyphShader
         {
-            public override void Execute(ref GlyphShaderContext context, ref Char glyph, ref Single x, ref Single y, ref Color color, Int32 index)
+            public override void Execute(ref GlyphShaderContext context, Char glyph, ref Single x, ref Single y, ref Color color, Int32 index)
             {
+                glyph = '?';
                 var sin = Math.Sin((Math.PI * 2.0) * ((index % 10) / 10.0) + cycle);
                 y = (int)(y + (sin * 2));
             }
@@ -246,7 +256,7 @@ namespace UvDebugSandbox
                 }
             }
 
-            public override void Execute(ref GlyphShaderContext context, ref Char character, ref Single x, ref Single y, ref Color color, Int32 index)
+            public override void Execute(ref GlyphShaderContext context, Char character, ref Single x, ref Single y, ref Color color, Int32 index)
             {
                 var rando = randos[(index + character) % randos.Length];
                 var offset = offsets[rando % offsets.Length];
@@ -380,65 +390,28 @@ namespace UvDebugSandbox
             textFormatter.AddArgument(upf.PerformanceStats.PositionCountLastFrame);
             textFormatter.Format("FPS: {0:decimals:2} FPS\nStyle: {1} / {2}\nMeasure: {3} / {4}\nArrange: {5} / {6}\nPosition: {7}", textBuffer);
 
-            textRenderer.Draw(spriteBatch, "The quick brown |c:ffff0000|    fox|c| jumps over the lazy dog.", 
-                Vector2.Zero, Color.White, new TextLayoutSettings(spriteFont, 100, 100, TextFlags.Standard));
+            //            textRenderer.Draw(spriteBatch, "The quick brown |c:ffff0000|    fox|c| jumps over the lazy dog.", 
+            //              Vector2.Zero, Color.White, new TextLayoutSettings(spriteFont, 100, 100, TextFlags.Standard));
 
-            var lexer = new TextLexer();
-            var lexerResult = new TextLexerResult();
-            var parser = new TextParser2();
-            var parserResult = new TextParserResult2();
-            var layout = new TextLayoutEngine2();
-            var layoutResult = new TextLayoutCommandStream();
+            textRenderer2.Draw(spriteBatch, "The ||quick|| |b|brown |c:ffff0000|fox|c||b| |b||i|jumps|i||b| over the |shader:wavy||icon:foo| |shader:rainbow|lazy|shader| dog.|shader| Tra la la. |style:bar|Beware the man who |b|speaks in hands|style|. Tra la la.",
+                Vector2.Zero, Color.White, 0, Int32.MaxValue, new TextLayoutSettings(spriteFont, 200, 100, TextFlags.AlignRight));
 
-            lexer.Lex("The quick brown |c:ffff0000|    fox|c| jumps over the lazy dog.", lexerResult);
-            parser.Parse(lexerResult, parserResult);
-            layout.CalculateLayout(parserResult, layoutResult, new TextLayoutSettings(spriteFont, 100, 100, TextFlags.AlignRight | TextFlags.AlignTop));
-
-            layoutResult.AcquirePointers();
-            for (int i = 0; i < layoutResult.Count; i++)
+            if (Ultraviolet.GetInput().GetKeyboard().IsKeyPressed(TwistedLogik.Ultraviolet.Input.Key.Q))
             {
-                var type = layoutResult.Seek(i);
-                switch (type)
-                {
-                    case TextLayoutCommandType.BlockInfo:
-                        {
-                            var cmd = layoutResult.ReadBlockInfoCommand();
-                            System.Diagnostics.Debug.WriteLine("BLOCK " + cmd.Offset + " / " + cmd.LengthInLines);
-                        }
-                        break;
-
-                    case TextLayoutCommandType.LineInfo:
-                        {
-                            var cmd = layoutResult.ReadLineInfoCommand();
-                            System.Diagnostics.Debug.WriteLine("LINE " + cmd.Offset + " / " + cmd.LengthInCommands);
-                        }
-                        break;
-
-                    case TextLayoutCommandType.Text:
-                        {
-                            var cmd = layoutResult.ReadTextCommand();
-                            var txt = layoutResult.SourceText.Substring(cmd.TextOffset, cmd.TextLength);
-                            System.Diagnostics.Debug.WriteLine("|" + txt.ToString() + "| @ " + cmd.Bounds);
-                        }
-                        break;
-
-                    case TextLayoutCommandType.ToggleBold:
-                        {
-                            layoutResult.ReadToggleBoldCommand();
-                        }
-                        break;
-
-                    default:
-                        System.Diagnostics.Debug.WriteLine(type);
-                        break;
-                }
+                start++;
             }
-            layoutResult.ReleasePointers();
+
+            if (Ultraviolet.GetInput().GetKeyboard().IsKeyPressed(TwistedLogik.Ultraviolet.Input.Key.A))
+            {
+                start--;
+            }
 
             spriteBatch.End();
 
             base.OnDrawing(time);
         }
+
+        private Int32 start;
 
         /// <summary>
         /// Called when the application is being shut down.

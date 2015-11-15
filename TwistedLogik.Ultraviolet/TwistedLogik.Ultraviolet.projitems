@@ -146,6 +146,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\InlineIconInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextFlags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutSourceStringBuilderCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutSourceStringCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutStyleCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutLineInfoCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutBlockInfoCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutColorCommand.cs" />
@@ -175,8 +178,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextParserToken2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextParserTokenType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRenderer2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextStyle2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextStyleGlyphShaderCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextStyleGlyphShaderCollection.IEnumerable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextStyleInstance.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextStyleScoped.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableCellCollection.cs" />

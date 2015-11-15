@@ -262,7 +262,7 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
             if (capacity <= CapacityInBytes)
                 return;
 
-            var size = Math.Max(capacity, (data.Length == 0) ? DefaultDataCapacity : data.Length * 2);
+            var size = Math.Max(capacity, (data.Length == 0) ? DefaultDataCapacity : (data.Length * 3) / 2 + 1);
             var temp = new Byte[size];
             if (lengthInBytes > 0)
             {
@@ -286,7 +286,7 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
             if (capacity <= CapacityInObjects)
                 return;
 
-            var size = Math.Max(capacity, (index.Length == 0) ? DefaultIndexCapacity : index.Length * 2);
+            var size = Math.Max(capacity, (index.Length == 0) ? DefaultIndexCapacity : (index.Length * 3) / 2 + 1);
             var temp = new Int32[size];
             if (lengthInObjects > 0)
             {

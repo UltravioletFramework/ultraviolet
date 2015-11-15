@@ -474,8 +474,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     if (token.GlyphShader != null)
                     {
-                        var iconGlyph = (char)0;
-                        token.GlyphShader.Execute(ref tokenGlyphShaderContext, ref iconGlyph, ref iconX, ref iconY, ref iconColor, 0);
+                        token.GlyphShader.Execute(ref tokenGlyphShaderContext, '\x0000', ref iconX, ref iconY, ref iconColor, 0);
                     }
 
                     var tokenPosition = new Vector2(iconX, iconY);

@@ -660,7 +660,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
         }
 
         /// <summary>
@@ -698,7 +698,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -741,7 +741,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -780,7 +780,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
         }
 
         /// <summary>
@@ -820,7 +820,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
         }
 
         /// <summary>
@@ -865,7 +865,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
         /// <summary>
@@ -904,7 +904,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
         }
 
         /// <summary>
@@ -942,7 +942,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -985,7 +985,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -1024,7 +1024,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
         }
 
         /// <summary>
@@ -1064,7 +1064,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1109,7 +1109,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1148,7 +1148,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
         }
 
         /// <summary>
@@ -1186,7 +1186,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -1229,7 +1229,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -1268,7 +1268,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
         }
 
         /// <summary>
@@ -1308,7 +1308,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1353,7 +1353,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(null, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
         /// <summary>
@@ -2040,12 +2040,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 
                 // Calculate the glyph's position on the screen.
                 var source = fontFace[character];
-                source = new Rectangle(source.X, source.Y, source.Width, source.Height);
                 var glyphX = flipHorizontal ? cx - source.Width : cx;
                 var glyphY = flipVertical ? cy - source.Height : cy;
 
-                if (glyphShaderContext.GlyphShader != null)
-                    glyphShaderContext.GlyphShader.Execute(ref glyphShaderContext, ref character, ref glyphX, ref glyphY, ref color, glyphShaderContext.SourceOffset + i);
+                if (glyphShaderContext.IsValid)
+                    glyphShaderContext.Execute(character, ref glyphX, ref glyphY, ref color, glyphShaderContext.SourceOffset + i);
 
                 glyphPosRaw = new Vector2(glyphX, glyphY);
 

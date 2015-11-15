@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security;
+using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections.Specialized;
 using TwistedLogik.Nucleus.Text;
@@ -26,6 +27,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Registers a style with the command stream.
+        /// </summary>
+        /// <param name="name">The name of the style to register.</param>
+        /// <param name="style">The style to register under the specified name.</param>
+        /// <returns>The index of the specified style within the command stream's internal registry.</returns>
+        public Int32 RegisterStyle(StringSegment name, TextStyle2 style)
+        {
+            Contract.Require(style, "style");
+
+            return RegisterResource(name, style, styles, stylesByName);
+        }
+
+        /// <summary>
         /// Registers an icon with the command stream.
         /// </summary>
         /// <param name="name">The name of the icon to register.</param>
@@ -33,16 +47,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The index of the specified icon within the command stream's internal registry.</returns>
         public Int32 RegisterIcon(StringSegment name, InlineIconInfo icon)
         {
-            Int32 index;
-            if (iconsByName.TryGetValue(name, out index))
-                return index;
-
-            index = icons.Count;
-
-            icons.Add(icon);
-            iconsByName[name] = index;
-
-            return index;
+            return RegisterResource(name, icon, icons, iconsByName);
         }
 
         /// <summary>
@@ -55,16 +60,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(font, "font");
 
-            Int32 index;
-            if (fontsByName.TryGetValue(name, out index))
-                return index;
-
-            index = fonts.Count;
-
-            fonts.Add(font);
-            fontsByName[name] = index;
-
-            return index;
+            return RegisterResource(name, font, fonts, fontsByName);
         }
 
         /// <summary>
@@ -77,16 +73,55 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(glyphShader, "glyphShader");
 
+            return RegisterResource(name, glyphShader, glyphShaders, glyphShadersByName);
+        }
+
+        /// <summary>
+        /// Registers a source string with the command stream.
+        /// </summary>
+        /// <param name="source">The source string to register.</param>
+        /// <returns>The index of the specified source string within the command stream's internal registry.</returns>
+        public Int32 RegisterSourceString(String source)
+        {
+            Contract.Require(source, "source");
+
+            return RegisterSource(source);
+        }
+
+        /// <summary>
+        /// Registers a source string builder with the command stream.
+        /// </summary>
+        /// <param name="source">The source string builder to register.</param>
+        /// <returns>The index of the specified source string builder within the command stream's internal registry.</returns>
+        public Int32 RegisterSourceStringBuilder(StringBuilder source)
+        {
+            Contract.Require(source, "source");
+
+            return RegisterSource(source);
+        }
+
+        /// <summary>
+        /// Retrieves the registered style with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the style to retrieve.</param>
+        /// <returns>The registered style with the specified name.</returns>
+        public TextStyle2 GetStyle(StringSegment name)
+        {
             Int32 index;
-            if (glyphShadersByName.TryGetValue(name, out index))
-                return index;
+            if (!stylesByName.TryGetValue(name, out index))
+                return null;
 
-            index = glyphShaders.Count;
+            return styles[index];
+        }
 
-            glyphShaders.Add(glyphShader);
-            glyphShadersByName[name] = index;
-
-            return index;
+        /// <summary>
+        /// Retrieves the registered style at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered style to retrieve.</param>
+        /// <returns>The registered style at the specified index within the command stream's internal registry.</returns>
+        public TextStyle2 GetStyle(Int32 index)
+        {
+            return styles[index];
         }
 
         /// <summary>
@@ -162,6 +197,26 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Retrieves the registered source string at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered source string to retrieve.</param>
+        /// <returns>The registered source string at the specified index within the command stream's internal registry.</returns>
+        public String GetSourceString(Int32 index)
+        {
+            return (String)sources[index];
+        }
+
+        /// <summary>
+        /// Retrieves the registered source string builder at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered source string builder to retrieve.</param>
+        /// <returns>The registered source string builder at the specified index within the command stream's internal registry.</returns>
+        public StringBuilder GetSourceStringBuilder(Int32 index)
+        {
+            return (StringBuilder)sources[index];
+        }
+
+        /// <summary>
         /// Prepares the stream for reading or writing by acquiring pointers to its underlying buffers.
         /// While pointers are acquired, these buffers will be pinned in memory.
         /// </summary>
@@ -186,6 +241,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             stream.Clear();
 
+            styles.Clear();
+            stylesByName.Clear();
+
             icons.Clear();
             iconsByName.Clear();
 
@@ -194,6 +252,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             glyphShaders.Clear();
             glyphShadersByName.Clear();
+
+            sources.Clear();
+            sourcesByReference.Clear();
 
             Settings = default(TextLayoutSettings);
             SourceText = StringSegment.Empty;
@@ -269,6 +330,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.PushStyle"/> command to the current position in the stream.
+        /// </summary>
+        /// <param name="command">The command to write to the stream.</param>
+        public void WritePushStyle(TextLayoutStyleCommand command)
+        {
+            stream.Reserve(sizeof(TextLayoutStyleCommand));
+            *(TextLayoutStyleCommand*)stream.Data = command;
+            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushStyle;
+            stream.FinalizeObject(sizeof(TextLayoutStyleCommand));
+        }
+
+        /// <summary>
         /// Writes a <see cref="TextLayoutCommandType.PushFont"/> command to the current position in the stream.
         /// </summary>
         /// <param name="command">The command to write to the stream.</param>
@@ -305,9 +378,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.PopStyle"/> command to the current position in the stream.
+        /// </summary>
+        public void WritePopStyle()
+        {
+            stream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopStyle;
+            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+        }
+
+        /// <summary>
         /// Writes a <see cref="TextLayoutCommandType.PopFont"/> command to the current position in the stream.
         /// </summary>
-        /// <param name="command">The command to write to the stream.</param>
         public void WritePopFont()
         {
             stream.Reserve(sizeof(TextLayoutCommandType));
@@ -318,7 +400,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Writes a <see cref="TextLayoutCommandType.PopColor"/> command to the current position in the stream.
         /// </summary>
-        /// <param name="command">The command to write to the stream.</param>
         public void WritePopColor()
         {
             stream.Reserve(sizeof(TextLayoutCommandType));
@@ -329,12 +410,35 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Writes a <see cref="TextLayoutCommandType.PopGlyphShader"/> command to the current position in the stream.
         /// </summary>
-        /// <param name="command">The command to write to the stream.</param>
         public void WritePopGlyphShader()
         {
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopGlyphShader;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
+        }
+
+        /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.ChangeSourceString"/> command to the current position in the stream.
+        /// </summary>
+        /// <param name="command">The command to write to the stream.</param>
+        public void WriteChangeSourceString(TextLayoutSourceStringCommand command)
+        {
+            stream.Reserve(sizeof(TextLayoutSourceStringCommand));
+            *(TextLayoutSourceStringCommand*)stream.Data = command;
+            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ChangeSourceString;
+            stream.FinalizeObject(sizeof(TextLayoutSourceStringCommand));
+        }
+
+        /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.ChangeSourceStringBuilder"/> command to the current position in the stream.
+        /// </summary>
+        /// <param name="command">The command to write to the stream.</param>
+        public void WriteChangeSourceStringBuilder(TextLayoutSourceStringBuilderCommand command)
+        {
+            stream.Reserve(sizeof(TextLayoutSourceStringBuilderCommand));
+            *(TextLayoutSourceStringBuilderCommand*)stream.Data = command;
+            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ChangeSourceStringBuilder;
+            stream.FinalizeObject(sizeof(TextLayoutSourceStringBuilderCommand));
         }
 
         /// <summary>
@@ -397,6 +501,108 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public void ReadToggleItalicCommand()
         {
             stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.PushStyle"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public TextLayoutStyleCommand ReadPushStyleCommand()
+        {
+            var command = *(TextLayoutStyleCommand*)stream.Data;
+            stream.Seek(sizeof(TextLayoutStyleCommand), SeekOrigin.Current);
+            return command;
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.PushFont"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public TextLayoutFontCommand ReadPushFontCommand()
+        {
+            var command = *(TextLayoutFontCommand*)stream.Data;
+            stream.Seek(sizeof(TextLayoutFontCommand), SeekOrigin.Current);
+            return command;
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.PushColor"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public TextLayoutColorCommand ReadPushColorCommand()
+        {
+            var command = *(TextLayoutColorCommand*)stream.Data;
+            stream.Seek(sizeof(TextLayoutColorCommand), SeekOrigin.Current);
+            return command;
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.PushGlyphShader"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public TextLayoutGlyphShaderCommand ReadPushGlyphShaderCommand()
+        {
+            var command = *(TextLayoutGlyphShaderCommand*)stream.Data;
+            stream.Seek(sizeof(TextLayoutGlyphShaderCommand), SeekOrigin.Current);
+            return command;
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.PopStyle"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public void ReadPopStyleCommand()
+        {
+            stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.PopFont"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public void ReadPopFontCommand()
+        {
+            stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.PopColor"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public void ReadPopColorCommand()
+        {
+            stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.PopGlyphShader"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public void ReadPopGlyphShaderCommand()
+        {
+            stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.ChangeSourceString"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public TextLayoutSourceStringCommand ReadChangeSourceStringCommand()
+        {
+            var command = *(TextLayoutSourceStringCommand*)stream.Data;
+            stream.Seek(sizeof(TextLayoutSourceStringCommand), SeekOrigin.Current);
+            return command;
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.ChangeSourceStringBuilder"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public TextLayoutSourceStringBuilderCommand ReadChangeSourceStringBuilderCommand()
+        {
+            var command = *(TextLayoutSourceStringBuilderCommand*)stream.Data;
+            stream.Seek(sizeof(TextLayoutSourceStringBuilderCommand), SeekOrigin.Current);
+            return command;
         }
 
         /// <summary>
@@ -474,15 +680,51 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
         }
 
+        /// <summary>
+        /// Registers a resource with the command stream.
+        /// </summary>
+        private Int32 RegisterResource<TResource>(StringSegment name, TResource resource, List<TResource> resourcesList, Dictionary<StringSegment, Int32> resourcesByName)
+        {
+            Int32 index;
+            if (resourcesByName.TryGetValue(name, out index))
+                return index;
+
+            index = resourcesList.Count;
+
+            resourcesList.Add(resource);
+            resourcesByName[name] = index;
+
+            return index;
+        }
+
+        /// <summary>
+        /// Registers a source string or string builder with the command stream.
+        /// </summary>
+        private Int32 RegisterSource(Object source)
+        {
+            Int32 index;
+            if (sourcesByReference.TryGetValue(source, out index))
+                return index;
+
+            sources.Add(source);
+            sourcesByReference[source] = sources.Count - 1;
+
+            return sources.Count - 1;
+        }
+
         // The underlying data stream containing our commands.
         private readonly UnsafeObjectStream stream = new UnsafeObjectStream(32, 256);
 
         // The stream's object registries.
+        private readonly Dictionary<StringSegment, Int32> stylesByName = new Dictionary<StringSegment, Int32>();
         private readonly Dictionary<StringSegment, Int32> iconsByName = new Dictionary<StringSegment, Int32>();
         private readonly Dictionary<StringSegment, Int32> fontsByName = new Dictionary<StringSegment, Int32>();
         private readonly Dictionary<StringSegment, Int32> glyphShadersByName = new Dictionary<StringSegment, Int32>();
+        private readonly Dictionary<Object, Int32> sourcesByReference = new Dictionary<Object, Int32>();
+        private readonly List<TextStyle2> styles = new List<TextStyle2>();
         private readonly List<InlineIconInfo> icons = new List<InlineIconInfo>();
         private readonly List<SpriteFont> fonts = new List<SpriteFont>();
         private readonly List<GlyphShader> glyphShaders = new List<GlyphShader>();
+        private readonly List<Object> sources = new List<Object>();
     }
 }
