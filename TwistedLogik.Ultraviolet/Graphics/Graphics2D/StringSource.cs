@@ -61,6 +61,29 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             if (builder != null)
                 return new StringSegment(builder, Start, Length);
+            
+            return StringSegment.Empty;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="StringSegment"/> structure that represents a substring of this string source.
+        /// </summary>
+        /// <param name="start">The index of the first character in the substring that will be represented by the string segment.</param>
+        /// <param name="length">The length of the substring that will be represented by the string segment.</param>
+        /// <returns>The <see cref="StringSegment"/> that was created.</returns>
+        public StringSegment CreateStringSegmentFromSubstring(Int32 start, Int32 length)
+        {
+            if (str != null)
+                return new StringSegment(str, Start + start, length);
+
+            if (builder != null)
+                return new StringSegment(str, Start + start, length);
+
+            if (start != 0)
+                throw new ArgumentOutOfRangeException("start");
+
+            if (length != 0)
+                throw new ArgumentOutOfRangeException("length");
 
             return StringSegment.Empty;
         }

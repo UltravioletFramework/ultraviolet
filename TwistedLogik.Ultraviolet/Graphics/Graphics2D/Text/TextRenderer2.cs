@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Security;
 using System.Text;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
@@ -396,8 +395,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var lineHeight = 0;
             var charsSeen = 0;
 
-            sourceString = input.SourceText.SourceString;
-            sourceStringBuilder = input.SourceText.SourceStringBuilder;
+            var source = new StringSource(input.SourceText);
 
             try
             {
@@ -431,7 +429,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         case TextLayoutCommandType.Text:
                             {
                                 var cmd = input.ReadTextCommand();
-                                var cmdText = GetSegmentFromCurrentSource(cmd.TextOffset, cmd.TextLength);
+                                var cmdText = source.CreateStringSegmentFromSubstring(cmd.TextOffset, cmd.TextLength);
                                 var cmdTextOriginalLength = cmdText.Length;
 
                                 if (charsSeen + cmdTextOriginalLength > start)
@@ -567,16 +565,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         case TextLayoutCommandType.ChangeSourceString:
                             {
                                 var cmd = input.ReadChangeSourceStringCommand();
-                                sourceString = input.GetSourceString(cmd.SourceIndex);
-                                sourceStringBuilder = null;
+                                source = new StringSource(input.GetSourceString(cmd.SourceIndex));
                             }
                             break;
 
                         case TextLayoutCommandType.ChangeSourceStringBuilder:
                             {
                                 var cmd = input.ReadChangeSourceStringBuilderCommand();
-                                sourceString = null;
-                                sourceStringBuilder = input.GetSourceStringBuilder(cmd.SourceIndex);
+                                source = new StringSource(input.GetSourceStringBuilder(cmd.SourceIndex));
                             }
                             break;
 
@@ -608,9 +604,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             fontStack.Clear();
             colorStack.Clear();
             glyphShaderStack.Clear();
-
-            sourceString = null;
-            sourceStringBuilder = null;
         }
 
         /// <summary>
@@ -760,21 +753,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             color = (colorStack.Count == 0) ? defaultColor : colorStack.Peek().Value;
         }
-
-        /// <summary>
-        /// Creates a <see cref="StringSegment"/> from the current string source.
-        /// </summary>
-        private StringSegment GetSegmentFromCurrentSource(Int32 start, Int32 length)
-        {
-            if (sourceString == null && sourceStringBuilder == null)
-                throw new InvalidOperationException();
-
-            if (sourceString != null)
-                return new StringSegment(sourceString, start, length);
-
-            return new StringSegment(sourceStringBuilder, start, length);
-        }
-        
+                
         // The text parser.
         private readonly TextLexerParser parser = new TextLexerParser();
         private readonly TextParserResult2 parserResult = new TextParserResult2();
@@ -788,7 +767,5 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private readonly Stack<TextStyleScoped<SpriteFont>> fontStack = new Stack<TextStyleScoped<SpriteFont>>();
         private readonly Stack<TextStyleScoped<Color>> colorStack = new Stack<TextStyleScoped<Color>>();
         private readonly Stack<TextStyleScoped<GlyphShader>> glyphShaderStack = new Stack<TextStyleScoped<GlyphShader>>();
-        private String sourceString;
-        private StringBuilder sourceStringBuilder;
     }
 }
