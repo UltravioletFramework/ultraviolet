@@ -1,0 +1,511 @@
+﻿using System;
+using System.Text;
+using System.Threading;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
+
+namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+{
+    /// <summary>
+    /// Represents a lexer/parser which takes a string as input and produces a stream of formatted text tokens.
+    /// </summary>
+    public sealed partial class TextLexerParser
+    {
+        /// <summary>
+        /// Lexes and parses the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="String"/> to parse.</param>
+        /// <param name="output">The parsed token stream.</param>
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        public void Parse(String input, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
+        {
+            Contract.Require(input, "input");
+            Contract.Require(output, "output");
+
+            output.Clear();
+            Parse(new StringSource(input), output, 0, input.Length, options);
+        }
+
+        /// <summary>
+        /// Incrementally lexes and parses the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="String"/> to parse.</param>
+        /// <param name="start">The index of the first character that was changed.</param>
+        /// <param name="count">The number of characters that were changed.</param>
+        /// <param name="result">The parsed token stream.</param>
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
+        /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
+        /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
+        /// of the source text are re-parsed by this operation.</remarks>
+        public IncrementalResult ParseIncremental(String input, Int32 start, Int32 count, TextParserResult2 result, TextParserOptions options = TextParserOptions.None)
+        {
+            Contract.Require(input, "input");
+            Contract.Require(result, "output");
+            Contract.EnsureRange(start >= 0, "start");
+            Contract.EnsureRange(count >= 0 && start + count <= input.Length, "count");
+
+            return ParseIncremental(new StringSource(input), start, count, result, options);
+        }
+
+        /// <summary>
+        /// Lexes and parses the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="StringBuilder"/> to parse.</param>
+        /// <param name="output">The parsed token stream.</param>
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        public void Parse(StringBuilder input, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
+        {
+            Contract.Require(input, "input");
+            Contract.Require(output, "output");
+
+            output.Clear();
+            Parse(new StringSource(input), output, 0, input.Length, options);
+        }
+
+        /// <summary>
+        /// Incrementally lexes and parses the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="StringBuilder"/> to parse.</param>
+        /// <param name="start">The index of the first character that was changed.</param>
+        /// <param name="count">The number of characters that were changed.</param>
+        /// <param name="result">The parsed token stream.</param>
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
+        /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
+        /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
+        /// of the source text are re-parsed by this operation.</remarks>
+        public IncrementalResult ParseIncremental(StringBuilder input, Int32 start, Int32 count, TextParserResult2 result, TextParserOptions options = TextParserOptions.None)
+        {
+            Contract.Require(input, "input");
+            Contract.Require(result, "output");
+            Contract.EnsureRange(start >= 0, "start");
+            Contract.EnsureRange(count >= 0 && start + count <= input.Length, "count");
+
+            return ParseIncremental(new StringSource(input), start, count, result, options);
+        }
+
+        /// <summary>
+        /// Lexes and parses the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="StringSource"/> to parse.</param>
+        /// <param name="output">The parsed token stream.</param>
+        /// <param name="index">The index at which to begin parsing the input string.</param>
+        /// <param name="count">the number of characters to parse.</param>
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        private void Parse(StringSource input, TextParserResult2 output, Int32 index, Int32 count, TextParserOptions options = TextParserOptions.None)
+        {
+            var bound = index + count;
+            while (index < bound)
+            {
+                if (IsStartOfNewline(input, index))
+                {
+                    output.Add(ConsumeNewlineToken(input, options, ref index));
+                    continue;
+                }
+                if (IsStartOfWhitespace(input, index))
+                {
+                    output.Add(ConsumeWhiteSpaceToken(input, options, ref index));
+                    continue;
+                }
+                if (IsEscapedPipe(input, index))
+                {
+                    output.Add(ConsumeEscapedPipeToken(input, options, ref index));
+                    continue;
+                }
+                if (IsStartOfCommand(input, index))
+                {
+                    output.Add(ConsumeCommandToken(input, options, ref index));
+                    continue;
+                }
+                if (IsStartOfWord(input, index))
+                {
+                    output.Add(ConsumeWordToken(input, options, ref index));
+                    continue;
+                }
+                index++;
+            }
+
+            output.SourceText = input.CreateStringSegment();
+        }
+
+        /// <summary>
+        /// Incrementally lexes and parses the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="StringSource"/> to parse.</param>
+        /// <param name="start">The index of the first character that was changed.</param>
+        /// <param name="count">The number of characters that were changed.</param>
+        /// <param name="output">The parsed token stream.</param>
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
+        /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
+        /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
+        /// of the source text are re-parsed by this operation.</remarks>
+        private IncrementalResult ParseIncremental(StringSource input, Int32 start, Int32 count, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
+        {
+            var inputLengthOld = output.SourceText.Length;
+            var inputLengthNew = input.Length;
+            var inputLengthDiff = inputLengthNew - inputLengthOld;
+
+            Int32 ix1, ix2;
+            FindTokensInfluencedBySubstring(output, start, count - inputLengthDiff, out ix1, out ix2);
+
+            var token1 = output[ix1];
+            var token2 = output[ix2];
+            
+            var invalidatedTokenCount = 1 + (ix2 - ix1);
+            output.RemoveRange(ix1, invalidatedTokenCount);
+
+            var lexStart = token1.SourceOffset;
+            var lexCount = inputLengthDiff + (token2.SourceOffset + token2.SourceLength) - lexStart;
+            var parserBuffer = incrementalParserBuffer.Value;
+            Parse(input, parserBuffer, lexStart, lexCount);
+            
+            output.SourceText = input.CreateStringSegment();
+            output.InsertRange(ix1, parserBuffer);
+
+            var affectedOffset = ix1;
+            var affectedCount = parserBuffer.Count;
+
+            parserBuffer.Clear();
+
+            return new IncrementalResult(affectedOffset, affectedCount);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character is the start of a newline token.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="ix">The index of the character to evaluate.</param>
+        /// <returns><c>true</c> if the specified character is the start of a newline token; otherwise, <c>false</c>.</returns>
+        private static Boolean IsStartOfNewline(StringSource input, Int32 ix)
+        {
+            return input[ix] == '\n';
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character is the start of a whitespace token.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="ix">The index of the character to evaluate.</param>
+        /// <returns><c>true</c> if the specified character is the start of a whitespace token; otherwise, <c>false</c>.</returns>
+        private static Boolean IsStartOfWhitespace(StringSource input, Int32 ix)
+        {
+            return Char.IsWhiteSpace(input[ix]) && !IsStartOfNewline(input, ix);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character is the end of a whitespace token.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="ix">The index of the character to evaluate.</param>
+        /// <returns><c>true</c> if the specified character is the end of a whitespace token; otherwise, <c>false</c>.</returns>
+        private static Boolean IsEndOfWhitespace(StringSource input, Int32 ix)
+        {
+            return !Char.IsWhiteSpace(input[ix]) || IsStartOfNewline(input, ix);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character is an escaped pipe.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="ix">The index of the character to evaluate.</param>
+        /// <returns><c>true</c> if the specified character is an escaped pipe; otherwise, <c>false</c>.</returns>
+        private static Boolean IsEscapedPipe(StringSource input, Int32 ix)
+        {
+            return input[ix] == '|' && (ix + 1 >= input.Length || input[ix + 1] == '|' || IsStartOfWhitespace(input, ix + 1) || IsStartOfNewline(input, ix + 1));
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character is the start of a command token.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="ix">The index of the character to evaluate.</param>
+        /// <returns><c>true</c> if the specified character is the start of a command token; otherwise, <c>false</c>.</returns>
+        private static Boolean IsStartOfCommand(StringSource input, Int32 ix)
+        {
+            return input[ix] == '|';
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character is the end of a command token.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="ix">The index of the character to evaluate.</param>
+        /// <returns><c>true</c> if the specified character is the end of a command token; otherwise, <c>false</c>.</returns>
+        private static Boolean IsEndOfCommand(StringSource input, Int32 ix)
+        {
+            return input[ix] == '|';
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character is the start of a word token.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="ix">The index of the character to evaluate.</param>
+        /// <returns><c>true</c> if the specified character is the start of a word token; otherwise, <c>false</c>.</returns>
+        private static Boolean IsStartOfWord(StringSource input, Int32 ix)
+        {
+            return !IsStartOfNewline(input, ix) && !IsStartOfWhitespace(input, ix) && !IsStartOfCommand(input, ix);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character is the end of a word token.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="ix">The index of the character to evaluate.</param>
+        /// <returns><c>true</c> if the specified character is the end of a word token; otherwise, <c>false</c>.</returns>
+        private static Boolean IsEndOfWord(StringSource input, Int32 ix)
+        {
+            return IsStartOfNewline(input, ix) || IsStartOfWhitespace(input, ix) || IsStartOfCommand(input, ix);
+        }
+
+        /// <summary>
+        /// Retrieves a newline token from the input stream, beginning at the specified character.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="options">The parser options.</param>
+        /// <param name="ix">The index at which to begin consuming token characters.</param>
+        /// <returns>The token that was created.</returns>
+        private static TextParserToken2 ConsumeNewlineToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        {
+            var sourceOffset = ix++;
+            var sourceLength = 1;
+            var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
+            return ParseLexerToken(TextLexerTokenType.NewLine, segment, sourceOffset, sourceLength, options);
+        }
+
+        /// <summary>
+        /// Retrieves a whitespace token from the input stream, beginning at the specified character.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="options">The parser options.</param>
+        /// <param name="ix">The index at which to begin consuming token characters.</param>
+        /// <returns>The token that was created.</returns>
+        private static TextParserToken2 ConsumeWhiteSpaceToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        {
+            var start = ix++;
+
+            while (ix < input.Length && !IsEndOfWhitespace(input, ix))
+                ix++;
+
+            var sourceOffset = start;
+            var sourceLength = ix - start;
+            var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
+            return ParseLexerToken(TextLexerTokenType.WhiteSpace, segment, sourceOffset, sourceLength, options);
+        }
+
+        /// <summary>
+        /// Retrieves an escaped pipe token from the input stream, beginning at the specified character.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="options">The parser options.</param>
+        /// <param name="ix">The index at which to begin consuming token characters.</param>
+        /// <returns>The token that was created.</returns>
+        private static TextParserToken2 ConsumeEscapedPipeToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        {
+            var start = ix++;
+            
+            if (ix < input.Length && input[ix] == '|')
+                ix++;
+
+            var sourceOffset = start;
+            var sourceLength = 1;
+            return ParseLexerToken(TextLexerTokenType.Pipe, "|", sourceOffset, sourceLength, options);
+        }
+
+        /// <summary>
+        /// Retrieves a command token from the input stream, beginning at the specified character.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="options">The parser options.</param>
+        /// <param name="ix">The index at which to begin consuming token characters.</param>
+        /// <returns>The token that was created.</returns>
+        private static TextParserToken2 ConsumeCommandToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        {
+            var valid = false;
+            var start = ix++;
+            while (ix < input.Length)
+            {
+                if (Char.IsWhiteSpace(input[ix]))
+                    break;
+
+                if (IsEndOfCommand(input, ix++)) 
+                {
+                    valid = true;
+                    break; 
+                }
+            }
+
+            var sourceOffset = start;
+            var sourceLength = ix - start;
+            var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
+            return ParseLexerToken(valid ? TextLexerTokenType.Command : TextLexerTokenType.Word, segment, sourceOffset, sourceLength, options);
+        }
+
+        /// <summary>
+        /// Retrieves a word token from the input stream, beginning at the specified character.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="options">The parser options.</param>
+        /// <param name="ix">The index at which to begin consuming token characters.</param>
+        /// <returns>The token that was created.</returns>
+        private static TextParserToken2 ConsumeWordToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        {
+            var start = ix++;
+            while (ix < input.Length && !IsEndOfWord(input, ix))
+                ix++;
+
+            var sourceOffset = start;
+            var sourceLength = ix - start;
+            var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
+            return ParseLexerToken(TextLexerTokenType.Word, segment, sourceOffset, sourceLength, options);
+        }
+
+        /// <summary>
+        /// Parses a lexer token.
+        /// </summary>
+        /// <param name="tokenType">A <see cref="TextLexerTokenType"/> value specifying the type of token produced by the lexer.</param>
+        /// <param name="tokenText">The text associated with the lexer token.</param>
+        /// <param name="sourceOffset">The offset of the first character in the source text that produced the token.</param>
+        /// <param name="sourceLength">The number of characters in the source text that produced the token.</param>
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        /// <returns>The parsed token.</returns>
+        private static TextParserToken2 ParseLexerToken(TextLexerTokenType tokenType, StringSegment tokenText, Int32 sourceOffset, Int32 sourceLength, TextParserOptions options)
+        {
+            var isIgnoringCommandCodes = (options & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes;
+
+            if (tokenType == TextLexerTokenType.Command && !isIgnoringCommandCodes)
+                return ParseCommandToken(tokenText, sourceOffset, sourceLength);
+
+            return new TextParserToken2(TextParserTokenType.Text, tokenText, sourceOffset, sourceLength);
+        }
+
+        /// <summary>
+        /// Parses a command token.
+        /// </summary>
+        /// <param name="tokenText">The text associated with the lexer token.</param>
+        /// <param name="sourceOffset">The offset of the first character in the source text that produced the token.</param>
+        /// <param name="sourceLength">The number of characters in the source text that produced the token.</param>
+        /// <returns>The parsed token.</returns>
+        private static TextParserToken2 ParseCommandToken(StringSegment tokenText, Int32 sourceOffset, Int32 sourceLength)
+        {
+            // Toggle bold style.
+            if (tokenText == "|b|")
+            {
+                return new TextParserToken2(TextParserTokenType.ToggleBold, StringSegment.Empty, sourceOffset, sourceLength);
+            }
+
+            // Toggle italic style.
+            if (tokenText == "|i|")
+            {
+                return new TextParserToken2(TextParserTokenType.ToggleItalic, StringSegment.Empty, sourceOffset, sourceLength);
+            }
+
+            // Set the current color.
+            if (tokenText.Length == 12 && tokenText.Substring(0, 3) == "|c:")
+            {
+                var hexcode = tokenText.Substring(3, 8);
+                return new TextParserToken2(TextParserTokenType.PushColor, hexcode, sourceOffset, sourceLength);
+            }
+
+            // Clear the current color.
+            if (tokenText == "|c|")
+            {
+                return new TextParserToken2(TextParserTokenType.PopColor, StringSegment.Empty, sourceOffset, sourceLength);
+            }
+
+            // Set the current font.
+            if (tokenText.Length >= 8 && tokenText.Substring(0, 6) == "|font:")
+            {
+                var name = tokenText.Substring(6, tokenText.Length - 7);
+                return new TextParserToken2(TextParserTokenType.PushFont, name, sourceOffset, sourceLength);
+            }
+
+            // Clear the current font.
+            if (tokenText == "|font|")
+            {
+                return new TextParserToken2(TextParserTokenType.PopFont, StringSegment.Empty, sourceOffset, sourceLength);
+            }
+
+            // Set the current glyph shader.
+            if (tokenText.Length >= 10 && tokenText.Substring(0, 8) == "|shader:")
+            {
+                var name = tokenText.Substring(8, tokenText.Length - 9);
+                return new TextParserToken2(TextParserTokenType.PushGlyphShader, name, sourceOffset, sourceLength);
+            }
+
+            // Clear the current glyph shader.
+            if (tokenText == "|shader|")
+            {
+                return new TextParserToken2(TextParserTokenType.PopGlyphShader, StringSegment.Empty, sourceOffset, sourceLength);
+            }
+
+            // Set the preset style.
+            if (tokenText.Length >= 9 && tokenText.Substring(0, 7) == "|style:")
+            {
+                var name = tokenText.Substring(7, tokenText.Length - 8);
+                return new TextParserToken2(TextParserTokenType.PushStyle, name, sourceOffset, sourceLength);
+            }
+
+            // Clear the preset style.
+            if (tokenText == "|style|")
+            {
+                return new TextParserToken2(TextParserTokenType.PopStyle, StringSegment.Empty, sourceOffset, sourceLength);
+            }
+
+            // Emit an inline icon.
+            if (tokenText.Length >= 8 && tokenText.Substring(0, 6) == "|icon:")
+            {
+                var name = tokenText.Substring(6, tokenText.Length - 7);
+                return new TextParserToken2(TextParserTokenType.Icon, name, sourceOffset, sourceLength);
+            }
+
+            // Unrecognized or invalid command.
+            return new TextParserToken2(TextParserTokenType.Text, tokenText, sourceOffset, sourceLength);
+        }
+        
+        /// <summary>
+        /// Finds the index of the first and last tokens which are potentially affected by changes in the specified substring of the source text.
+        /// </summary>
+        private void FindTokensInfluencedBySubstring(TextParserResult2 result, Int32 start, Int32 count, out Int32 ix1, out Int32 ix2)
+        {
+            var position = 0;
+            var end = start + count;
+
+            var ix1Found = false;
+            var ix2Found = false;
+
+            ix1 = 0;
+            ix2 = result.Count - 1;
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                var token = result[i];
+                var tokenStart = token.SourceOffset;
+                var tokenEnd = tokenStart + token.SourceLength;
+
+                if (!ix1Found && (start >= tokenStart && start <= tokenEnd))
+                {
+                    ix1 = i;
+                    ix1Found = true;
+                }
+
+                if (!ix2Found && (end >= tokenStart && end < tokenEnd))
+                {
+                    ix2 = i;
+                    ix2Found = true;
+                }
+
+                if (ix1Found && ix2Found)
+                    break;
+
+                position += token.SourceLength;
+            }
+        }
+
+        // A temporary buffer used by the incremental parser.
+        private static readonly ThreadLocal<TextParserResult2> incrementalParserBuffer = 
+            new ThreadLocal<TextParserResult2>(() => new TextParserResult2());
+    }
+}

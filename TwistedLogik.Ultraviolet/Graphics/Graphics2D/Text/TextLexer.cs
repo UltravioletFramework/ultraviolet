@@ -121,7 +121,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 index++;
             }
 
-            output.SourceText = input.ToStringSegment();
+            output.SourceText = input.CreateStringSegment();
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     new StringSegment(input.String, inputLengthDiff + token.TokenText.Start, token.TokenText.Length);
             }
 
-            output.SourceText = input.ToStringSegment();
+            output.SourceText = input.CreateStringSegment();
             output.InsertRange(ix1, lexBuffer);
 
             var affectedOffset = ix1;

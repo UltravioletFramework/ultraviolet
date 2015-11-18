@@ -13,10 +13,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="tokenType">The token's type.</param>
         /// <param name="text">The token's text.</param>
-        internal TextParserToken2(TextParserTokenType tokenType, StringSegment text)
+        /// <param name="sourceOffset">The offset of the first character in the source text that produced this token.</param>
+        /// <param name="sourceLength">The number of characters in the source text that produced this token.</param>
+        internal TextParserToken2(TextParserTokenType tokenType, StringSegment text, Int32 sourceOffset, Int32 sourceLength)
         {
             this.tokenType = tokenType;
             this.text = text;
+            this.sourceOffset = sourceOffset;
+            this.sourceLength = sourceLength;
         }
 
         /// <inheritdoc/>
@@ -43,6 +47,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Gets the offset of the first character in the source text that produced this token.
+        /// </summary>
+        public Int32 SourceOffset
+        {
+            get { return sourceOffset; }
+        }
+
+        /// <summary>
+        /// Gets the number of characters in the source text that produced this token.
+        /// </summary>
+        public Int32 SourceLength
+        {
+            get { return sourceLength; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this token represents a white space character.
         /// </summary>
         public Boolean IsWhiteSpace
@@ -61,5 +81,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         // Property values.
         private readonly TextParserTokenType tokenType;
         private readonly StringSegment text;
+        private readonly Int32 sourceOffset;
+        private readonly Int32 sourceLength;
     }
 }

@@ -96,43 +96,71 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Lexes the specified string.
+        /// Lexes and parses the specified string.
         /// </summary>
-        /// <param name="input">The string to lex.</param>
-        /// <param name="output">The lexed token stream.</param>
-        public void Lex(String input, TextLexerResult output)
+        /// <param name="input">The <see cref="String"/> to parse.</param>
+        /// <param name="output">The parsed token stream.</param>
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        public void Parse(String input, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
 
-            lexer.Lex(input, output);
+            parser.Parse(input, output, options);
         }
 
         /// <summary>
-        /// Parses the specified string.
+        /// Incrementally lexes and parses the specified string.
         /// </summary>
-        /// <param name="input">The token stream to parse.</param>
-        /// <param name="output">The parsed token stream.</param>
-        public void Parse(String input, TextParserResult2 output)
+        /// <param name="input">The <see cref="String"/> to parse.</param>
+        /// <param name="start">The index of the first character that was changed.</param>
+        /// <param name="count">The number of characters that were changed.</param>
+        /// <param name="result">The parsed token stream.</param>
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
+        /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
+        /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
+        /// of the source text are re-parsed by this operation.</remarks>
+        public void ParseIncremental(String input, Int32 start, Int32 count, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
 
-            lexer.Lex(input, lexerResult);
-            parser.Parse(lexerResult, output);
+            parser.ParseIncremental(input, start, count, output, options);
         }
 
         /// <summary>
-        /// Parses the specified token stream.
+        /// Lexes and parses the specified string.
         /// </summary>
-        /// <param name="input">The token stream to parse.</param>
+        /// <param name="input">The <see cref="StringBuilder"/> to parse.</param>
         /// <param name="output">The parsed token stream.</param>
-        public void Parse(TextLexerResult input, TextParserResult2 output)
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        public void Parse(StringBuilder input, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
 
-            parser.Parse(input, output);
+            parser.Parse(input, output, options);
+        }
+
+        /// <summary>
+        /// Incrementally lexes and parses the specified string.
+        /// </summary>
+        /// <param name="input">The <see cref="StringBuilder"/> to parse.</param>
+        /// <param name="start">The index of the first character that was changed.</param>
+        /// <param name="count">The number of characters that were changed.</param>
+        /// <param name="result">The parsed token stream.</param>
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
+        /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
+        /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
+        /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
+        /// of the source text are re-parsed by this operation.</remarks>
+        public void ParseIncremental(StringBuilder input, Int32 start, Int32 count, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
+        {
+            Contract.Require(input, "input");
+            Contract.Require(output, "output");
+
+            parser.ParseIncremental(input, start, count, output, options);
         }
 
         /// <summary>
@@ -145,19 +173,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
-
-            lexer.Lex(input, lexerResult);
-            parser.Parse(lexerResult, parserResult);
+            
+            parser.Parse(input, parserResult);
             layoutEngine.CalculateLayout(parserResult, output, settings);
         }
 
         /// <summary>
         /// Calculates a layout for the specified text.
         /// </summary>
-        /// <param name="input">The lexed text to lay out.</param>
+        /// <param name="input">The string of text to lay out.</param>
         /// <param name="output">The command stream representing the formatted text.</param>
         /// <param name="settings">The layout settings.</param>
-        public void CalculateLayout(TextLexerResult input, TextLayoutCommandStream output, TextLayoutSettings settings)
+        public void CalculateLayout(StringBuilder input, TextLayoutCommandStream output, TextLayoutSettings settings)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
@@ -193,11 +220,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
-
-            lexer.Lex(input, lexerResult);
-
+            
             var parserOptions = settings.GetParserOptions();
-            parser.Parse(lexerResult, parserResult, parserOptions);
+            parser.Parse(input, parserResult, parserOptions);
 
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
@@ -219,11 +244,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
-
-            lexer.Lex(input, lexerResult);
-
+            
             var parserOptions = settings.GetParserOptions();
-            parser.Parse(lexerResult, parserResult, parserOptions);
+            parser.Parse(input, parserResult, parserOptions);
 
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
@@ -234,12 +257,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> instance with which to draw the formatted text.</param>
-        /// <param name="input">The collection of lexer tokens which will be parsed, laid out, and drawn.</param>
+        /// <param name="input">The string which will be lexed, parsed, laid out, and drawn.</param>
         /// <param name="position">The position at which to draw the text.</param>
         /// <param name="defaultColor">The color with which to draw the text.</param>
         /// <param name="settings">The settings which are passed to the text layout engine.</param>
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
-        public RectangleF Draw(SpriteBatch spriteBatch, TextLexerResult input, Vector2 position, Color defaultColor, TextLayoutSettings settings)
+        public RectangleF Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Color defaultColor, TextLayoutSettings settings)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
@@ -256,14 +279,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> instance with which to draw the formatted text.</param>
-        /// <param name="input">The collection of lexer tokens which will be parsed, laid out, and drawn.</param>
+        /// <param name="input">The string which will be lexed, parsed, laid out, and drawn.</param>
         /// <param name="position">The position at which to draw the text.</param>
         /// <param name="defaultColor">The color with which to draw the text.</param>
         /// <param name="start">The index of the first character to draw.</param>
         /// <param name="count">The number of characters to draw.</param>
         /// <param name="settings">The settings which are passed to the text layout engine.</param>
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
-        public RectangleF Draw(SpriteBatch spriteBatch, TextLexerResult input, Vector2 position, Color defaultColor, Int32 start, Int32 count, TextLayoutSettings settings)
+        public RectangleF Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Color defaultColor, Int32 start, Int32 count, TextLayoutSettings settings)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
@@ -275,7 +298,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, start, count);
         }
-
+        
         /// <summary>
         /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
         /// </summary>
@@ -751,13 +774,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             return new StringSegment(sourceStringBuilder, start, length);
         }
-
-        // The text lexer.
-        private readonly TextLexer lexer = new TextLexer();
-        private readonly TextLexerResult lexerResult = new TextLexerResult();
-
+        
         // The text parser.
-        private readonly TextParser2 parser = new TextParser2();
+        private readonly TextLexerParser parser = new TextLexerParser();
         private readonly TextParserResult2 parserResult = new TextParserResult2();
 
         // The text layout engine.
