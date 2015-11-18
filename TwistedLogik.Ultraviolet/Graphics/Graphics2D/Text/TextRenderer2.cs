@@ -469,11 +469,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                                     var cmdIcon = input.GetIcon(cmd.IconIndex);
                                     var cmdPositionX = position.X + lineOffset + cmd.Bounds.X;
                                     var cmdPositionY = position.Y + blockOffset + cmd.Bounds.Y + ((lineHeight - cmd.Bounds.Height) / 2);
-                                    var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, 0, 0);
+                                    var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
                                     if (cmdGlyphShaderContext.IsValid)
                                     {
                                         var glyphColor = color;
-                                        cmdGlyphShaderContext.Execute('\x0000', ref cmdPositionX, ref cmdPositionY, ref glyphColor, 0);
+                                        cmdGlyphShaderContext.Execute('\x0000', ref cmdPositionX, ref cmdPositionY, ref glyphColor, charsSeen);
                                     }
                                     spriteBatch.DrawSprite(cmdIcon.Icon.Controller, new Vector2(cmdPositionX, cmdPositionY), cmdIcon.Width, cmdIcon.Height, color, 0f);
                                 }
