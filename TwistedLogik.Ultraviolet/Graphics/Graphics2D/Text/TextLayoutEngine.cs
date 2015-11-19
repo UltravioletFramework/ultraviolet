@@ -504,7 +504,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 if (token.TokenType != TextParserTokenType.Text || token.IsNewLine || !IsSegmentForCurrentSource(token.Text))
                     break;
                 
-                var tokenSize = MeasureToken(font, token, GetNextTextToken(input, index));
+                var tokenSize = MeasureToken(font, token, GetNextTextToken(input, index + 1));
                 if (state.PositionX + tokenSize.Width > (settings.Width ?? Int32.MaxValue))
                     break;
 
@@ -638,7 +638,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var token = input[i];
                 if (token.TokenType == TextParserTokenType.Text)
                     return token;
-
+                
                 if (token.TokenType == TextParserTokenType.Icon)
                     break;
             }
