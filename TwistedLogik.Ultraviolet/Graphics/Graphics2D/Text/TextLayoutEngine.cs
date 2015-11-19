@@ -300,10 +300,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (text.Length != 8)
                 throw new FormatException();
 
-            var a = GetHexNumberValue(text.Substring(0, 2));
-            var r = GetHexNumberValue(text.Substring(2, 2));
-            var g = GetHexNumberValue(text.Substring(4, 2));
-            var b = GetHexNumberValue(text.Substring(6, 2));
+            var a = (Int32)GetHexNumberValue(text.Substring(0, 2));
+            var r = (Int32)GetHexNumberValue(text.Substring(2, 2));
+            var g = (Int32)GetHexNumberValue(text.Substring(4, 2));
+            var b = (Int32)GetHexNumberValue(text.Substring(6, 2));
 
             return new Color(r, g, b, a);
         }

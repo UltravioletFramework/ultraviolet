@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             {
                 var offset = 0;
 
-                if (settings.Height.HasValue)
+                if (settings.Width.HasValue)
                 {
                     if ((settings.Flags & TextFlags.AlignRight) == TextFlags.AlignRight)
                         offset = (settings.Width.Value - lineWidth);

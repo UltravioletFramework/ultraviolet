@@ -393,7 +393,7 @@ namespace UvDebugSandbox
             //            textRenderer.Draw(spriteBatch, "The quick brown |c:ffff0000|    fox|c| jumps over the lazy dog.", 
             //              Vector2.Zero, Color.White, new TextLayoutSettings(spriteFont, 100, 100, TextFlags.Standard));
 
-            textRenderer2.Draw(spriteBatch, "The ||quick|| |b|brown |c:ffff0000|fox|c||b| |b||i|jumps|i||b| over the |shader:wavy||icon:foo| |shader:rainbow|lazy|shader| dog.|shader| Tra la la. |style:bar|Beware the man who |b|speaks in hands|style|. Tra la la.",
+            textRenderer2.Draw(spriteBatch, "|b|The |c:ffff8000|quick brown fox|c| jumps over the lazy dog.",
                 Vector2.Zero, Color.White, 0, Int32.MaxValue, new TextLayoutSettings(spriteFont, 200, 100, TextFlags.AlignRight));
 
             if (Ultraviolet.GetInput().GetKeyboard().IsKeyPressed(TwistedLogik.Ultraviolet.Input.Key.Q))
