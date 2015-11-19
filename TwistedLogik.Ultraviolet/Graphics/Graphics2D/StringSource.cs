@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 return new StringSegment(str, Start + start, length);
 
             if (builder != null)
-                return new StringSegment(str, Start + start, length);
+                return new StringSegment(builder, Start + start, length);
 
             if (start != 0)
                 throw new ArgumentOutOfRangeException("start");
@@ -101,6 +101,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             if (builder != null)
                 return new StringSegment(builder, start, length);
+
+            if (start != 0)
+                throw new ArgumentOutOfRangeException("start");
+
+            if (length != 0)
+                throw new ArgumentOutOfRangeException("length");
 
             return StringSegment.Empty;
         }

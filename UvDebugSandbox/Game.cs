@@ -119,30 +119,12 @@ namespace UvDebugSandbox
                 LoadPresentation();
 
                 this.spriteBatch = SpriteBatch.Create();
-                this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.DefaultUI);
-
-                shader = new TestGlyphShader();
-                rainbowShader = new RainbowGlyphShader();
-                wavyShader = new WavyGlyphShader();
-
-                var icons = this.content.Load<Sprite>(GlobalSpriteID.InterfaceIcons);
-
+                this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+                
                 this.textRenderer = new TextRenderer();
-                this.textRenderer.RegisterIcon("foo", icons["foo"]);
-                this.textRenderer.RegisterGlyphShader("test", shader);
-                this.textRenderer.RegisterGlyphShader("rainbow", rainbowShader);
-                this.textRenderer.RegisterGlyphShader("wavy", wavyShader);
                 this.textFormatter = new StringFormatter();
                 this.textBuffer = new StringBuilder();
-
-                this.textRenderer2 = new TextRenderer();
-                this.textRenderer2.RegisterIcon("foo", icons["foo"]);
-                this.textRenderer2.RegisterGlyphShader("test", shader);
-                this.textRenderer2.RegisterGlyphShader("rainbow", rainbowShader);
-                this.textRenderer2.RegisterGlyphShader("wavy", wavyShader);
-
-                this.textRenderer2.RegisterStyle("bar", new TextStyle(null, null, null, Color.Lime, rainbowShader, wavyShader));
-
+                
                 GC.Collect(2);
 
                 var screenService = new UIScreenService(content);
@@ -152,124 +134,6 @@ namespace UvDebugSandbox
             }
 
             base.OnLoadingContent();
-        }
-        TestGlyphShader shader;
-        RainbowGlyphShader rainbowShader;
-        WavyGlyphShader wavyShader;
-        TextRenderer textRenderer2;
-
-        private class RainbowGlyphShader : GlyphShader
-        {
-            public override void Execute(ref GlyphShaderContext context, Char glyph, ref Single x, ref Single y, ref Color color, Int32 index)
-            {
-                if (glyph == 0)
-                    return;
-
-                var colorIndex = (int)(index + cycle);
-                var color1 = colors[colorIndex % colors.Length];
-                var color2 = colors[(colorIndex + 1) % colors.Length];
-
-                var blend = (float)(cycle - (int)cycle);
-                color = Tweening.Lerp(color1, color2, blend);
-            }
-
-            public void Update(UltravioletTime time)
-            {
-                cycle += (time.ElapsedTime.TotalMilliseconds / 50.0);
-            }
-
-            private static readonly Color[] colors = new[] { Color.Red, Color.Orange, Color.Yellow, Color.Lime, Color.Cyan, Color.Violet };
-            private Double cycle;
-        }
-
-        private class WavyGlyphShader : GlyphShader
-        {
-            public override void Execute(ref GlyphShaderContext context, Char glyph, ref Single x, ref Single y, ref Color color, Int32 index)
-            {
-                glyph = '?';
-                var sin = Math.Sin((Math.PI * 2.0) * ((index % 10) / 10.0) + cycle);
-                y = (int)(y + (sin * 2));
-            }
-
-            public void Update(UltravioletTime time)
-            {
-                cycle += (time.ElapsedTime.TotalMilliseconds / 100.0);
-            }
-
-            private Double cycle;
-        }
-
-        private class TestGlyphShader : GlyphShader
-        {
-            public TestGlyphShader()
-            {
-                for (int i = 0; i < randos.Length; i++)
-                {
-                    randos[i] = rng.Next();
-                }
-
-                RegenerateOffsets();
-            }
-
-            public void Update(UltravioletTime time)
-            {
-                elapsed += time.ElapsedTime.TotalMilliseconds;
-
-                if (elapsed > 30)
-                {
-                    elapsed = 0;
-                    RegenerateOffsets();
-                }
-            }
-
-            private void RegenerateOffsets()
-            {
-                for (int i = 0; i < offsets.Length; i++)
-                {
-                    var x = offsets[i].X;
-                    var y = offsets[i].Y;
-
-                    var xchance = (x == 0) ? 1 : 250;
-                    var ychance = (y == 0) ? 1 : 250;
-
-                    if (rng.Next(0, 1000) < xchance)
-                    {
-                        if (x != 0)
-                            x = 0;
-                        else
-                        {
-                            x = rng.Next(0, 100) < 50 ? -1 : 1;
-                        }
-                    }
-
-                    if (rng.Next(0, 1000) < ychance)
-                    {
-                        if (y != 0)
-                            y = 0;
-                        else
-                        {
-                            y = rng.Next(0, 100) < 50 ? -1 : 1;
-                        }
-                    }
-
-                    offsets[i] = new Vector2(x, y);
-                }
-            }
-
-            public override void Execute(ref GlyphShaderContext context, Char character, ref Single x, ref Single y, ref Color color, Int32 index)
-            {
-                var rando = randos[(index + character) % randos.Length];
-                var offset = offsets[rando % offsets.Length];
-
-                x += offset.X;
-                y += offset.Y;
-            }
-
-            private readonly Random rng = new Random();
-            private readonly Int32[] randos = new Int32[1024];
-            private readonly Vector2[] offsets = new Vector2[1024];
-
-            private Double elapsed;
         }
 
         /// <summary>
@@ -352,10 +216,6 @@ namespace UvDebugSandbox
         /// <param name="time">Time elapsed since the last call to Update.</param>
         protected override void OnUpdating(UltravioletTime time)
         {
-            shader.Update(time);
-            rainbowShader.Update(time);
-            wavyShader.Update(time);
-
             var kb = Ultraviolet.GetInput().GetKeyboard();
             if (kb.IsKeyPressed(TwistedLogik.Ultraviolet.Input.Key.F2))
             {
@@ -390,28 +250,12 @@ namespace UvDebugSandbox
             textFormatter.AddArgument(upf.PerformanceStats.PositionCountLastFrame);
             textFormatter.Format("FPS: {0:decimals:2} FPS\nStyle: {1} / {2}\nMeasure: {3} / {4}\nArrange: {5} / {6}\nPosition: {7}", textBuffer);
 
-            //            textRenderer.Draw(spriteBatch, "The quick brown |c:ffff0000|    fox|c| jumps over the lazy dog.", 
-            //              Vector2.Zero, Color.White, new TextLayoutSettings(spriteFont, 100, 100, TextFlags.Standard));
-
-            textRenderer2.Draw(spriteBatch, "|b|The |c:ffff8000|quick brown fox|c| jumps over the lazy dog.",
-                Vector2.Zero, Color.White, 0, Int32.MaxValue, new TextLayoutSettings(spriteFont, 200, 100, TextFlags.AlignRight));
-
-            if (Ultraviolet.GetInput().GetKeyboard().IsKeyPressed(TwistedLogik.Ultraviolet.Input.Key.Q))
-            {
-                start++;
-            }
-
-            if (Ultraviolet.GetInput().GetKeyboard().IsKeyPressed(TwistedLogik.Ultraviolet.Input.Key.A))
-            {
-                start--;
-            }
+            textRenderer.Draw(spriteBatch, textBuffer, Vector2.Zero, Color.White, new TextLayoutSettings(spriteFont, null, null, TextFlags.Standard));
 
             spriteBatch.End();
 
             base.OnDrawing(time);
         }
-
-        private Int32 start;
 
         /// <summary>
         /// Called when the application is being shut down.
