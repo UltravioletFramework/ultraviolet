@@ -391,7 +391,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             var blockOffset = 0;
             var lineOffset = 0;
-            var lineOffsetMin = (Int32?)null;
             var lineHeight = 0;
             var charsSeen = 0;
 
@@ -421,7 +420,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             {
                                 var cmd = input.ReadLineInfoCommand();
                                 lineOffset = cmd.Offset;
-                                lineOffsetMin = lineOffsetMin.HasValue ? Math.Min(lineOffset, lineOffsetMin.GetValueOrDefault()) : lineOffset;
                                 lineHeight = cmd.LineHeight;
                             }
                             break;
@@ -592,7 +590,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 ClearLayoutStacks();
             }
 
-            return new RectangleF(position.X + (lineOffsetMin ?? 0), position.Y + blockOffset, input.ActualWidth, input.ActualHeight);
+            return new RectangleF(position.X + input.Bounds.X, position.Y + input.Bounds.Y, input.Bounds.Width, input.Bounds.Height);
         }
 
         /// <summary>

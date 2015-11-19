@@ -39,6 +39,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     ptr->LengthInLines = lengthInLines;
                 }
                 output.Seek(output.Count);
+
+                minBlockOffset = (minBlockOffset.HasValue) ? Math.Min(minBlockOffset.Value, offset) : offset;
             }
 
             /// <summary>
@@ -72,6 +74,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     ptr->LengthInCommands = lineLengthInCommands;
                 }
                 output.Seek(output.Count);
+
+                minLineOffset = (minLineOffset.HasValue) ? Math.Min(minLineOffset.Value, offset) : offset;
             }
 
             /// <summary>
@@ -233,6 +237,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 set { totalLength = value; }
             }
 
+            /// <summary>
+            /// Gets the bounds of the text after layout has been performed, relative to the layout area.
+            /// </summary>
+            public Rectangle Bounds
+            {
+                get
+                {
+                    return new Rectangle(minLineOffset ?? 0, minBlockOffset ?? 0, actualWidth, actualHeight);
+                }
+            }
+
             // Property values.
             private Int32 positionX;
             private Int32 positionY;
@@ -246,6 +261,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             private Int32 actualWidth;
             private Int32 actualHeight;
             private Int32 totalLength;
+            private Int32? minBlockOffset;
+            private Int32? minLineOffset;
         }
     }
 }

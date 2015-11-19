@@ -109,8 +109,8 @@ namespace UltravioletSample
                 "|c:FF808080|http://creativecommons.org/licenses/sampling+/1.0/|c|";
 
             var settings = new TextLayoutSettings(spriteFont, width, height, TextFlags.AlignMiddle | TextFlags.AlignCenter);
-            textRenderer.CalculateLayout(attribution, textLayoutResult, settings);
-            textRenderer.Draw(spriteBatch, textLayoutResult, Vector2.Zero, Color.White);
+            textRenderer.CalculateLayout(attribution, textLayoutCommands, settings);
+            textRenderer.Draw(spriteBatch, textLayoutCommands, Vector2.Zero, Color.White);
 
             spriteBatch.End();
 
@@ -124,10 +124,10 @@ namespace UltravioletSample
             LoadInputBindings();
             LoadContentManifests();
 
-            this.spriteFont       = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
-            this.spriteBatch      = SpriteBatch.Create();
-            this.textRenderer     = new TextRenderer();
-            this.textLayoutResult = new TextLayoutResult();
+            this.spriteFont         = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+            this.spriteBatch        = SpriteBatch.Create();
+            this.textRenderer       = new TextRenderer();
+            this.textLayoutCommands = new TextLayoutCommandStream();
 
             for (int i = 0; i < this.soundEffectPlayers.Length; i++)
             {
@@ -184,7 +184,7 @@ namespace UltravioletSample
         private SpriteFont spriteFont;
         private SpriteBatch spriteBatch;
         private TextRenderer textRenderer;
-        private TextLayoutResult textLayoutResult;
+        private TextLayoutCommandStream textLayoutCommands;
         private SoundEffect soundEffect;
         private readonly SoundEffectPlayer[] soundEffectPlayers = new SoundEffectPlayer[8];
         private Int32 nextPlayerInSequence;

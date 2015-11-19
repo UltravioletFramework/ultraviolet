@@ -280,6 +280,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 state.WriteBlockInfo(output, (Int16)state.ActualWidth, (Int16)state.ActualHeight, state.LineCount, ref settings);
 
                 output.Settings = settings;
+                output.Bounds = state.Bounds;
                 output.ActualWidth = state.ActualWidth;
                 output.ActualHeight = state.ActualHeight;
                 output.TotalLength = state.TotalLength;

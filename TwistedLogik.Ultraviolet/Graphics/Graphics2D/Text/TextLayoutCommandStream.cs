@@ -258,6 +258,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             Settings = default(TextLayoutSettings);
             SourceText = StringSegment.Empty;
+            Bounds = default(Rectangle);
             ActualWidth = 0;
             ActualHeight = 0;
             TotalLength = 0;
@@ -618,6 +619,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Gets the text that was processed by the layout engine.
         /// </summary>
         public StringSegment SourceText
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the bounds of the text after layout has been performed, relative to the layout area.
+        /// </summary>
+        public Rectangle Bounds
         {
             get;
             internal set;
