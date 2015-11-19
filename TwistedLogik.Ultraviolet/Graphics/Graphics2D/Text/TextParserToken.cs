@@ -6,16 +6,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents a token produced by parsing formatted text.
     /// </summary>
-    public struct TextParserToken2
+    public struct TextParserToken
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextParserToken2"/> structure.
+        /// Initializes a new instance of the <see cref="TextParserToken"/> structure.
         /// </summary>
         /// <param name="tokenType">The token's type.</param>
         /// <param name="text">The token's text.</param>
         /// <param name="sourceOffset">The offset of the first character in the source text that produced this token.</param>
         /// <param name="sourceLength">The number of characters in the source text that produced this token.</param>
-        internal TextParserToken2(TextParserTokenType tokenType, StringSegment text, Int32 sourceOffset, Int32 sourceLength)
+        internal TextParserToken(TextParserTokenType tokenType, StringSegment text, Int32 sourceOffset, Int32 sourceLength)
         {
             this.tokenType = tokenType;
             this.text = text;

@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="style">The style that was applied.</param>
         /// <param name="bold">A value indicating whether the font was bold before the style was applied.</param>
         /// <param name="italic">A value indicating whether the font was italic before the style was applied.</param>
-        public TextStyleInstance(TextStyle2 style, Boolean bold, Boolean italic)
+        public TextStyleInstance(TextStyle style, Boolean bold, Boolean italic)
         {
             this.style = style;
             this.bold = bold;
@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the style that was applied.
         /// </summary>
-        public TextStyle2 Style
+        public TextStyle Style
         {
             get { return style; }
         }
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         // Property values.
-        private readonly TextStyle2 style;
+        private readonly TextStyle style;
         private readonly Boolean bold;
         private readonly Boolean italic;
     }

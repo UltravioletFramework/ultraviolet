@@ -3,7 +3,7 @@ using System.Security;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
-    partial class TextLayoutEngine2
+    partial class TextLayoutEngine
     {
         /// <summary>
         /// Represents the state of the layout engine during a text layout operation.

@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents a lexer/parser which takes a string as input and produces a stream of formatted text tokens.
     /// </summary>
-    public sealed partial class TextLexerParser
+    public sealed partial class TextParser
     {
         /// <summary>
         /// Lexes and parses the specified string.
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The <see cref="String"/> to parse.</param>
         /// <param name="output">The parsed token stream.</param>
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        public void Parse(String input, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
+        public void Parse(String input, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
         /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
         /// of the source text are re-parsed by this operation.</remarks>
-        public IncrementalResult ParseIncremental(String input, Int32 start, Int32 count, TextParserResult2 result, TextParserOptions options = TextParserOptions.None)
+        public IncrementalResult ParseIncremental(String input, Int32 start, Int32 count, TextParserTokenStream result, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(result, "output");
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The <see cref="StringBuilder"/> to parse.</param>
         /// <param name="output">The parsed token stream.</param>
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        public void Parse(StringBuilder input, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
+        public void Parse(StringBuilder input, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
         /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
         /// of the source text are re-parsed by this operation.</remarks>
-        public IncrementalResult ParseIncremental(StringBuilder input, Int32 start, Int32 count, TextParserResult2 result, TextParserOptions options = TextParserOptions.None)
+        public IncrementalResult ParseIncremental(StringBuilder input, Int32 start, Int32 count, TextParserTokenStream result, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(result, "output");
@@ -93,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="index">The index at which to begin parsing the input string.</param>
         /// <param name="count">the number of characters to parse.</param>
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        private void Parse(StringSource input, TextParserResult2 output, Int32 index, Int32 count, TextParserOptions options = TextParserOptions.None)
+        private void Parse(StringSource input, TextParserTokenStream output, Int32 index, Int32 count, TextParserOptions options = TextParserOptions.None)
         {
             var bound = index + count;
             while (index < bound)
@@ -141,7 +141,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
         /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
         /// of the source text are re-parsed by this operation.</remarks>
-        private IncrementalResult ParseIncremental(StringSource input, Int32 start, Int32 count, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
+        private IncrementalResult ParseIncremental(StringSource input, Int32 start, Int32 count, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
             var inputLengthOld = output.SourceText.Length;
             var inputLengthNew = input.Length;
@@ -267,12 +267,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">The parser options.</param>
         /// <param name="ix">The index at which to begin consuming token characters.</param>
         /// <returns>The token that was created.</returns>
-        private static TextParserToken2 ConsumeNewlineToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeNewlineToken(StringSource input, TextParserOptions options, ref Int32 ix)
         {
             var sourceOffset = ix++;
             var sourceLength = 1;
             var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
-            return ParseLexerToken(TextLexerTokenType.NewLine, segment, sourceOffset, sourceLength, options);
+            return ParseLexerToken(LexedTokenType.NewLine, segment, sourceOffset, sourceLength, options);
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">The parser options.</param>
         /// <param name="ix">The index at which to begin consuming token characters.</param>
         /// <returns>The token that was created.</returns>
-        private static TextParserToken2 ConsumeWhiteSpaceToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeWhiteSpaceToken(StringSource input, TextParserOptions options, ref Int32 ix)
         {
             var start = ix++;
 
@@ -292,7 +292,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var sourceOffset = start;
             var sourceLength = ix - start;
             var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
-            return ParseLexerToken(TextLexerTokenType.WhiteSpace, segment, sourceOffset, sourceLength, options);
+            return ParseLexerToken(LexedTokenType.WhiteSpace, segment, sourceOffset, sourceLength, options);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">The parser options.</param>
         /// <param name="ix">The index at which to begin consuming token characters.</param>
         /// <returns>The token that was created.</returns>
-        private static TextParserToken2 ConsumeEscapedPipeToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeEscapedPipeToken(StringSource input, TextParserOptions options, ref Int32 ix)
         {
             var start = ix++;
             
@@ -311,7 +311,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             var sourceOffset = start;
             var sourceLength = 1;
-            return ParseLexerToken(TextLexerTokenType.Pipe, "|", sourceOffset, sourceLength, options);
+            return ParseLexerToken(LexedTokenType.Pipe, "|", sourceOffset, sourceLength, options);
         }
 
         /// <summary>
@@ -321,7 +321,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">The parser options.</param>
         /// <param name="ix">The index at which to begin consuming token characters.</param>
         /// <returns>The token that was created.</returns>
-        private static TextParserToken2 ConsumeCommandToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeCommandToken(StringSource input, TextParserOptions options, ref Int32 ix)
         {
             var valid = false;
             var start = ix++;
@@ -340,7 +340,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var sourceOffset = start;
             var sourceLength = ix - start;
             var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
-            return ParseLexerToken(valid ? TextLexerTokenType.Command : TextLexerTokenType.Word, segment, sourceOffset, sourceLength, options);
+            return ParseLexerToken(valid ? LexedTokenType.Command : LexedTokenType.Word, segment, sourceOffset, sourceLength, options);
         }
 
         /// <summary>
@@ -350,7 +350,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">The parser options.</param>
         /// <param name="ix">The index at which to begin consuming token characters.</param>
         /// <returns>The token that was created.</returns>
-        private static TextParserToken2 ConsumeWordToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeWordToken(StringSource input, TextParserOptions options, ref Int32 ix)
         {
             var start = ix++;
             while (ix < input.Length && !IsEndOfWord(input, ix))
@@ -359,7 +359,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var sourceOffset = start;
             var sourceLength = ix - start;
             var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
-            return ParseLexerToken(TextLexerTokenType.Word, segment, sourceOffset, sourceLength, options);
+            return ParseLexerToken(LexedTokenType.Word, segment, sourceOffset, sourceLength, options);
         }
 
         /// <summary>
@@ -371,14 +371,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="sourceLength">The number of characters in the source text that produced the token.</param>
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
         /// <returns>The parsed token.</returns>
-        private static TextParserToken2 ParseLexerToken(TextLexerTokenType tokenType, StringSegment tokenText, Int32 sourceOffset, Int32 sourceLength, TextParserOptions options)
+        private static TextParserToken ParseLexerToken(LexedTokenType tokenType, StringSegment tokenText, Int32 sourceOffset, Int32 sourceLength, TextParserOptions options)
         {
             var isIgnoringCommandCodes = (options & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes;
 
-            if (tokenType == TextLexerTokenType.Command && !isIgnoringCommandCodes)
+            if (tokenType == LexedTokenType.Command && !isIgnoringCommandCodes)
                 return ParseCommandToken(tokenText, sourceOffset, sourceLength);
 
-            return new TextParserToken2(TextParserTokenType.Text, tokenText, sourceOffset, sourceLength);
+            return new TextParserToken(TextParserTokenType.Text, tokenText, sourceOffset, sourceLength);
         }
 
         /// <summary>
@@ -388,87 +388,87 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="sourceOffset">The offset of the first character in the source text that produced the token.</param>
         /// <param name="sourceLength">The number of characters in the source text that produced the token.</param>
         /// <returns>The parsed token.</returns>
-        private static TextParserToken2 ParseCommandToken(StringSegment tokenText, Int32 sourceOffset, Int32 sourceLength)
+        private static TextParserToken ParseCommandToken(StringSegment tokenText, Int32 sourceOffset, Int32 sourceLength)
         {
             // Toggle bold style.
             if (tokenText == "|b|")
             {
-                return new TextParserToken2(TextParserTokenType.ToggleBold, StringSegment.Empty, sourceOffset, sourceLength);
+                return new TextParserToken(TextParserTokenType.ToggleBold, StringSegment.Empty, sourceOffset, sourceLength);
             }
 
             // Toggle italic style.
             if (tokenText == "|i|")
             {
-                return new TextParserToken2(TextParserTokenType.ToggleItalic, StringSegment.Empty, sourceOffset, sourceLength);
+                return new TextParserToken(TextParserTokenType.ToggleItalic, StringSegment.Empty, sourceOffset, sourceLength);
             }
 
             // Set the current color.
             if (tokenText.Length == 12 && tokenText.Substring(0, 3) == "|c:")
             {
                 var hexcode = tokenText.Substring(3, 8);
-                return new TextParserToken2(TextParserTokenType.PushColor, hexcode, sourceOffset, sourceLength);
+                return new TextParserToken(TextParserTokenType.PushColor, hexcode, sourceOffset, sourceLength);
             }
 
             // Clear the current color.
             if (tokenText == "|c|")
             {
-                return new TextParserToken2(TextParserTokenType.PopColor, StringSegment.Empty, sourceOffset, sourceLength);
+                return new TextParserToken(TextParserTokenType.PopColor, StringSegment.Empty, sourceOffset, sourceLength);
             }
 
             // Set the current font.
             if (tokenText.Length >= 8 && tokenText.Substring(0, 6) == "|font:")
             {
                 var name = tokenText.Substring(6, tokenText.Length - 7);
-                return new TextParserToken2(TextParserTokenType.PushFont, name, sourceOffset, sourceLength);
+                return new TextParserToken(TextParserTokenType.PushFont, name, sourceOffset, sourceLength);
             }
 
             // Clear the current font.
             if (tokenText == "|font|")
             {
-                return new TextParserToken2(TextParserTokenType.PopFont, StringSegment.Empty, sourceOffset, sourceLength);
+                return new TextParserToken(TextParserTokenType.PopFont, StringSegment.Empty, sourceOffset, sourceLength);
             }
 
             // Set the current glyph shader.
             if (tokenText.Length >= 10 && tokenText.Substring(0, 8) == "|shader:")
             {
                 var name = tokenText.Substring(8, tokenText.Length - 9);
-                return new TextParserToken2(TextParserTokenType.PushGlyphShader, name, sourceOffset, sourceLength);
+                return new TextParserToken(TextParserTokenType.PushGlyphShader, name, sourceOffset, sourceLength);
             }
 
             // Clear the current glyph shader.
             if (tokenText == "|shader|")
             {
-                return new TextParserToken2(TextParserTokenType.PopGlyphShader, StringSegment.Empty, sourceOffset, sourceLength);
+                return new TextParserToken(TextParserTokenType.PopGlyphShader, StringSegment.Empty, sourceOffset, sourceLength);
             }
 
             // Set the preset style.
             if (tokenText.Length >= 9 && tokenText.Substring(0, 7) == "|style:")
             {
                 var name = tokenText.Substring(7, tokenText.Length - 8);
-                return new TextParserToken2(TextParserTokenType.PushStyle, name, sourceOffset, sourceLength);
+                return new TextParserToken(TextParserTokenType.PushStyle, name, sourceOffset, sourceLength);
             }
 
             // Clear the preset style.
             if (tokenText == "|style|")
             {
-                return new TextParserToken2(TextParserTokenType.PopStyle, StringSegment.Empty, sourceOffset, sourceLength);
+                return new TextParserToken(TextParserTokenType.PopStyle, StringSegment.Empty, sourceOffset, sourceLength);
             }
 
             // Emit an inline icon.
             if (tokenText.Length >= 8 && tokenText.Substring(0, 6) == "|icon:")
             {
                 var name = tokenText.Substring(6, tokenText.Length - 7);
-                return new TextParserToken2(TextParserTokenType.Icon, name, sourceOffset, sourceLength);
+                return new TextParserToken(TextParserTokenType.Icon, name, sourceOffset, sourceLength);
             }
 
             // Unrecognized or invalid command.
-            return new TextParserToken2(TextParserTokenType.Text, tokenText, sourceOffset, sourceLength);
+            return new TextParserToken(TextParserTokenType.Text, tokenText, sourceOffset, sourceLength);
         }
         
         /// <summary>
         /// Finds the index of the first and last tokens which are potentially affected by changes in the specified substring of the source text.
         /// </summary>
-        private void FindTokensInfluencedBySubstring(TextParserResult2 result, Int32 start, Int32 count, out Int32 ix1, out Int32 ix2)
+        private void FindTokensInfluencedBySubstring(TextParserTokenStream result, Int32 start, Int32 count, out Int32 ix1, out Int32 ix2)
         {
             var position = 0;
             var end = start + count;
@@ -505,7 +505,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         // A temporary buffer used by the incremental parser.
-        private static readonly ThreadLocal<TextParserResult2> incrementalParserBuffer = 
-            new ThreadLocal<TextParserResult2>(() => new TextParserResult2());
+        private static readonly ThreadLocal<TextParserTokenStream> incrementalParserBuffer = 
+            new ThreadLocal<TextParserTokenStream>(() => new TextParserTokenStream());
     }
 }

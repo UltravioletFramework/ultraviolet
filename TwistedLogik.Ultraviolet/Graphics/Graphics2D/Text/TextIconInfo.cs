@@ -3,17 +3,17 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
-    /// Represents the metadata for an inline icon used by a text layout engine.
+    /// Represents the metadata for an icon used by the text layout engine.
     /// </summary>
-    public struct InlineIconInfo : IEquatable<InlineIconInfo>
+    public struct TextIconInfo : IEquatable<TextIconInfo>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InlineIconInfo"/> structure.
+        /// Initializes a new instance of the <see cref="TextIconInfo"/> structure.
         /// </summary>
         /// <param name="icon">The <see cref="SpriteAnimation"/> that represents the inline icon.</param>
         /// <param name="width">The width of the icon when rendered, in pixels.</param>
         /// <param name="height">The height of the icon when rendered, in pixels.</param>
-        internal InlineIconInfo(SpriteAnimation icon, Int32? width, Int32? height)
+        internal TextIconInfo(SpriteAnimation icon, Int32? width, Int32? height)
             : this()
         {
             Icon   = icon;
@@ -37,11 +37,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <inheritdoc/>
         public override Boolean Equals(Object obj)
         {
-            if (!(obj is InlineIconInfo))
+            if (!(obj is TextIconInfo))
             {
                 return false;
             }
-            return Equals((InlineIconInfo)obj);
+            return Equals((TextIconInfo)obj);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
         /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
-        public Boolean Equals(InlineIconInfo other)
+        public Boolean Equals(TextIconInfo other)
         {
             return
                 this.Icon == other.Icon &&

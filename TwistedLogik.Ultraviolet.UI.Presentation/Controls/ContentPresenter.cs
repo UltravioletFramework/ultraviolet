@@ -327,7 +327,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (contentElement == null)
             {
                 if (textParserResult == null)
-                    textParserResult = new TextParserResult2();
+                    textParserResult = new TextParserTokenStream();
 
                 var contentAsString = String.Format(ContentStringFormat ?? "{0}", content);
                 View.Resources.TextRenderer.Parse(contentAsString, textParserResult);
@@ -381,7 +381,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         // Cached parser/layout results for content text.
-        private TextParserResult2 textParserResult;
+        private TextParserTokenStream textParserResult;
         private TextLayoutCommandStream textLayoutCommands;
 
         // Cached layout parameters.

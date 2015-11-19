@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
-    /// Represents the collection of <see cref="GlyphShader"/> objects associated with a <see cref="TextStyle2"/>.
+    /// Represents the collection of <see cref="GlyphShader"/> objects associated with a <see cref="TextStyle"/>.
     /// </summary>
     public sealed partial class TextStyleGlyphShaderCollection : IEnumerable<GlyphShader>
     {

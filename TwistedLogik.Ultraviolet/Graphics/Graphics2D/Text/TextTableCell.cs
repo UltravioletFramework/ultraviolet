@@ -169,7 +169,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="x">The x-coordinate at which to draw the cell.</param>
         /// <param name="y">The y-coordinate at which to draw the cell.</param>
         /// <param name="color">The cell's default text color.</param>
-        internal void Draw(TextRenderer2 renderer, SpriteBatch spriteBatch, Single x, Single y, Color color)
+        internal void Draw(TextRenderer renderer, SpriteBatch spriteBatch, Single x, Single y, Color color)
         {
             renderer.Draw(spriteBatch, layout, new Vector2(x, y), color);
         }
@@ -191,7 +191,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="renderer">The text renderer used to lay out and render the table's text.</param>
         /// <param name="width">The cell's width in pixels.</param>
         /// <param name="height">The cell's height in pixels.</param>
-        internal void PerformLayout(TextRenderer2 renderer, Int32 width, Int32 height)
+        internal void PerformLayout(TextRenderer renderer, Int32 width, Int32 height)
         {
             var settings = new TextLayoutSettings(row.Table.Font, width, null, textFlags);
             renderer.CalculateLayout(text, layout, settings);

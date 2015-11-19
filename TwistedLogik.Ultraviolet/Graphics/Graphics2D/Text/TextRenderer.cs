@@ -10,14 +10,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     /// Contains methods for rendering formatted text.
     /// </summary>
     [SecuritySafeCritical]
-    public sealed unsafe class TextRenderer2
+    public sealed unsafe class TextRenderer
     {
         /// <summary>
         /// Registers a style with the specified name.
         /// </summary>
         /// <param name="name">The name of the style to register.</param>
         /// <param name="style">The style to register.</param>
-        public void RegisterStyle(String name, TextStyle2 style)
+        public void RegisterStyle(String name, TextStyle style)
         {
             layoutEngine.RegisterStyle(name, style);
         }
@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The <see cref="String"/> to parse.</param>
         /// <param name="output">The parsed token stream.</param>
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        public void Parse(String input, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
+        public void Parse(String input, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
@@ -120,7 +120,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
         /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
         /// of the source text are re-parsed by this operation.</remarks>
-        public void ParseIncremental(String input, Int32 start, Int32 count, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
+        public void ParseIncremental(String input, Int32 start, Int32 count, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
@@ -134,7 +134,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The <see cref="StringBuilder"/> to parse.</param>
         /// <param name="output">The parsed token stream.</param>
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        public void Parse(StringBuilder input, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
+        public void Parse(StringBuilder input, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
         /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
         /// of the source text are re-parsed by this operation.</remarks>
-        public void ParseIncremental(StringBuilder input, Int32 start, Int32 count, TextParserResult2 output, TextParserOptions options = TextParserOptions.None)
+        public void ParseIncremental(StringBuilder input, Int32 start, Int32 count, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
@@ -198,7 +198,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The parsed text to lay out.</param>
         /// <param name="output">The command stream representing the formatted text.</param>
         /// <param name="settings">The layout settings.</param>
-        public void CalculateLayout(TextParserResult2 input, TextLayoutCommandStream output, TextLayoutSettings settings)
+        public void CalculateLayout(TextParserTokenStream input, TextLayoutCommandStream output, TextLayoutSettings settings)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
@@ -307,7 +307,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="defaultColor">The color with which to draw the text.</param>
         /// <param name="settings">The settings which are passed to the text layout engine.</param>
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
-        public RectangleF Draw(SpriteBatch spriteBatch, TextParserResult2 input, Vector2 position, Color defaultColor, TextLayoutSettings settings)
+        public RectangleF Draw(SpriteBatch spriteBatch, TextParserTokenStream input, Vector2 position, Color defaultColor, TextLayoutSettings settings)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
@@ -328,7 +328,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="count">The number of characters to draw.</param>
         /// <param name="settings">The settings which are passed to the text layout engine.</param>
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
-        public RectangleF Draw(SpriteBatch spriteBatch, TextParserResult2 input, Vector2 position, Color defaultColor, Int32 start, Int32 count, TextLayoutSettings settings)
+        public RectangleF Draw(SpriteBatch spriteBatch, TextParserTokenStream input, Vector2 position, Color defaultColor, Int32 start, Int32 count, TextLayoutSettings settings)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
@@ -618,7 +618,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Pushes a style onto the style stack.
         /// </summary>
-        private void PushStyle(TextStyle2 style, ref Boolean bold, ref Boolean italic)
+        private void PushStyle(TextStyle style, ref Boolean bold, ref Boolean italic)
         {
             var instance = new TextStyleInstance(style, bold, italic);
             styleStack.Push(instance);
@@ -755,11 +755,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
                 
         // The text parser.
-        private readonly TextLexerParser parser = new TextLexerParser();
-        private readonly TextParserResult2 parserResult = new TextParserResult2();
+        private readonly TextParser parser = new TextParser();
+        private readonly TextParserTokenStream parserResult = new TextParserTokenStream();
 
         // The text layout engine.
-        private readonly TextLayoutEngine2 layoutEngine = new TextLayoutEngine2();
+        private readonly TextLayoutEngine layoutEngine = new TextLayoutEngine();
         private readonly TextLayoutCommandStream layoutResult = new TextLayoutCommandStream();
 
         // Layout parameter stacks.

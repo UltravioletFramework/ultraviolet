@@ -89,7 +89,7 @@ namespace SafeProjectName
             this.spriteBatch = SpriteBatch.Create();
             this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
 
-            this.textRenderer = new TextRenderer2();
+            this.textRenderer = new TextRenderer();
             this.textFormatter = new StringFormatter();
             this.textBuffer = new StringBuilder();
 
@@ -223,7 +223,7 @@ namespace SafeProjectName
         private CursorCollection cursors;
         private SpriteFont spriteFont;
         private SpriteBatch spriteBatch;
-        private TextRenderer2 textRenderer;
+        private TextRenderer textRenderer;
         private StringFormatter textFormatter;
         private StringBuilder textBuffer;
     }

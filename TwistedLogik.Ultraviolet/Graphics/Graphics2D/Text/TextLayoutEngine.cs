@@ -9,14 +9,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents an engine for laying out formatted text.
     /// </summary>
-    public sealed partial class TextLayoutEngine2
+    public sealed partial class TextLayoutEngine
     {
         /// <summary>
         /// Registers a style with the specified name.
         /// </summary>
         /// <param name="name">The name of the style to register.</param>
         /// <param name="style">The style to register.</param>
-        public void RegisterStyle(String name, TextStyle2 style)
+        public void RegisterStyle(String name, TextStyle style)
         {
             Contract.RequireNotEmpty(name, "name");
 
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.RequireNotEmpty(name, "name");
             Contract.Require(icon, "icon");
 
-            registeredIcons.Add(name, new InlineIconInfo(icon, width, height));
+            registeredIcons.Add(name, new TextIconInfo(icon, width, height));
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The parsed text which will be laid out according to the specified settings.</param>
         /// <param name="output">The layout command stream which will be populated with commands by this operation.</param>
         /// <param name="settings">A <see cref="TextLayoutSettings"/> structure which contains the settings for this operation.</param>
-        public void CalculateLayout(TextParserResult2 input, TextLayoutCommandStream output, TextLayoutSettings settings)
+        public void CalculateLayout(TextParserTokenStream input, TextLayoutCommandStream output, TextLayoutSettings settings)
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
@@ -172,7 +172,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                         case TextParserTokenType.Icon:
                             {
-                                var icon = default(InlineIconInfo);
+                                var icon = default(TextIconInfo);
                                 var iconIndex = RegisterIconWithCommandStream(output, token.Text, out icon);
                                 var iconSize = MeasureToken(currentFont, token);
 
@@ -224,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                         case TextParserTokenType.PushStyle:
                             {
-                                var pushedStyle = default(TextStyle2);
+                                var pushedStyle = default(TextStyle);
                                 var pushedStyleIndex = RegisterStyleWithCommandStream(output, token.Text, out pushedStyle);
                                 output.WritePushStyle(new TextLayoutStyleCommand(pushedStyleIndex));
                                 state.AdvanceToNextCommand();
@@ -381,7 +381,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Pushes a style onto the style stack.
         /// </summary>
         /// <param name="style">The style to push onto the stack.</param>
-        private void PushStyle(TextStyle2 style, ref Boolean bold, ref Boolean italic)
+        private void PushStyle(TextStyle style, ref Boolean bold, ref Boolean italic)
         {
             var instance = new TextStyleInstance(style, bold, italic);
             styleStack.Push(instance);
@@ -450,7 +450,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Accumulates sequential text tokens into a single text command.
         /// </summary>
-        private Boolean AccumulateText(TextParserResult2 input, TextLayoutCommandStream output, SpriteFontFace font, ref Int32 index, ref LayoutState state, ref TextLayoutSettings settings)
+        private Boolean AccumulateText(TextParserTokenStream input, TextLayoutCommandStream output, SpriteFontFace font, ref Int32 index, ref LayoutState state, ref TextLayoutSettings settings)
         {
             var first = input[index];
             var firstSize = MeasureToken(font, first, GetNextTextToken(input, index));
@@ -550,13 +550,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="tokenCurrent">The token to measure.</param>
         /// <param name="tokenNext">The token after <paramref name="tokenCurrent"/>, excluding command tokens.</param>
         /// <returns>The size of the specified token in pixels.</returns>
-        private Size2 MeasureToken(SpriteFontFace font, TextParserToken2 tokenCurrent, TextParserToken2? tokenNext = null)
+        private Size2 MeasureToken(SpriteFontFace font, TextParserToken tokenCurrent, TextParserToken? tokenNext = null)
         {
             switch (tokenCurrent.TokenType)
             {
                 case TextParserTokenType.Icon:
                     {
-                        InlineIconInfo icon;
+                        TextIconInfo icon;
                         if (!registeredIcons.TryGetValue(tokenCurrent.Text, out icon))
                             throw new InvalidOperationException(UltravioletStrings.UnrecognizedIcon.Format(tokenCurrent.Text));
 
@@ -586,7 +586,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Registers the specified style with the command stream and returns its resulting index.
         /// </summary>
-        public Int32 RegisterStyleWithCommandStream(TextLayoutCommandStream output, StringSegment name, out TextStyle2 style)
+        public Int32 RegisterStyleWithCommandStream(TextLayoutCommandStream output, StringSegment name, out TextStyle style)
         {
             if (!registeredStyles.TryGetValue(name, out style))
                 throw new InvalidOperationException(UltravioletStrings.UnrecognizedStyle.Format(name));
@@ -597,7 +597,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Registers the specified icon with the command stream and returns its resulting index.
         /// </summary>
-        private Int32 RegisterIconWithCommandStream(TextLayoutCommandStream output, StringSegment name, out InlineIconInfo icon)
+        private Int32 RegisterIconWithCommandStream(TextLayoutCommandStream output, StringSegment name, out TextIconInfo icon)
         {
             if (!registeredIcons.TryGetValue(name, out icon))
                 throw new InvalidOperationException(UltravioletStrings.UnrecognizedIcon.Format(name));
@@ -631,7 +631,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Gets the next text token after the specified index, if one exists and there are no intervening
         /// visible tokens (excluding commands).
         /// </summary>
-        private TextParserToken2? GetNextTextToken(TextParserResult2 input, Int32 index)
+        private TextParserToken? GetNextTextToken(TextParserTokenStream input, Int32 index)
         {
             for (int i = index + 1; i < input.Count; i++)
             {
@@ -656,10 +656,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         // Registered styles, icons, fonts, and glyph shaders.
-        private readonly Dictionary<StringSegment, TextStyle2> registeredStyles =
-            new Dictionary<StringSegment, TextStyle2>();
-        private readonly Dictionary<StringSegment, InlineIconInfo> registeredIcons =
-            new Dictionary<StringSegment, InlineIconInfo>();
+        private readonly Dictionary<StringSegment, TextStyle> registeredStyles =
+            new Dictionary<StringSegment, TextStyle>();
+        private readonly Dictionary<StringSegment, TextIconInfo> registeredIcons =
+            new Dictionary<StringSegment, TextIconInfo>();
         private readonly Dictionary<StringSegment, SpriteFont> registeredFonts =
             new Dictionary<StringSegment, SpriteFont>();
         private readonly Dictionary<StringSegment, GlyphShader> registeredGlyphShaders =

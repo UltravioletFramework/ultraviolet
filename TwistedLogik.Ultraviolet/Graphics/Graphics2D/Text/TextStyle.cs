@@ -5,17 +5,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents a preset text style.
     /// </summary>
-    public sealed class TextStyle2
+    public sealed class TextStyle
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextStyle2"/> class.
+        /// Initializes a new instance of the <see cref="TextStyle"/> class.
         /// </summary>
         /// <param name="font">The font which is applied by this style, if any.</param>
         /// <param name="bold">A value indicating whether this style makes the current font bold.</param>
         /// <param name="italic">A value indicating whether this style makes the current font italic.</param>
         /// <param name="color">The color which is applied by this style, if any.</param>
         /// <param name="glyphShaders">The glyph shaders which are applied by this style, if any.</param>
-        public TextStyle2(SpriteFont font, Boolean? bold, Boolean? italic, Color? color, params GlyphShader[] glyphShaders)
+        public TextStyle(SpriteFont font, Boolean? bold, Boolean? italic, Color? color, params GlyphShader[] glyphShaders)
         {
             this.Font = font;
             this.Bold = bold;

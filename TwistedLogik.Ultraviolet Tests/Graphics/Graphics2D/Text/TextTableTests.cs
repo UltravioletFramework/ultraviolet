@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
             var spriteBatch  = default(SpriteBatch);
             var spriteFont   = default(SpriteFont);
-            var textRenderer = default(TextRenderer2);
+            var textRenderer = default(TextRenderer);
             var table        = default(TextTable<TextTableViewModel>);
             var tableLayout  = default(TextTableLayout);
             var tableTexture = default(Texture2D);
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch  = SpriteBatch.Create();
                     spriteFont   = content.Load<SpriteFont>("Fonts/SegoeUI");
 
-                    textRenderer = new TextRenderer2();
+                    textRenderer = new TextRenderer();
                     textRenderer.RegisterFont("header", content.Load<SpriteFont>("Fonts/Garamond"));
                     textRenderer.RegisterFont("text", content.Load<SpriteFont>("Fonts/SegoeUI"));
 

@@ -127,7 +127,7 @@ namespace UvDebugSandbox
 
                 var icons = this.content.Load<Sprite>(GlobalSpriteID.InterfaceIcons);
 
-                this.textRenderer = new TextRenderer2();
+                this.textRenderer = new TextRenderer();
                 this.textRenderer.RegisterIcon("foo", icons["foo"]);
                 this.textRenderer.RegisterGlyphShader("test", shader);
                 this.textRenderer.RegisterGlyphShader("rainbow", rainbowShader);
@@ -135,13 +135,13 @@ namespace UvDebugSandbox
                 this.textFormatter = new StringFormatter();
                 this.textBuffer = new StringBuilder();
 
-                this.textRenderer2 = new TextRenderer2();
+                this.textRenderer2 = new TextRenderer();
                 this.textRenderer2.RegisterIcon("foo", icons["foo"]);
                 this.textRenderer2.RegisterGlyphShader("test", shader);
                 this.textRenderer2.RegisterGlyphShader("rainbow", rainbowShader);
                 this.textRenderer2.RegisterGlyphShader("wavy", wavyShader);
 
-                this.textRenderer2.RegisterStyle("bar", new TextStyle2(null, null, null, Color.Lime, rainbowShader, wavyShader));
+                this.textRenderer2.RegisterStyle("bar", new TextStyle(null, null, null, Color.Lime, rainbowShader, wavyShader));
 
                 GC.Collect(2);
 
@@ -156,7 +156,7 @@ namespace UvDebugSandbox
         TestGlyphShader shader;
         RainbowGlyphShader rainbowShader;
         WavyGlyphShader wavyShader;
-        TextRenderer2 textRenderer2;
+        TextRenderer textRenderer2;
 
         private class RainbowGlyphShader : GlyphShader
         {
@@ -507,7 +507,7 @@ namespace UvDebugSandbox
         private CursorCollection cursors;
         private SpriteFont spriteFont;
         private SpriteBatch spriteBatch;
-        private TextRenderer2 textRenderer;
+        private TextRenderer textRenderer;
         private StringFormatter textFormatter;
         private StringBuilder textBuffer;
 

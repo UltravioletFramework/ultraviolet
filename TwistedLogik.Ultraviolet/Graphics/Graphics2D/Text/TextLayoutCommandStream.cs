@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the style to register.</param>
         /// <param name="style">The style to register under the specified name.</param>
         /// <returns>The index of the specified style within the command stream's internal registry.</returns>
-        public Int32 RegisterStyle(StringSegment name, TextStyle2 style)
+        public Int32 RegisterStyle(StringSegment name, TextStyle style)
         {
             Contract.Require(style, "style");
 
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the icon to register.</param>
         /// <param name="icon">The icon to register under the specified name.</param>
         /// <returns>The index of the specified icon within the command stream's internal registry.</returns>
-        public Int32 RegisterIcon(StringSegment name, InlineIconInfo icon)
+        public Int32 RegisterIcon(StringSegment name, TextIconInfo icon)
         {
             return RegisterResource(name, icon, icons, iconsByName);
         }
@@ -105,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the style to retrieve.</param>
         /// <returns>The registered style with the specified name.</returns>
-        public TextStyle2 GetStyle(StringSegment name)
+        public TextStyle GetStyle(StringSegment name)
         {
             Int32 index;
             if (!stylesByName.TryGetValue(name, out index))
@@ -119,7 +119,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered style to retrieve.</param>
         /// <returns>The registered style at the specified index within the command stream's internal registry.</returns>
-        public TextStyle2 GetStyle(Int32 index)
+        public TextStyle GetStyle(Int32 index)
         {
             return styles[index];
         }
@@ -129,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the icon to retrieve.</param>
         /// <returns>The registered icon with the specified name.</returns>
-        public InlineIconInfo? GetIcon(StringSegment name)
+        public TextIconInfo? GetIcon(StringSegment name)
         {
             Int32 index;
             if (!iconsByName.TryGetValue(name, out index))
@@ -143,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered icon to retrieve.</param>
         /// <returns>The registered icon at the specified index within the command stream's internal registry.</returns>
-        public InlineIconInfo GetIcon(Int32 index)
+        public TextIconInfo GetIcon(Int32 index)
         {
             return icons[index];
         }
@@ -721,8 +721,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private readonly Dictionary<StringSegment, Int32> fontsByName = new Dictionary<StringSegment, Int32>();
         private readonly Dictionary<StringSegment, Int32> glyphShadersByName = new Dictionary<StringSegment, Int32>();
         private readonly Dictionary<Object, Int32> sourcesByReference = new Dictionary<Object, Int32>();
-        private readonly List<TextStyle2> styles = new List<TextStyle2>();
-        private readonly List<InlineIconInfo> icons = new List<InlineIconInfo>();
+        private readonly List<TextStyle> styles = new List<TextStyle>();
+        private readonly List<TextIconInfo> icons = new List<TextIconInfo>();
         private readonly List<SpriteFont> fonts = new List<SpriteFont>();
         private readonly List<GlyphShader> glyphShaders = new List<GlyphShader>();
         private readonly List<Object> sources = new List<Object>();

@@ -136,7 +136,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         // State values.
-        private readonly TextParserResult2 textParserResult = new TextParserResult2();
+        private readonly TextParserTokenStream textParserResult = new TextParserTokenStream();
         private readonly TextLayoutCommandStream textLayoutCommands = new TextLayoutCommandStream();
     }
 }

@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="icon">The token's icon.</param>
         /// <param name="glyphShader">The token's glyph shader.</param>
         /// <param name="color">The token's color.</param>
-        internal TextLayoutToken(StringSegment text, Rectangle bounds, SpriteFontFace fontFace, InlineIconInfo? icon, GlyphShader glyphShader, Color? color)
+        internal TextLayoutToken(StringSegment text, Rectangle bounds, SpriteFontFace fontFace, TextIconInfo? icon, GlyphShader glyphShader, Color? color)
         {
             this.text = text;
             this.bounds = bounds;
@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the token's icon.
         /// </summary>
-        public InlineIconInfo? Icon
+        public TextIconInfo? Icon
         {
             get { return icon; }
         }
@@ -125,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private readonly StringSegment text;
         private Rectangle bounds;
         private readonly SpriteFontFace fontFace;
-        private readonly InlineIconInfo? icon;
+        private readonly TextIconInfo? icon;
         private readonly GlyphShader glyphShader;
         private readonly Color? color;
     }
