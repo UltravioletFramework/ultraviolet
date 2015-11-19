@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The <see cref="String"/> to parse.</param>
         /// <param name="start">The index of the first character that was changed.</param>
         /// <param name="count">The number of characters that were changed.</param>
-        /// <param name="result">The parsed token stream.</param>
+        /// <param name="output">The parsed token stream.</param>
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
         /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
         /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
@@ -148,7 +148,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The <see cref="StringBuilder"/> to parse.</param>
         /// <param name="start">The index of the first character that was changed.</param>
         /// <param name="count">The number of characters that were changed.</param>
-        /// <param name="result">The parsed token stream.</param>
+        /// <param name="output">The parsed token stream.</param>
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
         /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
         /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made

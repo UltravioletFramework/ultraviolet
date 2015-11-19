@@ -365,7 +365,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Parses a lexer token.
         /// </summary>
-        /// <param name="tokenType">A <see cref="TextLexerTokenType"/> value specifying the type of token produced by the lexer.</param>
+        /// <param name="tokenType">A <see cref="LexedTokenType"/> value specifying the type of token produced by the lexer.</param>
         /// <param name="tokenText">The text associated with the lexer token.</param>
         /// <param name="sourceOffset">The offset of the first character in the source text that produced the token.</param>
         /// <param name="sourceLength">The number of characters in the source text that produced the token.</param>

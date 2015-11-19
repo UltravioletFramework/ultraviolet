@@ -381,6 +381,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Pushes a style onto the style stack.
         /// </summary>
         /// <param name="style">The style to push onto the stack.</param>
+        /// <param name="bold">A value indicating whether the current font face is bold.</param>
+        /// <param name="italic">A value indicating whether the current font face is italic.</param>
         private void PushStyle(TextStyle style, ref Boolean bold, ref Boolean italic)
         {
             var instance = new TextStyleInstance(style, bold, italic);

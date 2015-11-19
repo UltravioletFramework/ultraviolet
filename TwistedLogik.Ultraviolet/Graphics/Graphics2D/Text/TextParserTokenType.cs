@@ -1,7 +1,7 @@
 ﻿namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
-    /// Represents the types of parser tokens produced by <see cref="TextParser2"/>.
+    /// Represents the types of parser tokens produced by <see cref="TextParser"/>.
     /// </summary>
     public enum TextParserTokenType : byte
     {
