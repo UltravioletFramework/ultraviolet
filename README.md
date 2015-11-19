@@ -1,7 +1,7 @@
 ### Builds
 | Branch | Status |
 |--------|--------|
-| master | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/TLUV-TLUVB) |
+| master | ![Build Status](http://98.192.8.78:8085/plugins/servlet/wittified/build-status/TLUV-TLUVB) |
 
 What is Ultraviolet?
 ====================
