@@ -45,7 +45,7 @@ namespace TwistedLogik.Nucleus.Text
         public StringSegment(String source, Int32 start, Int32 length)
         {
             Contract.Require(source, "string");
-            Contract.EnsureRange(start >= 0 && start < source.Length, "start");
+            Contract.EnsureRange(start >= 0 && start <= source.Length, "start");
             Contract.EnsureRange(length >= 0 && start + length <= source.Length, "length");
 
             this.sourceString  = source;
@@ -63,7 +63,7 @@ namespace TwistedLogik.Nucleus.Text
         public StringSegment(StringBuilder source, Int32 start, Int32 length)
         {
             Contract.Require(source, "source");
-            Contract.EnsureRange(start >= 0 && start < source.Length, "start");
+            Contract.EnsureRange(start >= 0 && start <= source.Length, "start");
             Contract.EnsureRange(length >= 0 && start + length <= source.Length, "length");
 
             this.sourceString  = null;
@@ -80,7 +80,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="length">The number of characters in the string segment.</param>
         public StringSegment(StringSegment source, Int32 start, Int32 length)
         {
-            Contract.EnsureRange(start >= 0 && start < source.Length, "start");
+            Contract.EnsureRange(start >= 0 && start <= source.Length, "start");
             Contract.EnsureRange(length >= 0 && start + length <= source.Length, "length");
 
             this.sourceString = source.sourceString;

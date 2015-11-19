@@ -164,5 +164,51 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries.png");
         }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that the TextRenderer class returns the correct bounding box from its Draw() method.")]
+        public void TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(SpriteFont);
+            var textRenderer = default(TextRenderer);
+            var blankTexture = default(Texture2D);
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<SpriteFont>("Fonts/Garamond");
+                    textRenderer = new TextRenderer();
+                    blankTexture = Texture2D.Create(1, 1);
+                    blankTexture.SetData(new[] { Color.White });
+                })
+                .Render(uv =>
+                {
+                    const string text =
+                        "Lorem ipsum dolor sit amet,\n" +
+                        "|b|consectetur adipiscing elit.|b|\n" +
+                        "|i|Pellentesque egestas luctus sapien|i|\n" +
+                        "|b||i|in malesuada.|i||b|";
+                    
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var width = window.ClientSize.Width;
+                    var height = window.ClientSize.Height;
+
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+                    var settings = new TextLayoutSettings(spriteFont, width, height, TextFlags.AlignMiddle | TextFlags.AlignCenter);
+                    var bounds = textRenderer.Draw(spriteBatch, text, Vector2.Zero, Color.White, settings);
+
+                    spriteBatch.Draw(blankTexture, bounds, Color.Red * 0.5f);
+
+                    spriteBatch.End();
+                });
+            
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png");
+        }
     }
 }
