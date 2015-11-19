@@ -16,14 +16,14 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         {
             var spriteBatch  = default(SpriteBatch);
             var spriteFont   = default(SpriteFont);
-            var textRenderer = default(TextRenderer);
+            var textRenderer = default(TextRenderer2);
 
             var result = GivenAnUltravioletApplication()
                 .WithContent(content =>
                 {
                     spriteBatch  = SpriteBatch.Create();
                     spriteFont   = content.Load<SpriteFont>("Fonts/SegoeUI");
-                    textRenderer = new TextRenderer();
+                    textRenderer = new TextRenderer2();
                 })
                 .Render(uv =>
                 {
@@ -45,14 +45,14 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         {
             var spriteBatch  = default(SpriteBatch);
             var spriteFont   = default(SpriteFont);
-            var textRenderer = default(TextRenderer);
+            var textRenderer = default(TextRenderer2);
 
             var result = GivenAnUltravioletApplication()
                 .WithContent(content =>
                 {
                     spriteBatch  = SpriteBatch.Create();
                     spriteFont   = content.Load<SpriteFont>("Fonts/Garamond");
-                    textRenderer = new TextRenderer();
+                    textRenderer = new TextRenderer2();
                 })
                 .Render(uv =>
                 {
@@ -78,14 +78,14 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         {
             var spriteBatch  = default(SpriteBatch);
             var spriteFont   = default(SpriteFont);
-            var textRenderer = default(TextRenderer);
+            var textRenderer = default(TextRenderer2);
 
             var result = GivenAnUltravioletApplication()
                 .WithContent(content =>
                 {
                     spriteBatch  = SpriteBatch.Create();
                     spriteFont   = content.Load<SpriteFont>("Fonts/SegoeUI");
-                    textRenderer = new TextRenderer();
+                    textRenderer = new TextRenderer2();
                 })
                 .Render(uv =>
                 {
@@ -135,14 +135,14 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         {
             var spriteBatch  = default(SpriteBatch);
             var spriteFont   = default(SpriteFont);
-            var textRenderer = default(TextRenderer);
+            var textRenderer = default(TextRenderer2);
 
             var result = GivenAnUltravioletApplication()
                 .WithContent(content =>
                 {
                     spriteBatch  = SpriteBatch.Create();
                     spriteFont   = content.Load<SpriteFont>("Fonts/Garamond");
-                    textRenderer = new TextRenderer();
+                    textRenderer = new TextRenderer2();
                 })
                 .Render(uv =>
                 {
@@ -172,7 +172,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         {
             var spriteBatch = default(SpriteBatch);
             var spriteFont = default(SpriteFont);
-            var textRenderer = default(TextRenderer);
+            var textRenderer = default(TextRenderer2);
             var blankTexture = default(Texture2D);
 
             var result = GivenAnUltravioletApplication()
@@ -180,7 +180,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 {
                     spriteBatch = SpriteBatch.Create();
                     spriteFont = content.Load<SpriteFont>("Fonts/Garamond");
-                    textRenderer = new TextRenderer();
+                    textRenderer = new TextRenderer2();
                     blankTexture = Texture2D.Create(1, 1);
                     blankTexture.SetData(new[] { Color.White });
                 })

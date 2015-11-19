@@ -60,7 +60,7 @@ namespace SafeProjectName
             this.spriteBatch = SpriteBatch.Create();
             this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
 
-            this.textRenderer = new TextRenderer();
+            this.textRenderer = new TextRenderer2();
 
             base.OnLoadingContent();
         }
@@ -156,6 +156,6 @@ namespace SafeProjectName
         // Game resources.
         private SpriteFont spriteFont;
         private SpriteBatch spriteBatch;
-        private TextRenderer textRenderer;
+        private TextRenderer2 textRenderer;
     }
 }

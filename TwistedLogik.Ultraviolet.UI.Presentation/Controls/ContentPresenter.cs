@@ -102,11 +102,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            if (textLayoutResult != null && textLayoutResult.Count > 0 && containingControl != null)
+            if (textLayoutCommands != null && textLayoutCommands.Count > 0 && containingControl != null)
             {
                 var position = Display.DipsToPixels(UntransformedAbsolutePosition + ContentOffset);
                 var positionRounded = dc.IsTransformed ? (Vector2)position : (Vector2)(Point2)position;
-                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutResult, positionRounded, containingControl.Foreground * dc.Opacity);
+                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutCommands, positionRounded, containingControl.Foreground * dc.Opacity);
             }
 
             base.DrawOverride(time, dc);
@@ -129,8 +129,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (textParserResult != null)
                     textParserResult.Clear();
 
-                if (textLayoutResult != null)
-                    textLayoutResult.Clear();
+                if (textLayoutCommands != null)
+                    textLayoutCommands.Clear();
 
                 return new Size2D(
                     Math.Min(availableSize.Width, contentElement.DesiredSize.Width),
@@ -150,8 +150,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 UpdateTextLayoutCache(availableSize);
 
-                var textWidth  = Display.PixelsToDips(textLayoutResult.ActualWidth);
-                var textHeight = Display.PixelsToDips(textLayoutResult.ActualHeight);
+                var textWidth  = Display.PixelsToDips(textLayoutCommands.ActualWidth);
+                var textHeight = Display.PixelsToDips(textLayoutCommands.ActualHeight);
                 return new Size2D(textWidth, textHeight);
             }
         }
@@ -327,7 +327,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (contentElement == null)
             {
                 if (textParserResult == null)
-                    textParserResult = new TextParserResult();
+                    textParserResult = new TextParserResult2();
 
                 var contentAsString = String.Format(ContentStringFormat ?? "{0}", content);
                 View.Resources.TextRenderer.Parse(contentAsString, textParserResult);
@@ -342,8 +342,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="availableSize">The amount of space in which the element's text can be laid out.</param>
         private void UpdateTextLayoutCache(Size2D availableSize)
         {
-            if (textLayoutResult != null)
-                textLayoutResult.Clear();
+            if (textLayoutCommands != null)
+                textLayoutCommands.Clear();
 
             if (View == null || containingControl == null)
                 return;
@@ -353,8 +353,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var contentElement = content as UIElement;
             if (contentElement == null)
             {
-                if (textLayoutResult == null)
-                    textLayoutResult = new TextLayoutResult();
+                if (textLayoutCommands == null)
+                    textLayoutCommands = new TextLayoutCommandStream();
 
                 var font = containingControl.Font;
                 if (font.IsLoaded)
@@ -365,7 +365,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         (Int32)Math.Ceiling(availableSizeInPixels.Width),
                         (Int32)Math.Ceiling(availableSizeInPixels.Height), TextFlags.Standard, containingControl.FontStyle);
 
-                    View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
+                    View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
                 }
             }
         }
@@ -381,8 +381,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         // Cached parser/layout results for content text.
-        private TextParserResult textParserResult;
-        private TextLayoutResult textLayoutResult;
+        private TextParserResult2 textParserResult;
+        private TextLayoutCommandStream textLayoutCommands;
 
         // Cached layout parameters.
         private Control containingControl;

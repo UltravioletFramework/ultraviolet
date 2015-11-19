@@ -58,11 +58,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            if (textLayoutResult.Count > 0)
+            if (textLayoutCommands.Count > 0)
             {
                 var position = Display.DipsToPixels(UntransformedAbsolutePosition);
                 var positionRounded = dc.IsTransformed ? (Vector2)position : (Vector2)(Point2)position;
-                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutResult, positionRounded, Foreground * dc.Opacity);
+                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutCommands, positionRounded, Foreground * dc.Opacity);
             }
             base.DrawOverride(time, dc);
         }
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             UpdateTextLayoutResult(availableSize);
 
-            var sizePixels = new Size2D(textLayoutResult.ActualWidth, textLayoutResult.ActualHeight);
+            var sizePixels = new Size2D(textLayoutCommands.ActualWidth, textLayoutCommands.ActualHeight);
             var sizeDips   = Display.PixelsToDips(sizePixels);
 
             return sizeDips;
@@ -118,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="availableSize">The size of the space that is available for laying out text.</param>
         private void UpdateTextLayoutResult(Size2D availableSize)
         {
-            textLayoutResult.Clear();
+            textLayoutCommands.Clear();
 
             if (textParserResult.Count > 0 && Font.IsLoaded)
             {
@@ -131,12 +131,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);
                 var settings = new TextLayoutSettings(Font, constraintX, constraintY, flags, FontStyle);
 
-                View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
+                View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
             }
         }
 
         // State values.
-        private readonly TextParserResult textParserResult = new TextParserResult();
-        private readonly TextLayoutResult textLayoutResult = new TextLayoutResult();
+        private readonly TextParserResult2 textParserResult = new TextParserResult2();
+        private readonly TextLayoutCommandStream textLayoutCommands = new TextLayoutCommandStream();
     }
 }

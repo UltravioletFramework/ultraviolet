@@ -26,10 +26,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Creates a table from the layout information.
         /// </summary>
         /// <typeparam name="ViewModelType">The type of view model which is bound to this table.</typeparam>
-        /// <param name="renderer">The <see cref="TextRenderer"/> used to lay out and render the table's text.</param>
+        /// <param name="renderer">The <see cref="TextRenderer2"/> used to lay out and render the table's text.</param>
         /// <param name="font">The table's default font.</param>
         /// <returns>The <see cref="TextTable{ViewModelType}"/> that was created.</returns>
-        public TextTable<ViewModelType> Create<ViewModelType>(TextRenderer renderer, SpriteFont font)
+        public TextTable<ViewModelType> Create<ViewModelType>(TextRenderer2 renderer, SpriteFont font)
         {
             Contract.Require(renderer, "renderer");
             Contract.Require(font, "font");

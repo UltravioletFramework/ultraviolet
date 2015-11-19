@@ -127,7 +127,7 @@ namespace UvDebugSandbox
 
                 var icons = this.content.Load<Sprite>(GlobalSpriteID.InterfaceIcons);
 
-                this.textRenderer = new TextRenderer();
+                this.textRenderer = new TextRenderer2();
                 this.textRenderer.RegisterIcon("foo", icons["foo"]);
                 this.textRenderer.RegisterGlyphShader("test", shader);
                 this.textRenderer.RegisterGlyphShader("rainbow", rainbowShader);
@@ -507,7 +507,7 @@ namespace UvDebugSandbox
         private CursorCollection cursors;
         private SpriteFont spriteFont;
         private SpriteBatch spriteBatch;
-        private TextRenderer textRenderer;
+        private TextRenderer2 textRenderer;
         private StringFormatter textFormatter;
         private StringBuilder textBuffer;
 

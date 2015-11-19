@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the view's global text renderer.
         /// </summary>
-        public TextRenderer TextRenderer
+        public TextRenderer2 TextRenderer
         {
             get { return textRenderer; }
         }
@@ -123,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Property values.
         private readonly StringFormatter stringFormatter = new StringFormatter();
         private readonly StringBuilder stringBuffer = new StringBuilder();
-        private readonly TextRenderer textRenderer = new TextRenderer();
+        private readonly TextRenderer2 textRenderer = new TextRenderer2();
 
         // State values.
         private readonly PresentationFoundationView view;
