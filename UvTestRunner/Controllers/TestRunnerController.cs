@@ -11,9 +11,9 @@ namespace UvTestRunner.Controllers
         private readonly TestRunnerService testRunnerService = new TestRunnerService();
 
         [Route("api/uvtest")]
-        public async Task<IHttpActionResult> Post()
+        public async Task<IHttpActionResult> Post([FromBody] String workingDirectory)
         {
-            var testRunID = await testRunnerService.Run();
+            var testRunID = await testRunnerService.Run(workingDirectory);
             return Ok(new TestRunCreationResponse() { TestRunID = testRunID });
         }
 

@@ -44,8 +44,9 @@ namespace UvTestRunner.Services
         /// <summary>
         /// Runs the test suite.
         /// </summary>
+        /// <param name="workingDirectory">The current working directory for the build agent.</param>
         /// <returns>The identifier of the test run within the database.</returns>
-        public async Task<Int64> Run()
+        public async Task<Int64> Run(String workingDirectory)
         {
             var id = CreateTestRun();
 
@@ -55,7 +56,7 @@ namespace UvTestRunner.Services
             UpdateTestRunStatus(id, TestRunStatus.Running);
             var psi = new ProcessStartInfo(Settings.Default.TestHostExecutable, Settings.Default.TestHostArgs)
             {
-                WorkingDirectory = Settings.Default.TestRootDirectory
+                WorkingDirectory = Path.Combine(Settings.Default.TestRootDirectory, workingDirectory)
             };
             var proc = Process.Start(psi);
             proc.WaitForExit();
@@ -72,7 +73,7 @@ namespace UvTestRunner.Services
             /* TODO: The way we do this currently introduces a race condition if the test suite is being run simultaneously
              * in multiple threads, which shouldn't realistically happen, but this case probably
              * ought to be handled anyway for robustness. */
-            var testResultsRoot = Path.Combine(Settings.Default.TestRootDirectory, "TestResults");
+            var testResultsRoot = Path.Combine(Settings.Default.TestRootDirectory, workingDirectory, "TestResults");
             var testResultsDirs = Directory.GetDirectories(testResultsRoot)
                 .Where(x => x.Contains("_" + Environment.MachineName.ToUpper() + " "))
                 .Select(x => new DirectoryInfo(x));

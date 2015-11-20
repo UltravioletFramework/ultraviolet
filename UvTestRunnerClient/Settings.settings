@@ -5,9 +5,6 @@
     <Setting Name="UvTestRunnerUrlNvidia" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://localhost:9000</Value>
     </Setting>
-    <Setting Name="OutputPath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">C:\Ultraviolet</Value>
-    </Setting>
     <Setting Name="OutputNameAmd" Type="System.String" Scope="Application">
       <Value Profile="(Default)">foo_amd.trx</Value>
     </Setting>
