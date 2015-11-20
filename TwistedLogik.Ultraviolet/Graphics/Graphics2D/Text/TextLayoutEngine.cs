@@ -160,6 +160,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             {
                                 if (token.IsNewLine)
                                 {
+                                    state.AdvanceToNextCommand(0, currentFontFace.LineSpacing, 1, true);
                                     state.AdvanceToNextLine(output, ref settings);
                                 }
                                 else
