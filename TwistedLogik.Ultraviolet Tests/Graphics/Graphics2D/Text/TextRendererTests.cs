@@ -209,8 +209,6 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     spriteBatch.End();
                 });
-
-            result.Save("C:\\test\\result.png", System.Drawing.Imaging.ImageFormat.Png);
             
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png");
         }
