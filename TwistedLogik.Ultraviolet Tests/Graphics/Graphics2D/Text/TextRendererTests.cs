@@ -189,8 +189,10 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     const string text =
                         "Lorem ipsum dolor sit amet,\n" +
                         "|b|consectetur adipiscing elit.|b|\n" +
+                        "\n" +
                         "|i|Pellentesque egestas luctus sapien|i|\n" +
-                        "|b||i|in malesuada.|i||b|";
+                        "|b||i|in malesuada.|i||b|\n" + 
+                        "\n";
                     
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     var width = window.ClientSize.Width;
@@ -207,6 +209,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     spriteBatch.End();
                 });
+
+            result.Save("C:\\test\\result.png", System.Drawing.Imaging.ImageFormat.Png);
             
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png");
         }
