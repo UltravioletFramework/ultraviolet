@@ -43,7 +43,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(input, "input");
             Contract.Require(result, "output");
             Contract.EnsureRange(start >= 0, "start");
-            Contract.EnsureRange(count >= 0 && start + count <= input.Length, "count");
 
             return ParseIncremental(new StringSource(input), start, count, result, options);
         }

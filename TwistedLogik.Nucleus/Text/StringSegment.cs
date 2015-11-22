@@ -96,7 +96,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The converted <see cref="StringSegment"/>.</returns>
         public static implicit operator StringSegment(String s)
         {
-            return new StringSegment(s);
+            return (s == null) ? StringSegment.Empty : new StringSegment(s);
         }
 
         /// <summary>
