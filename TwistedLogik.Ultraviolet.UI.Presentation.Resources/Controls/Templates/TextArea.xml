@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="textarea-component"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+    </Grid>
+  </View>
+</ComponentTemplate>

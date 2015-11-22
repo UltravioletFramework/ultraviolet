@@ -11,7 +11,7 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents a element used for entering a single line of text.
+    /// Represents a element which allows the user to edit a single line of text.
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.TextBox.xml")]
     [DefaultProperty("Text")]
