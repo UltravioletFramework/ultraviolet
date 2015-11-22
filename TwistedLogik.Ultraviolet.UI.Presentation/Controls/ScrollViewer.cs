@@ -139,6 +139,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the margin which is applied to the scroll viewer's content pane.
+        /// </summary>
+        public Thickness ContentMargin
+        {
+            get { return GetValue<Thickness>(ContentMarginProperty); }
+            set { SetValue(ContentMarginProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="ContentMargin"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'content-margin'.</remarks>
+        public static readonly DependencyProperty ContentMarginProperty = DependencyProperty.Register("ContentMargin", typeof(Thickness), typeof(ScrollViewer),
+            new PropertyMetadata<Thickness>(PresentationBoxedValues.Thickness.Zero, PropertyMetadataOptions.None));
+
+        /// <summary>
         /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'hscrollbar-visibility'.</remarks>

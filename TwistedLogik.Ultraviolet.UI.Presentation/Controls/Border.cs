@@ -97,28 +97,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            var borderColor     = BorderColor;
+            var borderColor = BorderColor;
             var borderThickness = BorderThickness;
-            var borderArea      = new RectangleD(0, 0, UntransformedRelativeBounds.Width, UntransformedRelativeBounds.Height);
+
+            var borderArea = new RectangleD(0, 0, UntransformedRelativeBounds.Width, UntransformedRelativeBounds.Height);
 
             var leftSize = Math.Min(borderThickness.Left, borderArea.Width);
-            var leftArea = new RectangleD(borderArea.Left, borderArea.Top, leftSize, borderArea.Height);
+            if (leftSize > 0)
+            {
+                var leftArea = new RectangleD(borderArea.Left, borderArea.Top, leftSize, borderArea.Height);
+                DrawBlank(dc, leftArea, borderColor);
+            }
 
             var topSize = Math.Min(borderThickness.Top, borderArea.Height);
-            var topArea = new RectangleD(borderArea.Left, borderArea.Top, borderArea.Width, topSize);
+            if (topSize > 0)
+            {
+                var topArea = new RectangleD(borderArea.Left, borderArea.Top, borderArea.Width, topSize);
+                DrawBlank(dc, topArea, borderColor);
+            }
 
             var rightSize = Math.Min(borderThickness.Right, borderArea.Width);
-            var rightPos  = Math.Max(borderArea.Left, borderArea.Right - rightSize);
-            var rightArea = new RectangleD(rightPos, borderArea.Top, rightSize, borderArea.Height);
+            if (rightSize > 0)
+            {
+                var rightPos = Math.Max(borderArea.Left, borderArea.Right - rightSize);
+                var rightArea = new RectangleD(rightPos, borderArea.Top, rightSize, borderArea.Height);
+                DrawBlank(dc, rightArea, borderColor);
+            }
 
             var bottomSize = Math.Min(borderThickness.Bottom, borderArea.Height);
-            var bottomPos  = Math.Max(borderArea.Top, borderArea.Bottom - bottomSize);
-            var bottomArea = new RectangleD(borderArea.Left, bottomPos, borderArea.Width, bottomSize);
-
-            DrawBlank(dc, leftArea, borderColor);
-            DrawBlank(dc, topArea, borderColor);
-            DrawBlank(dc, rightArea, borderColor);
-            DrawBlank(dc, bottomArea, borderColor);
+            if (bottomSize > 0)
+            {
+                var bottomPos = Math.Max(borderArea.Top, borderArea.Bottom - bottomSize);
+                var bottomArea = new RectangleD(borderArea.Left, bottomPos, borderArea.Width, bottomSize);
+                DrawBlank(dc, bottomArea, borderColor);
+            }
 
             base.DrawOverride(time, dc);
         }

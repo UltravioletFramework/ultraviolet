@@ -251,6 +251,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PresentationProfilerSections.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssSelectorPartQualifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SystemParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextWrapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPool.IPooledObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPoolList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPool.PooledObject.cs" />

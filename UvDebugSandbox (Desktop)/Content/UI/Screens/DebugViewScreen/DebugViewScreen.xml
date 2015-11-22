@@ -2,7 +2,12 @@
 <UIPanelDefinition>
   <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
 
-    
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+
+      <TextBox Width="300"/>
+      <TextArea Width="300" Height="200"/>
+
+    </StackPanel>
     
   </View>
 </UIPanelDefinition>

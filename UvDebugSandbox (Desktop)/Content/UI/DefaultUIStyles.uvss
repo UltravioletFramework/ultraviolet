@@ -435,6 +435,32 @@ CheckBox > Grid > .toggle-focus-image
 	}
 }
 
+TextArea
+{
+	padding: 6 4 6 4;
+}
+
+TextArea >> ScrollViewer >> Border
+{
+	border-thickness: 0;
+}
+
+TextArea >> .textarea-background
+{
+	source-image: #Global:Textures:DefaultUI 73 404	62 31 4 4 4 4;
+}
+
+TextArea >> .textarea-scrollviewer
+{
+	margin: 4;
+}
+
+.textarea-focus-border
+{
+	margin: 2 2 2 3;
+	border-color: #ff5b9bd1;
+}
+
 TextBox
 {
 	padding: 10 8 10 8;
@@ -443,41 +469,17 @@ TextBox
 	caret-color: #ffffffff;
 	selection-image: #Global:Textures:DefaultUI 137 459 14 23;
 	selection-color: #ff528cc9;
-
-	transition (focus, focused): textbox-to-focused;
-	transition (focus, blurred): textbox-to-blurred;
 }
 
-.textbox-component .textbox-background
+TextBox >> .textbox-background
 {
-	source-image: #Global:Textures:DefaultUI 73 404	 62 31 4 4 4 4;
+	source-image: #Global:Textures:DefaultUI 73 404	62 31 4 4 4 4;
 }
 
 .textbox-focus-border
 {
 	margin: 2 2 2 3;
 	border-color: #ff5b9bd1;
-}
-
-@textbox-to-focused
-{
-	target (.textbox-focus)
-	{
-		animation opacity
-		{
-			keyframe 250 { 1 }
-		}
-	}
-}
-@textbox-to-blurred
-{
-	target (.textbox-focus)
-	{
-		animation opacity
-		{
-			keyframe 250 { }
-		}
-	}
 }
 
 HSlider

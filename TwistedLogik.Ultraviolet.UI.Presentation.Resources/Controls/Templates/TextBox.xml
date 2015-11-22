@@ -1,18 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
   <View>
-    <Grid Class="textbox-component"
-          HorizontalAlignment="Stretch"
-          VerticalAlignment="Stretch">
+    <Grid Class="textbox-component">
 
       <Image Class="textbox-background"
-             SourceColor="{{Background}}"
-             HorizontalAlignment="Stretch"
-             VerticalAlignment="Stretch"/>
+             SourceColor="{{Background}}"/>
       <TextBoxContentPresenter Name="PART_ContentPresenter"
                                Class="textbox-content"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Stretch"
                                Margin="{{Padding}}"
                                Updating="PresenterUpdate"
                                Drawing="PresenterDraw"/>

@@ -5,6 +5,23 @@
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
 
+      <Image Class="textarea-background"
+             SourceColor="{{Background}}"/>
+      <ScrollViewer Class="textarea-scrollviewer"
+                    ContentMargin="{{Padding}}"
+                    HorizontalScrollBarVisibility="{{HorizontalScrollBarVisibility}}"
+                    VerticalScrollBarVisibility="{{VerticalScrollBarVisibility}}">
+
+        <TextBlock>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris malesuada sed dolor a ultricies.</TextBlock>
+        
+      </ScrollViewer>
+      <Image Class="textarea-focus-image"
+             Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+             IsHitTestVisible="false"/>
+      <Border Class="textarea-focus-border"
+              Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+              IsHitTestVisible="false"/>
+
     </Grid>
   </View>
 </ComponentTemplate>
