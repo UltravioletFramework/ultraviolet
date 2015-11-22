@@ -557,27 +557,27 @@ ProgressBar
 	height: 20;
 }
 
-.listbox-scrollviewer > Grid > Border
+.listbox-scrollviewer
+{
+	content-margin: 1 2 1 2;
+}
+
+.listbox-scrollviewer >> Border
 {
 	border-thickness: 0;
 }
 
-.listbox-scrollviewer > Grid > Border > Canvas > .scrollviewer-background
+.listbox-scrollviewer >> .scrollviewer-background
 {
 	source-image: #Global:Textures:DefaultUI 73 436 62 31 4 4 4 4;
 }
 
-.listbox-scrollviewer > Grid > Border > Canvas > ScrollContentPresenter
-{
-	margin: 1 2 1 2;
-}
-
-.listbox-scrollviewer > Grid > VScrollBar
+.listbox-scrollviewer >> VScrollBar
 {
 	margin: 2 0 0 0;
 }
 
-.listbox-scrollviewer > Grid > HScrollBar
+.listbox-scrollviewer >> HScrollBar
 {
 	margin: 0 2 0 0;
 }
