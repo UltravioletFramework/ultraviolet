@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ScrollBarVisibility HorizontalScrollBarVisibility
         {
             get { return GetValue<ScrollBarVisibility>(HorizontalScrollBarVisibilityProperty); }
-            set { SetValue<ScrollBarVisibility>(HorizontalScrollBarVisibilityProperty, value); }
+            set { SetValue(HorizontalScrollBarVisibilityProperty, value); }
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public Boolean AcceptsTab
         {
             get { return GetValue<Boolean>(AcceptsTabProperty); }
-            set { SetValue<Boolean>(AcceptsTabProperty, value); }
+            set { SetValue(AcceptsTabProperty, value); }
         }
 
         /// <summary>
