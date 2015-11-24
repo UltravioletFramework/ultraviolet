@@ -14,13 +14,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="lineWidth">The width of the line in pixels.</param>
         /// <param name="lineHeight">The height of the line in pixels.</param>
         /// <param name="lengthInCommands">The length of the line of text in commands.</param>
-        public TextLayoutLineInfoCommand(Int32 offset, Int16 lineWidth, Int16 lineHeight, Int32 lengthInCommands)
+        /// <param name="lengthInGlyphs">The length of the line in glyphs.</param>
+        public TextLayoutLineInfoCommand(Int32 offset, Int16 lineWidth, Int16 lineHeight, Int16 lengthInCommands, Int16 lengthInGlyphs)
         {
             this.commandType = TextLayoutCommandType.LineInfo;
             this.offset = offset;
             this.lineWidth = lineWidth;
             this.lineHeight = lineHeight;
             this.lengthInCommands = lengthInCommands;
+            this.lengthInGlyphs = lengthInGlyphs;
         }
 
         /// <summary>
@@ -61,10 +63,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the length of the line of text in commands.
         /// </summary>
-        public Int32 LengthInCommands
+        public Int16 LengthInCommands
         {
             get { return lengthInCommands; }
             internal set { lengthInCommands = value; }
+        }
+
+        /// <summary>
+        /// Gets the length of the line of text in glyphs.
+        /// </summary>
+        public Int16 LengthInGlyphs
+        {
+            get { return lengthInGlyphs; }
+            internal set { lengthInGlyphs = value; }
         }
 
         // Property values.
@@ -72,6 +83,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private Int32 offset;
         private Int16 lineWidth;
         private Int16 lineHeight;
-        private Int32 lengthInCommands;
+        private Int16 lengthInCommands;
+        private Int16 lengthInGlyphs;
     }
 }

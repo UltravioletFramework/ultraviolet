@@ -50,9 +50,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="lineWidth">The width of the line in pixels.</param>
             /// <param name="lineHeight">The height of the line in pixels.</param>
             /// <param name="lengthInCommands">The length of the line of text in commands.</param>
+            /// <param name="lengthInGlyphs">The length of the line of text in glyphs.</param>
             /// <param name="settings">The layout settings.</param>
             [SecuritySafeCritical]
-            public void WriteLineInfo(TextLayoutCommandStream output, Int16 lineWidth, Int16 lineHeight, Int32 lengthInCommands, ref TextLayoutSettings settings)
+            public void WriteLineInfo(TextLayoutCommandStream output, Int16 lineWidth, Int16 lineHeight, Int16 lengthInCommands, Int16 lengthInGlyphs, ref TextLayoutSettings settings)
             {
                 var offset = 0;
 
@@ -71,7 +72,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     ptr->Offset = offset;
                     ptr->LineWidth = lineWidth;
                     ptr->LineHeight = lineHeight;
-                    ptr->LengthInCommands = lineLengthInCommands;
+                    ptr->LengthInCommands = lengthInCommands;
+                    ptr->LengthInGlyphs = lengthInGlyphs;
                 }
                 output.Seek(output.Count);
 
@@ -83,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// </summary>
             public void AdvanceToNextCommand()
             {
-                AdvanceToNextCommand(0, 0, 0, false);
+                AdvanceToNextCommand(0, 0, 1, 0, false);
             }
 
             /// <summary>
@@ -91,17 +93,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// </summary>
             /// <param name="width">The command's width in pixels.</param>
             /// <param name="height">The command's height in pixels.</param>
-            /// <param name="length">The command's length in characters.</param>
+            /// <param name="lengthInCommands">The command's length in layout commands.</param>
+            /// <param name="lengthInText">The command's length in characters.</param>
             /// <param name="isWhiteSpace">A value indicating whether the token represents white space.</param>
-            public void AdvanceToNextCommand(Int32 width, Int32 height, Int32 length, Boolean isWhiteSpace)
+            public void AdvanceToNextCommand(Int32 width, Int32 height, Int32 lengthInCommands, Int32 lengthInText, Boolean isWhiteSpace)
             {
                 positionX += width;
-                lineLengthInText += length;
-                lineLengthInCommands++;
+                lineLengthInCommands += lengthInCommands;
+                lineLengthInText += lengthInText;
                 lineTrailingWhiteSpaceWidth = isWhiteSpace ? (lineTrailingWhiteSpaceWidth + width) : 0;
                 lineWidth += width;
                 lineHeight = Math.Max(lineHeight, height);
-                totalLength += length;
+                totalLength += lengthInText;
             }
 
             /// <summary>
@@ -111,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             {
                 lineWidth -= lineTrailingWhiteSpaceWidth;
 
-                WriteLineInfo(output, (Int16)lineWidth, (Int16)lineHeight, lineLengthInCommands, ref settings);
+                WriteLineInfo(output, (Int16)lineWidth, (Int16)lineHeight, (Int16)lineLengthInCommands, (Int16)lineLengthInText, ref settings);
 
                 positionX = 0;
                 positionY += lineHeight;

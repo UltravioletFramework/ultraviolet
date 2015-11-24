@@ -23,7 +23,129 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public TextLayoutCommandType Seek(Int32 index)
         {
             var data = stream.SeekObject(index);
+            position = index;
             return *(TextLayoutCommandType*)data;
+        }
+        
+        /// <summary>
+        /// Moves the stream to the first command in the specified line of text.
+        /// </summary>
+        /// <param name="index">The index of the line to which to seek.</param>
+        /// <returns>A <see cref="TextLayoutCommandType"/> that represents the type of command at the stream's new position.</returns>
+        public TextLayoutCommandType SeekLine(Int32 index)
+        {
+            Contract.EnsureRange(index >= 0 && index < LineCount, "index");
+            
+            var position = 1;
+
+            for (int i = 0; i <= index; i++)
+            {
+                stream.SeekObject(position);
+                position += ((TextLayoutLineInfoCommand*)stream.Data)->LengthInCommands;
+            }
+
+            return *(TextLayoutCommandType*)stream.Data;
+        }
+
+        /// <summary>
+        /// Moves the stream to the next command.
+        /// </summary>
+        /// <returns><c>true</c> if the stream was able to seek to the next command; otherwise, <c>false</c>.</returns>
+        public Boolean SeekNextCommand()
+        {
+            if (position == Count)
+                return false;
+
+            switch (*(TextLayoutCommandType*)stream.Data)
+            {
+                case TextLayoutCommandType.BlockInfo:
+                    stream.Seek(sizeof(TextLayoutBlockInfoCommand), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.LineInfo:
+                    stream.Seek(sizeof(TextLayoutLineInfoCommand), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.Text:
+                    stream.Seek(sizeof(TextLayoutTextCommand), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.Icon:
+                    stream.Seek(sizeof(TextLayoutIconCommand), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.ToggleBold:
+                    stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.ToggleItalic:
+                    stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.PushStyle:
+                    stream.Seek(sizeof(TextLayoutStyleCommand), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.PushFont:
+                    stream.Seek(sizeof(TextLayoutFontCommand), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.PushColor:
+                    stream.Seek(sizeof(TextLayoutColorCommand), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.PushGlyphShader:
+                    stream.Seek(sizeof(TextLayoutGlyphShaderCommand), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.PopStyle:
+                    stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.PopFont:
+                    stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.PopColor:
+                    stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.PopGlyphShader:
+                    stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.ChangeSourceString:
+                    stream.Seek(sizeof(TextLayoutSourceStringCommand), SeekOrigin.Current);
+                    break;
+
+                case TextLayoutCommandType.ChangeSourceStringBuilder:
+                    stream.Seek(sizeof(TextLayoutSourceStringBuilderCommand), SeekOrigin.Current);
+                    break;
+
+                default:
+                    return false;
+            }
+
+            position++;
+            return true;
+        }
+
+        /// <summary>
+        /// Moves the stream to the first command in the next line of text, if there is one.
+        /// </summary>
+        /// <returns><c>true</c> if the stream was able to seek to another line of text; otherwise, <c>false</c>.</returns>
+        public Boolean SeekNextLine()
+        {
+            var currentCommandType = *(TextLayoutCommandType*)stream.Data;
+            if (currentCommandType == TextLayoutCommandType.LineInfo)
+            {
+                Seek(position + ((TextLayoutLineInfoCommand*)stream.Data)->LengthInCommands + 1);
+            }
+            else
+            {
+                while (*(TextLayoutCommandType*)stream.Data != TextLayoutCommandType.LineInfo && SeekNextCommand()) { }
+            }
+            return position + 1 < Count;
         }
 
         /// <summary>
@@ -239,6 +361,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void Clear()
         {
+            position = 0;
+
             stream.Clear();
 
             styles.Clear();
@@ -262,6 +386,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             ActualWidth = 0;
             ActualHeight = 0;
             TotalLength = 0;
+            LineCount = 0;
         }
 
         /// <summary>
@@ -273,6 +398,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             *(TextLayoutBlockInfoCommand*)stream.Data = new TextLayoutBlockInfoCommand();
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.BlockInfo;
             stream.FinalizeObject(sizeof(TextLayoutBlockInfoCommand));
+            position++;
         }
 
         /// <summary>
@@ -284,6 +410,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             *(TextLayoutLineInfoCommand*)stream.Data = new TextLayoutLineInfoCommand();
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.LineInfo;
             stream.FinalizeObject(sizeof(TextLayoutLineInfoCommand));
+            position++;       
         }
 
         /// <summary>
@@ -296,6 +423,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             *(TextLayoutTextCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.Text;
             stream.FinalizeObject(sizeof(TextLayoutTextCommand));
+            position++;
         }
 
         /// <summary>
@@ -308,6 +436,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             *(TextLayoutIconCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.Icon;
             stream.FinalizeObject(sizeof(TextLayoutIconCommand));
+            position++;
         }
 
         /// <summary>
@@ -318,6 +447,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ToggleBold;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            position++;
         }
 
         /// <summary>
@@ -328,6 +458,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ToggleItalic;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            position++;
         }
 
         /// <summary>
@@ -340,6 +471,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             *(TextLayoutStyleCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushStyle;
             stream.FinalizeObject(sizeof(TextLayoutStyleCommand));
+            position++;
         }
 
         /// <summary>
@@ -352,6 +484,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             *(TextLayoutFontCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushFont;
             stream.FinalizeObject(sizeof(TextLayoutFontCommand));
+            position++;
         }
 
         /// <summary>
@@ -364,6 +497,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             *(TextLayoutColorCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushColor;
             stream.FinalizeObject(sizeof(TextLayoutColorCommand));
+            position++;
         }
 
         /// <summary>
@@ -376,6 +510,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             *(TextLayoutGlyphShaderCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushGlyphShader;
             stream.FinalizeObject(sizeof(TextLayoutGlyphShaderCommand));
+            position++;
         }
 
         /// <summary>
@@ -386,6 +521,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopStyle;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            position++;
         }
 
         /// <summary>
@@ -396,6 +532,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopFont;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            position++;
         }
 
         /// <summary>
@@ -406,6 +543,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopColor;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            position++;
         }
 
         /// <summary>
@@ -416,6 +554,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopGlyphShader;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            position++;
         }
 
         /// <summary>
@@ -428,6 +567,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             *(TextLayoutSourceStringCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ChangeSourceString;
             stream.FinalizeObject(sizeof(TextLayoutSourceStringCommand));
+            position++;
         }
 
         /// <summary>
@@ -440,6 +580,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             *(TextLayoutSourceStringBuilderCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ChangeSourceStringBuilder;
             stream.FinalizeObject(sizeof(TextLayoutSourceStringBuilderCommand));
+            position++;
         }
 
         /// <summary>
@@ -450,6 +591,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             var command = *(TextLayoutBlockInfoCommand*)stream.Data;
             stream.Seek(sizeof(TextLayoutBlockInfoCommand), SeekOrigin.Current);
+            position++;
             return command;
         }
 
@@ -461,6 +603,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             var command = *(TextLayoutLineInfoCommand*)stream.Data;
             stream.Seek(sizeof(TextLayoutLineInfoCommand), SeekOrigin.Current);
+            position++;
             return command;
         }
 
@@ -472,6 +615,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             var command = *(TextLayoutTextCommand*)stream.Data;
             stream.Seek(sizeof(TextLayoutTextCommand), SeekOrigin.Current);
+            position++;
             return command;
         }
 
@@ -483,6 +627,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             var command = *(TextLayoutIconCommand*)stream.Data;
             stream.Seek(sizeof(TextLayoutIconCommand), SeekOrigin.Current);
+            position++;
             return command;
         }
 
@@ -493,6 +638,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public void ReadToggleBoldCommand()
         {
             stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
         }
 
         /// <summary>
@@ -502,6 +648,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public void ReadToggleItalicCommand()
         {
             stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
         }
 
         /// <summary>
@@ -512,6 +659,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             var command = *(TextLayoutStyleCommand*)stream.Data;
             stream.Seek(sizeof(TextLayoutStyleCommand), SeekOrigin.Current);
+            position++;
             return command;
         }
 
@@ -523,6 +671,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             var command = *(TextLayoutFontCommand*)stream.Data;
             stream.Seek(sizeof(TextLayoutFontCommand), SeekOrigin.Current);
+            position++;
             return command;
         }
 
@@ -534,6 +683,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             var command = *(TextLayoutColorCommand*)stream.Data;
             stream.Seek(sizeof(TextLayoutColorCommand), SeekOrigin.Current);
+            position++;
             return command;
         }
 
@@ -545,6 +695,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             var command = *(TextLayoutGlyphShaderCommand*)stream.Data;
             stream.Seek(sizeof(TextLayoutGlyphShaderCommand), SeekOrigin.Current);
+            position++;
             return command;
         }
 
@@ -555,6 +706,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public void ReadPopStyleCommand()
         {
             stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
         }
 
         /// <summary>
@@ -564,6 +716,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public void ReadPopFontCommand()
         {
             stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
         }
 
         /// <summary>
@@ -573,6 +726,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public void ReadPopColorCommand()
         {
             stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
         }
 
         /// <summary>
@@ -582,6 +736,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public void ReadPopGlyphShaderCommand()
         {
             stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
         }
 
         /// <summary>
@@ -592,6 +747,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             var command = *(TextLayoutSourceStringCommand*)stream.Data;
             stream.Seek(sizeof(TextLayoutSourceStringCommand), SeekOrigin.Current);
+            position++;
             return command;
         }
 
@@ -603,6 +759,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             var command = *(TextLayoutSourceStringBuilderCommand*)stream.Data;
             stream.Seek(sizeof(TextLayoutSourceStringBuilderCommand), SeekOrigin.Current);
+            position++;
             return command;
         }
 
@@ -669,6 +826,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Gets the number of lines of text in the stream.
+        /// </summary>
+        public Int32 LineCount
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
         /// Gets a pointer to the stream's current position within its internal data buffer.
         /// </summary>
         public IntPtr Data
@@ -688,6 +854,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             {
                 return stream.Data0;
             }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the command stream has acquired pointers to its underlying buffers.
+        /// </summary>
+        public Boolean HasAcquiredPointers
+        {
+            get { return stream.HasAcquiredPointers; }
         }
 
         /// <summary>
@@ -724,6 +898,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
         // The underlying data stream containing our commands.
         private readonly UnsafeObjectStream stream = new UnsafeObjectStream(32, 256);
+        private Int32 position;
 
         // The stream's object registries.
         private readonly Dictionary<StringSegment, Int32> stylesByName = new Dictionary<StringSegment, Int32>();

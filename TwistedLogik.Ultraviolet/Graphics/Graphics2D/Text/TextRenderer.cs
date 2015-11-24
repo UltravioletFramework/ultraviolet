@@ -13,6 +13,131 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     public sealed unsafe class TextRenderer
     {
         /// <summary>
+        /// Gets the index of the line of text at the specified position relative to the layout area.
+        /// </summary>
+        /// <param name="position">The position to evaluate.</param>
+        /// <returns>The index of the line of text at the specified position relative to the layout area.</returns>
+        public Int32 GetLineAtPosition(TextLayoutCommandStream input, Vector2 position)
+        {
+            return GetLineAtPosition(input, (Int32)position.X, (Int32)position.Y);
+        }
+
+        /// <summary>
+        /// Gets the index of the line of text at the specified position relative to the layout area.
+        /// </summary>
+        /// <param name="position">The position to evaluate.</param>
+        /// <returns>The index of the line of text at the specified position relative to the layout area.</returns>
+        public Int32 GetLineAtPosition(TextLayoutCommandStream input, Point2 position)
+        {
+            return GetLineAtPosition(input, position.X, position.Y);
+        }
+
+        /// <summary>
+        /// Gets the index of the line of text at the specified position relative to the layout area.
+        /// </summary>
+        /// <param name="x">The x-coordinate to evaluate.</param>
+        /// <param name="y">The y-coordinate to evaluate.</param>
+        /// <returns>The index of the line of text at the specified position relative to the layout area.</returns>
+        public Int32 GetLineAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// </summary>
+        /// <param name="position">The position to evaluate.</param>
+        /// <returns>The index of the glyph at the specified position relative to the layout area.</returns>
+        public Int32 GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position)
+        {
+            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y);
+        }
+
+        /// <summary>
+        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// </summary>
+        /// <param name="position">The position to evaluate.</param>
+        /// <returns>The index of the glyph at the specified position relative to the layout area.</returns>
+        public Int32 GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position)
+        {
+            return GetGlyphAtPosition(input, position.X, position.Y);
+        }
+
+        /// <summary>
+        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// </summary>
+        /// <param name="x">The x-coordinate to evaluate.</param>
+        /// <param name="y">The y-coordinate to evaluate.</param>
+        /// <returns>The index of the glyph at the specified position relative to the layout area.</returns>
+        public Int32 GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets a bounding box for the specified line, relative to the text layout area.
+        /// </summary>
+        /// <param name="index">The index of the line for which to retrieve a bounding box.</param>
+        /// <returns>A bounding box for the specified line, relative to the text layout area.</returns>
+        public Rectangle GetLineBounds(TextLayoutCommandStream input, Int32 index)
+        {
+            Contract.Require(input, "input");
+            Contract.EnsureRange(index >= 0 && index < input.LineCount, "index");
+
+            var acquiredPointers = !input.HasAcquiredPointers;
+            if (acquiredPointers)
+                input.AcquirePointers();
+
+            input.Seek(0);
+
+            var positionX = 0;
+            var positionY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+
+            input.SeekNextLine();
+
+            for (var i = 0; i < index; i++)
+            {
+                positionY += ((TextLayoutLineInfoCommand*)input.Data)->LineHeight;
+                input.SeekNextLine();
+            }
+
+            var lineInfo = (TextLayoutLineInfoCommand*)input.Data;
+            var lineWidth = lineInfo->LineWidth;
+            var lineHeight = lineInfo->LineHeight;
+            positionX = lineInfo->Offset;
+
+            if (acquiredPointers)
+                input.ReleasePointers();
+
+            return new Rectangle(positionX, positionY, lineWidth, lineHeight);
+        }
+
+        /// <summary>
+        /// Gets a bounding box for the specified glyph, relative to the text layout area.
+        /// </summary>
+        /// <param name="index">The index of the glyph for which to retrieve a bounding box.</param>
+        /// <returns>A bounding box for the specified glyph, relative to the text layout area.</returns>
+        public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index)
+        {
+            Int32 lineHeight;
+            return GetGlyphBounds(input, index, out lineHeight);
+        }
+
+        /// <summary>
+        /// Gets a bounding box for the specified glyph, relative to the text layout area.
+        /// </summary>
+        /// <param name="index">The index of the glyph for which to retrieve a bounding box.</param>
+        /// <param name="lineHeight">The height of the line that contains the specified glyph.</param>
+        /// <returns>A bounding box for the specified glyph, relative to the text layout area.</returns>
+        public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index, out Int32 lineHeight)
+        {
+            Contract.Require(input, "input");
+            Contract.EnsureRange(index >= 0 && index < input.TotalLength, "index");
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Registers a style with the specified name.
         /// </summary>
         /// <param name="name">The name of the style to register.</param>

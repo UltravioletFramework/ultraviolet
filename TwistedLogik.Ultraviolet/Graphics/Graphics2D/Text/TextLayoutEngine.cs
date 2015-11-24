@@ -160,7 +160,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             {
                                 if (token.IsNewLine)
                                 {
-                                    state.AdvanceToNextCommand(0, currentFontFace.LineSpacing, 1, true);
+                                    state.AdvanceToNextCommand(0, currentFontFace.LineSpacing, 0, 1, true);
                                     state.AdvanceToNextLine(output, ref settings);
                                 }
                                 else
@@ -185,7 +185,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                                 var iconBounds = new Rectangle(state.PositionX, state.PositionY, iconSize.Width, iconSize.Height);
                                 output.WriteIcon(new TextLayoutIconCommand(iconIndex, icon.Width, icon.Height, iconBounds));
-                                state.AdvanceToNextCommand(iconBounds.Width, iconBounds.Height, 1, false);
+                                state.AdvanceToNextCommand(iconBounds.Width, iconBounds.Height, 1, 1, false);
                             }
                             break;
 
@@ -285,6 +285,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 output.ActualWidth = state.ActualWidth;
                 output.ActualHeight = state.ActualHeight;
                 output.TotalLength = state.TotalLength;
+                output.LineCount = state.LineCount;
 
                 output.ReleasePointers();
             }
@@ -499,7 +500,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 }
             }
 
-            state.AdvanceToNextCommand(firstSize.Width, firstSize.Height, first.Text.Length, first.IsWhiteSpace);
+            state.AdvanceToNextCommand(firstSize.Width, firstSize.Height, 1, first.Text.Length, first.IsWhiteSpace);
             state.LineLengthInCommands--;
 
             while (index + 1 < input.Count)
@@ -519,7 +520,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 height = Math.Max(height, tokenSize.Height);
                 length = length + token.Text.Length;
 
-                state.AdvanceToNextCommand(tokenSize.Width, tokenSize.Height, token.Text.Length, token.IsWhiteSpace);
+                state.AdvanceToNextCommand(tokenSize.Width, tokenSize.Height, 1, token.Text.Length, token.IsWhiteSpace);
                 state.LineLengthInCommands--;
                 index++;
             }
