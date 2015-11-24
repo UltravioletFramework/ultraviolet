@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
@@ -88,13 +89,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextArea),
-            new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Visible, PropertyMetadataOptions.None, null, CoerceHorizontalScrollBarVisibility));
+            new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, PropertyMetadataOptions.None, null, CoerceHorizontalScrollBarVisibility));
 
         /// <summary>
         /// Identifies the <see cref="VerticalScrollBarVisibility"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextArea),
-            new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Visible, PropertyMetadataOptions.None));
+            new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="AcceptsReturn"/> dependency property.
@@ -106,6 +107,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public static readonly DependencyProperty AcceptsTabProperty = DependencyProperty.Register("AcceptsTab", typeof(Boolean), typeof(TextArea),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+
+        /// <inheritdoc/>
+        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+            if (PART_ContentPresenter != null)
+                PART_ContentPresenter.HandleTextBufferUpdate(textBuffer);
+
+            base.OnViewChanged(oldView, newView);
+        }
 
         /// <inheritdoc/>
         protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
@@ -130,6 +140,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnMouseUp(device, button, ref data);
         }
 
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        {
+            switch (key)
+            {
+                case Key.Return:
+                    if (AcceptsReturn)
+                    {
+                        ProcessReturn();
+                        data.Handled = true;
+                    }
+                    break;
+
+                case Key.Tab:
+                    if (AcceptsTab)
+                    {
+                        ProcessTab();
+                        data.Handled = true;
+                    }
+                    break;
+
+                case Key.Backspace:
+                    ProcessBackspace();
+                    data.Handled = true;
+                    break;
+
+                case Key.Delete:
+                    ProcessDelete();
+                    data.Handled = true;
+                    break;
+            }
+            base.OnKeyDown(device, key, modifiers, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTextInput(KeyboardDevice device, ref RoutedEventData data)
+        {
+            device.GetTextInput(tempBuffer);
+
+            // TODO
+            textBuffer.Append(tempBuffer);
+
+            if (PART_ContentPresenter != null)
+                PART_ContentPresenter.HandleTextBufferUpdate(textBuffer);
+
+            base.OnTextInput(device, ref data);
+        }
+
         /// <summary>
         /// Occurs when the value of the <see cref="TextWrapping"/> dependency property changes.
         /// </summary>
@@ -137,6 +195,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var textArea = (TextArea)dobj;
             textArea.CoerceValue(HorizontalScrollBarVisibilityProperty);
+
+            if (textArea.PART_ContentPresenter != null)
+                textArea.PART_ContentPresenter.InvalidateMeasure();
         }
 
         /// <summary>
@@ -152,5 +213,61 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             return value;
         }
+
+        /// <summary>
+        /// Inserts or appends a return character at the caret.
+        /// </summary>
+        private void ProcessReturn()
+        {
+            textBuffer.Append('\n');
+
+            if (PART_ContentPresenter != null)
+                PART_ContentPresenter.HandleTextBufferUpdate(textBuffer);
+        }
+
+        /// <summary>
+        /// Inserts or appends a return character at the caret.
+        /// </summary>
+        private void ProcessTab()
+        {
+            textBuffer.Append('\t');
+
+            if (PART_ContentPresenter != null)
+                PART_ContentPresenter.HandleTextBufferUpdate(textBuffer);
+        }
+
+        /// <summary>
+        /// Removes the character before the caret.
+        /// </summary>
+        private void ProcessBackspace()
+        {
+            if (textBuffer.Length > 0)
+            {
+                textBuffer.Remove(textBuffer.Length - 1, 1);
+
+                if (PART_ContentPresenter != null)
+                    PART_ContentPresenter.HandleTextBufferUpdate(textBuffer);
+            }
+        }
+
+        /// <summary>
+        /// Removes the character after the caret.
+        /// </summary>
+        private void ProcessDelete()
+        {
+
+        }
+
+        protected override RectangleD? ClipCore()
+        {
+            return UntransformedAbsoluteBounds;
+        }
+
+        // Component references.
+        private readonly TextAreaContentPresenter PART_ContentPresenter = null;
+
+        // State values.
+        private readonly StringBuilder tempBuffer = new StringBuilder();
+        private readonly StringBuilder textBuffer = new StringBuilder();
     }
 }

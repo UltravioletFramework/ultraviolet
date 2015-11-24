@@ -57,6 +57,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this scroll viewer applies a clipping rectangle to its content pane.
+        /// </summary>
+        public Boolean ContentClipped
+        {
+            get { return GetValue<Boolean>(ContentClippedProperty); }
+            set { SetValue(ContentClippedProperty, value); }
+        }
+
+        /// <summary>
         /// Gets the width of the content which is being displayed by the scroll viewer.
         /// </summary>
         public Double ExtentWidth
@@ -146,6 +155,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get { return GetValue<Thickness>(ContentMarginProperty); }
             set { SetValue(ContentMarginProperty, value); }
         }
+
+        /// <summary>
+        /// Identifies the <see cref="ContentClipped"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'content-clipped'.</remarks>
+        public static readonly DependencyProperty ContentClippedProperty = DependencyProperty.Register("ContentClipped", typeof(Boolean), typeof(ScrollViewer),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleContentClippedChanged));
 
         /// <summary>
         /// Identifies the <see cref="ContentMargin"/> dependency property.
@@ -417,6 +433,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 data.Handled = true;
             }
             base.OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, ref data);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ContentClipped"/> dependency property changes.
+        /// </summary>
+        private static void HandleContentClippedChanged(DependencyObject element, Boolean oldValue, Boolean newValue)
+        {
+            var scrollViewer = (ScrollViewer)element;
+            if (scrollViewer.PART_ContentPresenter != null)
+                scrollViewer.PART_ContentPresenter.Clip();
         }
 
         /// <summary>

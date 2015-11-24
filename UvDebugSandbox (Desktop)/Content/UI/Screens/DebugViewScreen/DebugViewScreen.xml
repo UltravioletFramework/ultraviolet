@@ -5,7 +5,7 @@
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
 
       <TextBox Width="300"/>
-      <TextArea Width="300" Height="200"/>
+      <TextArea Width="300" Height="200" AcceptsReturn="true" AcceptsTab="true" TextWrapping="NoWrap"/>
 
     </StackPanel>
     

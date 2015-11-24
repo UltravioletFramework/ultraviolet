@@ -71,6 +71,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override RectangleD? ClipCore()
+        {
+            var scrollViewer = TemplatedParent as ScrollViewer;
+            if (scrollViewer != null && scrollViewer.ContentClipped)
+            {
+                return UntransformedAbsoluteBounds;
+            }
+            return base.ClipCore();
+        }
+
+        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             var templatedParentElement = TemplatedParent as UIElement;

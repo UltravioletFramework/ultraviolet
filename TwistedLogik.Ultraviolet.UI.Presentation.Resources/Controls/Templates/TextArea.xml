@@ -9,11 +9,12 @@
              SourceColor="{{Background}}"/>
       <ScrollViewer Class="textarea-scrollviewer"
                     ContentMargin="{{Padding}}"
+                    ContentClipped="true"
                     HorizontalScrollBarVisibility="{{HorizontalScrollBarVisibility}}"
                     VerticalScrollBarVisibility="{{VerticalScrollBarVisibility}}">
 
-        <TextBlock>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris malesuada sed dolor a ultricies.</TextBlock>
-        
+        <TextAreaContentPresenter Name="PART_ContentPresenter"/>
+      
       </ScrollViewer>
       <Image Class="textarea-focus-image"
              Opacity="{{IsKeyboardFocused ? 1 : 0}}"
