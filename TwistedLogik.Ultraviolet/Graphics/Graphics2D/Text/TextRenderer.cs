@@ -16,9 +16,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the line of text at the specified position relative to the layout area.
         /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
-        /// <returns>The index of the line of text at the specified position relative to the layout area.</returns>
-        public Int32 GetLineAtPosition(TextLayoutCommandStream input, Vector2 position)
+        /// <param name="stretch">If <c>true</c>, a line is considered to fill the entire horizontal extent of the 
+        /// layout area, regardless of the line's actual width.</param>
+        /// <returns>The index of the line of text at the specified position relative to the layout area, 
+        /// or <c>null</c> if the specified position is not contained by any line.</returns>
+        public Int32? GetLineAtPosition(TextLayoutCommandStream input, Vector2 position, Boolean stretch = false)
         {
             return GetLineAtPosition(input, (Int32)position.X, (Int32)position.Y);
         }
@@ -26,9 +30,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the line of text at the specified position relative to the layout area.
         /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
-        /// <returns>The index of the line of text at the specified position relative to the layout area.</returns>
-        public Int32 GetLineAtPosition(TextLayoutCommandStream input, Point2 position)
+        /// <param name="stretch">If <c>true</c>, a line is considered to fill the entire horizontal extent of the 
+        /// layout area, regardless of the line's actual width.</param>
+        /// <returns>The index of the line of text at the specified position relative to the layout area, 
+        /// or <c>null</c> if the specified position is not contained by any line.</returns>
+        public Int32? GetLineAtPosition(TextLayoutCommandStream input, Point2 position, Boolean stretch = false)
         {
             return GetLineAtPosition(input, position.X, position.Y);
         }
@@ -36,20 +44,66 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the line of text at the specified position relative to the layout area.
         /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="x">The x-coordinate to evaluate.</param>
         /// <param name="y">The y-coordinate to evaluate.</param>
-        /// <returns>The index of the line of text at the specified position relative to the layout area.</returns>
-        public Int32 GetLineAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
+        /// <param name="stretch">If <c>true</c>, a line is considered to fill the entire horizontal extent of the 
+        /// layout area, regardless of the line's actual width.</param>
+        /// <returns>The index of the line of text at the specified position relative to the layout area, 
+        /// or <c>null</c> if the specified position is not contained by any line.</returns>
+        public Int32? GetLineAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, Boolean stretch = false)
         {
-            throw new NotImplementedException();
+            Contract.Require(input, "input");
+
+            if (x < 0 || y < 0)
+                return null;
+
+            var acquiredPointers = !input.HasAcquiredPointers;
+            if (acquiredPointers)
+                input.AcquirePointers();
+
+            input.Seek(0);
+
+            var positionX = 0;
+            var positionY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+
+            if (y < positionY || y >= positionY + input.ActualHeight)
+                return null;
+
+            input.SeekNextLine();
+
+            for (int i = 0; i < input.LineCount; i++)
+            {
+                var cmd = (TextLayoutLineInfoCommand*)input.Data;
+                positionX = cmd->Offset;
+
+                if (y >= positionY && y < positionY + cmd->LineHeight)
+                {
+                    if (stretch || (x >= positionX && x < positionX + cmd->LineWidth))
+                    {
+                        return i;
+                    }
+                    break;
+                }
+
+                positionY += cmd->LineHeight;
+                input.SeekNextLine();
+            }
+
+            if (acquiredPointers)
+                input.ReleasePointers();
+
+            return null;
         }
 
         /// <summary>
         /// Gets the index of the glyph at the specified position relative to the layout area.
         /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
-        /// <returns>The index of the glyph at the specified position relative to the layout area.</returns>
-        public Int32 GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position)
+        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position)
         {
             return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y);
         }
@@ -57,9 +111,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the glyph at the specified position relative to the layout area.
         /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
-        /// <returns>The index of the glyph at the specified position relative to the layout area.</returns>
-        public Int32 GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position)
+        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position)
         {
             return GetGlyphAtPosition(input, position.X, position.Y);
         }
@@ -67,10 +123,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the glyph at the specified position relative to the layout area.
         /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="x">The x-coordinate to evaluate.</param>
         /// <param name="y">The y-coordinate to evaluate.</param>
-        /// <returns>The index of the glyph at the specified position relative to the layout area.</returns>
-        public Int32 GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
+        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
         {
             throw new NotImplementedException();
         }

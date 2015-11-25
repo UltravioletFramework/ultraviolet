@@ -11,68 +11,92 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
     {
         [TestMethod]
         [TestCategory("Rendering")]
-        [Description("Ensures that the TextRenderer class returns the correct value from GetLineBounds().")]
-        public void TextRenderer_CalculatesCorrectLineBounds()
+        [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions inside the text of lines.")]
+        public void TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsInsideText()
         {
-            var spriteBatch = default(SpriteBatch);
-            var spriteFont = default(SpriteFont);
-
-            var blankTexture = default(Texture2D);
-
-            var textParser = default(TextParser);
-            var textParserResult = default(TextParserTokenStream);
-
-            var textLayoutEngine = default(TextLayoutEngine);
-            var textLayoutResult = default(TextLayoutCommandStream);
-
-            var textRenderer = default(TextRenderer);
+            var content = new TextRendererTestContent(
+                "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
+                "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
 
             var result = GivenAnUltravioletApplication()
-                .WithContent(content =>
-                {
-                    spriteBatch = SpriteBatch.Create();
-                    spriteFont = content.Load<SpriteFont>("Fonts/Garamond");
-
-                    blankTexture = Texture2D.Create(1, 1);
-                    blankTexture.SetData(new[] { Color.White });
-
-                    textParserResult = new TextParserTokenStream();
-                    textParser = new TextParser();
-                    textParser.Parse("The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\nThe |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", textParserResult);
-
-                    textLayoutResult = new TextLayoutCommandStream();
-                    textLayoutEngine = new TextLayoutEngine();
-                    
-                    var icons = content.Load<Sprite>("Sprites/InterfaceIcons");
-                    textLayoutEngine.RegisterIcon("test", icons["test"]);
-
-                    textRenderer = new TextRenderer();
-                })
+                .WithContent(content.Load)
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
-                    spriteBatch.Begin();
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+
+                    content.TextLayoutResult.AcquirePointers();
+                    var lines = new[]
+                    {
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 9, 8),
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 56, 33),
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 112, 55),
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 181, 77),
+                    };
+                    content.TextLayoutResult.ReleasePointers();
+                    
+                    content.SpriteBatch.Begin();
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    var colors = new[] { Color.Red, Color.Lime, Color.Blue, Color.Yellow };
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        var line = lines[i];
+                        if (line.HasValue)
+                        {
+                            var bounds = new Rectangle(0, line.Value * content.SpriteFont.Regular.LineSpacing,
+                                window.ClientSize.Width, content.SpriteFont.Regular.LineSpacing);
+                            content.SpriteBatch.Draw(content.BlankTexture, bounds, colors[i] * 0.5f);
+                        }
+                    }
+
+                    content.SpriteBatch.End();
+                });
+            
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsInsideText.png");
+        }
+        
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that the TextRenderer class returns the correct value from GetLineBounds().")]
+        public void TextRenderer_CalculatesCorrectLineBounds()
+        {
+            var content = new TextRendererTestContent(
+                "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
+                "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    textLayoutEngine.CalculateLayout(textParserResult, textLayoutResult,
-                        new TextLayoutSettings(spriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
-                    textRenderer.Draw(spriteBatch, textLayoutResult, Vector2.Zero, Color.White);
+                    content.TextLayoutResult.AcquirePointers();
+                    var line0Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 0);
+                    var line1Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 1);
+                    var line2Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 2);
+                    var line3Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 3);
+                    content.TextLayoutResult.ReleasePointers();
 
-                    textLayoutResult.AcquirePointers();
-                    var line0Bounds = textRenderer.GetLineBounds(textLayoutResult, 0);
-                    var line1Bounds = textRenderer.GetLineBounds(textLayoutResult, 1);
-                    var line2Bounds = textRenderer.GetLineBounds(textLayoutResult, 2);
-                    var line3Bounds = textRenderer.GetLineBounds(textLayoutResult, 3);
-                    textLayoutResult.ReleasePointers();
+                    content.SpriteBatch.Begin();
 
-                    spriteBatch.Draw(blankTexture, line0Bounds, Color.Red * 0.5f);
-                    spriteBatch.Draw(blankTexture, line1Bounds, Color.Lime * 0.5f);
-                    spriteBatch.Draw(blankTexture, line2Bounds, Color.Blue * 0.5f);
-                    spriteBatch.Draw(blankTexture, line3Bounds, Color.Yellow * 0.5f);
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
 
-                    spriteBatch.End();
+                    content.SpriteBatch.Draw(content.BlankTexture, line0Bounds, Color.Red * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, line1Bounds, Color.Lime * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, line2Bounds, Color.Blue * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, line3Bounds, Color.Yellow * 0.5f);
+
+                    content.SpriteBatch.End();
                 });
 
             TheResultingImage(result).WithinThreshold(0)
@@ -84,66 +108,37 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         [Description("Ensures that the TextRenderer class returns the correct value from GetLineBounds() when layout commands are disabled.")]
         public void TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled()
         {
-            var spriteBatch = default(SpriteBatch);
-            var spriteFont = default(SpriteFont);
-
-            var blankTexture = default(Texture2D);
-
-            var textParser = default(TextParser);
-            var textParserResult = default(TextParserTokenStream);
-
-            var textLayoutEngine = default(TextLayoutEngine);
-            var textLayoutResult = default(TextLayoutCommandStream);
-
-            var textRenderer = default(TextRenderer);
+            var content = new TextRendererTestContent(
+                "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
+                "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", TextParserOptions.IgnoreCommandCodes);
 
             var result = GivenAnUltravioletApplication()
-                .WithContent(content =>
-                {
-                    spriteBatch = SpriteBatch.Create();
-                    spriteFont = content.Load<SpriteFont>("Fonts/Garamond");
-
-                    blankTexture = Texture2D.Create(1, 1);
-                    blankTexture.SetData(new[] { Color.White });
-
-                    textParserResult = new TextParserTokenStream();
-                    textParser = new TextParser();
-                    textParser.Parse("The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\nThe |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", 
-                        textParserResult, TextParserOptions.IgnoreCommandCodes);
-
-                    textLayoutResult = new TextLayoutCommandStream();
-                    textLayoutEngine = new TextLayoutEngine();
-
-                    var icons = content.Load<Sprite>("Sprites/InterfaceIcons");
-                    textLayoutEngine.RegisterIcon("test", icons["test"]);
-
-                    textRenderer = new TextRenderer();
-                })
+                .WithContent(content.Load)
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
-                    spriteBatch.Begin();
-
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    textLayoutEngine.CalculateLayout(textParserResult, textLayoutResult,
-                        new TextLayoutSettings(spriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
-                    textRenderer.Draw(spriteBatch, textLayoutResult, Vector2.Zero, Color.White);
+                    content.TextLayoutResult.AcquirePointers();
+                    var line0Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 0);
+                    var line1Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 1);
+                    var line2Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 2);
+                    var line3Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 3);
+                    content.TextLayoutResult.ReleasePointers();
 
-                    textLayoutResult.AcquirePointers();
-                    var line0Bounds = textRenderer.GetLineBounds(textLayoutResult, 0);
-                    var line1Bounds = textRenderer.GetLineBounds(textLayoutResult, 1);
-                    var line2Bounds = textRenderer.GetLineBounds(textLayoutResult, 2);
-                    var line3Bounds = textRenderer.GetLineBounds(textLayoutResult, 3);
-                    textLayoutResult.ReleasePointers();
+                    content.SpriteBatch.Begin();
 
-                    spriteBatch.Draw(blankTexture, line0Bounds, Color.Red * 0.5f);
-                    spriteBatch.Draw(blankTexture, line1Bounds, Color.Lime * 0.5f);
-                    spriteBatch.Draw(blankTexture, line2Bounds, Color.Blue * 0.5f);
-                    spriteBatch.Draw(blankTexture, line3Bounds, Color.Yellow * 0.5f);
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
 
-                    spriteBatch.End();
+                    content.SpriteBatch.Draw(content.BlankTexture, line0Bounds, Color.Red * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, line1Bounds, Color.Lime * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, line2Bounds, Color.Blue * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, line3Bounds, Color.Yellow * 0.5f);
+
+                    content.SpriteBatch.End();
                 });
             
             TheResultingImage(result).WithinThreshold(0)
@@ -155,71 +150,43 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         [Description("Ensures that the TextRenderer class returns the correct value from GetGlyphBounds().")]
         public void TextRenderer_CalculatesCorrectGlyphBounds()
         {
-            var spriteBatch = default(SpriteBatch);
-            var spriteFont = default(SpriteFont);
-
-            var blankTexture = default(Texture2D);
-
-            var textParser = default(TextParser);
-            var textParserResult = default(TextParserTokenStream);
-
-            var textLayoutEngine = default(TextLayoutEngine);
-            var textLayoutResult = default(TextLayoutCommandStream);
-
-            var textRenderer = default(TextRenderer);
+            var content = new TextRendererTestContent(
+                "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
+                "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
 
             var result = GivenAnUltravioletApplication()
-                .WithContent(content =>
-                {
-                    spriteBatch = SpriteBatch.Create();
-                    spriteFont = content.Load<SpriteFont>("Fonts/Garamond");
-
-                    blankTexture = Texture2D.Create(1, 1);
-                    blankTexture.SetData(new[] { Color.White });
-
-                    textParserResult = new TextParserTokenStream();
-                    textParser = new TextParser();
-                    textParser.Parse("The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\nThe |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", textParserResult);
-
-                    textLayoutResult = new TextLayoutCommandStream();
-                    textLayoutEngine = new TextLayoutEngine();
-
-                    var icons = content.Load<Sprite>("Sprites/InterfaceIcons");
-                    textLayoutEngine.RegisterIcon("test", icons["test"]);
-
-                    textRenderer = new TextRenderer();
-                })
+                .WithContent(content.Load)
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
-                    spriteBatch.Begin();
-
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    textLayoutEngine.CalculateLayout(textParserResult, textLayoutResult,
-                        new TextLayoutSettings(spriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
-                    textRenderer.Draw(spriteBatch, textLayoutResult, Vector2.Zero, Color.White);
+                    content.TextLayoutResult.AcquirePointers();
+                    var glyph0Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 0);
+                    var glyph4Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 4);
+                    var glyph14Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 14);
+                    var glyph26Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 26);
+                    var glyph51Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 51);
+                    var glyph52Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 52);
+                    var glyphLastBounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, content.TextLayoutResult.TotalLength - 1);
+                    content.TextLayoutResult.ReleasePointers();
 
-                    textLayoutResult.AcquirePointers();
-                    var glyph0Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 0);
-                    var glyph4Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 4);
-                    var glyph14Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 14);
-                    var glyph26Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 26);
-                    var glyph51Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 51);
-                    var glyph52Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 52);
-                    var glyphLastBounds = textRenderer.GetGlyphBounds(textLayoutResult, textLayoutResult.TotalLength - 1);
-                    textLayoutResult.ReleasePointers();
+                    content.SpriteBatch.Begin();
 
-                    spriteBatch.Draw(blankTexture, glyph0Bounds, Color.Red * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph4Bounds, Color.Cyan * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph14Bounds, Color.Lime * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph26Bounds, Color.Blue * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph51Bounds, Color.Yellow * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph52Bounds, Color.Purple * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyphLastBounds, Color.White * 0.5f);
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
 
-                    spriteBatch.End();
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph0Bounds, Color.Red * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph4Bounds, Color.Cyan * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph14Bounds, Color.Lime * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph26Bounds, Color.Blue * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph51Bounds, Color.Yellow * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph52Bounds, Color.Purple * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyphLastBounds, Color.White * 0.5f);
+
+                    content.SpriteBatch.End();
                 });
             
             TheResultingImage(result).WithinThreshold(0)
@@ -231,72 +198,43 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         [Description("Ensures that the TextRenderer class returns the correct value from GetGlyphBounds() when layout commands are disabled.")]
         public void TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled()
         {
-            var spriteBatch = default(SpriteBatch);
-            var spriteFont = default(SpriteFont);
-
-            var blankTexture = default(Texture2D);
-
-            var textParser = default(TextParser);
-            var textParserResult = default(TextParserTokenStream);
-
-            var textLayoutEngine = default(TextLayoutEngine);
-            var textLayoutResult = default(TextLayoutCommandStream);
-
-            var textRenderer = default(TextRenderer);
+            var content = new TextRendererTestContent(
+                "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
+                "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", TextParserOptions.IgnoreCommandCodes);
 
             var result = GivenAnUltravioletApplication()
-                .WithContent(content =>
-                {
-                    spriteBatch = SpriteBatch.Create();
-                    spriteFont = content.Load<SpriteFont>("Fonts/Garamond");
-
-                    blankTexture = Texture2D.Create(1, 1);
-                    blankTexture.SetData(new[] { Color.White });
-
-                    textParserResult = new TextParserTokenStream();
-                    textParser = new TextParser();
-                    textParser.Parse("The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\nThe |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", 
-                        textParserResult, TextParserOptions.IgnoreCommandCodes);
-
-                    textLayoutResult = new TextLayoutCommandStream();
-                    textLayoutEngine = new TextLayoutEngine();
-
-                    var icons = content.Load<Sprite>("Sprites/InterfaceIcons");
-                    textLayoutEngine.RegisterIcon("test", icons["test"]);
-
-                    textRenderer = new TextRenderer();
-                })
+                .WithContent(content.Load)
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
-                    spriteBatch.Begin();
-
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    textLayoutEngine.CalculateLayout(textParserResult, textLayoutResult,
-                        new TextLayoutSettings(spriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
-                    textRenderer.Draw(spriteBatch, textLayoutResult, Vector2.Zero, Color.White);
+                    content.TextLayoutResult.AcquirePointers();
+                    var glyph0Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 0);
+                    var glyph4Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 4);
+                    var glyph14Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 14);
+                    var glyph26Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 26);
+                    var glyph51Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 51);
+                    var glyph52Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 52);
+                    var glyphLastBounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, content.TextLayoutResult.TotalLength - 1);
+                    content.TextLayoutResult.ReleasePointers();
 
-                    textLayoutResult.AcquirePointers();
-                    var glyph0Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 0);
-                    var glyph4Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 4);
-                    var glyph14Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 14);
-                    var glyph26Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 26);
-                    var glyph51Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 51);
-                    var glyph52Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 52);
-                    var glyphLastBounds = textRenderer.GetGlyphBounds(textLayoutResult, textLayoutResult.TotalLength - 1);
-                    textLayoutResult.ReleasePointers();
+                    content.SpriteBatch.Begin();
 
-                    spriteBatch.Draw(blankTexture, glyph0Bounds, Color.Red * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph4Bounds, Color.Cyan * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph14Bounds, Color.Lime * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph26Bounds, Color.Blue * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph51Bounds, Color.Yellow * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph52Bounds, Color.Purple * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyphLastBounds, Color.White * 0.5f);
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
 
-                    spriteBatch.End();
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph0Bounds, Color.Red * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph4Bounds, Color.Cyan * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph14Bounds, Color.Lime * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph26Bounds, Color.Blue * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph51Bounds, Color.Yellow * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph52Bounds, Color.Purple * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyphLastBounds, Color.White * 0.5f);
+
+                    content.SpriteBatch.End();
                 });
             
             TheResultingImage(result).WithinThreshold(0)
