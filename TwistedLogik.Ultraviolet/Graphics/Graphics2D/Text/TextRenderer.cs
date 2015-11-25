@@ -193,10 +193,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                                 var glyphOffset = (indexWithinText == 0) ? 0 : fontFace.MeasureString(cmdText, 0, indexWithinText).Width;
                                 var glyphSize = fontFace.MeasureGlyph(cmdText, indexWithinText);
+                                var glyphPosition = cmd->GetAbsolutePosition(positionX + glyphOffset, positionY, lineHeight);
 
-                                bounds = new Rectangle(
-                                    positionX + cmd->Bounds.X + glyphOffset, 
-                                    positionY + cmd->Bounds.Y + ((lineHeight - cmd->Bounds.Height) / 2), glyphSize.Width, glyphSize.Height);
+                                bounds = new Rectangle(glyphPosition, glyphSize);
                                 boundsFound = true;
                             }
                             glyphsSeen += cmd->TextLength;
@@ -209,9 +208,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutIconCommand*)input.Data;
                             if (glyphsSeen + 1 > index)
                             {
-                                bounds = new Rectangle(
-                                    positionX + cmd->Bounds.X,
-                                    positionY + cmd->Bounds.Y + ((lineHeight - cmd->Bounds.Height) / 2), cmd->Bounds.Width, cmd->Bounds.Height);
+                                var glyphPosition = cmd->GetAbsolutePosition(positionX, positionY, lineHeight);
+                                bounds = new Rectangle(glyphPosition, cmd->Bounds.Size);
                                 boundsFound = true;
                             }
                             glyphsSeen++;
@@ -750,9 +748,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                                     cmdText = cmdText.Substring(subStart, subLength);
                                 }
 
-                                var cmdPosition = new Vector2(
-                                    position.X + cmd->Bounds.X + lineOffset + tokenOffset,
-                                    position.Y + cmd->Bounds.Y + blockOffset + ((lineHeight - cmd->Bounds.Height) / 2));
+                                var cmdPosition = cmd->GetAbsolutePositionVector(position.X + lineOffset, position.Y + blockOffset, lineHeight);
                                 var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
                                 spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, cmdText, cmdPosition, color);
                             }
@@ -769,15 +765,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             if (charsSeen + 1 > start)
                             {
                                 var cmdIcon = input.GetIcon(cmd->IconIndex);
-                                var cmdPositionX = position.X + lineOffset + cmd->Bounds.X;
-                                var cmdPositionY = position.Y + blockOffset + cmd->Bounds.Y + ((lineHeight - cmd->Bounds.Height) / 2);
+                                var cmdPosition = cmd->GetAbsolutePositionVector(position.X + lineOffset, position.Y + blockOffset, lineHeight);
                                 var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
                                 if (cmdGlyphShaderContext.IsValid)
                                 {
                                     var glyphColor = color;
-                                    cmdGlyphShaderContext.Execute('\x0000', ref cmdPositionX, ref cmdPositionY, ref glyphColor, charsSeen);
+                                    var glyphX = cmdPosition.X;
+                                    var glyphY = cmdPosition.Y;
+                                    cmdGlyphShaderContext.Execute('\x0000', ref glyphX, ref glyphY, ref glyphColor, charsSeen);
+                                    cmdPosition = new Vector2(glyphX, glyphY);
                                 }
-                                spriteBatch.DrawSprite(cmdIcon.Icon.Controller, new Vector2(cmdPositionX, cmdPositionY), cmdIcon.Width, cmdIcon.Height, color, 0f);
+                                spriteBatch.DrawSprite(cmdIcon.Icon.Controller, cmdPosition, cmdIcon.Width, cmdIcon.Height, color, 0f);
                             }
 
                             charsSeen += 1;

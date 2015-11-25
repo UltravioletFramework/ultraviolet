@@ -150,9 +150,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     spriteBatch.End();
                 });
-
-            result.Save("C:\\test\\test.png", System.Drawing.Imaging.ImageFormat.Png);
-
+            
             TheResultingImage(result).WithinThreshold(0)
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds.png");
         }

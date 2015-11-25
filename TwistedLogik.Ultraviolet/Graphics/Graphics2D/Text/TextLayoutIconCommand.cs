@@ -26,6 +26,42 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Gets the absolute position of the icon when rendered.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
+        /// <returns>A <see cref="Point2"/> that describes the absolute position of the icon.</returns>
+        public Point2 GetAbsolutePosition(Int32 x, Int32 y, Int32 lineHeight)
+        {
+            return new Point2(x + bounds.X, y + bounds.Y + ((lineHeight - bounds.Height) / 2));
+        }
+
+        /// <summary>
+        /// Gets the absolute position of the icon when rendered.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
+        /// <returns>A <see cref="Vector2"/> that describes the absolute position of the icon.</returns>
+        public Vector2 GetAbsolutePositionVector(Single x, Single y, Int32 lineHeight)
+        {
+            return new Vector2(x + bounds.X, y + bounds.Y + ((lineHeight - bounds.Height) / 2));
+        }
+
+        /// <summary>
+        /// Gets the absolute bounds of the icon when rendered.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
+        /// <returns>A <see cref="Rectangle"/> that describes the absolute bounds of the icon.</returns>
+        public Rectangle GetAbsoluteBounds(Int32 x, Int32 y, Int32 lineHeight)
+        {
+            return new Rectangle(x + bounds.X, y + bounds.Y + ((lineHeight - bounds.Height) / 2), bounds.Width, bounds.Height);
+        }
+
+        /// <summary>
         /// Gets the command type.
         /// </summary>
         public TextLayoutCommandType CommandType
