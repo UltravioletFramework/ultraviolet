@@ -504,6 +504,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -520,9 +520,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
             
-            var parserOptions = settings.GetParserOptions();
-            parser.Parse(input, parserResult, parserOptions);
-
+            parser.Parse(input, parserResult);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, 0, Int32.MaxValue);
@@ -537,16 +535,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="defaultColor">The color with which to draw the text.</param>
         /// <param name="start">The index of the first character to draw.</param>
         /// <param name="count">The number of characters to draw.</param>
+        /// <param name="parserOptions">The parser options to use when parsing the input text.</param>
         /// <param name="settings">The settings which are passed to the text layout engine.</param>
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
-        public RectangleF Draw(SpriteBatch spriteBatch, String input, Vector2 position, Color defaultColor, Int32 start, Int32 count, TextLayoutSettings settings)
+        public RectangleF Draw(SpriteBatch spriteBatch, String input, Vector2 position, Color defaultColor, Int32 start, Int32 count, TextParserOptions parserOptions, TextLayoutSettings settings)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
             
-            var parserOptions = settings.GetParserOptions();
             parser.Parse(input, parserResult, parserOptions);
-
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, start, count);
@@ -565,10 +562,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
-
-            var parserOptions = settings.GetParserOptions();
-            parser.Parse(input, parserResult, parserOptions);
-
+            
+            parser.Parse(input, parserResult);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, 0, Int32.MaxValue);
@@ -583,16 +578,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="defaultColor">The color with which to draw the text.</param>
         /// <param name="start">The index of the first character to draw.</param>
         /// <param name="count">The number of characters to draw.</param>
+        /// <param name="parserOptions">The parser options to use when parsing the input text.</param>
         /// <param name="settings">The settings which are passed to the text layout engine.</param>
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
-        public RectangleF Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Color defaultColor, Int32 start, Int32 count, TextLayoutSettings settings)
+        public RectangleF Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Color defaultColor, Int32 start, Int32 count, TextParserOptions parserOptions, TextLayoutSettings settings)
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
-
-            var parserOptions = settings.GetParserOptions();
+            
             parser.Parse(input, parserResult, parserOptions);
-
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, start, count);
