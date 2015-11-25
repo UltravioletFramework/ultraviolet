@@ -127,172 +127,171 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 throw new ArgumentException(UltravioletStrings.InvalidLayoutSettings);
 
             var state = new LayoutState();
-            
+
             var index = 0;
 
             var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
             var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
 
-            try
+            output.Clear();
+            output.SourceText = input.SourceText;
+
+            var acquiredPointers = !output.HasAcquiredPointers;
+            if (acquiredPointers)
+                output.AcquirePointers();
+
+            output.WriteBlockInfo();
+            output.WriteLineInfo();
+
+            state.LineInfoCommandIndex = 1;
+
+            var currentFont = settings.Font;
+            var currentFontFace = settings.Font.GetFace(SpriteFontStyle.Regular);
+
+            while (index < input.Count)
             {
-                output.Clear();
-                output.SourceText = input.SourceText;
+                var token = input[index];
 
-                output.AcquirePointers();                
-                output.WriteBlockInfo();
-                output.WriteLineInfo();
+                currentFontFace = default(SpriteFontFace);
+                currentFont = GetCurrentFont(ref settings, bold, italic, out currentFontFace);
 
-                state.LineInfoCommandIndex = 1;
-
-                var currentFont = settings.Font;
-                var currentFontFace = settings.Font.GetFace(SpriteFontStyle.Regular);
-
-                while (index < input.Count)
+                switch (token.TokenType)
                 {
-                    var token = input[index];
-
-                    currentFontFace = default(SpriteFontFace);
-                    currentFont = GetCurrentFont(ref settings, bold, italic, out currentFontFace);
-
-                    switch (token.TokenType)
-                    {
-                        case TextParserTokenType.Text:
+                    case TextParserTokenType.Text:
+                        {
+                            if (token.IsNewLine)
                             {
-                                if (token.IsNewLine)
-                                {
-                                    state.AdvanceToNextCommand(0, currentFontFace.LineSpacing, 0, 1, true);
-                                    state.AdvanceToNextLine(output, ref settings);
-                                }
-                                else
-                                {
-                                    if (!AccumulateText(input, output, currentFontFace, ref index, ref state, ref settings))
-                                        break;
-                                }
+                                state.AdvanceToNextCommand(0, currentFontFace.LineSpacing, 0, 1, true);
+                                state.AdvanceToNextLine(output, ref settings);
                             }
-                            break;
-
-                        case TextParserTokenType.Icon:
+                            else
                             {
-                                var icon = default(TextIconInfo);
-                                var iconIndex = RegisterIconWithCommandStream(output, token.Text, out icon);
-                                var iconSize = MeasureToken(currentFont, token);
-
-                                if (state.PositionX + iconSize.Width > (settings.Width ?? Int32.MaxValue))
-                                    state.AdvanceToNextLine(output, ref settings);
-
-                                if (state.PositionY + iconSize.Height > (settings.Height ?? Int32.MaxValue))
+                                if (!AccumulateText(input, output, currentFontFace, ref index, ref state, ref settings))
                                     break;
-
-                                var iconBounds = new Rectangle(state.PositionX, state.PositionY, iconSize.Width, iconSize.Height);
-                                output.WriteIcon(new TextLayoutIconCommand(iconIndex, icon.Width, icon.Height, iconBounds));
-                                state.AdvanceToNextCommand(iconBounds.Width, iconBounds.Height, 1, 1, false);
                             }
-                            break;
+                        }
+                        break;
 
-                        case TextParserTokenType.ToggleBold:
-                            {
-                                output.WriteToggleBold();
-                                state.AdvanceToNextCommand();
-                                bold = !bold;
-                            }
-                            break;
+                    case TextParserTokenType.Icon:
+                        {
+                            var icon = default(TextIconInfo);
+                            var iconIndex = RegisterIconWithCommandStream(output, token.Text, out icon);
+                            var iconSize = MeasureToken(currentFont, token);
 
-                        case TextParserTokenType.ToggleItalic:
-                            {
-                                output.WriteToggleItalic();
-                                state.AdvanceToNextCommand();
-                                italic = !italic;
-                            }
-                            break;
+                            if (state.PositionX + iconSize.Width > (settings.Width ?? Int32.MaxValue))
+                                state.AdvanceToNextLine(output, ref settings);
 
-                        case TextParserTokenType.PushFont:
-                            {
-                                var pushedFont = default(SpriteFont);
-                                var pushedFontIndex = RegisterFontWithCommandStream(output, token.Text, out pushedFont);
-                                output.WritePushFont(new TextLayoutFontCommand(pushedFontIndex));
-                                state.AdvanceToNextCommand();
-                                PushFont(pushedFont);
-                            }
-                            break;
+                            if (state.PositionY + iconSize.Height > (settings.Height ?? Int32.MaxValue))
+                                break;
 
-                        case TextParserTokenType.PushColor:
-                            {
-                                var pushedColor = ParseColor(token.Text);
-                                output.WritePushColor(new TextLayoutColorCommand(pushedColor));
-                                state.AdvanceToNextCommand();
-                            }
-                            break;
+                            var iconBounds = new Rectangle(state.PositionX, state.PositionY, iconSize.Width, iconSize.Height);
+                            output.WriteIcon(new TextLayoutIconCommand(iconIndex, icon.Width, icon.Height, iconBounds));
+                            state.AdvanceToNextCommand(iconBounds.Width, iconBounds.Height, 1, 1, false);
+                        }
+                        break;
 
-                        case TextParserTokenType.PushStyle:
-                            {
-                                var pushedStyle = default(TextStyle);
-                                var pushedStyleIndex = RegisterStyleWithCommandStream(output, token.Text, out pushedStyle);
-                                output.WritePushStyle(new TextLayoutStyleCommand(pushedStyleIndex));
-                                state.AdvanceToNextCommand();
-                                PushStyle(pushedStyle, ref bold, ref italic);
-                            }
-                            break;
-
-                        case TextParserTokenType.PushGlyphShader:
-                            {
-                                var pushedGlyphShader = default(GlyphShader);
-                                var pushedGlyphShaderIndex = RegisterGlyphShaderWithCommandStream(output, token.Text, out pushedGlyphShader);
-                                output.WritePushGlyphShader(new TextLayoutGlyphShaderCommand(pushedGlyphShaderIndex));
-                                state.AdvanceToNextCommand();
-                            }
-                            break;
-
-                        case TextParserTokenType.PopFont:
-                            {
-                                output.WritePopFont();
-                                state.AdvanceToNextCommand();
-                                PopFont();
-                            }
-                            break;
-
-                        case TextParserTokenType.PopColor:
-                            output.WritePopColor();
+                    case TextParserTokenType.ToggleBold:
+                        {
+                            output.WriteToggleBold();
                             state.AdvanceToNextCommand();
-                            break;
+                            bold = !bold;
+                        }
+                        break;
 
-                        case TextParserTokenType.PopStyle:
-                            {
-                                output.WritePopStyle();
-                                state.AdvanceToNextCommand();
-                                PopStyle(ref bold, ref italic);
-                            }
-                            break;
-
-                        case TextParserTokenType.PopGlyphShader:
-                            output.WritePopGlyphShader();
+                    case TextParserTokenType.ToggleItalic:
+                        {
+                            output.WriteToggleItalic();
                             state.AdvanceToNextCommand();
-                            break;
+                            italic = !italic;
+                        }
+                        break;
 
-                        default:
-                            throw new InvalidOperationException("TODO");
-                    }
+                    case TextParserTokenType.PushFont:
+                        {
+                            var pushedFont = default(SpriteFont);
+                            var pushedFontIndex = RegisterFontWithCommandStream(output, token.Text, out pushedFont);
+                            output.WritePushFont(new TextLayoutFontCommand(pushedFontIndex));
+                            state.AdvanceToNextCommand();
+                            PushFont(pushedFont);
+                        }
+                        break;
 
-                    index++;
+                    case TextParserTokenType.PushColor:
+                        {
+                            var pushedColor = ParseColor(token.Text);
+                            output.WritePushColor(new TextLayoutColorCommand(pushedColor));
+                            state.AdvanceToNextCommand();
+                        }
+                        break;
+
+                    case TextParserTokenType.PushStyle:
+                        {
+                            var pushedStyle = default(TextStyle);
+                            var pushedStyleIndex = RegisterStyleWithCommandStream(output, token.Text, out pushedStyle);
+                            output.WritePushStyle(new TextLayoutStyleCommand(pushedStyleIndex));
+                            state.AdvanceToNextCommand();
+                            PushStyle(pushedStyle, ref bold, ref italic);
+                        }
+                        break;
+
+                    case TextParserTokenType.PushGlyphShader:
+                        {
+                            var pushedGlyphShader = default(GlyphShader);
+                            var pushedGlyphShaderIndex = RegisterGlyphShaderWithCommandStream(output, token.Text, out pushedGlyphShader);
+                            output.WritePushGlyphShader(new TextLayoutGlyphShaderCommand(pushedGlyphShaderIndex));
+                            state.AdvanceToNextCommand();
+                        }
+                        break;
+
+                    case TextParserTokenType.PopFont:
+                        {
+                            output.WritePopFont();
+                            state.AdvanceToNextCommand();
+                            PopFont();
+                        }
+                        break;
+
+                    case TextParserTokenType.PopColor:
+                        output.WritePopColor();
+                        state.AdvanceToNextCommand();
+                        break;
+
+                    case TextParserTokenType.PopStyle:
+                        {
+                            output.WritePopStyle();
+                            state.AdvanceToNextCommand();
+                            PopStyle(ref bold, ref italic);
+                        }
+                        break;
+
+                    case TextParserTokenType.PopGlyphShader:
+                        output.WritePopGlyphShader();
+                        state.AdvanceToNextCommand();
+                        break;
+
+                    default:
+                        throw new InvalidOperationException("TODO");
                 }
 
-                if (state.LineLengthInCommands > 0)
-                    state.AdvanceToNextLine(output, ref settings, false);
+                index++;
+            }
 
-                state.WriteBlockInfo(output, (Int16)state.ActualWidth, (Int16)state.ActualHeight, state.LineCount, ref settings);
+            if (state.LineLengthInCommands > 0)
+                state.AdvanceToNextLine(output, ref settings, false);
 
-                output.Settings = settings;
-                output.Bounds = state.Bounds;
-                output.ActualWidth = state.ActualWidth;
-                output.ActualHeight = state.ActualHeight;
-                output.TotalLength = state.TotalLength;
-                output.LineCount = state.LineCount;
+            state.WriteBlockInfo(output, (Int16)state.ActualWidth, (Int16)state.ActualHeight, state.LineCount, ref settings);
 
+            output.Settings = settings;
+            output.Bounds = state.Bounds;
+            output.ActualWidth = state.ActualWidth;
+            output.ActualHeight = state.ActualHeight;
+            output.TotalLength = state.TotalLength;
+            output.LineCount = state.LineCount;
+
+            if (acquiredPointers)
                 output.ReleasePointers();
-            }
-            finally
-            {
-                ClearLayoutStacks();
-            }
+
+            ClearLayoutStacks();
         }
 
         /// <summary>

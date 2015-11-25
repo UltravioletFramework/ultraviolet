@@ -506,7 +506,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 throw new ArgumentException(UltravioletStrings.InvalidLayoutSettings);
 
             var end = (count == Int32.MaxValue) ? Int32.MaxValue : start + count - 1;
-            
+
             var settings = input.Settings;
             var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
             var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
@@ -521,199 +521,208 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             var source = new StringSource(input.SourceText);
 
-            try
-            {
+            var acquiredPointers = !input.HasAcquiredPointers;
+            if (acquiredPointers)
                 input.AcquirePointers();
-                input.Seek(0);
 
-                for (int i = 0; i < input.Count; i++)
+            input.Seek(0);
+
+            for (int i = 0; i < input.Count; i++)
+            {
+                if (charsSeen >= end)
+                    break;
+
+                var cmdType = *(TextLayoutCommandType*)input.Data;
+                switch (cmdType)
                 {
-                    if (charsSeen >= end)
+                    case TextLayoutCommandType.BlockInfo:
+                        {
+                            var cmd = (TextLayoutBlockInfoCommand*)input.Data;
+                            blockOffset = cmd->Offset;
+                            input.SeekPastBlockInfoCommand();
+                        }
                         break;
 
-                    var cmdType = *(TextLayoutCommandType*)input.Data;
-                    switch (cmdType)
-                    {
-                        case TextLayoutCommandType.BlockInfo:
-                            {
-                                var cmd = input.ReadBlockInfoCommand();
-                                blockOffset = cmd.Offset;
-                            }
-                            break;
+                    case TextLayoutCommandType.LineInfo:
+                        {
+                            var cmd = (TextLayoutLineInfoCommand*)input.Data;
+                            lineOffset = cmd->Offset;
+                            lineHeight = cmd->LineHeight;
+                            input.SeekPastLineInfoCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.LineInfo:
-                            {
-                                var cmd = input.ReadLineInfoCommand();
-                                lineOffset = cmd.Offset;
-                                lineHeight = cmd.LineHeight;
-                            }
-                            break;
+                    case TextLayoutCommandType.Text:
+                        {
+                            var cmd = (TextLayoutTextCommand*)input.Data;
+                            var cmdText = source.CreateStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
+                            var cmdTextOriginalLength = cmdText.Length;
 
-                        case TextLayoutCommandType.Text:
+                            if (charsSeen + cmdTextOriginalLength > start)
                             {
-                                var cmd = input.ReadTextCommand();
-                                var cmdText = source.CreateStringSegmentFromSubstring(cmd.TextOffset, cmd.TextLength);
-                                var cmdTextOriginalLength = cmdText.Length;
+                                var tokenOffset = 0;
+                                var tokenStart = charsSeen;
+                                var tokenEnd = tokenStart + cmdText.Length - 1;
 
-                                if (charsSeen + cmdTextOriginalLength > start)
+                                if ((tokenStart < start && tokenEnd >= start) || (tokenStart <= end && tokenEnd > end))
                                 {
-                                    var tokenOffset = 0;
-                                    var tokenStart = charsSeen;
-                                    var tokenEnd = tokenStart + cmdText.Length - 1;
-
-                                    if ((tokenStart < start && tokenEnd >= start) || (tokenStart <= end && tokenEnd > end))
-                                    {
-                                        var subStart = (charsSeen > start) ? 0 : start - charsSeen;
-                                        var subEnd = Math.Min(end, charsSeen + cmdText.Length - 1) - charsSeen;
-                                        var subLength = 1 + (subEnd - subStart);
-                                        tokenOffset = (subStart == 0) ? 0 : fontFace.MeasureString(cmdText.Substring(0, subStart)).Width;
-                                        cmdText = cmdText.Substring(subStart, subLength);
-                                    }
-
-                                    var cmdPosition = new Vector2(
-                                        position.X + cmd.Bounds.X + lineOffset + tokenOffset,
-                                        position.Y + cmd.Bounds.Y + blockOffset + ((lineHeight - cmd.Bounds.Height) / 2));
-                                    var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
-                                    spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, cmdText, cmdPosition, color);
+                                    var subStart = (charsSeen > start) ? 0 : start - charsSeen;
+                                    var subEnd = Math.Min(end, charsSeen + cmdText.Length - 1) - charsSeen;
+                                    var subLength = 1 + (subEnd - subStart);
+                                    tokenOffset = (subStart == 0) ? 0 : fontFace.MeasureString(cmdText.Substring(0, subStart)).Width;
+                                    cmdText = cmdText.Substring(subStart, subLength);
                                 }
 
-                                charsSeen += cmdTextOriginalLength;
+                                var cmdPosition = new Vector2(
+                                    position.X + cmd->Bounds.X + lineOffset + tokenOffset,
+                                    position.Y + cmd->Bounds.Y + blockOffset + ((lineHeight - cmd->Bounds.Height) / 2));
+                                var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
+                                spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, cmdText, cmdPosition, color);
                             }
-                            break;
 
-                        case TextLayoutCommandType.Icon:
+                            charsSeen += cmdTextOriginalLength;
+                            input.SeekPastTextCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.Icon:
+                        {
+                            var cmd = (TextLayoutIconCommand*)input.Data;
+                            
+                            if (charsSeen + 1 > start)
                             {
-                                var cmd = input.ReadIconCommand();
-
-                                if (charsSeen + 1 > start)
+                                var cmdIcon = input.GetIcon(cmd->IconIndex);
+                                var cmdPositionX = position.X + lineOffset + cmd->Bounds.X;
+                                var cmdPositionY = position.Y + blockOffset + cmd->Bounds.Y + ((lineHeight - cmd->Bounds.Height) / 2);
+                                var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
+                                if (cmdGlyphShaderContext.IsValid)
                                 {
-                                    var cmdIcon = input.GetIcon(cmd.IconIndex);
-                                    var cmdPositionX = position.X + lineOffset + cmd.Bounds.X;
-                                    var cmdPositionY = position.Y + blockOffset + cmd.Bounds.Y + ((lineHeight - cmd.Bounds.Height) / 2);
-                                    var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
-                                    if (cmdGlyphShaderContext.IsValid)
-                                    {
-                                        var glyphColor = color;
-                                        cmdGlyphShaderContext.Execute('\x0000', ref cmdPositionX, ref cmdPositionY, ref glyphColor, charsSeen);
-                                    }
-                                    spriteBatch.DrawSprite(cmdIcon.Icon.Controller, new Vector2(cmdPositionX, cmdPositionY), cmdIcon.Width, cmdIcon.Height, color, 0f);
+                                    var glyphColor = color;
+                                    cmdGlyphShaderContext.Execute('\x0000', ref cmdPositionX, ref cmdPositionY, ref glyphColor, charsSeen);
                                 }
-
-                                charsSeen += 1;
+                                spriteBatch.DrawSprite(cmdIcon.Icon.Controller, new Vector2(cmdPositionX, cmdPositionY), cmdIcon.Width, cmdIcon.Height, color, 0f);
                             }
-                            break;
 
-                        case TextLayoutCommandType.ToggleBold:
-                            {
-                                input.ReadToggleBoldCommand();
-                                bold = !bold;
-                                RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            }
-                            break;
+                            charsSeen += 1;
+                            input.SeekPastIconCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.ToggleItalic:
-                            {
-                                input.ReadToggleItalicCommand();
-                                italic = !italic;
-                                RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            }
-                            break;
+                    case TextLayoutCommandType.ToggleBold:
+                        {
+                            bold = !bold;
+                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
+                            input.SeekPastToggleBoldCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.PushStyle:
-                            {
-                                var cmd = input.ReadPushStyleCommand();
-                                PushStyle(input.GetStyle(cmd.StyleIndex), ref bold, ref italic);
-                                RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                                RefreshColor(defaultColor, out color);
-                            }
-                            break;
+                    case TextLayoutCommandType.ToggleItalic:
+                        {
+                            italic = !italic;
+                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
+                            input.SeekPastToggleItalicCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.PushFont:
-                            {
-                                var cmd = input.ReadPushFontCommand();
-                                var cmdFont = input.GetFont(cmd.FontIndex);
-                                PushFont(cmdFont);
-                                RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            }
-                            break;
+                    case TextLayoutCommandType.PushStyle:
+                        {
+                            var cmd = (TextLayoutStyleCommand*)input.Data;
+                            PushStyle(input.GetStyle(cmd->StyleIndex), ref bold, ref italic);
+                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
+                            RefreshColor(defaultColor, out color);
+                            input.SeekPastPushStyleCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.PushColor:
-                            {
-                                var cmd = input.ReadPushColorCommand();
-                                var cmdColor = cmd.Color;
-                                PushColor(cmdColor);
-                                RefreshColor(defaultColor, out color);
-                            }
-                            break;
+                    case TextLayoutCommandType.PushFont:
+                        {
+                            var cmd = (TextLayoutFontCommand*)input.Data;
+                            var cmdFont = input.GetFont(cmd->FontIndex);
+                            PushFont(cmdFont);
+                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
+                            input.SeekPastPushFontCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.PushGlyphShader:
-                            {
-                                var cmd = input.ReadPushGlyphShaderCommand();
-                                PushGlyphShader(input.GetGlyphShader(cmd.GlyphShaderIndex));
-                            }
-                            break;
+                    case TextLayoutCommandType.PushColor:
+                        {
+                            var cmd = (TextLayoutColorCommand*)input.Data;
+                            var cmdColor = cmd->Color;
+                            PushColor(cmdColor);
+                            RefreshColor(defaultColor, out color);
+                            input.SeekPastPushColorCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.PopStyle:
-                            {
-                                input.ReadPopStyleCommand();
-                                PopStyle(ref bold, ref italic);
-                                RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                                RefreshColor(defaultColor, out color);
-                            }
-                            break;
+                    case TextLayoutCommandType.PushGlyphShader:
+                        {
+                            var cmd = (TextLayoutGlyphShaderCommand*)input.Data;
+                            PushGlyphShader(input.GetGlyphShader(cmd->GlyphShaderIndex));
+                            input.SeekPastPushGlyphShaderCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.PopFont:
-                            {
-                                input.ReadPopFontCommand();
-                                PopFont();
-                                RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            }
-                            break;
+                    case TextLayoutCommandType.PopStyle:
+                        {
+                            PopStyle(ref bold, ref italic);
+                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
+                            RefreshColor(defaultColor, out color);
+                            input.SeekPastPopStyleCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.PopColor:
-                            {
-                                input.ReadPopColorCommand();
-                                PopColor();
-                                RefreshColor(defaultColor, out color);
-                            }
-                            break;
+                    case TextLayoutCommandType.PopFont:
+                        {
+                            PopFont();
+                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
+                            input.SeekPastPopFontCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.PopGlyphShader:
-                            {
-                                input.ReadPopGlyphShaderCommand();
-                                PopGlyphShader();
-                            }
-                            break;
+                    case TextLayoutCommandType.PopColor:
+                        {
+                            PopColor();
+                            RefreshColor(defaultColor, out color);
+                            input.SeekPastPopColorCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.ChangeSourceString:
-                            {
-                                var cmd = input.ReadChangeSourceStringCommand();
-                                source = new StringSource(input.GetSourceString(cmd.SourceIndex));
-                            }
-                            break;
+                    case TextLayoutCommandType.PopGlyphShader:
+                        {
+                            PopGlyphShader();
+                            input.SeekPastPopGlyphShaderCommand();
+                        }
+                        break;
 
-                        case TextLayoutCommandType.ChangeSourceStringBuilder:
-                            {
-                                var cmd = input.ReadChangeSourceStringBuilderCommand();
-                                source = new StringSource(input.GetSourceStringBuilder(cmd.SourceIndex));
-                            }
-                            break;
+                    case TextLayoutCommandType.ChangeSourceString:
+                        {
+                            var cmd = (TextLayoutSourceStringCommand*)input.Data;
+                            source = new StringSource(input.GetSourceString(cmd->SourceIndex));
+                            input.SeekPastChangeSourceStringCommand();
+                        }
+                        break;
 
-                        default:
-                            if (i + 1 < input.Count)
-                            {
-                                input.Seek(i + 1);
-                            }
-                            break;
-                    }
+                    case TextLayoutCommandType.ChangeSourceStringBuilder:
+                        {
+                            var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
+                            source = new StringSource(input.GetSourceStringBuilder(cmd->SourceIndex));
+                            input.SeekPastChangeSourceStringBuilderCommand();
+                        }
+                        break;
+
+                    default:
+                        if (i + 1 < input.Count)
+                        {
+                            input.Seek(i + 1);
+                        }
+                        break;
                 }
+            }
 
+            if (acquiredPointers)
                 input.ReleasePointers();
-            }
-            finally
-            {
-                ClearLayoutStacks();
-            }
+
+            ClearLayoutStacks();
 
             return new RectangleF(position.X + input.Bounds.X, position.Y + input.Bounds.Y, input.Bounds.Width, input.Bounds.Height);
         }

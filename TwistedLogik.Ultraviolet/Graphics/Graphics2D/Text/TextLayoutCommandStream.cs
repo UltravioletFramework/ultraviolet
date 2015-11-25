@@ -764,6 +764,150 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.BlockInfo"/> command.
+        /// </summary>
+        public void SeekPastBlockInfoCommand()
+        {
+            stream.Seek(sizeof(TextLayoutBlockInfoCommand), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.LineInfo"/> command.
+        /// </summary>
+        public void SeekPastLineInfoCommand()
+        {
+            stream.Seek(sizeof(TextLayoutLineInfoCommand), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.Text"/> command.
+        /// </summary>
+        public void SeekPastTextCommand()
+        {
+            stream.Seek(sizeof(TextLayoutTextCommand), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be an <see cref="TextLayoutCommandType.Icon"/> command.
+        /// </summary>
+        public void SeekPastIconCommand()
+        {
+            stream.Seek(sizeof(TextLayoutIconCommand), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.ToggleBold"/> command.
+        /// </summary>
+        public void SeekPastToggleBoldCommand()
+        {
+            stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.ToggleItalic"/> command.
+        /// </summary>
+        public void SeekPastToggleItalicCommand()
+        {
+            stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.PushStyle"/> command.
+        /// </summary>
+        public void SeekPastPushStyleCommand()
+        {
+            stream.Seek(sizeof(TextLayoutStyleCommand), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.PushFont"/> command.
+        /// </summary>
+        public void SeekPastPushFontCommand()
+        {
+            stream.Seek(sizeof(TextLayoutFontCommand), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.PushColor"/> command.
+        /// </summary>
+        public void SeekPastPushColorCommand()
+        {
+            stream.Seek(sizeof(TextLayoutColorCommand), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.PushGlyphShader"/> command.
+        /// </summary>
+        public void SeekPastPushGlyphShaderCommand()
+        {
+            stream.Seek(sizeof(TextLayoutGlyphShaderCommand), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.PopStyle"/> command.
+        /// </summary>
+        public void SeekPastPopStyleCommand()
+        {
+            stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.PopFont"/> command.
+        /// </summary>
+        public void SeekPastPopFontCommand()
+        {
+            stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.PopColor"/> command.
+        /// </summary>
+        public void SeekPastPopColorCommand()
+        {
+            stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.PopGlyphShader"/> command.
+        /// </summary>
+        public void SeekPastPopGlyphShaderCommand()
+        {
+            stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.ChangeSourceString"/> command.
+        /// </summary>
+        public void SeekPastChangeSourceStringCommand()
+        {
+            stream.Seek(sizeof(TextLayoutSourceStringCommand), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.ChangeSourceStringBuilder"/> command.
+        /// </summary>
+        public void SeekPastChangeSourceStringBuilderCommand()
+        {
+            stream.Seek(sizeof(TextLayoutSourceStringBuilderCommand), SeekOrigin.Current);
+            position++;
+        }
+
+        /// <summary>
         /// Gets the layout settings which were used to produce the command stream.
         /// </summary>
         public TextLayoutSettings Settings
