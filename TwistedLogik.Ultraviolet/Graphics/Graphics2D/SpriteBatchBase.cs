@@ -1999,7 +1999,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
 
             // Calculate the size of the area in which the text will be rendered.
-            var measure = fontFace.MeasureString(ref text);
+            var measure = fontFace.MeasureString(ref text, 0, text.Length);
             var areaTL = new Vector2(position.X - origin.X, position.Y - origin.Y);
             var areaBR = new Vector2(position.X - origin.X + measure.Width, position.Y - origin.Y + measure.Height);
 

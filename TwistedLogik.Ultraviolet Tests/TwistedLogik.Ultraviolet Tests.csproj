@@ -122,7 +122,6 @@
     <Compile Include="Audio\BASS_SoundEffectPlayerTests.cs" />
     <Compile Include="Audio\BASS_SongPlayerTests.cs" />
     <Compile Include="CircleDTests.cs" />
-    <Compile Include="Graphics\Graphics2D\Text\TextLayoutCommandStreamTests.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextParserTests.cs" />
     <Compile Include="UI\Presentation\Controls\ExampleBoxesAdorner.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteBatchTests.cs" />
@@ -502,7 +501,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextLayoutCommandStream_CalculatesCorrectLineBounds.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png">

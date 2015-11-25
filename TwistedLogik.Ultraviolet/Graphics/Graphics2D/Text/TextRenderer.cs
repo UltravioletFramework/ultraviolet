@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security;
 using System.Text;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
@@ -134,7 +135,183 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(input, "input");
             Contract.EnsureRange(index >= 0 && index < input.TotalLength, "index");
 
-            throw new NotImplementedException();
+            var boundsFound = false;
+            var bounds = Rectangle.Empty;
+            lineHeight = 0;
+
+            var settings = input.Settings;
+
+            var acquiredPointers = !input.HasAcquiredPointers;
+            if (acquiredPointers)
+                input.AcquirePointers();
+
+            input.Seek(0);
+
+            var glyphsSeen = 0;
+
+            var sourceString = input.SourceText.SourceString;
+            var sourceStringBuilder = input.SourceText.SourceStringBuilder;
+
+            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
+            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
+
+            var font = settings.Font;
+            var fontFace = font.GetFace(bold, italic);
+
+            var positionX = 0;
+            var positionY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+
+            input.SeekNextCommand();
+
+            for (int i = 1; i < input.Count && !boundsFound; i++)
+            {
+                var cmdType = *(TextLayoutCommandType*)input.Data;
+
+                switch (cmdType)
+                {
+                    case TextLayoutCommandType.LineInfo:
+                        {
+                            var cmd = (TextLayoutLineInfoCommand*)input.Data;
+                            positionX = cmd->Offset;
+                            lineHeight = cmd->LineHeight;
+                            input.SeekPastLineInfoCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.Text:
+                        {
+                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
+
+                            var cmd = (TextLayoutTextCommand*)input.Data;
+                            if (glyphsSeen + cmd->TextLength > index)
+                            {
+                                var cmdText = (sourceString != null) ?
+                                    new StringSegment(sourceString, cmd->TextOffset, cmd->TextLength) :
+                                    new StringSegment(sourceStringBuilder, cmd->TextOffset, cmd->TextLength);
+
+                                var indexWithinText = index - glyphsSeen;
+
+                                var glyphOffset = (indexWithinText == 0) ? 0 : fontFace.MeasureString(cmdText, 0, indexWithinText).Width;
+                                var glyphSize = fontFace.MeasureGlyph(cmdText, indexWithinText);
+
+                                bounds = new Rectangle(
+                                    positionX + cmd->Bounds.X + glyphOffset, 
+                                    positionY + cmd->Bounds.Y, glyphSize.Width, glyphSize.Height);
+                                boundsFound = true;
+                            }
+                            glyphsSeen += cmd->TextLength;
+                            input.SeekPastTextCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.Icon:
+                        {
+                            var cmd = (TextLayoutIconCommand*)input.Data;
+                            if (glyphsSeen + 1 > index)
+                            {
+                                bounds = new Rectangle(
+                                    positionX + cmd->Bounds.X,
+                                    positionY + cmd->Bounds.Y, cmd->Bounds.Width, cmd->Bounds.Height);
+                                boundsFound = true;
+                            }
+                            glyphsSeen++;
+                            input.SeekPastIconCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.ToggleBold:
+                        {
+                            bold = !bold;
+                            input.SeekPastToggleBoldCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.ToggleItalic:
+                        {
+                            italic = !italic;
+                            input.SeekPastToggleItalicCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.PushStyle:
+                        {
+                            var cmd = (TextLayoutStyleCommand*)input.Data;
+                            var cmdStyle = input.GetStyle(cmd->StyleIndex);
+                            PushStyle(cmdStyle, ref bold, ref italic);
+                            input.SeekPastPushStyleCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.PushFont:
+                        {
+                            var cmd = (TextLayoutFontCommand*)input.Data;
+                            var cmdFont = input.GetFont(cmd->FontIndex);
+                            PushFont(cmdFont);
+                            input.SeekPastPushFontCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.PushColor:
+                        input.SeekPastPushColorCommand();
+                        break;
+
+                    case TextLayoutCommandType.PushGlyphShader:
+                        input.SeekPastPushGlyphShaderCommand();
+                        break;
+
+                    case TextLayoutCommandType.PopStyle:
+                        {
+                            PopStyle(ref bold, ref italic);
+                            input.SeekPastPopStyleCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.PopFont:
+                        {
+                            PopFont();
+                            input.SeekPastPopFontCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.PopColor:
+                        input.SeekPastPopFontCommand();
+                        break;
+
+                    case TextLayoutCommandType.PopGlyphShader:
+                        input.SeekPastPopGlyphShaderCommand();
+                        break;
+
+                    case TextLayoutCommandType.ChangeSourceString:
+                        {
+                            var cmd = (TextLayoutSourceStringCommand*)input.Data;
+                            sourceString = input.GetSourceString(cmd->SourceIndex);
+                            sourceStringBuilder = null;
+                        }
+                        break;
+
+                    case TextLayoutCommandType.ChangeSourceStringBuilder:
+                        {
+                            var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
+                            sourceString = null;
+                            sourceStringBuilder = input.GetSourceStringBuilder(cmd->SourceIndex);
+                        }
+                        break;
+
+                    default:
+                        if (i < input.Count)
+                        {
+                            input.Seek(i + 1);
+                        }
+                        break;
+                }
+            }
+
+            if (acquiredPointers)
+                input.ReleasePointers();
+            
+            ClearLayoutStacks();
+
+            return bounds;
         }
 
         /// <summary>
@@ -569,7 +746,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                                     var subStart = (charsSeen > start) ? 0 : start - charsSeen;
                                     var subEnd = Math.Min(end, charsSeen + cmdText.Length - 1) - charsSeen;
                                     var subLength = 1 + (subEnd - subStart);
-                                    tokenOffset = (subStart == 0) ? 0 : fontFace.MeasureString(cmdText.Substring(0, subStart)).Width;
+                                    tokenOffset = (subStart == 0) ? 0 : fontFace.MeasureString(cmdText, 0, subStart).Width;
                                     cmdText = cmdText.Substring(subStart, subLength);
                                 }
 
@@ -711,7 +888,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         break;
 
                     default:
-                        if (i + 1 < input.Count)
+                        if (i < input.Count)
                         {
                             input.Seek(i + 1);
                         }

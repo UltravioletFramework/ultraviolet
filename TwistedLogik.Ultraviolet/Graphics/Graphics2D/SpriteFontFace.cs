@@ -80,7 +80,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public Size2 MeasureString(String text)
         {
             var source = new StringSource(text);
-            return MeasureString(ref source);
+            return MeasureString(ref source, 0, text.Length);
+        }
+
+        public Size2 MeasureString(String text, Int32 start, Int32 count)
+        {
+
+
+            var source = new StringSource(text);
+            return MeasureString(ref source, start, count);
         }
 
         /// <summary>
@@ -91,7 +99,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public Size2 MeasureString(StringBuilder text)
         {
             var source = new StringSource(text);
-            return MeasureString(ref source);
+            return MeasureString(ref source, 0, text.Length);
+        }
+
+        public Size2 MeasureString(StringBuilder text, Int32 start, Int32 count)
+        {
+
+
+            var source = new StringSource(text);
+            return MeasureString(ref source, start, count);
         }
 
         /// <summary>
@@ -102,7 +118,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public Size2 MeasureString(StringSegment text)
         {
             var source = new StringSource(text);
-            return MeasureString(ref source);
+            return MeasureString(ref source, 0, text.Length);
+        }
+
+        public Size2 MeasureString(StringSegment text, Int32 start, Int32 count)
+        {
+
+            var source = new StringSource(text);
+            return MeasureString(ref source, start, count);
         }
 
         /// <summary>
@@ -242,11 +265,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="source">The text to measure.</param>
         /// <returns>The size of the specified string of text when rendered using this font.</returns>
-        internal Size2 MeasureString(ref StringSource source)
+        internal Size2 MeasureString(ref StringSource source, Int32 start, Int32 count)
         {
             var cx = 0;
             var cy = 0;
-            for (int i = 0; i < source.Length; i++)
+            for (int i = start; i < count; i++)
             {
                 var character = source[i];
                 switch (character)
@@ -265,6 +288,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 }
                 cx += MeasureGlyph(ref source, i).Width;
             }
+            
             return new Size2(cx, cy + LineSpacing);
         }
 
