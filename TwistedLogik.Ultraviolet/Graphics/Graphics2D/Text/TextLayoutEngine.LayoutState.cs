@@ -101,6 +101,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 positionX += width;
                 lineLengthInCommands += lengthInCommands;
                 lineLengthInText += lengthInText;
+                lineTrailingWhiteSpaceCount = isWhiteSpace ? (lineTrailingWhiteSpaceCount + lengthInText) : 0;
                 lineTrailingWhiteSpaceWidth = isWhiteSpace ? (lineTrailingWhiteSpaceWidth + width) : 0;
                 lineWidth += width;
                 lineHeight = Math.Max(lineHeight, height);
@@ -113,6 +114,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             public void AdvanceToNextLine(TextLayoutCommandStream output, ref TextLayoutSettings settings, Boolean writeLineInfo = true)
             {
                 lineWidth -= lineTrailingWhiteSpaceWidth;
+                lineLengthInText -= lineTrailingWhiteSpaceCount;
+                totalLength -= lineTrailingWhiteSpaceCount;
 
                 WriteLineInfo(output, (Int16)lineWidth, (Int16)lineHeight, (Int16)lineLengthInCommands, (Int16)lineLengthInText, ref settings);
 
@@ -120,6 +123,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 positionY += lineHeight;
                 actualWidth = Math.Max(actualWidth, lineWidth);
                 actualHeight += lineHeight;
+                lineTrailingWhiteSpaceCount = 0;
                 lineTrailingWhiteSpaceWidth = 0;
                 lineCount++;
                 lineWidth = 0;
@@ -160,12 +164,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             /// <summary>
+            /// Gets or sets the number of trailing white space characters on the current line.
+            /// </summary>
+            public Int32 LineTrailingWhiteSpaceCount
+            {
+                get { return lineTrailingWhiteSpaceCount; }
+                set { lineTrailingWhiteSpaceCount = value; }
+            }
+
+            /// <summary>
             /// Gets or sets the width of the current line's trailing white space.
             /// </summary>
             public Int32 LineTrailingWhiteSpaceWidth
             {
                 get { return lineTrailingWhiteSpaceWidth; }
-                set { LineTrailingWhiteSpaceWidth = value; }
+                set { lineTrailingWhiteSpaceWidth = value; }
             }
 
             /// <summary>
@@ -255,6 +268,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             private Int32 positionX;
             private Int32 positionY;
             private Int32 lineInfoCommandIndex;
+            private Int32 lineTrailingWhiteSpaceCount;
             private Int32 lineTrailingWhiteSpaceWidth;
             private Int32 lineCount;
             private Int32 lineWidth;

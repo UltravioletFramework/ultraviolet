@@ -75,7 +75,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.End();
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds.png");
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds.png");
         }
 
         [TestMethod]
@@ -136,7 +137,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var glyph26Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 26);
                     var glyph51Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 51);
                     var glyph52Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 52);
-                    var glyph85Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 85);
+                    var glyphLastBounds = textRenderer.GetGlyphBounds(textLayoutResult, textLayoutResult.TotalLength - 1);
                     textLayoutResult.ReleasePointers();
 
                     spriteBatch.Draw(blankTexture, glyph0Bounds, Color.Red * 0.5f);
@@ -145,12 +146,15 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.Draw(blankTexture, glyph26Bounds, Color.Blue * 0.5f);
                     spriteBatch.Draw(blankTexture, glyph51Bounds, Color.Yellow * 0.5f);
                     spriteBatch.Draw(blankTexture, glyph52Bounds, Color.Purple * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph85Bounds, Color.White * 0.5f);
+                    spriteBatch.Draw(blankTexture, glyphLastBounds, Color.White * 0.5f);
 
                     spriteBatch.End();
                 });
-            
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds.png");
+
+            result.Save("C:\\test\\test.png", System.Drawing.Imaging.ImageFormat.Png);
+
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds.png");
         }
 
         [TestMethod]
@@ -179,7 +183,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.End();
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderColoredStrings.png");
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderColoredStrings.png");
         }
 
         [TestMethod]
@@ -212,7 +217,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.End();
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderStyledStrings.png");
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderStyledStrings.png");
         }
 
         [TestMethod]
@@ -269,7 +275,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.End();
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanAlignTextWithinAnArea.png");
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanAlignTextWithinAnArea.png");
         }
 
         [TestMethod]
@@ -306,7 +313,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.End();
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries.png");
+            TheResultingImage(result)
+                .WithinThreshold(0).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries.png");
         }
 
         [TestMethod]
@@ -354,7 +362,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.End();
                 });
             
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png");
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png");
         }
     }
 }
