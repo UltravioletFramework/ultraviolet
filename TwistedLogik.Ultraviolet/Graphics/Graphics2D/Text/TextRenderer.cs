@@ -196,7 +196,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                                 bounds = new Rectangle(
                                     positionX + cmd->Bounds.X + glyphOffset, 
-                                    positionY + cmd->Bounds.Y, glyphSize.Width, glyphSize.Height);
+                                    positionY + cmd->Bounds.Y + ((lineHeight - cmd->Bounds.Height) / 2), glyphSize.Width, glyphSize.Height);
                                 boundsFound = true;
                             }
                             glyphsSeen += cmd->TextLength;
@@ -211,7 +211,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             {
                                 bounds = new Rectangle(
                                     positionX + cmd->Bounds.X,
-                                    positionY + cmd->Bounds.Y, cmd->Bounds.Width, cmd->Bounds.Height);
+                                    positionY + cmd->Bounds.Y + ((lineHeight - cmd->Bounds.Height) / 2), cmd->Bounds.Width, cmd->Bounds.Height);
                                 boundsFound = true;
                             }
                             glyphsSeen++;

@@ -38,10 +38,13 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     textParserResult = new TextParserTokenStream();
                     textParser = new TextParser();
-                    textParser.Parse("The |b|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\nThe |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", textParserResult);
+                    textParser.Parse("The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\nThe |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", textParserResult);
 
                     textLayoutResult = new TextLayoutCommandStream();
                     textLayoutEngine = new TextLayoutEngine();
+                    
+                    var icons = content.Load<Sprite>("Sprites/InterfaceIcons");
+                    textLayoutEngine.RegisterIcon("test", icons["test"]);
 
                     textRenderer = new TextRenderer();
                 })
@@ -71,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     spriteBatch.End();
                 });
-            
+
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds.png");
         }
 
@@ -104,10 +107,13 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     textParserResult = new TextParserTokenStream();
                     textParser = new TextParser();
-                    textParser.Parse("The |b|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\nThe |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", textParserResult);
+                    textParser.Parse("The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\nThe |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", textParserResult);
 
                     textLayoutResult = new TextLayoutCommandStream();
                     textLayoutEngine = new TextLayoutEngine();
+
+                    var icons = content.Load<Sprite>("Sprites/InterfaceIcons");
+                    textLayoutEngine.RegisterIcon("test", icons["test"]);
 
                     textRenderer = new TextRenderer();
                 })
@@ -125,23 +131,25 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     textLayoutResult.AcquirePointers();
                     var glyph0Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 0);
-                    var glyph13Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 13);
-                    var glyph25Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 25);
-                    var glyph50Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 50);
+                    var glyph4Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 4);
+                    var glyph14Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 14);
+                    var glyph26Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 26);
                     var glyph51Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 51);
-                    var glyph84Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 84);
+                    var glyph52Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 52);
+                    var glyph85Bounds = textRenderer.GetGlyphBounds(textLayoutResult, 85);
                     textLayoutResult.ReleasePointers();
 
                     spriteBatch.Draw(blankTexture, glyph0Bounds, Color.Red * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph13Bounds, Color.Lime * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph25Bounds, Color.Blue * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph50Bounds, Color.Yellow * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph51Bounds, Color.Purple * 0.5f);
-                    spriteBatch.Draw(blankTexture, glyph84Bounds, Color.White * 0.5f);
+                    spriteBatch.Draw(blankTexture, glyph4Bounds, Color.Cyan * 0.5f);
+                    spriteBatch.Draw(blankTexture, glyph14Bounds, Color.Lime * 0.5f);
+                    spriteBatch.Draw(blankTexture, glyph26Bounds, Color.Blue * 0.5f);
+                    spriteBatch.Draw(blankTexture, glyph51Bounds, Color.Yellow * 0.5f);
+                    spriteBatch.Draw(blankTexture, glyph52Bounds, Color.Purple * 0.5f);
+                    spriteBatch.Draw(blankTexture, glyph85Bounds, Color.White * 0.5f);
 
                     spriteBatch.End();
                 });
-
+            
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds.png");
         }
 
