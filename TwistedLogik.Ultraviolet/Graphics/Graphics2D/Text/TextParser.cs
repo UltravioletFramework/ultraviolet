@@ -126,6 +126,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             output.SourceText = input.CreateStringSegment();
+            output.ParserOptions = options;
         }
 
         /// <summary>

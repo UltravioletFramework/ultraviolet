@@ -135,6 +135,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             output.Clear();
             output.SourceText = input.SourceText;
+            output.ParserOptions = input.ParserOptions;
 
             var acquiredPointers = !output.HasAcquiredPointers;
             if (acquiredPointers)

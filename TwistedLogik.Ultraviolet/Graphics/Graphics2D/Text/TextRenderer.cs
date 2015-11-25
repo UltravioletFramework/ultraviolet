@@ -160,10 +160,27 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             var positionX = 0;
             var positionY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
-
+            
             input.SeekNextCommand();
+            
+            // NOTE: If we're ignoring command codes, we can optimize by entirely skipping past lines prior to the one
+            // that contains the glyph we're interested in, because we know our style will never change from the default.
+            var ignoreCommandCodes = (input.ParserOptions & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes;
+            if (ignoreCommandCodes)
+            {
+                while (true)
+                {
+                    var cmd = (TextLayoutLineInfoCommand*)input.Data;
+                    if (glyphsSeen + cmd->LengthInGlyphs > index)
+                        break;
 
-            for (int i = 1; i < input.Count && !boundsFound; i++)
+                    glyphsSeen += cmd->LengthInGlyphs;
+                    input.SeekNextLine();
+                }
+            }
+
+            // Seek through the remaining commands until we find the one that contains our glyph.
+            while (!boundsFound)
             {
                 var cmdType = *(TextLayoutCommandType*)input.Data;
 
@@ -284,6 +301,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutSourceStringCommand*)input.Data;
                             sourceString = input.GetSourceString(cmd->SourceIndex);
                             sourceStringBuilder = null;
+                            input.SeekPastChangeSourceStringCommand();
                         }
                         break;
 
@@ -292,14 +310,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
                             sourceString = null;
                             sourceStringBuilder = input.GetSourceStringBuilder(cmd->SourceIndex);
+                            input.SeekPastChangeSourceStringBuilderCommand();
                         }
                         break;
 
                     default:
-                        if (i < input.Count)
-                        {
-                            input.Seek(i + 1);
-                        }
+                        input.SeekNextCommand();
                         break;
                 }
             }

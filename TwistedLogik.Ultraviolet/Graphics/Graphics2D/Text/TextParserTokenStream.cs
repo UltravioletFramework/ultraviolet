@@ -15,6 +15,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public void Clear()
         {
             SourceText = StringSegment.Empty;
+            ParserOptions = TextParserOptions.None;
             tokens.Clear();
         }
 
@@ -79,6 +80,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Gets the source text that was parsed.
         /// </summary>
         public StringSegment SourceText
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the parser options which were used to produce this token stream.
+        /// </summary>
+        public TextParserOptions ParserOptions
         {
             get;
             internal set;

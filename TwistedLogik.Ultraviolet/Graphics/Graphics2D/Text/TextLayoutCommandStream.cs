@@ -123,6 +123,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     break;
 
                 default:
+                    if (position + 1 <= Count)
+                    {
+                        Seek(position + 1);
+                        return true;
+                    }
                     return false;
             }
 
@@ -916,6 +921,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             internal set;
         }
         
+        /// <summary>
+        /// Gets the parser options which were used to produce the command stream.
+        /// </summary>
+        public TextParserOptions ParserOptions
+        {
+            get;
+            internal set;
+        }
+
         /// <summary>
         /// Gets the text that was processed by the layout engine.
         /// </summary>
