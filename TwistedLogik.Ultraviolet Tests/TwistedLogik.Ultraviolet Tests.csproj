@@ -505,19 +505,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideGlyph.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValueForPositionOutsideGlyph.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsInsideGlyph.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValueForPositionInsideGlyph.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText_AndStretchParameterIsTrue.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValueForPositionOutsideText_WithStretch.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValueForPositionOutsideText.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsInsideText.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValueForPositionInsideText.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png">

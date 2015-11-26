@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         [TestMethod]
         [TestCategory("Rendering")]
         [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions inside of text.")]
-        public void TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsInsideText()
+        public void TextRenderer_GetLineAtPosition_ReturnsCorrectValueForPositionInsideText()
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
@@ -59,13 +59,13 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result).WithinThreshold(0)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsInsideText.png");
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValueForPositionInsideText.png");
         }
 
         [TestMethod]
         [TestCategory("Rendering")]
         [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions outside of text.")]
-        public void TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText()
+        public void TextRenderer_GetLineAtPosition_ReturnsCorrectValueForPositionOutsideText()
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
@@ -112,13 +112,13 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
 
             TheResultingImage(result).WithinThreshold(0)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText.png");
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValueForPositionOutsideText.png");
         }
 
         [TestMethod]
         [TestCategory("Rendering")]
         [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions outside of text when the 'stretch' parameter is set to true.")]
-        public void TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText_AndStretchParameterIsTrue()
+        public void TextRenderer_GetLineAtPosition_ReturnsCorrectValueForPositionOutsideText_WithStretch()
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
@@ -165,13 +165,13 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result).WithinThreshold(0)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText_AndStretchParameterIsTrue.png");
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValueForPositionOutsideText_WithStretch.png");
         }
 
         [TestMethod]
         [TestCategory("Rendering")]
         [Description("Ensures that the GetGlyphAtPosition() method on TextRenderer returns the correct result for positions inside of a glyph.")]
-        public void TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsInsideGlyph()
+        public void TextRenderer_GetGlyphAtPosition_ReturnsCorrectValueForPositionInsideGlyph()
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
@@ -221,13 +221,13 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
 
             TheResultingImage(result).WithinThreshold(0)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsInsideGlyph.png");
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValueForPositionInsideGlyph.png");
         }
 
         [TestMethod]
         [TestCategory("Rendering")]
         [Description("Ensures that the GetGlyphAtPosition() method on TextRenderer returns the correct result for positions outside of a glyph.")]
-        public void TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideGlyph()
+        public void TextRenderer_GetGlyphAtPosition_ReturnsCorrectValueForPositionOutsideGlyph()
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
@@ -277,7 +277,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result).WithinThreshold(0)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideGlyph.png");
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValueForPositionOutsideGlyph.png");
         }
 
         [TestMethod]
