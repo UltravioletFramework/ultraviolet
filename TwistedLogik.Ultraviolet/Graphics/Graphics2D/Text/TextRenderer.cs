@@ -420,6 +420,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a bounding box for the specified line, relative to the text layout area.
         /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="index">The index of the line for which to retrieve a bounding box.</param>
         /// <returns>A bounding box for the specified line, relative to the text layout area.</returns>
         public Rectangle GetLineBounds(TextLayoutCommandStream input, Int32 index)
@@ -458,6 +459,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a bounding box for the specified glyph, relative to the text layout area.
         /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="index">The index of the glyph for which to retrieve a bounding box.</param>
         /// <returns>A bounding box for the specified glyph, relative to the text layout area.</returns>
         public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index)
@@ -469,6 +471,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a bounding box for the specified glyph, relative to the text layout area.
         /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="index">The index of the glyph for which to retrieve a bounding box.</param>
         /// <param name="lineHeight">The height of the line that contains the specified glyph.</param>
         /// <returns>A bounding box for the specified glyph, relative to the text layout area.</returns>

@@ -83,9 +83,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             return MeasureString(ref source, 0, text.Length);
         }
 
+        /// <summary>
+        /// Measures the size of the specified substring of text when rendered using this font.
+        /// </summary>
+        /// <param name="text">The text to measure.</param>
+        /// <param name="start">The index of the first character of the substring to measure.</param>
+        /// <param name="count">The number of characters in the substring to measure.</param>
+        /// <returns>The size of the specified substring of text when rendered using this font.</returns>
         public Size2 MeasureString(String text, Int32 start, Int32 count)
         {
-
+            Contract.EnsureRange(start >= 0 && start < text.Length, "start");
+            Contract.EnsureRange(count >= 0 && start + count <= text.Length, "count");
 
             var source = new StringSource(text);
             return MeasureString(ref source, start, count);
@@ -102,9 +110,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             return MeasureString(ref source, 0, text.Length);
         }
 
+        /// <summary>
+        /// Measures the size of the specified substring of text when rendered using this font.
+        /// </summary>
+        /// <param name="text">The text to measure.</param>
+        /// <param name="start">The index of the first character of the substring to measure.</param>
+        /// <param name="count">The number of characters in the substring to measure.</param>
+        /// <returns>The size of the specified substring of text when rendered using this font.</returns>
         public Size2 MeasureString(StringBuilder text, Int32 start, Int32 count)
         {
-
+            Contract.EnsureRange(start >= 0 && start < text.Length, "start");
+            Contract.EnsureRange(count >= 0 && start + count <= text.Length, "count");
 
             var source = new StringSource(text);
             return MeasureString(ref source, start, count);
@@ -121,8 +137,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             return MeasureString(ref source, 0, text.Length);
         }
 
+        /// <summary>
+        /// Measures the size of the specified substring of text when rendered using this font.
+        /// </summary>
+        /// <param name="text">The text to measure.</param>
+        /// <param name="start">The index of the first character of the substring to measure.</param>
+        /// <param name="count">The number of characters in the substring to measure.</param>
+        /// <returns>The size of the specified substring of text when rendered using this font.</returns>
         public Size2 MeasureString(StringSegment text, Int32 start, Int32 count)
         {
+            Contract.EnsureRange(start >= 0 && start < text.Length, "start");
+            Contract.EnsureRange(count >= 0 && start + count <= text.Length, "count");
 
             var source = new StringSource(text);
             return MeasureString(ref source, start, count);
@@ -261,10 +286,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Measures the size of the specified string of text when rendered using this font.
+        /// Measures the size of the specified substring of text when rendered using this font.
         /// </summary>
         /// <param name="source">The text to measure.</param>
-        /// <returns>The size of the specified string of text when rendered using this font.</returns>
+        /// <param name="start">The index of the first character of the substring to measure.</param>
+        /// <param name="count">The number of characters in the substring to measure.</param>
+        /// <returns>The size of the specified substring of text when rendered using this font.</returns>
         internal Size2 MeasureString(ref StringSource source, Int32 start, Int32 count)
         {
             var cx = 0;

@@ -256,12 +256,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private void ProcessDelete()
         {
 
-        }
-
-        protected override RectangleD? ClipCore()
-        {
-            return UntransformedAbsoluteBounds;
-        }
+        }        
 
         // Component references.
         private readonly TextAreaContentPresenter PART_ContentPresenter = null;
