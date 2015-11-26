@@ -505,6 +505,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideGlyph.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsInsideGlyph.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText_AndStretchParameterIsTrue.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

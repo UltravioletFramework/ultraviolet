@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
@@ -11,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
     {
         [TestMethod]
         [TestCategory("Rendering")]
-        [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions inside the text of lines.")]
+        [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions inside of text.")]
         public void TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsInsideText()
         {
             var content = new TextRendererTestContent(
@@ -63,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [TestMethod]
         [TestCategory("Rendering")]
-        [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions outside the text of lines.")]
+        [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions outside of text.")]
         public void TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText()
         {
             var content = new TextRendererTestContent(
@@ -116,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [TestMethod]
         [TestCategory("Rendering")]
-        [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions outside the text of lines when the 'stretch' parameter is set to true.")]
+        [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions outside of text when the 'stretch' parameter is set to true.")]
         public void TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText_AndStretchParameterIsTrue()
         {
             var content = new TextRendererTestContent(
@@ -165,6 +166,118 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
             
             TheResultingImage(result).WithinThreshold(0)
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText_AndStretchParameterIsTrue.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that the GetGlyphAtPosition() method on TextRenderer returns the correct result for positions inside of a glyph.")]
+        public void TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsInsideGlyph()
+        {
+            var content = new TextRendererTestContent(
+                "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
+                "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+
+                    content.TextLayoutResult.AcquirePointers();
+                    var lines = new Int32?[5];
+                    var glyphs = new[]
+                    {
+                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 7, 6, out lines[0]),
+                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 49, 10, out lines[1]),
+                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 88, 33, out lines[2]),
+                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 55, 55, out lines[3]),
+                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 146, 77, out lines[4]),
+                    };
+                    content.TextLayoutResult.ReleasePointers();
+
+                    TheResultingCollection(glyphs).ShouldBeExactly(0, 4, 36, 49, 79);
+                    TheResultingCollection(lines).ShouldBeExactly(0, 0, 1, 2, 3);
+
+                    content.SpriteBatch.Begin();
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    var colors = new[] { Color.Red, Color.Lime, Color.Blue, Color.Yellow, Color.Purple };
+                    for (int i = 0; i < glyphs.Length; i++)
+                    {
+                        var glyph = glyphs[i];
+                        if (glyph.HasValue)
+                        {
+                            var bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, glyph.Value);
+                            content.SpriteBatch.Draw(content.BlankTexture, bounds, colors[i] * 0.5f);
+                        }
+                    }
+
+                    content.SpriteBatch.End();
+                });
+
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsInsideGlyph.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that the GetGlyphAtPosition() method on TextRenderer returns the correct result for positions outside of a glyph.")]
+        public void TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideGlyph()
+        {
+            var content = new TextRendererTestContent(
+                "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
+                "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+
+                    content.TextLayoutResult.AcquirePointers();
+                    var lines = new Int32?[5];
+                    var glyphs = new[]
+                    {
+                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 169, 32, out lines[0]),
+                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 178, 122, out lines[1]),
+                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 472, 8, out lines[2]),
+                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 114, 203, out lines[3]),
+                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 391, 217, out lines[4]),
+                    };
+                    content.TextLayoutResult.ReleasePointers();
+
+                    TheResultingCollection(glyphs).ShouldBeExactly(null, null, null, null, null);
+                    TheResultingCollection(lines).ShouldBeExactly(1, null, 0, null, null);
+
+                    content.SpriteBatch.Begin();
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    var colors = new[] { Color.Red, Color.Lime, Color.Blue, Color.Yellow, Color.Purple };
+                    for (int i = 0; i < glyphs.Length; i++)
+                    {
+                        var glyph = glyphs[i];
+                        if (glyph.HasValue)
+                        {
+                            var bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, glyph.Value);
+                            content.SpriteBatch.Draw(content.BlankTexture, bounds, colors[i] * 0.5f);
+                        }
+                    }
+
+                    content.SpriteBatch.End();
+                });
+            
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetGlyphAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideGlyph.png");
         }
 
         [TestMethod]

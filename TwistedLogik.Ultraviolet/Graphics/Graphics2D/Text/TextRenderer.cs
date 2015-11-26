@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(input, "input");
 
-            if (x < 0 || y < 0)
+            if (x < 0 || y < 0 || input.Count == 0)
                 return null;
 
             var acquiredPointers = !input.HasAcquiredPointers;
@@ -64,10 +64,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             input.Seek(0);
 
-            var positionX = 0;
-            var positionY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+            var offsetX = 0;
+            var offsetY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
 
-            if (y < positionY || y >= positionY + input.ActualHeight)
+            if (y < offsetY || y >= offsetY + input.ActualHeight)
                 return null;
 
             input.SeekNextLine();
@@ -75,18 +75,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             for (int i = 0; i < input.LineCount; i++)
             {
                 var cmd = (TextLayoutLineInfoCommand*)input.Data;
-                positionX = cmd->Offset;
+                offsetX = cmd->Offset;
 
-                if (y >= positionY && y < positionY + cmd->LineHeight)
+                if (y >= offsetY && y < offsetY + cmd->LineHeight)
                 {
-                    if (stretch || (x >= positionX && x < positionX + cmd->LineWidth))
+                    if (stretch || (x >= offsetX && x < offsetX + cmd->LineWidth))
                     {
                         return i;
                     }
                     break;
                 }
 
-                positionY += cmd->LineHeight;
+                offsetY += cmd->LineHeight;
                 input.SeekNextLine();
             }
 
@@ -105,7 +105,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position)
         {
-            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y);
+            Int32? lineAtPosition;
+            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, out lineAtPosition);
+        }
+
+        /// <summary>
+        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="position">The position to evaluate.</param>
+        /// <param name="lineAtPosition">The index of the line of text that contains the specified position, regardless of
+        /// whether the position corresponds to an actual glyph.</param>
+        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position, out Int32? lineAtPosition)
+        {
+            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, out lineAtPosition);
         }
 
         /// <summary>
@@ -117,7 +132,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position)
         {
-            return GetGlyphAtPosition(input, position.X, position.Y);
+            Int32? lineAtPosition;
+            return GetGlyphAtPosition(input, position.X, position.Y, out lineAtPosition);
+        }
+
+        /// <summary>
+        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="position">The position to evaluate.</param>
+        /// <param name="lineAtPosition">The index of the line of text that contains the specified position, regardless of
+        /// whether the position corresponds to an actual glyph.</param>
+        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position, out Int32? lineAtPosition)
+        {
+            return GetGlyphAtPosition(input, position.X, position.Y, out lineAtPosition);
         }
 
         /// <summary>
@@ -130,7 +160,261 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
         {
-            throw new NotImplementedException();
+            Int32? lineAtPosition;
+            return GetGlyphAtPosition(input, x, y, out lineAtPosition);
+        }
+
+        /// <summary>
+        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="x">The x-coordinate to evaluate.</param>
+        /// <param name="y">The y-coordinate to evaluate.</param>
+        /// <param name="lineAtPosition">The index of the line of text that contains the specified position, regardless of
+        /// whether the position corresponds to an actual glyph.</param>
+        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition)
+        {
+            Contract.Require(input, "input");
+
+            lineAtPosition = null;
+
+            if (x < 0 || y < 0 || input.Count == 0)
+                return null;
+            
+            var glyphFound = false;
+            var glyph = default(Int32?);
+            var glyphIsInCurrentLine = false;
+
+            var settings = input.Settings;
+
+            var acquiredPointers = !input.HasAcquiredPointers;
+            if (acquiredPointers)
+                input.AcquirePointers();
+
+            var glyphsSeen = 0;
+
+            var sourceString = input.SourceText.SourceString;
+            var sourceStringBuilder = input.SourceText.SourceStringBuilder;
+
+            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
+            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
+
+            var font = settings.Font;
+            var fontFace = font.GetFace(bold, italic);
+
+            input.Seek(0);
+
+            var offsetX = 0;
+            var offsetY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+
+            if (y < offsetY || y >= offsetY + input.ActualHeight)
+                return null;
+
+            var lineIndex = -1;
+            var linePosition = 0;
+            var lineHeight = 0;
+
+            input.SeekNextCommand();
+
+            // NOTE: If we're ignoring command codes, we can optimize by entirely skipping past lines prior to the one
+            // that contains the position we're interested in, because we know our style will never change from the default.
+            var ignoreCommandCodes = (input.ParserOptions & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes;
+            if (ignoreCommandCodes)
+            {
+                do
+                {
+                    var cmd = (TextLayoutLineInfoCommand*)input.Data;
+                    lineIndex++;
+                    lineHeight = cmd->LineHeight;
+
+                    if (y >= linePosition && y < linePosition + lineHeight)
+                    {
+                        lineAtPosition = lineIndex;
+                        break;
+                    }
+
+                    linePosition += cmd->LineHeight;
+                }
+                while (input.SeekNextLine());
+
+                glyphIsInCurrentLine = true;
+            }
+
+            // Seek through the remaining commands until we find the one that contains our glyph.
+            while (!glyphFound && input.StreamPosition < input.Count)
+            {
+                var cmdType = *(TextLayoutCommandType*)input.Data;
+
+                switch (cmdType)
+                {
+                    case TextLayoutCommandType.LineInfo:
+                        {
+                            if (glyphIsInCurrentLine)
+                                return null;
+
+                            var cmd = (TextLayoutLineInfoCommand*)input.Data;
+                            offsetX = cmd->Offset;
+                            lineIndex++;
+                            linePosition += lineHeight;
+                            lineHeight = cmd->LineHeight;
+
+                            glyphIsInCurrentLine = (y >= linePosition && y < linePosition + cmd->LineHeight);
+                            if (glyphIsInCurrentLine)
+                                lineAtPosition = lineIndex;
+
+                            input.SeekPastLineInfoCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.Text:
+                        {
+                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
+
+                            var cmd = (TextLayoutTextCommand*)input.Data;
+                            if (glyphIsInCurrentLine)
+                            {
+                                var tokenBounds = cmd->GetAbsoluteBounds(offsetX, offsetY, lineHeight);
+                                if (x >= tokenBounds.Left && x < tokenBounds.Right)
+                                {
+                                    var cmdText = (sourceString != null) ?
+                                        new StringSegment(sourceString, cmd->TextOffset, cmd->TextLength) :
+                                        new StringSegment(sourceStringBuilder, cmd->TextOffset, cmd->TextLength);
+
+                                    glyphFound = true;
+
+                                    var glyphX = tokenBounds.X;
+                                    for (int i = 0; i < cmdText.Length; i++)
+                                    {
+                                        var glyphSize = fontFace.MeasureGlyph(cmdText, i);
+                                        if (x >= glyphX && x < glyphX + glyphSize.Width)
+                                        {
+                                            glyph = glyphsSeen;
+                                            break;
+                                        }
+                                        glyphX += glyphSize.Width;
+                                        glyphsSeen++;
+                                    }
+                                }
+                            }
+
+                            if (!glyphFound)
+                                glyphsSeen += cmd->TextLength;
+
+                            input.SeekPastTextCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.Icon:
+                        {
+                            var cmd = (TextLayoutIconCommand*)input.Data;
+                            if (glyphIsInCurrentLine)
+                            {
+                                var glyphBounds = cmd->GetAbsoluteBounds(offsetX, offsetY, lineHeight);
+                                if (x >= glyphBounds.Left && x < glyphBounds.Right)
+                                {
+                                    glyph = glyphsSeen;
+                                    glyphFound = true;
+                                }
+                            }
+                            glyphsSeen++;
+                            input.SeekPastIconCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.ToggleBold:
+                        {
+                            bold = !bold;
+                            input.SeekPastToggleBoldCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.ToggleItalic:
+                        {
+                            italic = !italic;
+                            input.SeekPastToggleItalicCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.PushStyle:
+                        {
+                            var cmd = (TextLayoutStyleCommand*)input.Data;
+                            var cmdStyle = input.GetStyle(cmd->StyleIndex);
+                            PushStyle(cmdStyle, ref bold, ref italic);
+                            input.SeekPastPushStyleCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.PushFont:
+                        {
+                            var cmd = (TextLayoutFontCommand*)input.Data;
+                            var cmdFont = input.GetFont(cmd->FontIndex);
+                            PushFont(cmdFont);
+                            input.SeekPastPushFontCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.PushColor:
+                        input.SeekPastPushColorCommand();
+                        break;
+
+                    case TextLayoutCommandType.PushGlyphShader:
+                        input.SeekPastPushGlyphShaderCommand();
+                        break;
+
+                    case TextLayoutCommandType.PopStyle:
+                        {
+                            PopStyle(ref bold, ref italic);
+                            input.SeekPastPopStyleCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.PopFont:
+                        {
+                            PopFont();
+                            input.SeekPastPopFontCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.PopColor:
+                        input.SeekPastPopFontCommand();
+                        break;
+
+                    case TextLayoutCommandType.PopGlyphShader:
+                        input.SeekPastPopGlyphShaderCommand();
+                        break;
+
+                    case TextLayoutCommandType.ChangeSourceString:
+                        {
+                            var cmd = (TextLayoutSourceStringCommand*)input.Data;
+                            sourceString = input.GetSourceString(cmd->SourceIndex);
+                            sourceStringBuilder = null;
+                            input.SeekPastChangeSourceStringCommand();
+                        }
+                        break;
+
+                    case TextLayoutCommandType.ChangeSourceStringBuilder:
+                        {
+                            var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
+                            sourceString = null;
+                            sourceStringBuilder = input.GetSourceStringBuilder(cmd->SourceIndex);
+                            input.SeekPastChangeSourceStringBuilderCommand();
+                        }
+                        break;
+
+                    default:
+                        input.SeekNextCommand();
+                        break;
+                }
+            }
+
+            if (acquiredPointers)
+                input.ReleasePointers();
+
+            ClearLayoutStacks();
+
+            return glyph;
         }
 
         /// <summary>
@@ -141,7 +425,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Rectangle GetLineBounds(TextLayoutCommandStream input, Int32 index)
         {
             Contract.Require(input, "input");
-            Contract.EnsureRange(index >= 0 && index < input.LineCount, "index");
+            Contract.EnsureRange(index >= 0 && index < input.LineCount, "index");            
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
@@ -216,8 +500,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var font = settings.Font;
             var fontFace = font.GetFace(bold, italic);
 
-            var positionX = 0;
-            var positionY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+            var offsetX = 0;
+            var offsetY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
             
             input.SeekNextCommand();
             
@@ -238,7 +522,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             // Seek through the remaining commands until we find the one that contains our glyph.
-            while (!boundsFound)
+            while (!boundsFound && input.StreamPosition < input.Count)
             {
                 var cmdType = *(TextLayoutCommandType*)input.Data;
 
@@ -247,7 +531,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     case TextLayoutCommandType.LineInfo:
                         {
                             var cmd = (TextLayoutLineInfoCommand*)input.Data;
-                            positionX = cmd->Offset;
+                            offsetX = cmd->Offset;
                             lineHeight = cmd->LineHeight;
                             input.SeekPastLineInfoCommand();
                         }
@@ -268,7 +552,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                                 var glyphOffset = (indexWithinText == 0) ? 0 : fontFace.MeasureString(cmdText, 0, indexWithinText).Width;
                                 var glyphSize = fontFace.MeasureGlyph(cmdText, indexWithinText);
-                                var glyphPosition = cmd->GetAbsolutePosition(positionX + glyphOffset, positionY, lineHeight);
+                                var glyphPosition = cmd->GetAbsolutePosition(offsetX + glyphOffset, offsetY, lineHeight);
 
                                 bounds = new Rectangle(glyphPosition, glyphSize);
                                 boundsFound = true;
@@ -283,7 +567,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutIconCommand*)input.Data;
                             if (glyphsSeen + 1 > index)
                             {
-                                var glyphPosition = cmd->GetAbsolutePosition(positionX, positionY, lineHeight);
+                                var glyphPosition = cmd->GetAbsolutePosition(offsetX, offsetY, lineHeight);
                                 bounds = new Rectangle(glyphPosition, cmd->Bounds.Size);
                                 boundsFound = true;
                             }
