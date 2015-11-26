@@ -60,7 +60,113 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
             TheResultingImage(result).WithinThreshold(0)
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsInsideText.png");
         }
-        
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions outside the text of lines.")]
+        public void TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText()
+        {
+            var content = new TextRendererTestContent(
+                "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
+                "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+
+                    content.TextLayoutResult.AcquirePointers();
+                    var lines = new[]
+                    {
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 350, 8),
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 350, 33),
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 350, 55),
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 350, 77),
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 350, 200),
+                    };
+                    content.TextLayoutResult.ReleasePointers();
+
+                    content.SpriteBatch.Begin();
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    var colors = new[] { Color.Red, Color.Lime, Color.Blue, Color.Yellow, Color.Purple };
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        var line = lines[i];
+                        if (line.HasValue)
+                        {
+                            var bounds = new Rectangle(0, line.Value * content.SpriteFont.Regular.LineSpacing,
+                                window.ClientSize.Width, content.SpriteFont.Regular.LineSpacing);
+                            content.SpriteBatch.Draw(content.BlankTexture, bounds, colors[i] * 0.5f);
+                        }
+                    }
+
+                    content.SpriteBatch.End();
+                });
+
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions outside the text of lines when the 'stretch' parameter is set to true.")]
+        public void TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText_AndStretchParameterIsTrue()
+        {
+            var content = new TextRendererTestContent(
+                "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
+                "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+
+                    content.TextLayoutResult.AcquirePointers();
+                    var lines = new[]
+                    {
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 350, 8, true),
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 350, 33, true),
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 350, 55, true),
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 350, 77, true),
+                        content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 350, 200, true),
+                    };
+                    content.TextLayoutResult.ReleasePointers();
+
+                    content.SpriteBatch.Begin();
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    var colors = new[] { Color.Red, Color.Lime, Color.Blue, Color.Yellow, Color.Purple };
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        var line = lines[i];
+                        if (line.HasValue)
+                        {
+                            var bounds = new Rectangle(0, line.Value * content.SpriteFont.Regular.LineSpacing,
+                                window.ClientSize.Width, content.SpriteFont.Regular.LineSpacing);
+                            content.SpriteBatch.Draw(content.BlankTexture, bounds, colors[i] * 0.5f);
+                        }
+                    }
+
+                    content.SpriteBatch.End();
+                });
+            
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetLineAtPosition_ReturnsCorrectValue_WhenPositionIsOutsideText_AndStretchParameterIsTrue.png");
+        }
+
         [TestMethod]
         [TestCategory("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetLineBounds().")]
