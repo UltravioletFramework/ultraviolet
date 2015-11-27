@@ -403,6 +403,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         }
                         break;
 
+                    case TextLayoutCommandType.Hyphen:
+                        input.SeekPastHyphenCommand();
+                        break;
+
                     default:
                         input.SeekNextCommand();
                         break;
@@ -657,6 +661,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             sourceStringBuilder = input.GetSourceStringBuilder(cmd->SourceIndex);
                             input.SeekPastChangeSourceStringBuilderCommand();
                         }
+                        break;
+
+                    case TextLayoutCommandType.Hyphen:
+                        input.SeekPastHyphenCommand();
                         break;
 
                     default:
@@ -1083,59 +1091,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         break;
 
                     case TextLayoutCommandType.Text:
-                        {
-                            var cmd = (TextLayoutTextCommand*)input.Data;
-                            var cmdText = source.CreateStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
-                            var cmdTextOriginalLength = cmdText.Length;
-
-                            if (charsSeen + cmdTextOriginalLength > start)
-                            {
-                                var tokenOffset = 0;
-                                var tokenStart = charsSeen;
-                                var tokenEnd = tokenStart + cmdText.Length - 1;
-
-                                if ((tokenStart < start && tokenEnd >= start) || (tokenStart <= end && tokenEnd > end))
-                                {
-                                    var subStart = (charsSeen > start) ? 0 : start - charsSeen;
-                                    var subEnd = Math.Min(end, charsSeen + cmdText.Length - 1) - charsSeen;
-                                    var subLength = 1 + (subEnd - subStart);
-                                    tokenOffset = (subStart == 0) ? 0 : fontFace.MeasureString(cmdText, 0, subStart).Width;
-                                    cmdText = cmdText.Substring(subStart, subLength);
-                                }
-
-                                var cmdPosition = cmd->GetAbsolutePositionVector(position.X + lineOffset, position.Y + blockOffset, lineHeight);
-                                var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
-                                spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, cmdText, cmdPosition, color);
-                            }
-
-                            charsSeen += cmdTextOriginalLength;
-                            input.SeekPastTextCommand();
-                        }
+                        DrawText(spriteBatch, input, fontFace, ref source, 
+                            position.X + lineOffset, position.Y + blockOffset, lineHeight, start, end, color, ref charsSeen);
                         break;
 
                     case TextLayoutCommandType.Icon:
-                        {
-                            var cmd = (TextLayoutIconCommand*)input.Data;
-                            
-                            if (charsSeen + 1 > start)
-                            {
-                                var cmdIcon = input.GetIcon(cmd->IconIndex);
-                                var cmdPosition = cmd->GetAbsolutePositionVector(position.X + lineOffset, position.Y + blockOffset, lineHeight);
-                                var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
-                                if (cmdGlyphShaderContext.IsValid)
-                                {
-                                    var glyphColor = color;
-                                    var glyphX = cmdPosition.X;
-                                    var glyphY = cmdPosition.Y;
-                                    cmdGlyphShaderContext.Execute('\x0000', ref glyphX, ref glyphY, ref glyphColor, charsSeen);
-                                    cmdPosition = new Vector2(glyphX, glyphY);
-                                }
-                                spriteBatch.DrawSprite(cmdIcon.Icon.Controller, cmdPosition, cmdIcon.Width, cmdIcon.Height, color, 0f);
-                            }
-
-                            charsSeen += 1;
-                            input.SeekPastIconCommand();
-                        }
+                        DrawIcon(spriteBatch, input, position.X + lineOffset, position.Y + blockOffset, lineHeight, start, count, color, ref charsSeen);
                         break;
 
                     case TextLayoutCommandType.ToggleBold:
@@ -1240,6 +1201,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         }
                         break;
 
+                    case TextLayoutCommandType.Hyphen:
+                        input.SeekPastHyphenCommand();
+                        break;
+
                     default:
                         if (i < input.Count)
                         {
@@ -1255,6 +1220,96 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             ClearLayoutStacks();
 
             return new RectangleF(position.X + input.Bounds.X, position.Y + input.Bounds.Y, input.Bounds.Width, input.Bounds.Height);
+        }
+
+        /// <summary>
+        /// Draws a text command.
+        /// </summary>
+        private void DrawText(SpriteBatch spriteBatch, TextLayoutCommandStream input, SpriteFontFace fontFace, ref StringSource source,
+            Single x, Single y, Int32 lineHeight, Int32 start, Int32 end, Color color, ref Int32 charsSeen)
+        {
+            var wasDrawnToCompletion = true;
+
+            var cmd = (TextLayoutTextCommand*)input.Data;
+            var cmdText = source.CreateStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
+            var cmdLength = cmdText.Length;
+            var cmdPosition = Vector2.Zero;
+            var cmdGlyphShaderContext = default(GlyphShaderContext);
+            var cmdOffset = 0;
+
+            var isTextVisible = (start <= charsSeen + cmdLength);
+            if (isTextVisible)
+            {
+                var tokenStart = charsSeen;
+                var tokenEnd = tokenStart + cmdText.Length - 1;
+
+                var isTextPartiallyVisible = ((tokenStart < start && tokenEnd >= start) || (tokenStart <= end && tokenEnd > end));
+                if (isTextPartiallyVisible)
+                {
+                    wasDrawnToCompletion = false;
+
+                    var subStart = (charsSeen > start) ? 0 : start - charsSeen;
+                    var subEnd = Math.Min(end, charsSeen + cmdText.Length - 1) - charsSeen;
+                    var subLength = 1 + (subEnd - subStart);
+                    cmdOffset = (subStart == 0) ? 0 : fontFace.MeasureString(cmdText, 0, subStart).Width;
+                    cmdText = cmdText.Substring(subStart, subLength);
+                }
+
+                cmdPosition = cmd->GetAbsolutePositionVector(x + cmdOffset, y, lineHeight);
+                cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
+
+                spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, cmdText, cmdPosition, color);
+            }
+
+            charsSeen += cmdLength;
+            input.SeekPastTextCommand();
+
+            var isTextSplitByHyphen = (input.StreamPosition < input.Count && *(TextLayoutCommandType*)input.Data == TextLayoutCommandType.Hyphen);
+            if (isTextSplitByHyphen)
+            {
+                if (wasDrawnToCompletion)
+                {
+                    var hyphenatedGlyph = cmdText[cmdText.Length - 1];
+                    var hyphenatedTextWidth = fontFace.MeasureString(cmdText).Width;
+                    var hyphenatedTextKerning = fontFace.Kerning.Get(hyphenatedGlyph, '-');
+
+                    cmdPosition = new Vector2(cmdPosition.X + hyphenatedTextWidth + hyphenatedTextKerning, cmdPosition.Y);
+                    cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen - 1, input.TotalLength);
+
+                    spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, "-", cmdPosition, color);
+                }
+
+                input.SeekPastHyphenCommand();
+            }
+        }
+
+        /// <summary>
+        /// Draws an icon command.
+        /// </summary>
+        private void DrawIcon(SpriteBatch spriteBatch, TextLayoutCommandStream input, 
+            Single x, Single y, Int32 lineHeight, Int32 start, Int32 end, Color color, ref Int32 charsSeen)
+        {
+            var cmd = (TextLayoutIconCommand*)input.Data;
+
+            var isIconVisible = (start <= charsSeen + 1);
+            if (isIconVisible)
+            {
+                var cmdIcon = input.GetIcon(cmd->IconIndex);
+                var cmdPosition = cmd->GetAbsolutePositionVector(x, y, lineHeight);
+                var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
+                if (cmdGlyphShaderContext.IsValid)
+                {
+                    var glyphColor = color;
+                    var glyphX = cmdPosition.X;
+                    var glyphY = cmdPosition.Y;
+                    cmdGlyphShaderContext.Execute('\x0000', ref glyphX, ref glyphY, ref glyphColor, charsSeen);
+                    cmdPosition = new Vector2(glyphX, glyphY);
+                }
+                spriteBatch.DrawSprite(cmdIcon.Icon.Controller, cmdPosition, cmdIcon.Width, cmdIcon.Height, color, 0f);
+            }
+
+            charsSeen += 1;
+            input.SeekPastIconCommand();
         }
 
         /// <summary>

@@ -89,5 +89,10 @@
         /// Represents a command to change the source string builder.
         /// </summary>
         ChangeSourceStringBuilder,
+
+        /// <summary>
+        /// Represents a command to draw a hyphen character.
+        /// </summary>
+        Hyphen,
     }
 }

@@ -12,6 +12,74 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
     {
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensures that the text layout engine correctly splits very long words across multiple lines.")]
+        public void TextRenderer_BreaksVeryLongWordsIntoMultipleLines()
+        {
+            var content = new TextRendererTestContent("Welcome to Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch! Please enjoy your stay.\n\n" +
+                "This message brought to you by the Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch tourist board.");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var width = window.ClientSize.Width / 2;
+                    var height = window.ClientSize.Height;
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.Standard));
+
+                    content.SpriteBatch.Begin();
+
+                    content.SpriteBatch.Draw(content.BlankTexture, 
+                        new RectangleF(0, 0, width, height), Color.Red * 0.5f);
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    content.SpriteBatch.End();
+                });
+
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that the text layout engine correctly splits very long words across multiple lines when hyphenation is enabled.")]
+        public void TextRenderer_BreaksVeryLongWordsIntoMultipleLines_WithHyphens()
+        {
+            var content = new TextRendererTestContent("Welcome to Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch! Please enjoy your stay.\n\n" +
+                "This message brought to you by the Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch tourist board.");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var width = window.ClientSize.Width / 2;
+                    var height = window.ClientSize.Height;
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.Standard, TextLayoutOptions.Hyphenate));
+
+                    content.SpriteBatch.Begin();
+
+                    content.SpriteBatch.Draw(content.BlankTexture,
+                        new RectangleF(0, 0, width, height), Color.Red * 0.5f);
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    content.SpriteBatch.End();
+                });
+
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines_WithHyphens.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
         [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions inside of text.")]
         public void TextRenderer_GetCorrectLineAtPosition_ForPositionInsideText()
         {

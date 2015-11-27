@@ -153,6 +153,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             {
                 var token = input[index];
 
+                state.TokenSplitInProgress = false;
+
                 currentFontFace = default(SpriteFontFace);
                 currentFont = GetCurrentFont(ref settings, bold, italic, out currentFontFace);
 
@@ -168,7 +170,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             else
                             {
                                 if (!AccumulateText(input, output, currentFontFace, ref index, ref state, ref settings))
-                                    break;
+                                    break;                                
                             }
                         }
                         break;
@@ -177,7 +179,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             var icon = default(TextIconInfo);
                             var iconIndex = RegisterIconWithCommandStream(output, token.Text, out icon);
-                            var iconSize = MeasureToken(currentFont, token);
+                            var iconSize = MeasureToken(currentFont, token.TokenType, token.Text);
 
                             if (state.PositionX + iconSize.Width > (settings.Width ?? Int32.MaxValue))
                                 state.AdvanceToNextLine(output, ref settings);
@@ -268,13 +270,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     case TextParserTokenType.PopGlyphShader:
                         output.WritePopGlyphShader();
                         state.AdvanceToNextCommand();
-                        break;
+                        break;                        
 
                     default:
                         throw new InvalidOperationException("TODO");
                 }
 
-                index++;
+                if (!state.TokenSplitInProgress)
+                    index++;
             }
 
             if (state.LineLengthInCommands > 0)
@@ -457,80 +460,87 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         private Boolean AccumulateText(TextParserTokenStream input, TextLayoutCommandStream output, SpriteFontFace font, ref Int32 index, ref LayoutState state, ref TextLayoutSettings settings)
         {
-            var first = input[index];
-            var firstSize = MeasureToken(font, first, GetNextTextToken(input, index));
-
-            if (state.PositionX + firstSize.Width > (settings.Width ?? Int32.MaxValue))
-                state.AdvanceToNextLine(output, ref settings);
-
-            if (state.PositionY + firstSize.Height > (settings.Height ?? Int32.MaxValue))
-                return false;
-
-            if (first.IsWhiteSpace && state.LineLengthInText == 0)
+            if (input[index].IsWhiteSpace && state.LineLengthInText == 0)
                 return true;
 
-            var start = first.Text.Start;
-            var length = first.Text.Length;
+            var indexStart = index;         
+            var hyphenate = (settings.Options & TextLayoutOptions.Hyphenate) == TextLayoutOptions.Hyphenate;
+
+            var availableWidth = (settings.Width ?? Int32.MaxValue);
+            var availableHeight = (settings.Height ?? Int32.MaxValue);
 
             var x = state.PositionX;
             var y = state.PositionY;
-            var width = firstSize.Width;
-            var height = firstSize.Height;
+            var width = 0;
+            var height = 0;
 
-            if (!IsSegmentForCurrentSource(first.Text))
+            var start = input[index].Text.Start + state.TokenSplitOffset;
+            var length = 0;
+
+            while (index < input.Count)
             {
-                var isFirstSource = (sourceString == null && sourceStringBuilder == null);
+                var token = input[index];
+                if (token.TokenType != TextParserTokenType.Text || token.IsNewLine)
+                    break;
 
-                sourceString = first.Text.SourceString;
-                sourceStringBuilder = first.Text.SourceStringBuilder;
-
-                // NOTE: To save memory, we can elide the first change source command if it's just going to change to the input source.
-                if (!isFirstSource || input.SourceText.SourceString != sourceString || input.SourceText.SourceStringBuilder != sourceStringBuilder)
+                if (!IsSegmentForCurrentSource(token.Text))
                 {
-                    if (sourceString != null)
+                    if (index != indexStart)
+                        break;
+
+                    EmitChangeSourceIfNecessary(input, output, ref token);
+                }
+
+                var tokenText = (state.TokenSplitOffset > 0) ? token.Text.Substring(state.TokenSplitOffset) : token.Text;
+                var tokenNext = GetNextTextToken(input, index);
+                var tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext);
+
+                var overflowsLine = state.PositionX + tokenSize.Width > availableWidth;
+                if (overflowsLine)
+                {
+                    if (tokenSize.Width > availableWidth)
                     {
-                        var sourceIndex = output.RegisterSourceString(sourceString);
-                        output.WriteChangeSourceString(new TextLayoutSourceStringCommand(sourceIndex));
+                        if (!GetFittedSubstring(font, availableWidth, ref tokenText, ref tokenSize, ref state, hyphenate))
+                            break;
+
+                        state.TokenSplitInProgress = true;
+                        state.TokenSplitOffset += tokenText.Length;
                     }
                     else
                     {
-                        var sourceIndex = output.RegisterSourceStringBuilder(sourceStringBuilder);
-                        output.WriteChangeSourceStringBuilder(new TextLayoutSourceStringBuilderCommand(sourceIndex));
+                        state.AdvanceToNextLine(output, ref settings);
+                        break;
                     }
                 }
-            }
 
-            state.AdvanceToNextCommand(firstSize.Width, firstSize.Height, 1, first.Text.Length, first.IsWhiteSpace);
-            state.LineLengthInCommands--;
-
-            while (index + 1 < input.Count)
-            {
-                var token = input[index + 1];
-                if (token.TokenType != TextParserTokenType.Text || token.IsNewLine || !IsSegmentForCurrentSource(token.Text))
-                    break;
-                
-                var tokenSize = MeasureToken(font, token, GetNextTextToken(input, index + 1));
-                if (state.PositionX + tokenSize.Width > (settings.Width ?? Int32.MaxValue))
-                    break;
-
-                if (token.Text.Start != start + length)
+                if (tokenText.Start != start + length)
                     break;
 
                 width = width + tokenSize.Width;
                 height = Math.Max(height, tokenSize.Height);
-                length = length + token.Text.Length;
+                length = length + tokenText.Length;
 
-                state.AdvanceToNextCommand(tokenSize.Width, tokenSize.Height, 1, token.Text.Length, token.IsWhiteSpace);
+                state.AdvanceToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenText.Length, token.IsWhiteSpace);
                 state.LineLengthInCommands--;
+
+                if (state.TokenSplitInProgress)
+                {
+                    state.AdvanceToNextLine(output, ref settings);
+                    break;
+                }
+
+                state.TokenSplitOffset = 0;
                 index++;
             }
 
-            if (length > 0)
+            var bounds = new Rectangle(x, y, width, height);
+            if (EmitTextIfNecessary(output, start, length, ref bounds, ref state) && state.TokenSplitInProgress && hyphenate)
             {
+                output.WriteHyphen();
                 state.LineLengthInCommands++;
-                output.WriteText(new TextLayoutTextCommand(start, length, new Rectangle(x, y, width, height)));
             }
 
+            index--;
             return true;
         }
 
@@ -549,34 +559,119 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Adds a <see cref="TextLayoutCommandType.ChangeSourceString"/> or <see cref="TextLayoutCommandType.ChangeSourceStringBuilder"/> command to the output
+        /// stream if it is necessary to do so for the specified parser token.
+        /// </summary>
+        private Boolean EmitChangeSourceIfNecessary(TextParserTokenStream input, TextLayoutCommandStream output, ref TextParserToken token)
+        {
+            if (!IsSegmentForCurrentSource(token.Text))
+            {
+                var isFirstSource = (sourceString == null && sourceStringBuilder == null);
+
+                sourceString = token.Text.SourceString;
+                sourceStringBuilder = token.Text.SourceStringBuilder;
+
+                // NOTE: To save memory, we can elide the first change source command if it's just going to change to the input source.
+                if (!isFirstSource || input.SourceText.SourceString != sourceString || input.SourceText.SourceStringBuilder != sourceStringBuilder)
+                {
+                    if (sourceString != null)
+                    {
+                        var sourceIndex = output.RegisterSourceString(sourceString);
+                        output.WriteChangeSourceString(new TextLayoutSourceStringCommand(sourceIndex));
+                    }
+                    else
+                    {
+                        var sourceIndex = output.RegisterSourceStringBuilder(sourceStringBuilder);
+                        output.WriteChangeSourceStringBuilder(new TextLayoutSourceStringBuilderCommand(sourceIndex));
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Adds a <see cref="TextLayoutCommandType.Text"/> command to the output stream if the specified span of text has a non-zero length.
+        /// </summary>
+        private Boolean EmitTextIfNecessary(TextLayoutCommandStream output, Int32 start, Int32 length, ref Rectangle bounds, ref LayoutState state)
+        {
+            if (length == 0)
+                return false;
+
+            output.WriteText(new TextLayoutTextCommand(start, length, bounds));
+            state.LineLengthInCommands++;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Given a string and an available space, returns the largest substring which will fit within that space.
+        /// </summary>
+        private Boolean GetFittedSubstring(SpriteFontFace font, Int32 maxLineWidth, ref StringSegment tokenText, ref Size2 tokenSize, ref LayoutState state, Boolean hyphenate)
+        {
+            var substringAvailableWidth = maxLineWidth - state.PositionX;
+            var substringWidth = 0;
+            var substringLength = 0;
+
+            for (int glyphIndex = 0; glyphIndex < tokenText.Length - 1; glyphIndex++)
+            {
+                var glyph1 = tokenText[glyphIndex];
+                var glyph2 = tokenText[glyphIndex + 1];
+                var glyphWidth = 0;
+
+                if (hyphenate)
+                {
+                    glyphWidth = font.MeasureGlyph(glyph1, '-').Width + font.MeasureGlyph('-').Width;
+                }
+                else
+                {
+                    glyphWidth = font.MeasureGlyph(glyph1).Width;
+                }
+                
+                if (substringAvailableWidth - glyphWidth < 0)
+                    break;
+
+                var glyphSize = font.MeasureGlyph(glyph1, glyph2);
+                substringAvailableWidth -= glyphSize.Width;
+                substringWidth += glyphSize.Width;
+                substringLength++;
+            }
+
+            tokenText = tokenText.Substring(0, substringLength);
+            tokenSize = new Size2(substringWidth, tokenSize.Height);
+
+            return substringLength > 0;
+        }
+        
+        /// <summary>
         /// Calculates the size of the specified parser token when rendered according to the current layout state.
         /// </summary>
         /// <param name="font">The current font face.</param>
         /// <param name="tokenCurrent">The token to measure.</param>
         /// <param name="tokenNext">The token after <paramref name="tokenCurrent"/>, excluding command tokens.</param>
         /// <returns>The size of the specified token in pixels.</returns>
-        private Size2 MeasureToken(SpriteFontFace font, TextParserToken tokenCurrent, TextParserToken? tokenNext = null)
+        private Size2 MeasureToken(SpriteFontFace font, TextParserTokenType tokenType, StringSegment tokenText, TextParserToken? tokenNext = null)
         {
-            switch (tokenCurrent.TokenType)
+            switch (tokenType)
             {
                 case TextParserTokenType.Icon:
                     {
                         TextIconInfo icon;
-                        if (!registeredIcons.TryGetValue(tokenCurrent.Text, out icon))
-                            throw new InvalidOperationException(UltravioletStrings.UnrecognizedIcon.Format(tokenCurrent.Text));
+                        if (!registeredIcons.TryGetValue(tokenText, out icon))
+                            throw new InvalidOperationException(UltravioletStrings.UnrecognizedIcon.Format(tokenText));
 
                         return new Size2(icon.Width ?? icon.Icon.Controller.Width, icon.Height ?? icon.Icon.Controller.Height);
                     }
 
                 case TextParserTokenType.Text:
                     {
-                        var size = font.MeasureString(tokenCurrent.Text);
+                        var size = font.MeasureString(tokenText);
                         if (tokenNext.HasValue)
                         {
                             var tokenNextValue = tokenNext.GetValueOrDefault();
                             if (tokenNextValue.TokenType == TextParserTokenType.Text && !tokenNextValue.Text.IsEmpty && !tokenNextValue.IsNewLine)
                             {
-                                var charLast = tokenCurrent.Text[tokenCurrent.Text.Length - 1];
+                                var charLast = tokenText[tokenText.Length - 1];
                                 var charNext = tokenNextValue.Text[0];
                                 var kerning = font.Kerning.Get(charLast, charNext);
                                 return new Size2(size.Width + kerning, size.Height);
@@ -591,7 +686,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Registers the specified style with the command stream and returns its resulting index.
         /// </summary>
-        public Int32 RegisterStyleWithCommandStream(TextLayoutCommandStream output, StringSegment name, out TextStyle style)
+        private Int32 RegisterStyleWithCommandStream(TextLayoutCommandStream output, StringSegment name, out TextStyle style)
         {
             if (!registeredStyles.TryGetValue(name, out style))
                 throw new InvalidOperationException(UltravioletStrings.UnrecognizedStyle.Format(name));

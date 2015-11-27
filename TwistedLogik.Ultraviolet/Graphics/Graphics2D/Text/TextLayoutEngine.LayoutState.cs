@@ -135,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 if (writeLineInfo)
                     output.WriteLineInfo();
             }
-
+            
             /// <summary>
             /// Gets or sets the x-coordinate at which the next token will be placed.
             /// </summary>
@@ -251,6 +251,24 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             {
                 get { return totalLength; }
                 set { totalLength = value; }
+            }
+
+            /// <summary>
+            /// Gets or sets an offset indicating the current position in a token that is being split across multiple lines.
+            /// </summary>
+            public Int32 TokenSplitOffset
+            {
+                get;
+                set;
+            }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether the layout engine is in the process of splitting a token across multiple lines.
+            /// </summary>
+            public Boolean TokenSplitInProgress
+            {
+                get;
+                set;
             }
 
             /// <summary>

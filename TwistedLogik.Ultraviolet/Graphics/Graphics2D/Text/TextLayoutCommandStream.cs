@@ -122,6 +122,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     stream.Seek(sizeof(TextLayoutSourceStringBuilderCommand), SeekOrigin.Current);
                     break;
 
+                case TextLayoutCommandType.Hyphen:
+                    stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+                    break;
+
                 default:
                     if (streamPosition + 1 <= Count)
                     {
@@ -589,6 +593,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.Hyphen"/> command to the current position in the stream.
+        /// </summary>
+        public void WriteHyphen()
+        {
+            stream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.Hyphen;
+            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            streamPosition++;
+        }
+
+        /// <summary>
         /// Reads a <see cref="TextLayoutCommandType.BlockInfo"/> command from the current position in the command stream.
         /// </summary>
         /// <returns>The command that was read.</returns>
@@ -769,6 +784,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.Hyphen"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public void ReadHyphenCommand()
+        {
+            stream.Seek(sizeof(TextLayoutCommandType), SeekOrigin.Current);
+            streamPosition++;
+        }
+
+        /// <summary>
         /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.BlockInfo"/> command.
         /// </summary>
         public void SeekPastBlockInfoCommand()
@@ -907,6 +932,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.ChangeSourceStringBuilder"/> command.
         /// </summary>
         public void SeekPastChangeSourceStringBuilderCommand()
+        {
+            stream.Seek(sizeof(TextLayoutSourceStringBuilderCommand), SeekOrigin.Current);
+            streamPosition++;
+        }
+
+        /// <summary>
+        /// Moves the stream past the current command, which is assume to be a <see cref="TextLayoutCommandType.Hyphen"/> command.
+        /// </summary>
+        public void SeekPastHyphenCommand()
         {
             stream.Seek(sizeof(TextLayoutSourceStringBuilderCommand), SeekOrigin.Current);
             streamPosition++;
