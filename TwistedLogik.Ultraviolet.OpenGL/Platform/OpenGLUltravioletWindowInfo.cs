@@ -538,6 +538,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// </summary>
         private void DesignateCurrentOpenGLWindow(IUltravioletWindow window, IntPtr context)
         {
+            var shuttingDown = (window == null && context == IntPtr.Zero);
+
             if (context == IntPtr.Zero)
             {
                 if (glcontext == IntPtr.Zero)
@@ -553,7 +555,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 throw new SDL2Exception();
 
             if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0)
-                throw new SDL2Exception();
+            {
+                if (!shuttingDown)
+                    throw new SDL2Exception();
+            }
 
             glwin = win;
             glcontext = context;
