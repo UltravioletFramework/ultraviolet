@@ -200,6 +200,11 @@
       <Variant>Unrecognized style '{0}'</Variant>
     </en-US>
   </String>
+  <String Key="UNRECOGNIZED_LAYOUT_COMMAND">
+    <en-US>
+      <Variant>Recognized layout command '{0}'</Variant>
+    </en-US>
+  </String>
   <String Key="INVALID_LAYOUT_SETTINGS">
     <en-US>
       <Variant>Invalid layout settings.</Variant>

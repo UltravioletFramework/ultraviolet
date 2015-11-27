@@ -273,7 +273,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         break;                        
 
                     default:
-                        throw new InvalidOperationException("TODO");
+                        throw new InvalidOperationException(UltravioletStrings.UnrecognizedLayoutCommand.Format(token.TokenType));
                 }
 
                 if (!state.TokenSplitInProgress)
@@ -647,8 +647,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Calculates the size of the specified parser token when rendered according to the current layout state.
         /// </summary>
         /// <param name="font">The current font face.</param>
-        /// <param name="tokenCurrent">The token to measure.</param>
-        /// <param name="tokenNext">The token after <paramref name="tokenCurrent"/>, excluding command tokens.</param>
+        /// <param name="tokenType">The type of the current token.</param>
+        /// <param name="tokenText">The text of the current token.</param>
+        /// <param name="tokenNext">The next token after the current token, excluding command tokens.</param>
         /// <returns>The size of the specified token in pixels.</returns>
         private Size2 MeasureToken(SpriteFontFace font, TextParserTokenType tokenType, StringSegment tokenText, TextParserToken? tokenNext = null)
         {
