@@ -460,9 +460,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         private Boolean AccumulateText(TextParserTokenStream input, TextLayoutCommandStream output, SpriteFontFace font, ref Int32 index, ref LayoutState state, ref TextLayoutSettings settings)
         {
-            if (input[index].IsWhiteSpace && state.LineLengthInText == 0)
-                return true;
-
             var indexStart = index;         
             var hyphenate = (settings.Options & TextLayoutOptions.Hyphenate) == TextLayoutOptions.Hyphenate;
 
@@ -474,6 +471,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var width = 0;
             var height = 0;
 
+            var skipFinalToken = false;
             var start = input[index].Text.Start + state.TokenSplitOffset;
             var length = 0;
 
@@ -498,8 +496,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var overflowsLine = state.PositionX + tokenSize.Width > availableWidth;
                 if (overflowsLine)
                 {
-                    if (tokenSize.Width > availableWidth)
+                    var splitWhiteSpace = token.IsWhiteSpace && (settings.Options & TextLayoutOptions.PreserveTrailingWhiteSpace) == TextLayoutOptions.PreserveTrailingWhiteSpace;
+                    if (splitWhiteSpace || tokenSize.Width > availableWidth)
                     {
+                        if (token.IsWhiteSpace)
+                            hyphenate = false;
+
                         if (!GetFittedSubstring(font, availableWidth, ref tokenText, ref tokenSize, ref state, hyphenate))
                             break;
 
@@ -508,6 +510,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     }
                     else
                     {
+                        if (token.IsWhiteSpace)
+                            skipFinalToken = true;
+
                         state.AdvanceToNextLine(output, ref settings);
                         break;
                     }
@@ -523,24 +528,31 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 state.AdvanceToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenText.Length, token.IsWhiteSpace);
                 state.LineLengthInCommands--;
 
+                index++;
+
                 if (state.TokenSplitInProgress)
-                {
-                    state.AdvanceToNextLine(output, ref settings);
                     break;
-                }
 
                 state.TokenSplitOffset = 0;
-                index++;
             }
 
             var bounds = new Rectangle(x, y, width, height);
-            if (EmitTextIfNecessary(output, start, length, ref bounds, ref state) && state.TokenSplitInProgress && hyphenate)
+            if (EmitTextIfNecessary(output, start, length, ref bounds, ref state))
             {
-                output.WriteHyphen();
-                state.LineLengthInCommands++;
+                if (state.TokenSplitInProgress)
+                {
+                    if (hyphenate)
+                    {
+                        output.WriteHyphen();
+                        state.LineLengthInCommands++;
+                    }
+                    state.AdvanceToNextLine(output, ref settings);
+                }
             }
 
-            index--;
+            if (!skipFinalToken)
+                index--;
+
             return true;
         }
 

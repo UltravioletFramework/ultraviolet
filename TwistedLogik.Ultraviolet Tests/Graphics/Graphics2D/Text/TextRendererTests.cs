@@ -80,6 +80,46 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensures that the text layout engine correctly splits very long white space across multiple lines when trailing white space is being preserved.")]
+        public void TextRenderer_BreaksPreservedWhiteSpaceIntoMultipleLines()
+        {
+            var content = new TextRendererTestContent("Hello, world!                    This                    is a                    test.");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var width = window.ClientSize.Width / 2;
+                    var height = window.ClientSize.Height;
+
+                    content.SpriteBatch.Begin();
+
+                    content.SpriteBatch.Draw(content.BlankTexture,
+                        new RectangleF(0, 0, width, height), Color.Red * 0.5f);
+                    
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.Standard, TextLayoutOptions.Hyphenate));
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, new Vector2(0, 0), Color.White);
+
+                    content.SpriteBatch.Draw(content.BlankTexture,
+                        new RectangleF(width, 0, width, height), Color.DarkRed * 0.5f);
+
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.Standard, TextLayoutOptions.PreserveTrailingWhiteSpace | TextLayoutOptions.Hyphenate));
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, new Vector2(width, 0), Color.White);
+
+                    content.SpriteBatch.End();
+                });
+            
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksPreservedWhiteSpaceIntoMultipleLines.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
         [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions inside of text.")]
         public void TextRenderer_GetCorrectLineAtPosition_ForPositionInsideText()
         {
