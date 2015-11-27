@@ -22,9 +22,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
             Contract.Require(content, "content");
 
             this.SpriteBatch = SpriteBatch.Create();
-            this.SpriteFont = content.Load<SpriteFont>("Fonts/Garamond");
+            this.SpriteFont = content.Load<SpriteFont>(FontPath ?? "Fonts/Garamond");
 
-            this.TextIcons = content.Load<Sprite>("Sprites/InterfaceIcons");
+            this.TextIcons = content.Load<Sprite>(IconPath ?? "Sprites/InterfaceIcons");
 
             this.TextParserResult = new TextParserTokenStream();
             this.TextParser = new TextParser();
@@ -43,6 +43,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         public SpriteBatch SpriteBatch { get; private set; }
         public SpriteFont SpriteFont { get; private set; }
+        public String FontPath { get; set; }
+        public String IconPath { get; set; }
         public String Text { get; private set; }
         public Sprite TextIcons { get; private set; }
         public TextParserTokenStream TextParserResult { get; private set; }

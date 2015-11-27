@@ -1067,7 +1067,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             for (int i = 0; i < input.Count; i++)
             {
-                if (charsSeen >= end)
+                if (charsSeen > end)
                     break;
 
                 var cmdType = *(TextLayoutCommandType*)input.Data;
@@ -1244,7 +1244,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var cmdGlyphShaderContext = default(GlyphShaderContext);
             var cmdOffset = 0;
 
-            var isTextVisible = (start <= charsSeen + cmdLength);
+            var isTextVisible = (start < charsSeen + cmdLength);
             if (isTextVisible)
             {
                 var tokenStart = charsSeen;
@@ -1298,7 +1298,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             var cmd = (TextLayoutIconCommand*)input.Data;
 
-            var isIconVisible = (start <= charsSeen + 1);
+            var isIconVisible = (start < charsSeen + 1);
             if (isIconVisible)
             {
                 var icon = input.GetIcon(cmd->IconIndex);

@@ -13,6 +13,61 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         [TestMethod]
         [TestCategory("Rendering")]
         [Description("Ensures that the text layout engine correctly splits very long words across multiple lines.")]
+        public void TextRenderer_CorrectlyRendersSubstrings()
+        {
+            var content = new TextRendererTestContent("Welcome to |b||c:FFFF0000|Corneria|c||b|");
+            content.FontPath = "Fonts/SegoeUI";
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+                    
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, null, null, TextFlags.Standard));
+
+                    content.SpriteBatch.Begin();
+
+                    var positionX = 0f;
+                    var positionY = 0f;
+
+                    positionY = 0f;
+
+                    for (int i = 0; i < content.Text.Length; i++)
+                    {
+                        content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, new Vector2(positionX, positionY), Color.White, 0, i);
+                        positionY += content.TextLayoutResult.ActualHeight;
+                    }
+
+                    positionX = uv.GetPlatform().Windows.GetPrimary().ClientSize.Width / 3;
+                    positionY = 0f;
+
+                    for (int i = 0; i < content.Text.Length; i++)
+                    {
+                        content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, new Vector2(positionX, positionY), Color.White, i, Int32.MaxValue);
+                        positionY += content.TextLayoutResult.ActualHeight;
+                    }
+
+                    positionX = 2 * uv.GetPlatform().Windows.GetPrimary().ClientSize.Width / 3;
+                    positionY = 0f;
+
+                    for (int i = 0; i < content.Text.Length; i++)
+                    {
+                        content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, new Vector2(positionX, positionY), Color.White, i, 10);
+                        positionY += content.TextLayoutResult.ActualHeight;
+                    }
+
+                    content.SpriteBatch.End();
+                });
+
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSubstrings.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that the text layout engine correctly splits very long words across multiple lines.")]
         public void TextRenderer_BreaksVeryLongWordsIntoMultipleLines()
         {
             var content = new TextRendererTestContent("Welcome to Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch! Please enjoy your stay.\n\n" +
