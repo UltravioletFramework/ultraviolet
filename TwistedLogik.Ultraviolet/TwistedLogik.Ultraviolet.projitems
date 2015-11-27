@@ -102,6 +102,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\GlyphData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\GlyphShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\GlyphShaderContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\GlyphShaderProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Graphics2DBinaryReaderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Graphics2DBinaryWriterExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\ISpriteBatchEffect.cs" />

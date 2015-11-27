@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Initializes a new instance of the <see cref="GlyphShaderContext"/> structure.
         /// </summary>
         /// <param name="glyphShader">The glyph shader that executes within this context.</param>
-        public GlyphShaderContext(GlyphShader glyphShader)
+        public GlyphShaderContext(GlyphShaderProxy glyphShader)
             : this(glyphShader, 0, 0)
         {
 
@@ -25,68 +25,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="glyphShader">The glyph shader that executes within this context.</param>
         /// <param name="sourceOffset">The offset of the text being rendered within the overall source text.</param>
         /// <param name="sourceLength">The overall length of the source text.</param>
-        public GlyphShaderContext(GlyphShader glyphShader, Int32 sourceOffset, Int32 sourceLength)
+        public GlyphShaderContext(GlyphShaderProxy glyphShader, Int32 sourceOffset, Int32 sourceLength)
         {
-            this.glyphShaderScopedStack = null;
-            this.glyphShaderStack = null;
             this.glyphShader = glyphShader;
             this.sourceOffset = sourceOffset;
             this.sourceLength = sourceLength;
-            this.isValid = (glyphShader != null);
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GlyphShaderContext"/> structure.
-        /// </summary>
-        /// <param name="glyphShaderStack">The stack of glyph shaders that execute within this context.</param>
-        public GlyphShaderContext(Stack<GlyphShader> glyphShaderStack)
-            : this(glyphShaderStack, 0, 0)
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GlyphShaderContext"/> structure.
-        /// </summary>
-        /// <param name="glyphShaderStack">The stack of glyph shaders that execute within this context.</param>
-        /// <param name="sourceOffset">The offset of the text being rendered within the overall source text.</param>
-        /// <param name="sourceLength">The overall length of the source text.</param>
-        public GlyphShaderContext(Stack<GlyphShader> glyphShaderStack, Int32 sourceOffset, Int32 sourceLength)
-        {
-            this.glyphShaderScopedStack = null;
-            this.glyphShaderStack = glyphShaderStack;
-            this.glyphShader = null;
-            this.sourceOffset = sourceOffset;
-            this.sourceLength = sourceLength;
-            this.isValid = (glyphShaderStack != null);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GlyphShaderContext"/> structure.
-        /// </summary>
-        /// <param name="scopedGlyphShaderStack">The stack of glyph shaders that execute within this context.</param>
-        internal GlyphShaderContext(Stack<TextStyleScoped<GlyphShader>> scopedGlyphShaderStack)
-            : this(scopedGlyphShaderStack, 0, 0)
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GlyphShaderContext"/> structure.
-        /// </summary>
-        /// <param name="scopedGlyphShaderStack">The stack of glyph shaders that execute within this context.</param>
-        /// <param name="sourceOffset">The offset of the text being rendered within the overall source text.</param>
-        /// <param name="sourceLength">The overall length of the source text.</param>
-        internal GlyphShaderContext(Stack<TextStyleScoped<GlyphShader>> scopedGlyphShaderStack, Int32 sourceOffset, Int32 sourceLength)
-        {
-            this.glyphShaderScopedStack = scopedGlyphShaderStack;
-            this.glyphShaderStack = null;
-            this.glyphShader = null;
-            this.sourceOffset = sourceOffset;
-            this.sourceLength = sourceLength;
-            this.isValid = (scopedGlyphShaderStack != null);
-        }
-
+        
         /// <summary>
         /// Implicitly converts a <see cref="GlyphShader"/> instance to a new instance of the <see cref="GlyphShaderContext"/> structure.
         /// </summary>
@@ -106,27 +51,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Implicitly converts a scoped stack of <see cref="GlyphShader"/> instances to a new instance of the <see cref="GlyphShaderContext"/> structure.
+        /// </summary>
+        /// <param name="glyphShaderStack">The glyph shader stack to convert.</param>
+        public static implicit operator GlyphShaderContext(Stack<TextStyleScoped<GlyphShader>> glyphShaderScopedStack)
+        {
+            return new GlyphShaderContext(glyphShaderScopedStack);
+        }
+
+        /// <summary>
         /// Executes the glyph shader.
         /// </summary>
         /// <param name="data">The data for the glyph which is being drawn.</param>
         /// <param name="index">The index of the glyph within its source string.</param>
         public void Execute(ref GlyphData data, Int32 index)
         {
-            if (glyphShaderScopedStack != null)
-            {
-                foreach (var glyphShader in glyphShaderScopedStack)
-                    glyphShader.Value.Execute(ref this, ref data, index);
-            }
-            else if (glyphShaderStack != null)
-            {
-                foreach (var glyphShader in glyphShaderStack)
-                    glyphShader.Execute(ref this, ref data, index);
-            }
-            else
-            {
-                if (glyphShader != null)
-                    glyphShader.Execute(ref this, ref data, index);
-            }
+            glyphShader.Execute(ref this, ref data, index);
         }
 
         /// <summary>
@@ -155,15 +95,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Boolean IsValid
         {
-            get { return isValid; }
+            get { return glyphShader.IsValid; }
         }
 
         // Property values.
-        private readonly Stack<TextStyleScoped<GlyphShader>> glyphShaderScopedStack;
-        private readonly Stack<GlyphShader> glyphShaderStack;
-        private readonly GlyphShader glyphShader;
+        private readonly GlyphShaderProxy glyphShader;
         private readonly Int32 sourceOffset;
         private readonly Int32 sourceLength;
-        private readonly Boolean isValid;
     }
 }
