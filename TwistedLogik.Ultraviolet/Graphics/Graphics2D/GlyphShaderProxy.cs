@@ -83,13 +83,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             if (glyphShaderScopedStack != null)
             {
-                foreach (var glyphShader in glyphShaderScopedStack)
-                    glyphShader.Value.Execute(ref context, ref data, index);
+                foreach (var shader in glyphShaderScopedStack)
+                    shader.Value.Execute(ref context, ref data, index);
             }
             else if (glyphShaderStack != null)
             {
-                foreach (var glyphShader in glyphShaderStack)
-                    glyphShader.Execute(ref context, ref data, index);
+                foreach (var shader in glyphShaderStack)
+                    shader.Execute(ref context, ref data, index);
             }
             else if (glyphShader != null)
             {
@@ -112,13 +112,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
             else if (glyphShaderStack != null)
             {
-                foreach (var glyphShader in glyphShaderStack)
-                    action(state, glyphShader);
+                foreach (var shader in glyphShaderStack)
+                    action(state, shader);
             }
             else if (glyphShaderScopedStack != null)
             {
-                foreach (var glyphShader in glyphShaderScopedStack)
-                    action(state, glyphShader.Value);
+                foreach (var shader in glyphShaderScopedStack)
+                    action(state, shader.Value);
             }
         }
 
