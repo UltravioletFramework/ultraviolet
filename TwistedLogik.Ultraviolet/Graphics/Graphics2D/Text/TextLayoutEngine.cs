@@ -144,6 +144,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             output.WriteBlockInfo();
             output.WriteLineInfo();
 
+            if (settings.InitialLayoutStyle != null)
+            {
+                var initialStyle = default(TextStyle);
+                var initialStyleIndex = RegisterStyleWithCommandStream(output, settings.InitialLayoutStyle, out initialStyle);
+                output.WritePushStyle(new TextLayoutStyleCommand(initialStyleIndex));
+                PushStyle(initialStyle, ref bold, ref italic);
+            }
+
             state.LineInfoCommandIndex = 1;
 
             var currentFont = settings.Font;
