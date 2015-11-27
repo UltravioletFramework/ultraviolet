@@ -1232,6 +1232,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             var cmd = (TextLayoutTextCommand*)input.Data;
             var cmdText = source.CreateStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
+            if (cmdText.Equals("\n"))
+            {
+                charsSeen += 1;
+                input.SeekPastTextCommand();
+                return;
+            }
+
             var cmdLength = cmdText.Length;
             var cmdPosition = Vector2.Zero;
             var cmdGlyphShaderContext = default(GlyphShaderContext);

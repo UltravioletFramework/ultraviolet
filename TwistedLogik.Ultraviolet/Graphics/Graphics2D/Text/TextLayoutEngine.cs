@@ -164,8 +164,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             if (token.IsNewLine)
                             {
-                                state.AdvanceToNextCommand(0, currentFontFace.LineSpacing, 0, 1, true);
+                                var lineHeight = (state.LineHeight == 0) ? currentFontFace.LineSpacing : state.LineHeight;
                                 state.AdvanceToNextLine(output, ref settings);
+                                state.AdvanceToNextCommand(0, currentFontFace.LineSpacing, 1, 1, true);
+                                output.WriteText(new TextLayoutTextCommand(token.Text.Start, token.Text.Length,
+                                    new Rectangle(state.PositionX, state.PositionY, 0, lineHeight)));
                             }
                             else
                             {

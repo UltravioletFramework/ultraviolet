@@ -1860,10 +1860,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
         /// <param name="data">The sprite's custom data.</param>
-        private void DrawInternal(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, 
+        private void DrawInternal(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle,
             Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Ultraviolet.ValidateResource(texture);
+
+            if (destinationRectangle.Width == 0 || destinationRectangle.Height == 0)
+                return;
 
             var ix = batchInfo.Reserve(texture, ref data);
 

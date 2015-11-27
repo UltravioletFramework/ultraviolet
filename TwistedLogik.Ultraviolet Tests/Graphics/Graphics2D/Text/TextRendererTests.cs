@@ -285,6 +285,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
                 "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
 
+            var lines = default(Int32?[]);
+            var glyphs = default(Int32?[]);
+
             var result = GivenAnUltravioletApplication()
                 .WithContent(content.Load)
                 .Render(uv =>
@@ -296,8 +299,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
 
                     content.TextLayoutResult.AcquirePointers();
-                    var lines = new Int32?[5];
-                    var glyphs = new[]
+                    lines = new Int32?[5];
+                    glyphs = new[]
                     {
                         content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 7, 6, out lines[0]),
                         content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 49, 10, out lines[1]),
@@ -306,9 +309,6 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 146, 77, out lines[4]),
                     };
                     content.TextLayoutResult.ReleasePointers();
-
-                    TheResultingCollection(glyphs).ShouldBeExactly(0, 4, 36, 49, 79);
-                    TheResultingCollection(lines).ShouldBeExactly(0, 0, 1, 2, 3);
 
                     content.SpriteBatch.Begin();
 
@@ -330,6 +330,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
             TheResultingImage(result).WithinThreshold(0)
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph.png");
+
+            TheResultingCollection(glyphs).ShouldBeExactly(0, 4, 37, 51, 82);
+            TheResultingCollection(lines).ShouldBeExactly(0, 0, 1, 2, 3);
         }
 
         [TestMethod]
@@ -495,9 +498,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var glyph0Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 0);
                     var glyph4Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 4);
                     var glyph14Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 14);
-                    var glyph26Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 26);
-                    var glyph51Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 51);
-                    var glyph52Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 52);
+                    var glyph27Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 27);
+                    var glyph53Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 53);
+                    var glyph54Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 54);
                     var glyphLastBounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, content.TextLayoutResult.TotalLength - 1);
                     content.TextLayoutResult.ReleasePointers();
 
@@ -508,9 +511,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.Draw(content.BlankTexture, glyph0Bounds, Color.Red * 0.5f);
                     content.SpriteBatch.Draw(content.BlankTexture, glyph4Bounds, Color.Cyan * 0.5f);
                     content.SpriteBatch.Draw(content.BlankTexture, glyph14Bounds, Color.Lime * 0.5f);
-                    content.SpriteBatch.Draw(content.BlankTexture, glyph26Bounds, Color.Blue * 0.5f);
-                    content.SpriteBatch.Draw(content.BlankTexture, glyph51Bounds, Color.Yellow * 0.5f);
-                    content.SpriteBatch.Draw(content.BlankTexture, glyph52Bounds, Color.Purple * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph27Bounds, Color.Blue * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph53Bounds, Color.Yellow * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph54Bounds, Color.Purple * 0.5f);
                     content.SpriteBatch.Draw(content.BlankTexture, glyphLastBounds, Color.White * 0.5f);
 
                     content.SpriteBatch.End();
@@ -544,8 +547,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var glyph4Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 4);
                     var glyph14Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 14);
                     var glyph26Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 26);
-                    var glyph51Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 51);
                     var glyph52Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 52);
+                    var glyph53Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 53);
                     var glyphLastBounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, content.TextLayoutResult.TotalLength - 1);
                     content.TextLayoutResult.ReleasePointers();
 
@@ -557,8 +560,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.Draw(content.BlankTexture, glyph4Bounds, Color.Cyan * 0.5f);
                     content.SpriteBatch.Draw(content.BlankTexture, glyph14Bounds, Color.Lime * 0.5f);
                     content.SpriteBatch.Draw(content.BlankTexture, glyph26Bounds, Color.Blue * 0.5f);
-                    content.SpriteBatch.Draw(content.BlankTexture, glyph51Bounds, Color.Yellow * 0.5f);
-                    content.SpriteBatch.Draw(content.BlankTexture, glyph52Bounds, Color.Purple * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph52Bounds, Color.Yellow * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph53Bounds, Color.Purple * 0.5f);
                     content.SpriteBatch.Draw(content.BlankTexture, glyphLastBounds, Color.White * 0.5f);
 
                     content.SpriteBatch.End();
