@@ -328,14 +328,20 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         internal Size2 MeasureGlyph(ref StringSource source, Int32 ix)
         {
             var c1 = source[ix];
-            if (c1 == '\n')
+            switch (c1)
             {
-                return new Size2(0, LineSpacing);
+                case '\n':
+                    return new Size2(0, LineSpacing);
+
+                case '\t':
+                    return new Size2(TabWidth, LineSpacing);
+
+                default:
+                    var c2 = (ix + 1 < source.Length) ? source[ix + 1] : (Char?)null;
+                    var glyph = this[c1];
+                    var offset = c2.HasValue ? kerning.Get(c1, c2.GetValueOrDefault()) : 0;
+                    return new Size2(glyph.Width + offset, glyph.Height);
             }
-            var c2 = (ix + 1 < source.Length) ? source[ix + 1] : (Char?)null;            
-            var glyph = this[c1];
-            var offset = c2.HasValue ? kerning.Get(c1, c2.GetValueOrDefault()) : 0;
-            return new Size2(glyph.Width + offset, glyph.Height);
         }
 
         /// <summary>
