@@ -41,7 +41,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="width">The width of the layout area.</param>
         /// <param name="height">The height of the layout area.</param>
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
-        /// <param name="fontStyle">The initial font style.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <c>null</c> to use no initial layout style.</param>
         public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags, String initialLayoutStyle)
             : this(font, width, height, flags, TextLayoutOptions.None, SpriteFontStyle.Regular, initialLayoutStyle)
@@ -101,7 +100,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="height">The height of the layout area.</param>
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
-        /// <param name="fontStyle">The initial font style.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <c>null</c> to use no initial layout style.</param>
         public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, String initialLayoutStyle)
             : this(font, width, height, flags, options, SpriteFontStyle.Regular, initialLayoutStyle)

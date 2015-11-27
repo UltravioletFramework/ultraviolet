@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Implicitly converts a scoped stack of <see cref="GlyphShader"/> instances to a new instance of the <see cref="GlyphShaderContext"/> structure.
         /// </summary>
-        /// <param name="glyphShaderStack">The glyph shader stack to convert.</param>
+        /// <param name="glyphShaderScopedStack">The glyph shader stack to convert.</param>
         public static implicit operator GlyphShaderContext(Stack<TextStyleScoped<GlyphShader>> glyphShaderScopedStack)
         {
             return new GlyphShaderContext(glyphShaderScopedStack);

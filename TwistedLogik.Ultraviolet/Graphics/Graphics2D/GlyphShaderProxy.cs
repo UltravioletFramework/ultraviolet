@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Initializes a new instance of the <see cref="GlyphShaderProxy"/> structure.
         /// </summary>
-        /// <param name="glyphShader">The <see cref="GlyphShader"/> which is represented by this proxy.</param>
+        /// <param name="glyphShader">The glyph shader which is represented by this proxy.</param>
         private GlyphShaderProxy(GlyphShader glyphShader)
         {
             this.glyphShaderScopedStack = null;
@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Initializes a new instance of the <see cref="GlyphShaderProxy"/> structure.
         /// </summary>
-        /// <param name="glyphShaderStack">The <see cref="Stack{GlyphShader}"/> which is represented by this proxy.</param>
+        /// <param name="glyphShaderStack">The glyph shader stack which is represented by this proxy.</param>
         private GlyphShaderProxy(Stack<GlyphShader> glyphShaderStack)
         {
             this.glyphShaderScopedStack = null;
@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Initializes a new instance of the <see cref="GlyphShaderProxy"/> structure.
         /// </summary>
-        /// <param name="glyphShaderScopedStack">The <see cref="Stack{TextStyleScoped{GlyphShader}}"/> which is represented by this proxy.</param>
+        /// <param name="glyphShaderScopedStack">The glyph shader stack which is represented by this proxy.</param>
         private GlyphShaderProxy(Stack<TextStyleScoped<GlyphShader>> glyphShaderScopedStack)
         {
             this.glyphShaderScopedStack = glyphShaderScopedStack;
@@ -47,27 +47,27 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
-        /// Implicitly converts a <see cref="Stack{GlyphShader}"/> to a <see cref="GlyphShaderProxy"/> structure.
+        /// Implicitly converts a glyph shader to a <see cref="GlyphShaderProxy"/> structure.
         /// </summary>
-        /// <param name="glyphShader">The <see cref="Stack{GlyphShader}"/> to convert.</param>
+        /// <param name="glyphShader">The glyph shader to convert.</param>
         public static implicit operator GlyphShaderProxy(GlyphShader glyphShader)
         {
             return glyphShader == null ? Invalid : new GlyphShaderProxy(glyphShader);
         }
 
         /// <summary>
-        /// Implicitly converts a <see cref="Stack{TextStyleScoped{GlyphShader}}"/> to a <see cref="GlyphShaderProxy"/> structure.
+        /// Implicitly converts a stack of glyph shaders to a <see cref="GlyphShaderProxy"/> structure.
         /// </summary>
-        /// <param name="glyphShader">The <see cref="Stack{TextStyleScoped{GlyphShader}}"/> to convert.</param>
+        /// <param name="glyphShaderStack">The glyph shader stack to convert.</param>
         public static implicit operator GlyphShaderProxy(Stack<GlyphShader> glyphShaderStack)
         {
             return glyphShaderStack == null ? Invalid : new GlyphShaderProxy(glyphShaderStack);
         }
 
         /// <summary>
-        /// Implicitly converts a <see cref="GlyphShader"/> to a <see cref="GlyphShaderProxy"/> structure.
+        /// Implicitly converts a scoped stack of glyph shaders to a <see cref="GlyphShaderProxy"/> structure.
         /// </summary>
-        /// <param name="glyphShader">The <see cref="GlyphShader"/> to convert.</param>
+        /// <param name="glyphShaderScopedStack">The scoped glyph shader stack to convert.</param>
         public static implicit operator GlyphShaderProxy(Stack<TextStyleScoped<GlyphShader>> glyphShaderScopedStack)
         {
             return (glyphShaderScopedStack == null) ? Invalid : new GlyphShaderProxy(glyphShaderScopedStack);
