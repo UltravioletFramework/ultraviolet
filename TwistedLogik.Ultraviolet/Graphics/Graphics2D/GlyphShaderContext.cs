@@ -108,27 +108,24 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Executes the glyph shader.
         /// </summary>
-        /// <param name="glyph">The glyph that is being rendered.</param>
-        /// <param name="x">The x-coordinate at which the glyph is being rendered.</param>
-        /// <param name="y">The y-coordinate at which the glyph is being rendered.</param>
-        /// <param name="color">The color in which the glyph is being rendered.</param>
+        /// <param name="data">The data for the glyph which is being drawn.</param>
         /// <param name="index">The index of the glyph within its source string.</param>
-        public void Execute(Char glyph, ref Single x, ref Single y, ref Color color, Int32 index)
+        public void Execute(ref GlyphData data, Int32 index)
         {
             if (glyphShaderScopedStack != null)
             {
                 foreach (var glyphShader in glyphShaderScopedStack)
-                    glyphShader.Value.Execute(ref this, glyph, ref x, ref y, ref color, index);
+                    glyphShader.Value.Execute(ref this, ref data, index);
             }
             else if (glyphShaderStack != null)
             {
                 foreach (var glyphShader in glyphShaderStack)
-                    glyphShader.Execute(ref this, glyph, ref x, ref y, ref color, index);
+                    glyphShader.Execute(ref this, ref data, index);
             }
             else
             {
                 if (glyphShader != null)
-                    glyphShader.Execute(ref this, glyph, ref x, ref y, ref color, index);
+                    glyphShader.Execute(ref this, ref data, index);
             }
         }
 

@@ -2018,43 +2018,92 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             Vector2.Transform(ref areaBR, ref transform, out transformedBR);
 
             // Add the text's glyphs to the sprite batch.
+            var character = default(Char);
+            var glyphData = new GlyphData();
+            var glyphShaderPass = 0;
+            var glyphX = 0f;
+            var glyphY = 0f;
+            var glyphOrigin = Vector2.Zero;
+            var glyphScale = Vector2.One;
+            var glyphColor = color;
             var glyphPosRaw = Vector2.Zero;
             var glyphPosTransformed = Vector2.Zero;
             var cx = flipHorizontal ? areaBR.X : areaTL.X;
             var cy = flipVertical ? areaBR.Y : areaTL.Y;
             for (int i = 0; i < text.Length; i++)
             {
+                // Retrieve the glyph that we're rendering from the source text.
+                // If this is not the first shader pass, it means a shader changed our glyph.
+                if (glyphShaderPass == 0)
+                    character = text[i];
+
                 // Handle special characters.
-                var character = text[i];
                 switch (character)
                 {
                     case '\t':
+                        glyphShaderPass = 0;
                         cx = cx + (fontFace.TabWidth * dirX);
                         continue;
 
                     case '\r':
+                        glyphShaderPass = 0;
                         continue;
 
                     case '\n':
+                        glyphShaderPass = 0;
                         cx = flipHorizontal ? areaBR.X : areaTL.X;
                         cy = cy + (fontFace.LineSpacing * dirY);
                         continue;
                 }
                 
-                // Calculate the glyph's position on the screen.
+                // Calculate the glyph's parameters and run any glyph shaders.
                 var source = fontFace[character];
-                var glyphX = flipHorizontal ? cx - source.Width : cx;
-                var glyphY = flipVertical ? cy - source.Height : cy;
+                glyphX = flipHorizontal ? cx - source.Width : cx;
+                glyphY = flipVertical ? cy - source.Height : cy;
+                glyphOrigin = new Vector2(source.Width / 2, source.Height / 2);
+                glyphScale = scale;
+                glyphColor = color;
 
                 if (glyphShaderContext.IsValid)
-                    glyphShaderContext.Execute(character, ref glyphX, ref glyphY, ref color, glyphShaderContext.SourceOffset + i);
+                {
+                    glyphData.Glyph = character;
+                    glyphData.Pass = glyphShaderPass++;
+                    glyphData.X = glyphX;
+                    glyphData.Y = glyphY;
+                    glyphData.ScaleX = 1.0f;
+                    glyphData.ScaleY = 1.0f;
+                    glyphData.Color = color;
+                    glyphData.ClearDirtyFlags();
 
+                    glyphShaderContext.Execute(ref glyphData, glyphShaderContext.SourceOffset + i);
+
+                    if (glyphData.DirtyGlyph)
+                    {
+                        character = glyphData.Glyph;
+                        i--;
+                        continue;
+                    }
+
+                    if (glyphData.DirtyPosition)
+                    {
+                        glyphX = glyphData.X;
+                        glyphY = glyphData.Y;
+                    }
+
+                    if (glyphData.DirtyScale)
+                        glyphScale = scale * new Vector2(glyphData.ScaleX, glyphData.ScaleY);
+
+                    if (glyphData.DirtyColor)
+                        glyphColor = glyphData.Color;
+                }
+
+                glyphShaderPass = 0;
                 glyphPosRaw = new Vector2(glyphX, glyphY);
 
                 // Add the glyph to the batch.
                 Vector2.Transform(ref glyphPosRaw, ref transform, out glyphPosTransformed);
-                DrawInternal(fontFace.Texture, glyphPosTransformed,
-                    source, color, rotation, Vector2.Zero, scale, effects, layerDepth, data);
+                DrawInternal(fontFace.Texture, glyphPosTransformed + glyphOrigin,
+                    source, glyphColor, rotation, glyphOrigin, glyphScale, effects, layerDepth, data);
 
                 cx += fontFace.MeasureGlyph(ref text, i).Width * dirX;
             }

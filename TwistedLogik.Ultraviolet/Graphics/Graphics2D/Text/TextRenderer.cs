@@ -1301,18 +1301,41 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var isIconVisible = (start <= charsSeen + 1);
             if (isIconVisible)
             {
-                var cmdIcon = input.GetIcon(cmd->IconIndex);
-                var cmdPosition = cmd->GetAbsolutePositionVector(x, y, lineHeight);
+                var icon = input.GetIcon(cmd->IconIndex);
+                var iconWidth = (Single)(icon.Width ?? icon.Icon.Controller.Width);
+                var iconHeight = (Single)(icon.Height ?? icon.Icon.Controller.Height);
+                var iconPosition = cmd->GetAbsolutePositionVector(x, y, lineHeight);
+                var iconRotation = 0f;
+
                 var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
                 if (cmdGlyphShaderContext.IsValid)
                 {
-                    var glyphColor = color;
-                    var glyphX = cmdPosition.X;
-                    var glyphY = cmdPosition.Y;
-                    cmdGlyphShaderContext.Execute('\x0000', ref glyphX, ref glyphY, ref glyphColor, charsSeen);
-                    cmdPosition = new Vector2(glyphX, glyphY);
+                    var glyphData = new GlyphData();
+                    glyphData.Glyph = '\x0000';
+                    glyphData.Pass = 0;
+                    glyphData.X = iconPosition.X;
+                    glyphData.Y = iconPosition.Y;
+                    glyphData.ScaleX = 1.0f;
+                    glyphData.ScaleY = 1.0f;
+                    glyphData.Color = color;
+                    glyphData.ClearDirtyFlags();
+
+                    cmdGlyphShaderContext.Execute(ref glyphData, charsSeen);
+
+                    if (glyphData.DirtyPosition)
+                        iconPosition = new Vector2(glyphData.X, glyphData.Y);
+
+                    if (glyphData.DirtyScale)
+                    {
+                        iconWidth *= glyphData.ScaleX;
+                        iconHeight *= glyphData.ScaleY;
+                    }
+                    
+                    if (glyphData.DirtyColor)
+                        color = glyphData.Color;
                 }
-                spriteBatch.DrawSprite(cmdIcon.Icon.Controller, cmdPosition, cmdIcon.Width, cmdIcon.Height, color, 0f);
+
+                spriteBatch.DrawSprite(icon.Icon.Controller, iconPosition, iconWidth, iconHeight, color, iconRotation);
             }
 
             charsSeen += 1;
