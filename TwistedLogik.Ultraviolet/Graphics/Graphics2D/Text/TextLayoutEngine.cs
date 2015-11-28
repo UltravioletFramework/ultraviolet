@@ -659,7 +659,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 substringLength++;
             }
 
-            tokenText = tokenText.Substring(0, substringLength);
+            tokenText = substringLength > 0 ? tokenText.Substring(0, substringLength) : StringSegment.Empty;
             tokenSize = new Size2(substringWidth, tokenSize.Height);
 
             return substringLength > 0;
