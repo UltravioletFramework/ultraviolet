@@ -113,9 +113,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// </summary>
             public void AdvanceToNextLine(TextLayoutCommandStream output, ref TextLayoutSettings settings, Boolean writeLineInfo = true)
             {
-                lineWidth -= lineTrailingWhiteSpaceWidth;
-                lineLengthInText -= lineTrailingWhiteSpaceCount;
-                totalLength -= lineTrailingWhiteSpaceCount;
+                if ((settings.Options & TextLayoutOptions.PreserveTrailingWhiteSpace) != TextLayoutOptions.PreserveTrailingWhiteSpace)
+                {
+                    lineWidth -= lineTrailingWhiteSpaceWidth;
+                    lineLengthInText -= lineTrailingWhiteSpaceCount;
+                    totalLength -= lineTrailingWhiteSpaceCount;
+                }
 
                 WriteLineInfo(output, (Int16)lineWidth, (Int16)lineHeight, (Int16)lineLengthInCommands, (Int16)lineLengthInText, ref settings);
 
