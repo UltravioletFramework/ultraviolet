@@ -235,11 +235,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         break;
                     }
 
+                    glyphsSeen += cmd->LengthInGlyphs;
                     linePosition += cmd->LineHeight;
                 }
                 while (input.SeekNextLine());
-
+                
                 glyphIsInCurrentLine = true;
+                input.SeekNextCommand();
             }
 
             // Seek through the remaining commands until we find the one that contains our glyph.
