@@ -235,7 +235,7 @@ namespace TwistedLogik.Nucleus.Text
         {
             if (sourceBuilder != null)
             {
-                return sourceBuilder.ToString();
+                return sourceBuilder.ToString(Start, Length);
             }
             if (sourceString != null)
             {
