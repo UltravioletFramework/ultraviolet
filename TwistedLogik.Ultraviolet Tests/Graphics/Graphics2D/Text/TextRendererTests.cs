@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
     {
         [TestMethod]
         [TestCategory("Rendering")]
-        [Description("Ensures that the text layout engine correctly splits very long words across multiple lines.")]
+        [Description("Ensures that the TextRenderer class renders substrings of formatted text correctly.")]
         public void TextRenderer_CorrectlyRendersSubstrings()
         {
             var content = new TextRendererTestContent("Welcome to |b||c:FFFF0000|Corneria|c||b|");
