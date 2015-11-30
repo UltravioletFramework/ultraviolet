@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.IO;
 
 namespace TwistedLogik.Nucleus.Collections.Specialized
 {
@@ -42,7 +41,8 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
             lengthInBytes = 0;
             lengthInObjects = 0;
 
-            position = 0;
+            positionInObjects = 0;
+            positionInBytes = 0;
 
             if (hasAcquiredPointers)
             {
@@ -63,7 +63,7 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
 
             gcData = GCHandle.Alloc(data, GCHandleType.Pinned);
             pData0 = (Byte*)gcData.AddrOfPinnedObject().ToPointer();
-            pData = pData0 + position;
+            pData = pData0 + positionInBytes;
         }
 
         /// <summary>
@@ -82,52 +82,93 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         }
 
         /// <summary>
-        /// Moves the stream's data pointer to the specified position in bytes.
-        /// </summary>
-        /// <param name="offset">The offset from the seek origin (in bytes) to which the stream's data pointer will be moved.</param>
-        /// <param name="origin">A <see cref="SeekOrigin"/> value specifying the origin of the seek operation.</param>
-        /// <returns>The stream's data pointer after moving to the specified position.</returns>
-        [CLSCompliant(false)]
-        public void* Seek(Int32 offset, SeekOrigin origin)
-        {
-            Contract.Ensure(hasAcquiredPointers, NucleusStrings.UnsafeStreamMustAcquirePointers);
-
-            var target = GetPositionFromSeek(offset, origin);
-            if (target < 0 || target > lengthInBytes)
-                throw new ArgumentOutOfRangeException("offset");
-            
-            position = target;
-            pData = pData0 + target;
-
-            return pData;
-        }
-
-        /// <summary>
         /// Moves the stream's data pointer to the beginning of the object with the specified index.
         /// </summary>
         /// <param name="offset">The index of the object to which the stream's data pointer will be moved.</param>
         /// <returns>The stream's data pointer after moving to the specified position.</returns>
         [CLSCompliant(false)]
-        public void* SeekObject(Int32 offset)
+        public void* RawSeekObject(Int32 offset)
         {
             Contract.Ensure(hasAcquiredPointers, NucleusStrings.UnsafeStreamMustAcquirePointers);
             Contract.EnsureRange(offset >= 0 && offset <= lengthInObjects, "offset");
 
-            position = (offset == lengthInObjects) ? lengthInBytes : index[offset];
-            pData = pData0 + position;
+            positionInObjects = offset;
+            positionInBytes = (offset == lengthInObjects) ? lengthInBytes : index[offset];
+            pData = pData0 + positionInBytes;
 
             return pData;
         }
 
         /// <summary>
-        /// Moves the stream's data pointer to the specified position in bytes.
+        /// Moves the stream's data pointer to the beginning of the next object.
         /// </summary>
-        /// <param name="offset">The offset from the seek origin (in bytes) to which the stream's data pointer will be moved.</param>
-        /// <param name="origin">A <see cref="SeekOrigin"/> value specifying the origin of the seek operation.</param>
-        /// <returns>The stream's data pointer after moving to the specified position.</returns>
-        public IntPtr SafeSeek(Int32 offset, SeekOrigin origin)
+        /// <remarks>This method has no effect if the current stream position is at the end of the stream.</remarks>
+        /// <returns>The stream's data pointer after moving to the next object.</returns>
+        [CLSCompliant(false)]
+        public void* RawSeekForward()
         {
-            return (IntPtr)Seek(offset, origin);
+            Contract.Ensure(hasAcquiredPointers, NucleusStrings.UnsafeStreamMustAcquirePointers);
+
+            if (positionInObjects == lengthInObjects)
+                return pData;
+
+            positionInObjects++;
+            positionInBytes = (positionInObjects == lengthInObjects) ? lengthInBytes : index[positionInObjects];
+            pData = pData0 + positionInBytes;
+
+            return pData;
+        }
+
+        /// <summary>
+        /// Moves the stream's data pointer to the beginning of the previous object.
+        /// </summary>
+        /// <remarks>This method has no effect if the current stream position is at the beginning of the stream.</remarks>
+        /// <returns>The stream's data pointer after moving to the previous object.</returns>
+        [CLSCompliant(false)]
+        public void* RawSeekBackward()
+        {
+            Contract.Ensure(hasAcquiredPointers, NucleusStrings.UnsafeStreamMustAcquirePointers);
+
+            if (positionInObjects == 0)
+                return pData;
+
+            positionInObjects--;
+            positionInBytes = index[positionInObjects];
+            pData = pData0 + positionInBytes;
+
+            return pData;
+        }
+
+        /// <summary>
+        /// Moves the stream's data pointer to the beginning of the stream.
+        /// </summary>
+        /// <returns>The stream's data pointer after moving to the beginning of the stream.</returns>
+        [CLSCompliant(false)]
+        public void* RawSeekBeginning()
+        {
+            Contract.Ensure(hasAcquiredPointers, NucleusStrings.UnsafeStreamMustAcquirePointers);
+
+            positionInObjects = 0;
+            positionInBytes = 0;
+            pData = pData0;
+
+            return pData;
+        }
+
+        /// <summary>
+        /// Moves the stream's data pointer to the end of the stream.
+        /// </summary>
+        /// <returns></returns>
+        [CLSCompliant(false)]
+        public void* RawSeekEnd()
+        {
+            Contract.Ensure(hasAcquiredPointers, NucleusStrings.UnsafeStreamMustAcquirePointers);
+
+            positionInObjects = lengthInObjects;
+            positionInBytes = lengthInBytes;
+            pData = pData0 + lengthInBytes;
+
+            return pData;
         }
 
         /// <summary>
@@ -135,11 +176,53 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         /// </summary>
         /// <param name="offset">The index of the object to which the stream's data pointer will be moved.</param>
         /// <returns>The stream's data pointer after moving to the specified position.</returns>
-        public IntPtr SafeSeekObject(Int32 offset)
+        public IntPtr SeekObject(Int32 offset)
         {
-            return (IntPtr)SeekObject(offset);
+            return (IntPtr)RawSeekObject(offset);
         }
-        
+
+        /// <summary>
+        /// Moves the stream's data pointer to the beginning of the next object.
+        /// </summary>
+        /// <remarks>This method has no effect if the current stream position is at the end of the stream.</remarks>
+        /// <returns>The stream's data pointer after moving to the next object.</returns>
+        [CLSCompliant(false)]
+        public IntPtr SeekForward()
+        {
+            return (IntPtr)RawSeekForward();
+        }
+
+        /// <summary>
+        /// Moves the stream's data pointer to the beginning of the previous object.
+        /// </summary>
+        /// <remarks>This method has no effect if the current stream position is at the beginning of the stream.</remarks>
+        /// <returns>The stream's data pointer after moving to the previous object.</returns>
+        [CLSCompliant(false)]
+        public IntPtr SeekBackward()
+        {
+            return (IntPtr)RawSeekBackward();
+        }
+
+        /// <summary>
+        /// Moves the stream's data pointer to the beginning of the stream.
+        /// </summary>
+        /// <returns></returns>
+        [CLSCompliant(false)]
+        public IntPtr SeekBeginning()
+        {
+            return (IntPtr)RawSeekBeginning();
+        }
+
+        /// <summary>
+        /// Moves the stream's data pointer to the end of the stream.
+        /// </summary>
+        /// <returns></returns>
+        [CLSCompliant(false)]
+        public IntPtr SeekEnd()
+        {
+            return (IntPtr)RawSeekEnd();
+        }
+
         /// <summary>
         /// Reserves enough space in the stream for one additional object of the specified size.
         /// </summary>
@@ -147,6 +230,7 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         public void Reserve(Int32 numberOfBytes)
         {
             Contract.EnsureRange(numberOfBytes > 0, "numberOfBytes");
+            Contract.Ensure(positionInBytes == lengthInBytes, NucleusStrings.UnsafeStreamCanOnlyReserveAtStreamEnd);
 
             EnsureIndexCapacity(lengthInObjects + 1);
             EnsureDataCapacity(lengthInBytes + numberOfBytes);
@@ -162,9 +246,50 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         {
             Contract.Ensure(numberOfObjects > 0, "numberOfObjects");
             Contract.Ensure(numberOfBytes > 0, "numberOfBytes");
+            Contract.Ensure(positionInBytes == lengthInBytes, NucleusStrings.UnsafeStreamCanOnlyReserveAtStreamEnd);
 
             EnsureIndexCapacity(lengthInObjects + numberOfObjects);
             EnsureDataCapacity(lengthInBytes + numberOfBytes);
+        }
+
+        /// <summary>
+        /// Reserves enough space in the stream for the specified number of additional objects with the
+        /// specified total size in bytes. The reserved space will be inserted into the stream prior to
+        /// the object at the specified index. The stream's current position will be moved to the beginning
+        /// of the reserved data.
+        /// </summary>
+        /// <param name="insertPosition">The index at which to insert the reserved space, from 0 (the
+        /// beginning of the stream) to LengthInObjects, inclusive (the end of the stream).</param>
+        /// <param name="numberOfObjects">The number of objects to reserve.</param>
+        /// <param name="numberOfBytes">The number of bytes to reserve.</param>
+        public void ReserveInsert(Int32 insertPosition, Int32 numberOfObjects, Int32 numberOfBytes)
+        {
+            Contract.Ensure(insertPosition >= 0 && insertPosition <= lengthInObjects, "insertPosition");
+            Contract.Ensure(numberOfObjects > 0, "numberOfObjects");
+            Contract.Ensure(numberOfBytes > 0, "numberOfBytes");
+
+            var insert = (insertPosition < lengthInObjects);
+            var insertPositionInBytes = insert ? index[insertPosition] : lengthInBytes;
+
+            EnsureIndexCapacity(lengthInObjects + numberOfObjects);
+            EnsureDataCapacity(lengthInBytes + numberOfBytes);
+
+            RawSeekObject(insertPosition);
+            
+            if (insert)
+            {
+                var indexCopyOffset = insertPosition;
+                var indexCopyLength = lengthInObjects - indexCopyOffset;
+                Array.Copy(index, indexCopyOffset, index, indexCopyOffset + numberOfObjects, indexCopyLength);
+                Array.Clear(index, indexCopyOffset, numberOfObjects);
+
+                var dataCopyOffset = insertPositionInBytes;
+                var dataCopyLength = lengthInBytes - dataCopyOffset;
+                Array.Copy(data, dataCopyOffset, data, dataCopyOffset + numberOfBytes, dataCopyLength);
+
+                for (int i = indexCopyOffset + numberOfObjects; i < lengthInObjects + numberOfObjects; i++)
+                    index[i] += numberOfBytes;
+            }
         }
 
         /// <summary>
@@ -174,16 +299,19 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         public void FinalizeObject(Int32 numberOfBytes)
         {
             Contract.EnsureRange(numberOfBytes > 0, "numberOfBytes");
-            Contract.EnsureRange(position + numberOfBytes <= CapacityInBytes, "numberOfBytes");
+            Contract.EnsureRange(positionInBytes + numberOfBytes <= CapacityInBytes, "numberOfBytes");
             Contract.Ensure(lengthInObjects + 1 <= CapacityInBytes, NucleusStrings.BufferLengthExceeded);
 
-            index[lengthInObjects++] = position;
+            if (positionInObjects < lengthInObjects && index[positionInObjects] != 0)
+                throw new InvalidOperationException(NucleusStrings.UnsafeStreamWouldOverwriteObject);
 
-            position += numberOfBytes;
+            index[positionInObjects++] = positionInBytes;
+            positionInBytes += numberOfBytes;
 
             if (hasAcquiredPointers)
-                pData = pData0 + position;
+                pData = pData0 + positionInBytes;
 
+            lengthInObjects++;
             lengthInBytes += numberOfBytes;
         }
 
@@ -209,8 +337,8 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         public Int32 LengthInBytes
         {
             get { return lengthInBytes; }
-        }        
-                
+        }
+
         /// <summary>
         /// Gets the stream's total capacity for objects.
         /// </summary>
@@ -254,6 +382,22 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         }
 
         /// <summary>
+        /// Gets the stream's current position in the object index.
+        /// </summary>
+        public Int32 PositionInObjects
+        {
+            get { return positionInObjects; }
+        }
+
+        /// <summary>
+        /// Gets the stream's current position in the data buffer.
+        /// </summary>
+        public Int32 PositionInBytes
+        {
+            get { return positionInBytes; }
+        }
+
+        /// <summary>
         /// Ensures that the data buffer has at least the specified capacity, and expands
         /// the buffer if it does not.
         /// </summary>
@@ -294,35 +438,15 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
             }
             index = temp;
         }
-
-        /// <summary>
-        /// Gets the byte position to which the specified seek operation will move the stream.
-        /// </summary>
-        private Int32 GetPositionFromSeek(Int32 offset, SeekOrigin origin)
-        {
-            switch (origin)
-            {
-                case SeekOrigin.Begin:
-                    return offset;
-
-                case SeekOrigin.Current:
-                    return position + offset;
-
-                case SeekOrigin.End:
-                    return lengthInBytes + offset;
-
-                default:
-                    throw new ArgumentException("origin");
-            }
-        }
-
+        
         // State values.
         private const Int32 DefaultDataCapacity = 256;
         private const Int32 DefaultIndexCapacity = 8;
         private static readonly Byte[] EmptyData = new Byte[0];
         private static readonly Int32[] EmptyIndex = new Int32[0];
         private GCHandle gcData;
-        private Int32 position;
+        private Int32 positionInBytes;
+        private Int32 positionInObjects;
         private Byte* pData0;
         private Byte* pData;
         private Byte[] data;

@@ -245,7 +245,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             // Seek through the remaining commands until we find the one that contains our glyph.
-            while (!glyphFound && input.StreamPosition < input.Count)
+            while (!glyphFound && input.StreamPositionInObjects < input.Count)
             {
                 var cmdType = *(TextLayoutCommandType*)input.Data;
 
@@ -265,8 +265,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             glyphIsInCurrentLine = (y >= linePosition && y < linePosition + cmd->LineHeight);
                             if (glyphIsInCurrentLine)
                                 lineAtPosition = lineIndex;
-
-                            input.SeekPastLineInfoCommand();
                         }
                         break;
 
@@ -303,8 +301,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                             if (!glyphFound)
                                 glyphsSeen += cmd->TextLength;
-
-                            input.SeekPastTextCommand();
                         }
                         break;
 
@@ -321,21 +317,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                                 }
                             }
                             glyphsSeen++;
-                            input.SeekPastIconCommand();
                         }
                         break;
 
                     case TextLayoutCommandType.ToggleBold:
                         {
                             bold = !bold;
-                            input.SeekPastToggleBoldCommand();
                         }
                         break;
 
                     case TextLayoutCommandType.ToggleItalic:
                         {
                             italic = !italic;
-                            input.SeekPastToggleItalicCommand();
                         }
                         break;
 
@@ -344,7 +337,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutStyleCommand*)input.Data;
                             var cmdStyle = input.GetStyle(cmd->StyleIndex);
                             PushStyle(cmdStyle, ref bold, ref italic);
-                            input.SeekPastPushStyleCommand();
                         }
                         break;
 
@@ -353,38 +345,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutFontCommand*)input.Data;
                             var cmdFont = input.GetFont(cmd->FontIndex);
                             PushFont(cmdFont);
-                            input.SeekPastPushFontCommand();
                         }
-                        break;
-
-                    case TextLayoutCommandType.PushColor:
-                        input.SeekPastPushColorCommand();
-                        break;
-
-                    case TextLayoutCommandType.PushGlyphShader:
-                        input.SeekPastPushGlyphShaderCommand();
                         break;
 
                     case TextLayoutCommandType.PopStyle:
                         {
                             PopStyle(ref bold, ref italic);
-                            input.SeekPastPopStyleCommand();
                         }
                         break;
 
                     case TextLayoutCommandType.PopFont:
                         {
                             PopFont();
-                            input.SeekPastPopFontCommand();
                         }
-                        break;
-
-                    case TextLayoutCommandType.PopColor:
-                        input.SeekPastPopFontCommand();
-                        break;
-
-                    case TextLayoutCommandType.PopGlyphShader:
-                        input.SeekPastPopGlyphShaderCommand();
                         break;
 
                     case TextLayoutCommandType.ChangeSourceString:
@@ -392,7 +365,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutSourceStringCommand*)input.Data;
                             sourceString = input.GetSourceString(cmd->SourceIndex);
                             sourceStringBuilder = null;
-                            input.SeekPastChangeSourceStringCommand();
                         }
                         break;
 
@@ -401,18 +373,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
                             sourceString = null;
                             sourceStringBuilder = input.GetSourceStringBuilder(cmd->SourceIndex);
-                            input.SeekPastChangeSourceStringBuilderCommand();
                         }
                         break;
 
+                    case TextLayoutCommandType.PushColor:
+                    case TextLayoutCommandType.PushGlyphShader:
+                    case TextLayoutCommandType.PopColor:
+                    case TextLayoutCommandType.PopGlyphShader:
                     case TextLayoutCommandType.Hyphen:
-                        input.SeekPastHyphenCommand();
-                        break;
-
-                    default:
-                        input.SeekNextCommand();
                         break;
                 }
+
+                input.SeekNextCommand();
             }
 
             if (acquiredPointers)
@@ -531,7 +503,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             // Seek through the remaining commands until we find the one that contains our glyph.
-            while (!boundsFound && input.StreamPosition < input.Count)
+            while (!boundsFound && input.StreamPositionInObjects < input.Count)
             {
                 var cmdType = *(TextLayoutCommandType*)input.Data;
 
@@ -542,7 +514,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutLineInfoCommand*)input.Data;
                             offsetX = cmd->Offset;
                             lineHeight = cmd->LineHeight;
-                            input.SeekPastLineInfoCommand();
                         }
                         break;
 
@@ -567,7 +538,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                                 boundsFound = true;
                             }
                             glyphsSeen += cmd->TextLength;
-                            input.SeekPastTextCommand();
                         }
                         break;
 
@@ -581,21 +551,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                                 boundsFound = true;
                             }
                             glyphsSeen++;
-                            input.SeekPastIconCommand();
                         }
                         break;
 
                     case TextLayoutCommandType.ToggleBold:
                         {
                             bold = !bold;
-                            input.SeekPastToggleBoldCommand();
                         }
                         break;
 
                     case TextLayoutCommandType.ToggleItalic:
                         {
                             italic = !italic;
-                            input.SeekPastToggleItalicCommand();
                         }
                         break;
 
@@ -604,7 +571,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutStyleCommand*)input.Data;
                             var cmdStyle = input.GetStyle(cmd->StyleIndex);
                             PushStyle(cmdStyle, ref bold, ref italic);
-                            input.SeekPastPushStyleCommand();
                         }
                         break;
 
@@ -613,38 +579,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutFontCommand*)input.Data;
                             var cmdFont = input.GetFont(cmd->FontIndex);
                             PushFont(cmdFont);
-                            input.SeekPastPushFontCommand();
                         }
-                        break;
-
-                    case TextLayoutCommandType.PushColor:
-                        input.SeekPastPushColorCommand();
-                        break;
-
-                    case TextLayoutCommandType.PushGlyphShader:
-                        input.SeekPastPushGlyphShaderCommand();
                         break;
 
                     case TextLayoutCommandType.PopStyle:
                         {
                             PopStyle(ref bold, ref italic);
-                            input.SeekPastPopStyleCommand();
                         }
                         break;
 
                     case TextLayoutCommandType.PopFont:
                         {
                             PopFont();
-                            input.SeekPastPopFontCommand();
                         }
-                        break;
-
-                    case TextLayoutCommandType.PopColor:
-                        input.SeekPastPopFontCommand();
-                        break;
-
-                    case TextLayoutCommandType.PopGlyphShader:
-                        input.SeekPastPopGlyphShaderCommand();
                         break;
 
                     case TextLayoutCommandType.ChangeSourceString:
@@ -652,7 +599,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutSourceStringCommand*)input.Data;
                             sourceString = input.GetSourceString(cmd->SourceIndex);
                             sourceStringBuilder = null;
-                            input.SeekPastChangeSourceStringCommand();
                         }
                         break;
 
@@ -661,18 +607,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
                             sourceString = null;
                             sourceStringBuilder = input.GetSourceStringBuilder(cmd->SourceIndex);
-                            input.SeekPastChangeSourceStringBuilderCommand();
                         }
                         break;
 
+                    case TextLayoutCommandType.PushColor:
+                    case TextLayoutCommandType.PushGlyphShader:
+                    case TextLayoutCommandType.PopColor:
+                    case TextLayoutCommandType.PopGlyphShader:
                     case TextLayoutCommandType.Hyphen:
-                        input.SeekPastHyphenCommand();
-                        break;
-
-                    default:
-                        input.SeekNextCommand();
                         break;
                 }
+
+                input.SeekNextCommand();
             }
 
             if (acquiredPointers)
@@ -1067,7 +1013,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             input.Seek(0);
 
-            for (int i = 0; i < input.Count; i++)
+            while (input.StreamPositionInObjects < input.Count)
             {
                 if (charsSeen > end)
                     break;
@@ -1079,7 +1025,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             var cmd = (TextLayoutBlockInfoCommand*)input.Data;
                             blockOffset = cmd->Offset;
-                            input.SeekPastBlockInfoCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
@@ -1088,12 +1034,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutLineInfoCommand*)input.Data;
                             lineOffset = cmd->Offset;
                             lineHeight = cmd->LineHeight;
-                            input.SeekPastLineInfoCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
                     case TextLayoutCommandType.Text:
-                        DrawText(spriteBatch, input, fontFace, ref source, 
+                        DrawText(spriteBatch, input, fontFace, ref source,
                             position.X + lineOffset, position.Y + blockOffset, lineHeight, start, end, color, ref charsSeen);
                         break;
 
@@ -1105,7 +1051,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             bold = !bold;
                             RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            input.SeekPastToggleBoldCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
@@ -1113,7 +1059,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             italic = !italic;
                             RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            input.SeekPastToggleItalicCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
@@ -1123,7 +1069,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             PushStyle(input.GetStyle(cmd->StyleIndex), ref bold, ref italic);
                             RefreshFont(ref settings, bold, italic, out font, out fontFace);
                             RefreshColor(defaultColor, out color);
-                            input.SeekPastPushStyleCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
@@ -1133,7 +1079,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmdFont = input.GetFont(cmd->FontIndex);
                             PushFont(cmdFont);
                             RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            input.SeekPastPushFontCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
@@ -1143,7 +1089,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmdColor = cmd->Color;
                             PushColor(cmdColor);
                             RefreshColor(defaultColor, out color);
-                            input.SeekPastPushColorCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
@@ -1151,7 +1097,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             var cmd = (TextLayoutGlyphShaderCommand*)input.Data;
                             PushGlyphShader(input.GetGlyphShader(cmd->GlyphShaderIndex));
-                            input.SeekPastPushGlyphShaderCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
@@ -1160,7 +1106,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             PopStyle(ref bold, ref italic);
                             RefreshFont(ref settings, bold, italic, out font, out fontFace);
                             RefreshColor(defaultColor, out color);
-                            input.SeekPastPopStyleCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
@@ -1168,7 +1114,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             PopFont();
                             RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            input.SeekPastPopFontCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
@@ -1176,14 +1122,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             PopColor();
                             RefreshColor(defaultColor, out color);
-                            input.SeekPastPopColorCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
                     case TextLayoutCommandType.PopGlyphShader:
                         {
                             PopGlyphShader();
-                            input.SeekPastPopGlyphShaderCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
@@ -1191,7 +1137,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             var cmd = (TextLayoutSourceStringCommand*)input.Data;
                             source = new StringSource(input.GetSourceString(cmd->SourceIndex));
-                            input.SeekPastChangeSourceStringCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
@@ -1199,19 +1145,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
                             source = new StringSource(input.GetSourceStringBuilder(cmd->SourceIndex));
-                            input.SeekPastChangeSourceStringBuilderCommand();
+                            input.SeekNextCommand();
                         }
                         break;
 
                     case TextLayoutCommandType.Hyphen:
-                        input.SeekPastHyphenCommand();
+                        input.SeekNextCommand();
                         break;
 
                     default:
-                        if (i < input.Count)
-                        {
-                            input.Seek(i + 1);
-                        }
+                        input.SeekNextCommand();
                         break;
                 }
             }
@@ -1237,7 +1180,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (cmdText.Equals("\n"))
             {
                 charsSeen += 1;
-                input.SeekPastTextCommand();
+                input.SeekNextCommand();
                 return;
             }
 
@@ -1271,9 +1214,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             charsSeen += cmdLength;
-            input.SeekPastTextCommand();
+            input.SeekNextCommand();
 
-            var isTextSplitByHyphen = (input.StreamPosition < input.Count && *(TextLayoutCommandType*)input.Data == TextLayoutCommandType.Hyphen);
+            var isTextSplitByHyphen = (input.StreamPositionInObjects < input.Count && *(TextLayoutCommandType*)input.Data == TextLayoutCommandType.Hyphen);
             if (isTextSplitByHyphen)
             {
                 if (wasDrawnToCompletion)
@@ -1288,7 +1231,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, "-", cmdPosition, color);
                 }
 
-                input.SeekPastHyphenCommand();
+                input.SeekNextCommand();
             }
         }
 
@@ -1341,7 +1284,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             charsSeen += 1;
-            input.SeekPastIconCommand();
+            input.SeekNextCommand();
         }
 
         /// <summary>

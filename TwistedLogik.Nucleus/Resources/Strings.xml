@@ -290,4 +290,14 @@
       <Variant>AcquirePointers() cannot be called again until ReleasePointers() is called.</Variant>
     </en-US>
   </String>
+  <String Key="UNSAFE_STREAM_CAN_ONLY_RESERVE_AT_STREAM_END">
+    <en-US>
+      <Variant>Reserve() and ReserveMultiple() can only be called when the stream's current position is at the end of the stream.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSAFE_STREAM_WOULD_OVERWRITE_OBJECT">
+    <en-US>
+      <Variant>The operation is invalid because an attempt was made to overwrite an existing object.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
