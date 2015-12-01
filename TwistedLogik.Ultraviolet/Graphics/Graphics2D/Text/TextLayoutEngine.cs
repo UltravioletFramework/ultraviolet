@@ -523,7 +523,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     {
                         if (token.IsWhiteSpace)
                             skipFinalToken = true;
-                        
+
+                        state.AdvanceToNextLine(output, ref settings);
+
                         break;
                     }
                 }
@@ -556,8 +558,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         output.WriteHyphen();
                         state.LineLengthInCommands++;
                     }
+                    state.AdvanceToNextLine(output, ref settings);
                 }
-                state.AdvanceToNextLine(output, ref settings);
             }
 
             if (!skipFinalToken)
