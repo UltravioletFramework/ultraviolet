@@ -94,5 +94,10 @@
         /// Represents a command to draw a hyphen character.
         /// </summary>
         Hyphen,
+
+        /// <summary>
+        /// Represents a command to insert a line break character.
+        /// </summary>
+        LineBreak,
     }
 }

@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             return *(TextLayoutCommandType*)stream.RawSeekObject(index);
         }
-        
+
         /// <summary>
         /// Moves the stream to the first command in the specified line of text.
         /// </summary>
@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public TextLayoutCommandType SeekLine(Int32 index)
         {
             Contract.EnsureRange(index >= 0 && index < LineCount, "index");
-            
+
             var position = 1;
 
             for (int i = 0; i <= index; i++)
@@ -334,7 +334,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             stream.Reserve(sizeof(TextLayoutLineInfoCommand));
             *(TextLayoutLineInfoCommand*)stream.Data = new TextLayoutLineInfoCommand();
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.LineInfo;
-            stream.FinalizeObject(sizeof(TextLayoutLineInfoCommand)); 
+            stream.FinalizeObject(sizeof(TextLayoutLineInfoCommand));
         }
 
         /// <summary>
@@ -500,6 +500,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.Hyphen;
+            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+        }
+
+        /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.LineBreak"/> command to the current position in the stream.
+        /// </summary>
+        public void WriteLineBreak()
+        {
+            stream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.LineBreak;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
         }
 
@@ -675,7 +685,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             stream.RawSeekForward();
         }
-        
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.LineBreak"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public void ReadLineBreakCommand()
+        {
+            stream.RawSeekForward();
+        }
+
         /// <summary>
         /// Gets the layout settings which were used to produce the command stream.
         /// </summary>

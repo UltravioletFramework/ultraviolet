@@ -126,12 +126,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (settings.Font == null)
                 throw new ArgumentException(UltravioletStrings.InvalidLayoutSettings);
 
-            var state = new LayoutState();
-
-            var index = 0;
-
-            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
-            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
+            var state = new LayoutState() { LineInfoCommandIndex = 1 };
 
             output.Clear();
             output.SourceText = input.SourceText;
@@ -144,18 +139,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             output.WriteBlockInfo();
             output.WriteLineInfo();
 
-            if (settings.InitialLayoutStyle != null)
-            {
-                var initialStyle = default(TextStyle);
-                var initialStyleIndex = RegisterStyleWithCommandStream(output, settings.InitialLayoutStyle, out initialStyle);
-                output.WritePushStyle(new TextLayoutStyleCommand(initialStyleIndex));
-                PushStyle(initialStyle, ref bold, ref italic);
-            }
+            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
+            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
 
-            state.LineInfoCommandIndex = 1;
+            if (settings.InitialLayoutStyle != null)
+                PrepareInitialStyle(output, ref bold, ref italic, ref settings);
 
             var currentFont = settings.Font;
             var currentFontFace = settings.Font.GetFace(SpriteFontStyle.Regular);
+
+            var index = 0;
 
             while (index < input.Count)
             {
@@ -172,11 +165,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             if (token.IsNewLine)
                             {
-                                var lineHeight = (state.LineHeight == 0) ? currentFontFace.LineSpacing : state.LineHeight;
-                                state.AdvanceToNextLine(output, ref settings);
-                                state.AdvanceToNextCommand(0, currentFontFace.LineSpacing, 1, 1, true);
-                                output.WriteText(new TextLayoutTextCommand(token.Text.Start, token.Text.Length,
-                                    new Rectangle(state.PositionX, state.PositionY, 0, lineHeight)));
+                                state.AdvanceLayoutToNextLineWithBreak(output, ref settings);
                             }
                             else
                             {
@@ -193,21 +182,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var iconSize = MeasureToken(currentFont, token.TokenType, token.Text);
 
                             if (state.PositionX + iconSize.Width > (settings.Width ?? Int32.MaxValue))
-                                state.AdvanceToNextLine(output, ref settings);
+                                state.AdvanceLayoutToNextLine(output, ref settings);
 
                             if (state.PositionY + iconSize.Height > (settings.Height ?? Int32.MaxValue))
                                 break;
 
                             var iconBounds = new Rectangle(state.PositionX, state.PositionY, iconSize.Width, iconSize.Height);
                             output.WriteIcon(new TextLayoutIconCommand(iconIndex, icon.Width, icon.Height, iconBounds));
-                            state.AdvanceToNextCommand(iconBounds.Width, iconBounds.Height, 1, 1, false);
+                            state.AdvanceLineToNextCommand(iconBounds.Width, iconBounds.Height, 1, 1, false);
                         }
                         break;
 
                     case TextParserTokenType.ToggleBold:
                         {
                             output.WriteToggleBold();
-                            state.AdvanceToNextCommand();
+                            state.AdvanceLineToNextCommand();
                             bold = !bold;
                         }
                         break;
@@ -215,7 +204,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     case TextParserTokenType.ToggleItalic:
                         {
                             output.WriteToggleItalic();
-                            state.AdvanceToNextCommand();
+                            state.AdvanceLineToNextCommand();
                             italic = !italic;
                         }
                         break;
@@ -225,7 +214,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var pushedFont = default(SpriteFont);
                             var pushedFontIndex = RegisterFontWithCommandStream(output, token.Text, out pushedFont);
                             output.WritePushFont(new TextLayoutFontCommand(pushedFontIndex));
-                            state.AdvanceToNextCommand();
+                            state.AdvanceLineToNextCommand();
                             PushFont(pushedFont);
                         }
                         break;
@@ -234,7 +223,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             var pushedColor = ParseColor(token.Text);
                             output.WritePushColor(new TextLayoutColorCommand(pushedColor));
-                            state.AdvanceToNextCommand();
+                            state.AdvanceLineToNextCommand();
                         }
                         break;
 
@@ -243,7 +232,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var pushedStyle = default(TextStyle);
                             var pushedStyleIndex = RegisterStyleWithCommandStream(output, token.Text, out pushedStyle);
                             output.WritePushStyle(new TextLayoutStyleCommand(pushedStyleIndex));
-                            state.AdvanceToNextCommand();
+                            state.AdvanceLineToNextCommand();
                             PushStyle(pushedStyle, ref bold, ref italic);
                         }
                         break;
@@ -253,35 +242,35 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var pushedGlyphShader = default(GlyphShader);
                             var pushedGlyphShaderIndex = RegisterGlyphShaderWithCommandStream(output, token.Text, out pushedGlyphShader);
                             output.WritePushGlyphShader(new TextLayoutGlyphShaderCommand(pushedGlyphShaderIndex));
-                            state.AdvanceToNextCommand();
+                            state.AdvanceLineToNextCommand();
                         }
                         break;
 
                     case TextParserTokenType.PopFont:
                         {
                             output.WritePopFont();
-                            state.AdvanceToNextCommand();
+                            state.AdvanceLineToNextCommand();
                             PopFont();
                         }
                         break;
 
                     case TextParserTokenType.PopColor:
                         output.WritePopColor();
-                        state.AdvanceToNextCommand();
+                        state.AdvanceLineToNextCommand();
                         break;
 
                     case TextParserTokenType.PopStyle:
                         {
                             output.WritePopStyle();
-                            state.AdvanceToNextCommand();
+                            state.AdvanceLineToNextCommand();
                             PopStyle(ref bold, ref italic);
                         }
                         break;
 
                     case TextParserTokenType.PopGlyphShader:
                         output.WritePopGlyphShader();
-                        state.AdvanceToNextCommand();
-                        break;                        
+                        state.AdvanceLineToNextCommand();
+                        break;                                                
 
                     default:
                         throw new InvalidOperationException(UltravioletStrings.UnrecognizedLayoutCommand.Format(token.TokenType));
@@ -291,17 +280,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     index++;
             }
 
-            if (state.LineLengthInCommands > 0)
-                state.AdvanceToNextLine(output, ref settings, false);
-
-            state.WriteBlockInfo(output, (Int16)state.ActualWidth, (Int16)state.ActualHeight, state.LineCount, ref settings);
-
-            output.Settings = settings;
-            output.Bounds = state.Bounds;
-            output.ActualWidth = state.ActualWidth;
-            output.ActualHeight = state.ActualHeight;
-            output.TotalLength = state.TotalLength;
-            output.LineCount = state.LineCount;
+            state.FinalizeLayout(output, ref settings);
 
             if (acquiredPointers)
                 output.ReleasePointers();
@@ -392,6 +371,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             sourceString = null;
             sourceStringBuilder = null;
+        }
+
+        private void PrepareInitialStyle(TextLayoutCommandStream output, ref Boolean bold, ref Boolean italic, ref TextLayoutSettings settings)
+        {
+            if (settings.InitialLayoutStyle == null)
+                return;
+
+            var initialStyle = default(TextStyle);
+            var initialStyleIndex = RegisterStyleWithCommandStream(output, settings.InitialLayoutStyle, out initialStyle);
+            output.WritePushStyle(new TextLayoutStyleCommand(initialStyleIndex));
+            PushStyle(initialStyle, ref bold, ref italic);
         }
 
         /// <summary>
@@ -524,7 +514,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         if (token.IsWhiteSpace)
                             skipFinalToken = true;
 
-                        state.AdvanceToNextLine(output, ref settings);
+                        state.AdvanceLayoutToNextLine(output, ref settings);
 
                         break;
                     }
@@ -537,7 +527,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 height = Math.Max(height, tokenSize.Height);
                 length = length + tokenText.Length;
 
-                state.AdvanceToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenText.Length, token.IsWhiteSpace);
+                state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenText.Length, token.IsWhiteSpace);
                 state.LineLengthInCommands--;
 
                 index++;
@@ -558,7 +548,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         output.WriteHyphen();
                         state.LineLengthInCommands++;
                     }
-                    state.AdvanceToNextLine(output, ref settings);
+                    state.AdvanceLayoutToNextLine(output, ref settings);
                 }
             }
 

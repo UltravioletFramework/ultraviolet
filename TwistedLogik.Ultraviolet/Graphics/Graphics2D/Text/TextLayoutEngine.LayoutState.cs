@@ -79,24 +79,25 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                 minLineOffset = (minLineOffset.HasValue) ? Math.Min(minLineOffset.Value, offset) : offset;
             }
-
+            
             /// <summary>
-            /// Advances to the next command on the current line.
+            /// Advances the layout state past the current layout command, assuming that the command is a styling command
+            /// with zero size and zero length in characters.
             /// </summary>
-            public void AdvanceToNextCommand()
+            public void AdvanceLineToNextCommand()
             {
-                AdvanceToNextCommand(0, 0, 1, 0, false);
+                AdvanceLineToNextCommand(0, 0, 1, 0, false);
             }
-
+            
             /// <summary>
-            /// Advances to the next command on the current line.
+            /// Advances the layout state past the current layout command.
             /// </summary>
-            /// <param name="width">The command's width in pixels.</param>
-            /// <param name="height">The command's height in pixels.</param>
-            /// <param name="lengthInCommands">The command's length in layout commands.</param>
-            /// <param name="lengthInText">The command's length in characters.</param>
-            /// <param name="isWhiteSpace">A value indicating whether the token represents white space.</param>
-            public void AdvanceToNextCommand(Int32 width, Int32 height, Int32 lengthInCommands, Int32 lengthInText, Boolean isWhiteSpace)
+            /// <param name="width">The width in pixels which the command contributes to the current line.</param>
+            /// <param name="height">The height in pixels which the command contributes to the current line.</param>
+            /// <param name="lengthInCommands">The number of layout commands which were ultimately produced in the output stream by this command.</param>
+            /// <param name="lengthInText">The number of characters of text which are represented by this command.</param>
+            /// <param name="isWhiteSpace">A value indicating whether this command represents white space.</param>
+            public void AdvanceLineToNextCommand(Int32 width, Int32 height, Int32 lengthInCommands, Int32 lengthInText, Boolean isWhiteSpace)
             {
                 positionX += width;
                 lineLengthInCommands += lengthInCommands;
@@ -107,11 +108,44 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 lineHeight = Math.Max(lineHeight, height);
                 totalLength += lengthInText;
             }
+            
+            /// <summary>
+            /// Advances the layout state to the next line of text.
+            /// </summary>
+            /// <param name="output">The <see cref="TextLayoutCommandStream"/> which is being populated.</param>
+            /// <param name="settings">The current layout settings.</param>
+            public void AdvanceLayoutToNextLine(TextLayoutCommandStream output, ref TextLayoutSettings settings)
+            {
+                FinalizeLine(output, ref settings);
+                output.WriteLineInfo();
+            }
 
             /// <summary>
-            /// Advances the layout engine to the next line.
+            /// Advances the layout state to the next line of text after inserting a line break character at the end of the current line.
             /// </summary>
-            public void AdvanceToNextLine(TextLayoutCommandStream output, ref TextLayoutSettings settings, Boolean writeLineInfo = true)
+            /// <param name="output">The <see cref="TextLayoutCommandStream"/> which is being populated.</param>
+            /// <param name="settings">The current layout settings.</param>
+            public void AdvanceLayoutToNextLineWithBreak(TextLayoutCommandStream output, ref TextLayoutSettings settings)
+            {
+                var lineHeightCurrent = lineHeight;
+                if (lineHeightCurrent == 0)
+                    lineHeight = settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing;
+
+                // HACK: we're pretending this isn't white space until I fix how white space is handled
+                output.WriteLineBreak();
+                AdvanceLineToNextCommand(0, lineHeightCurrent, 1, 1, false);
+
+                AdvanceLayoutToNextLine(output, ref settings);
+                AdvanceLineToNextCommand(0, lineHeightCurrent, 0, 0, true);
+            }
+
+            /// <summary>
+            /// Finalizes the current line by writing the line's metadata to the command stream and resetting
+            /// state values which are associated with the current line.
+            /// </summary>
+            /// <param name="output">The <see cref="TextLayoutCommandStream"/> which is being populated.</param>
+            /// <param name="settings">The current layout settings.</param>
+            public void FinalizeLine(TextLayoutCommandStream output, ref TextLayoutSettings settings)
             {
                 if ((settings.Options & TextLayoutOptions.PreserveTrailingWhiteSpace) != TextLayoutOptions.PreserveTrailingWhiteSpace)
                 {
@@ -134,11 +168,28 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 lineLengthInText = 0;
                 lineLengthInCommands = 0;
                 lineInfoCommandIndex = output.Count;
-
-                if (writeLineInfo)
-                    output.WriteLineInfo();
             }
-            
+
+            /// <summary>
+            /// Finalizes the layout by writing the block's metadata to the command stream.
+            /// </summary>
+            /// <param name="output">The <see cref="TextLayoutCommandStream"/> which is being populated.</param>
+            /// <param name="settings">The current layout settings.</param>
+            public void FinalizeLayout(TextLayoutCommandStream output, ref TextLayoutSettings settings)
+            {
+                if (LineHeight > 0)
+                    FinalizeLine(output, ref settings);
+
+                WriteBlockInfo(output, (Int16)ActualWidth, (Int16)ActualHeight, LineCount, ref settings);
+
+                output.Settings = settings;
+                output.Bounds = Bounds;
+                output.ActualWidth = ActualWidth;
+                output.ActualHeight = ActualHeight;
+                output.TotalLength = TotalLength;
+                output.LineCount = LineCount;
+            }
+
             /// <summary>
             /// Gets or sets the x-coordinate at which the next token will be placed.
             /// </summary>

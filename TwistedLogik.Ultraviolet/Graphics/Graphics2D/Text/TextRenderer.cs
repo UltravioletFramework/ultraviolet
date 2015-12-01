@@ -376,6 +376,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         }
                         break;
 
+                    case TextLayoutCommandType.LineBreak:
+                        {
+                            glyphsSeen++;
+                        }
+                        break;
+
                     case TextLayoutCommandType.PushColor:
                     case TextLayoutCommandType.PushGlyphShader:
                     case TextLayoutCommandType.PopColor:
@@ -458,6 +464,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(input, "input");
             Contract.EnsureRange(index >= 0 && index < input.TotalLength, "index");
 
+            var boundsOnLineBreak = false;
             var boundsFound = false;
             var bounds = Rectangle.Empty;
             lineHeight = 0;
@@ -481,8 +488,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var font = settings.Font;
             var fontFace = font.GetFace(bold, italic);
 
-            var offsetX = 0;
-            var offsetY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+            var offsetBlockY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+            var offsetLineX = 0;
+            var offsetLineY = 0;
             
             input.SeekNextCommand();
             
@@ -506,14 +514,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             while (!boundsFound && input.StreamPositionInObjects < input.Count)
             {
                 var cmdType = *(TextLayoutCommandType*)input.Data;
+                if (cmdType != TextLayoutCommandType.LineInfo && boundsOnLineBreak)
+                    throw new InvalidOperationException(UltravioletStrings.LineBreakNotFollowedByNewLine);
 
                 switch (cmdType)
                 {
                     case TextLayoutCommandType.LineInfo:
                         {
                             var cmd = (TextLayoutLineInfoCommand*)input.Data;
-                            offsetX = cmd->Offset;
+                            offsetLineX = cmd->Offset;
+                            offsetLineY = offsetLineY + lineHeight;
                             lineHeight = cmd->LineHeight;
+
+                            if (boundsOnLineBreak)
+                            {
+                                boundsFound = true;
+                                bounds = new Rectangle(offsetLineX, offsetBlockY + offsetLineY, 0, lineHeight);
+                            }
                         }
                         break;
 
@@ -532,7 +549,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                                 var glyphOffset = (indexWithinText == 0) ? 0 : fontFace.MeasureString(cmdText, 0, indexWithinText).Width;
                                 var glyphSize = fontFace.MeasureGlyph(cmdText, indexWithinText);
-                                var glyphPosition = cmd->GetAbsolutePosition(offsetX + glyphOffset, offsetY, lineHeight);
+                                var glyphPosition = cmd->GetAbsolutePosition(offsetLineX + glyphOffset, offsetBlockY, lineHeight);
 
                                 bounds = new Rectangle(glyphPosition, glyphSize);
                                 boundsFound = true;
@@ -546,7 +563,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutIconCommand*)input.Data;
                             if (glyphsSeen + 1 > index)
                             {
-                                var glyphPosition = cmd->GetAbsolutePosition(offsetX, offsetY, lineHeight);
+                                var glyphPosition = cmd->GetAbsolutePosition(offsetLineX, offsetBlockY, lineHeight);
                                 bounds = new Rectangle(glyphPosition, cmd->Bounds.Size);
                                 boundsFound = true;
                             }
@@ -607,6 +624,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
                             sourceString = null;
                             sourceStringBuilder = input.GetSourceStringBuilder(cmd->SourceIndex);
+                        }
+                        break;
+
+                    case TextLayoutCommandType.LineBreak:
+                        {
+                            if (glyphsSeen + 1 > index)
+                            {
+                                boundsOnLineBreak = true;
+                            }
+                            glyphsSeen++;
                         }
                         break;
 
@@ -1151,6 +1178,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     case TextLayoutCommandType.Hyphen:
                         input.SeekNextCommand();
+                        break;
+
+                    case TextLayoutCommandType.LineBreak:
+                        input.SeekNextCommand();
+                        charsSeen++;
                         break;
 
                     default:

@@ -125,6 +125,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource ViewDirectiveMustHaveType            = new StringResource(StringDatabase, "VIEW_DIRECTIVE_MUST_HAVE_TYPE");
         public static readonly StringResource NotSupportedInServiceMode            = new StringResource(StringDatabase, "NOT_SUPPORTED_IN_SERVICE_MODE");
         public static readonly StringResource ContextDoesNotHaveProfiler           = new StringResource(StringDatabase, "CONTEXT_DOES_NOT_HAVE_PROFILER");
+        public static readonly StringResource LineBreakNotFollowedByNewLine        = new StringResource(StringDatabase, "LINE_BREAK_NOT_FOLLOWED_BY_NEW_LINE");
 #pragma warning restore 1591
     }
 }

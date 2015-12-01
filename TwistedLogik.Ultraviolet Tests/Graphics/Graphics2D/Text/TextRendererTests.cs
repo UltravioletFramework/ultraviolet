@@ -553,11 +553,18 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var glyph0Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 0);
                     var glyph4Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 4);
                     var glyph14Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 14);
+                    var glyph26Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 26);
                     var glyph27Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 27);
                     var glyph53Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 53);
                     var glyph54Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 54);
                     var glyphLastBounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, content.TextLayoutResult.TotalLength - 1);
                     content.TextLayoutResult.ReleasePointers();
+
+                    // Glyph 26 is a line break and therefore invisible, so check it manually
+                    TheResultingValue(glyph26Bounds.X).ShouldBe(163);
+                    TheResultingValue(glyph26Bounds.Y).ShouldBe(158);
+                    TheResultingValue(glyph26Bounds.Width).ShouldBe(0);
+                    TheResultingValue(glyph26Bounds.Height).ShouldBe(22);
 
                     content.SpriteBatch.Begin();
 
@@ -566,6 +573,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.Draw(content.BlankTexture, glyph0Bounds, Color.Red * 0.5f);
                     content.SpriteBatch.Draw(content.BlankTexture, glyph4Bounds, Color.Cyan * 0.5f);
                     content.SpriteBatch.Draw(content.BlankTexture, glyph14Bounds, Color.Lime * 0.5f);
+                    content.SpriteBatch.Draw(content.BlankTexture, glyph26Bounds, Color.Red * 0.5f); // should be invisible
                     content.SpriteBatch.Draw(content.BlankTexture, glyph27Bounds, Color.Blue * 0.5f);
                     content.SpriteBatch.Draw(content.BlankTexture, glyph53Bounds, Color.Yellow * 0.5f);
                     content.SpriteBatch.Draw(content.BlankTexture, glyph54Bounds, Color.Purple * 0.5f);
