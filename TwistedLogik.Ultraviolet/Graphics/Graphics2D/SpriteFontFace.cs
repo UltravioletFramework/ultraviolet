@@ -296,9 +296,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             var cx = 0;
             var cy = 0;
-            for (int i = start; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var character = source[i];
+                var character = source[start + i];
                 switch (character)
                 {
                     case '\r':
@@ -313,7 +313,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                         cx = cx + TabWidth;
                         continue;
                 }
-                cx += MeasureGlyph(ref source, i).Width;
+                cx += MeasureGlyph(ref source, start + i).Width;
             }
             
             return new Size2(cx, cy + LineSpacing);
