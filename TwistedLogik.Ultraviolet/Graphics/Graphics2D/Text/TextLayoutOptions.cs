@@ -17,11 +17,5 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Indicates that words which are split across multiple lines should be hyphenated.
         /// </summary>
         Hyphenate = 0x0001,
-
-        /// <summary>
-        /// Indicates that white space at the end of lines should be preserved, rather than
-        /// being removed from the layout stream.
-        /// </summary>
-        PreserveTrailingWhiteSpace = 0x0002,
     }
 }

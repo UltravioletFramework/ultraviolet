@@ -99,6 +99,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Rectangle Bounds
         {
             get { return bounds; }
+            internal set { bounds = value; }
         }
 
         // Property values.
@@ -106,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private readonly Int32 iconIndex;
         private readonly Int32 iconWidth;
         private readonly Int32 iconHeight;
-        private readonly Rectangle bounds;
+        private Rectangle bounds;
         private readonly Boolean hasIconWidth;
         private readonly Boolean hasIconHeight;
     }

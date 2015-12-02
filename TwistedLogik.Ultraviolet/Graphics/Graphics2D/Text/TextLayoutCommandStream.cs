@@ -15,6 +15,41 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     public unsafe class TextLayoutCommandStream
     {
         /// <summary>
+        /// Gets a <see cref="LineInfo"/> structure which describes the specified line of formatted text.
+        /// </summary>
+        /// <param name="index">The index of the line for which to retrieve metadata.</param>
+        /// <returns>A <see cref="LineInfo"/> structure which describes the specified line of formatted text.</returns>
+        public LineInfo GetLineInfo(Int32 index)
+        {
+            Contract.EnsureRange(index >= 0 && index < LineCount, "index");
+
+            var acquiredPointers = !HasAcquiredPointers;
+            if (acquiredPointers)
+                AcquirePointers();
+
+            Seek(0);
+            var blockOffset = ((TextLayoutBlockInfoCommand*)Data)->Offset;
+
+            SeekNextCommand();
+            var lineInfo = (TextLayoutLineInfoCommand*)Data;
+            var linePosition = 0;
+            for (int i = 0; i < index; i++)
+            {
+                linePosition += lineInfo->LineHeight;
+                Seek(1 + StreamPositionInObjects + lineInfo->LengthInCommands);
+                lineInfo = (TextLayoutLineInfoCommand*)Data;
+            }
+
+            var result = new LineInfo(lineInfo->Offset, blockOffset + linePosition, 
+                lineInfo->LineWidth, lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInGlyphs);
+
+            if (acquiredPointers)
+                ReleasePointers();
+
+            return result;
+        }
+
+        /// <summary>
         /// Moves the stream to the command with the specified index.
         /// </summary>
         /// <param name="index">The index of the command to which the stream will seek.</param>
@@ -820,7 +855,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             get { return stream.HasAcquiredPointers; }
         }
-
+        
+        /// <summary>
+        /// Gets the <see cref="UnsafeObjectStream"/> which provides the command stream's storage.
+        /// </summary>
+        internal UnsafeObjectStream InternalObjectStream
+        {
+            get { return stream; }
+        }
+        
         /// <summary>
         /// Registers a resource with the command stream.
         /// </summary>

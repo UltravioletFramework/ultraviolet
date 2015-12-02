@@ -4,6 +4,7 @@ using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.Testing;
+using TwistedLogik.Ultraviolet.Testing.Graphics.Graphics2D.Text;
 
 namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 {
@@ -135,10 +136,12 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [TestMethod]
         [TestCategory("Rendering")]
-        [Description("Ensures that the text layout engine correctly splits very long white space across multiple lines when trailing white space is being preserved.")]
-        public void TextRenderer_BreaksPreservedWhiteSpaceIntoMultipleLines()
+        [Description(
+            "Ensures that the text layout engine breaks lines at the last breaking space prior to the token which exceeded the layout area, and " +
+            "that drawing the result with left alignment produces the correct image.")]
+        public void TextRenderer_BreaksAtLastBreakingSpace_WithLeftAlignment()
         {
-            var content = new TextRendererTestContent("Hello, world!                    This                    is a                    test.");
+            var content = new TextRendererTestContent("Hello! This is a |icon:test|test|b|test|b||i|test|i||b||i|test|i||b| of the line breaking algorithm.");
 
             var result = GivenAnUltravioletApplication()
                 .WithContent(content.Load)
@@ -149,28 +152,142 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     var width = window.ClientSize.Width / 2;
                     var height = window.ClientSize.Height;
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
 
                     content.SpriteBatch.Begin();
-
-                    content.SpriteBatch.Draw(content.BlankTexture,
+                    content.SpriteBatch.Draw(content.BlankTexture, 
                         new RectangleF(0, 0, width, height), Color.Red * 0.5f);
-                    
-                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.Standard, TextLayoutOptions.Hyphenate));
-                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, new Vector2(0, 0), Color.White);
 
-                    content.SpriteBatch.Draw(content.BlankTexture,
-                        new RectangleF(width, 0, width, height), Color.DarkRed * 0.5f);
-
-                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.Standard, TextLayoutOptions.PreserveTrailingWhiteSpace | TextLayoutOptions.Hyphenate));
-                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, new Vector2(width, 0), Color.White);
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
 
                     content.SpriteBatch.End();
                 });
             
+            TheResultingValue(content.TextLayoutResult.GetLineInfo(0))
+                .ShouldHavePosition(0, 0)
+                .ShouldHaveSize(132, 22)
+                .ShouldHaveLengthInCommands(2)
+                .ShouldHaveLengthInGlyphs(17);
+            
+            TheResultingValue(content.TextLayoutResult.GetLineInfo(1))
+                .ShouldHavePosition(0, 22)
+                .ShouldHaveSize(198, 22)
+                .ShouldHaveLengthInCommands(15)
+                .ShouldHaveLengthInGlyphs(25);
+
+            TheResultingValue(content.TextLayoutResult.GetLineInfo(2))
+                .ShouldHavePosition(0, 44)
+                .ShouldHaveSize(204, 22)
+                .ShouldHaveLengthInCommands(2)
+                .ShouldHaveLengthInGlyphs(24);
+            
             TheResultingImage(result).WithinThreshold(0)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksPreservedWhiteSpaceIntoMultipleLines.png");
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithLeftAlignment.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description(
+            "Ensures that the text layout engine breaks lines at the last breaking space prior to the token which exceeded the layout area, and " +
+            "that drawing the result with right alignment produces the correct image.")]
+        public void TextRenderer_BreaksAtLastBreakingSpace_WithRightAlignment()
+        {
+            var content = new TextRendererTestContent("Hello! This is a |icon:test|test|b|test|b||i|test|i||b||i|test|i||b| of the line breaking algorithm.");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var width = window.ClientSize.Width / 2;
+                    var height = window.ClientSize.Height;
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignRight, TextLayoutOptions.None));
+
+                    content.SpriteBatch.Begin();
+                    content.SpriteBatch.Draw(content.BlankTexture,
+                        new RectangleF(0, 0, width, height), Color.Red * 0.5f);
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    content.SpriteBatch.End();
+                });
+            
+            TheResultingValue(content.TextLayoutResult.GetLineInfo(0))
+                .ShouldHavePosition(108, 0)
+                .ShouldHaveSize(132, 22)
+                .ShouldHaveLengthInCommands(2)
+                .ShouldHaveLengthInGlyphs(17);
+
+            TheResultingValue(content.TextLayoutResult.GetLineInfo(1))
+                .ShouldHavePosition(42, 22)
+                .ShouldHaveSize(198, 22)
+                .ShouldHaveLengthInCommands(15)
+                .ShouldHaveLengthInGlyphs(25);
+
+            TheResultingValue(content.TextLayoutResult.GetLineInfo(2))
+                .ShouldHavePosition(36, 44)
+                .ShouldHaveSize(204, 22)
+                .ShouldHaveLengthInCommands(2)
+                .ShouldHaveLengthInGlyphs(24);
+
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithRightAlignment.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description(
+            "Ensures that the text layout engine breaks lines at the last breaking space prior to the token which exceeded the layout area, and " +
+            "that drawing the result with center alignment produces the correct image.")]
+        public void TextRenderer_BreaksAtLastBreakingSpace_WithCenterAlignment()
+        {
+            var content = new TextRendererTestContent("Hello! This is a |icon:test|test|b|test|b||i|test|i||b||i|test|i||b| of the line breaking algorithm.");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var width = window.ClientSize.Width / 2;
+                    var height = window.ClientSize.Height;
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignCenter, TextLayoutOptions.None));
+
+                    content.SpriteBatch.Begin();
+                    content.SpriteBatch.Draw(content.BlankTexture,
+                        new RectangleF(0, 0, width, height), Color.Red * 0.5f);
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    content.SpriteBatch.End();
+                });
+            
+            TheResultingValue(content.TextLayoutResult.GetLineInfo(0))
+                .ShouldHavePosition(54, 0)
+                .ShouldHaveSize(132, 22)
+                .ShouldHaveLengthInCommands(2)
+                .ShouldHaveLengthInGlyphs(17);
+
+            TheResultingValue(content.TextLayoutResult.GetLineInfo(1))
+                .ShouldHavePosition(21, 22)
+                .ShouldHaveSize(198, 22)
+                .ShouldHaveLengthInCommands(15)
+                .ShouldHaveLengthInGlyphs(25);
+
+            TheResultingValue(content.TextLayoutResult.GetLineInfo(2))
+                .ShouldHavePosition(18, 44)
+                .ShouldHaveSize(204, 22)
+                .ShouldHaveLengthInCommands(2)
+                .ShouldHaveLengthInGlyphs(24);
+
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithCenterAlignment.png");
         }
 
         [TestMethod]
@@ -841,6 +958,11 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
             
             TheResultingImage(result).WithinThreshold(0)
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png");
+        }
+        
+        protected static LineInfoResult TheResultingValue(LineInfo obj)
+        {
+            return new LineInfoResult(obj);
         }
     }
 }

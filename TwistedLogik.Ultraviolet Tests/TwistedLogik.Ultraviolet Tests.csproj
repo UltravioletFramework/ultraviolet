@@ -505,10 +505,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSubstrings.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithCenterAlignment.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksPreservedWhiteSpaceIntoMultipleLines.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithRightAlignment.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithLeftAlignment.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSubstrings.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines_WithHyphens.png">

@@ -73,6 +73,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Int32 TextOffset
         {
             get { return textOffset; }
+            internal set { textOffset = value; }
         }
 
         /// <summary>
@@ -81,6 +82,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Int32 TextLength
         {
             get { return textLength; }
+            internal set { textLength = value; }
         }
 
         /// <summary>
@@ -89,12 +91,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Rectangle Bounds
         {
             get { return bounds; }
+            internal set { bounds = value; }
         }
 
         // Property values.
         private readonly TextLayoutCommandType commandType;
-        private readonly Int32 textOffset;
-        private readonly Int32 textLength;
-        private readonly Rectangle bounds;
+        private Int32 textOffset;
+        private Int32 textLength;
+        private Rectangle bounds;
     }
 }

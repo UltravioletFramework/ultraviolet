@@ -145,6 +145,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StringSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\TextureImage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\IncrementalResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\LineInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextIconInfo.cs" />

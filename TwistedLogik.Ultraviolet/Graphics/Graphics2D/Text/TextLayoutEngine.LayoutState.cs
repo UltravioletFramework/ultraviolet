@@ -65,6 +65,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         offset = (settings.Width.Value - lineWidth) / 2;
                 }
 
+                var outputStreamPosition = output.StreamPositionInObjects;
                 output.Seek(lineInfoCommandIndex);
                 unsafe
                 {
@@ -75,18 +76,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     ptr->LengthInCommands = lengthInCommands;
                     ptr->LengthInGlyphs = lengthInGlyphs;
                 }
-                output.Seek(output.Count);
+                output.Seek(outputStreamPosition);
 
                 minLineOffset = (minLineOffset.HasValue) ? Math.Min(minLineOffset.Value, offset) : offset;
             }
-            
+
             /// <summary>
             /// Advances the layout state past the current layout command, assuming that the command is a styling command
             /// with zero size and zero length in characters.
             /// </summary>
             public void AdvanceLineToNextCommand()
             {
-                AdvanceLineToNextCommand(0, 0, 1, 0, false);
+                AdvanceLineToNextCommand(0, 0, 1, 0);
             }
             
             /// <summary>
@@ -96,14 +97,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="height">The height in pixels which the command contributes to the current line.</param>
             /// <param name="lengthInCommands">The number of layout commands which were ultimately produced in the output stream by this command.</param>
             /// <param name="lengthInText">The number of characters of text which are represented by this command.</param>
-            /// <param name="isWhiteSpace">A value indicating whether this command represents white space.</param>
-            public void AdvanceLineToNextCommand(Int32 width, Int32 height, Int32 lengthInCommands, Int32 lengthInText, Boolean isWhiteSpace)
+            public void AdvanceLineToNextCommand(Int32 width, Int32 height, Int32 lengthInCommands, Int32 lengthInText)
             {
                 positionX += width;
                 lineLengthInCommands += lengthInCommands;
                 lineLengthInText += lengthInText;
-                lineTrailingWhiteSpaceCount = isWhiteSpace ? (lineTrailingWhiteSpaceCount + lengthInText) : 0;
-                lineTrailingWhiteSpaceWidth = isWhiteSpace ? (lineTrailingWhiteSpaceWidth + width) : 0;
                 lineWidth += width;
                 lineHeight = Math.Max(lineHeight, height);
                 totalLength += lengthInText;
@@ -130,13 +128,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var lineHeightCurrent = lineHeight;
                 if (lineHeightCurrent == 0)
                     lineHeight = settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing;
-
-                // HACK: we're pretending this isn't white space until I fix how white space is handled
+                
                 output.WriteLineBreak();
-                AdvanceLineToNextCommand(0, lineHeightCurrent, 1, 1, false);
+                AdvanceLineToNextCommand(0, lineHeightCurrent, 1, 1);
 
                 AdvanceLayoutToNextLine(output, ref settings);
-                AdvanceLineToNextCommand(0, lineHeightCurrent, 0, 0, true);
+                AdvanceLineToNextCommand(0, lineHeightCurrent, 0, 0);
             }
 
             /// <summary>
@@ -147,27 +144,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="settings">The current layout settings.</param>
             public void FinalizeLine(TextLayoutCommandStream output, ref TextLayoutSettings settings)
             {
-                if ((settings.Options & TextLayoutOptions.PreserveTrailingWhiteSpace) != TextLayoutOptions.PreserveTrailingWhiteSpace)
-                {
-                    lineWidth -= lineTrailingWhiteSpaceWidth;
-                    lineLengthInText -= lineTrailingWhiteSpaceCount;
-                    totalLength -= lineTrailingWhiteSpaceCount;
-                }
-
                 WriteLineInfo(output, (Int16)lineWidth, (Int16)lineHeight, (Int16)lineLengthInCommands, (Int16)lineLengthInText, ref settings);
 
                 positionX = 0;
                 positionY += lineHeight;
                 actualWidth = Math.Max(actualWidth, lineWidth);
                 actualHeight += lineHeight;
-                lineTrailingWhiteSpaceCount = 0;
-                lineTrailingWhiteSpaceWidth = 0;
                 lineCount++;
                 lineWidth = 0;
                 lineHeight = 0;
                 lineLengthInText = 0;
                 lineLengthInCommands = 0;
                 lineInfoCommandIndex = output.Count;
+                lineBreakCommand = null;
+                lineBreakOffset = null;
+                brokenTextSizeBeforeBreak = null;
+                brokenTextSizeAfterBreak = null;
             }
 
             /// <summary>
@@ -188,6 +180,169 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 output.ActualHeight = ActualHeight;
                 output.TotalLength = TotalLength;
                 output.LineCount = LineCount;
+            }
+
+            /// <summary>
+            /// Replaces the last breaking space on the current line with a line break.
+            /// </summary>
+            /// <param name="output">The <see cref="TextLayoutCommandStream"/> which is being populated.</param>
+            /// <param name="settings">The current layout settings.</param>
+            [SecuritySafeCritical]
+            public unsafe Boolean ReplaceLastBreakingSpaceWithLineBreak(TextLayoutCommandStream output, ref TextLayoutSettings settings)
+            {
+                if (!lineBreakCommand.HasValue || !lineBreakOffset.HasValue)
+                    return false;
+
+                var commandsAfterBreak = output.Count - (lineBreakCommand.Value + 1);
+                var sizeBeforeBreak = brokenTextSizeBeforeBreak.Value;
+                var sizeAfterBreak = brokenTextSizeAfterBreak.Value;
+                var brokenCommandSize = Size2.Zero;
+                var brokenCommandOffset = 0;
+                var brokenCommandLength = 0;
+
+                var newLineHeight = sizeAfterBreak.Height;
+                if (newLineHeight == 0)
+                    newLineHeight = settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing;
+
+                // Truncate the command which is being broken.
+                output.Seek(lineBreakCommand.Value);
+                unsafe
+                {
+                    var cmd = (TextLayoutTextCommand*)output.Data;
+
+                    brokenCommandOffset = cmd->TextOffset;
+                    brokenCommandLength = cmd->TextLength;
+                    brokenCommandSize = cmd->Bounds.Size;
+
+                    cmd->TextLength = lineBreakOffset.Value;
+                    cmd->Bounds = new Rectangle(cmd->Bounds.Location, sizeBeforeBreak);
+                }
+                output.SeekNextCommand();
+
+                // Insert a line break, a new line, and the second half of the truncated text.
+                var part1Length = lineBreakOffset.Value;
+                var part2Offset = brokenCommandOffset + (lineBreakOffset.Value + 1);
+                var part2Length = brokenCommandLength - (part1Length + 1);
+                var part2IsNotDegenerate = (part2Length > 0);
+
+                var numberOfObjects = part2IsNotDegenerate ? 3 : 2;
+                var numberOfBytes =
+                    sizeof(TextLayoutCommandType) +
+                    sizeof(TextLayoutLineInfoCommand) +
+                    (part2IsNotDegenerate ? sizeof(TextLayoutTextCommand) : 0);
+
+                var insertionPosition = output.InternalObjectStream.PositionInObjects;
+
+                output.InternalObjectStream.ReserveInsert(numberOfObjects, numberOfBytes);
+
+                *(TextLayoutCommandType*)output.Data = TextLayoutCommandType.LineBreak;
+                output.InternalObjectStream.FinalizeObject(sizeof(TextLayoutCommandType));
+
+                *(TextLayoutCommandType*)output.Data = TextLayoutCommandType.LineInfo;
+                output.InternalObjectStream.FinalizeObject(sizeof(TextLayoutLineInfoCommand));
+
+                if (part2IsNotDegenerate)
+                {
+                    var textOffset = part2Offset;
+                    var textLength = part2Length;
+                    var bounds = new Rectangle(0, positionY + lineHeight, sizeAfterBreak.Width, sizeAfterBreak.Height);
+
+                    *(TextLayoutTextCommand*)output.InternalObjectStream.Data = new TextLayoutTextCommand(textOffset, textLength, bounds);
+                    output.InternalObjectStream.FinalizeObject(sizeof(TextLayoutTextCommand));
+                }
+
+                // Add the line break command to the broken line.
+                AdvanceLineToNextCommand(0, 0, 1, 1);
+                
+                // Recalculate the parameters for the broken line.
+                output.Seek(LineInfoCommandIndex + 1);
+
+                var brokenLineWidth = 0;
+                var brokenLineHeight = 0;
+                var brokenLineLengthInText = 0;
+                var brokenLineLengthInCommands = 0;
+
+                var cmdType = TextLayoutCommandType.None;
+                while ((cmdType = *(TextLayoutCommandType*)output.Data) != TextLayoutCommandType.LineInfo)
+                {
+                    switch (cmdType)
+                    {
+                        case TextLayoutCommandType.Text:
+                            {
+                                var cmd = (TextLayoutTextCommand*)output.Data;
+                                brokenLineWidth += cmd->Bounds.Width;
+                                brokenLineHeight = Math.Max(brokenLineHeight, cmd->Bounds.Height);
+                                brokenLineLengthInText += cmd->TextLength;
+                            }
+                            break;
+
+                        case TextLayoutCommandType.Icon:
+                            {
+                                var cmd = (TextLayoutIconCommand*)output.Data;
+                                brokenLineWidth += cmd->Bounds.Width;
+                                brokenLineHeight = Math.Max(brokenLineHeight, cmd->Bounds.Height);
+                                brokenLineLengthInText += 1;
+                            }
+                            break;
+
+                        case TextLayoutCommandType.LineBreak:
+                            brokenLineLengthInText++;
+                            break;
+                    }
+                    brokenLineLengthInCommands++;
+                    output.SeekNextCommand();
+                }
+
+                // Finalize the broken line.
+                lineWidth = brokenLineWidth;
+                lineHeight = brokenLineHeight;
+                lineLengthInText = brokenLineLengthInText;
+                lineLengthInCommands = brokenLineLengthInCommands;
+                FinalizeLine(output, ref settings);
+
+                // Fixup token bounds and update parameters for new line.
+                LineInfoCommandIndex = insertionPosition + 1;
+                while (output.StreamPositionInObjects < output.Count)
+                {
+                    var width = 0;
+                    var height = 0;
+                    var lengthInCommands = 0;
+                    var lengthInText = 0;
+
+                    switch (*(TextLayoutCommandType*)output.Data)
+                    {
+                        case TextLayoutCommandType.Text:
+                            {
+                                var cmd = (TextLayoutTextCommand*)output.Data;
+                                width = cmd->Bounds.Width;
+                                height = cmd->Bounds.Height;
+                                lengthInCommands = 1;
+                                lengthInText = cmd->TextLength;
+                                cmd->Bounds = new Rectangle(PositionX, PositionY, width, height);
+                            }
+                            break;
+
+                        case TextLayoutCommandType.Icon:
+                            {
+                                var cmd = (TextLayoutIconCommand*)output.Data;
+                                width = cmd->Bounds.Width;
+                                height = cmd->Bounds.Height;
+                                lengthInCommands = 1;
+                                lengthInText = 1;
+                                cmd->Bounds = new Rectangle(PositionX, PositionY, width, height);
+                            }
+                            break;
+
+                        case TextLayoutCommandType.LineBreak:
+                            lengthInText++;
+                            break;
+                    }
+
+                    AdvanceLineToNextCommand(width, height, lengthInCommands, lengthInText);
+                    output.SeekNextCommand();
+                }
+
+                return true;
             }
 
             /// <summary>
@@ -216,25 +371,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 get { return lineInfoCommandIndex; }
                 set { lineInfoCommandIndex = value; }
             }
-
-            /// <summary>
-            /// Gets or sets the number of trailing white space characters on the current line.
-            /// </summary>
-            public Int32 LineTrailingWhiteSpaceCount
-            {
-                get { return lineTrailingWhiteSpaceCount; }
-                set { lineTrailingWhiteSpaceCount = value; }
-            }
-
-            /// <summary>
-            /// Gets or sets the width of the current line's trailing white space.
-            /// </summary>
-            public Int32 LineTrailingWhiteSpaceWidth
-            {
-                get { return lineTrailingWhiteSpaceWidth; }
-                set { lineTrailingWhiteSpaceWidth = value; }
-            }
-
+            
             /// <summary>
             /// Gets or sets the number of lines in the laid-out text.
             /// </summary>
@@ -252,7 +389,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 get { return lineWidth; }
                 set { lineWidth = value; }
             }
-
+            
             /// <summary>
             /// Gets or sets the height of the current line in pixels.
             /// </summary>
@@ -308,21 +445,48 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             /// <summary>
-            /// Gets or sets an offset indicating the current position in a token that is being split across multiple lines.
+            /// Gets or sets the offset within the current parser token at which to begin processing.
             /// </summary>
-            public Int32 TokenSplitOffset
+            public Int32? ParserTokenOffset
             {
-                get;
-                set;
+                get { return parserTokenOffset; }
+                set { parserTokenOffset = value; }
             }
 
             /// <summary>
-            /// Gets or sets a value indicating whether the layout engine is in the process of splitting a token across multiple lines.
+            /// Gets or sets the index of the command that contains the point at which the current line will break.
             /// </summary>
-            public Boolean TokenSplitInProgress
+            public Int32? LineBreakCommand
             {
-                get;
-                set;
+                get { return lineBreakCommand; }
+                set { lineBreakCommand = value; }
+            }
+
+            /// <summary>
+            /// Gets or sets the offset within <see cref="LineBreakCommand"/> at which the line will break.
+            /// </summary>
+            public Int32? LineBreakOffset
+            {
+                get { return lineBreakOffset; }
+                set { lineBreakOffset = value; }
+            }
+
+            /// <summary>
+            /// Gets or sets the size of the pre-break portion of the text which contains this line's break point.
+            /// </summary>
+            public Size2? BrokenTextSizeBeforeBreak
+            {
+                get { return brokenTextSizeBeforeBreak; }
+                set { brokenTextSizeBeforeBreak = value; }
+            }
+
+            /// <summary>
+            /// Gets or sets the size of the post-break portion of the text which contains this line's break point.
+            /// </summary>
+            public Size2? BrokenTextSizeAfterBreak
+            {
+                get { return brokenTextSizeAfterBreak; }
+                set { brokenTextSizeAfterBreak = value; }
             }
 
             /// <summary>
@@ -340,8 +504,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             private Int32 positionX;
             private Int32 positionY;
             private Int32 lineInfoCommandIndex;
-            private Int32 lineTrailingWhiteSpaceCount;
-            private Int32 lineTrailingWhiteSpaceWidth;
             private Int32 lineCount;
             private Int32 lineWidth;
             private Int32 lineHeight;
@@ -350,6 +512,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             private Int32 actualWidth;
             private Int32 actualHeight;
             private Int32 totalLength;
+            private Int32? parserTokenOffset;
+            private Int32? lineBreakCommand;
+            private Int32? lineBreakOffset;
+            private Size2? brokenTextSizeBeforeBreak;
+            private Size2? brokenTextSizeAfterBreak;
             private Int32? minBlockOffset;
             private Int32? minLineOffset;
         }

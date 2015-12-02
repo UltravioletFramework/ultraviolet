@@ -149,135 +149,68 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var currentFontFace = settings.Font.GetFace(SpriteFontStyle.Regular);
 
             var index = 0;
+            var processing = true;
 
-            while (index < input.Count)
+            while (index < input.Count && processing)
             {
                 var token = input[index];
-
-                state.TokenSplitInProgress = false;
-
+                
                 currentFontFace = default(SpriteFontFace);
                 currentFont = GetCurrentFont(ref settings, bold, italic, out currentFontFace);
 
                 switch (token.TokenType)
                 {
                     case TextParserTokenType.Text:
-                        {
-                            if (token.IsNewLine)
-                            {
-                                state.AdvanceLayoutToNextLineWithBreak(output, ref settings);
-                            }
-                            else
-                            {
-                                if (!AccumulateText(input, output, currentFontFace, ref index, ref state, ref settings))
-                                    break;                                
-                            }
-                        }
+                        processing = ProcessTextToken(input, output, currentFontFace, ref token, ref state, ref settings, ref index);
                         break;
 
                     case TextParserTokenType.Icon:
-                        {
-                            var icon = default(TextIconInfo);
-                            var iconIndex = RegisterIconWithCommandStream(output, token.Text, out icon);
-                            var iconSize = MeasureToken(currentFont, token.TokenType, token.Text);
-
-                            if (state.PositionX + iconSize.Width > (settings.Width ?? Int32.MaxValue))
-                                state.AdvanceLayoutToNextLine(output, ref settings);
-
-                            if (state.PositionY + iconSize.Height > (settings.Height ?? Int32.MaxValue))
-                                break;
-
-                            var iconBounds = new Rectangle(state.PositionX, state.PositionY, iconSize.Width, iconSize.Height);
-                            output.WriteIcon(new TextLayoutIconCommand(iconIndex, icon.Width, icon.Height, iconBounds));
-                            state.AdvanceLineToNextCommand(iconBounds.Width, iconBounds.Height, 1, 1, false);
-                        }
+                        processing = ProcessIconToken(output, ref token, ref state, ref settings, ref index);
                         break;
 
                     case TextParserTokenType.ToggleBold:
-                        {
-                            output.WriteToggleBold();
-                            state.AdvanceLineToNextCommand();
-                            bold = !bold;
-                        }
+                        ProcessToggleBoldToken(output, ref bold, ref state, ref index);
                         break;
 
                     case TextParserTokenType.ToggleItalic:
-                        {
-                            output.WriteToggleItalic();
-                            state.AdvanceLineToNextCommand();
-                            italic = !italic;
-                        }
+                        ProcessToggleItalicToken(output, ref italic, ref state, ref index);
                         break;
 
                     case TextParserTokenType.PushFont:
-                        {
-                            var pushedFont = default(SpriteFont);
-                            var pushedFontIndex = RegisterFontWithCommandStream(output, token.Text, out pushedFont);
-                            output.WritePushFont(new TextLayoutFontCommand(pushedFontIndex));
-                            state.AdvanceLineToNextCommand();
-                            PushFont(pushedFont);
-                        }
+                        ProcessPushFontToken(output, ref token, ref state, ref index);
                         break;
 
                     case TextParserTokenType.PushColor:
-                        {
-                            var pushedColor = ParseColor(token.Text);
-                            output.WritePushColor(new TextLayoutColorCommand(pushedColor));
-                            state.AdvanceLineToNextCommand();
-                        }
+                        ProcessPushColorToken(output, ref token, ref state, ref index);
                         break;
 
                     case TextParserTokenType.PushStyle:
-                        {
-                            var pushedStyle = default(TextStyle);
-                            var pushedStyleIndex = RegisterStyleWithCommandStream(output, token.Text, out pushedStyle);
-                            output.WritePushStyle(new TextLayoutStyleCommand(pushedStyleIndex));
-                            state.AdvanceLineToNextCommand();
-                            PushStyle(pushedStyle, ref bold, ref italic);
-                        }
+                        ProcessPushStyleToken(output, ref bold, ref italic, ref token, ref state, ref index);
                         break;
 
                     case TextParserTokenType.PushGlyphShader:
-                        {
-                            var pushedGlyphShader = default(GlyphShader);
-                            var pushedGlyphShaderIndex = RegisterGlyphShaderWithCommandStream(output, token.Text, out pushedGlyphShader);
-                            output.WritePushGlyphShader(new TextLayoutGlyphShaderCommand(pushedGlyphShaderIndex));
-                            state.AdvanceLineToNextCommand();
-                        }
+                        ProcessPushGlyphShaderToken(output, ref token, ref state, ref index);
                         break;
 
                     case TextParserTokenType.PopFont:
-                        {
-                            output.WritePopFont();
-                            state.AdvanceLineToNextCommand();
-                            PopFont();
-                        }
+                        ProcessPopFontToken(output, ref token, ref state, ref index);
                         break;
 
                     case TextParserTokenType.PopColor:
-                        output.WritePopColor();
-                        state.AdvanceLineToNextCommand();
+                        ProcessPopColorToken(output, ref token, ref state, ref index);
                         break;
 
                     case TextParserTokenType.PopStyle:
-                        {
-                            output.WritePopStyle();
-                            state.AdvanceLineToNextCommand();
-                            PopStyle(ref bold, ref italic);
-                        }
+                        ProcessPopStyleToken(output, ref bold, ref italic, ref token, ref state, ref index);
                         break;
 
                     case TextParserTokenType.PopGlyphShader:
-                        output.WritePopGlyphShader();
-                        state.AdvanceLineToNextCommand();
+                        ProcessPopGlyphShaderToken(output, ref token, ref state, ref index);
                         break;                                                
 
                     default:
                         throw new InvalidOperationException(UltravioletStrings.UnrecognizedLayoutCommand.Format(token.TokenType));
                 }
-
-                if (!state.TokenSplitInProgress)
-                    index++;
             }
 
             state.FinalizeLayout(output, ref settings);
@@ -373,6 +306,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             sourceStringBuilder = null;
         }
 
+        /// <summary>
+        /// If the layout has an initial style defined, this method modifies the layout stacks to reflect it.
+        /// </summary>
         private void PrepareInitialStyle(TextLayoutCommandStream output, ref Boolean bold, ref Boolean italic, ref TextLayoutSettings settings)
         {
             if (settings.InitialLayoutStyle == null)
@@ -382,6 +318,172 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var initialStyleIndex = RegisterStyleWithCommandStream(output, settings.InitialLayoutStyle, out initialStyle);
             output.WritePushStyle(new TextLayoutStyleCommand(initialStyleIndex));
             PushStyle(initialStyle, ref bold, ref italic);
+        }
+        
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.Text"/>.
+        /// </summary>
+        private Boolean ProcessTextToken(TextParserTokenStream input, TextLayoutCommandStream output, SpriteFontFace currentFontFace,
+            ref TextParserToken token, ref LayoutState state, ref TextLayoutSettings settings, ref Int32 index)
+        {
+            if (token.IsNewLine)
+            {
+                state.AdvanceLayoutToNextLineWithBreak(output, ref settings);
+                index++;
+            }
+            else
+            {
+                if (!AccumulateText(input, output, currentFontFace, ref index, ref state, ref settings))
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.Icon"/>.
+        /// </summary>
+        private Boolean ProcessIconToken(TextLayoutCommandStream output,
+            ref TextParserToken token, ref LayoutState state, ref TextLayoutSettings settings, ref Int32 index)
+        {
+            var icon = default(TextIconInfo);
+            var iconIndex = RegisterIconWithCommandStream(output, token.Text, out icon);
+            var iconSize = MeasureToken(null, token.TokenType, token.Text);
+
+            if (state.PositionX + iconSize.Width > (settings.Width ?? Int32.MaxValue))
+                state.AdvanceLayoutToNextLine(output, ref settings);
+
+            if (state.PositionY + iconSize.Height > (settings.Height ?? Int32.MaxValue))
+                return false;
+
+            var iconBounds = new Rectangle(state.PositionX, state.PositionY, iconSize.Width, iconSize.Height);
+            output.WriteIcon(new TextLayoutIconCommand(iconIndex, icon.Width, icon.Height, iconBounds));
+            state.AdvanceLineToNextCommand(iconBounds.Width, iconBounds.Height, 1, 1);
+            index++;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.ToggleBold"/>.
+        /// </summary>
+        private void ProcessToggleBoldToken(TextLayoutCommandStream output, ref Boolean bold,
+            ref LayoutState state, ref Int32 index)
+        {
+            output.WriteToggleBold();
+            state.AdvanceLineToNextCommand();
+            bold = !bold;
+            index++;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.ToggleItalic"/>.
+        /// </summary>
+        private void ProcessToggleItalicToken(TextLayoutCommandStream output, ref Boolean italic,
+            ref LayoutState state, ref Int32 index)
+        {
+            output.WriteToggleItalic();
+            state.AdvanceLineToNextCommand();
+            italic = !italic;
+            index++;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.PushFont"/>.
+        /// </summary>
+        private void ProcessPushFontToken(TextLayoutCommandStream output,
+            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+        {
+            var pushedFont = default(SpriteFont);
+            var pushedFontIndex = RegisterFontWithCommandStream(output, token.Text, out pushedFont);
+            output.WritePushFont(new TextLayoutFontCommand(pushedFontIndex));
+            state.AdvanceLineToNextCommand();
+            PushFont(pushedFont);
+            index++;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.PushColor"/>.
+        /// </summary>
+        private void ProcessPushColorToken(TextLayoutCommandStream output,
+            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+        {
+            var pushedColor = ParseColor(token.Text);
+            output.WritePushColor(new TextLayoutColorCommand(pushedColor));
+            state.AdvanceLineToNextCommand();
+            index++;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.PushStyle"/>.
+        /// </summary>
+        private void ProcessPushStyleToken(TextLayoutCommandStream output, ref Boolean bold, ref Boolean italic,
+            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+        {
+            var pushedStyle = default(TextStyle);
+            var pushedStyleIndex = RegisterStyleWithCommandStream(output, token.Text, out pushedStyle);
+            output.WritePushStyle(new TextLayoutStyleCommand(pushedStyleIndex));
+            state.AdvanceLineToNextCommand();
+            PushStyle(pushedStyle, ref bold, ref italic);
+            index++;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.PushGlyphShader"/>.
+        /// </summary>
+        private void ProcessPushGlyphShaderToken(TextLayoutCommandStream output,
+            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+        {
+            var pushedGlyphShader = default(GlyphShader);
+            var pushedGlyphShaderIndex = RegisterGlyphShaderWithCommandStream(output, token.Text, out pushedGlyphShader);
+            output.WritePushGlyphShader(new TextLayoutGlyphShaderCommand(pushedGlyphShaderIndex));
+            state.AdvanceLineToNextCommand();
+            index++;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.PopFont"/>.
+        /// </summary>
+        private void ProcessPopFontToken(TextLayoutCommandStream output,
+            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+        {
+            output.WritePopFont();
+            state.AdvanceLineToNextCommand();
+            PopFont();
+            index++;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.PopColor"/>.
+        /// </summary>
+        private void ProcessPopColorToken(TextLayoutCommandStream output,
+            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+        {
+            output.WritePopColor();
+            state.AdvanceLineToNextCommand();
+            index++;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.PopStyle"/>.
+        /// </summary>
+        private void ProcessPopStyleToken(TextLayoutCommandStream output, ref Boolean bold, ref Boolean italic,
+            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+        {
+            output.WritePopStyle();
+            state.AdvanceLineToNextCommand();
+            PopStyle(ref bold, ref italic);
+            index++;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.PopGlyphShader"/>.
+        /// </summary>
+        private void ProcessPopGlyphShaderToken(TextLayoutCommandStream output,
+            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+        {
+            output.WritePopGlyphShader();
+            state.AdvanceLineToNextCommand();
+            index++;
         }
 
         /// <summary>
@@ -457,11 +559,20 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Creates a <see cref="StringSegment"/> from the current source text.
+        /// </summary>
+        private StringSegment CreateStringSegmentFromCurrentSource(Int32 start, Int32 length)
+        {
+            return (sourceString != null) ?
+                new StringSegment(sourceString, start, length) :
+                new StringSegment(sourceStringBuilder, start, length);
+        }
+
+        /// <summary>
         /// Accumulates sequential text tokens into a single text command.
         /// </summary>
         private Boolean AccumulateText(TextParserTokenStream input, TextLayoutCommandStream output, SpriteFontFace font, ref Int32 index, ref LayoutState state, ref TextLayoutSettings settings)
         {
-            var indexStart = index;         
             var hyphenate = (settings.Options & TextLayoutOptions.Hyphenate) == TextLayoutOptions.Hyphenate;
 
             var availableWidth = (settings.Width ?? Int32.MaxValue);
@@ -472,9 +583,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var width = 0;
             var height = 0;
 
-            var skipFinalToken = false;
-            var start = input[index].Text.Start + state.TokenSplitOffset;
-            var length = 0;
+            var accumulatedStart = input[index].Text.Start + (state.ParserTokenOffset ?? 0);
+            var accumulatedLength = 0;
+            var accumulatedCount = 0;
+
+            var lineOverflow = false;
+            var lineBreakPossible = false;
 
             while (index < input.Count)
             {
@@ -484,76 +598,86 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                 if (!IsSegmentForCurrentSource(token.Text))
                 {
-                    if (index != indexStart)
+                    if (accumulatedCount > 0)
                         break;
 
                     EmitChangeSourceIfNecessary(input, output, ref token);
                 }
 
-                var tokenText = (state.TokenSplitOffset > 0) ? token.Text.Substring(state.TokenSplitOffset) : token.Text;
+                var tokenText = token.Text.Substring(state.ParserTokenOffset ?? 0);
                 var tokenNext = GetNextTextToken(input, index);
                 var tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext);
-
+                
                 var overflowsLine = state.PositionX + tokenSize.Width > availableWidth;
                 if (overflowsLine)
                 {
-                    var splitWhiteSpace = token.IsWhiteSpace && (settings.Options & TextLayoutOptions.PreserveTrailingWhiteSpace) == TextLayoutOptions.PreserveTrailingWhiteSpace;
-                    if (splitWhiteSpace || tokenSize.Width > availableWidth)
-                    {
-                        if (token.IsWhiteSpace)
-                            hyphenate = false;
-
-                        if (!GetFittedSubstring(font, availableWidth, ref tokenText, ref tokenSize, ref state, hyphenate))
-                            break;
-
-                        state.TokenSplitInProgress = true;
-                        state.TokenSplitOffset += tokenText.Length;
-                    }
-                    else
-                    {
-                        if (token.IsWhiteSpace)
-                            skipFinalToken = true;
-
-                        state.AdvanceLayoutToNextLine(output, ref settings);
-
-                        break;
-                    }
+                    lineOverflow = true;
+                    break;
                 }
 
-                if (tokenText.Start != start + length)
+                if (tokenText.Start != accumulatedStart + accumulatedLength)
                     break;
+
+                if (token.IsWhiteSpace)
+                {
+                    lineBreakPossible = true;
+                    state.LineBreakCommand = output.Count;
+                    state.LineBreakOffset = accumulatedLength + token.Text.Length - 1;
+                }
 
                 width = width + tokenSize.Width;
                 height = Math.Max(height, tokenSize.Height);
-                length = length + tokenText.Length;
+                accumulatedLength = accumulatedLength + tokenText.Length;
+                accumulatedCount++;
 
-                state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenText.Length, token.IsWhiteSpace);
+                state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenText.Length);
+                state.ParserTokenOffset = 0;
                 state.LineLengthInCommands--;
 
                 index++;
+            }
 
-                if (state.TokenSplitInProgress)
-                    break;
+            if (lineBreakPossible)
+            {
+                var preLineBreakTextStart = accumulatedStart;
+                var preLineBreakTextLength = state.LineBreakOffset.Value;
+                var preLineBreakText = CreateStringSegmentFromCurrentSource(preLineBreakTextStart, preLineBreakTextLength);
+                var preLineBreakSize = (preLineBreakText.Length == 0) ? Size2.Zero :
+                    MeasureToken(font, TextParserTokenType.Text, preLineBreakText);
+                state.BrokenTextSizeBeforeBreak = preLineBreakSize;
 
-                state.TokenSplitOffset = 0;
+                var postLineBreakStart = accumulatedStart + (state.LineBreakOffset.Value + 1);
+                var postLineBreakLength = accumulatedLength - (state.LineBreakOffset.Value + 1);
+                var postLineBreakText = CreateStringSegmentFromCurrentSource(postLineBreakStart, postLineBreakLength);
+                var postLineBreakSize = (postLineBreakText.Length == 0) ? Size2.Zero :
+                    MeasureToken(font, TextParserTokenType.Text, postLineBreakText, GetNextTextToken(input, index - 1));
+                state.BrokenTextSizeAfterBreak = postLineBreakSize;
             }
 
             var bounds = new Rectangle(x, y, width, height);
-            if (EmitTextIfNecessary(output, start, length, ref bounds, ref state))
-            {
-                if (state.TokenSplitInProgress)
-                {
-                    if (hyphenate)
-                    {
-                        output.WriteHyphen();
-                        state.LineLengthInCommands++;
-                    }
-                    state.AdvanceLayoutToNextLine(output, ref settings);
-                }
-            }
+            EmitTextIfNecessary(output, accumulatedStart, accumulatedLength, ref bounds, ref state);
 
-            if (!skipFinalToken)
-                index--;
+            if (lineOverflow && !state.ReplaceLastBreakingSpaceWithLineBreak(output, ref settings))
+            {
+                var overflowingToken = input[index];
+                var overflowingTokenText = overflowingToken.Text.Substring(state.ParserTokenOffset ?? 0);
+                var overflowingTokenSize = MeasureToken(font, TextParserTokenType.Text, overflowingTokenText, GetNextTextToken(input, index));
+                if (!GetFittedSubstring(font, availableWidth, ref overflowingTokenText, ref overflowingTokenSize, ref state, hyphenate))
+                    return false;
+
+                var overflowingTokenBounds = new Rectangle(state.PositionX, state.PositionY, overflowingTokenSize.Width, overflowingTokenSize.Height);
+                EmitTextIfNecessary(output, overflowingTokenText.Start, overflowingTokenText.Length, ref overflowingTokenBounds, ref state);
+                state.AdvanceLineToNextCommand(overflowingTokenSize.Width, overflowingTokenSize.Height, 1, overflowingTokenText.Length);
+
+                if (hyphenate)
+                {
+                    output.WriteHyphen();
+                    state.AdvanceLineToNextCommand(0, 0, 1, 0);
+                }
+
+                state.ParserTokenOffset = (state.ParserTokenOffset ?? 0) + overflowingTokenText.Length;
+                state.AdvanceLayoutToNextLine(output, ref settings);
+            }
 
             return true;
         }

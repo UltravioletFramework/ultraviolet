@@ -255,6 +255,18 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         /// <summary>
         /// Reserves enough space in the stream for the specified number of additional objects with the
         /// specified total size in bytes. The reserved space will be inserted into the stream prior to
+        /// the object at the stream's current position.
+        /// </summary>
+        /// <param name="numberOfObjects">The number of objects to reserve.</param>
+        /// <param name="numberOfBytes">The number of bytes to reserve.</param>
+        public void ReserveInsert(Int32 numberOfObjects, Int32 numberOfBytes)
+        {
+            ReserveInsert(positionInObjects, numberOfObjects, numberOfBytes);
+        }
+
+        /// <summary>
+        /// Reserves enough space in the stream for the specified number of additional objects with the
+        /// specified total size in bytes. The reserved space will be inserted into the stream prior to
         /// the object at the specified index. The stream's current position will be moved to the beginning
         /// of the reserved data.
         /// </summary>
