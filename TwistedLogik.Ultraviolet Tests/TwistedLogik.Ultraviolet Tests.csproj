@@ -505,6 +505,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CutsOffTextThatExceedsVerticalLayoutSpace.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

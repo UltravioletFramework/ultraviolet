@@ -13,6 +13,41 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
     {
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensure that the TextRenderer class does not render text beyond the vertical extent of its layout area.")]
+        public void TextRenderer_CutsOffTextThatExceedsVerticalLayoutSpace()
+        {
+            var content = new TextRendererTestContent(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum commodo pretium risus sollicitudin ultricies. " +
+                "Ut quis arcu suscipit, rutrum libero nec, convallis sem. Morbi rhoncus urna nec turpis bibendum eleifend. In vestibulum " +
+                "congue feugiat. In pulvinar enim quis diam malesuada, a vestibulum urna bibendum.");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var width = window.ClientSize.Width / 2;
+                    var height = window.ClientSize.Height / 2;
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
+
+                    content.SpriteBatch.Begin();
+                    content.SpriteBatch.Draw(content.BlankTexture,
+                        new RectangleF(0, 0, width, height), Color.Red * 0.5f);
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    content.SpriteBatch.End();
+                });
+            
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CutsOffTextThatExceedsVerticalLayoutSpace.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
         [Description("Ensures that the TextRenderer class renders substrings of formatted text correctly.")]
         public void TextRenderer_CorrectlyRendersSubstrings()
         {
