@@ -505,6 +505,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_DoesNotBreakOnNonBreakingSpace_WhenBreakingSpaceIsAvailable.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithCenterAlignment.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

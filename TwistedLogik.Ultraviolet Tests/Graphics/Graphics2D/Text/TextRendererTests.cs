@@ -68,6 +68,73 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensures that the text layout engine will not break on a non-breaking space if a breaking space is available on the line.")]
+        public void TextRenderer_DoesNotBreakOnNonBreakingSpace_WhenBreakingSpaceIsAvailable()
+        {
+            var content = new TextRendererTestContent(
+                "Distance to Moon: 238,900\u00A0mi\n" +
+                "\n" +
+                "Distance to Mars: 140\u00A0million\u00A0miles");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var width = window.ClientSize.Width / 2;
+                    var height = window.ClientSize.Height;
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
+
+                    content.SpriteBatch.Begin();
+                    content.SpriteBatch.Draw(content.BlankTexture,
+                        new RectangleF(0, 0, width, height), Color.Red * 0.5f);
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    content.SpriteBatch.End();
+                });
+            
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_DoesNotBreakOnNonBreakingSpace_WhenBreakingSpaceIsAvailable.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that the text layout engine WILL break on a non-breaking space if a there is no breaking space available on the line.")]
+        public void TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable()
+        {
+            var content = new TextRendererTestContent("Every\u00A0single\u00A0space\u00A0on\u00A0this\u00A0line\u00A0is\u00A0non-breaking!");
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content.Load)
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var width = window.ClientSize.Width / 2;
+                    var height = window.ClientSize.Height;
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
+
+                    content.SpriteBatch.Begin();
+                    content.SpriteBatch.Draw(content.BlankTexture,
+                        new RectangleF(0, 0, width, height), Color.Red * 0.5f);
+
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+
+                    content.SpriteBatch.End();
+                });
+            
+            TheResultingImage(result).WithinThreshold(0)
+                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
         [Description("Ensures that the text layout engine correctly splits very long words across multiple lines.")]
         public void TextRenderer_BreaksVeryLongWordsIntoMultipleLines()
         {

@@ -618,7 +618,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 if (tokenText.Start != accumulatedStart + accumulatedLength)
                     break;
 
-                if (token.IsWhiteSpace)
+                if (token.IsWhiteSpace && (state.LineBreakCommand == null || !token.IsNonBreakingSpace))
                 {
                     lineBreakPossible = true;
                     state.LineBreakCommand = output.Count;

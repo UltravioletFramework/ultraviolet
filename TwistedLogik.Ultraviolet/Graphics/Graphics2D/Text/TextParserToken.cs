@@ -15,12 +15,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="text">The token's text.</param>
         /// <param name="sourceOffset">The offset of the first character in the source text that produced this token.</param>
         /// <param name="sourceLength">The number of characters in the source text that produced this token.</param>
-        internal TextParserToken(TextParserTokenType tokenType, StringSegment text, Int32 sourceOffset, Int32 sourceLength)
+        /// <param name="isNonBreakingSpace">A value indicating whether this token represents a non-breaking space.</param>
+        internal TextParserToken(TextParserTokenType tokenType, StringSegment text, Int32 sourceOffset, Int32 sourceLength, Boolean isNonBreakingSpace = false)
         {
             this.tokenType = tokenType;
             this.text = text;
             this.sourceOffset = sourceOffset;
             this.sourceLength = sourceLength;
+            this.isNonBreakingSpace = isNonBreakingSpace;
         }
 
         /// <inheritdoc/>
@@ -78,10 +80,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             get { return tokenType == TextParserTokenType.Text && !text.IsEmpty && text[0] == '\n'; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this token represents non-breaking white space.
+        /// </summary>
+        public Boolean IsNonBreakingSpace
+        {
+            get { return isNonBreakingSpace; }
+        }
+
         // Property values.
         private readonly TextParserTokenType tokenType;
         private readonly StringSegment text;
         private readonly Int32 sourceOffset;
         private readonly Int32 sourceLength;
+        private readonly Boolean isNonBreakingSpace;
     }
 }

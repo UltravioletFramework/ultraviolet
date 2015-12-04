@@ -102,9 +102,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     output.Add(ConsumeNewlineToken(input, options, ref index));
                     continue;
                 }
-                if (IsStartOfWhitespace(input, index))
+                if (IsStartOfNonBreakingSpace(input, index))
                 {
-                    output.Add(ConsumeWhiteSpaceToken(input, options, ref index));
+                    output.Add(ConsumeNonBreakingSpaceToken(input, options, ref index));
+                    continue;
+                }
+                if (IsStartOfBreakingSpace(input, index))
+                {
+                    output.Add(ConsumeBreakingSpaceToken(input, options, ref index));
                     continue;
                 }
                 if (IsEscapedPipe(input, index))
@@ -182,27 +187,49 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             return input[ix] == '\n';
         }
-
+        
         /// <summary>
-        /// Gets a value indicating whether the specified character is the start of a whitespace token.
+        /// Gets a value indicating whether the specified character is the start of a non-breaking white space token.
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is the start of a whitespace token; otherwise, <c>false</c>.</returns>
-        private static Boolean IsStartOfWhitespace(StringSource input, Int32 ix)
+        /// <returns><c>true</c> if the specified character is the start of a non-breaking white space token; otherwise, <c>false</c>.</returns>
+        private static Boolean IsStartOfNonBreakingSpace(StringSource input, Int32 ix)
         {
-            return Char.IsWhiteSpace(input[ix]) && !IsStartOfNewline(input, ix);
+            return input[ix] == '\u00A0';
         }
 
         /// <summary>
-        /// Gets a value indicating whether the specified character is the end of a whitespace token.
+        /// Gets a value indicating whether the specified character is the end of a non-breaking white space token.
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is the end of a whitespace token; otherwise, <c>false</c>.</returns>
-        private static Boolean IsEndOfWhitespace(StringSource input, Int32 ix)
+        /// <returns><c>true</c> if the specified character is the end of a non-breaking white space token; otherwise, <c>false</c>.</returns>
+        private static Boolean IsEndOfNonBreakingSpace(StringSource input, Int32 ix)
         {
-            return !Char.IsWhiteSpace(input[ix]) || IsStartOfNewline(input, ix);
+            return input[ix] != '\u00A0';
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character is the start of a breaking white space token.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="ix">The index of the character to evaluate.</param>
+        /// <returns><c>true</c> if the specified character is the start of a breaking white space token; otherwise, <c>false</c>.</returns>
+        private static Boolean IsStartOfBreakingSpace(StringSource input, Int32 ix)
+        {
+            return input[ix] != '\u00A0' && Char.IsWhiteSpace(input[ix]) && !IsStartOfNewline(input, ix);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character is the end of a breaking white space token.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="ix">The index of the character to evaluate.</param>
+        /// <returns><c>true</c> if the specified character is the end of a breaking white space token; otherwise, <c>false</c>.</returns>
+        private static Boolean IsEndOfBreakingSpace(StringSource input, Int32 ix)
+        {
+            return input[ix] == '\u00A0' || !Char.IsWhiteSpace(input[ix]) || IsStartOfNewline(input, ix);
         }
 
         /// <summary>
@@ -213,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns><c>true</c> if the specified character is an escaped pipe; otherwise, <c>false</c>.</returns>
         private static Boolean IsEscapedPipe(StringSource input, Int32 ix)
         {
-            return input[ix] == '|' && (ix + 1 >= input.Length || input[ix + 1] == '|' || IsStartOfWhitespace(input, ix + 1) || IsStartOfNewline(input, ix + 1));
+            return input[ix] == '|' && (ix + 1 >= input.Length || input[ix + 1] == '|' || Char.IsWhiteSpace(input[ix + 1]));
         }
 
         /// <summary>
@@ -246,7 +273,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns><c>true</c> if the specified character is the start of a word token; otherwise, <c>false</c>.</returns>
         private static Boolean IsStartOfWord(StringSource input, Int32 ix)
         {
-            return !IsStartOfNewline(input, ix) && !IsStartOfWhitespace(input, ix) && !IsStartOfCommand(input, ix);
+            return !Char.IsWhiteSpace(input[ix]) && !IsStartOfCommand(input, ix);
         }
 
         /// <summary>
@@ -257,7 +284,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns><c>true</c> if the specified character is the end of a word token; otherwise, <c>false</c>.</returns>
         private static Boolean IsEndOfWord(StringSource input, Int32 ix)
         {
-            return IsStartOfNewline(input, ix) || IsStartOfWhitespace(input, ix) || IsStartOfCommand(input, ix);
+            return Char.IsWhiteSpace(input[ix]) || IsStartOfCommand(input, ix);
         }
 
         /// <summary>
@@ -276,23 +303,43 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Retrieves a whitespace token from the input stream, beginning at the specified character.
+        /// Retrieves a non-breaking white space token from the input stream, beginning at the specified character.
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="options">The parser options.</param>
         /// <param name="ix">The index at which to begin consuming token characters.</param>
         /// <returns>The token that was created.</returns>
-        private static TextParserToken ConsumeWhiteSpaceToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeNonBreakingSpaceToken(StringSource input, TextParserOptions options, ref Int32 ix)
         {
             var start = ix++;
 
-            while (ix < input.Length && !IsEndOfWhitespace(input, ix))
+            while (ix < input.Length && !IsEndOfNonBreakingSpace(input, ix))
                 ix++;
 
             var sourceOffset = start;
             var sourceLength = ix - start;
             var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
-            return ParseLexerToken(LexedTokenType.WhiteSpace, segment, sourceOffset, sourceLength, options);
+            return ParseLexerToken(LexedTokenType.NonBreakingWhiteSpace, segment, sourceOffset, sourceLength, options);
+        }
+
+        /// <summary>
+        /// Retrieves a breaking white space token from the input stream, beginning at the specified character.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="options">The parser options.</param>
+        /// <param name="ix">The index at which to begin consuming token characters.</param>
+        /// <returns>The token that was created.</returns>
+        private static TextParserToken ConsumeBreakingSpaceToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        {
+            var start = ix++;
+
+            while (ix < input.Length && !IsEndOfBreakingSpace(input, ix))
+                ix++;
+
+            var sourceOffset = start;
+            var sourceLength = ix - start;
+            var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
+            return ParseLexerToken(LexedTokenType.BreakingWhiteSpace, segment, sourceOffset, sourceLength, options);
         }
 
         /// <summary>
@@ -378,7 +425,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (tokenType == LexedTokenType.Command && !isIgnoringCommandCodes)
                 return ParseCommandToken(tokenText, sourceOffset, sourceLength);
 
-            return new TextParserToken(TextParserTokenType.Text, tokenText, sourceOffset, sourceLength);
+            return new TextParserToken(TextParserTokenType.Text, tokenText, sourceOffset, sourceLength, 
+                tokenType == LexedTokenType.NonBreakingWhiteSpace);
         }
 
         /// <summary>

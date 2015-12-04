@@ -66,6 +66,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 }
             }
 
+            // For rendering and measurement purposes, treat non-breaking spaces like normal spaces
+            Int32 spaceIndex;
+            if (glyphIndices.TryGetValue(' ', out spaceIndex) && !glyphIndices.ContainsKey('\u00A0'))
+                glyphIndices['\u00A0'] = spaceIndex;
+
             if (ixSubstitution == null)
                 throw new ArgumentOutOfRangeException("substitutionCharacter");
 

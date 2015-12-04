@@ -14,9 +14,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             NewLine,
 
             /// <summary>
-            /// The token represents white space.
+            /// The token represents breaking white space.
             /// </summary>
-            WhiteSpace,
+            BreakingWhiteSpace,
+
+            /// <summary>
+            /// The token represents non-breaking white space.
+            /// </summary>
+            NonBreakingWhiteSpace,
 
             /// <summary>
             /// The token represents a word containing letters, numbers, or other characters.
