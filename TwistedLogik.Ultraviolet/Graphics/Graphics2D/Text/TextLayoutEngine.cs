@@ -660,19 +660,39 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (lineOverflow && !state.ReplaceLastBreakingSpaceWithLineBreak(output, ref settings))
             {
                 var overflowingToken = input[index];
+                if (overflowingToken.IsWhiteSpace && !overflowingToken.IsNonBreakingSpace)
+                {
+                    output.WriteLineBreak();
+                    state.AdvanceLineToNextCommand(0, 0, 1, 1);
+                    state.AdvanceLayoutToNextLine(output, ref settings);
+
+                    if (overflowingToken.Text.Length > 1)
+                    {
+                        state.ParserTokenOffset = 1;
+                    }
+                    else
+                    {
+                        index++;
+                    }
+                    return true;
+                }
+
                 var overflowingTokenText = overflowingToken.Text.Substring(state.ParserTokenOffset ?? 0);
                 var overflowingTokenSize = MeasureToken(font, TextParserTokenType.Text, overflowingTokenText, GetNextTextToken(input, index));
-                if (!GetFittedSubstring(font, availableWidth, ref overflowingTokenText, ref overflowingTokenSize, ref state, hyphenate))
-                    return false;
+                GetFittedSubstring(font, availableWidth, ref overflowingTokenText, ref overflowingTokenSize, ref state, hyphenate);
 
-                var overflowingTokenBounds = new Rectangle(state.PositionX, state.PositionY, overflowingTokenSize.Width, overflowingTokenSize.Height);
-                EmitTextIfNecessary(output, overflowingTokenText.Start, overflowingTokenText.Length, ref overflowingTokenBounds, ref state);
-                state.AdvanceLineToNextCommand(overflowingTokenSize.Width, overflowingTokenSize.Height, 1, overflowingTokenText.Length);
+                var overflowingTokenBounds = (overflowingTokenText.Length == 0) ? Rectangle.Empty :
+                    new Rectangle(state.PositionX, state.PositionY, overflowingTokenSize.Width, overflowingTokenSize.Height);
 
-                if (hyphenate)
+                var overflowingTextEmitted = EmitTextIfNecessary(output, overflowingTokenText.Start, overflowingTokenText.Length, ref overflowingTokenBounds, ref state);
+                if (overflowingTextEmitted)
                 {
-                    output.WriteHyphen();
-                    state.AdvanceLineToNextCommand(0, 0, 1, 0);
+                    state.AdvanceLineToNextCommand(overflowingTokenSize.Width, overflowingTokenSize.Height, 1, overflowingTokenText.Length);
+                    if (hyphenate)
+                    {
+                        output.WriteHyphen();
+                        state.AdvanceLineToNextCommand(0, 0, 1, 0);
+                    }
                 }
 
                 state.ParserTokenOffset = (state.ParserTokenOffset ?? 0) + overflowingTokenText.Length;
