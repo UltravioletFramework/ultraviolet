@@ -102,6 +102,6 @@ namespace TwistedLogik.Ultraviolet.Testing
 
         // State values.
         private readonly Bitmap bitmap;
-        private Single threshold = 0.01f;
+        private Single threshold = 0.0f;
     }
 }

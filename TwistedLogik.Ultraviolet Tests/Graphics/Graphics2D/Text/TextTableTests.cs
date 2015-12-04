@@ -80,7 +80,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.End();
                 });
             
-            TheResultingImage(result).WithinThreshold(0f).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png");
+            TheResultingImage(result).
+                ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png");
         }
     }
 }
