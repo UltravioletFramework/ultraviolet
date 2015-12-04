@@ -34,7 +34,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_UIElement_DrawsCorrectly_WithRenderTransform(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithRenderTransform.png");
+            TheResultingImage(result).WithinThreshold(0.01f)
+                .ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithRenderTransform.png");
         }
 
         [TestMethod]
