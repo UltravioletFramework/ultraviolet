@@ -162,11 +162,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 {
                     case TextParserTokenType.Text:
                         processing = ProcessTextToken(input, output, currentFontFace, ref token, ref state, ref settings, ref index);
-                                    break;                                
+                        break;
 
                     case TextParserTokenType.Icon:
                         processing = ProcessIconToken(output, ref token, ref state, ref settings, ref index);
-                                break;
+                        break;
 
                     case TextParserTokenType.ToggleBold:
                         ProcessToggleBoldToken(output, ref bold, ref state, ref index);
@@ -206,7 +206,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     case TextParserTokenType.PopGlyphShader:
                         ProcessPopGlyphShaderToken(output, ref token, ref state, ref index);
-                        break;                        
+                        break;
 
                     default:
                         throw new InvalidOperationException(UltravioletStrings.UnrecognizedLayoutCommand.Format(token.TokenType));
@@ -319,7 +319,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             output.WritePushStyle(new TextLayoutStyleCommand(initialStyleIndex));
             PushStyle(initialStyle, ref bold, ref italic);
         }
-        
+
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.Text"/>.
         /// </summary>
@@ -616,10 +616,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 }
 
                 if (tokenText.Start != accumulatedStart + accumulatedLength)
-                            break;
+                    break;
 
                 if (token.IsWhiteSpace)
-                    {
+                {
                     lineBreakPossible = true;
                     state.LineBreakCommand = output.Count;
                     state.LineBreakOffset = accumulatedLength + token.Text.Length - 1;
@@ -658,7 +658,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             EmitTextIfNecessary(output, accumulatedStart, accumulatedLength, ref bounds, ref state);
 
             if (lineOverflow && !state.ReplaceLastBreakingSpaceWithLineBreak(output, ref settings))
-                {
+            {
                 var overflowingToken = input[index];
                 var overflowingTokenText = overflowingToken.Text.Substring(state.ParserTokenOffset ?? 0);
                 var overflowingTokenSize = MeasureToken(font, TextParserTokenType.Text, overflowingTokenText, GetNextTextToken(input, index));
@@ -669,11 +669,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 EmitTextIfNecessary(output, overflowingTokenText.Start, overflowingTokenText.Length, ref overflowingTokenBounds, ref state);
                 state.AdvanceLineToNextCommand(overflowingTokenSize.Width, overflowingTokenSize.Height, 1, overflowingTokenText.Length);
 
-                    if (hyphenate)
-                    {
-                        output.WriteHyphen();
+                if (hyphenate)
+                {
+                    output.WriteHyphen();
                     state.AdvanceLineToNextCommand(0, 0, 1, 0);
-            }
+                }
 
                 state.ParserTokenOffset = (state.ParserTokenOffset ?? 0) + overflowingTokenText.Length;
                 state.AdvanceLayoutToNextLine(output, ref settings);
@@ -765,7 +765,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 {
                     glyphWidth = font.MeasureGlyph(glyph1).Width;
                 }
-                
+
                 if (substringAvailableWidth - glyphWidth < 0)
                     break;
 
@@ -780,7 +780,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             return substringLength > 0;
         }
-        
+
         /// <summary>
         /// Calculates the size of the specified parser token when rendered according to the current layout state.
         /// </summary>
@@ -877,7 +877,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var token = input[i];
                 if (token.TokenType == TextParserTokenType.Text)
                     return token;
-                
+
                 if (token.TokenType == TextParserTokenType.Icon)
                     break;
             }
