@@ -153,6 +153,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             while (index < input.Count && processing)
             {
+                if (state.PositionY >= (settings.Height ?? Int32.MaxValue))
+                    break;
+
                 var token = input[index];
 
                 currentFontFace = default(SpriteFontFace);

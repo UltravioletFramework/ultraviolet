@@ -1027,8 +1027,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var fontFace = font.GetFace(bold, italic);
             var color = defaultColor;
 
+            var availableHeight = settings.Height ?? Int32.MaxValue;
             var blockOffset = 0;
             var lineOffset = 0;
+            var linePosition = 0;
             var lineHeight = 0;
             var charsSeen = 0;
 
@@ -1061,6 +1063,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutLineInfoCommand*)input.Data;
                             lineOffset = cmd->Offset;
                             lineHeight = cmd->LineHeight;
+                            if (blockOffset + linePosition + lineHeight > availableHeight)
+                            {
+                                input.Seek(input.Count);
+                                break;
+                            }
+                            linePosition = linePosition + lineHeight;
                             input.SeekNextCommand();
                         }
                         break;
