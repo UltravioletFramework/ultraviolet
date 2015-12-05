@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Initializes a new instance of the <see cref="TextLayoutStyleCommand"/> structure.
         /// </summary>
         /// <param name="styleIndex">The index of the style within the command stream's style registry.</param>
-        public TextLayoutStyleCommand(Int32 styleIndex)
+        public TextLayoutStyleCommand(Int16 styleIndex)
         {
             this.commandType = TextLayoutCommandType.PushStyle;
             this.styleIndex = styleIndex;
@@ -28,13 +28,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the style within the command stream's style registry.
         /// </summary>
-        public Int32 StyleIndex
+        public Int16 StyleIndex
         {
             get { return styleIndex; }
         }
 
         // Property values.
         private readonly TextLayoutCommandType commandType;
-        private readonly Int32 styleIndex;
+        private readonly Int16 styleIndex;
     }
 }

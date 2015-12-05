@@ -117,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the style to register.</param>
         /// <param name="style">The style to register under the specified name.</param>
         /// <returns>The index of the specified style within the command stream's internal registry.</returns>
-        public Int32 RegisterStyle(StringSegment name, TextStyle style)
+        public Int16 RegisterStyle(StringSegment name, TextStyle style)
         {
             Contract.Require(style, "style");
 
@@ -130,7 +130,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the icon to register.</param>
         /// <param name="icon">The icon to register under the specified name.</param>
         /// <returns>The index of the specified icon within the command stream's internal registry.</returns>
-        public Int32 RegisterIcon(StringSegment name, TextIconInfo icon)
+        public Int16 RegisterIcon(StringSegment name, TextIconInfo icon)
         {
             return RegisterResource(name, icon, icons, iconsByName);
         }
@@ -141,7 +141,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the font to register.</param>
         /// <param name="font">The font to register under the specified name.</param>
         /// <returns>The index of the specified font within the command stream's internal registry.</returns>
-        public Int32 RegisterFont(StringSegment name, SpriteFont font)
+        public Int16 RegisterFont(StringSegment name, SpriteFont font)
         {
             Contract.Require(font, "font");
 
@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the glyph shader to register.</param>
         /// <param name="glyphShader">The glyph shader to register under the specified name.</param>
         /// <returns>The index of the specified glyph shader within the command stream's internal registry.</returns>
-        public Int32 RegisterGlyphShader(StringSegment name, GlyphShader glyphShader)
+        public Int16 RegisterGlyphShader(StringSegment name, GlyphShader glyphShader)
         {
             Contract.Require(glyphShader, "glyphShader");
 
@@ -166,7 +166,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="source">The source string to register.</param>
         /// <returns>The index of the specified source string within the command stream's internal registry.</returns>
-        public Int32 RegisterSourceString(String source)
+        public Int16 RegisterSourceString(String source)
         {
             Contract.Require(source, "source");
 
@@ -178,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="source">The source string builder to register.</param>
         /// <returns>The index of the specified source string builder within the command stream's internal registry.</returns>
-        public Int32 RegisterSourceStringBuilder(StringBuilder source)
+        public Int16 RegisterSourceStringBuilder(StringBuilder source)
         {
             Contract.Require(source, "source");
 
@@ -192,7 +192,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The registered style with the specified name.</returns>
         public TextStyle GetStyle(StringSegment name)
         {
-            Int32 index;
+            Int16 index;
             if (!stylesByName.TryGetValue(name, out index))
                 return null;
 
@@ -204,7 +204,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered style to retrieve.</param>
         /// <returns>The registered style at the specified index within the command stream's internal registry.</returns>
-        public TextStyle GetStyle(Int32 index)
+        public TextStyle GetStyle(Int16 index)
         {
             return styles[index];
         }
@@ -216,7 +216,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The registered icon with the specified name.</returns>
         public TextIconInfo? GetIcon(StringSegment name)
         {
-            Int32 index;
+            Int16 index;
             if (!iconsByName.TryGetValue(name, out index))
                 return null;
 
@@ -228,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered icon to retrieve.</param>
         /// <returns>The registered icon at the specified index within the command stream's internal registry.</returns>
-        public TextIconInfo GetIcon(Int32 index)
+        public TextIconInfo GetIcon(Int16 index)
         {
             return icons[index];
         }
@@ -240,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The registered font with the specified name.</returns>
         public SpriteFont GetFont(StringSegment name)
         {
-            Int32 index;
+            Int16 index;
             if (!fontsByName.TryGetValue(name, out index))
                 return null;
 
@@ -252,7 +252,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered font to retrieve.</param>
         /// <returns>The registered font at the specified index within the command stream's internal registry.</returns>
-        public SpriteFont GetFont(Int32 index)
+        public SpriteFont GetFont(Int16 index)
         {
             return fonts[index];
         }
@@ -264,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The registered glyph shader with the specified name.</returns>
         public GlyphShader GetGlyphShader(StringSegment name)
         {
-            Int32 index;
+            Int16 index;
             if (!glyphShadersByName.TryGetValue(name, out index))
                 return null;
 
@@ -276,7 +276,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered glyph shader to retrieve.</param>
         /// <returns>The registered glyph shader at the specified index within the command stream's internal registry.</returns>
-        public GlyphShader GetGlyphShader(Int32 index)
+        public GlyphShader GetGlyphShader(Int16 index)
         {
             return glyphShaders[index];
         }
@@ -286,7 +286,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered source string to retrieve.</param>
         /// <returns>The registered source string at the specified index within the command stream's internal registry.</returns>
-        public String GetSourceString(Int32 index)
+        public String GetSourceString(Int16 index)
         {
             return (String)sources[index];
         }
@@ -296,7 +296,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered source string builder to retrieve.</param>
         /// <returns>The registered source string builder at the specified index within the command stream's internal registry.</returns>
-        public StringBuilder GetSourceStringBuilder(Int32 index)
+        public StringBuilder GetSourceStringBuilder(Int16 index)
         {
             return (StringBuilder)sources[index];
         }
@@ -867,13 +867,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Registers a resource with the command stream.
         /// </summary>
-        private Int32 RegisterResource<TResource>(StringSegment name, TResource resource, List<TResource> resourcesList, Dictionary<StringSegment, Int32> resourcesByName)
+        private Int16 RegisterResource<TResource>(StringSegment name, TResource resource, List<TResource> resourcesList, Dictionary<StringSegment, Int16> resourcesByName)
         {
-            Int32 index;
+            Int16 index;
             if (resourcesByName.TryGetValue(name, out index))
                 return index;
 
-            index = resourcesList.Count;
+            index = (Int16)resourcesList.Count;
+
+            if (index > Int16.MaxValue)
+                throw new InvalidOperationException("TODO");
 
             resourcesList.Add(resource);
             resourcesByName[name] = index;
@@ -884,27 +887,32 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Registers a source string or string builder with the command stream.
         /// </summary>
-        private Int32 RegisterSource(Object source)
+        private Int16 RegisterSource(Object source)
         {
-            Int32 index;
+            var index = default(Int16);
             if (sourcesByReference.TryGetValue(source, out index))
                 return index;
 
-            sources.Add(source);
-            sourcesByReference[source] = sources.Count - 1;
+            index = (Int16)sources.Count;
 
-            return sources.Count - 1;
+            if (index > Int16.MaxValue)
+                throw new InvalidOperationException("TODO");
+
+            sources.Add(source);
+            sourcesByReference[source] = index;
+
+            return (Int16)index;
         }
 
         // The underlying data stream containing our commands.
         private readonly UnsafeObjectStream stream = new UnsafeObjectStream(32, 256);
 
         // The stream's object registries.
-        private readonly Dictionary<StringSegment, Int32> stylesByName = new Dictionary<StringSegment, Int32>();
-        private readonly Dictionary<StringSegment, Int32> iconsByName = new Dictionary<StringSegment, Int32>();
-        private readonly Dictionary<StringSegment, Int32> fontsByName = new Dictionary<StringSegment, Int32>();
-        private readonly Dictionary<StringSegment, Int32> glyphShadersByName = new Dictionary<StringSegment, Int32>();
-        private readonly Dictionary<Object, Int32> sourcesByReference = new Dictionary<Object, Int32>();
+        private readonly Dictionary<StringSegment, Int16> stylesByName = new Dictionary<StringSegment, Int16>();
+        private readonly Dictionary<StringSegment, Int16> iconsByName = new Dictionary<StringSegment, Int16>();
+        private readonly Dictionary<StringSegment, Int16> fontsByName = new Dictionary<StringSegment, Int16>();
+        private readonly Dictionary<StringSegment, Int16> glyphShadersByName = new Dictionary<StringSegment, Int16>();
+        private readonly Dictionary<Object, Int16> sourcesByReference = new Dictionary<Object, Int16>();
         private readonly List<TextStyle> styles = new List<TextStyle>();
         private readonly List<TextIconInfo> icons = new List<TextIconInfo>();
         private readonly List<SpriteFont> fonts = new List<SpriteFont>();

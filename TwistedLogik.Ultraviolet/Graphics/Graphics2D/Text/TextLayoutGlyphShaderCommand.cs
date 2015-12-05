@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
-    /// Represents a lyout command to push a font onto the font stack.
+    /// Represents a lyout command to push a glyph shader onto the glyph shader stack.
     /// </summary>
     public struct TextLayoutGlyphShaderCommand
     {
@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Initializes a new instance of the <see cref="TextLayoutGlyphShaderCommand"/> structure.
         /// </summary>
         /// <param name="glyphShaderIndex">The index of the glyph shader within the command stream's glyph shader registry.</param>
-        public TextLayoutGlyphShaderCommand(Int32 glyphShaderIndex)
+        public TextLayoutGlyphShaderCommand(Int16 glyphShaderIndex)
         {
             this.commandType = TextLayoutCommandType.PushGlyphShader;
             this.glyphShaderIndex = glyphShaderIndex;
@@ -28,13 +28,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the glyph shader within the command stream's glyph shader registry.
         /// </summary>
-        public Int32 GlyphShaderIndex
+        public Int16 GlyphShaderIndex
         {
             get { return glyphShaderIndex; }
         }
 
         // Property values.
         private readonly TextLayoutCommandType commandType;
-        private readonly Int32 glyphShaderIndex;
+        private readonly Int16 glyphShaderIndex;
     }
 }

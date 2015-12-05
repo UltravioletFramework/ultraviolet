@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="lengthInLines">The length of the block of text in lines.</param>
             /// <param name="settings">The layout settings.</param>
             [SecuritySafeCritical]
-            public void WriteBlockInfo(TextLayoutCommandStream output, Int16 blockWidth, Int16 blockHeight, Int32 lengthInLines, ref TextLayoutSettings settings)
+            public void WriteBlockInfo(TextLayoutCommandStream output, Int32 blockWidth, Int32 blockHeight, Int32 lengthInLines, ref TextLayoutSettings settings)
             {
                 var offset = 0;
 
@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="lengthInGlyphs">The length of the line of text in glyphs.</param>
             /// <param name="settings">The layout settings.</param>
             [SecuritySafeCritical]
-            public void WriteLineInfo(TextLayoutCommandStream output, Int16 lineWidth, Int16 lineHeight, Int16 lengthInCommands, Int16 lengthInGlyphs, ref TextLayoutSettings settings)
+            public void WriteLineInfo(TextLayoutCommandStream output, Int32 lineWidth, Int32 lineHeight, Int32 lengthInCommands, Int32 lengthInGlyphs, ref TextLayoutSettings settings)
             {
                 var offset = 0;
 
@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="settings">The current layout settings.</param>
             public void FinalizeLine(TextLayoutCommandStream output, ref TextLayoutSettings settings)
             {
-                WriteLineInfo(output, (Int16)lineWidth, (Int16)lineHeight, (Int16)lineLengthInCommands, (Int16)lineLengthInText, ref settings);
+                WriteLineInfo(output, lineWidth, lineHeight, lineLengthInCommands, lineLengthInText, ref settings);
 
                 positionX = 0;
                 positionY += lineHeight;
@@ -172,7 +172,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 if (LineHeight > 0)
                     FinalizeLine(output, ref settings);
 
-                WriteBlockInfo(output, (Int16)ActualWidth, (Int16)ActualHeight, LineCount, ref settings);
+                WriteBlockInfo(output, ActualWidth, ActualHeight, LineCount, ref settings);
 
                 output.Settings = settings;
                 output.Bounds = Bounds;
@@ -215,7 +215,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     brokenCommandSize = cmd->Bounds.Size;
 
                     cmd->TextLength = lineBreakOffset.Value;
-                    cmd->Bounds = new Rectangle(cmd->Bounds.Location, sizeBeforeBreak);
+                    cmd->TextWidth = (Int16)sizeBeforeBreak.Width;
+                    cmd->TextHeight = (Int16)sizeBeforeBreak.Height;
                 }
                 output.SeekNextCommand();
 
@@ -245,9 +246,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 {
                     var textOffset = part2Offset;
                     var textLength = part2Length;
-                    var bounds = new Rectangle(0, positionY + lineHeight, sizeAfterBreak.Width, sizeAfterBreak.Height);
 
-                    *(TextLayoutTextCommand*)output.InternalObjectStream.Data = new TextLayoutTextCommand(textOffset, textLength, bounds);
+                    *(TextLayoutTextCommand*)output.InternalObjectStream.Data = new TextLayoutTextCommand(textOffset, textLength, 
+                        0, positionY + lineHeight, (Int16)sizeAfterBreak.Width, (Int16)sizeAfterBreak.Height);
                     output.InternalObjectStream.FinalizeObject(sizeof(TextLayoutTextCommand));
                 }
 
@@ -270,8 +271,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         case TextLayoutCommandType.Text:
                             {
                                 var cmd = (TextLayoutTextCommand*)output.Data;
-                                brokenLineWidth += cmd->Bounds.Width;
-                                brokenLineHeight = Math.Max(brokenLineHeight, cmd->Bounds.Height);
+                                brokenLineWidth += cmd->TextWidth;
+                                brokenLineHeight = Math.Max(brokenLineHeight, cmd->TextHeight);
                                 brokenLineLengthInText += cmd->TextLength;
                             }
                             break;
@@ -314,22 +315,24 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         case TextLayoutCommandType.Text:
                             {
                                 var cmd = (TextLayoutTextCommand*)output.Data;
-                                width = cmd->Bounds.Width;
-                                height = cmd->Bounds.Height;
+                                width = cmd->TextWidth;
+                                height = cmd->TextHeight;
                                 lengthInCommands = 1;
                                 lengthInText = cmd->TextLength;
-                                cmd->Bounds = new Rectangle(PositionX, PositionY, width, height);
+                                cmd->TextX = PositionX;
+                                cmd->TextY = PositionY;
                             }
                             break;
 
                         case TextLayoutCommandType.Icon:
                             {
                                 var cmd = (TextLayoutIconCommand*)output.Data;
-                                width = cmd->Bounds.Width;
-                                height = cmd->Bounds.Height;
+                                width = cmd->IconWidth;
+                                height = cmd->IconHeight;
                                 lengthInCommands = 1;
                                 lengthInText = 1;
-                                cmd->Bounds = new Rectangle(PositionX, PositionY, width, height);
+                                cmd->IconX = PositionX;
+                                cmd->IconY = PositionY;
                             }
                             break;
 

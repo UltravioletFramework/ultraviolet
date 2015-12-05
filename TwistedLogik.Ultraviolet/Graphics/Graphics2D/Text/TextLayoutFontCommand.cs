@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Initializes a new instance of the <see cref="TextLayoutFontCommand"/> structure.
         /// </summary>
         /// <param name="fontIndex">The index of the font within the command stream's font registry.</param>
-        public TextLayoutFontCommand(Int32 fontIndex)
+        public TextLayoutFontCommand(Int16 fontIndex)
         {
             this.commandType = TextLayoutCommandType.PushFont;
             this.fontIndex = fontIndex;
@@ -28,13 +28,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the font within the command stream's font registry.
         /// </summary>
-        public Int32 FontIndex
+        public Int16 FontIndex
         {
             get { return fontIndex; }
         }
 
         // Property values.
         private readonly TextLayoutCommandType commandType;
-        private readonly Int32 fontIndex;
+        private readonly Int16 fontIndex;
     }
 }

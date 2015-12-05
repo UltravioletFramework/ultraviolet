@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Initializes a new instance of the <see cref="TextLayoutSourceStringCommand"/> structure.
         /// </summary>
         /// <param name="sourceIndex">The index of the source string within the command stream's source registry.</param>
-        public TextLayoutSourceStringCommand(Int32 sourceIndex)
+        public TextLayoutSourceStringCommand(Int16 sourceIndex)
         {
             this.commandType = TextLayoutCommandType.ChangeSourceString;
             this.sourceIndex = sourceIndex;
@@ -28,13 +28,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the source string within the command stream's source registry.
         /// </summary>
-        public Int32 SourceIndex
+        public Int16 SourceIndex
         {
             get { return sourceIndex; }
         }
 
         // Property values.
         private readonly TextLayoutCommandType commandType;
-        private readonly Int32 sourceIndex;
+        private readonly Int16 sourceIndex;
     }
 }

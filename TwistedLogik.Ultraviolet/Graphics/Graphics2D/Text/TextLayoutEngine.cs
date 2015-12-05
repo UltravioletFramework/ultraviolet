@@ -359,8 +359,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 return false;
 
             var iconBounds = new Rectangle(state.PositionX, state.PositionY, iconSize.Width, iconSize.Height);
-            output.WriteIcon(new TextLayoutIconCommand(iconIndex, icon.Width, icon.Height, iconBounds));
-            state.AdvanceLineToNextCommand(iconBounds.Width, iconBounds.Height, 1, 1);
+            output.WriteIcon(new TextLayoutIconCommand(iconIndex, state.PositionX, state.PositionY, (Int16)iconSize.Width, (Int16)iconSize.Height));
+            state.AdvanceLineToNextCommand(iconSize.Width, iconSize.Height, 1, 1);
             index++;
 
             return true;
@@ -611,6 +611,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var tokenNext = GetNextTextToken(input, index);
                 var tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext);
 
+                // NOTE: We assume in a couple of places that tokens sizes don't exceed Int16.MaxValue, so try to
+                // avoid accumulating tokens larger than that just in case somebody is doing something dumb
+                if (width + tokenSize.Width > Int16.MaxValue)
+                    break;
+
                 var overflowsLine = state.PositionX + tokenSize.Width > availableWidth;
                 if (overflowsLine)
                 {
@@ -759,7 +764,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (length == 0)
                 return false;
 
-            output.WriteText(new TextLayoutTextCommand(start, length, bounds));
+            output.WriteText(new TextLayoutTextCommand(start, length, 
+                bounds.X, bounds.Y, (Int16)bounds.Width, (Int16)bounds.Height));
+
             state.LineLengthInCommands++;
 
             return true;
@@ -848,7 +855,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Registers the specified style with the command stream and returns its resulting index.
         /// </summary>
-        private Int32 RegisterStyleWithCommandStream(TextLayoutCommandStream output, StringSegment name, out TextStyle style)
+        private Int16 RegisterStyleWithCommandStream(TextLayoutCommandStream output, StringSegment name, out TextStyle style)
         {
             if (!registeredStyles.TryGetValue(name, out style))
                 throw new InvalidOperationException(UltravioletStrings.UnrecognizedStyle.Format(name));
@@ -859,7 +866,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Registers the specified icon with the command stream and returns its resulting index.
         /// </summary>
-        private Int32 RegisterIconWithCommandStream(TextLayoutCommandStream output, StringSegment name, out TextIconInfo icon)
+        private Int16 RegisterIconWithCommandStream(TextLayoutCommandStream output, StringSegment name, out TextIconInfo icon)
         {
             if (!registeredIcons.TryGetValue(name, out icon))
                 throw new InvalidOperationException(UltravioletStrings.UnrecognizedIcon.Format(name));
@@ -870,7 +877,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Registers the specified font with the command stream and returns its resulting index.
         /// </summary>
-        private Int32 RegisterFontWithCommandStream(TextLayoutCommandStream output, StringSegment name, out SpriteFont font)
+        private Int16 RegisterFontWithCommandStream(TextLayoutCommandStream output, StringSegment name, out SpriteFont font)
         {
             if (!registeredFonts.TryGetValue(name, out font))
                 throw new InvalidOperationException(UltravioletStrings.UnrecognizedFont.Format(name));
@@ -881,7 +888,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Registers the specified glyph shader with the command stream and returns its resulting index.
         /// </summary>
-        private Int32 RegisterGlyphShaderWithCommandStream(TextLayoutCommandStream output, StringSegment name, out GlyphShader glyphShader)
+        private Int16 RegisterGlyphShaderWithCommandStream(TextLayoutCommandStream output, StringSegment name, out GlyphShader glyphShader)
         {
             if (!registeredGlyphShaders.TryGetValue(name, out glyphShader))
                 throw new InvalidOperationException(UltravioletStrings.UnrecognizedGlyphShader.Format(name));

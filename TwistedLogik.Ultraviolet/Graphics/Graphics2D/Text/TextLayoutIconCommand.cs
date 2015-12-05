@@ -11,18 +11,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Initializes a new instance of the <see cref="TextLayoutIconCommand"/> structure.
         /// </summary>
         /// <param name="iconIndex">The index of the icon within the command stream's icon registry.</param>
-        /// <param name="iconWidth">The width of the icon, in pixels, or <c>null</c> to use the icon's default width.</param>
-        /// <param name="iconHeight">The height of the icon, in pixels, or <c>null</c> to use the icon's default height.</param>
-        /// <param name="bounds">The bounds of the icon drawn by this command relative to the layout area.</param>
-        public TextLayoutIconCommand(Int32 iconIndex, Int32? iconWidth, Int32? iconHeight, Rectangle bounds)
+        /// <param name="iconX">The x-coordinate of the icon's origin relative to its layout area.</param>
+        /// <param name="iconY">The y-coordinate of the icon's origin relative to its layout area.</param>
+        /// <param name="iconWidth">The icon's width in pixels.</param>
+        /// <param name="iconHeight">The icon's height in pixels.</param>
+        public TextLayoutIconCommand(Int16 iconIndex, Int32 iconX, Int32 iconY, Int16 iconWidth, Int16 iconHeight)
         {
             this.commandType = TextLayoutCommandType.Icon;
             this.iconIndex = iconIndex;
-            this.iconWidth = iconWidth.GetValueOrDefault();
-            this.iconHeight = iconHeight.GetValueOrDefault();
-            this.bounds = bounds;
-            this.hasIconWidth = iconWidth.HasValue;
-            this.hasIconHeight = iconHeight.HasValue;
+            this.iconX = iconX;
+            this.iconY = iconY;
+            this.iconWidth = iconWidth;
+            this.iconHeight = iconHeight;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="Point2"/> that describes the absolute position of the icon.</returns>
         public Point2 GetAbsolutePosition(Int32 x, Int32 y, Int32 lineHeight)
         {
-            return new Point2(x + bounds.X, y + bounds.Y + ((lineHeight - bounds.Height) / 2));
+            return new Point2(x + iconX, y + iconY + ((lineHeight - iconHeight) / 2));
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="Vector2"/> that describes the absolute position of the icon.</returns>
         public Vector2 GetAbsolutePositionVector(Single x, Single y, Int32 lineHeight)
         {
-            return new Vector2(x + bounds.X, y + bounds.Y + ((lineHeight - bounds.Height) / 2));
+            return new Vector2(x + iconX, y + iconY + ((lineHeight - iconHeight) / 2));
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="Rectangle"/> that describes the absolute bounds of the icon.</returns>
         public Rectangle GetAbsoluteBounds(Int32 x, Int32 y, Int32 lineHeight)
         {
-            return new Rectangle(x + bounds.X, y + bounds.Y + ((lineHeight - bounds.Height) / 2), bounds.Width, bounds.Height);
+            return new Rectangle(x + iconX, y + iconY + ((lineHeight - iconHeight) / 2), iconWidth, iconHeight);
         }
 
         /// <summary>
@@ -72,25 +72,45 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the icon within the command stream's icon registry.
         /// </summary>
-        public Int32 IconIndex
+        public Int16 IconIndex
         {
             get { return iconIndex; }
         }
 
         /// <summary>
-        /// Gets the width of the icon, in pixels, or 0 if the icon's default width is used.
+        /// Gets the x-coordinate of the icon's origin relative to its layout area.
         /// </summary>
-        public Int32? IconWidth
+        public Int32 IconX
         {
-            get { return hasIconWidth ? iconWidth : (Int32?)null; }
+            get { return iconX; }
+            internal set { iconX = value; }
         }
 
         /// <summary>
-        /// Gets the height of the icon, in pixels, or 0 if the icon's default height is used.
+        /// Gets the y-coordinate of the icon's origin relative to its layout area.
         /// </summary>
-        public Int32? IconHeight
+        public Int32 IconY
         {
-            get { return hasIconHeight ? iconHeight : (Int32?)null; }
+            get { return iconY; }
+            internal set { iconY = value; }
+        }
+
+        /// <summary>
+        /// Gets the icon's width in pixels.
+        /// </summary>
+        public Int16 IconWidth
+        {
+            get { return iconWidth; }
+            internal set { iconWidth = value; }
+        }
+
+        /// <summary>
+        /// Gets the icon's height in pixels.
+        /// </summary>
+        public Int16 IconHeight
+        {
+            get { return iconHeight; }
+            internal set { iconHeight = value; }
         }
 
         /// <summary>
@@ -98,17 +118,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public Rectangle Bounds
         {
-            get { return bounds; }
-            internal set { bounds = value; }
+            get { return new Rectangle(iconX, iconY, iconWidth, iconHeight); }
         }
 
         // Property values.
         private readonly TextLayoutCommandType commandType;
-        private readonly Int32 iconIndex;
-        private readonly Int32 iconWidth;
-        private readonly Int32 iconHeight;
-        private Rectangle bounds;
-        private readonly Boolean hasIconWidth;
-        private readonly Boolean hasIconHeight;
+        private readonly Int16 iconIndex;
+        private Int32 iconX;
+        private Int32 iconY;
+        private Int16 iconWidth;
+        private Int16 iconHeight;
     }
 }

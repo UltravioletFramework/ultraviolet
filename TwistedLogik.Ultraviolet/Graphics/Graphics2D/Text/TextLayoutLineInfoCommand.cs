@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="lineHeight">The height of the line in pixels.</param>
         /// <param name="lengthInCommands">The length of the line of text in commands.</param>
         /// <param name="lengthInGlyphs">The length of the line in glyphs.</param>
-        public TextLayoutLineInfoCommand(Int32 offset, Int16 lineWidth, Int16 lineHeight, Int16 lengthInCommands, Int16 lengthInGlyphs)
+        public TextLayoutLineInfoCommand(Int32 offset, Int32 lineWidth, Int32 lineHeight, Int32 lengthInCommands, Int32 lengthInGlyphs)
         {
             this.commandType = TextLayoutCommandType.LineInfo;
             this.offset = offset;
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the width of the line in pixels.
         /// </summary>
-        public Int16 LineWidth
+        public Int32 LineWidth
         {
             get { return lineWidth; }
             internal set { lineWidth = value; }
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the height of the line in pixels.
         /// </summary>
-        public Int16 LineHeight
+        public Int32 LineHeight
         {
             get { return lineHeight; }
             internal set { lineHeight = value; }
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the length of the line of text in commands.
         /// </summary>
-        public Int16 LengthInCommands
+        public Int32 LengthInCommands
         {
             get { return lengthInCommands; }
             internal set { lengthInCommands = value; }
@@ -72,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the length of the line of text in glyphs.
         /// </summary>
-        public Int16 LengthInGlyphs
+        public Int32 LengthInGlyphs
         {
             get { return lengthInGlyphs; }
             internal set { lengthInGlyphs = value; }
@@ -81,9 +81,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         // Property values.
         private TextLayoutCommandType commandType;
         private Int32 offset;
-        private Int16 lineWidth;
-        private Int16 lineHeight;
-        private Int16 lengthInCommands;
-        private Int16 lengthInGlyphs;
+        private Int32 lineWidth;
+        private Int32 lineHeight;
+        private Int32 lengthInCommands;
+        private Int32 lengthInGlyphs;
     }
 }

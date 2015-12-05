@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the types of commands produced by the text layout engine.
     /// </summary>
-    public enum TextLayoutCommandType
+    public enum TextLayoutCommandType : byte
     {
         /// <summary>
         /// No command type.
