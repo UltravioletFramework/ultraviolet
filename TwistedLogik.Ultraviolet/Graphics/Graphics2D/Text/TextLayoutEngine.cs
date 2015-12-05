@@ -593,6 +593,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var lineOverflow = false;
             var lineBreakPossible = false;
 
+            var tokenText = default(StringSegment);
+            var tokenNext = default(TextParserToken?);
+            var tokenSize = default(Size2);
+
             while (index < input.Count)
             {
                 var token = input[index];
@@ -607,9 +611,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     EmitChangeSourceIfNecessary(input, output, ref token);
                 }
 
-                var tokenText = token.Text.Substring(state.ParserTokenOffset ?? 0);
-                var tokenNext = GetNextTextToken(input, index);
-                var tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext);
+                tokenText = token.Text.Substring(state.ParserTokenOffset ?? 0);
+                tokenNext = GetNextTextToken(input, index);
+                tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext);
 
                 // NOTE: We assume in a couple of places that tokens sizes don't exceed Int16.MaxValue, so try to
                 // avoid accumulating tokens larger than that just in case somebody is doing something dumb
@@ -684,18 +688,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     }
                     return true;
                 }
+                
+                GetFittedSubstring(font, availableWidth, ref tokenText, ref tokenSize, ref state, hyphenate);
 
-                var overflowingTokenText = overflowingToken.Text.Substring(state.ParserTokenOffset ?? 0);
-                var overflowingTokenSize = MeasureToken(font, TextParserTokenType.Text, overflowingTokenText, GetNextTextToken(input, index));
-                GetFittedSubstring(font, availableWidth, ref overflowingTokenText, ref overflowingTokenSize, ref state, hyphenate);
+                var overflowingTokenBounds = (tokenText.Length == 0) ? Rectangle.Empty :
+                    new Rectangle(state.PositionX, state.PositionY, tokenSize.Width, tokenSize.Height);
 
-                var overflowingTokenBounds = (overflowingTokenText.Length == 0) ? Rectangle.Empty :
-                    new Rectangle(state.PositionX, state.PositionY, overflowingTokenSize.Width, overflowingTokenSize.Height);
-
-                var overflowingTextEmitted = EmitTextIfNecessary(output, overflowingTokenText.Start, overflowingTokenText.Length, ref overflowingTokenBounds, ref state);
+                var overflowingTextEmitted = EmitTextIfNecessary(output, tokenText.Start, tokenText.Length, ref overflowingTokenBounds, ref state);
                 if (overflowingTextEmitted)
                 {
-                    state.AdvanceLineToNextCommand(overflowingTokenSize.Width, overflowingTokenSize.Height, 1, overflowingTokenText.Length);
+                    state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenText.Length);
                     if (hyphenate)
                     {
                         output.WriteHyphen();
@@ -703,7 +705,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     }
                 }
 
-                state.ParserTokenOffset = (state.ParserTokenOffset ?? 0) + overflowingTokenText.Length;
+                state.ParserTokenOffset = (state.ParserTokenOffset ?? 0) + tokenText.Length;
                 state.AdvanceLayoutToNextLine(output, ref settings);
             }
 
