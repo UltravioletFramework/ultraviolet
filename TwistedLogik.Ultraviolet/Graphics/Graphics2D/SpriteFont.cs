@@ -130,6 +130,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             get { return faceBoldItalic; }
         }
 
+        /// <summary>
+        /// Gets the number of characters in the Extended ASCII table, which is used to optimize sprite fonts
+        /// when using common glyphs from the Roman alphabet.
+        /// </summary>
+        internal const Int32 ExtendedAsciiCount = 256;
+
         // Property values.
         private readonly SpriteFontFace faceRegular;
         private readonly SpriteFontFace faceBold;

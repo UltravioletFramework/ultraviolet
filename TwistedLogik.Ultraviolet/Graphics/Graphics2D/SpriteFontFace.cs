@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
@@ -45,36 +44,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             this.texture = texture;
             this.ownsTexture = ownsTexture;
 
-            this.regions = (regions == null) ? new[] { CharacterRegion.Default } : regions.ToArray();
-            this.glyphs = glyphs.ToArray();
-            this.lineHeight = glyphs.Max(x => x.Height);
-            this.firstCharacter = firstCharacter;
-            this.substitutionCharacter = substitutionCharacter;
-
-            var ix = 0;
-            var ixSubstitution = (Int32?)null;
-
-            foreach (var r in this.regions)
-            {
-                for (char c = r.Start; c <= r.End; c++)
-                {
-                    if (c == substitutionCharacter)
-                    {
-                        ixSubstitution = ix;
-                    }
-                    glyphIndices[c] = ix++;
-                }
-            }
-
-            // For rendering and measurement purposes, treat non-breaking spaces like normal spaces
-            Int32 spaceIndex;
-            if (glyphIndices.TryGetValue(' ', out spaceIndex) && !glyphIndices.ContainsKey('\u00A0'))
-                glyphIndices['\u00A0'] = spaceIndex;
-
-            if (ixSubstitution == null)
-                throw new ArgumentOutOfRangeException("substitutionCharacter");
-
-            this.substitutionCharacterIndex = ixSubstitution.Value;
+            this.glyphs = new SpriteFontGlyphIndex(regions ?? new[] { CharacterRegion.Default }, glyphs, firstCharacter, substitutionCharacter);
+            this.kerning = new SpriteFontKerning();           
         }
 
         /// <summary>
@@ -228,7 +199,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Char FirstCharacter
         {
-            get { return firstCharacter; }
+            get { return glyphs.FirstCharacter; }
         }
 
         /// <summary>
@@ -237,7 +208,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <remarks>The substitution glyph is used as a replacement for characters which do not exist in the collection.</remarks>
         public Char SubstitutionCharacter
         {
-            get { return substitutionCharacter; }
+            get { return glyphs.SubstitutionCharacter; }
         }
 
         /// <summary>
@@ -245,7 +216,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Int32 Characters
         {
-            get { return glyphs.Length; }
+            get { return glyphs.Count; }
         }
 
         /// <summary>
@@ -269,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Int32 LineSpacing
         {
-            get { return lineHeight; }
+            get { return glyphs.LineSpacing; }
         }
 
         /// <summary>
@@ -279,17 +250,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The position of the specified glyph on the font face's texture.</returns>
         public Rectangle this[Char character]
         {
-            get
-            {
-                Int32 ix;
-                if (!glyphIndices.TryGetValue(character, out ix))
-                {
-                    return glyphs[substitutionCharacterIndex];
-                }
-                return glyphs[ix];
-            }
+            get { return glyphs[character]; }
         }
-
+        
         /// <summary>
         /// Measures the size of the specified substring of text when rendered using this font.
         /// </summary>
@@ -343,7 +306,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
                 default:
                     var c2 = (ix + 1 < source.Length) ? source[ix + 1] : (Char?)null;
-                    var glyph = this[c1];
+                    var glyph = glyphs[c1];
                     var offset = c2.HasValue ? kerning.Get(c1, c2.GetValueOrDefault()) : 0;
                     return new Size2(glyph.Width + offset, glyph.Height);
             }
@@ -368,20 +331,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
         // Property values.
         private readonly Texture2D texture;
-        private readonly Char firstCharacter;
-        private readonly Char substitutionCharacter;
-        private readonly Int32 lineHeight;
-
-        // State values.
-        private readonly Int32 substitutionCharacterIndex;
-        private readonly CharacterRegion[] regions;
-        private readonly Rectangle[] glyphs;
         private readonly Boolean ownsTexture;
 
-        private readonly Dictionary<Char, Int32> glyphIndices = 
-            new Dictionary<Char, Int32>();
+        // State values.
+        private readonly SpriteFontGlyphIndex glyphs;
+        private readonly SpriteFontKerning kerning;
 
-        // The font face's kerning information.
-        private readonly SpriteFontKerning kerning = new SpriteFontKerning();
+
+        //private readonly Rectangle[] glyphs;
+        //private readonly Int32[] asciiCache;
+        //private readonly Dictionary<Char, Int32> glyphIndices;            
     }
 }
