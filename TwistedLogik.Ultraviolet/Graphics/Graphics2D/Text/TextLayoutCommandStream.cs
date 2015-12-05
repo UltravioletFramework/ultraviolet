@@ -348,6 +348,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             ActualHeight = 0;
             TotalLength = 0;
             LineCount = 0;
+
+            hasMultipleFontStyles = false;
         }
 
         /// <summary>
@@ -401,6 +403,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WriteToggleBold()
         {
+            hasMultipleFontStyles = true;
+
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ToggleBold;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
@@ -411,6 +415,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WriteToggleItalic()
         {
+            hasMultipleFontStyles = true;
+
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ToggleItalic;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
@@ -422,6 +428,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WritePushStyle(TextLayoutStyleCommand command)
         {
+            hasMultipleFontStyles = true;
+
             stream.Reserve(sizeof(TextLayoutStyleCommand));
             *(TextLayoutStyleCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushStyle;
@@ -434,6 +442,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WritePushFont(TextLayoutFontCommand command)
         {
+            hasMultipleFontStyles = true;
+
             stream.Reserve(sizeof(TextLayoutFontCommand));
             *(TextLayoutFontCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushFont;
@@ -469,6 +479,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WritePopStyle()
         {
+            hasMultipleFontStyles = true;
+
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopStyle;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
@@ -479,6 +491,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WritePopFont()
         {
+            hasMultipleFontStyles = true;
+
             stream.Reserve(sizeof(TextLayoutCommandType));
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopFont;
             stream.FinalizeObject(sizeof(TextLayoutCommandType));
@@ -849,6 +863,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Gets a value indicating whether the stream contains commands which change the style of the rendered font 
+        /// </summary
+        /// <remarks>This value will be <c>true</c> if the stream contains any 
+        /// <see cref="TextLayoutCommandType.ToggleBold"/>,
+        /// <see cref="TextLayoutCommandType.ToggleItalic"/>,
+        /// <see cref="TextLayoutCommandType.PushFont"/>, 
+        /// <see cref="TextLayoutCommandType.PushStyle"/>, 
+        /// <see cref="TextLayoutCommandType.PopFont"/>, or 
+        /// <see cref="TextLayoutCommandType.PopStyle"/> commands.
+        /// </remarks>
+        public Boolean HasMultipleFontStyles
+        {
+            get { return hasMultipleFontStyles; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the command stream has acquired pointers to its underlying buffers.
         /// </summary>
         public Boolean HasAcquiredPointers
@@ -918,5 +948,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private readonly List<SpriteFont> fonts = new List<SpriteFont>();
         private readonly List<GlyphShader> glyphShaders = new List<GlyphShader>();
         private readonly List<Object> sources = new List<Object>();
+
+        // Property values.
+        private Boolean hasMultipleFontStyles;
     }
 }

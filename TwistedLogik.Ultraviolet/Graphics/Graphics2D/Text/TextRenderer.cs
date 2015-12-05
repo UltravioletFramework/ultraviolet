@@ -218,10 +218,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             input.SeekNextCommand();
 
-            // NOTE: If we're ignoring command codes, we can optimize by entirely skipping past lines prior to the one
+            // NOTE: If we only have a single font style, we can optimize by entirely skipping past lines prior to the one
             // that contains the position we're interested in, because we know our style will never change from the default.
-            var ignoreCommandCodes = (input.ParserOptions & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes;
-            if (ignoreCommandCodes)
+            var canSkipLines = !input.HasMultipleFontStyles;
+            if (canSkipLines)
             {
                 do
                 {
@@ -493,11 +493,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var offsetLineY = 0;
             
             input.SeekNextCommand();
-            
-            // NOTE: If we're ignoring command codes, we can optimize by entirely skipping past lines prior to the one
-            // that contains the glyph we're interested in, because we know our style will never change from the default.
-            var ignoreCommandCodes = (input.ParserOptions & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes;
-            if (ignoreCommandCodes)
+
+            // NOTE: If we only have a single font style, we can optimize by entirely skipping past lines prior to the one
+            // that contains the position we're interested in, because we know our style will never change from the default.
+            var canSkipLines = !input.HasMultipleFontStyles;
+            if (canSkipLines)
             {
                 while (true)
                 {
