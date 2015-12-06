@@ -742,7 +742,8 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         internal void ProcessWorkItemsInternal()
         {
-            if (pendingWorkItemCount == 0)
+            var count = Interlocked.CompareExchange(ref pendingWorkItemCount, 0, 0);
+            if (count == 0)
                 return;
 
             Task workItem;
@@ -1224,7 +1225,7 @@ namespace TwistedLogik.Ultraviolet
         private readonly UltravioletFactory factory = new UltravioletFactory();
         private readonly ConcurrentQueue<Task> queuedWorkItems = new ConcurrentQueue<Task>();
         private readonly Thread thread;
-        private volatile Int32 pendingWorkItemCount;
+        private Int32 pendingWorkItemCount;
         private Boolean isHardwareInputDisabled;
         private Boolean isRunningInServiceMode;
         private Boolean isInitialized;
