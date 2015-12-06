@@ -864,7 +864,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
         /// <summary>
         /// Gets a value indicating whether the stream contains commands which change the style of the rendered font 
-        /// </summary
+        /// </summary>
         /// <remarks>This value will be <c>true</c> if the stream contains any 
         /// <see cref="TextLayoutCommandType.ToggleBold"/>,
         /// <see cref="TextLayoutCommandType.ToggleItalic"/>,
