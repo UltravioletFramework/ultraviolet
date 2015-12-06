@@ -295,6 +295,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 }
 
                 // Finalize the broken line.
+                totalLength = (totalLength - lineLengthInText) + brokenLineLengthInText;
                 lineWidth = brokenLineWidth;
                 lineHeight = brokenLineHeight;
                 lineLengthInText = brokenLineLengthInText;

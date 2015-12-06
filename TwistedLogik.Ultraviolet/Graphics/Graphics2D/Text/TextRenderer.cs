@@ -376,7 +376,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             // that contains the position we're interested in, because we don't need to process any commands that those lines contain.
             var canSkipLines = !input.HasMultipleFontStyles;
             if (canSkipLines)
-                SkipToLineContainingGlyph(input, index, ref glyphCountSeen);
+                SkipToLineContainingGlyph(input, index, ref lineIndex, ref offsetLineY, ref lineWidth, ref lineHeight, ref glyphCountSeen);
 
             // Seek through the remaining commands until we find the one that contains our glyph.
             while (!boundsFound && input.StreamPositionInObjects < input.Count)
@@ -491,7 +491,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (glyphIsInFrontOfInsertionPoint)
                 return new Rectangle(glyphBounds.Left, glyphBounds.Top, 0, glyphBounds.Height);
 
-            return new Rectangle(glyphBounds.Right, glyphBounds.Top, 0, glyphBounds.Height);
+            return new Rectangle(glyphBounds.Right - 1, glyphBounds.Top, 0, glyphBounds.Height);
         }
 
         /// <summary>
@@ -1376,17 +1376,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Moves the specified command stream forward to the beginning of the line that contains the specified glyph.
         /// </summary>
-        private void SkipToLineContainingGlyph(TextLayoutCommandStream input, Int32 glyph, ref Int32 glyphCountSeen)
+        private void SkipToLineContainingGlyph(TextLayoutCommandStream input, Int32 glyph, 
+            ref Int32 lineIndex, ref Int32 linePosition, ref Int32 lineWidth, ref Int32 lineHeight, ref Int32 glyphCountSeen)
         {
-            while (true)
+            do
             {
                 var cmd = (TextLayoutLineInfoCommand*)input.Data;
+                lineIndex++;
+                lineWidth = cmd->LineWidth;
+                lineHeight = cmd->LineHeight;
+
                 if (glyphCountSeen + cmd->LengthInGlyphs > glyph)
                     break;
 
                 glyphCountSeen += cmd->LengthInGlyphs;
-                input.SeekNextLine();
+                linePosition += cmd->LineHeight;
             }
+            while (input.SeekNextLine());
         }
 
         /// <summary>

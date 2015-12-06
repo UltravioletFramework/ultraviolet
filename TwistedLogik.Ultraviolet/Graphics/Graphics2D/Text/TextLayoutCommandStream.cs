@@ -56,7 +56,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="TextLayoutCommandType"/> that represents the type of command at the stream's new position.</returns>
         public TextLayoutCommandType Seek(Int32 index)
         {
-            return *(TextLayoutCommandType*)stream.RawSeekObject(index);
+            var ptr = stream.RawSeekObject(index);
+            return (index < Count) ? *(TextLayoutCommandType*)ptr : TextLayoutCommandType.None;
         }
 
         /// <summary>

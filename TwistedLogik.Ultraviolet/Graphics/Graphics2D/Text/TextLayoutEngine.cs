@@ -697,7 +697,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var overflowingTextEmitted = EmitTextIfNecessary(output, tokenText.Start, tokenText.Length, ref overflowingTokenBounds, ref state);
                 if (overflowingTextEmitted)
                 {
-                    state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenText.Length);
+                    state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 0, tokenText.Length);
                     if (hyphenate)
                     {
                         output.WriteHyphen();

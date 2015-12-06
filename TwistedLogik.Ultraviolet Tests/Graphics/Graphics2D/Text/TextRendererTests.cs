@@ -163,7 +163,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
-            
+
+            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe(content.Text.Length);
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable.png");
         }
@@ -197,6 +199,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
+
+            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe(content.Text.Length);
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines.png");
@@ -232,6 +236,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
+            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe(content.Text.Length);
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines_WithHyphens.png");
         }
@@ -265,7 +271,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
-            
+
+            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe("Hello! This is a Xtesttesttesttest of the line breaking algorithm.".Length);
+
             TheResultingValue(content.TextLayoutResult.GetLineInfo(0))
                 .ShouldHavePosition(0, 0)
                 .ShouldHaveSize(132, 22)
@@ -317,7 +325,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
-            
+
+            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe("Hello! This is a Xtesttesttesttest of the line breaking algorithm.".Length);
+
             TheResultingValue(content.TextLayoutResult.GetLineInfo(0))
                 .ShouldHavePosition(108, 0)
                 .ShouldHaveSize(132, 22)
@@ -369,6 +379,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
+
+            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe("Hello! This is a Xtesttesttesttest of the line breaking algorithm.".Length);
             
             TheResultingValue(content.TextLayoutResult.GetLineInfo(0))
                 .ShouldHavePosition(54, 0)
