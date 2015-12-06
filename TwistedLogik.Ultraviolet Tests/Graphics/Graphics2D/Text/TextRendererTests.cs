@@ -792,8 +792,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.TextLayoutResult.ReleasePointers();
 
                     // Glyph 26 is a line break and therefore invisible, so check it manually
-                    TheResultingValue(glyph26Bounds.X).ShouldBe(163);
-                    TheResultingValue(glyph26Bounds.Y).ShouldBe(158);
+                    TheResultingValue(glyph26Bounds.X).ShouldBe(369);
+                    TheResultingValue(glyph26Bounds.Y).ShouldBe(136);
                     TheResultingValue(glyph26Bounds.Width).ShouldBe(0);
                     TheResultingValue(glyph26Bounds.Height).ShouldBe(22);
 

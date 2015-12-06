@@ -117,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             {
                 while (*(TextLayoutCommandType*)stream.Data != TextLayoutCommandType.LineInfo && SeekNextCommand()) { }
             }
-            return stream.PositionInObjects + 1 < Count;
+            return stream.PositionInObjects < Count;
         }
 
         /// <summary>

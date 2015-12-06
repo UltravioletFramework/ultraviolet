@@ -341,8 +341,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.EnsureRange(index >= 0 && index < input.TotalLength, "index");
 
             var glyphCountSeen = 0;
-
-            var boundsOnLineBreak = false;
+            
             var boundsFound = false;
             var bounds = Rectangle.Empty;
 
@@ -382,20 +381,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             while (!boundsFound && input.StreamPositionInObjects < input.Count)
             {
                 var cmdType = *(TextLayoutCommandType*)input.Data;
-                if (cmdType != TextLayoutCommandType.LineInfo && boundsOnLineBreak)
-                    throw new InvalidOperationException(UltravioletStrings.LineBreakNotFollowedByNewLine);
 
                 switch (cmdType)
                 {
                     case TextLayoutCommandType.LineInfo:
-                        {
-                            ProcessLineInfo(input, ref lineIndex, ref offsetLineX, ref offsetLineY, ref lineWidth, ref lineHeight);
-                            if (boundsOnLineBreak)
-                            {
-                                boundsFound = true;
-                                bounds = new Rectangle(offsetLineX, blockOffset + offsetLineY, 0, lineHeight);
-                            }
-                        }
+                        ProcessLineInfo(input, ref lineIndex, ref offsetLineX, ref offsetLineY, ref lineWidth, ref lineHeight);
                         break;
 
                     case TextLayoutCommandType.Text:
@@ -438,7 +428,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     case TextLayoutCommandType.LineBreak:
                         {
                             if (++glyphCountSeen > index)
-                                boundsOnLineBreak = true;
+                            {
+                                bounds = new Rectangle(offsetLineX + lineWidth - 1, blockOffset + offsetLineY, 0, lineHeight);
+                                boundsFound = true;
+                            }
                         }
                         input.SeekNextCommand();
                         break;
@@ -481,17 +474,40 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                 return new Rectangle(0, 0, 0, input.Settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing);
             }
-
+            
             var lineWidth = 0;
             var lineHeight = 0;
 
-            var glyphIsInFrontOfInsertionPoint = (index < input.TotalLength);
-            var glyphBounds = GetGlyphBounds(input, glyphIsInFrontOfInsertionPoint ? index : input.TotalLength - 1, out lineWidth, out lineHeight, true);
+            if (input.TotalLength == index)
+            {
+                var acquiredPointers = !input.HasAcquiredPointers;
+                if (acquiredPointers)
+                    input.AcquirePointers();
 
-            if (glyphIsInFrontOfInsertionPoint)
+                input.Seek(0);
+
+                var positionX = 0;
+                var positionY = ((TextLayoutBlockInfoCommand*)input.InternalObjectStream.Data)->Offset;
+
+                while (input.SeekNextLine())
+                {
+                    var lineInfo = (TextLayoutLineInfoCommand*)input.InternalObjectStream.Data;
+                    positionX = lineInfo->Offset;
+                    positionY = positionY + lineHeight;
+                    lineWidth = lineInfo->LineWidth;
+                    lineHeight = lineInfo->LineHeight;
+                }
+
+                if (acquiredPointers)
+                    input.ReleasePointers();
+
+                return new Rectangle(positionX + Math.Max(0, lineWidth - 1), positionY, 0, lineHeight);
+            }
+            else
+            {
+                var glyphBounds = GetGlyphBounds(input, index, out lineWidth, out lineHeight, true);
                 return new Rectangle(glyphBounds.Left, glyphBounds.Top, 0, glyphBounds.Height);
-
-            return new Rectangle(glyphBounds.Right - 1, glyphBounds.Top, 0, glyphBounds.Height);
+            }
         }
 
         /// <summary>
@@ -1382,12 +1398,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             do
             {
                 var cmd = (TextLayoutLineInfoCommand*)input.Data;
-                lineIndex++;
-                lineWidth = cmd->LineWidth;
-                lineHeight = cmd->LineHeight;
 
                 if (glyphCountSeen + cmd->LengthInGlyphs > glyph)
                     break;
+
+                lineIndex++;
+                lineWidth = cmd->LineWidth;
+                lineHeight = cmd->LineHeight;
 
                 glyphCountSeen += cmd->LengthInGlyphs;
                 linePosition += cmd->LineHeight;

@@ -515,9 +515,4 @@
       <Variant>This operation is invalid because the Ultraviolet context does not have an associated performance profiler.</Variant>
     </en-US>
   </String>
-  <String Key="LINE_BREAK_NOT_FOLLOWED_BY_NEW_LINE">
-    <en-US>
-      <Variant>The layout command stream is invalid because it contains a LineBreak command that is not followed by a LineInfo command.</Variant>
-    </en-US>
-  </String>
 </LocalizedStrings>
