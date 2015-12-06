@@ -14,13 +14,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     public sealed unsafe class TextRenderer
     {
         /// <summary>
-        /// Gets the index of the line of text at the specified position relative to the layout area.
+        /// Gets the index of the line of text at the specified layout-relative position.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
         /// <param name="stretch">If <c>true</c>, a line is considered to fill the entire horizontal extent of the 
         /// layout area, regardless of the line's actual width.</param>
-        /// <returns>The index of the line of text at the specified position relative to the layout area, 
+        /// <returns>The index of the line of text at the specified layout-relative position, 
         /// or <c>null</c> if the specified position is not contained by any line.</returns>
         public Int32? GetLineAtPosition(TextLayoutCommandStream input, Vector2 position, Boolean stretch = false)
         {
@@ -28,13 +28,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets the index of the line of text at the specified position relative to the layout area.
+        /// Gets the index of the line of text at the specified layout-relative position.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
         /// <param name="stretch">If <c>true</c>, a line is considered to fill the entire horizontal extent of the 
         /// layout area, regardless of the line's actual width.</param>
-        /// <returns>The index of the line of text at the specified position relative to the layout area, 
+        /// <returns>The index of the line of text at the specified layout-relative position, 
         /// or <c>null</c> if the specified position is not contained by any line.</returns>
         public Int32? GetLineAtPosition(TextLayoutCommandStream input, Point2 position, Boolean stretch = false)
         {
@@ -42,14 +42,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets the index of the line of text at the specified position relative to the layout area.
+        /// Gets the index of the line of text at the specified layout-relative position.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="x">The x-coordinate to evaluate.</param>
         /// <param name="y">The y-coordinate to evaluate.</param>
         /// <param name="stretch">If <c>true</c>, a line is considered to fill the entire horizontal extent of the 
         /// layout area, regardless of the line's actual width.</param>
-        /// <returns>The index of the line of text at the specified position relative to the layout area, 
+        /// <returns>The index of the line of text at the specified layout-relative position, 
         /// or <c>null</c> if the specified position is not contained by any line.</returns>
         public Int32? GetLineAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, Boolean stretch = false)
         {
@@ -97,11 +97,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// Gets the index of the glyph at the specified layout-relative position.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
-        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position)
         {
@@ -110,13 +110,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// Gets the index of the glyph at the specified layout-relative position.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
         /// <param name="lineAtPosition">The index of the line of text that contains the specified position, regardless of
         /// whether the position corresponds to an actual glyph.</param>
-        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position, out Int32? lineAtPosition)
         {
@@ -124,11 +124,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// Gets the index of the glyph at the specified layout-relative position.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
-        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position)
         {
@@ -137,13 +137,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// Gets the index of the glyph at the specified layout-relative position.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
         /// <param name="lineAtPosition">The index of the line of text that contains the specified position, regardless of
         /// whether the position corresponds to an actual glyph.</param>
-        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position, out Int32? lineAtPosition)
         {
@@ -151,12 +151,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// Gets the index of the glyph at the specified layout-relative position.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="x">The x-coordinate to evaluate.</param>
         /// <param name="y">The y-coordinate to evaluate.</param>
-        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
         {
@@ -165,149 +165,113 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets the index of the glyph at the specified position relative to the layout area.
+        /// Gets the index of the glyph at the specified layout-relative position.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="x">The x-coordinate to evaluate.</param>
         /// <param name="y">The y-coordinate to evaluate.</param>
         /// <param name="lineAtPosition">The index of the line of text that contains the specified position, regardless of
         /// whether the position corresponds to an actual glyph.</param>
-        /// <returns>The index of the glyph at the specified position relative to the layout area,
+        /// <returns>The index of the glyph at the specified layout-relative position,
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition)
         {
             Contract.Require(input, "input");
 
-            lineAtPosition = null;
+            return GetGlyphOrInsertionPointAtPosition(input, x, y, out lineAtPosition, false);
+        }
 
-            if (x < 0 || y < 0 || input.Count == 0)
-                return null;
+        /// <summary>
+        /// Gets the index of the insertion point which is closest to the specified layout-relative position.
+        /// </summary>
+        /// <remarks>An insertion point represents a position at which new text can be inserted into the formatted text, starting
+        /// at index 0 (before the first character) and ending at <see cref="TextLayoutCommandStream.Count"/>, inclusive (after the last character).</remarks>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="position">The position to evaluate.</param>
+        /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
+        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Vector2 position)
+        {
+            return GetInsertionPointAtPosition(input, (Int32)position.X, (Int32)position.Y);
+        }
 
-            var glyphCountSeen = 0;
-            var glyphFound = false;
-            var glyph = default(Int32?);
+        /// <summary>
+        /// Gets the index of the insertion point which is closest to the specified layout-relative position.
+        /// </summary>
+        /// <remarks>An insertion point represents a position at which new text can be inserted into the formatted text, starting
+        /// at index 0 (before the first character) and ending at <see cref="TextLayoutCommandStream.Count"/>, inclusive (after the last character).</remarks>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="position">The position to evaluate.</param>
+        /// <param name="lineAtPosition">The index of the line of text that contains the specified insertion point.</param>
+        /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
+        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Vector2 position, out Int32 lineAtPosition)
+        {
+            return GetInsertionPointAtPosition(input, (Int32)position.X, (Int32)position.Y, out lineAtPosition);
+        }
 
-            var settings = input.Settings;
-            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
-            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
-            var font = settings.Font;
-            var fontFace = font.GetFace(bold, italic);
+        /// <summary>
+        /// Gets the index of the insertion point which is closest to the specified layout-relative position.
+        /// </summary>
+        /// <remarks>An insertion point represents a position at which new text can be inserted into the formatted text, starting
+        /// at index 0 (before the first character) and ending at <see cref="TextLayoutCommandStream.Count"/>, inclusive (after the last character).</remarks>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="position">The position to evaluate.</param>
+        /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
+        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Point2 position)
+        {
+            return GetInsertionPointAtPosition(input, position.X, position.Y);
+        }
 
-            var source = (input.SourceText.SourceString != null) ?
-                new StringSource(input.SourceText.SourceString) :
-                new StringSource(input.SourceText.SourceStringBuilder);
+        /// <summary>
+        /// Gets the index of the insertion point which is closest to the specified layout-relative position.
+        /// </summary>
+        /// <remarks>An insertion point represents a position at which new text can be inserted into the formatted text, starting
+        /// at index 0 (before the first character) and ending at <see cref="TextLayoutCommandStream.Count"/>, inclusive (after the last character).</remarks>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="position">The position to evaluate.</param>
+        /// <param name="lineAtPosition">The index of the line of text that contains the specified insertion point.</param>
+        /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
+        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Point2 position, out Int32 lineAtPosition)
+        {
+            return GetInsertionPointAtPosition(input, position.X, position.Y, out lineAtPosition);
+        }
 
-            var acquiredPointers = !input.HasAcquiredPointers;
-            if (acquiredPointers)
-                input.AcquirePointers();
-            
-            input.Seek(0);
+        /// <summary>
+        /// Gets the index of the insertion point which is closest to the specified layout-relative position.
+        /// </summary>
+        /// <remarks>An insertion point represents a position at which new text can be inserted into the formatted text, starting
+        /// at index 0 (before the first character) and ending at <see cref="TextLayoutCommandStream.Count"/>, inclusive (after the last character).</remarks>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="x">The x-coordinate to evaluate.</param>
+        /// <param name="y">The y-coordinate to evaluate.</param>
+        /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
+        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
+        {
+            Contract.Require(input, "input");
 
-            var blockOffset = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
-            var offsetLineX = 0;
-            var offsetLineY = 0;
+            Int32? lineAtPosition;
+            return GetGlyphOrInsertionPointAtPosition(input, x, y, out lineAtPosition, true) ?? 0;
+        }
 
-            if (y < blockOffset || y >= blockOffset + input.ActualHeight)
-                return null;
+        /// <summary>
+        /// Gets the index of the insertion point which is closest to the specified layout-relative position.
+        /// </summary>
+        /// <remarks>An insertion point represents a position at which new text can be inserted into the formatted text, starting
+        /// at index 0 (before the first character) and ending at <see cref="TextLayoutCommandStream.Count"/>, inclusive (after the last character).</remarks>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="x">The x-coordinate to evaluate.</param>
+        /// <param name="y">The y-coordinate to evaluate.</param>
+        /// <param name="lineAtPosition">The index of the line of text that contains the specified insertion point.</param>
+        /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
+        public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32 lineAtPosition)
+        {
+            Contract.Require(input, "input");
 
-            var lineIndex = -1;
-            var lineWidth = 0;
-            var lineHeight = 0;
+            var lineAtPositionTemp = default(Int32?);
+            var result = GetGlyphOrInsertionPointAtPosition(input, x, y, out lineAtPositionTemp, true) ?? 0;
 
-            input.SeekNextCommand();
+            lineAtPosition = lineAtPositionTemp ?? 0;
 
-            // NOTE: If we only have a single font style, we can optimize by entirely skipping past lines prior to the one
-            // that contains the position we're interested in, because we don't need to process any commands that those lines contain.
-            var canSkipLines = !input.HasMultipleFontStyles;
-            if (canSkipLines)
-            {
-                SkipToLineAtPosition(input, x, y, ref lineIndex, ref offsetLineY, ref lineWidth, ref lineHeight, ref glyphCountSeen);
-                input.SeekNextCommand();
-            }
-
-            var glyphIsInCurrentLine = canSkipLines;
-
-            // Seek through the remaining commands until we find the one that contains our glyph.
-            while (!glyphFound && input.StreamPositionInObjects < input.Count)
-            {
-                var cmdType = *(TextLayoutCommandType*)input.Data;
-
-                switch (cmdType)
-                {
-                    case TextLayoutCommandType.LineInfo:
-                        {
-                            if (glyphIsInCurrentLine)
-                                return null;
-
-                            ProcessLineInfo(input, ref lineIndex, ref offsetLineX, ref offsetLineY, ref lineWidth, ref lineHeight);
-                            glyphIsInCurrentLine = (y >= offsetLineY && y < offsetLineY + lineHeight);
-
-                            if (glyphIsInCurrentLine)
-                                lineAtPosition = lineIndex;
-                        }
-                        break;
-
-                    case TextLayoutCommandType.Text:
-                        {
-                            var cmd = (TextLayoutTextCommand*)input.Data;
-                            if (glyphIsInCurrentLine)
-                            {
-                                var tokenBounds = cmd->GetAbsoluteBounds(offsetLineX, blockOffset, lineHeight);
-                                if (x >= tokenBounds.Left && x < tokenBounds.Right)
-                                {
-                                    var text = source.CreateStringSegmentFromSameSource(cmd->TextOffset, cmd->TextLength);
-                                    glyph = glyphCountSeen + GetGlyphAtPositionWithinText(fontFace, ref text, x - tokenBounds.Left);
-                                    glyphFound = true;
-                                }
-                            }
-                            glyphCountSeen += cmd->TextLength;
-                        }
-                        input.SeekNextCommand();
-                        break;
-
-                    case TextLayoutCommandType.Icon:
-                        {
-                            if (glyphIsInCurrentLine)
-                            {
-                                var iconCmd = (TextLayoutIconCommand*)input.Data;
-                                var iconBounds = iconCmd->GetAbsoluteBounds(offsetLineX, blockOffset, lineHeight);
-                                if (x >= iconBounds.Left && x < iconBounds.Right)
-                                {
-                                    glyph = glyphCountSeen;
-                                    glyphFound = true;
-                                }
-                            }
-                            glyphCountSeen++;
-                        }
-                        input.SeekNextCommand();
-                        break;
-                        
-                    case TextLayoutCommandType.LineBreak:
-                        {
-                            glyphCountSeen++;
-                        }
-                        input.SeekNextCommand();
-                        break;
-
-                    default:
-                        {
-                            var change = ProcessStylingCommand(input, cmdType, TextRendererStacks.Style | TextRendererStacks.Font, ref bold, ref italic, ref source);
-                            if ((change & TextRendererStateChange.ChangeFont) == TextRendererStateChange.ChangeFont)
-                            {
-                                RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            }
-                        }
-                        input.SeekNextCommand();
-                        break;
-                }
-            }
-
-            if (acquiredPointers)
-                input.ReleasePointers();
-
-            ClearLayoutStacks();
-
-            return glyph;
+            return result;
         }
 
         /// <summary>
@@ -1392,7 +1356,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the glyph within the specified text that contains the specified position.
         /// </summary>
-        private Int32 GetGlyphAtPositionWithinText(SpriteFontFace fontFace, ref StringSegment text, Int32 position)
+        private Int32? GetGlyphAtPositionWithinText(SpriteFontFace fontFace, ref StringSegment text, ref Int32 position, out Int32 glyphWidth, out Int32 glyphHeight)
         {
             var glyphPosition = 0;
             var glyphCount = 0;
@@ -1401,12 +1365,199 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var glyphSize = fontFace.MeasureGlyph(text, i);
                 if (position >= glyphPosition && position < glyphPosition + glyphSize.Width)
                 {
+                    glyphWidth = glyphSize.Width;
+                    glyphHeight = glyphSize.Height;
                     return glyphCount;
                 }
                 glyphPosition += glyphSize.Width;
                 glyphCount++;
             }
-            return text.Length;
+            glyphWidth = 0;
+            glyphHeight = 0;
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the index of the glyph or insertion point which is closest to the specified position in layout-relative space.
+        /// </summary>
+        private Int32? GetGlyphOrInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition, Boolean getInsertionPoint)
+        {
+            lineAtPosition = null;
+
+            if (getInsertionPoint)
+            {
+                if (y < 0 || input.Count == 0)
+                    return 0;
+            }
+            else
+            {
+                if (x < 0 || y < 0 || input.Count == 0)
+                    return null;
+            }
+
+            var glyphCountSeen = 0;
+            var glyphFound = false;
+            var glyph = default(Int32?);
+            var glyphBounds = Rectangle.Empty;
+
+            var settings = input.Settings;
+            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
+            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
+            var font = settings.Font;
+            var fontFace = font.GetFace(bold, italic);
+
+            var source = (input.SourceText.SourceString != null) ?
+                new StringSource(input.SourceText.SourceString) :
+                new StringSource(input.SourceText.SourceStringBuilder);
+
+            var acquiredPointers = !input.HasAcquiredPointers;
+            if (acquiredPointers)
+                input.AcquirePointers();
+
+            input.Seek(0);
+
+            var blockOffset = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+            var offsetLineX = 0;
+            var offsetLineY = 0;
+
+            if (y < blockOffset)
+            {
+                if (getInsertionPoint)
+                {
+                    lineAtPosition = 0;
+                    return 0;
+                }
+                lineAtPosition = null;
+                return null;
+            }
+
+            if (y >= blockOffset + input.ActualHeight)
+            {
+                if (getInsertionPoint)
+                {
+                    lineAtPosition = input.LineCount - 1;
+                    return input.TotalLength;
+                }
+                lineAtPosition = null;
+                return null;
+            }
+
+            var lineIndex = -1;
+            var lineWidth = 0;
+            var lineHeight = 0;
+
+            input.SeekNextCommand();
+
+            // NOTE: If we only have a single font style, we can optimize by entirely skipping past lines prior to the one
+            // that contains the position we're interested in, because we don't need to process any commands that those lines contain.
+            var canSkipLines = !input.HasMultipleFontStyles;
+            if (canSkipLines)
+            {
+                SkipToLineAtPosition(input, x, y, ref lineIndex, ref offsetLineY, ref lineWidth, ref lineHeight, ref glyphCountSeen);
+                input.SeekNextCommand();
+            }
+
+            var glyphIsInCurrentLine = canSkipLines;
+
+            // Seek through the remaining commands until we find the one that contains our glyph.
+            while (!glyphFound && input.StreamPositionInObjects < input.Count)
+            {
+                var cmdType = *(TextLayoutCommandType*)input.Data;
+
+                switch (cmdType)
+                {
+                    case TextLayoutCommandType.LineInfo:
+                        {
+                            if (glyphIsInCurrentLine)
+                                return getInsertionPoint ? glyphCountSeen : (Int32?)null;
+
+                            ProcessLineInfo(input, ref lineIndex, ref offsetLineX, ref offsetLineY, ref lineWidth, ref lineHeight);
+                            glyphIsInCurrentLine = (y >= offsetLineY && y < offsetLineY + lineHeight);
+
+                            if (glyphIsInCurrentLine)
+                                lineAtPosition = lineIndex;
+                        }
+                        break;
+
+                    case TextLayoutCommandType.Text:
+                        {
+                            var cmd = (TextLayoutTextCommand*)input.Data;
+                            if (glyphIsInCurrentLine)
+                            {
+                                var tokenBounds = cmd->GetAbsoluteBounds(offsetLineX, blockOffset, lineHeight);
+                                if (x >= tokenBounds.Left && x < tokenBounds.Right)
+                                {
+                                    var text = source.CreateStringSegmentFromSameSource(cmd->TextOffset, cmd->TextLength);
+                                    var glyphPos = (x - tokenBounds.Left);
+                                    var glyphWidth = 0;
+                                    var glyphHeight = 0;
+                                    glyph = glyphCountSeen + GetGlyphAtPositionWithinText(fontFace, ref text, ref glyphPos, out glyphWidth, out glyphHeight);
+                                    glyphBounds = new Rectangle(tokenBounds.X + glyphPos, tokenBounds.Y, glyphWidth, glyphHeight);
+                                    glyphFound = true;
+                                }
+                            }
+                            glyphCountSeen += cmd->TextLength;
+                        }
+                        input.SeekNextCommand();
+                        break;
+
+                    case TextLayoutCommandType.Icon:
+                        {
+                            if (glyphIsInCurrentLine)
+                            {
+                                var iconCmd = (TextLayoutIconCommand*)input.Data;
+                                var iconBounds = iconCmd->GetAbsoluteBounds(offsetLineX, blockOffset, lineHeight);
+                                if (x >= iconBounds.Left && x < iconBounds.Right)
+                                {
+                                    glyph = glyphCountSeen;
+                                    glyphBounds = iconBounds;
+                                    glyphFound = true;
+                                }
+                            }
+                            glyphCountSeen++;
+                        }
+                        input.SeekNextCommand();
+                        break;
+
+                    case TextLayoutCommandType.LineBreak:
+                        {
+                            glyphCountSeen++;
+                        }
+                        input.SeekNextCommand();
+                        break;
+
+                    default:
+                        {
+                            var change = ProcessStylingCommand(input, cmdType, TextRendererStacks.Style | TextRendererStacks.Font, ref bold, ref italic, ref source);
+                            if ((change & TextRendererStateChange.ChangeFont) == TextRendererStateChange.ChangeFont)
+                            {
+                                RefreshFont(ref settings, bold, italic, out font, out fontFace);
+                            }
+                        }
+                        input.SeekNextCommand();
+                        break;
+                }
+            }
+
+            if (acquiredPointers)
+                input.ReleasePointers();
+
+            ClearLayoutStacks();
+
+            if (getInsertionPoint)
+            {
+                if (glyph.HasValue)
+                {
+                    return (x - glyphBounds.Center.X < 0) ? glyph.Value : glyph.Value + 1;
+                }
+                else
+                {
+                    lineAtPosition = input.LineCount - 1;
+                    return input.TotalLength;
+                }
+            }
+
+            return glyph;
         }
 
         // The text parser.
