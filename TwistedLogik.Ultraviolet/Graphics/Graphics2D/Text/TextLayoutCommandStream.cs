@@ -80,6 +80,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Moves the stream past its last element.
+        /// </summary>
+        public void SeekEnd()
+        {
+            Seek(Count);
+        }
+
+        /// <summary>
         /// Moves the stream to the next command.
         /// </summary>
         /// <returns><c>true</c> if the stream was able to seek to the next command; otherwise, <c>false</c>.</returns>

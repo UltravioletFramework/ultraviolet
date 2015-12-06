@@ -182,67 +182,50 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             if (x < 0 || y < 0 || input.Count == 0)
                 return null;
-            
+
+            var glyphCountSeen = 0;
             var glyphFound = false;
             var glyph = default(Int32?);
-            var glyphIsInCurrentLine = false;
 
             var settings = input.Settings;
+            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
+            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
+            var font = settings.Font;
+            var fontFace = font.GetFace(bold, italic);
+
+            var source = (input.SourceText.SourceString != null) ?
+                new StringSource(input.SourceText.SourceString) :
+                new StringSource(input.SourceText.SourceStringBuilder);
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
                 input.AcquirePointers();
-
-            var glyphsSeen = 0;
-
-            var sourceString = input.SourceText.SourceString;
-            var sourceStringBuilder = input.SourceText.SourceStringBuilder;
-
-            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
-            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
-
-            var font = settings.Font;
-            var fontFace = font.GetFace(bold, italic);
-
+            
             input.Seek(0);
 
-            var offsetX = 0;
-            var offsetY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+            var blockOffset = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+            var offsetLineX = 0;
+            var offsetLineY = 0;
 
-            if (y < offsetY || y >= offsetY + input.ActualHeight)
+            if (y < blockOffset || y >= blockOffset + input.ActualHeight)
                 return null;
 
             var lineIndex = -1;
-            var linePosition = 0;
+            var lineWidth = 0;
             var lineHeight = 0;
 
             input.SeekNextCommand();
 
             // NOTE: If we only have a single font style, we can optimize by entirely skipping past lines prior to the one
-            // that contains the position we're interested in, because we know our style will never change from the default.
+            // that contains the position we're interested in, because we don't need to process any commands that those lines contain.
             var canSkipLines = !input.HasMultipleFontStyles;
             if (canSkipLines)
             {
-                do
-                {
-                    var cmd = (TextLayoutLineInfoCommand*)input.Data;
-                    lineIndex++;
-                    lineHeight = cmd->LineHeight;
-
-                    if (y >= linePosition && y < linePosition + lineHeight)
-                    {
-                        lineAtPosition = lineIndex;
-                        break;
-                    }
-
-                    glyphsSeen += cmd->LengthInGlyphs;
-                    linePosition += cmd->LineHeight;
-                }
-                while (input.SeekNextLine());
-                
-                glyphIsInCurrentLine = true;
+                SkipToLineAtPosition(input, x, y, ref lineIndex, ref offsetLineY, ref lineWidth, ref lineHeight, ref glyphCountSeen);
                 input.SeekNextCommand();
             }
+
+            var glyphIsInCurrentLine = canSkipLines;
 
             // Seek through the remaining commands until we find the one that contains our glyph.
             while (!glyphFound && input.StreamPositionInObjects < input.Count)
@@ -256,13 +239,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             if (glyphIsInCurrentLine)
                                 return null;
 
-                            var cmd = (TextLayoutLineInfoCommand*)input.Data;
-                            offsetX = cmd->Offset;
-                            lineIndex++;
-                            linePosition += lineHeight;
-                            lineHeight = cmd->LineHeight;
+                            ProcessLineInfo(input, ref lineIndex, ref offsetLineX, ref offsetLineY, ref lineWidth, ref lineHeight);
+                            glyphIsInCurrentLine = (y >= offsetLineY && y < offsetLineY + lineHeight);
 
-                            glyphIsInCurrentLine = (y >= linePosition && y < linePosition + cmd->LineHeight);
                             if (glyphIsInCurrentLine)
                                 lineAtPosition = lineIndex;
                         }
@@ -270,127 +249,57 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     case TextLayoutCommandType.Text:
                         {
-                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
-
                             var cmd = (TextLayoutTextCommand*)input.Data;
                             if (glyphIsInCurrentLine)
                             {
-                                var tokenBounds = cmd->GetAbsoluteBounds(offsetX, offsetY, lineHeight);
+                                var tokenBounds = cmd->GetAbsoluteBounds(offsetLineX, blockOffset, lineHeight);
                                 if (x >= tokenBounds.Left && x < tokenBounds.Right)
                                 {
-                                    var cmdText = (sourceString != null) ?
-                                        new StringSegment(sourceString, cmd->TextOffset, cmd->TextLength) :
-                                        new StringSegment(sourceStringBuilder, cmd->TextOffset, cmd->TextLength);
-
+                                    var text = source.CreateStringSegmentFromSameSource(cmd->TextOffset, cmd->TextLength);
+                                    glyph = glyphCountSeen + GetGlyphAtPositionWithinText(fontFace, ref text, x - tokenBounds.Left);
                                     glyphFound = true;
-
-                                    var glyphX = tokenBounds.X;
-                                    for (int i = 0; i < cmdText.Length; i++)
-                                    {
-                                        var glyphSize = fontFace.MeasureGlyph(cmdText, i);
-                                        if (x >= glyphX && x < glyphX + glyphSize.Width)
-                                        {
-                                            glyph = glyphsSeen;
-                                            break;
-                                        }
-                                        glyphX += glyphSize.Width;
-                                        glyphsSeen++;
-                                    }
                                 }
                             }
-
-                            if (!glyphFound)
-                                glyphsSeen += cmd->TextLength;
+                            glyphCountSeen += cmd->TextLength;
                         }
+                        input.SeekNextCommand();
                         break;
 
                     case TextLayoutCommandType.Icon:
                         {
-                            var cmd = (TextLayoutIconCommand*)input.Data;
                             if (glyphIsInCurrentLine)
                             {
-                                var glyphBounds = cmd->GetAbsoluteBounds(offsetX, offsetY, lineHeight);
-                                if (x >= glyphBounds.Left && x < glyphBounds.Right)
+                                var iconCmd = (TextLayoutIconCommand*)input.Data;
+                                var iconBounds = iconCmd->GetAbsoluteBounds(offsetLineX, blockOffset, lineHeight);
+                                if (x >= iconBounds.Left && x < iconBounds.Right)
                                 {
-                                    glyph = glyphsSeen;
+                                    glyph = glyphCountSeen;
                                     glyphFound = true;
                                 }
                             }
-                            glyphsSeen++;
+                            glyphCountSeen++;
                         }
+                        input.SeekNextCommand();
                         break;
-
-                    case TextLayoutCommandType.ToggleBold:
-                        {
-                            bold = !bold;
-                        }
-                        break;
-
-                    case TextLayoutCommandType.ToggleItalic:
-                        {
-                            italic = !italic;
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PushStyle:
-                        {
-                            var cmd = (TextLayoutStyleCommand*)input.Data;
-                            var cmdStyle = input.GetStyle(cmd->StyleIndex);
-                            PushStyle(cmdStyle, ref bold, ref italic);
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PushFont:
-                        {
-                            var cmd = (TextLayoutFontCommand*)input.Data;
-                            var cmdFont = input.GetFont(cmd->FontIndex);
-                            PushFont(cmdFont);
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PopStyle:
-                        {
-                            PopStyle(ref bold, ref italic);
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PopFont:
-                        {
-                            PopFont();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.ChangeSourceString:
-                        {
-                            var cmd = (TextLayoutSourceStringCommand*)input.Data;
-                            sourceString = input.GetSourceString(cmd->SourceIndex);
-                            sourceStringBuilder = null;
-                        }
-                        break;
-
-                    case TextLayoutCommandType.ChangeSourceStringBuilder:
-                        {
-                            var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
-                            sourceString = null;
-                            sourceStringBuilder = input.GetSourceStringBuilder(cmd->SourceIndex);
-                        }
-                        break;
-
+                        
                     case TextLayoutCommandType.LineBreak:
                         {
-                            glyphsSeen++;
+                            glyphCountSeen++;
                         }
+                        input.SeekNextCommand();
                         break;
 
-                    case TextLayoutCommandType.PushColor:
-                    case TextLayoutCommandType.PushGlyphShader:
-                    case TextLayoutCommandType.PopColor:
-                    case TextLayoutCommandType.PopGlyphShader:
-                    case TextLayoutCommandType.Hyphen:
+                    default:
+                        {
+                            var change = ProcessStylingCommand(input, cmdType, TextRendererStacks.Style | TextRendererStacks.Font, ref bold, ref italic, ref source);
+                            if ((change & TextRendererStateChange.ChangeFont) == TextRendererStateChange.ChangeFont)
+                            {
+                                RefreshFont(ref settings, bold, italic, out font, out fontFace);
+                            }
+                        }
+                        input.SeekNextCommand();
                         break;
                 }
-
-                input.SeekNextCommand();
             }
 
             if (acquiredPointers)
@@ -410,7 +319,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Rectangle GetLineBounds(TextLayoutCommandStream input, Int32 index)
         {
             Contract.Require(input, "input");
-            Contract.EnsureRange(index >= 0 && index < input.LineCount, "index");            
+            Contract.EnsureRange(index >= 0 && index < input.LineCount, "index");
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
@@ -448,8 +357,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A bounding box for the specified glyph, relative to the text layout area.</returns>
         public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index)
         {
-            Int32 lineHeight;
-            return GetGlyphBounds(input, index, out lineHeight);
+            Int32 lineWidth, lineHeight;
+            return GetGlyphBounds(input, index, out lineWidth, out lineHeight);
         }
 
         /// <summary>
@@ -457,19 +366,33 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="index">The index of the glyph for which to retrieve a bounding box.</param>
+        /// <param name="lineWidth">The width of the line that contains the specified glyph.</param>
         /// <param name="lineHeight">The height of the line that contains the specified glyph.</param>
         /// <returns>A bounding box for the specified glyph, relative to the text layout area.</returns>
-        public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index, out Int32 lineHeight)
+        public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index, out Int32 lineWidth, out Int32 lineHeight)
         {
             Contract.Require(input, "input");
             Contract.EnsureRange(index >= 0 && index < input.TotalLength, "index");
 
+            var glyphCountSeen = 0;
+
             var boundsOnLineBreak = false;
             var boundsFound = false;
             var bounds = Rectangle.Empty;
+
+            var lineIndex = -1;
+            lineWidth = 0;
             lineHeight = 0;
 
             var settings = input.Settings;
+            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
+            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
+            var font = settings.Font;
+            var fontFace = font.GetFace(bold, italic);
+
+            var source = (input.SourceText.SourceString != null) ?
+                new StringSource(input.SourceText.SourceString) :
+                new StringSource(input.SourceText.SourceStringBuilder);
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
@@ -477,38 +400,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             input.Seek(0);
 
-            var glyphsSeen = 0;
-
-            var sourceString = input.SourceText.SourceString;
-            var sourceStringBuilder = input.SourceText.SourceStringBuilder;
-
-            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
-            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
-
-            var font = settings.Font;
-            var fontFace = font.GetFace(bold, italic);
-
-            var offsetBlockY = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
+            var blockOffset = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
             var offsetLineX = 0;
             var offsetLineY = 0;
-            
+
             input.SeekNextCommand();
 
             // NOTE: If we only have a single font style, we can optimize by entirely skipping past lines prior to the one
-            // that contains the position we're interested in, because we know our style will never change from the default.
+            // that contains the position we're interested in, because we don't need to process any commands that those lines contain.
             var canSkipLines = !input.HasMultipleFontStyles;
             if (canSkipLines)
-            {
-                while (true)
-                {
-                    var cmd = (TextLayoutLineInfoCommand*)input.Data;
-                    if (glyphsSeen + cmd->LengthInGlyphs > index)
-                        break;
-
-                    glyphsSeen += cmd->LengthInGlyphs;
-                    input.SeekNextLine();
-                }
-            }
+                SkipToLineContainingGlyph(input, index, ref glyphCountSeen);
 
             // Seek through the remaining commands until we find the one that contains our glyph.
             while (!boundsFound && input.StreamPositionInObjects < input.Count)
@@ -521,136 +423,72 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 {
                     case TextLayoutCommandType.LineInfo:
                         {
-                            var cmd = (TextLayoutLineInfoCommand*)input.Data;
-                            offsetLineX = cmd->Offset;
-                            offsetLineY = offsetLineY + lineHeight;
-                            lineHeight = cmd->LineHeight;
-
+                            ProcessLineInfo(input, ref lineIndex, ref offsetLineX, ref offsetLineY, ref lineWidth, ref lineHeight);
                             if (boundsOnLineBreak)
                             {
                                 boundsFound = true;
-                                bounds = new Rectangle(offsetLineX, offsetBlockY + offsetLineY, 0, lineHeight);
+                                bounds = new Rectangle(offsetLineX, blockOffset + offsetLineY, 0, lineHeight);
                             }
                         }
                         break;
 
                     case TextLayoutCommandType.Text:
                         {
-                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
-
                             var cmd = (TextLayoutTextCommand*)input.Data;
-                            if (glyphsSeen + cmd->TextLength > index)
+                            if (glyphCountSeen + cmd->TextLength > index)
                             {
-                                var cmdText = (sourceString != null) ?
-                                    new StringSegment(sourceString, cmd->TextOffset, cmd->TextLength) :
-                                    new StringSegment(sourceStringBuilder, cmd->TextOffset, cmd->TextLength);
+                                var text = source.CreateStringSegmentFromSameSource(cmd->TextOffset, cmd->TextLength);
 
-                                var indexWithinText = index - glyphsSeen;
-
-                                var glyphOffset = (indexWithinText == 0) ? 0 : fontFace.MeasureString(cmdText, 0, indexWithinText).Width;
-                                var glyphSize = fontFace.MeasureGlyph(cmdText, indexWithinText);
-                                var glyphPosition = cmd->GetAbsolutePosition(offsetLineX + glyphOffset, offsetBlockY, lineHeight);
+                                var glyphIndexWithinText = index - glyphCountSeen;
+                                var glyphOffset = (glyphIndexWithinText == 0) ? 0 : fontFace.MeasureString(text, 0, glyphIndexWithinText).Width;
+                                var glyphSize = fontFace.MeasureGlyph(text, glyphIndexWithinText);
+                                var glyphPosition = cmd->GetAbsolutePosition(offsetLineX + glyphOffset, blockOffset, lineHeight);
 
                                 bounds = new Rectangle(glyphPosition, glyphSize);
                                 boundsFound = true;
                             }
-                            glyphsSeen += cmd->TextLength;
+                            glyphCountSeen += cmd->TextLength;
                         }
+                        input.SeekNextCommand();
                         break;
 
                     case TextLayoutCommandType.Icon:
                         {
                             var cmd = (TextLayoutIconCommand*)input.Data;
-                            if (glyphsSeen + 1 > index)
+                            if (++glyphCountSeen > index)
                             {
-                                var glyphPosition = cmd->GetAbsolutePosition(offsetLineX, offsetBlockY, lineHeight);
+                                var glyphPosition = cmd->GetAbsolutePosition(offsetLineX, blockOffset, lineHeight);
                                 bounds = new Rectangle(glyphPosition, cmd->Bounds.Size);
                                 boundsFound = true;
                             }
-                            glyphsSeen++;
                         }
-                        break;
-
-                    case TextLayoutCommandType.ToggleBold:
-                        {
-                            bold = !bold;
-                        }
-                        break;
-
-                    case TextLayoutCommandType.ToggleItalic:
-                        {
-                            italic = !italic;
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PushStyle:
-                        {
-                            var cmd = (TextLayoutStyleCommand*)input.Data;
-                            var cmdStyle = input.GetStyle(cmd->StyleIndex);
-                            PushStyle(cmdStyle, ref bold, ref italic);
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PushFont:
-                        {
-                            var cmd = (TextLayoutFontCommand*)input.Data;
-                            var cmdFont = input.GetFont(cmd->FontIndex);
-                            PushFont(cmdFont);
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PopStyle:
-                        {
-                            PopStyle(ref bold, ref italic);
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PopFont:
-                        {
-                            PopFont();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.ChangeSourceString:
-                        {
-                            var cmd = (TextLayoutSourceStringCommand*)input.Data;
-                            sourceString = input.GetSourceString(cmd->SourceIndex);
-                            sourceStringBuilder = null;
-                        }
-                        break;
-
-                    case TextLayoutCommandType.ChangeSourceStringBuilder:
-                        {
-                            var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
-                            sourceString = null;
-                            sourceStringBuilder = input.GetSourceStringBuilder(cmd->SourceIndex);
-                        }
+                        input.SeekNextCommand();
                         break;
 
                     case TextLayoutCommandType.LineBreak:
                         {
-                            if (glyphsSeen + 1 > index)
-                            {
+                            if (++glyphCountSeen > index)
                                 boundsOnLineBreak = true;
-                            }
-                            glyphsSeen++;
                         }
+                        input.SeekNextCommand();
                         break;
 
-                    case TextLayoutCommandType.PushColor:
-                    case TextLayoutCommandType.PushGlyphShader:
-                    case TextLayoutCommandType.PopColor:
-                    case TextLayoutCommandType.PopGlyphShader:
-                    case TextLayoutCommandType.Hyphen:
+                    default:
+                        {
+                            var change = ProcessStylingCommand(input, cmdType, TextRendererStacks.Style | TextRendererStacks.Font, ref bold, ref italic, ref source);
+                            if ((change & TextRendererStateChange.ChangeFont) == TextRendererStateChange.ChangeFont)
+                            {
+                                RefreshFont(ref settings, bold, italic, out font, out fontFace);
+                            }
+                        }
+                        input.SeekNextCommand();
                         break;
                 }
-
-                input.SeekNextCommand();
             }
 
             if (acquiredPointers)
                 input.ReleasePointers();
-            
+
             ClearLayoutStacks();
 
             return bounds;
@@ -816,7 +654,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(input, "input");
             Contract.Require(output, "output");
-            
+
             parser.Parse(input, parserResult);
             layoutEngine.CalculateLayout(parserResult, output, settings);
         }
@@ -863,7 +701,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
-            
+
             parser.Parse(input, parserResult);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
@@ -886,7 +724,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
-            
+
             parser.Parse(input, parserResult, parserOptions);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
@@ -906,7 +744,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
-            
+
             parser.Parse(input, parserResult);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
@@ -929,13 +767,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(spriteBatch, "spriteBatch");
             Contract.Require(input, "input");
-            
+
             parser.Parse(input, parserResult, parserOptions);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
 
             return DrawInternal(spriteBatch, layoutResult, position, defaultColor, start, count);
         }
-        
+
         /// <summary>
         /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
         /// </summary>
@@ -1018,8 +856,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (input.Settings.Font == null)
                 throw new ArgumentException(UltravioletStrings.InvalidLayoutSettings);
 
-            var end = (count == Int32.MaxValue) ? Int32.MaxValue : start + count - 1;
-
             var settings = input.Settings;
             var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
             var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
@@ -1029,10 +865,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             var availableHeight = settings.Height ?? Int32.MaxValue;
             var blockOffset = 0;
+            var lineIndex = -1;
             var lineOffset = 0;
             var linePosition = 0;
+            var lineWidth = 0;
             var lineHeight = 0;
+
             var charsSeen = 0;
+            var charsMax = (count == Int32.MaxValue) ? Int32.MaxValue : start + count - 1;
 
             var source = new StringSource(input.SourceText);
 
@@ -1044,156 +884,55 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             while (input.StreamPositionInObjects < input.Count)
             {
-                if (charsSeen > end)
+                if (charsSeen > charsMax)
                     break;
 
                 var cmdType = *(TextLayoutCommandType*)input.Data;
                 switch (cmdType)
                 {
                     case TextLayoutCommandType.BlockInfo:
-                        {
-                            var cmd = (TextLayoutBlockInfoCommand*)input.Data;
-                            blockOffset = cmd->Offset;
-                            input.SeekNextCommand();
-                        }
+                        ProcessBlockInfo(input, out blockOffset);
                         break;
 
                     case TextLayoutCommandType.LineInfo:
                         {
-                            var cmd = (TextLayoutLineInfoCommand*)input.Data;
-                            lineOffset = cmd->Offset;
-                            lineHeight = cmd->LineHeight;
+                            ProcessLineInfo(input, ref lineIndex, ref lineOffset, ref linePosition, ref lineWidth, ref lineHeight);
                             if (blockOffset + linePosition + lineHeight > availableHeight)
                             {
-                                input.Seek(input.Count);
-                                break;
+                                input.SeekEnd();
                             }
-                            linePosition = linePosition + lineHeight;
-                            input.SeekNextCommand();
                         }
                         break;
 
                     case TextLayoutCommandType.Text:
                         DrawText(spriteBatch, input, fontFace, ref source,
-                            position.X + lineOffset, position.Y + blockOffset, lineHeight, start, end, color, ref charsSeen);
+                            position.X + lineOffset, position.Y + blockOffset, lineHeight, start, charsMax, color, ref charsSeen);
                         break;
 
                     case TextLayoutCommandType.Icon:
-                        DrawIcon(spriteBatch, input, position.X + lineOffset, position.Y + blockOffset, lineHeight, start, count, color, ref charsSeen);
+                        DrawIcon(spriteBatch, input, 
+                            position.X + lineOffset, position.Y + blockOffset, lineHeight, start, count, color, ref charsSeen);
                         break;
-
-                    case TextLayoutCommandType.ToggleBold:
-                        {
-                            bold = !bold;
-                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.ToggleItalic:
-                        {
-                            italic = !italic;
-                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PushStyle:
-                        {
-                            var cmd = (TextLayoutStyleCommand*)input.Data;
-                            PushStyle(input.GetStyle(cmd->StyleIndex), ref bold, ref italic);
-                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            RefreshColor(defaultColor, out color);
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PushFont:
-                        {
-                            var cmd = (TextLayoutFontCommand*)input.Data;
-                            var cmdFont = input.GetFont(cmd->FontIndex);
-                            PushFont(cmdFont);
-                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PushColor:
-                        {
-                            var cmd = (TextLayoutColorCommand*)input.Data;
-                            var cmdColor = cmd->Color;
-                            PushColor(cmdColor);
-                            RefreshColor(defaultColor, out color);
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PushGlyphShader:
-                        {
-                            var cmd = (TextLayoutGlyphShaderCommand*)input.Data;
-                            PushGlyphShader(input.GetGlyphShader(cmd->GlyphShaderIndex));
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PopStyle:
-                        {
-                            PopStyle(ref bold, ref italic);
-                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            RefreshColor(defaultColor, out color);
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PopFont:
-                        {
-                            PopFont();
-                            RefreshFont(ref settings, bold, italic, out font, out fontFace);
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PopColor:
-                        {
-                            PopColor();
-                            RefreshColor(defaultColor, out color);
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.PopGlyphShader:
-                        {
-                            PopGlyphShader();
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.ChangeSourceString:
-                        {
-                            var cmd = (TextLayoutSourceStringCommand*)input.Data;
-                            source = new StringSource(input.GetSourceString(cmd->SourceIndex));
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.ChangeSourceStringBuilder:
-                        {
-                            var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
-                            source = new StringSource(input.GetSourceStringBuilder(cmd->SourceIndex));
-                            input.SeekNextCommand();
-                        }
-                        break;
-
-                    case TextLayoutCommandType.Hyphen:
-                        input.SeekNextCommand();
-                        break;
-
+                        
                     case TextLayoutCommandType.LineBreak:
+                        {
+                            charsSeen++;
+                        }
                         input.SeekNextCommand();
-                        charsSeen++;
                         break;
 
                     default:
+                        {
+                            var change = ProcessStylingCommand(input, cmdType, TextRendererStacks.All, ref bold, ref italic, ref source);
+                            if ((change & TextRendererStateChange.ChangeFont) == TextRendererStateChange.ChangeFont)
+                            {
+                                RefreshFont(ref settings, bold, italic, out font, out fontFace);
+                            }
+                            if ((change & TextRendererStateChange.ChangeColor) == TextRendererStateChange.ChangeColor)
+                            {
+                                RefreshColor(defaultColor, out color);
+                            }
+                        }
                         input.SeekNextCommand();
                         break;
                 }
@@ -1278,7 +1017,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Draws an icon command.
         /// </summary>
-        private void DrawIcon(SpriteBatch spriteBatch, TextLayoutCommandStream input, 
+        private void DrawIcon(SpriteBatch spriteBatch, TextLayoutCommandStream input,
             Single x, Single y, Int32 lineHeight, Int32 start, Int32 end, Color color, ref Int32 charsSeen)
         {
             var cmd = (TextLayoutIconCommand*)input.Data;
@@ -1315,7 +1054,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         iconWidth *= glyphData.ScaleX;
                         iconHeight *= glyphData.ScaleY;
                     }
-                    
+
                     if (glyphData.DirtyColor)
                         color = glyphData.Color;
                 }
@@ -1485,7 +1224,191 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             color = (colorStack.Count == 0) ? defaultColor : colorStack.Peek().Value;
         }
-                
+
+        /// <summary>
+        /// Processes a styling command and returns a value specifying which, if any, styling parameters were changed as a result.
+        /// </summary>
+        private TextRendererStateChange ProcessStylingCommand(TextLayoutCommandStream input, TextLayoutCommandType type, TextRendererStacks stacks,
+            ref Boolean bold, ref Boolean italic, ref StringSource source)
+        {
+            switch (type)
+            {
+                case TextLayoutCommandType.ToggleBold:
+                    bold = !bold;
+                    return TextRendererStateChange.ChangeFont;
+
+                case TextLayoutCommandType.ToggleItalic:
+                    italic = !italic;
+                    return TextRendererStateChange.ChangeFont;
+
+                case TextLayoutCommandType.PushStyle:
+                    if ((stacks & TextRendererStacks.Style) == TextRendererStacks.Style)
+                    {
+                        var cmd = (TextLayoutStyleCommand*)input.Data;
+                        PushStyle(input.GetStyle(cmd->StyleIndex), ref bold, ref italic);
+                        return TextRendererStateChange.ChangeFont | TextRendererStateChange.ChangeColor | TextRendererStateChange.ChangeGlyphShader;
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.PushFont:
+                    if ((stacks & TextRendererStacks.Font) == TextRendererStacks.Font)
+                    {
+                        var cmd = (TextLayoutFontCommand*)input.Data;
+                        PushFont(input.GetFont(cmd->FontIndex));
+                        return TextRendererStateChange.ChangeFont;
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.PushColor:
+                    if ((stacks & TextRendererStacks.Color) == TextRendererStacks.Color)
+                    {
+                        var cmd = (TextLayoutColorCommand*)input.Data;
+                        PushColor(cmd->Color);
+                        return TextRendererStateChange.ChangeColor;
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.PushGlyphShader:
+                    if ((stacks & TextRendererStacks.GlyphShader) == TextRendererStacks.GlyphShader)
+                    {
+                        var cmd = (TextLayoutGlyphShaderCommand*)input.Data;
+                        PushGlyphShader(input.GetGlyphShader(cmd->GlyphShaderIndex));
+                        return TextRendererStateChange.ChangeGlyphShader;
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.PopStyle:
+                    if ((stacks & TextRendererStacks.Style) == TextRendererStacks.Style)
+                    {
+                        PopStyle(ref bold, ref italic);
+                        return TextRendererStateChange.ChangeFont | TextRendererStateChange.ChangeColor | TextRendererStateChange.ChangeGlyphShader;
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.PopFont:
+                    if ((stacks & TextRendererStacks.Font) == TextRendererStacks.Font)
+                    {
+                        PopFont();
+                        return TextRendererStateChange.ChangeFont;
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.PopColor:
+                    if ((stacks & TextRendererStacks.Color) == TextRendererStacks.Color)
+                    {
+                        PopColor();
+                        return TextRendererStateChange.ChangeColor;
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.PopGlyphShader:
+                    if ((stacks & TextRendererStacks.GlyphShader) == TextRendererStacks.GlyphShader)
+                    {
+                        PopGlyphShader();
+                        return TextRendererStateChange.ChangeGlyphShader;
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.ChangeSourceString:
+                    {
+                        var cmd = (TextLayoutSourceStringCommand*)input.Data;
+                        source = new StringSource(input.GetSourceString(cmd->SourceIndex));
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.ChangeSourceStringBuilder:
+                    {
+                        var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
+                        source = new StringSource(input.GetSourceStringBuilder(cmd->SourceIndex));
+                    }
+                    return TextRendererStateChange.None;
+            }
+
+            return TextRendererStateChange.None;
+        }
+
+        /// <summary>
+        /// Processes a <see cref="TextLayoutCommandType.BlockInfo"/> command.
+        /// </summary>
+        private void ProcessBlockInfo(TextLayoutCommandStream input, out Int32 offset)
+        {
+            var cmd = (TextLayoutBlockInfoCommand*)input.Data;
+            offset = cmd->Offset;
+            input.SeekNextCommand();
+        }
+
+        /// <summary>
+        /// Processes a <see cref="TextLayoutCommandType.LineInfo"/> command.
+        /// </summary>
+        private void ProcessLineInfo(TextLayoutCommandStream input, ref Int32 index, ref Int32 offset, ref Int32 position, ref Int32 width, ref Int32 height)
+        {
+            var cmd = (TextLayoutLineInfoCommand*)input.Data;
+            index++;
+            offset = cmd->Offset;
+            position = position + height;
+            width = cmd->LineWidth;
+            height = cmd->LineHeight;
+            input.SeekNextCommand();
+        }
+
+        /// <summary>
+        /// Moves the specified command stream forward to the beginning of the line that contains the specified coordinates.
+        /// </summary>
+        private void SkipToLineAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y,
+            ref Int32 lineIndex, ref Int32 linePosition, ref Int32 lineWidth, ref Int32 lineHeight, ref Int32 glyphCountSeen)
+        {
+            do
+            {
+                var cmd = (TextLayoutLineInfoCommand*)input.Data;
+                lineIndex++;
+                lineWidth = cmd->LineWidth;
+                lineHeight = cmd->LineHeight;
+
+                if (y >= linePosition && y < linePosition + lineHeight)
+                    break;
+
+                glyphCountSeen += cmd->LengthInGlyphs;
+                linePosition += cmd->LineHeight;
+            }
+            while (input.SeekNextLine());
+        }
+
+        /// <summary>
+        /// Moves the specified command stream forward to the beginning of the line that contains the specified glyph.
+        /// </summary>
+        private void SkipToLineContainingGlyph(TextLayoutCommandStream input, Int32 glyph, ref Int32 glyphCountSeen)
+        {
+            while (true)
+            {
+                var cmd = (TextLayoutLineInfoCommand*)input.Data;
+                if (glyphCountSeen + cmd->LengthInGlyphs > glyph)
+                    break;
+
+                glyphCountSeen += cmd->LengthInGlyphs;
+                input.SeekNextLine();
+            }
+        }
+
+        /// <summary>
+        /// Gets the index of the glyph within the specified text that contains the specified position.
+        /// </summary>
+        private Int32 GetGlyphAtPositionWithinText(SpriteFontFace fontFace, ref StringSegment text, Int32 position)
+        {
+            var glyphPosition = 0;
+            var glyphCount = 0;
+            for (int i = 0; i < text.Length; i++)
+            {
+                var glyphSize = fontFace.MeasureGlyph(text, i);
+                if (position >= glyphPosition && position < glyphPosition + glyphSize.Width)
+                {
+                    return glyphCount;
+                }
+                glyphPosition += glyphSize.Width;
+                glyphCount++;
+            }
+            return text.Length;
+        }
+
         // The text parser.
         private readonly TextParser parser = new TextParser();
         private readonly TextParserTokenStream parserResult = new TextParserTokenStream();
