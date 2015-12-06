@@ -275,11 +275,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets a bounding box for the specified line, relative to the text layout area.
+        /// Gets a layout-relative bounding box for the specified line.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="index">The index of the line for which to retrieve a bounding box.</param>
-        /// <returns>A bounding box for the specified line, relative to the text layout area.</returns>
+        /// <returns>A layout-relative bounding box for the specified line.</returns>
         public Rectangle GetLineBounds(TextLayoutCommandStream input, Int32 index)
         {
             Contract.Require(input, "input");
@@ -314,26 +314,28 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets a bounding box for the specified glyph, relative to the text layout area.
+        /// Gets a layout-relative bounding box for the specified glyph.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="index">The index of the glyph for which to retrieve a bounding box.</param>
-        /// <returns>A bounding box for the specified glyph, relative to the text layout area.</returns>
-        public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index)
+        /// <param name="spanLineHeight">A value indicating whether the returned bounds should span the height of the line.</param>
+        /// <returns>A layout-relative bounding box for the specified glyph.</returns>
+        public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index, Boolean spanLineHeight = false)
         {
             Int32 lineWidth, lineHeight;
-            return GetGlyphBounds(input, index, out lineWidth, out lineHeight);
+            return GetGlyphBounds(input, index, out lineWidth, out lineHeight, spanLineHeight);
         }
 
         /// <summary>
-        /// Gets a bounding box for the specified glyph, relative to the text layout area.
+        /// Gets a layout-relative bounding box for the specified glyph.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="index">The index of the glyph for which to retrieve a bounding box.</param>
         /// <param name="lineWidth">The width of the line that contains the specified glyph.</param>
         /// <param name="lineHeight">The height of the line that contains the specified glyph.</param>
-        /// <returns>A bounding box for the specified glyph, relative to the text layout area.</returns>
-        public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index, out Int32 lineWidth, out Int32 lineHeight)
+        /// <param name="spanLineHeight">A value indicating whether the returned bounds should span the height of the line.</param>
+        /// <returns>A layout-relative bounding box for the specified glyph.</returns>
+        public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index, out Int32 lineWidth, out Int32 lineHeight, Boolean spanLineHeight = false)
         {
             Contract.Require(input, "input");
             Contract.EnsureRange(index >= 0 && index < input.TotalLength, "index");
@@ -406,9 +408,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                                 var glyphIndexWithinText = index - glyphCountSeen;
                                 var glyphOffset = (glyphIndexWithinText == 0) ? 0 : fontFace.MeasureString(text, 0, glyphIndexWithinText).Width;
                                 var glyphSize = fontFace.MeasureGlyph(text, glyphIndexWithinText);
-                                var glyphPosition = cmd->GetAbsolutePosition(offsetLineX + glyphOffset, blockOffset, lineHeight);
+                                var glyphPosition = spanLineHeight ? new Point2(cmd->Bounds.Location.X + glyphOffset, cmd->Bounds.Location.Y) :
+                                    cmd->GetAbsolutePosition(offsetLineX + glyphOffset, blockOffset, lineHeight);
 
-                                bounds = new Rectangle(glyphPosition, glyphSize);
+                                bounds = new Rectangle(glyphPosition, spanLineHeight ? new Size2(glyphSize.Width, lineHeight) : glyphSize);
                                 boundsFound = true;
                             }
                             glyphCountSeen += cmd->TextLength;
@@ -421,8 +424,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutIconCommand*)input.Data;
                             if (++glyphCountSeen > index)
                             {
-                                var glyphPosition = cmd->GetAbsolutePosition(offsetLineX, blockOffset, lineHeight);
-                                bounds = new Rectangle(glyphPosition, cmd->Bounds.Size);
+                                var glyphSize = cmd->Bounds.Size;
+                                var glyphPosition = spanLineHeight ? cmd->Bounds.Location :
+                                    cmd->GetAbsolutePosition(offsetLineX, blockOffset, lineHeight);
+
+                                bounds = new Rectangle(glyphPosition, spanLineHeight ? new Size2(glyphSize.Width, lineHeight) : glyphSize);
                                 boundsFound = true;
                             }
                         }
@@ -456,6 +462,36 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             ClearLayoutStacks();
 
             return bounds;
+        }
+
+        /// <summary>
+        /// Gets a layout-relative bounding box for the specified insertion point.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="index">The index of the insertion point for which to retrieve a bounding box.</param>
+        /// <returns>A layout-relative bounding box for the specified glyph.</returns>
+        public Rectangle GetInsertionPointBounds(TextLayoutCommandStream input, Int32 index)
+        {
+            Contract.Require(input, "input");
+
+            if (input.TotalLength == 0)
+            {
+                if (input.Settings.Font == null)
+                    return Rectangle.Empty;
+
+                return new Rectangle(0, 0, 0, input.Settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing);
+            }
+
+            var lineWidth = 0;
+            var lineHeight = 0;
+
+            var glyphIsInFrontOfInsertionPoint = (index < input.TotalLength);
+            var glyphBounds = GetGlyphBounds(input, glyphIsInFrontOfInsertionPoint ? index : input.TotalLength - 1, out lineWidth, out lineHeight, true);
+
+            if (glyphIsInFrontOfInsertionPoint)
+                return new Rectangle(glyphBounds.Left, glyphBounds.Top, 0, glyphBounds.Height);
+
+            return new Rectangle(glyphBounds.Right, glyphBounds.Top, 0, glyphBounds.Height);
         }
 
         /// <summary>
