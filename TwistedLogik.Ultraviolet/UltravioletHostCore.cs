@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet
             if (!host.IsActive && InactiveSleepTime.TotalMilliseconds > 0)
                 Thread.Sleep(InactiveSleepTime);
  
-            uv.ProcessWorkItems();
+            uv.ProcessWorkItemsInternal();
 
             if (IsFixedTimeStep)
             {
@@ -225,15 +225,15 @@ namespace TwistedLogik.Ultraviolet
 
         // Current tick state.
         private readonly UltravioletTimeTracker timeTrackerUpdate = new UltravioletTimeTracker();
-        private readonly UltravioletTimeTracker timeTrackerDraw   = new UltravioletTimeTracker();
-        private readonly Stopwatch tickTimer  = new Stopwatch();
+        private readonly UltravioletTimeTracker timeTrackerDraw = new UltravioletTimeTracker();
+        private readonly Stopwatch tickTimer = new Stopwatch();
         private readonly Stopwatch frameTimer = new Stopwatch();
         private Double tickElapsed;
         private Double frameElapsed;
         private TimeSpan targetElapsedTime = defaultTargetElapsedTime;
         private TimeSpan inactiveSleepTime = defaultInactiveSleepTime;
-        private Boolean isFixedTimeStep    = defaultIsFixedTimeStep;
-        private Boolean isRunningSlowly    = false;
+        private Boolean isFixedTimeStep = defaultIsFixedTimeStep;
+        private Boolean isRunningSlowly = false;
         private Int32 runningSlowlyFrames;
     }
 }

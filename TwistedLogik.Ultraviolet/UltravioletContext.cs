@@ -151,11 +151,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNotDisposed(this, disposed);
             Contract.Ensure(thread == Thread.CurrentThread, UltravioletStrings.WorkItemsMustBeProcessedOnMainThread);
 
-            Task workItem;
-            while (queuedWorkItems.TryDequeue(out workItem))
-            {
-                workItem.RunSynchronously();
-            }
+            ProcessWorkItemsInternal();
         }
 
         /// <summary>
@@ -430,6 +426,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 var task = new Task(workItem);
                 queuedWorkItems.Enqueue(task);
+                Interlocked.Increment(ref pendingWorkItemCount);
                 return task;
             }
         }
@@ -457,6 +454,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 var task = new Task(workItem, state);
                 queuedWorkItems.Enqueue(task);
+                Interlocked.Increment(ref pendingWorkItemCount);
                 return task;
             }
         }
@@ -484,6 +482,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 var task = new Task<T>(workItem);
                 queuedWorkItems.Enqueue(task);
+                Interlocked.Increment(ref pendingWorkItemCount);
                 return task;
             }
         }
@@ -512,6 +511,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 var task = new Task<T>(workItem, state);
                 queuedWorkItems.Enqueue(task);
+                Interlocked.Increment(ref pendingWorkItemCount);
                 return task;
             }
         }
@@ -735,6 +735,22 @@ namespace TwistedLogik.Ultraviolet
                 throw new InvalidOperationException(UltravioletStrings.ContextMissing);
 
             return current;
+        }
+
+        /// <summary>
+        /// Processes all queued work items.
+        /// </summary>
+        internal void ProcessWorkItemsInternal()
+        {
+            if (pendingWorkItemCount == 0)
+                return;
+
+            Task workItem;
+            while (queuedWorkItems.TryDequeue(out workItem))
+            {
+                workItem.RunSynchronously();
+                Interlocked.Decrement(ref pendingWorkItemCount);
+            }
         }
 
         /// <summary>
@@ -1208,6 +1224,7 @@ namespace TwistedLogik.Ultraviolet
         private readonly UltravioletFactory factory = new UltravioletFactory();
         private readonly ConcurrentQueue<Task> queuedWorkItems = new ConcurrentQueue<Task>();
         private readonly Thread thread;
+        private volatile Int32 pendingWorkItemCount;
         private Boolean isHardwareInputDisabled;
         private Boolean isRunningInServiceMode;
         private Boolean isInitialized;
