@@ -195,7 +195,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Called when the user presses the <see cref="Key.Key"/> key.
+        /// Called when the user presses the <see cref="Key.End"/> key.
         /// </summary>
         internal void ProcessEnd()
         {
