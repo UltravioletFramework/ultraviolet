@@ -90,13 +90,23 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Implicitly converts a string to a string segment.
+        /// Implicitly converts a <see cref="String"/> to a string segment.
         /// </summary>
-        /// <param name="s">The <see cref="SourceString"/> to convert.</param>
+        /// <param name="s">The <see cref="String"/> to convert.</param>
         /// <returns>The converted <see cref="StringSegment"/>.</returns>
         public static implicit operator StringSegment(String s)
         {
-            return (s == null) ? StringSegment.Empty : new StringSegment(s);
+            return (s == null) ? Empty : new StringSegment(s);
+        }
+        
+        /// <summary>
+        /// Explicitly converts a <see cref="StringBuilder"/> to a string segment.
+        /// </summary>
+        /// <param name="s">The <see cref="StringBuilder"/> to convert.</param>
+        /// <returns>The converted <see cref="StringSegment"/>.</returns>
+        public static explicit operator StringSegment(StringBuilder sb)
+        {
+            return (sb == null) ? Empty : new StringSegment(sb);
         }
 
         /// <summary>

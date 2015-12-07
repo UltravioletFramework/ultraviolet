@@ -33,6 +33,62 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Selects the specified range of text.
+        /// </summary>
+        /// <param name="start">The index of the first character to select.</param>
+        /// <param name="length">The number of characters to select.</param>
+        public void Select(Int32 start, Int32 length)
+        {
+            if (PART_Editor != null)
+                PART_Editor.Select(start, length);
+        }
+
+        /// <summary>
+        /// Selects the entirety of the editor's text.
+        /// </summary>
+        public void SelectAll()
+        {
+            if (PART_Editor != null)
+                PART_Editor.SelectAll();
+        }
+
+        /// <summary>
+        /// Selects the word, whitespace, or symbol at the current caret position.
+        /// </summary>
+        public void SelectCurrentToken()
+        {
+            if (PART_Editor != null)
+                PART_Editor.SelectCurrentToken();
+        }
+
+        /// <summary>
+        /// Copies the currently selected text onto the clipboard.
+        /// </summary>
+        public void Copy()
+        {
+            if (PART_Editor != null)
+                PART_Editor.Copy();
+        }
+
+        /// <summary>
+        /// Cuts the currently selected text onto the clipboard.
+        /// </summary>
+        public void Cut()
+        {
+            if (PART_Editor != null)
+                PART_Editor.Cut();
+        }
+
+        /// <summary>
+        /// Pastes the contents of the clipboard at the current caret position.
+        /// </summary>
+        public void Paste()
+        {
+            if (PART_Editor != null)
+                PART_Editor.Paste();
+        }
+
+        /// <summary>
         /// Gets or sets a value specifying how the text area's text wraps when it reaches the edge of its container.
         /// </summary>
         public TextWrapping TextWrapping
@@ -79,6 +135,63 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the starting point of the selected text.
+        /// </summary>
+        public Int32 SelectionStart
+        {
+            get
+            {
+                if (PART_Editor != null)
+                    return PART_Editor.SelectionStart;
+
+                return 0;
+            }
+            set
+            {
+                if (PART_Editor != null)
+                    PART_Editor.SelectionStart = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the length of the selected text.
+        /// </summary>
+        public Int32 SelectionLength
+        {
+            get
+            {
+                if (PART_Editor != null)
+                    return PART_Editor.SelectionLength;
+
+                return 0;
+            }
+            set
+            {
+                if (PART_Editor != null)
+                    PART_Editor.SelectionLength = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the currently selected text.
+        /// </summary>
+        public String SelectedText
+        {
+            get
+            {
+                if (PART_Editor != null)
+                    return PART_Editor.SelectedText;
+
+                return String.Empty;
+            }
+            set
+            {
+                if (PART_Editor != null)
+                    PART_Editor.SelectedText = value;
+            }
+        }
+
+        /// <summary>
         /// Identifies the <see cref="TextWrapping"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextWrappingProperty = DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(TextArea),
@@ -106,7 +219,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public static readonly DependencyProperty AcceptsTabProperty = DependencyProperty.Register("AcceptsTab", typeof(Boolean), typeof(TextArea),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
-        
+
         /// <inheritdoc/>
         protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
@@ -116,12 +229,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 CaptureMouse();
             }
 
-            var mousepos = Mouse.GetPosition((Control)PART_ScrollViewer ?? this);
-            if (Bounds.Contains(mousepos))
-            {
-                if (PART_Editor != null)
-                    PART_Editor.ProcessMouseDown(device, button, ref data);
-            }
+            if (PART_Editor != null && IsMouseWithinEditor())
+                PART_Editor.HandleMouseDown(device, button, ref data);
 
             data.Handled = true;
             base.OnMouseDown(device, button, ref data);
@@ -134,15 +243,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 ReleaseMouseCapture();
             }
+
+            if (PART_Editor != null && IsMouseWithinEditor())
+                PART_Editor.HandleMouseUp(device, button, ref data);
+
             data.Handled = true;
             base.OnMouseUp(device, button, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        {
+            if (IsMouseWithinEditor() && PART_Editor != null)
+                PART_Editor.HandleMouseDoubleClick(device, button, ref data);
+
+            base.OnMouseDoubleClick(device, button, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        {
+            if (PART_Editor != null)
+                PART_Editor.HandleMouseMove(device, ref data);
+
+            data.Handled = true;
+            base.OnMouseMove(device, x, y, dx, dy, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnLostMouseCapture(ref RoutedEventData data)
+        {
+            if (PART_Editor != null)
+                PART_Editor.HandleLostMouseCapture();
+
+            data.Handled = true;
+            base.OnLostMouseCapture(ref data);
         }
 
         /// <inheritdoc/>
         protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
             if (PART_Editor != null)
-                PART_Editor.ProcessGotKeyboardFocus();
+                PART_Editor.HandleGotKeyboardFocus();
 
             base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
@@ -151,7 +293,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
             if (PART_Editor != null)
-                PART_Editor.ProcessLostKeyboardFocus();
+                PART_Editor.HandleLostKeyboardFocus();
 
             base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
@@ -159,84 +301,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
-            switch (key)
-            {
-                case Key.Return:
-                    if (AcceptsReturn)
-                    {
-                        if (PART_Editor != null)
-                            PART_Editor.ProcessReturn();
-
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Tab:
-                    if (AcceptsTab)
-                    {
-                        if (PART_Editor != null)
-                            PART_Editor.ProcessTab();
-
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Backspace:
-                    if (PART_Editor != null)
-                        PART_Editor.ProcessBackspace();
-
-                    data.Handled = true;
-                    break;
-
-                case Key.Delete:
-                    if (PART_Editor != null)
-                        PART_Editor.ProcessDelete();
-
-                    data.Handled = true;
-                    break;
-
-                case Key.Left:
-                    if (PART_Editor != null)
-                        PART_Editor.ProcessLeft();
-
-                    data.Handled = true;
-                    break;
-
-                case Key.Right:
-                    if (PART_Editor != null)
-                        PART_Editor.ProcessRight();
-
-                    data.Handled = true;
-                    break;
-
-                case Key.Up:
-                    if (PART_Editor != null)
-                        PART_Editor.ProcessUp();
-
-                    data.Handled = true;
-                    break;
-
-                case Key.Down:
-                    if (PART_Editor != null)
-                        PART_Editor.ProcessDown();
-
-                    data.Handled = true;
-                    break;
-
-                case Key.Home:
-                    if (PART_Editor != null)
-                        PART_Editor.ProcessHome();
-
-                    data.Handled = true;
-                    break;
-
-                case Key.End:
-                    if (PART_Editor != null)
-                        PART_Editor.ProcessEnd();
-
-                    data.Handled = true;
-                    break;
-            }
+            if (PART_Editor != null)
+                PART_Editor.HandleKeyDown(device, key, modifiers, ref data);
+            
             base.OnKeyDown(device, key, modifiers, ref data);
         }
 
@@ -244,7 +311,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override void OnTextInput(KeyboardDevice device, ref RoutedEventData data)
         {
             if (PART_Editor != null)
-                PART_Editor.ProcessTextInput(device, ref data);
+                PART_Editor.HandleTextInput(device, ref data);
 
             base.OnTextInput(device, ref data);
         }
@@ -274,7 +341,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             return value;
         }
-        
+
+        /// <summary>
+        /// Gets a value indicating whether the mouse is currently inside of the editor.
+        /// </summary>
+        private Boolean IsMouseWithinEditor()
+        {
+            var mouseTarget = (Control)PART_ScrollViewer ?? this;
+            var mouseBounds = mouseTarget.Bounds;
+
+            return mouseBounds.Contains(Mouse.GetPosition(mouseTarget));
+        }
+
         // Component references.
         private readonly ScrollViewer PART_ScrollViewer = null;
         private readonly TextAreaEditor PART_Editor = null;

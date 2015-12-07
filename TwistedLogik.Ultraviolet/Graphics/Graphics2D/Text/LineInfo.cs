@@ -10,20 +10,50 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Initializes a new instance of the <see cref="LineInfo"/> structure.
         /// </summary>
+        /// <param name="source">The command stream from which this line was retrieved.</param>
+        /// <param name="lineIndex">The index of the line within its layout.</param>
         /// <param name="x">The x-coordinate of the line's top-left corner relative to its layout area.</param>
         /// <param name="y">The y-coordinate of the line's top-left corner relative to its layout area.</param>
         /// <param name="width">The line's width in pixels.</param>
         /// <param name="height">The line's height in pixels.</param>
         /// <param name="lengthInCommands">The line's length in commands.</param>
         /// <param name="lengthInGlyphs">The line's length in glyphs.</param>
-        internal LineInfo(Int32 x, Int32 y, Int32 width, Int32 height, Int32 lengthInCommands, Int32 lengthInGlyphs)
+        internal LineInfo(TextLayoutCommandStream source, Int32 lineIndex, Int32 lineInfoCommandIndex, 
+            Int32 x, Int32 y, Int32 width, Int32 height, Int32 lengthInCommands, Int32 lengthInGlyphs)
         {
+            this.source = source;
+            this.lineIndex = lineIndex;
+            this.lineInfoCommandIndex = lineInfoCommandIndex;
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
             this.lengthInCommands = lengthInCommands;
             this.lengthInGlyphs = lengthInGlyphs;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="TextLayoutCommandStream"/> from which this line originated.
+        /// </summary>
+        public TextLayoutCommandStream Source
+        {
+            get { return source; }
+        }
+
+        /// <summary>
+        /// Gets the index of the line within its layout.
+        /// </summary>
+        public Int32 LineIndex
+        {
+            get { return lineIndex; }
+        }
+
+        /// <summary>
+        /// Gets the index of the <see cref="TextLayoutCommandType.LineInfo"/> command that contains this line's metadata.
+        /// </summary>
+        public Int32 LineInfoCommandIndex
+        {
+            get { return lineInfoCommandIndex; }
         }
 
         /// <summary>
@@ -75,6 +105,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         // Property values.
+        private readonly TextLayoutCommandStream source;
+        private readonly Int32 lineIndex;
+        private readonly Int32 lineInfoCommandIndex;
         private readonly Int32 x;
         private readonly Int32 y;
         private readonly Int32 width;

@@ -515,4 +515,9 @@
       <Variant>This operation is invalid because the Ultraviolet context does not have an associated performance profiler.</Variant>
     </en-US>
   </String>
+  <String Key="LINE_INFO_IS_NOT_FROM_SAME_SOURCE">
+    <en-US>
+      <Variant>The specified LineInfo object was not created by this command stream.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

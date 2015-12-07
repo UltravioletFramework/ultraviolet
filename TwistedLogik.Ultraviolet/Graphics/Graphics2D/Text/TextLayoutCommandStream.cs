@@ -40,13 +40,63 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 lineInfo = (TextLayoutLineInfoCommand*)Data;
             }
 
-            var result = new LineInfo(lineInfo->Offset, blockOffset + linePosition, 
+            var result = new LineInfo(this, index, StreamPositionInObjects, lineInfo->Offset, blockOffset + linePosition, 
                 lineInfo->LineWidth, lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInGlyphs);
 
             if (acquiredPointers)
                 ReleasePointers();
 
             return result;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="LineInfo"/> structure which describes the line that comes immediately
+        /// after the specified line.
+        /// </summary>
+        /// <param name="previous">A <see cref="LineInfo"/> structure which describes the previous line.</param>
+        /// <param name="next">A <see cref="LineInfo"/> structure which describes the line that comes after <paramref name="previous"/>.</param>
+        /// <returns><c>true</c> if a line was retrieved; otherwise, <c>false</c>.</returns>
+        public Boolean GetNextLineInfo(LineInfo previous, out LineInfo next)
+        {
+            return GetNextLineInfoRef(ref previous, out next);
+        }
+
+        /// <summary>
+        /// Gets a <see cref="LineInfo"/> structure which describes the line that comes immediately
+        /// after the specified line.
+        /// </summary>
+        /// <param name="previous">A <see cref="LineInfo"/> structure which describes the previous line.</param>
+        /// <param name="next">A <see cref="LineInfo"/> structure which describes the line that comes after <paramref name="previous"/>.</param>
+        /// <returns><c>true</c> if a line was retrieved; otherwise, <c>false</c>.</returns>
+        public Boolean GetNextLineInfoRef(ref LineInfo previous, out LineInfo next)
+        {
+            if (previous.Source != this)
+                throw new ArgumentException(UltravioletStrings.LineInfoIsNotFromSameSource);
+
+            if (previous.LineIndex + 1 == LineCount)
+            {
+                next = default(LineInfo);
+                return false;
+            }
+
+            var acquiredPointers = !HasAcquiredPointers;
+            if (acquiredPointers)
+                AcquirePointers();
+
+            if (StreamPositionInObjects != previous.LineInfoCommandIndex)
+                Seek(previous.LineInfoCommandIndex);
+
+            Seek(1 + StreamPositionInObjects + ((TextLayoutLineInfoCommand*)Data)->LengthInCommands);
+
+            var lineInfo = (TextLayoutLineInfoCommand*)Data;
+            next = new LineInfo(this, previous.LineIndex + 1, StreamPositionInObjects,
+                lineInfo->Offset, previous.Y + previous.Height, lineInfo->LineWidth, 
+                lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInGlyphs);
+            
+            if (acquiredPointers)
+                ReleasePointers();
+
+            return true;
         }
 
         /// <summary>

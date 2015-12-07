@@ -127,6 +127,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TabControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextArea.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextAreaEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\TextAreaEditor.CaretNavigationDirection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBox.OffsetPosition.cs" />
