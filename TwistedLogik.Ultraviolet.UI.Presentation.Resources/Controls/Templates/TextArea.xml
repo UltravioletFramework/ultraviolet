@@ -7,13 +7,14 @@
 
       <Image Class="textarea-background"
              SourceColor="{{Background}}"/>
-      <ScrollViewer Class="textarea-scrollviewer"
+      <ScrollViewer Name="PART_ScrollViewer"
+                    Class="textarea-scrollviewer"
                     ContentMargin="{{Padding}}"
                     ContentClipped="true"
                     HorizontalScrollBarVisibility="{{HorizontalScrollBarVisibility}}"
                     VerticalScrollBarVisibility="{{VerticalScrollBarVisibility}}">
 
-        <TextAreaContentPresenter Name="PART_ContentPresenter"/>
+        <TextAreaEditor Name="PART_Editor"/>
       
       </ScrollViewer>
       <Image Class="textarea-focus-image"

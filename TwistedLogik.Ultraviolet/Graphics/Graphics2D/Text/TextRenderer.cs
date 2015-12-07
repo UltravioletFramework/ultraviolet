@@ -346,6 +346,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var bounds = Rectangle.Empty;
 
             var lineIndex = -1;
+            var lineLengthInCommands = 0;
+            var lineLengthInGlyphs = 0;
             lineWidth = 0;
             lineHeight = 0;
 
@@ -375,7 +377,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             // that contains the position we're interested in, because we don't need to process any commands that those lines contain.
             var canSkipLines = !input.HasMultipleFontStyles;
             if (canSkipLines)
-                SkipToLineContainingGlyph(input, index, ref lineIndex, ref offsetLineY, ref lineWidth, ref lineHeight, ref glyphCountSeen);
+            {
+                SkipToLineContainingGlyph(input, index, ref lineIndex, ref offsetLineY, 
+                    ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs, ref glyphCountSeen);
+            }
 
             // Seek through the remaining commands until we find the one that contains our glyph.
             while (!boundsFound && input.StreamPositionInObjects < input.Count)
@@ -385,7 +390,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 switch (cmdType)
                 {
                     case TextLayoutCommandType.LineInfo:
-                        ProcessLineInfo(input, ref lineIndex, ref offsetLineX, ref offsetLineY, ref lineWidth, ref lineHeight);
+                        ProcessLineInfo(input, ref lineIndex, ref offsetLineX, ref offsetLineY, 
+                            ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs);
                         break;
 
                     case TextLayoutCommandType.Text:
@@ -886,6 +892,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var linePosition = 0;
             var lineWidth = 0;
             var lineHeight = 0;
+            var lineLengthInCommands = 0;
+            var lineLengthInGlyphs = 0;
 
             var charsSeen = 0;
             var charsMax = (count == Int32.MaxValue) ? Int32.MaxValue : start + count - 1;
@@ -912,7 +920,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     case TextLayoutCommandType.LineInfo:
                         {
-                            ProcessLineInfo(input, ref lineIndex, ref lineOffset, ref linePosition, ref lineWidth, ref lineHeight);
+                            ProcessLineInfo(input, ref lineIndex, ref lineOffset, ref linePosition, 
+                                ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs);
                             if (blockOffset + linePosition + lineHeight > availableHeight)
                             {
                                 input.SeekEnd();
@@ -1356,7 +1365,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Processes a <see cref="TextLayoutCommandType.LineInfo"/> command.
         /// </summary>
-        private void ProcessLineInfo(TextLayoutCommandStream input, ref Int32 index, ref Int32 offset, ref Int32 position, ref Int32 width, ref Int32 height)
+        private void ProcessLineInfo(TextLayoutCommandStream input, ref Int32 index, ref Int32 offset, ref Int32 position, 
+            ref Int32 width, ref Int32 height, ref Int32 lengthInCommands, ref Int32 lengthInGlyphs)
         {
             var cmd = (TextLayoutLineInfoCommand*)input.Data;
             index++;
@@ -1364,6 +1374,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             position = position + height;
             width = cmd->LineWidth;
             height = cmd->LineHeight;
+            lengthInCommands = cmd->LengthInCommands;
+            lengthInGlyphs = cmd->LengthInGlyphs;
             input.SeekNextCommand();
         }
 
@@ -1371,7 +1383,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Moves the specified command stream forward to the beginning of the line that contains the specified coordinates.
         /// </summary>
         private void SkipToLineAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y,
-            ref Int32 lineIndex, ref Int32 linePosition, ref Int32 lineWidth, ref Int32 lineHeight, ref Int32 glyphCountSeen)
+            ref Int32 lineIndex, ref Int32 linePosition, ref Int32 lineWidth, ref Int32 lineHeight, ref Int32 lineLengthInCommands, ref Int32 lineLengthInGlyphs, ref Int32 glyphCountSeen)
         {
             do
             {
@@ -1379,6 +1391,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 lineIndex++;
                 lineWidth = cmd->LineWidth;
                 lineHeight = cmd->LineHeight;
+                lineLengthInCommands = cmd->LengthInCommands;
+                lineLengthInGlyphs = cmd->LengthInGlyphs;
 
                 if (y >= linePosition && y < linePosition + lineHeight)
                     break;
@@ -1393,7 +1407,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Moves the specified command stream forward to the beginning of the line that contains the specified glyph.
         /// </summary>
         private void SkipToLineContainingGlyph(TextLayoutCommandStream input, Int32 glyph, 
-            ref Int32 lineIndex, ref Int32 linePosition, ref Int32 lineWidth, ref Int32 lineHeight, ref Int32 glyphCountSeen)
+            ref Int32 lineIndex, ref Int32 linePosition, ref Int32 lineWidth, ref Int32 lineHeight, ref Int32 lineLengthInCommands, ref Int32 lineLengthInGlyphs, ref Int32 glyphCountSeen)
         {
             do
             {
@@ -1402,12 +1416,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 if (glyphCountSeen + cmd->LengthInGlyphs > glyph)
                     break;
 
+                linePosition += lineHeight;
+
                 lineIndex++;
                 lineWidth = cmd->LineWidth;
                 lineHeight = cmd->LineHeight;
+                lineLengthInCommands = cmd->LengthInCommands;
+                lineLengthInGlyphs = cmd->LengthInGlyphs;
 
                 glyphCountSeen += cmd->LengthInGlyphs;
-                linePosition += cmd->LineHeight;
             }
             while (input.SeekNextLine());
         }
@@ -1424,6 +1441,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var glyphSize = fontFace.MeasureGlyph(text, i);
                 if (position >= glyphPosition && position < glyphPosition + glyphSize.Width)
                 {
+                    position = glyphPosition;
                     glyphWidth = glyphSize.Width;
                     glyphHeight = glyphSize.Height;
                     return glyphCount;
@@ -1431,6 +1449,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 glyphPosition += glyphSize.Width;
                 glyphCount++;
             }
+            position = 0;
             glyphWidth = 0;
             glyphHeight = 0;
             return null;
@@ -1441,7 +1460,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         private Int32? GetGlyphOrInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition, Boolean getInsertionPoint)
         {
-            lineAtPosition = null;
+            lineAtPosition = getInsertionPoint ? 0 : (Int32?)null;
+
+            if (input.Count == 0)
+                return getInsertionPoint ? 0 : (Int32?)null;
 
             if (getInsertionPoint)
             {
@@ -1504,6 +1526,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var lineIndex = -1;
             var lineWidth = 0;
             var lineHeight = 0;
+            var lineStartInGlyphs = 0;
+            var lineLengthInCommands = 0;
+            var lineLengthInGlyphs = 0;
 
             input.SeekNextCommand();
 
@@ -1512,8 +1537,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var canSkipLines = !input.HasMultipleFontStyles;
             if (canSkipLines)
             {
-                SkipToLineAtPosition(input, x, y, ref lineIndex, ref offsetLineY, ref lineWidth, ref lineHeight, ref glyphCountSeen);
+                SkipToLineAtPosition(input, x, y, ref lineIndex, ref offsetLineY, 
+                    ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs, ref glyphCountSeen);
                 input.SeekNextCommand();
+
+                lineStartInGlyphs = glyphCountSeen;
             }
 
             var glyphIsInCurrentLine = canSkipLines;
@@ -1528,11 +1556,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     case TextLayoutCommandType.LineInfo:
                         {
                             if (glyphIsInCurrentLine)
-                                return getInsertionPoint ? glyphCountSeen : (Int32?)null;
+                                return getInsertionPoint ? Math.Max(0, glyphCountSeen - 1) : (Int32?)null;
 
-                            ProcessLineInfo(input, ref lineIndex, ref offsetLineX, ref offsetLineY, ref lineWidth, ref lineHeight);
+                            ProcessLineInfo(input, ref lineIndex, ref offsetLineX, ref offsetLineY, 
+                                ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs);
+
+                            lineStartInGlyphs = glyphCountSeen;
+
                             glyphIsInCurrentLine = (y >= offsetLineY && y < offsetLineY + lineHeight);
-
                             if (glyphIsInCurrentLine)
                                 lineAtPosition = lineIndex;
                         }
@@ -1607,7 +1638,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             {
                 if (glyph.HasValue)
                 {
-                    return (x - glyphBounds.Center.X < 0) ? glyph.Value : glyph.Value + 1;
+                    var max = (lineStartInGlyphs + lineLengthInGlyphs - 1); 
+                    return Math.Min(max, (x - glyphBounds.Center.X < 0) ? glyph.Value : glyph.Value + 1);
                 }
                 else
                 {
