@@ -30,14 +30,14 @@ void main()
 	vec4 avgValue = vec4(0.0f, 0.0f, 0.0f, 0.0f);
 	float coefficientSum = 0.0f;
 
-	avgValue += texture2D(Texture, vTextureCoordinate.xy) * incrementalGaussian.x;
+	avgValue += texture(Texture, vTextureCoordinate.xy) * incrementalGaussian.x;
 	coefficientSum += incrementalGaussian.x;
 	incrementalGaussian.xy *= incrementalGaussian.yz;
 
 	for (float i = 1.0f; i <= Radius; i++) 
 	{ 
-		avgValue += texture2D(Texture, vTextureCoordinate.xy - i * step * Direction) * incrementalGaussian.x;         
-		avgValue += texture2D(Texture, vTextureCoordinate.xy + i * step * Direction) * incrementalGaussian.x;         
+		avgValue += texture(Texture, vTextureCoordinate.xy - i * step * Direction) * incrementalGaussian.x;         
+		avgValue += texture(Texture, vTextureCoordinate.xy + i * step * Direction) * incrementalGaussian.x;         
 		coefficientSum += 2 * incrementalGaussian.x;
 		incrementalGaussian.xy *= incrementalGaussian.yz;
 	}
