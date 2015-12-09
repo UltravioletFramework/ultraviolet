@@ -102,7 +102,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Explicitly converts a <see cref="StringBuilder"/> to a string segment.
         /// </summary>
-        /// <param name="s">The <see cref="StringBuilder"/> to convert.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> to convert.</param>
         /// <returns>The converted <see cref="StringSegment"/>.</returns>
         public static explicit operator StringSegment(StringBuilder sb)
         {

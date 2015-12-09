@@ -12,6 +12,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="source">The command stream from which this line was retrieved.</param>
         /// <param name="lineIndex">The index of the line within its layout.</param>
+        /// <param name="lineInfoCommandIndex">The index of the command that contains the line's metadata.</param>
         /// <param name="x">The x-coordinate of the line's top-left corner relative to its layout area.</param>
         /// <param name="y">The y-coordinate of the line's top-left corner relative to its layout area.</param>
         /// <param name="width">The line's width in pixels.</param>
