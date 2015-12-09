@@ -95,7 +95,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var wrapperType = viewModelType;
                 if (wrapperType == null)
                 {
-                    var upf = uv.GetUI().GetPresentationFoundation();
                     var wrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(TemplatedParent.GetType());
                     wrapperType = uv.GetUI().GetPresentationFoundation().GetDataSourceWrapperTypeByName(wrapperName);
 

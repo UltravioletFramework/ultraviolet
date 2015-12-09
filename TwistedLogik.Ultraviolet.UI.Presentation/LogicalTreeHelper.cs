@@ -242,7 +242,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (childIndex < 0)
                 return null;
 
-            var children = GetChildrenCount(parent);
             for (int i = childIndex - 1; i >= 0; i--)
             {
                 var sibling = GetChild(parent, i) as T;

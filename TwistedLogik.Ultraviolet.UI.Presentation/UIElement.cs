@@ -201,7 +201,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     if (parentPopup != null)
                     {
                         var transformMatrix = parentPopup.PopupTransformToViewInDevicePixels;
-                        if (transformMatrix != null)
+						var transformIsNotIdentity = !transformMatrix.Equals(Matrix.Identity);
+                        if (transformIsNotIdentity)
                         {
                             dc.End();
                             dc.Begin(SpriteSortMode.Deferred, null, transformMatrix);
@@ -2622,7 +2623,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             
-            var upf = element.Ultraviolet.GetUI().GetPresentationFoundation();
             if (oldValue == null && newValue != null)
             {
                 element.RequiredOutOfBandTargets = Math.Min(1, 1 + newValue.AdditionalRenderTargetsRequired);

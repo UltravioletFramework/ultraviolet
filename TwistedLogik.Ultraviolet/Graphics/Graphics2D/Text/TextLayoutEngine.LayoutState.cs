@@ -193,7 +193,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 if (!lineBreakCommand.HasValue || !lineBreakOffset.HasValue)
                     return false;
 
-                var commandsAfterBreak = output.Count - (lineBreakCommand.Value + 1);
                 var sizeBeforeBreak = brokenTextSizeBeforeBreak.Value;
                 var sizeAfterBreak = brokenTextSizeAfterBreak.Value;
                 var brokenCommandSize = Size2.Zero;

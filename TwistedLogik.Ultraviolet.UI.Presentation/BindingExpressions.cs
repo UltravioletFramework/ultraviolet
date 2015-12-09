@@ -461,7 +461,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             return new DataBindingGetter<T>((ds) =>
             {
-                var source = ds;
                 var wrapper = ds as IDataSourceWrapper;
                 if (wrapper != null)
                 {
@@ -482,7 +481,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             return new DataBindingSetter<T>((ds, value) =>
             {
-                var source = ds;
                 var wrapper = ds as IDataSourceWrapper;
                 if (wrapper != null)
                 {

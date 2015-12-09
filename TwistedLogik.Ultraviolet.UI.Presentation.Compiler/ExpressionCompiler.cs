@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var expressionVerificationResult = 
                 PerformExpressionVerificationCompilationPass(state, models, referencedAssemblies);
 
-            if (expressionVerificationResult.Errors.Count > 0)
+			if (expressionVerificationResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
             {
                 if (state.WriteErrorsToFile)
                     WriteErrorsToWorkingDirectory(state, expressionVerificationResult);
@@ -122,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var finalPassResult = 
                 PerformFinalCompilationPass(state, output, models, referencedAssemblies, conversionFixupPassResult);
 
-            if (finalPassResult.Errors.Count > 0)
+			if (finalPassResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
             {
                 if (state.WriteErrorsToFile)
                     WriteErrorsToWorkingDirectory(state, finalPassResult);
@@ -255,16 +255,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <returns>A <see cref="CompilerResults"/> instance that represents the result of compilation.</returns>
         private static CompilerResults CompileDataSourceWrapperSources(ExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references)
         {
-            var writeToFile = (output != null);
-
             var options = new CompilerParameters();
             options.OutputAssembly = output;
             options.GenerateExecutable = false;
             options.GenerateInMemory = true;
             options.IncludeDebugInformation = false;
+			options.TreatWarningsAsErrors = false;
             options.ReferencedAssemblies.AddRange(references.Distinct().ToArray());
 
-            var dir = Directory.CreateDirectory(GetWorkingDirectory(state));
             var files = new List<String>();
 
             foreach (var info in infos)
@@ -424,9 +422,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 var typeNameCommaIx = definedDataSourceTypeName.IndexOf(',');
                 if (typeNameCommaIx < 0)
                     throw new InvalidOperationException(CompilerStrings.ViewModelTypeIsNotFullyQualified.Format(dataSourceDefinition.DataSourceIdentifier));
-
-                var definedDataSourceTypeAssemblyName = definedDataSourceTypeName.Substring(typeNameCommaIx + 1).Trim();
-                var definedDataSourceTypeAssembly = Assembly.Load(definedDataSourceTypeAssemblyName);
 
                 var definedDataSourceType = Type.GetType(definedDataSourceTypeName);
                 if (definedDataSourceType == null)
@@ -650,11 +645,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         private static void WriteErrorsToWorkingDirectory(ExpressionCompilerState state, CompilerResults results)
         {
             var logpath = Path.Combine(GetWorkingDirectory(state), "Compilation Errors.txt");
-            File.Delete(logpath);
+			try
+			{
+				File.Delete(logpath);
+			}
+			catch(DirectoryNotFoundException) {	}
 
-            if (results.Errors.Count > 0)
+			var logdir = Path.GetDirectoryName(logpath);
+			Directory.CreateDirectory(logdir);
+
+			// NOTE: Under Mono we seem to get warnings even when "Treat Warnings as Errors" is turned off.
+			var trueErrors = results.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).ToList();
+			if (trueErrors.Count > 0)
             {
-                var errorStrings = results.Errors.Cast<CompilerError>().Select(x =>
+				var errorStrings = trueErrors.Select(x =>
                     String.Format("{0}\t{1}\t{2}\t{3}", x.ErrorNumber, x.ErrorText, Path.GetFileName(x.FileName), x.Line));
                 
                 File.WriteAllLines(logpath, Enumerable.Union(new[] { "Code\tDescription\tFile\tLine" }, errorStrings));

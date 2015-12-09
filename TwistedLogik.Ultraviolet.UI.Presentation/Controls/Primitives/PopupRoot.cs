@@ -152,8 +152,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private static void HandleChildChanged(DependencyObject dobj, UIElement oldValue, UIElement newValue)
         {
             var popupRoot = (PopupRoot)dobj;
-            var popup = popupRoot.Parent as Popup;
-
             popupRoot.nonLogicalAdornerDecorator.Child = newValue;
         }
 

@@ -10,14 +10,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     public abstract class Trigger
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Trigger"/> class.
-        /// </summary>
-        public Trigger()
-        {
-            cachedDelegateHandleClearingStyles = HandleClearingStyles;
-        }
-        
-        /// <summary>
         /// Attaches the trigger to the specified dependency object.
         /// </summary>
         /// <param name="dobj">The dependency object to which to attach the trigger.</param>
@@ -188,7 +180,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         });
 
         // State values.
-        private readonly UpfEventHandler cachedDelegateHandleClearingStyles;
         private readonly TriggerActionCollection actions = new TriggerActionCollection();
         private readonly Dictionary<DependencyObject, Boolean> attachments = 
             new Dictionary<DependencyObject, Boolean>();

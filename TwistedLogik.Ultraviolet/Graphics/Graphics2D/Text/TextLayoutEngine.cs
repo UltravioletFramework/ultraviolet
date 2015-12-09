@@ -358,7 +358,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (state.PositionY + iconSize.Height > (settings.Height ?? Int32.MaxValue))
                 return false;
 
-            var iconBounds = new Rectangle(state.PositionX, state.PositionY, iconSize.Width, iconSize.Height);
             output.WriteIcon(new TextLayoutIconCommand(iconIndex, state.PositionX, state.PositionY, (Int16)iconSize.Width, (Int16)iconSize.Height));
             state.AdvanceLineToNextCommand(iconSize.Width, iconSize.Height, 1, 1);
             index++;
@@ -579,8 +578,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var hyphenate = (settings.Options & TextLayoutOptions.Hyphenate) == TextLayoutOptions.Hyphenate;
 
             var availableWidth = (settings.Width ?? Int32.MaxValue);
-            var availableHeight = (settings.Height ?? Int32.MaxValue);
-
             var x = state.PositionX;
             var y = state.PositionY;
             var width = 0;

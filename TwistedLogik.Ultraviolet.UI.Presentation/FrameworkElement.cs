@@ -630,9 +630,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 RectangleD.TransformAxisAligned(ref area, ref layoutTransformUsedDuringLayout, out area);
                 usedSize = new Size2D(area.Width, area.Height);
 
-                layoutTransformSizeUsedAfterTransform = usedSize;
-                layoutTransformOffset = new Size2D(-area.X, -area.Y);
-
                 xOffset -= area.X;
                 yOffset -= area.Y;
             }
@@ -1003,8 +1000,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // State values.
         private Matrix layoutTransformUsedDuringLayout;
         private Size2D layoutTransformSizeDesiredBeforeTransform;
-        private Size2D layoutTransformSizeUsedAfterTransform;
-        private Size2D layoutTransformOffset;
         private Boolean isLayoutTransformed;
         private Boolean isInitializing;
     }

@@ -92,7 +92,7 @@ namespace UvDebugSandbox
         {
             SetFileSourceFromManifestIfExists("UvDebugSandbox.Content.uvarc");
 
-            UltravioletProfiler.EnableSection(UltravioletProfilerSections.Frame);
+//            UltravioletProfiler.EnableSection(UltravioletProfilerSections.Frame);
 
             base.OnInitialized();
         }
@@ -251,20 +251,6 @@ namespace UvDebugSandbox
             textFormatter.Format("FPS: {0:decimals:2} FPS\nStyle: {1} / {2}\nMeasure: {3} / {4}\nArrange: {5} / {6}\nPosition: {7}", textBuffer);
             
             textRenderer.Draw(spriteBatch, textBuffer, Vector2.Zero, Color.White, new TextLayoutSettings(spriteFont, null, null, TextFlags.Standard));
-
-            var commandStream = new TextLayoutCommandStream();
-            textRenderer.CalculateLayout("The monster from the loch runs halfway 'round the block The quick brown fox jumps over the lazy dog",
-                commandStream, new TextLayoutSettings(spriteFont, 100, null, TextFlags.AlignRight));
-
-            commandStream.AcquirePointers();
-            commandStream.Seek(0);
-
-            var line1 = textRenderer.GetLineBounds(commandStream, 0);
-            var line2 = textRenderer.GetLineBounds(commandStream, 1);
-            var line3 = textRenderer.GetLineBounds(commandStream, 2);
-            var line4 = textRenderer.GetLineBounds(commandStream, 3);
-
-            commandStream.ReleasePointers();
 
             spriteBatch.End();
 

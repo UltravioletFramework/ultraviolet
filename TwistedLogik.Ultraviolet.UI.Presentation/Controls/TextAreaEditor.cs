@@ -822,7 +822,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var caretBoundsDips = Display.PixelsToDips(caretRenderBounds);
                 var caretImage = (caretInsertionMode == TextBoxInsertionMode.Insert) ? CaretInsertImage : CaretOverwriteImage;
                 var caretColor = (caretInsertionMode == TextBoxInsertionMode.Insert) ? CaretInsertColor : CaretOverwriteColor;
-                DrawImage(dc, CaretInsertImage, caretBoundsDips, caretColor, true);
+				DrawImage(dc, caretImage, caretBoundsDips, caretColor, true);
             }
         }
 

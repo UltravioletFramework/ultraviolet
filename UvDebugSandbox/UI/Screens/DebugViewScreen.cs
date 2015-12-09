@@ -32,17 +32,12 @@ namespace UvDebugSandbox.UI.Screens
 
     public class DebugViewModel
     {
-        private readonly ConfirmationDialog confirmationDialog;
-
         private PresentationFoundationView view;
-        private DebugScreen owner;
 
         public DebugViewModel(PresentationFoundationView view, DebugScreen owner)
         {
             Enable = true;
             this.view = view;
-            this.owner = owner;
-            this.confirmationDialog = new ConfirmationDialog(owner);
             this.mb = new MessageBoxModal(owner);
         }
 

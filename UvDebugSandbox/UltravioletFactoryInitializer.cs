@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Profiler.dotTrace;
 
 namespace UvDebugSandbox
 {
@@ -21,7 +20,7 @@ namespace UvDebugSandbox
         [Conditional("ENABLE_PROFILING")]
         private void InitializeProfilingFactoryMethods(UltravioletContext owner, UltravioletFactory factory)
         {
-            dotTraceProfiler.RegisterProfiler(owner, factory);
+            //dotTraceProfiler.RegisterProfiler(owner, factory);
         }
     }
 }
