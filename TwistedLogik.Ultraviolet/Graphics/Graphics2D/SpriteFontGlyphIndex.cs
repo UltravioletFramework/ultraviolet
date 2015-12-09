@@ -42,12 +42,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                         if (ascii == null)
                             ascii = new Int32[SpriteFont.ExtendedAsciiCount];
 
+                        if (character == substitutionCharacter)
+                            substitutionCharacterIndex = count;
+
                         ascii[character] = count;
                     }
                     else
                     {
                         if (unicode == null)
                             unicode = new Dictionary<Char, Int32>();
+
+                        if (character == substitutionCharacter)
+                            substitutionCharacterIndex = count;
 
                         unicode[character] = count;
                     }
@@ -82,10 +88,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                     return glyphs[ascii[character]];
 
                 Int32 index;
-                if (unicode.TryGetValue(character, out index))
+                if (unicode != null && unicode.TryGetValue(character, out index))
                     return glyphs[index];
 
-                return glyphs[unicode[substitutionCharacter]];
+                return glyphs[substitutionCharacterIndex];
             }
         }
 
@@ -124,6 +130,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         // Property values.
         private readonly Char firstCharacter;
         private readonly Char substitutionCharacter;
+        private readonly Int32 substitutionCharacterIndex;
         private readonly Int32 lineSpacing;
         private readonly Int32 count;
 
