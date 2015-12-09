@@ -121,7 +121,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (String.IsNullOrEmpty(text))
                 return;
 
-            InsertTextAtCaret(text);
+            InsertTextAtCaret(text, false);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 if (selectionPosition == null)
                     return 0;
-                
+
                 return Math.Abs(selectionPosition.Value - caretPosition);
             }
             set
@@ -180,7 +180,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 DeleteSelection();
 
                 var caretPositionOld = caretPosition;
-                InsertTextAtCaret(value);
+                InsertTextAtCaret(value, false);
                 var caretPositionNew = caretPosition;
 
                 var selectionStart = caretPositionOld;
@@ -189,7 +189,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 Select(selectionStart, selectionLength);
             }
         }
-        
+
         /// <summary>
         /// Called when the editor should process a mouse button being pressed.
         /// </summary>
@@ -331,7 +331,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.Return2:
                     if (owner != null && owner.AcceptsReturn)
                     {
-                        InsertTextAtCaret("\n");
+                        InsertTextAtCaret("\n", false);
                         data.Handled = true;
                     }
                     break;
@@ -339,7 +339,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.Tab:
                     if (owner != null && owner.AcceptsTab)
                     {
-                        InsertTextAtCaret("\t");
+                        InsertTextAtCaret("\t", true);
                         data.Handled = true;
                     }
                     break;
@@ -383,7 +383,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
             }
         }
-        
+
         /// <summary>
         /// Called when the editor should read text input from the keyboard device.
         /// </summary>
@@ -393,11 +393,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             device.GetTextInput(bufferInput);
 
-            InsertTextAtCaret((StringSegment)bufferInput);
+            InsertTextAtCaret((StringSegment)bufferInput, true);
 
             data.Handled = true;
         }
-                
+
+        /// <summary>
+        /// Gets or sets the editor's insertion mode.
+        /// </summary>
+        internal TextBoxInsertionMode InsertionMode
+        {
+            get { return insertionMode; }
+            set
+            {
+                if (insertionMode != value)
+                {
+                    insertionMode = value;
+                    caretBlinkTimer = 0;
+                    UpdateCaret();
+                }
+            }
+        }
+
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {
@@ -416,10 +433,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             UpdateTextLayoutStream(availableSize);
 
             var width = Display.PixelsToDips(textLayoutStream.ActualWidth);
-            width = Math.Max(width, Display.PixelsToDips(caretWidth));
+            width = Math.Max(width, Display.PixelsToDips(caretBounds.Width));
 
             var height = Display.PixelsToDips(textLayoutStream.ActualHeight);
-            height = Math.Max(height, Display.PixelsToDips(caretHeight));
+            height = Math.Max(height, Display.PixelsToDips(caretBounds.Height));
 
             return new Size2D(width, height);
         }
@@ -429,7 +446,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             return finalSize;
         }
-        
+
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
@@ -563,7 +580,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var owner = TemplatedParent as TextArea;
             if (owner == null)
                 return;
-            
+
             var position = Display.DipsToPixels(UntransformedAbsolutePosition);
             var positionRounded = dc.IsTransformed ? (Vector2)position : (Vector2)(Point2)position;
             View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutStream, positionRounded, owner.Foreground * dc.Opacity);
@@ -583,12 +600,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var isCaretVisible = ((Int32)(caretBlinkTimer / 500.0) % 2 == 0);
             if (isCaretVisible)
             {
-                var caretXDips = Display.PixelsToDips(caretX);
-                var caretYDips = Display.PixelsToDips(caretY);
-                var caretWidthDips = Display.PixelsToDips(caretWidth);
-                var caretHeightDips = Display.PixelsToDips(caretHeight);
-                var caretBounds = new RectangleD(caretXDips, caretYDips, caretWidthDips, caretHeightDips);
-                DrawBlank(dc, caretBounds, owner.Foreground);
+                var caretBoundsDips = Display.PixelsToDips(caretRenderBounds);
+                DrawBlank(dc, caretRenderBounds, owner.Foreground);
             }
         }
 
@@ -639,12 +652,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void MoveCaretUp()
         {
-            var x = caretX;
-            var y = caretY - 1;
-
-            if (y < 0)
-                return;
-
+            var x = caretBounds.Left;
+            var y = caretBounds.Top - 1;
+            
             var movementAllowed = (textLayoutStream.Count > 0);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Up))
             {
@@ -659,12 +669,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void MoveCaretDown()
         {
-            var x = caretX;
-            var y = caretY + caretHeight;
-
-            if (y >= textLayoutStream.ActualHeight)
-                return;
-
+            var x = caretBounds.Left;
+            var y = caretBounds.Bottom;
+            
             var movementAllowed = (textLayoutStream.Count > 0);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Down))
             {
@@ -737,7 +744,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
             }
         }
-        
+
         /// <summary>
         /// Deletes the text in the current selection.
         /// </summary>
@@ -856,13 +863,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Inserts text at the specified position in the text buffer.
         /// </summary>
-        private void InsertTextAtPosition(StringSegment str, Int32 position)
+        private void InsertTextAtPosition(StringSegment str, Int32 position, Boolean overwrite)
         {
             var selectionStart = SelectionStart;
             var selectionLength = SelectionLength;
 
-            if (DeleteSelection() && position > selectionStart)
-                position -= selectionLength;
+            var selectionDeleted = DeleteSelection();
+            if (selectionDeleted)
+            {
+                if (position > selectionStart)
+                    position -= selectionLength;
+            }
+            else
+            {
+                if (InsertionMode == TextBoxInsertionMode.Overwrite && overwrite && !IsCaretOnLineBreak())
+                {
+                    var lengthToRemove = Math.Min(str.Length, bufferText.Length - caretPosition);
+                    if (lengthToRemove > 0)
+                        bufferText.Remove(caretPosition, str.Length);
+                }
+            }
 
             for (int i = 0; i < str.Length; i++)
                 bufferText.Insert(position + i, str[i]);
@@ -876,9 +896,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Inserts text at the current caret position.
         /// </summary>
-        private void InsertTextAtCaret(StringSegment str)
+        private void InsertTextAtCaret(StringSegment str, Boolean overwrite)
         {
-            InsertTextAtPosition(str, caretPosition);
+            InsertTextAtPosition(str, caretPosition, overwrite);
         }
 
         /// <summary>
@@ -886,24 +906,55 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateCaret()
         {
-            if (caretPosition > 0 && caretPosition <= textLayoutStream.TotalLength)
+            var owner = TemplatedParent as TextArea;
+
+            if (InsertionMode == TextBoxInsertionMode.Overwrite && !IsCaretOnLineBreak())
             {
-                var caretBounds = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream, caretPosition);
-                caretX = caretBounds.X;
-                caretY = caretBounds.Y;
-                caretWidth = 1;
-                caretHeight = caretBounds.Height;
+                var font = (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource.Value.GetFace(SpriteFontStyle.Regular) : null;
+                var fontLineSpacing = (font != null) ? font.LineSpacing : 0;
+
+                var caretX = 0;
+                var caretY = 0;
+                var caretWidth = (Int32)Math.Ceiling(fontLineSpacing / 2f);
+                var caretHeight = 4;
+
+                if (textLayoutStream.TotalLength > 0)
+                {
+                    var glyphLineIndex = 0;
+                    var glyphLineWidth = 0;
+                    var glyphLineHeight = 0;
+                    var glyphBounds = View.Resources.TextRenderer.GetGlyphBounds(textLayoutStream,
+                        caretPosition, out glyphLineIndex, out glyphLineWidth, out glyphLineHeight, true);
+
+                    caretX = glyphBounds.Left;
+                    caretY = glyphBounds.Top;
+                    caretWidth = glyphBounds.Width;
+                    caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, fontLineSpacing);
+                }
+                else
+                {
+                    caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, fontLineSpacing);
+                }
+
+                caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.Left, caretBounds.Bottom - caretHeight, caretWidth, caretHeight);
             }
             else
             {
-                var owner = TemplatedParent as TextArea;
-                caretX = 0;
-                caretY = 0;
-                caretWidth = 1;
-                caretHeight = (owner == null && owner.Font.IsLoaded) ? 0 : owner.Font.Resource.Value.GetFace(SpriteFontStyle.Regular).LineSpacing;
+                if (caretPosition > 0 && caretPosition <= textLayoutStream.TotalLength)
+                {
+                    caretBounds = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream, caretPosition);
+                    caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.X, caretBounds.Y, 1, caretBounds.Height);
+                }
+                else
+                {
+                    var caretWidth = 1;
+                    var caretHeight = (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource.Value.GetFace(SpriteFontStyle.Regular).LineSpacing : 0;
+                    caretBounds = new Ultraviolet.Rectangle(0, 0, 0, caretHeight);
+                    caretRenderBounds = new Ultraviolet.Rectangle(0, 0, caretWidth, caretHeight);
+                }
             }
         }
-        
+
         /// <summary>
         /// Calculates the parameters with which to draw the selection.
         /// </summary>
@@ -957,7 +1008,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     var selectionBottomHeight = selectionEndLineHeight;
                     selectionBottom = new Ultraviolet.Rectangle(selectionBottomX, selectionBottomY, selectionBottomWidth, selectionBottomHeight);
                 }
-            }            
+            }
         }
 
         /// <summary>
@@ -969,6 +1020,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             UpdateCaret();
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the caret is currently positioned on a line break.
+        /// </summary>
+        private Boolean IsCaretOnLineBreak()
+        {
+            return caretPosition == bufferText.Length || bufferText[caretPosition] == '\n';
+        }
+
+        // Property values.
+        private TextBoxInsertionMode insertionMode = TextBoxInsertionMode.Insert;
+
         // State values.
         private readonly TextParserTokenStream textParserStream = new TextParserTokenStream();
         private readonly TextLayoutCommandStream textLayoutStream = new TextLayoutCommandStream();
@@ -976,10 +1038,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         // Caret parameters.
         private Double caretBlinkTimer;
         private Int32 caretPosition;
-        private Int32 caretX;
-        private Int32 caretY;
-        private Int32 caretWidth;
-        private Int32 caretHeight;        
+        private Ultraviolet.Rectangle caretBounds;
+        private Ultraviolet.Rectangle caretRenderBounds;
 
         // Selection parameters.
         private Int32? selectionPosition;

@@ -57,6 +57,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ColumnDefinitionCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ColumnDefinitionCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\DockPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HeaderedContentControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TabItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBoxItem.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DefinitionBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DefinitionBaseCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Dock.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\DockPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Grid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Grid.GridMeasurementOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Grid.VirtualCellMetadata.cs" />

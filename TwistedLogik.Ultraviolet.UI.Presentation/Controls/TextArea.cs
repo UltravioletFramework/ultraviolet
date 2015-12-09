@@ -87,6 +87,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (PART_Editor != null)
                 PART_Editor.Paste();
         }
+        
+        /// <summary>
+        /// Gets or sets the text area's current insertion mode.
+        /// </summary>
+        public TextBoxInsertionMode InsertionMode
+        {
+            get { return GetValue<TextBoxInsertionMode>(InsertionModeProperty); }
+            set { SetValue(InsertionModeProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets a value specifying how the text area's text wraps when it reaches the edge of its container.
@@ -190,6 +199,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     PART_Editor.SelectedText = value;
             }
         }
+
+        /// <summary>
+        /// Identifies the <see cref="InsertionMode"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextArea),
+            new PropertyMetadata<TextBoxInsertionMode>(TextBoxInsertionMode.Insert, PropertyMetadataOptions.None, HandleInsertionModeChanged));
 
         /// <summary>
         /// Identifies the <see cref="TextWrapping"/> dependency property.
@@ -303,7 +318,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (PART_Editor != null)
                 PART_Editor.HandleKeyDown(device, key, modifiers, ref data);
-            
+
+            if (!data.Handled)
+            {
+                switch (key)
+                {
+                    case Key.Insert:
+                        InsertionMode = (InsertionMode == TextBoxInsertionMode.Insert) ?
+                            TextBoxInsertionMode.Overwrite :
+                            TextBoxInsertionMode.Insert;
+                        data.Handled = true;
+                        break;
+                }
+            }
+               
             base.OnKeyDown(device, key, modifiers, ref data);
         }
 
@@ -314,6 +342,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 PART_Editor.HandleTextInput(device, ref data);
 
             base.OnTextInput(device, ref data);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="InsertionMode"/> dependency property changes.
+        /// </summary>
+        private static void HandleInsertionModeChanged(DependencyObject dobj, TextBoxInsertionMode oldValue, TextBoxInsertionMode newValue)
+        {
+            var textArea = (TextArea)dobj;
+            if (textArea.PART_Editor != null)
+                textArea.PART_Editor.InsertionMode = newValue;
         }
 
         /// <summary>
