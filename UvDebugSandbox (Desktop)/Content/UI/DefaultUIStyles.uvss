@@ -440,6 +440,15 @@ TextArea
 	padding: 6 4 6 4;
 }
 
+TextArea >> TextAreaEditor
+{
+	caret-insert-color: #ffffffff;
+	caret-insert-topmost: true;
+	caret-overwrite-color: #ffffffff;
+	caret-overwrite-topmost: true;
+	selection-color: #ff528cc9;
+}
+
 TextArea >> ScrollViewer >> Border
 {
 	border-thickness: 0;

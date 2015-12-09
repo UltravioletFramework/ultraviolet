@@ -191,6 +191,158 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the caret is drawn on top of the text while the caret is in insertion mode.
+        /// </summary>
+        public Boolean CaretInsertTopmost
+        {
+            get { return GetValue<Boolean>(CaretInsertTopmostProperty); }
+            set { SetValue(CaretInsertTopmostProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the caret is drawn on top of the text while the caret is in insertion mode.
+        /// </summary>
+        public Boolean CaretOverwriteTopmost
+        {
+            get { return GetValue<Boolean>(CaretOverwriteTopmostProperty); }
+            set { SetValue(CaretOverwriteTopmostProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the image used to draw the caret while the caret is in insertion mode.
+        /// </summary>
+        public SourcedImage CaretInsertImage
+        {
+            get { return GetValue<SourcedImage>(CaretInsertImageProperty); }
+            set { SetValue(CaretInsertImageProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the image used to draw the caret while the caret is in overwrite mode.
+        /// </summary>
+        public SourcedImage CaretOverwriteImage
+        {
+            get { return GetValue<SourcedImage>(CaretInsertImageProperty); }
+            set { SetValue(CaretInsertImageProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the color with which the caret is drawn while the caret is in insertion mode.
+        /// </summary>
+        public Color CaretInsertColor
+        {
+            get { return GetValue<Color>(CaretInsertColorProperty); }
+            set { SetValue(CaretInsertColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the color with which the caret is drawn while the caret is in overwrite mode.
+        /// </summary>
+        public Color CaretOverwriteColor
+        {
+            get { return GetValue<Color>(CaretOverwriteColorProperty); }
+            set { SetValue(CaretOverwriteColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the caret's width when it is in insertion mode, specified in device in independent pixels.
+        /// </summary>
+        /// <remarks>The caret will never be wider than the glyph at which it is positioned, regardless of this value.</remarks>
+        public Double CaretWidth
+        {
+            get { return GetValue<Double>(CaretWidthProperty); }
+            set { SetValue(CaretWidthProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the cart's thickness when it is in overwrite mode, specified in device independent pixels.
+        /// </summary>
+        /// <remarks>The caret will never be taller than the glyph at which it is positioned, regardless of this value.</remarks>
+        public Double CaretThickness
+        {
+            get { return GetValue<Double>(CaretThicknessProperty); }
+            set { SetValue(CaretThicknessProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the image used to draw the selection highlight.
+        /// </summary>
+        public SourcedImage SelectionImage
+        {
+            get { return GetValue<SourcedImage>(SelectionImageProperty); }
+            set { SetValue(SelectionImageProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the color with which the selection highlight is drawn.
+        /// </summary>
+        public Color SelectionColor
+        {
+            get { return GetValue<Color>(SelectionColorProperty); }
+            set { SetValue(SelectionColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="CaretInsertTopmost"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CaretInsertTopmostProperty = DependencyProperty.Register("CaretInsertTopmost", typeof(Boolean), typeof(TextAreaEditor),
+            new PropertyMetadata<Boolean>(true, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="CaretOverwriteTopmost"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CaretOverwriteTopmostProperty = DependencyProperty.Register("CaretOverwriteTopmost", typeof(Boolean), typeof(TextAreaEditor),
+            new PropertyMetadata<Boolean>(true, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="CaretInsertImage"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CaretInsertImageProperty = DependencyProperty.Register("CaretInsertImage", typeof(SourcedImage), typeof(TextAreaEditor),
+            new PropertyMetadata<SourcedImage>(null, PropertyMetadataOptions.None, HandleCaretInsertImageChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="CaretOverwriteImage"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CaretOverwriteImageProperty = DependencyProperty.Register("CaretOverwriteImage", typeof(SourcedImage), typeof(TextAreaEditor),
+            new PropertyMetadata<SourcedImage>(null, PropertyMetadataOptions.None, HandleCaretOverwriteImageChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="CaretInsertColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CaretInsertColorProperty = DependencyProperty.Register("CaretInsertColor", typeof(Color), typeof(TextAreaEditor),
+            new PropertyMetadata<Color>(Color.White, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="CaretOverwriteColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CaretOverwriteColorProperty = DependencyProperty.Register("CaretOverwriteColor", typeof(Color), typeof(TextAreaEditor),
+            new PropertyMetadata<Color>(Color.White, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="CaretWidth"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CaretWidthProperty = DependencyProperty.Register("CaretWidth", typeof(Double), typeof(TextAreaEditor),
+            new PropertyMetadata<Double>(1.0, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="CaretThickness"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextAreaEditor),
+            new PropertyMetadata<Double>(4.0, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="SelectionImage"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedImage), typeof(TextAreaEditor),
+            new PropertyMetadata<SourcedImage>(null, PropertyMetadataOptions.None, HandleSelectionImageChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="SelectionColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(Color), typeof(TextAreaEditor),
+            new PropertyMetadata<Color>(Color.Blue * 0.4f, PropertyMetadataOptions.None));
+
+        /// <summary>
         /// Called when the editor should process a mouse button being pressed.
         /// </summary>
         /// <param name="device">The <see cref="MouseDevice"/> that raised the event.</param>
@@ -416,18 +568,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
-        {
-            if (textLayoutStream.Count > 0)
-                UpdateTextLayoutStream(MostRecentAvailableSize);
-
-            UpdateCaret();
-            UpdateSelection();
-
-            base.ReloadContentCore(recursive);
-        }
-
-        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             UpdateTextLayoutStream(availableSize);
@@ -451,10 +591,89 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
             DrawSelection(time, dc);
-            DrawText(time, dc);
-            DrawCaret(time, dc);
+
+            var caretTopmost = 
+                (caretInsertionMode == TextBoxInsertionMode.Insert && CaretInsertTopmost) ||
+                (caretInsertionMode == TextBoxInsertionMode.Overwrite && CaretOverwriteTopmost);
+
+            if (caretTopmost)
+            {
+                DrawText(time, dc);
+                DrawCaret(time, dc);
+            }
+            else
+            {
+                DrawCaret(time, dc);
+                DrawText(time, dc);
+            }
 
             base.DrawOverride(time, dc);
+        }
+        
+        /// <inheritdoc/>
+        protected override void ReloadContentCore(Boolean recursive)
+        {
+            ReloadCaretInsertImage();
+            ReloadCaretOverwriteImage();
+            ReloadSelectionImage();
+
+            if (textLayoutStream.Count > 0)
+                UpdateTextLayoutStream(MostRecentAvailableSize);
+
+            UpdateSelectionAndCaret();
+
+            base.ReloadContentCore(recursive);
+        }
+
+        /// <summary>
+        /// Reloads the <see cref="CaretInsertImage"/> resource.
+        /// </summary>
+        protected void ReloadCaretInsertImage()
+        {
+            LoadImage(CaretInsertImage);
+        }
+
+        /// <summary>
+        /// Reloads the <see cref="CaretOverwriteImage"/> resource.
+        /// </summary>
+        protected void ReloadCaretOverwriteImage()
+        {
+            LoadImage(CaretOverwriteImage);
+        }
+
+        /// <summary>
+        /// Reloads the <see cref="SelectionImage"/> resource.
+        /// </summary>
+        protected void ReloadSelectionImage()
+        {
+            LoadImage(SelectionImage);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="CaretInsertImage"/> dependency property changes.
+        /// </summary>
+        private static void HandleCaretInsertImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
+        {
+            var textAreaEditor = (TextAreaEditor)dobj;
+            textAreaEditor.ReloadCaretInsertImage();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="CaretOverwriteImage"/> dependency property changes.
+        /// </summary>
+        private static void HandleCaretOverwriteImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
+        {
+            var textAreaEditor = (TextAreaEditor)dobj;
+            textAreaEditor.ReloadCaretOverwriteImage();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="SelectionImage"/> dependency property changes.
+        /// </summary>
+        private static void HandleSelectionImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
+        {
+            var textAreaEditor = (TextAreaEditor)dobj;
+            textAreaEditor.ReloadSelectionImage();
         }
 
         /// <summary>
@@ -540,7 +759,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             // Draw the first line
             var selectionTopDips = Display.PixelsToDips(selectionTop);
-            DrawBlank(dc, selectionTopDips, Color.CornflowerBlue);
+            DrawImage(dc, SelectionImage, selectionTopDips, SelectionColor, true);
 
             // Draw the middle
             if (selectionLineCount > 2)
@@ -555,7 +774,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                     var lineBounds = new Ultraviolet.Rectangle(lineInfo.X, lineInfo.Y, lineInfo.Width, lineInfo.Height);
                     var lineBoundsDips = Display.PixelsToDips(lineBounds);
-                    DrawBlank(dc, lineBoundsDips, Color.CornflowerBlue);
+                    DrawImage(dc, SelectionImage, lineBoundsDips, SelectionColor, true);
                 }
 
                 textLayoutStream.ReleasePointers();
@@ -565,7 +784,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (selectionLineCount > 1)
             {
                 var selectionBottomDips = Display.PixelsToDips(selectionBottom);
-                DrawBlank(dc, selectionBottomDips, Color.CornflowerBlue);
+                DrawImage(dc, SelectionImage, selectionBottomDips, SelectionColor, true);
             }
         }
 
@@ -601,7 +820,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (isCaretVisible)
             {
                 var caretBoundsDips = Display.PixelsToDips(caretRenderBounds);
-                DrawBlank(dc, caretRenderBounds, owner.Foreground);
+                var caretImage = (caretInsertionMode == TextBoxInsertionMode.Insert) ? CaretInsertImage : CaretOverwriteImage;
+                var caretColor = (caretInsertionMode == TextBoxInsertionMode.Insert) ? CaretInsertColor : CaretOverwriteColor;
+                DrawImage(dc, CaretInsertImage, caretBoundsDips, caretColor, true);
             }
         }
 
@@ -876,7 +1097,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             else
             {
-                if (InsertionMode == TextBoxInsertionMode.Overwrite && overwrite && !IsCaretOnLineBreak())
+                if (caretInsertionMode == TextBoxInsertionMode.Overwrite && overwrite)
                 {
                     var lengthToRemove = Math.Min(str.Length, bufferText.Length - caretPosition);
                     if (lengthToRemove > 0)
@@ -908,15 +1129,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var owner = TemplatedParent as TextArea;
 
+            var font = (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource.Value.GetFace(SpriteFontStyle.Regular) : null;
+            var fontLineSpacing = (font != null) ? font.LineSpacing : 0;
+
             if (InsertionMode == TextBoxInsertionMode.Overwrite && !IsCaretOnLineBreak())
             {
-                var font = (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource.Value.GetFace(SpriteFontStyle.Regular) : null;
-                var fontLineSpacing = (font != null) ? font.LineSpacing : 0;
+                caretInsertionMode = TextBoxInsertionMode.Overwrite;
 
                 var caretX = 0;
                 var caretY = 0;
                 var caretWidth = (Int32)Math.Ceiling(fontLineSpacing / 2f);
-                var caretHeight = 4;
+                var caretHeight = (Int32)Display.DipsToPixels(CaretThickness);
 
                 if (textLayoutStream.TotalLength > 0)
                 {
@@ -929,28 +1152,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     caretX = glyphBounds.Left;
                     caretY = glyphBounds.Top;
                     caretWidth = glyphBounds.Width;
-                    caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, fontLineSpacing);
+                    caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, glyphBounds.Height);
                 }
                 else
                 {
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, fontLineSpacing);
                 }
 
-                caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.Left, caretBounds.Bottom - caretHeight, caretWidth, caretHeight);
+                caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.Left, 
+                    Math.Max(caretBounds.Top, caretBounds.Bottom - caretHeight), caretWidth, 
+                    Math.Min(caretBounds.Height, caretHeight));
             }
             else
             {
+                caretInsertionMode = TextBoxInsertionMode.Insert;
+
                 if (caretPosition > 0 && caretPosition <= textLayoutStream.TotalLength)
                 {
+                    var caretWidthPx = (Int32)Display.DipsToPixels(CaretWidth);
+
+                    // TODO: Clamp to glyph width
+
                     caretBounds = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream, caretPosition);
-                    caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.X, caretBounds.Y, 1, caretBounds.Height);
+                    caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.X, caretBounds.Y, 
+                        caretWidthPx, caretBounds.Height);
                 }
                 else
                 {
-                    var caretWidth = 1;
-                    var caretHeight = (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource.Value.GetFace(SpriteFontStyle.Regular).LineSpacing : 0;
-                    caretBounds = new Ultraviolet.Rectangle(0, 0, 0, caretHeight);
-                    caretRenderBounds = new Ultraviolet.Rectangle(0, 0, caretWidth, caretHeight);
+                    var caretWidthPx = (Int32)Display.DipsToPixels(CaretWidth);
+                    var caretHeightPx = (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource.Value.GetFace(SpriteFontStyle.Regular).LineSpacing : 0;
+
+                    caretBounds = new Ultraviolet.Rectangle(0, 0, 0, caretHeightPx);
+                    caretRenderBounds = new Ultraviolet.Rectangle(0, 0, 
+                        Math.Min(caretWidthPx, fontLineSpacing), caretHeightPx);
                 }
             }
         }
@@ -1040,6 +1274,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private Int32 caretPosition;
         private Ultraviolet.Rectangle caretBounds;
         private Ultraviolet.Rectangle caretRenderBounds;
+        private TextBoxInsertionMode caretInsertionMode = TextBoxInsertionMode.Insert;
 
         // Selection parameters.
         private Int32? selectionPosition;
