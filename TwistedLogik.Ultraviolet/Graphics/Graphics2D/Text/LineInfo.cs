@@ -12,19 +12,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="source">The command stream from which this line was retrieved.</param>
         /// <param name="lineIndex">The index of the line within its layout.</param>
-        /// <param name="lineInfoCommandIndex">The index of the command that contains the line's metadata.</param>
+        /// <param name="offsetInCommands">The index of the command that contains the line's metadata.</param>
+        /// <param name="offsetInGlyphs">The index of the first glyph in the line.</param>
         /// <param name="x">The x-coordinate of the line's top-left corner relative to its layout area.</param>
         /// <param name="y">The y-coordinate of the line's top-left corner relative to its layout area.</param>
         /// <param name="width">The line's width in pixels.</param>
         /// <param name="height">The line's height in pixels.</param>
         /// <param name="lengthInCommands">The line's length in commands.</param>
         /// <param name="lengthInGlyphs">The line's length in glyphs.</param>
-        internal LineInfo(TextLayoutCommandStream source, Int32 lineIndex, Int32 lineInfoCommandIndex, 
+        internal LineInfo(TextLayoutCommandStream source, Int32 lineIndex, Int32 offsetInCommands, Int32 offsetInGlyphs, 
             Int32 x, Int32 y, Int32 width, Int32 height, Int32 lengthInCommands, Int32 lengthInGlyphs)
         {
             this.source = source;
             this.lineIndex = lineIndex;
-            this.lineInfoCommandIndex = lineInfoCommandIndex;
+            this.offsetInCommands = offsetInCommands;
+            this.offsetInGlyphs = offsetInGlyphs;
             this.x = x;
             this.y = y;
             this.width = width;
@@ -52,9 +54,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the <see cref="TextLayoutCommandType.LineInfo"/> command that contains this line's metadata.
         /// </summary>
-        public Int32 LineInfoCommandIndex
+        public Int32 OffsetInCommands
         {
-            get { return lineInfoCommandIndex; }
+            get { return offsetInCommands; }
+        }
+
+        /// <summary>
+        /// Gets the index of the first glyph in the line.
+        /// </summary>
+        public Int32 OffsetInGlyphs
+        {
+            get { return offsetInGlyphs; }
         }
 
         /// <summary>
@@ -108,7 +118,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         // Property values.
         private readonly TextLayoutCommandStream source;
         private readonly Int32 lineIndex;
-        private readonly Int32 lineInfoCommandIndex;
+        private readonly Int32 offsetInCommands;
+        private readonly Int32 offsetInGlyphs;
         private readonly Int32 x;
         private readonly Int32 y;
         private readonly Int32 width;

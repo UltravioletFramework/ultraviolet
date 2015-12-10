@@ -491,8 +491,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A layout-relative bounding box for the specified glyph.</returns>
         public Rectangle GetInsertionPointBounds(TextLayoutCommandStream input, Int32 index)
         {
-            Rectangle? glyphBounds;
-            return GetInsertionPointBounds(input, index, out glyphBounds);
+            var lineIndex = 0;
+            var lineWidth = 0;
+            var lineHeight = 0;
+            var glyphBounds = default(Rectangle?);
+            return GetInsertionPointBounds(input, index, out lineIndex, out lineWidth, out lineHeight, out glyphBounds);
         }
 
         /// <summary>
@@ -500,11 +503,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="index">The index of the insertion point for which to retrieve a bounding box.</param>
+        /// <param name="lineIndex">The index of the line that contains the specified insertion point.</param>
+        /// <param name="lineWidth">The width of the line that contains the specified insertion point.</param>
+        /// <param name="lineHeight">The height of the line that contains the specified insertion point.</param>
         /// <param name="glyphBounds">The bounding box of the glyph that comes after the insertion point, or <c>null</c> if there is no such glyph.</param>
         /// <returns>A layout-relative bounding box for the specified glyph.</returns>
-        public Rectangle GetInsertionPointBounds(TextLayoutCommandStream input, Int32 index, out Rectangle? glyphBounds)
+        public Rectangle GetInsertionPointBounds(TextLayoutCommandStream input, Int32 index, 
+            out Int32 lineIndex, out Int32 lineWidth, out Int32 lineHeight, out Rectangle? glyphBounds)
         {
             Contract.Require(input, "input");
+
+            lineIndex = 0;
+            lineWidth = 0;
+            lineHeight = 0;
 
             if (input.TotalLength == 0)
             {
@@ -516,10 +527,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 glyphBounds = null;
                 return new Rectangle(0, 0, 0, input.Settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing);
             }
-
-            var lineIndex = 0;
-            var lineWidth = 0;
-            var lineHeight = 0;
 
             if (input.TotalLength == index)
             {
@@ -544,6 +551,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 if (acquiredPointers)
                     input.ReleasePointers();
 
+                lineIndex = input.LineCount - 1;
                 glyphBounds = null;
                 return new Rectangle(positionX + Math.Max(0, lineWidth - 1), positionY, 0, lineHeight);
             }

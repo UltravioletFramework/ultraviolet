@@ -33,14 +33,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             SeekNextCommand();
             var lineInfo = (TextLayoutLineInfoCommand*)Data;
             var linePosition = 0;
+            var lineGlyphStart = 0;
             for (int i = 0; i < index; i++)
             {
                 linePosition += lineInfo->LineHeight;
+                lineGlyphStart += lineInfo->LengthInGlyphs;
                 Seek(1 + StreamPositionInObjects + lineInfo->LengthInCommands);
                 lineInfo = (TextLayoutLineInfoCommand*)Data;
             }
 
-            var result = new LineInfo(this, index, StreamPositionInObjects, lineInfo->Offset, blockOffset + linePosition, 
+            var result = new LineInfo(this, index, StreamPositionInObjects, lineGlyphStart, lineInfo->Offset, blockOffset + linePosition, 
                 lineInfo->LineWidth, lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInGlyphs);
 
             if (acquiredPointers)
@@ -83,13 +85,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (acquiredPointers)
                 AcquirePointers();
 
-            if (StreamPositionInObjects != previous.LineInfoCommandIndex)
-                Seek(previous.LineInfoCommandIndex);
+            if (StreamPositionInObjects != previous.OffsetInCommands)
+                Seek(previous.OffsetInCommands);
 
             Seek(1 + StreamPositionInObjects + ((TextLayoutLineInfoCommand*)Data)->LengthInCommands);
 
             var lineInfo = (TextLayoutLineInfoCommand*)Data;
-            next = new LineInfo(this, previous.LineIndex + 1, StreamPositionInObjects,
+            next = new LineInfo(this, previous.LineIndex + 1, StreamPositionInObjects, previous.OffsetInGlyphs + previous.LengthInGlyphs,
                 lineInfo->Offset, previous.Y + previous.Height, lineInfo->LineWidth, 
                 lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInGlyphs);
             

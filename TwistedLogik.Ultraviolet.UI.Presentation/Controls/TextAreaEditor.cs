@@ -392,6 +392,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (button == MouseButton.Left)
             {
                 SelectCurrentToken();
+                ScrollToCaret(true, false, false);
             }
         }
 
@@ -505,32 +506,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
 
                 case Key.Left:
-                    MoveCaretInDirection(CaretNavigationDirection.Left);
+                    MoveCaretInDirection(CaretNavigationDirection.Left, modifiers);
                     data.Handled = true;
                     break;
 
                 case Key.Right:
-                    MoveCaretInDirection(CaretNavigationDirection.Right);
+                    MoveCaretInDirection(CaretNavigationDirection.Right, modifiers);
                     data.Handled = true;
                     break;
 
                 case Key.Up:
-                    MoveCaretInDirection(CaretNavigationDirection.Up);
+                    MoveCaretInDirection(CaretNavigationDirection.Up, modifiers);
                     data.Handled = true;
                     break;
 
                 case Key.Down:
-                    MoveCaretInDirection(CaretNavigationDirection.Down);
+                    MoveCaretInDirection(CaretNavigationDirection.Down, modifiers);
                     data.Handled = true;
                     break;
 
                 case Key.Home:
-                    MoveCaretInDirection(CaretNavigationDirection.Home);
+                    MoveCaretInDirection(CaretNavigationDirection.Home, modifiers);
                     data.Handled = true;
                     break;
 
                 case Key.End:
-                    MoveCaretInDirection(CaretNavigationDirection.End);
+                    MoveCaretInDirection(CaretNavigationDirection.End, modifiers);
                     data.Handled = true;
                     break;
             }
@@ -592,6 +593,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
             return finalSize;
+        }
+
+        /// <inheritdoc/>
+        protected override void PositionOverride()
+        {
+            if (pendingScrollToCaret)
+            {
+                pendingScrollToCaret = false;
+                ScrollToCaret(false, false, false);
+            }
+            base.PositionOverride();
         }
 
         /// <inheritdoc/>
@@ -843,8 +855,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             caretBlinkTimer = 0;
             caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, mousePosPixs);
-
             UpdateSelectionAndCaret();
+
+            ScrollToCaret(true, false, false);
         }
 
         /// <summary>
@@ -858,6 +871,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 caretBlinkTimer = 0;
                 caretPosition -= 1;
                 UpdateSelectionAndCaret();
+
+                ScrollToCaret(false, true, false);
             }
         }
 
@@ -872,6 +887,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 caretBlinkTimer = 0;
                 caretPosition += 1;
                 UpdateSelectionAndCaret();
+
+                ScrollToCaret(false, false, true);
             }
         }
 
@@ -889,6 +906,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 caretBlinkTimer = 0;
                 caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
                 UpdateSelectionAndCaret();
+
+                ScrollToCaret(true, false, false);
             }
         }
 
@@ -906,36 +925,60 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 caretBlinkTimer = 0;
                 caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
                 UpdateSelectionAndCaret();
+
+                ScrollToCaret(true, false, false);               
             }
         }
 
         /// <summary>
-        /// Moves the caret to the beginning of the text.
+        /// Moves the caret to the beginning of the current line.
         /// </summary>
-        private void MoveCaretToHome()
+        private void MoveCaretToHome(Boolean moveToBeginningOfText)
         {
-            var movementAllowed = (caretPosition > 0);
+            var movementAllowed = (caretPosition > 0 && textLayoutStream.TotalLength > 0);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Home))
             {
-                caretBlinkTimer = 0;
-                caretPosition = 0;
+                if (moveToBeginningOfText)
+                {
+                    caretPosition = 0;
+                }
+                else
+                {
+                    var lineInfo = textLayoutStream.GetLineInfo(caretLineIndex);
+                    caretPosition = lineInfo.OffsetInGlyphs;
+                }
 
+                caretBlinkTimer = 0;
                 UpdateSelectionAndCaret();
+
+                ScrollToCaret(true, false, false);
             }
         }
 
         /// <summary>
-        /// Moves the caret to the end of the text.
+        /// Moves the caret to the end of the current line.
         /// </summary>
-        private void MoveCaretToEnd()
+        private void MoveCaretToEnd(Boolean moveToEndOfText)
         {
-            var movementAllowed = (caretPosition < textLayoutStream.TotalLength);
+            var movementAllowed = (caretPosition < textLayoutStream.TotalLength && textLayoutStream.TotalLength > 0);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.End))
             {
-                caretBlinkTimer = 0;
-                caretPosition = textLayoutStream.TotalLength;
+                if (moveToEndOfText)
+                {
+                    caretPosition = textLayoutStream.TotalLength;
+                }
+                else
+                {
+                    var lineInfo = textLayoutStream.GetLineInfo(caretLineIndex);
+                    caretPosition = lineInfo.OffsetInGlyphs + lineInfo.LengthInGlyphs;
+                    if (caretPosition > 0 && bufferText[caretPosition - 1] == '\n')
+                        caretPosition--;
+                }
 
+                caretBlinkTimer = 0;
                 UpdateSelectionAndCaret();
+
+                ScrollToCaret(true, false, false);
             }
         }
 
@@ -943,7 +986,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Moves the caret in the specified direction.
         /// </summary>
         /// <param name="direction">A <see cref="CaretNavigationDirection"/> value that specifies how to move the caret.</param>
-        private void MoveCaretInDirection(CaretNavigationDirection direction)
+        private void MoveCaretInDirection(CaretNavigationDirection direction, ModifierKeys modifiers = ModifierKeys.None)
         {
             switch (direction)
             {
@@ -964,11 +1007,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
 
                 case CaretNavigationDirection.Home:
-                    MoveCaretToHome();
+                    MoveCaretToHome((modifiers & ModifierKeys.Control) == ModifierKeys.Control);
                     break;
 
                 case CaretNavigationDirection.End:
-                    MoveCaretToEnd();
+                    MoveCaretToEnd((modifiers & ModifierKeys.Control) == ModifierKeys.Control);
                     break;
             }
         }
@@ -1118,6 +1161,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             caretBlinkTimer = 0;
             caretPosition = (position <= caretPosition) ? caretPosition + str.Length : caretPosition;
 
+            pendingScrollToCaret = true;
+
             UpdateTextParserStream();
         }
 
@@ -1164,10 +1209,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     caretY = glyphBounds.Top;
                     caretWidth = glyphBounds.Width;
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, glyphBounds.Height);
+                    caretLineIndex = glyphLineIndex;
                 }
                 else
                 {
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, fontLineSpacing);
+                    caretLineIndex = 0;
                 }
 
                 caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.Left, 
@@ -1186,19 +1233,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (textLayoutStream.TotalLength > 0)
                 {
                     var caretWidthPx = (Int32)Display.DipsToPixels(CaretWidth);
-                    
+
+                    var lineIndex = 0;
+                    var lineWidth = 0;
+                    var lineHeight = 0;
+
                     var boundsGlyph = default(Ultraviolet.Rectangle?);
-                    var boundsInsert = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream, caretPosition, out boundsGlyph);
+                    var boundsInsert = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream, caretPosition,
+                        out lineIndex, out lineWidth, out lineHeight, out boundsGlyph);
 
                     caretX = boundsInsert.X;
                     caretY = boundsInsert.Y;
-                    caretWidth = (boundsGlyph.HasValue) ? boundsGlyph.Value.Width : fontLineSpacingHalf;
+                    caretWidth = (boundsGlyph.HasValue && boundsGlyph.Value.Width > 0) ? boundsGlyph.Value.Width : fontLineSpacingHalf;
                     caretHeight = boundsInsert.Height;
-                    caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, caretHeight);                    
+                    caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, caretHeight);
+                    caretLineIndex = lineIndex;                    
                 }
                 else
                 {
-                    caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, caretHeight);                    
+                    caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, caretHeight);
+                    caretLineIndex = 0;
                 }
 
                 caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.Left, caretBounds.Top,
@@ -1272,6 +1326,66 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Scrolls to ensure that the caret is within the viewport.
+        /// </summary>
+        private void ScrollToCaret(Boolean showMaximumLineWidth, Boolean jumpLeft, Boolean jumpRight)
+        {
+            var scrollViewer = Parent as ScrollViewer;
+            if (scrollViewer == null)
+                return;
+
+            var boundsViewport = new RectangleD(scrollViewer.HorizontalOffset, scrollViewer.VerticalOffset, 
+                scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
+            var boundsCaret = Display.PixelsToDips(caretRenderBounds);
+
+            var isHorizontalScrollingNecessary = (boundsCaret.Left < boundsViewport.Left || boundsCaret.Right > boundsViewport.Right);
+            var isVerticalScrollingNecessary = (boundsCaret.Top < boundsViewport.Top || boundsCaret.Bottom > boundsViewport.Bottom);
+
+            if (!isHorizontalScrollingNecessary && !isVerticalScrollingNecessary)
+                return;
+            
+            if (isVerticalScrollingNecessary)
+            {
+                if (boundsCaret.Top < boundsViewport.Top)
+                {
+                    var verticalOffset = boundsCaret.Top;
+                    scrollViewer.ScrollToVerticalOffset(verticalOffset);
+                }
+                else
+                {
+                    var verticalOffset = (boundsCaret.Bottom - boundsViewport.Height);
+                    scrollViewer.ScrollToVerticalOffset(verticalOffset);
+                }
+            }
+
+            if (showMaximumLineWidth)
+            {
+                var horizontalOffset = boundsCaret.Right - boundsViewport.Width;
+                scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
+            }
+            else
+            {
+                if (isHorizontalScrollingNecessary)
+                {
+                    if (boundsCaret.Left < boundsViewport.Left)
+                    {
+                        var horizontalOffset = boundsCaret.Left -
+                            (jumpLeft ? (boundsViewport.Width / 3.0) : 0);
+
+                        scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
+                    }
+                    else
+                    {
+                        var horizontalOffset = (boundsCaret.Right - boundsViewport.Width) +
+                            (jumpRight ? (boundsViewport.Width / 3.0) : 0);
+
+                        scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the caret is currently positioned on a line break.
         /// </summary>
         private Boolean IsCaretOnLineBreak()
@@ -1285,10 +1399,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         // State values.
         private readonly TextParserTokenStream textParserStream = new TextParserTokenStream();
         private readonly TextLayoutCommandStream textLayoutStream = new TextLayoutCommandStream();
+        private Boolean pendingScrollToCaret;
 
         // Caret parameters.
         private Double caretBlinkTimer;
         private Int32 caretPosition;
+        private Int32 caretLineIndex;
         private Ultraviolet.Rectangle caretBounds;
         private Ultraviolet.Rectangle caretRenderBounds;
         private TextBoxInsertionMode caretInsertionMode = TextBoxInsertionMode.Insert;
