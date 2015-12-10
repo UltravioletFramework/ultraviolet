@@ -572,15 +572,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             UpdateTextLayoutStream(availableSize);
 
+            var owner = TemplatedParent as TextArea;
+            var ownerFont = (owner == null || !owner.Font.IsLoaded) ? null : owner.Font.Resource.Value;
+            var ownerFontLineSpacing = (ownerFont == null) ? 0 : ownerFont.GetFace(SpriteFontStyle.Regular).LineSpacing;
+            var ownerFontLineSpacingHalf = (Int32)Math.Ceiling(ownerFontLineSpacing / 2f);
+
+            var widthOfInsertionCaret = Math.Min((Int32)Display.DipsToPixels(CaretWidth), ownerFontLineSpacingHalf);
             var width = Display.PixelsToDips(textLayoutStream.ActualWidth);
             width = Math.Max(width, Display.PixelsToDips(caretBounds.Width));
+            width = width + Display.PixelsToDips(widthOfInsertionCaret);
 
             var height = Display.PixelsToDips(textLayoutStream.ActualHeight);
             height = Math.Max(height, Display.PixelsToDips(caretBounds.Height));
 
             return new Size2D(width, height);
         }
-
+        
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
@@ -1131,6 +1138,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var font = (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource.Value.GetFace(SpriteFontStyle.Regular) : null;
             var fontLineSpacing = (font != null) ? font.LineSpacing : 0;
+            var fontLineSpacingHalf = (Int32)Math.Ceiling(fontLineSpacing / 2f);
+
+            var styledCaretWidth = (Int32)Display.DipsToPixels(CaretWidth);
+            var styledCaretThickness = (Int32)Display.DipsToPixels(CaretThickness);
 
             if (InsertionMode == TextBoxInsertionMode.Overwrite && !IsCaretOnLineBreak())
             {
@@ -1138,8 +1149,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 var caretX = 0;
                 var caretY = 0;
-                var caretWidth = (Int32)Math.Ceiling(fontLineSpacing / 2f);
-                var caretHeight = (Int32)Display.DipsToPixels(CaretThickness);
+                var caretWidth = fontLineSpacingHalf;
+                var caretHeight = styledCaretThickness;
 
                 if (textLayoutStream.TotalLength > 0)
                 {
@@ -1167,25 +1178,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 caretInsertionMode = TextBoxInsertionMode.Insert;
 
-                if (caretPosition > 0 && caretPosition <= textLayoutStream.TotalLength)
+                var caretX = 0;
+                var caretY = 0;
+                var caretWidth = fontLineSpacingHalf;
+                var caretHeight = fontLineSpacing;
+
+                if (textLayoutStream.TotalLength > 0)
                 {
                     var caretWidthPx = (Int32)Display.DipsToPixels(CaretWidth);
+                    
+                    var boundsGlyph = default(Ultraviolet.Rectangle?);
+                    var boundsInsert = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream, caretPosition, out boundsGlyph);
 
-                    // TODO: Clamp to glyph width
-
-                    caretBounds = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream, caretPosition);
-                    caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.X, caretBounds.Y, 
-                        caretWidthPx, caretBounds.Height);
+                    caretX = boundsInsert.X;
+                    caretY = boundsInsert.Y;
+                    caretWidth = (boundsGlyph.HasValue) ? boundsGlyph.Value.Width : fontLineSpacingHalf;
+                    caretHeight = boundsInsert.Height;
+                    caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, caretHeight);                    
                 }
                 else
                 {
-                    var caretWidthPx = (Int32)Display.DipsToPixels(CaretWidth);
-                    var caretHeightPx = (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource.Value.GetFace(SpriteFontStyle.Regular).LineSpacing : 0;
-
-                    caretBounds = new Ultraviolet.Rectangle(0, 0, 0, caretHeightPx);
-                    caretRenderBounds = new Ultraviolet.Rectangle(0, 0, 
-                        Math.Min(caretWidthPx, fontLineSpacing), caretHeightPx);
+                    caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, caretHeight);                    
                 }
+
+                caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.Left, caretBounds.Top,
+                    Math.Min(caretBounds.Width, styledCaretWidth), caretBounds.Height);
             }
         }
 

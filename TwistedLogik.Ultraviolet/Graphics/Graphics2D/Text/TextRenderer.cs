@@ -491,13 +491,29 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A layout-relative bounding box for the specified glyph.</returns>
         public Rectangle GetInsertionPointBounds(TextLayoutCommandStream input, Int32 index)
         {
+            Rectangle? glyphBounds;
+            return GetInsertionPointBounds(input, index, out glyphBounds);
+        }
+
+        /// <summary>
+        /// Gets a layout-relative bounding box for the specified insertion point.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="index">The index of the insertion point for which to retrieve a bounding box.</param>
+        /// <param name="glyphBounds">The bounding box of the glyph that comes after the insertion point, or <c>null</c> if there is no such glyph.</param>
+        /// <returns>A layout-relative bounding box for the specified glyph.</returns>
+        public Rectangle GetInsertionPointBounds(TextLayoutCommandStream input, Int32 index, out Rectangle? glyphBounds)
+        {
             Contract.Require(input, "input");
 
             if (input.TotalLength == 0)
             {
                 if (input.Settings.Font == null)
+                {
+                    glyphBounds = null;
                     return Rectangle.Empty;
-
+                }
+                glyphBounds = null;
                 return new Rectangle(0, 0, 0, input.Settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing);
             }
 
@@ -528,12 +544,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 if (acquiredPointers)
                     input.ReleasePointers();
 
+                glyphBounds = null;
                 return new Rectangle(positionX + Math.Max(0, lineWidth - 1), positionY, 0, lineHeight);
             }
             else
             {
-                var glyphBounds = GetGlyphBounds(input, index, out lineIndex, out lineWidth, out lineHeight, true);
-                return new Rectangle(glyphBounds.Left, glyphBounds.Top, 0, glyphBounds.Height);
+                var glyphBoundsValue = GetGlyphBounds(input, index, out lineIndex, out lineWidth, out lineHeight, true);
+
+                glyphBounds = glyphBoundsValue;
+                return new Rectangle(glyphBoundsValue.Left, glyphBoundsValue.Top, 0, glyphBoundsValue.Height);
             }
         }
 
