@@ -29,8 +29,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public Control(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            var dataSourceWrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(GetType());
-            dataSourceWrapper = uv.GetUI().GetPresentationFoundation().CreateDataSourceWrapper(dataSourceWrapperName, this);
+            var upf = uv.GetUI().GetPresentationFoundation();
+            dataSourceWrapper = upf.CreateDataSourceWrapperForControl(this);
 
             LoadComponentRoot();
         }

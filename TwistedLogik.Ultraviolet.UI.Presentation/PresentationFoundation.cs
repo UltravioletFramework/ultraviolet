@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.outOfBandRenderer = uv.IsRunningInServiceMode ? null : new OutOfBandRenderer(uv);
 
-            this.styleQueue   = new LayoutQueue(InvalidateStyle, false);
+            this.styleQueue = new LayoutQueue(InvalidateStyle, false);
             this.measureQueue = new LayoutQueue(InvalidateMeasure);
             this.arrangeQueue = new LayoutQueue(InvalidateArrange);
         }
@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(ultravioletConfig, "configuration");
 
-            ultravioletConfig.ViewProviderAssembly      = typeof(PresentationFoundation).Assembly.FullName;
+            ultravioletConfig.ViewProviderAssembly = typeof(PresentationFoundation).Assembly.FullName;
             ultravioletConfig.ViewProviderConfiguration = presentationConfig;
         }
 
@@ -61,14 +61,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             diagnosticsPanel.Draw();
         }
-        
+
         /// <summary>
         /// Creates a new view model wrapper instance of the specified type which wraps the specified view model, if such a wrapper exists.
         /// </summary>
         /// <param name="name">The name of the view model wrapper type to instantiate.</param>
         /// <param name="viewModel">The view model instance that will be wrapped by the view model wrapper.</param>
         /// <returns>The view model wrapper that was created, or a reference to <paramref name="viewModel"/> if no valid wrapper exists.</returns>
-        public Object CreateDataSourceWrapper(String name, Object viewModel)
+        public Object CreateDataSourceWrapperByName(String name, Object viewModel)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(name, "name");
@@ -83,7 +83,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 wrapperType = (vmWrapperAttr == null) ? null : vmWrapperAttr.WrapperType;
                 compiledDataSourceWrappers[name] = wrapperType;
             }
-            
+
+            return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new[] { viewModel });
+        }
+
+        /// <summary>
+        /// Creates a new view model wrapper instance for the specified control's component template.
+        /// </summary>
+        /// <param name="viewModel">The control for which to create a view model wrapper.</param>
+        /// <returns>The view model wrapper that was created, or a reference to <paramref name="viewModel"/> if no valid wrapper exists.</returns>
+        public Object CreateDataSourceWrapperForControl(Control viewModel)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(viewModel, "control");
+
+            if (viewModel == null)
+                return null;
+
+            var wrapperType = default(Type);
+            var templateType = viewModel.GetType();
+            var templateName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templateType);
+            var templateInherited = false;
+
+            for (var current = templateType; current != null; current = current.BaseType)
+            {
+                var nameCurrent = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(current);
+                if (compiledDataSourceWrappers.TryGetValue(nameCurrent, out wrapperType))
+                    break;
+
+                templateInherited = true;
+            }
+
+            if (wrapperType != null && templateInherited)
+                compiledDataSourceWrappers[templateName] = wrapperType;
+
             return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new[] { viewModel });
         }
 
@@ -98,7 +131,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.RequireNotEmpty(path, "path");
 
             var name = PresentationFoundationView.GetDataSourceWrapperNameForView(path);
-            
+
             Type wrapperType;
             if (compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
             {
@@ -124,7 +157,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             return null;
         }
-
+        
         /// <summary>
         /// Compiles the binding expressions in the specified content directory tree.
         /// </summary>

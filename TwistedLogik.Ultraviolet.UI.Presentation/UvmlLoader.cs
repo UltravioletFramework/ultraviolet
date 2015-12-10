@@ -1249,10 +1249,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (templatedParent != null)
             {
                 dataSource = templatedParent;
-                dataSourceType = dataSource.GetType();
+                PresentationFoundation.Instance.ComponentTemplates.Get(templatedParent, out dataSourceType);
             }
 
-            return BindingExpressions.CreateBoundEventDelegate(dataSource, dataSourceType, handlerType, handlerName);     
+            return BindingExpressions.CreateBoundEventDelegate(dataSource, dataSourceType, handlerType, handlerName);
         }
 
         /// <summary>

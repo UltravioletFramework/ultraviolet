@@ -92,11 +92,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// </summary>
             private void FindCompiledBindingExpressions()
             {
+                var wrapperName = default(String);
                 var wrapperType = viewModelType;
                 if (wrapperType == null)
                 {
-                    var wrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(TemplatedParent.GetType());
-                    wrapperType = uv.GetUI().GetPresentationFoundation().GetDataSourceWrapperTypeByName(wrapperName);
+                    for (var templateType = TemplatedParent.GetType(); templateType != null; templateType = templateType.BaseType)
+                    {
+                        wrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templateType);
+                        wrapperType = uv.GetUI().GetPresentationFoundation().GetDataSourceWrapperTypeByName(wrapperName);
+
+                        if (wrapperType != null)
+                            break;
+                    }
 
                     if (wrapperType == null)
                         throw new InvalidOperationException(PresentationStrings.CannotFindViewModelWrapper.Format(wrapperName));

@@ -71,15 +71,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The current expression in the chain.</returns>
         private Expression AddDataSourceReference(String expression, Object dataSource, Type dataSourceType)
         {
-            var dataSourceVariable = Expression.Variable(dataSource.GetType(), "dataSource");
+            var view = dataSource as PresentationFoundationView;
+
+            var dataSourceVariableType = (view != null) ? dataSource.GetType() : dataSourceType;
+            var dataSourceVariable = Expression.Variable(dataSourceVariableType, "dataSource");
             variables.Add(dataSourceVariable);
 
             var dataSourceAssignment = Expression.Assign(dataSourceVariable, Expression.Constant(dataSource));
             expressions.Add(dataSourceAssignment);
 
             AddNullCheck(dataSourceVariable);
-
-            var view = dataSource as PresentationFoundationView;
+            
             if (view != null)
             {
                 var viewModelVariable = Expression.Variable(dataSourceType, "viewModel");

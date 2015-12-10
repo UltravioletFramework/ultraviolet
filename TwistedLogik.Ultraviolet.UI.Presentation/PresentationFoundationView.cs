@@ -202,7 +202,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public override void SetViewModel(Object viewModel)
         {
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            var wrapper = upf.CreateDataSourceWrapper(viewModelWrapperName, viewModel);
+            var wrapper = upf.CreateDataSourceWrapperByName(viewModelWrapperName, viewModel);
 
             base.SetViewModel(wrapper);
         }
