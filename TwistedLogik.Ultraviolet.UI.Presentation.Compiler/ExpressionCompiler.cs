@@ -45,9 +45,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             if (result.Succeeded)
             {
                 cacheNew.Save(cacheFile);
-            }
-            else
-            {
                 DeleteWorkingDirectory(state);
             }
 
@@ -658,6 +655,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 			var trueErrors = results.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).ToList();
 			if (trueErrors.Count > 0)
             {
+                var filesWithErrors = trueErrors.Select(x => x.FileName).Distinct();
+                foreach (var fileWithErrors in filesWithErrors)
+                {
+                    var fileWithErrorsSrc = Path.GetFullPath(fileWithErrors);
+                    var fileWithErrorsDst = Path.Combine(GetWorkingDirectory(state), Path.GetFileName(fileWithErrors));
+                    File.Copy(fileWithErrorsSrc, fileWithErrorsDst, true);
+                }
+
 				var errorStrings = trueErrors.Select(x =>
                     String.Format("{0}\t{1}\t{2}\t{3}", x.ErrorNumber, x.ErrorText, Path.GetFileName(x.FileName), x.Line));
                 
@@ -848,7 +853,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var result = new List<BindingExpressionCompilationError>();
 
             var errorsByFile = errors.Cast<CompilerError>()
-                .Where(x => !x.IsWarning).GroupBy(x => x.FileName).ToDictionary(x => x.Key, x => x.ToList());
+                .Where(x => !x.IsWarning).GroupBy(x => Path.GetFileName(x.FileName)).ToDictionary(x => x.Key, x => x.ToList());
 
             foreach (var model in models)
             {
