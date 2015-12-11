@@ -359,9 +359,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     WriteLine("get");
                     WriteLine("{");
                     WriteLine("var value = {0};", getexp);
-                    WriteLine("if (value == null || value.GetType() == typeof(String))");
+                    WriteLine("if (value is String)");
                     WriteLine("{");
                     WriteLine("return (String)(Object)value;");
+                    WriteLine("}");
+                    WriteLine("if (ReferenceEquals(value, null))");
+                    WriteLine("{");
+                    WriteLine("return null;");
                     WriteLine("}");
                     WriteLine("return String.Format(\"{0}\", {1});", expFormatString, expMemberPath);
                     WriteLine("}");
