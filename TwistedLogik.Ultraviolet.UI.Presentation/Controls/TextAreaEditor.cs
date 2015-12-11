@@ -1136,6 +1136,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void InsertTextAtPosition(StringSegment str, Int32 position, Boolean overwrite)
         {
+            var owner = TemplatedParent as TextArea;
+            var acceptsReturn = (owner != null && owner.AcceptsReturn);
+            var acceptsTab = (owner != null && owner.AcceptsTab);
+
+            if (caretInsertionMode != TextBoxInsertionMode.Overwrite)
+                overwrite = false;
+
             var selectionStart = SelectionStart;
             var selectionLength = SelectionLength;
 
@@ -1144,22 +1151,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 if (position > selectionStart)
                     position -= selectionLength;
-            }
-            else
-            {
-                if (caretInsertionMode == TextBoxInsertionMode.Overwrite && overwrite)
-                {
-                    var lengthToRemove = Math.Min(str.Length, bufferText.Length - caretPosition);
-                    if (lengthToRemove > 0)
-                        bufferText.Remove(caretPosition, str.Length);
-                }
-            }
+
+                overwrite = false;
+            }            
+
+            var charactersInserted = 0;
 
             for (int i = 0; i < str.Length; i++)
-                bufferText.Insert(position + i, str[i]);
+            {
+                var character = str[i];
+                if (character == '\r')
+                    continue;
+                if (character == '\n' && !acceptsReturn)
+                    break;
+                if (character == '\t' && !acceptsTab)
+                    character = ' ';
+
+                if (overwrite && position + i < bufferText.Length)
+                    bufferText.Remove(position + i, 1);
+
+                bufferText.Insert(position + i, character);
+                charactersInserted++;
+            }
 
             caretBlinkTimer = 0;
-            caretPosition = (position <= caretPosition) ? caretPosition + str.Length : caretPosition;
+            caretPosition = (position <= caretPosition) ? caretPosition + charactersInserted : caretPosition;
 
             pendingScrollToCaret = true;
 
