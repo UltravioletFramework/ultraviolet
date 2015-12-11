@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents the text editor in a <see cref="TextArea"/>.
     /// </summary>
     [UvmlKnownType]
-    public partial class TextAreaEditor : Control
+    public partial class TextAreaEditor : FrameworkElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextAreaEditor"/> control.
