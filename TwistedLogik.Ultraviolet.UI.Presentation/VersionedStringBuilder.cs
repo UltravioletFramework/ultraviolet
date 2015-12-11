@@ -27,6 +27,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="VersionedStringBuilder"/> class.
+        /// </summary>
+        /// <param name="value">The initial value of the string builder.</param>
+        public VersionedStringBuilder(String value)
+        {
+            this.stringBuilder = new StringBuilder(value);
+        }
+
+        /// <summary>
         /// Explicitly converts a <see cref="VersionedStringBuilder"/> instance to a <see cref="String"/> instance.
         /// </summary>
         /// <param name="vsb">The <see cref="VersionedStringBuilder"/> to convert.</param>
