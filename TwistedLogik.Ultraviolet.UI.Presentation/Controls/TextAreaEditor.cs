@@ -985,7 +985,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Moves the caret in the specified direction.
         /// </summary>
-        /// <param name="direction">A <see cref="CaretNavigationDirection"/> value that specifies how to move the caret.</param>
         private void MoveCaretInDirection(CaretNavigationDirection direction, ModifierKeys modifiers = ModifierKeys.None)
         {
             switch (direction)
