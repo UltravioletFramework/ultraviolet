@@ -827,6 +827,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (!selectionPosition.HasValue || SelectionLength == 0)
                 return;
 
+            var owner = TemplatedParent as TextArea;
+            if (owner != null && !owner.IsKeyboardFocusWithin)
+                return;
+
             // Draw the first line
             var selectionTopDips = Display.PixelsToDips(selectionTop);
             DrawImage(dc, SelectionImage, selectionTopDips, SelectionColor, true);
