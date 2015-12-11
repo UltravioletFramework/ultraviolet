@@ -352,10 +352,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     GetCSharpTypeName(dprop.PropertyType), 
                     GetCSharpTypeName(dprop.OwnerType), dpropField.Name) : expMemberPath;
 
-                if (expressionInfo.Type == typeof(String) || !String.IsNullOrEmpty(expFormatString))
-                {
-                    expFormatString = String.IsNullOrEmpty(expFormatString) ? "{0}" : String.Format("{{0:{0}}}", expFormatString);
+                expFormatString = String.IsNullOrEmpty(expFormatString) ? "{0}" : String.Format("{{0:{0}}}", expFormatString);
 
+                if (expressionInfo.Type == typeof(String))
+                {
                     WriteLine("get");
                     WriteLine("{");
                     WriteLine("var value = {0};", getexp);
@@ -372,7 +372,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 }
                 else
                 {
-                    WriteLine("get {{ return ({0})({1}); }}", GetCSharpTypeName(expressionInfo.Type), getexp);
+                    if (expressionInfo.Type == typeof(VersionedStringSource))
+                    {
+                        WriteLine("get");
+                        WriteLine("{");
+                        WriteLine("var value = {0};", getexp);
+                        WriteLine("if (value is {0} || value is String)", GetCSharpTypeName(typeof(VersionedStringSource)));
+                        WriteLine("{");
+                        WriteLine("return ({0})value;", GetCSharpTypeName(typeof(VersionedStringSource)));
+                        WriteLine("}");
+                        WriteLine("return ({0})String.Format(\"{1}\", {2});", GetCSharpTypeName(typeof(VersionedStringSource)), expFormatString, expMemberPath);
+                        WriteLine("}");
+                    }
+                    else
+                    {
+                        WriteLine("get {{ return ({0})({1}); }}", GetCSharpTypeName(expressionInfo.Type), getexp);
+                    }
                 }
 
                 expressionInfo.GetterLineEnd = LineCount - 1;

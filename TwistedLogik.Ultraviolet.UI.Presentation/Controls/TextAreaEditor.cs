@@ -343,6 +343,57 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Color>(Color.Blue * 0.4f, PropertyMetadataOptions.None));
 
         /// <summary>
+        /// Called when the value of the <see cref="TextArea.TextProperty"/> dependency property changes.
+        /// </summary>
+        /// <param name="value">The new value of the dependency property.</param>
+        internal void HandleTextChanged(VersionedStringSource value)
+        {
+            if (value.IsSourcedFromStringBuilder)
+            {
+                var vsb = (VersionedStringBuilder)value;
+                if (vsb.Version == bufferText.Version)
+                    return;
+            }
+
+            bufferText.Clear();
+            bufferText.Append(value);
+
+            if (caretPosition > bufferText.Length)
+            {
+                caretBlinkTimer = 0;
+                caretPosition = bufferText.Length;
+
+                pendingScrollToCaret = true;                
+            }
+            
+            UpdateTextStringSource();
+            UpdateTextParserStream();
+        }
+
+        /// <summary>
+        /// Called when the text area's text is changed by the <see cref="TextArea.SetText(StringBuilder)"/> method.
+        /// </summary>
+        /// <param name="value">The <see cref="StringBuilder"/> that contains the text area's new text.</param>
+        internal void HandleTextChanged(StringBuilder value)
+        {
+            selectionPosition = null;
+
+            bufferText.Length = 0;
+            bufferText.Append(value);
+
+            UpdateTextStringSource();
+            UpdateTextParserStream();
+
+            if (caretPosition > value.Length)
+            {
+                caretPosition = value.Length;
+                caretBlinkTimer = 0;
+
+                UpdateSelectionAndCaret();
+            }
+        }
+
+        /// <summary>
         /// Called when the editor should process a mouse button being pressed.
         /// </summary>
         /// <param name="device">The <see cref="MouseDevice"/> that raised the event.</param>
@@ -734,7 +785,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (View == null)
                 return;
 
-            View.Resources.TextRenderer.Parse(bufferText, textParserStream, TextParserOptions.IgnoreCommandCodes);
+            View.Resources.TextRenderer.Parse((StringBuilder)bufferText, textParserStream, TextParserOptions.IgnoreCommandCodes);
             InvalidateMeasure();
         }
 
@@ -1034,6 +1085,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             bufferText.Remove(start, length);
 
+            UpdateTextStringSource();
             UpdateTextParserStream();
 
             return true;
@@ -1049,6 +1101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 bufferText.Remove(caretPosition, 1);
                 caretBlinkTimer = 0;
 
+                UpdateTextStringSource();
                 UpdateTextParserStream();
 
                 return true;
@@ -1067,6 +1120,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 caretBlinkTimer = 0;
                 caretPosition -= 1;
 
+                UpdateTextStringSource();
                 UpdateTextParserStream();
 
                 return true;
@@ -1172,12 +1226,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 bufferText.Insert(position + i, character);
                 charactersInserted++;
             }
-
+            
             caretBlinkTimer = 0;
             caretPosition = (position <= caretPosition) ? caretPosition + charactersInserted : caretPosition;
 
             pendingScrollToCaret = true;
 
+            UpdateTextStringSource();
             UpdateTextParserStream();
         }
 
@@ -1187,6 +1242,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private void InsertTextAtCaret(StringSegment str, Boolean overwrite)
         {
             InsertTextAtPosition(str, caretPosition, overwrite);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="VersionedStringSource"/> instance which is exposed through the <see cref="TextArea.Text"/> dependency property.
+        /// </summary>
+        private void UpdateTextStringSource()
+        {
+            var owner = TemplatedParent as TextArea;
+            if (owner == null)
+                return;
+
+            owner.SetValue(TextArea.TextProperty, new VersionedStringSource(bufferText));
         }
 
         /// <summary>
@@ -1434,6 +1501,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         // The editor's internal text buffer.
         private readonly StringBuilder bufferInput = new StringBuilder();
-        private readonly StringBuilder bufferText = new StringBuilder();
+        private readonly VersionedStringBuilder bufferText = new VersionedStringBuilder();
     }
 }

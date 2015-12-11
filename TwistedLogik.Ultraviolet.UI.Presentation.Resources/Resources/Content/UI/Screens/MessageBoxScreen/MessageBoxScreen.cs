@@ -4,6 +4,7 @@ using TwistedLogik.Nucleus.Text;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
 #pragma warning disable 1591
+#pragma warning disable 0184
     [System.CLSCompliant(false)]
     [System.CodeDom.Compiler.GeneratedCode("UPF Binding Expression Compiler", "1.2.0.0")]
     public sealed partial class MessageBoxViewModel_Impl : TwistedLogik.Ultraviolet.UI.Presentation.IDataSourceWrapper
@@ -87,16 +88,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         
         #region Expressions
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{Caption}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
-        public System.String __UPF_Expression0
+        public TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource __UPF_Expression0
         {
             get
             {
                 var value = Caption;
-                if (value == null || value.GetType() == typeof(String))
+                if (value is TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource || value is String)
                 {
-                    return (String)(Object)value;
+                    return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)value;
                 }
-                return String.Format("{0}", Caption);
+                return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)String.Format("{0}", Caption);
             }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{HasCaption ? Visibility.Visible : Visibility.Collapsed}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
@@ -110,16 +111,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return (TwistedLogik.Ultraviolet.UI.Presentation.Visibility)(HasImage ? Visibility.Visible : Visibility.Collapsed); }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{Text}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
-        public System.String __UPF_Expression3
+        public TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource __UPF_Expression3
         {
             get
             {
                 var value = Text;
-                if (value == null || value.GetType() == typeof(String))
+                if (value is TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource || value is String)
                 {
-                    return (String)(Object)value;
+                    return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)value;
                 }
-                return String.Format("{0}", Text);
+                return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)String.Format("{0}", Text);
             }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{HasText ? Visibility.Visible : Visibility.Collapsed}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
@@ -149,5 +150,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         #endregion
     }
+#pragma warning restore 0184
 #pragma warning restore 1591
 }

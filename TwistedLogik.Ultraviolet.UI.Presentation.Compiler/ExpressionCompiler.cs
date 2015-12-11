@@ -491,6 +491,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 writer.WriteLine("namespace " + @namespace);
                 writer.WriteLine("{");
                 writer.WriteLine("#pragma warning disable 1591");
+                writer.WriteLine("#pragma warning disable 0184");
                 writer.WriteLine("[System.CLSCompliant(false)]");
                 writer.WriteLine("[System.CodeDom.Compiler.GeneratedCode(\"UPF Binding Expression Compiler\", \"{0}\")]", FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion);
                 writer.WriteLine("public sealed partial class {0} : {1}", dataSourceWrapperInfo.DataSourceWrapperName, writer.GetCSharpTypeName(typeof(IDataSourceWrapper)));
@@ -558,6 +559,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                 // Source code generation complete
                 writer.WriteLine("}");
+                writer.WriteLine("#pragma warning restore 0184");
                 writer.WriteLine("#pragma warning restore 1591");
                 writer.WriteLine("}");
 

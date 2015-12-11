@@ -250,6 +250,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPerformanceStats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationProfilerSections.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StringBuilderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssSelectorPartQualifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SystemParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextWrapping.cs" />
@@ -261,7 +263,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationViewResources.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationViewRoot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationStrings.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PropertyMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PropertyMetadataOfT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PropertyMetadataOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoutedEvent.cs" />
@@ -356,6 +357,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvmlName.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlPlaceholderAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VersionedStringBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VersionedStringSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VerticalAlignment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)View.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModelWrapperAttribute.cs" />

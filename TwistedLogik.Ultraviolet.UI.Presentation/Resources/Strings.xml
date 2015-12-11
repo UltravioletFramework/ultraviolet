@@ -380,4 +380,9 @@
       <Variant>Cannot locate the view wrapper type named '{0}'. You may need to recompile your application's binding expressions assembly.</Variant>
     </en-US>
   </String>
+  <String Key="VERSIONED_STRING_SOURCE_IS_STALE">
+    <en-US>
+      <Variant>The operation is invalid because the string source contains stale data.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

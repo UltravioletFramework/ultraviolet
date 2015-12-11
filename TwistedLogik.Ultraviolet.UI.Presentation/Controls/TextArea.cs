@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
@@ -30,6 +31,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             : base(uv, name)
         {
 
+        }
+        
+        /// <summary>
+        /// Gets the text area's text.
+        /// </summary>
+        /// <returns>A <see cref="String"/> instance containing the text area's text.</returns>
+        public String GetText()
+        {
+            return GetValue<VersionedStringSource>(TextProperty).ToString();
+        }
+
+        /// <summary>
+        /// Gets the text area's text.
+        /// </summary>
+        /// <param name="stringBuilder">A <see cref="StringBuilder"/> instance to populate with the text area's text.</param>
+        public void GetText(StringBuilder stringBuilder)
+        {
+            Contract.Require(stringBuilder, "stringBuilder");
+
+            var value = GetValue<VersionedStringSource>(TextProperty);
+
+            stringBuilder.Length = 0;
+            stringBuilder.AppendVersionedStringSource(value);
+        }
+
+        /// <summary>
+        /// Sets the text area's text.
+        /// </summary>
+        /// <param name="value">A <see cref="String"/> instance to set as the text area's text.</param>
+        public void SetText(String value)
+        {
+            SetValue(TextProperty, new VersionedStringSource(value));
+        }
+
+        /// <summary>
+        /// Sets the text area's text.
+        /// </summary>
+        /// <param name="value">A <see cref="StringBuilder"/> instance whose contents will be set as the text area's text.</param>
+        public void SetText(StringBuilder value)
+        {
+            if (PART_Editor != null)
+                PART_Editor.HandleTextChanged(value);
         }
 
         /// <summary>
@@ -87,7 +130,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (PART_Editor != null)
                 PART_Editor.Paste();
         }
-        
+
         /// <summary>
         /// Gets or sets the text area's current insertion mode.
         /// </summary>
@@ -199,6 +242,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     PART_Editor.SelectedText = value;
             }
         }
+
+        /// <summary>
+        /// Identifies the <see cref="Text"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextArea),
+            new PropertyMetadata<VersionedStringSource>(VersionedStringSource.Invalid, PropertyMetadataOptions.None, HandleTextChanged));
 
         /// <summary>
         /// Identifies the <see cref="InsertionMode"/> dependency property.
@@ -342,6 +391,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 PART_Editor.HandleTextInput(device, ref data);
 
             base.OnTextInput(device, ref data);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Text"/> dependency property changes.
+        /// </summary>
+        private static void HandleTextChanged(DependencyObject dobj, VersionedStringSource oldValue, VersionedStringSource newValue)
+        {
+            var textArea = (TextArea)dobj;
+            if (textArea.PART_Editor != null)
+                textArea.PART_Editor.HandleTextChanged(newValue);
         }
 
         /// <summary>

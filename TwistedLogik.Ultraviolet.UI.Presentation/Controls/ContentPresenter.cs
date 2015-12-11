@@ -329,7 +329,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (textParserResult == null)
                     textParserResult = new TextParserTokenStream();
 
-                var contentAsString = String.Format(ContentStringFormat ?? "{0}", content);
+                var contentAsString = default(String);
+                var contentFormat = ContentStringFormat;
+                if (contentFormat == null)
+                {
+                    contentAsString = (content == null) ? String.Empty : content.ToString();
+                }
+                else
+                {
+                    contentAsString = String.Format(contentFormat, content);
+                }
+
                 View.Resources.TextRenderer.Parse(contentAsString, textParserResult);
             }
 
