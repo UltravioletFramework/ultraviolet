@@ -1245,7 +1245,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Updates the <see cref="VersionedStringSource"/> instance which is exposed through the <see cref="TextArea.Text"/> dependency property.
+        /// Updates the <see cref="VersionedStringSource"/> instance which is exposed through the <see cref="TextArea.TextProperty"/> dependency property.
         /// </summary>
         private void UpdateTextStringSource()
         {

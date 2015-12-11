@@ -230,7 +230,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets a value indicating whether the buffer is sources from an instance of <see cref="StringBuilder"/>.
+        /// Gets a value indicating whether the buffer is sources from an instance of <see cref="System.Text.StringBuilder"/>.
         /// </summary>
         public Boolean IsSourcedFromStringBuilder
         {

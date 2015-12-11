@@ -244,7 +244,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Identifies the <see cref="Text"/> dependency property.
+        /// Identifies the Text dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextArea),
             new PropertyMetadata<VersionedStringSource>(VersionedStringSource.Invalid, PropertyMetadataOptions.None, HandleTextChanged));
@@ -394,7 +394,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Text"/> dependency property changes.
+        /// Occurs when the value of the Text dependency property changes.
         /// </summary>
         private static void HandleTextChanged(DependencyObject dobj, VersionedStringSource oldValue, VersionedStringSource newValue)
         {
