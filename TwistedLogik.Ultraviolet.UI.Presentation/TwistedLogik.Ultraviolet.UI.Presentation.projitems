@@ -51,6 +51,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Border.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Canvas.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CharacterCasing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\CheckBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ClickMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ColumnDefinition.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DockPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HeaderedContentControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ScrollChangedInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TabItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBoxItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ContentControl.cs" />

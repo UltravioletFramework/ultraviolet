@@ -336,6 +336,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets the total number of characters in the text area's text.
+        /// </summary>
+        public Int32 TextLength
+        {
+            get { return textLayoutStream.TotalLength; }
+        }
+
+        /// <summary>
         /// Gets the total number of lines in the text area's text.
         /// </summary>
         public Int32 LineCount
@@ -344,11 +352,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the total number of characters in the text area's text.
+        /// Gets or sets the current position of the insertion caret.
         /// </summary>
-        public Int32 TextLength
+        public Int32 CaretIndex
         {
-            get { return textLayoutStream.TotalLength; }
+            get { return caretPosition; }
+            set
+            {
+                Contract.EnsureRange(value >= 0 && value <= textLayoutStream.TotalLength, "value");
+
+                selectionPosition = null;
+
+                caretPosition = value;
+                caretBlinkTimer = 0;
+
+                UpdateSelectionAndCaret();
+            }
         }
 
         /// <summary>
@@ -1039,7 +1058,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var wrap = (owner.TextWrapping == TextWrapping.Wrap);
             var width = wrap ? (Int32?)Display.DipsToPixels(availableSize.Width) : null;
-
+            
             var settings = new TextLayoutSettings(owner.Font, width, null, TextFlags.Standard);
             View.Resources.TextRenderer.CalculateLayout(textParserStream, textLayoutStream, settings);
 
@@ -1439,7 +1458,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 overwrite = false;
             }            
 
-            var charactersInserted = 0;
+            var characterCasing = (owner == null) ? CharacterCasing.Normal : owner.CharacterCasing;
+            var characterCount = 0;
+
+            var maxLength = (owner == null) ? 0 : owner.MaxLength;
 
             for (int i = 0; i < str.Length; i++)
             {
@@ -1451,15 +1473,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (character == '\t' && !acceptsTab)
                     character = ' ';
 
+                switch (characterCasing)
+                {
+                    case CharacterCasing.Lower:
+                        character = Char.ToLower(character);
+                        break;
+
+                    case CharacterCasing.Upper:
+                        character = Char.ToUpper(character);
+                        break;
+                }
+
                 if (overwrite && position + i < bufferText.Length)
+                {
                     bufferText.Remove(position + i, 1);
+                }
+                else
+                {
+                    if (maxLength > 0 && bufferText.Length >= maxLength)
+                        break;
+                }
 
                 bufferText.Insert(position + i, character);
-                charactersInserted++;
+                characterCount++;
             }
             
             caretBlinkTimer = 0;
-            caretPosition = (position <= caretPosition) ? caretPosition + charactersInserted : caretPosition;
+            caretPosition = (position <= caretPosition) ? caretPosition + characterCount : caretPosition;
 
             pendingScrollToCaret = true;
 

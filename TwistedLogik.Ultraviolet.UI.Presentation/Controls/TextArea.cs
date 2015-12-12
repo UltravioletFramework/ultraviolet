@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         static TextArea()
         {
-
+            EventManager.RegisterClassHandler(typeof(TextArea), ScrollViewer.ScrollChangedEvent, new UpfScrollChangedEventHandler(HandleScrollChanged));            
         }
 
         /// <summary>
@@ -261,31 +261,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the total number of lines in the text area's text.
+        /// Gets or sets a <see cref="CharacterCasing"/> value which specifies the casing which is applies to the text area's text.
         /// </summary>
-        public Int32 LineCount
+        public CharacterCasing CharacterCasing
         {
-            get
-            {
-                if (PART_Editor != null)
-                    return PART_Editor.LineCount;
-
-                return 0;
-            }
-        }
-
-        /// <summary>
-        /// Gets the total number of characters in the text area's text.
-        /// </summary>
-        public Int32 TextLength
-        {
-            get
-            {
-                if (PART_Editor != null)
-                    return PART_Editor.TextLength;
-
-                return 0;
-            }
+            get { return GetValue<CharacterCasing>(CharacterCasingProperty); }
+            set { SetValue(CharacterCasingProperty, value); }
         }
 
         /// <summary>
@@ -295,6 +276,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get { return GetValue<TextBoxInsertionMode>(InsertionModeProperty); }
             set { SetValue(InsertionModeProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value specifying how the text area's text is aligned.
+        /// </summary>
+        public TextAlignment TextAlignment
+        {
+            get { return GetValue<TextAlignment>(TextAlignmentProperty); }
+            set { SetValue(TextAlignmentProperty, value); }
         }
 
         /// <summary>
@@ -341,6 +331,80 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get { return GetValue<Boolean>(AcceptsTabProperty); }
             set { SetValue(AcceptsTabProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the total number of characters in the text area's text.
+        /// </summary>
+        public Int32 TextLength
+        {
+            get
+            {
+                if (PART_Editor != null)
+                    return PART_Editor.TextLength;
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum length of the text which is entered into the text area.
+        /// </summary>
+        public Int32 MaxLength
+        {
+            get { return GetValue<Int32>(MaxLengthProperty); }
+            set { SetValue(MaxLengthProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the total number of lines in the text area's text.
+        /// </summary>
+        public Int32 LineCount
+        {
+            get
+            {
+                if (PART_Editor != null)
+                    return PART_Editor.LineCount;
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the minimum number of visible lines.
+        /// </summary>
+        public Int32 MinLines
+        {
+            get { return GetValue<Int32>(MinLinesProperty); }
+            set { SetValue(MinLinesProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum number of visible lines.
+        /// </summary>
+        public Int32 MaxLines
+        {
+            get { return GetValue<Int32>(MaxLinesProperty); }
+            set { SetValue(MaxLinesProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the current position of the insertion caret.
+        /// </summary>
+        public Int32 CaretIndex
+        {
+            get
+            {
+                if (PART_Editor != null)
+                    return PART_Editor.CaretIndex;
+
+                return 0;
+            }
+            set
+            {
+                if (PART_Editor != null)
+                    PART_Editor.CaretIndex = value;
+            }
         }
 
         /// <summary>
@@ -407,10 +471,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<VersionedStringSource>(VersionedStringSource.Invalid, PropertyMetadataOptions.None, HandleTextChanged));
 
         /// <summary>
+        /// Identifies the <see cref="CharacterCasing"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CharacterCasingProperty = DependencyProperty.Register("CharacterCasing", typeof(CharacterCasing), typeof(TextArea),
+            new PropertyMetadata<CharacterCasing>(CharacterCasing.Normal, PropertyMetadataOptions.None));
+
+        /// <summary>
         /// Identifies the <see cref="InsertionMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextArea),
             new PropertyMetadata<TextBoxInsertionMode>(TextBoxInsertionMode.Insert, PropertyMetadataOptions.None, HandleInsertionModeChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="TextAlignment"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TextAlignmentProperty = DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextArea),
+            new PropertyMetadata<TextAlignment>(TextAlignment.Left, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="TextWrapping"/> dependency property.
@@ -441,6 +517,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty AcceptsTabProperty = DependencyProperty.Register("AcceptsTab", typeof(Boolean), typeof(TextArea),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
+        /// <summary>
+        /// Identifies the <see cref="MinLines"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MinLinesProperty = DependencyProperty.Register("MinLines", typeof(Int32), typeof(TextArea),
+            new PropertyMetadata<Int32>(1, PropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <see cref="MaxLines"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaxLinesProperty = DependencyProperty.Register("MaxLines", typeof(Int32), typeof(TextArea),
+            new PropertyMetadata<Int32>(Int32.MaxValue, PropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <see cref="MaxLength"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextArea),
+            new PropertyMetadata<Int32>(CommonBoxedValues.Int32.Zero, PropertyMetadataOptions.None));
+
+        /// <inheritdoc/>
+        protected override Size2D MeasureOverride(Size2D availableSize)
+        {
+            UpdateScrollViewerSize();
+            return base.MeasureOverride(availableSize);
+        }
+        
         /// <inheritdoc/>
         protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
@@ -551,6 +652,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Occurs when the control handles a <see cref="ScrollViewer.ScrollChangedEvent"/> routed event.
+        /// </summary>
+        private static void HandleScrollChanged(DependencyObject dobj, ref ScrollChangedInfo scrollInfo, ref RoutedEventData data)
+        {
+            if (!MathUtil.IsApproximatelyZero(scrollInfo.ViewportHeightChange))
+            {
+                ((TextArea)dobj).UpdateScrollViewerSize();
+            }
+            data.Handled = true;
+        }
+        
+        /// <summary>
         /// Occurs when the value of the Text dependency property changes.
         /// </summary>
         private static void HandleTextChanged(DependencyObject dobj, VersionedStringSource oldValue, VersionedStringSource newValue)
@@ -581,7 +694,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (textArea.PART_Editor != null)
                 textArea.PART_Editor.InvalidateMeasure();
         }
-
+        
         /// <summary>
         /// Coerces the value of the <see cref="HorizontalScrollBarVisibility"/> property to force the scroll bar
         /// to a disabled state when wrapping is enabled.
@@ -607,8 +720,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             return mouseBounds.Contains(Mouse.GetPosition(mouseTarget));
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the text area's height is constrained by a <see cref="FrameworkElement.Height"/>,
+        /// <see cref="FrameworkElement.MinHeight"/>, or <see cref="FrameworkElement.MaxHeight"/> value.
+        /// </summary>
+        /// <returns><c>true</c> if the text area's height is constrained; otherwise, <c>false</c>.</returns>
+        private Boolean IsHeightConstrained()
+        {
+            return !Double.IsNaN(Height) || !MathUtil.IsApproximatelyZero(MinHeight) || !Double.IsPositiveInfinity(MaxHeight);
+        }
+
+        /// <summary>
+        /// Updates the size constraints of the text area's scroll viewer.
+        /// </summary>
+        private void UpdateScrollViewerSize()
+        {
+            if (PART_ScrollViewer == null)
+                return;
+            
+            if (IsHeightConstrained())
+            {
+                PART_ScrollViewer.ClearLocalValue(MinHeightProperty);
+                PART_ScrollViewer.ClearLocalValue(MaxHeightProperty);
+            }
+            else
+            {
+                var heightOfComponents = PART_ScrollViewer.ActualHeight - PART_ScrollViewer.ViewportHeight;
+                var heightOfLine = !Font.IsLoaded ? 0 : Font.Resource.Value.GetFace(FontStyle).LineSpacing;
+
+                if (MinLines > 1)
+                {
+                    PART_ScrollViewer.MinHeight = heightOfComponents + (heightOfLine * MinLines);
+                }
+                else
+                {
+                    PART_ScrollViewer.ClearLocalValue(MinHeightProperty);
+                }
+
+                if (MaxLines < Int32.MaxValue)
+                {
+                    PART_ScrollViewer.MaxHeight = heightOfComponents + (heightOfLine * MaxLines);
+                }
+                else
+                {
+                    PART_ScrollViewer.ClearLocalValue(MaxHeightProperty);
+                }
+            }
+        }
+
         // Component references.
         private readonly ScrollViewer PART_ScrollViewer = null;
-        private readonly TextAreaEditor PART_Editor = null;
+        private readonly TextAreaEditor PART_Editor = null;        
     }
 }

@@ -133,10 +133,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             );
 
             var contentSize   = base.ArrangeOverride(contentFinalSize, options);
-            var presenterSize = new Size2D(
-                Math.Min(finalSize.Width, contentSize.Width),
-                Math.Min(finalSize.Height, contentSize.Height)
-            );
+            var presenterSize = finalSize;
 
             extentWidth  = contentSize.Width;
             extentHeight = contentSize.Height;

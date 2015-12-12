@@ -7,6 +7,14 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
+    /// Represents the method that is called in response to a <see cref="ScrollViewer.ScrollChanged"/> routed event.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="scrollInfo">A <see cref="ScrollChangedInfo"/> structure that describes the changes to the scrolling state.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
+    public delegate void UpfScrollChangedEventHandler(DependencyObject element, ref ScrollChangedInfo scrollInfo, ref RoutedEventData data);
+
+    /// <summary>
     /// Represents a control which provides a scrollable view of its content.
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.ScrollViewer.xml")]
@@ -157,6 +165,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Occurs when the scroll viewer's scrolling properties are changed.
+        /// </summary>
+        public event UpfScrollChangedEventHandler ScrollChanged
+        {
+            add { AddHandler(ScrollChangedEvent, value); }
+            remove { RemoveHandler(ScrollChangedEvent, value); }
+        }
+
+        /// <summary>
         /// Identifies the <see cref="ContentClipped"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'content-clipped'.</remarks>
@@ -183,6 +200,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <remarks>The styling name of this dependency property is 'vscrollbar-visibility'.</remarks>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", "vscrollbar-visibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
             new PropertyMetadata<ScrollBarVisibility>(PresentationBoxedValues.ScrollBarVisibility.Visible, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="ScrollChanged"/> event.
+        /// </summary>
+        public static readonly RoutedEvent ScrollChangedEvent = EventManager.RegisterRoutedEvent("ScrollChanged", RoutingStrategy.Bubble, 
+            typeof(UpfScrollChangedEventHandler), typeof(ScrollViewer));
 
         /// <summary>
         /// Scrolls in response to keyboard input.
@@ -314,9 +337,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override void PositionOverride()
         {
             if (PART_ContentPresenter != null)
-            {
                 PART_ContentPresenter.PositionChildren();
+
+            var newHorizontalOffset = HorizontalOffset;
+            var newVerticalOffset = VerticalOffset;
+            var newExtentWidth = ExtentWidth;
+            var newExtentHeight = ExtentHeight;
+            var newViewportWidth = ViewportWidth;
+            var newViewportHeight = ViewportHeight;
+
+            var scrollChanged =
+                !MathUtil.AreApproximatelyEqual(oldHorizontalOffset, newHorizontalOffset) ||
+                !MathUtil.AreApproximatelyEqual(oldVerticalOffset, newVerticalOffset) ||
+                !MathUtil.AreApproximatelyEqual(oldExtentWidth, newExtentWidth) ||
+                !MathUtil.AreApproximatelyEqual(oldExtentHeight, newExtentHeight) ||
+                !MathUtil.AreApproximatelyEqual(oldViewportWidth, newViewportWidth) ||
+                !MathUtil.AreApproximatelyEqual(oldViewportHeight, newViewportHeight);
+
+            if (scrollChanged)
+            {
+                var evtDelegate = EventManager.GetInvocationDelegate<UpfScrollChangedEventHandler>(ScrollChangedEvent);
+                var evtData = new RoutedEventData(this);
+
+                var scrollInfo = new ScrollChangedInfo(
+                    newHorizontalOffset, newHorizontalOffset - oldHorizontalOffset,
+                    newVerticalOffset, newVerticalOffset - oldVerticalOffset,
+                    newExtentWidth, newExtentWidth - oldExtentWidth,
+                    newExtentHeight, newExtentHeight - oldExtentHeight,
+                    newViewportWidth, newViewportWidth - oldViewportWidth,
+                    newViewportHeight, newViewportHeight - oldViewportHeight);
+
+                oldHorizontalOffset = newHorizontalOffset;
+                oldVerticalOffset = newVerticalOffset;
+                oldExtentWidth = newExtentWidth;
+                oldExtentHeight = newExtentHeight;
+                oldViewportWidth = newViewportWidth;
+                oldViewportHeight = newViewportHeight;
+
+                evtDelegate(this, ref scrollInfo, ref evtData);
             }
+
             base.PositionOverride();
         }
 
@@ -450,12 +510,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void HandleScrollValueChanged(DependencyObject element, ref RoutedEventData data)
         {
-            PART_ContentPresenter.PositionChildren();
+            Position(MostRecentPositionOffset);
         }
 
         // Scroll deltas for various input events.
         private const Double ScrollDeltaMouseWheel = 48.0;
         private const Double ScrollDeltaKey = 16.0;
+
+        // Tracks the most recent scroll info values for ScrollChanged events.
+        private Double oldHorizontalOffset;
+        private Double oldVerticalOffset;
+        private Double oldExtentWidth;
+        private Double oldExtentHeight;
+        private Double oldViewportWidth;
+        private Double oldViewportHeight;
 
         // Control component references.
         private readonly ScrollContentPresenter PART_ContentPresenter = null;
