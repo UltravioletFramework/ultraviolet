@@ -132,6 +132,163 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Clears the text area's content.
+        /// </summary>
+        public void Clear()
+        {
+            if (PART_Editor != null)
+                PART_Editor.Clear();
+        }
+
+        /// <summary>
+        /// Gets the index of the first character on the specified line.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line for which to retrieve a character index.</param>
+        /// <returns>The index of the first character on the specified line.</returns>
+        public Int32 GetCharacterIndexFromLineIndex(Int32 lineIndex)
+        {
+            if (PART_Editor != null)
+                return PART_Editor.GetCharacterIndexFromLineIndex(lineIndex);
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the index of the character that is closest to the specified point.
+        /// </summary>
+        /// <param name="point">A point in client space to evaluate.</param>
+        /// <param name="snapToText">A value indicating that the closest character should be returned (if true), 
+        /// or that only characters directly under the specified point should be returned (if false).</param>
+        /// <returns>The index of the character at the specified point, or -1 if there is no character at the specified point.</returns>
+        public Int32 GetCharacterIndexFromPoint(Point2D point, Boolean snapToText)
+        {
+            if (PART_Editor != null)
+                return PART_Editor.GetCharacterIndexFromPoint(point, snapToText);
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Gets the index of the first visible line of text.
+        /// </summary>
+        /// <returns>The index of the first visible line of text.</returns>
+        public Int32 GetFirstVisibleLineIndex()
+        {
+            if (PART_Editor != null)
+                return PART_Editor.GetFirstVisibleLineIndex();
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the index of the last visible line of text.
+        /// </summary>
+        /// <returns>The index of the last visible line of text.</returns>
+        public Int32 GetLastVisibleLineIndex()
+        {
+            if (PART_Editor != null)
+                return PART_Editor.GetLastVisibleLineIndex();
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the index of the line of text that contains the specified character.
+        /// </summary>
+        /// <param name="charIndex">The index of the character to evaluate.</param>
+        /// <returns>The index of the line of text that contains the specified character.</returns>
+        public Int32 GetLineIndexFromCharacterIndex(Int32 charIndex)
+        {
+            if (PART_Editor != null)
+                return PART_Editor.GetLineIndexFromCharacterIndex(charIndex);
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the number of characters on the specified line of text.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line to evaluate.</param>
+        /// <returns>The number of characters on the specified line of text.</returns>
+        public Int32 GetLineLength(Int32 lineIndex)
+        {
+            if (PART_Editor != null)
+                return PART_Editor.GetLineLength(lineIndex);
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the specified line of text.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line of text to retrieve.</param>
+        /// <returns>A string containing the contents of the specified line of text.</returns>
+        public String GetLineText(Int32 lineIndex)
+        {
+            if (PART_Editor != null)
+                return PART_Editor.GetLineText(lineIndex);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets a rectangle that represents the leading edge of the specified character.
+        /// </summary>
+        /// <param name="charIndex">The index of the character for which to retrieve the rectangle.</param>
+        /// <returns>A rectangle which represents the bounds of the leading edge of the specified character,
+        /// or <see cref="RectangleD.Empty"/> if the bounding rectangle cannot be determined.</returns>
+        public RectangleD GetRectFromCharacterIndex(Int32 charIndex)
+        {
+            if (PART_Editor != null)
+                return PART_Editor.GetRectFromCharacterIndex(charIndex);
+
+            return RectangleD.Empty;
+        }
+
+        /// <summary>
+        /// Gets a rectangle that represents the leading or trailing edge of the specified character.
+        /// </summary>
+        /// <param name="charIndex">The index of the character for which to retrieve the rectangle.</param>
+        /// <param name="trailingEdge">A value specifying whether to retrieve the trailing edge of the character.</param>
+        /// <returns>A rectangle which represents the bounds of the leading or trailing edge of the specified character,
+        /// or <see cref="RectangleD.Empty"/> if the bounding rectangle cannot be determined.</returns>
+        public RectangleD GetRectFromCharacterIndex(Int32 charIndex, Boolean trailingEdge)
+        {
+            if (PART_Editor != null)
+                return PART_Editor.GetRectFromCharacterIndex(charIndex, trailingEdge);
+
+            return RectangleD.Empty;
+        }
+
+        /// <summary>
+        /// Gets the total number of lines in the text area's text.
+        /// </summary>
+        public Int32 LineCount
+        {
+            get
+            {
+                if (PART_Editor != null)
+                    return PART_Editor.LineCount;
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets the total number of characters in the text area's text.
+        /// </summary>
+        public Int32 TextLength
+        {
+            get
+            {
+                if (PART_Editor != null)
+                    return PART_Editor.TextLength;
+
+                return 0;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the text area's current insertion mode.
         /// </summary>
         public TextBoxInsertionMode InsertionMode

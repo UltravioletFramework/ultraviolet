@@ -125,6 +125,233 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Clears the text area's text.
+        /// </summary>
+        public void Clear()
+        {
+            caretPosition = 0;
+            selectionPosition = null;
+            UpdateSelectionAndCaret();
+
+            bufferText.Clear();
+            UpdateTextStringSource();
+            UpdateTextParserStream();
+        }
+        
+        /// <summary>
+        /// Gets the index of the first character on the specified line.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line for which to retrieve a character index.</param>
+        /// <returns>The index of the first character on the specified line.</returns>
+        public Int32 GetCharacterIndexFromLineIndex(Int32 lineIndex)
+        {
+            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, "lineIndex");
+
+            if (View == null)
+                return 0;
+
+            var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
+            return lineInfo.OffsetInGlyphs;
+        }
+
+        /// <summary>
+        /// Gets the index of the character that is closest to the specified point.
+        /// </summary>
+        /// <param name="point">A point in client space to evaluate.</param>
+        /// <param name="snapToText">A value indicating that the closest character should be returned (if true), 
+        /// or that only characters directly under the specified point should be returned (if false).</param>
+        /// <returns>The index of the character at the specified point, or -1 if there is no character at the specified point.</returns>
+        public Int32 GetCharacterIndexFromPoint(Point2D point, Boolean snapToText)
+        {
+            if (View == null)
+                return -1;
+
+            var pointX = point.X;
+            var pointY = point.Y;
+
+            if (snapToText)
+            {
+                if (pointX < 0)
+                    pointX = 0;
+
+                if (pointX >= textLayoutStream.ActualWidth)
+                    pointX = textLayoutStream.ActualWidth - 1;
+
+                if (pointY < 0)
+                    pointY = 0;
+
+                if (pointY >= textLayoutStream.ActualHeight)
+                    pointY = textLayoutStream.ActualHeight - 1;
+            }
+
+            pointX = Display.DipsToPixels(pointX);
+            pointY = Display.DipsToPixels(pointY);
+            
+            var lineAtPosition = default(Int32?);
+            var character = View.Resources.TextRenderer.GetGlyphAtPosition(textLayoutStream, 
+                (Int32)pointX, (Int32)pointY, snapToText, out lineAtPosition);
+
+            return character ?? -1;
+        }
+
+        /// <summary>
+        /// Gets the index of the first visible line of text.
+        /// </summary>
+        /// <returns>The index of the first visible line of text.</returns>
+        public Int32 GetFirstVisibleLineIndex()
+        {
+            if (View == null)
+                return 0;
+
+            var position = Point2D.Zero;
+
+            var scrollViewer = Parent as ScrollViewer;
+            if (scrollViewer != null)
+                position = new Point2D(0, scrollViewer.VerticalOffset);
+
+            var owner = TemplatedParent as TextArea;
+            if (owner == null || !owner.Font.IsLoaded)
+                return 0;
+
+            var lineHeight = owner.Font.Resource.Value.GetFace(owner.FontStyle).LineSpacing;
+            if (lineHeight == 0)
+                return 0;
+
+            return (Int32)Display.DipsToPixels(position.Y) / lineHeight;
+        }
+
+        /// <summary>
+        /// Gets the index of the last visible line of text.
+        /// </summary>
+        /// <returns>The index of the last visible line of text.</returns>
+        public Int32 GetLastVisibleLineIndex()
+        {
+            if (View == null)
+                return 0;
+
+            var position = Point2D.Zero;
+
+            var scrollViewer = Parent as ScrollViewer;
+            if (scrollViewer != null)
+                position = new Point2D(0, scrollViewer.VerticalOffset + scrollViewer.ViewportHeight);
+
+            var owner = TemplatedParent as TextArea;
+            if (owner == null || !owner.Font.IsLoaded)
+                return 0;
+
+            var lineHeight = owner.Font.Resource.Value.GetFace(owner.FontStyle).LineSpacing;
+            if (lineHeight == 0)
+                return 0;
+
+            return (Int32)Display.DipsToPixels(position.Y) / lineHeight;
+        }
+
+        /// <summary>
+        /// Gets the index of the line of text that contains the specified character.
+        /// </summary>
+        /// <param name="charIndex">The index of the character to evaluate.</param>
+        /// <returns>The index of the line of text that contains the specified character.</returns>
+        public Int32 GetLineIndexFromCharacterIndex(Int32 charIndex)
+        {
+            Contract.EnsureRange(charIndex >= 0 && charIndex < textLayoutStream.TotalLength, "charIndex");
+
+            var lineInfo = textLayoutStream.GetLineInfo(0);
+            var charCount = 0;
+
+            if (charIndex < lineInfo.LengthInGlyphs)
+                return 0;
+
+            charCount += lineInfo.LengthInGlyphs;
+
+            for (int i = 1; i < textLayoutStream.LineCount; i++)
+            {
+                textLayoutStream.GetNextLineInfoRef(ref lineInfo, out lineInfo);
+
+                if (charIndex < charCount + lineInfo.LengthInGlyphs)
+                    return i;
+
+                charCount += lineInfo.LengthInGlyphs;
+            }
+
+            return textLayoutStream.LineCount - 1;
+        }
+
+        /// <summary>
+        /// Gets the number of characters on the specified line of text.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line to evaluate.</param>
+        /// <returns>The number of characters on the specified line of text.</returns>
+        public Int32 GetLineLength(Int32 lineIndex)
+        {
+            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, "lineIndex");
+
+            var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
+
+            return lineInfo.LengthInGlyphs;
+        }
+
+        /// <summary>
+        /// Gets the specified line of text.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line of text to retrieve.</param>
+        /// <returns>A string containing the contents of the specified line of text.</returns>
+        public String GetLineText(Int32 lineIndex)
+        {
+            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, "lineIndex");
+
+            var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
+
+            return bufferText.ToString(lineInfo.OffsetInGlyphs, lineInfo.LengthInGlyphs);
+        }
+
+        /// <summary>
+        /// Gets a rectangle that represents the leading edge of the specified character.
+        /// </summary>
+        /// <param name="charIndex">The index of the character for which to retrieve the rectangle.</param>
+        /// <returns>A rectangle which represents the bounds of the leading edge of the specified character,
+        /// or <see cref="RectangleD.Empty"/> if the bounding rectangle cannot be determined.</returns>
+        public RectangleD GetRectFromCharacterIndex(Int32 charIndex)
+        {
+            return GetRectFromCharacterIndex(charIndex, false);
+        }
+
+        /// <summary>
+        /// Gets a rectangle that represents the leading or trailing edge of the specified character.
+        /// </summary>
+        /// <param name="charIndex">The index of the character for which to retrieve the rectangle.</param>
+        /// <param name="trailingEdge">A value specifying whether to retrieve the trailing edge of the character.</param>
+        /// <returns>A rectangle which represents the bounds of the leading or trailing edge of the specified character,
+        /// or <see cref="RectangleD.Empty"/> if the bounding rectangle cannot be determined.</returns>
+        public RectangleD GetRectFromCharacterIndex(Int32 charIndex, Boolean trailingEdge)
+        {
+            Contract.EnsureRange(charIndex >= 0 && charIndex < textLayoutStream.TotalLength, "charIndex");
+
+            if (View == null)
+                return RectangleD.Empty;
+
+            var bounds = View.Resources.TextRenderer.GetInsertionPointBounds(
+                textLayoutStream, charIndex + (trailingEdge ? 1 : 0));
+
+            return Display.PixelsToDips(bounds);
+        }
+
+        /// <summary>
+        /// Gets the total number of lines in the text area's text.
+        /// </summary>
+        public Int32 LineCount
+        {
+            get { return textLayoutStream.LineCount; }
+        }
+
+        /// <summary>
+        /// Gets the total number of characters in the text area's text.
+        /// </summary>
+        public Int32 TextLength
+        {
+            get { return textLayoutStream.TotalLength; }
+        }
+
+        /// <summary>
         /// Gets or sets the starting point of the selected text.
         /// </summary>
         public Int32 SelectionStart

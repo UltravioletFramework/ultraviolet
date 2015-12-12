@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position)
         {
             Int32? lineAtPosition;
-            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, out lineAtPosition);
+            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, false, out lineAtPosition);
         }
 
         /// <summary>
@@ -120,7 +120,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position, out Int32? lineAtPosition)
         {
-            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, out lineAtPosition);
+            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, false, out lineAtPosition);
+        }
+
+        /// <summary>
+        /// Gets the index of the glyph at the specified layout-relative position.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="position">The position to evaluate.</param>
+        /// <param name="snapToLine">A value indicating whether the search position should be snapped to the nearest line of text.</param>
+        /// <param name="lineAtPosition">The index of the line of text that contains the specified position, regardless of
+        /// whether the position corresponds to an actual glyph.</param>
+        /// <returns>The index of the glyph at the specified layout-relative position,
+        /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Vector2 position, Boolean snapToLine, out Int32? lineAtPosition)
+        {
+            return GetGlyphAtPosition(input, (Int32)position.X, (Int32)position.Y, snapToLine, out lineAtPosition);
         }
 
         /// <summary>
@@ -133,7 +148,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position)
         {
             Int32? lineAtPosition;
-            return GetGlyphAtPosition(input, position.X, position.Y, out lineAtPosition);
+            return GetGlyphAtPosition(input, position.X, position.Y, false, out lineAtPosition);
         }
 
         /// <summary>
@@ -147,7 +162,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position, out Int32? lineAtPosition)
         {
-            return GetGlyphAtPosition(input, position.X, position.Y, out lineAtPosition);
+            return GetGlyphAtPosition(input, position.X, position.Y, false, out lineAtPosition);
+        }
+
+        /// <summary>
+        /// Gets the index of the glyph at the specified layout-relative position.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="position">The position to evaluate.</param>
+        /// <param name="snapToLine">A value indicating whether the search position should be snapped to the nearest line of text.</param>
+        /// <param name="lineAtPosition">The index of the line of text that contains the specified position, regardless of
+        /// whether the position corresponds to an actual glyph.</param>
+        /// <returns>The index of the glyph at the specified layout-relative position,
+        /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Point2 position, Boolean snapToLine, out Int32? lineAtPosition)
+        {
+            return GetGlyphAtPosition(input, position.X, position.Y, snapToLine, out lineAtPosition);
         }
 
         /// <summary>
@@ -161,7 +191,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
         {
             Int32? lineAtPosition;
-            return GetGlyphAtPosition(input, x, y, out lineAtPosition);
+            return GetGlyphAtPosition(input, x, y, false, out lineAtPosition);
         }
 
         /// <summary>
@@ -176,13 +206,30 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition)
         {
+            return GetGlyphAtPosition(input, x, y, false, out lineAtPosition);
+        }
+
+        /// <summary>
+        /// Gets the index of the glyph at the specified layout-relative position.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="x">The x-coordinate to evaluate.</param>
+        /// <param name="y">The y-coordinate to evaluate.</param>
+        /// <param name="snapToLine">A value indicating whether the search position should be snapped to the nearest line of text.</param>
+        /// <param name="lineAtPosition">The index of the line of text that contains the specified position, regardless of
+        /// whether the position corresponds to an actual glyph.</param>
+        /// <returns>The index of the glyph at the specified layout-relative position,
+        /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
+        public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, Boolean snapToLine, out Int32? lineAtPosition)
+        {
             Contract.Require(input, "input");
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
                 input.AcquirePointers();
 
-            var result = GetGlyphOrInsertionPointAtPosition(input, x, y, out lineAtPosition, false);
+            var result = GetGlyphOrInsertionPointAtPosition(input, x, y, out lineAtPosition, 
+                snapToLine ? GlyphSearchMode.SearchGlyphsSnapToLine : GlyphSearchMode.SearchGlyphs);
 
             if (acquiredPointers)
                 input.ReleasePointers();
@@ -280,7 +327,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 input.AcquirePointers();
 
             var lineAtPositionTemp = default(Int32?);
-            var result = GetGlyphOrInsertionPointAtPosition(input, x, y, out lineAtPositionTemp, true) ?? 0;
+            var result = GetGlyphOrInsertionPointAtPosition(input, x, y, out lineAtPositionTemp, GlyphSearchMode.SearchInsertionPoints) ?? 0;
 
             lineAtPosition = lineAtPositionTemp ?? 0;
 
@@ -1504,18 +1551,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             glyphHeight = 0;
             return null;
         }
-
+        
         /// <summary>
         /// Gets the index of the glyph or insertion point which is closest to the specified position in layout-relative space.
         /// </summary>
-        private Int32? GetGlyphOrInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition, Boolean getInsertionPoint)
+        private Int32? GetGlyphOrInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition, GlyphSearchMode searchMode)
         {
-            lineAtPosition = getInsertionPoint ? 0 : (Int32?)null;
+            var searchInsertionPoints = (searchMode == GlyphSearchMode.SearchInsertionPoints);
+            var searchSnapToLine = (searchMode == GlyphSearchMode.SearchGlyphsSnapToLine);
+
+            lineAtPosition = searchInsertionPoints ? 0 : (Int32?)null;
 
             if (input.Count == 0)
-                return getInsertionPoint ? 0 : (Int32?)null;
+                return searchInsertionPoints ? 0 : (Int32?)null;
 
-            if (getInsertionPoint)
+            if (searchInsertionPoints)
             {
                 if (y < 0 || input.Count == 0)
                     return 0;
@@ -1530,6 +1580,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var glyphFound = false;
             var glyph = default(Int32?);
             var glyphBounds = Rectangle.Empty;
+            var glyphWasLineBreak = false;
 
             var settings = input.Settings;
             var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
@@ -1547,9 +1598,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var offsetLineX = 0;
             var offsetLineY = 0;
 
+            // If our search point comes before the start of the block, then
+            // the only possible answer is the first glyph in the block.
             if (y < blockOffset)
             {
-                if (getInsertionPoint)
+                if (searchInsertionPoints)
                 {
                     lineAtPosition = 0;
                     return 0;
@@ -1558,9 +1611,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 return null;
             }
 
+            // If our search point comes after the end of the block, then
+            // the only possible answer is the last glyph in the block.
             if (y >= blockOffset + input.ActualHeight)
             {
-                if (getInsertionPoint)
+                if (searchInsertionPoints)
                 {
                     lineAtPosition = input.LineCount - 1;
                     return input.TotalLength;
@@ -1578,7 +1633,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             input.SeekNextCommand();
 
-            // NOTE: If we only have a single font style, we can optimize by entirely skipping past lines prior to the one
+            // If we only have a single font style, we can optimize by entirely skipping past lines prior to the one
             // that contains the position we're interested in, because we don't need to process any commands that those lines contain.
             var canSkipLines = !input.HasMultipleFontStyles;
             if (canSkipLines)
@@ -1586,19 +1641,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 SkipToLineAtPosition(input, x, y, ref lineIndex, ref offsetLineX, ref offsetLineY, 
                     ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs, ref glyphCountSeen);
                 input.SeekNextCommand();
-
+                
+                // If our search point comes before the beginning of the line that it's on,
+                // then the only possible answer is the first glyph on the line.
                 if (x < offsetLineX)
                 {
-                    if (getInsertionPoint)
-                    {
-                        lineAtPosition = lineIndex;
-                        return glyphCountSeen;
-                    }
-                    else
-                    {
-                        lineAtPosition = null;
-                        return null;
-                    }
+                    lineAtPosition = lineIndex;
+                    return (searchInsertionPoints || searchSnapToLine) ? glyphCountSeen : default(Int32?);
                 }
 
                 lineStartInGlyphs = glyphCountSeen;
@@ -1615,27 +1664,39 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 {
                     case TextLayoutCommandType.LineInfo:
                         {
+                            // If we thought the glyph was in the previous line, but we've gone past the end of the line,
+                            // then the only possible answer is the last glyph on the line.
                             if (glyphIsInCurrentLine)
-                                return getInsertionPoint ? Math.Max(0, glyphCountSeen - 1) : (Int32?)null;
+                            {
+                                lineAtPosition = lineIndex;
+                                return (searchInsertionPoints || searchSnapToLine) ? 
+                                    Math.Max(0, glyphCountSeen - (glyphWasLineBreak ? 1 : 0)) : default(Int32?);
+                            }
 
                             ProcessLineInfo(input, ref lineIndex, ref offsetLineX, ref offsetLineY, 
                                 ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs);
 
                             lineStartInGlyphs = glyphCountSeen;
 
+                            // Determine whether we expect the glyph that we're searching for to be on the current
+                            // line, then check to see if our search point comes before the begining of the line. If
+                            // it does, then the only possible answer is the first glyph on the line.
                             glyphIsInCurrentLine = (y >= offsetLineY && y < offsetLineY + lineHeight);
                             if (glyphIsInCurrentLine)
                             {
                                 lineAtPosition = lineIndex;
 
                                 if (x < offsetLineX)
-                                    return getInsertionPoint ? glyphCountSeen : (Int32?)null;
+                                    return (searchInsertionPoints || searchSnapToLine) ? glyphCountSeen : default(Int32?);
                             }
                         }
                         break;
 
                     case TextLayoutCommandType.Text:
                         {
+                            // If we expect the glyph to be on the current line, then compare our search position to
+                            // the bounds of this text command. If the text command contains our search position, then
+                            // check each of its glyphs individually.
                             var cmd = (TextLayoutTextCommand*)input.Data;
                             if (glyphIsInCurrentLine)
                             {
@@ -1658,6 +1719,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     case TextLayoutCommandType.Icon:
                         {
+                            // If we expect the glyph to be on the current line, then compare our search position to
+                            // the bounds of this icon command. If the icon command contains our search position, then
+                            // the icon glyph must be our answer.
                             if (glyphIsInCurrentLine)
                             {
                                 var iconCmd = (TextLayoutIconCommand*)input.Data;
@@ -1676,6 +1740,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     case TextLayoutCommandType.LineBreak:
                         {
+                            // Line breaks have no width, and therefore cannot contain the search position;
+                            // skip past this command, but make a note of having seen it (after switch).
                             glyphCountSeen++;
                         }
                         input.SeekNextCommand();
@@ -1692,20 +1758,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         input.SeekNextCommand();
                         break;
                 }
+
+                glyphWasLineBreak = (cmdType == TextLayoutCommandType.LineBreak);
             }
-            
-            if (getInsertionPoint)
+
+            // If we've found a matching glyph, we need to decide what to do with it. If we're looking for the corresponding
+            // insertion point, then determine which side of the glyph our search point fell on and adjust our index accordingly. 
+            // Otherwise, just return the glyph's index within the source text.
+            if (searchInsertionPoints)
             {
                 if (glyph.HasValue)
                 {
-                    var max = (lineStartInGlyphs + lineLengthInGlyphs - 1); 
+                    var max = (lineStartInGlyphs + lineLengthInGlyphs - 1);
                     return Math.Min(max, (x - glyphBounds.Center.X < 0) ? glyph.Value : glyph.Value + 1);
                 }
-                else
-                {
-                    lineAtPosition = input.LineCount - 1;
-                    return input.TotalLength;
-                }
+                lineAtPosition = input.LineCount - 1;
+                return input.TotalLength;
             }
 
             return glyph;
