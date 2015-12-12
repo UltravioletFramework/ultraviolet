@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 {
                     if ((settings.Flags & TextFlags.AlignBottom) == TextFlags.AlignBottom)
                         offset = (settings.Height.Value - blockHeight);
-                    if ((settings.Flags & TextFlags.AlignMiddle) == TextFlags.AlignMiddle)
+                    else if ((settings.Flags & TextFlags.AlignMiddle) == TextFlags.AlignMiddle)
                         offset = (settings.Height.Value - blockHeight) / 2;
                 }
 
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 {
                     if ((settings.Flags & TextFlags.AlignRight) == TextFlags.AlignRight)
                         offset = (settings.Width.Value - lineWidth);
-                    if ((settings.Flags & TextFlags.AlignCenter) == TextFlags.AlignCenter)
+                    else if ((settings.Flags & TextFlags.AlignCenter) == TextFlags.AlignCenter)
                         offset = (settings.Width.Value - lineWidth) / 2;
                 }
 
@@ -89,7 +89,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             {
                 AdvanceLineToNextCommand(0, 0, 1, 0);
             }
-            
+
             /// <summary>
             /// Advances the layout state past the current layout command.
             /// </summary>
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 lineHeight = Math.Max(lineHeight, height);
                 totalLength += lengthInText;
             }
-            
+
             /// <summary>
             /// Advances the layout state to the next line of text.
             /// </summary>
@@ -128,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var lineHeightCurrent = lineHeight;
                 if (lineHeightCurrent == 0)
                     lineHeight = settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing;
-                
+
                 output.WriteLineBreak();
                 AdvanceLineToNextCommand(0, lineHeightCurrent, 1, 1);
 
@@ -180,6 +180,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 output.ActualHeight = ActualHeight;
                 output.TotalLength = TotalLength;
                 output.LineCount = LineCount;
+
+                if (!settings.Width.HasValue)
+                {
+                    if ((settings.Flags & TextFlags.AlignCenter) == TextFlags.AlignCenter ||
+                        (settings.Flags & TextFlags.AlignRight) == TextFlags.AlignRight)
+                    {
+                        FixHorizontalAlignmentForUnconstrainedLayout(output, ref settings);
+                    }
+                }
             }
 
             /// <summary>
@@ -246,14 +255,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     var textOffset = part2Offset;
                     var textLength = part2Length;
 
-                    *(TextLayoutTextCommand*)output.InternalObjectStream.Data = new TextLayoutTextCommand(textOffset, textLength, 
+                    *(TextLayoutTextCommand*)output.InternalObjectStream.Data = new TextLayoutTextCommand(textOffset, textLength,
                         0, positionY + lineHeight, (Int16)sizeAfterBreak.Width, (Int16)sizeAfterBreak.Height);
                     output.InternalObjectStream.FinalizeObject(sizeof(TextLayoutTextCommand));
                 }
 
                 // Add the line break command to the broken line.
                 AdvanceLineToNextCommand(0, 0, 1, 1);
-                
+
                 // Recalculate the parameters for the broken line.
                 output.Seek(LineInfoCommandIndex + 1);
 
@@ -374,7 +383,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 get { return lineInfoCommandIndex; }
                 set { lineInfoCommandIndex = value; }
             }
-            
+
             /// <summary>
             /// Gets or sets the number of lines in the laid-out text.
             /// </summary>
@@ -392,7 +401,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 get { return lineWidth; }
                 set { lineWidth = value; }
             }
-            
+
             /// <summary>
             /// Gets or sets the height of the current line in pixels.
             /// </summary>
@@ -419,7 +428,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 get { return lineLengthInCommands; }
                 set { lineLengthInCommands = value; }
             }
-            
+
             /// <summary>
             /// Gets or sets the width of the area which is occupied by text after layout is performed.
             /// </summary>
@@ -500,6 +509,26 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 get
                 {
                     return new Rectangle(minLineOffset ?? 0, minBlockOffset ?? 0, actualWidth, actualHeight);
+                }
+            }
+
+            /// <summary>
+            /// This method corrects the offsets of lines in a layout which is right- or center-aligned but which
+            /// did not have a constrained horizontal layout space.
+            /// </summary>
+            [SecuritySafeCritical]
+            private unsafe void FixHorizontalAlignmentForUnconstrainedLayout(TextLayoutCommandStream output, ref TextLayoutSettings settings)
+            {
+                output.Seek(0);
+
+                while (output.SeekNextLine())
+                {
+                    var lineInfo = (TextLayoutLineInfoCommand*)output.InternalObjectStream.Data;
+
+                    if ((settings.Flags & TextFlags.AlignRight) == TextFlags.AlignRight)
+                        lineInfo->Offset = (output.ActualWidth - lineInfo->LineWidth);
+                    else if ((settings.Flags & TextFlags.AlignCenter) == TextFlags.AlignCenter)
+                        lineInfo->Offset = (output.ActualWidth - lineInfo->LineWidth) / 2;
                 }
             }
 
