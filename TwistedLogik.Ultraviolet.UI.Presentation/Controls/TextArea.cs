@@ -141,6 +141,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Scrolls the text area so that the specified line is in full view.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line to scroll into view.</param>
+        public void ScrollToLine(Int32 lineIndex)
+        {
+            if (PART_Editor != null)
+                PART_Editor.ScrollToLine(lineIndex);
+        }
+
+        /// <summary>
         /// Gets the index of the first character on the specified line.
         /// </summary>
         /// <param name="lineIndex">The index of the line for which to retrieve a character index.</param>
