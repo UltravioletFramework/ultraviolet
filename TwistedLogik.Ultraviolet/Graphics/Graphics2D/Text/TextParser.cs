@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     output.Add(ConsumeBreakingSpaceToken(input, options, ref index));
                     continue;
                 }
-                if (IsEscapedPipe(input, index))
+                if (IsEscapedPipe(input, index, options))
                 {
                     output.Add(ConsumeEscapedPipeToken(input, options, ref index));
                     continue;
@@ -237,9 +237,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
+        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
         /// <returns><c>true</c> if the specified character is an escaped pipe; otherwise, <c>false</c>.</returns>
-        private static Boolean IsEscapedPipe(StringSource input, Int32 ix)
+        private static Boolean IsEscapedPipe(StringSource input, Int32 ix, TextParserOptions options)
         {
+            if ((options & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes)
+                return false;
+
             return input[ix] == '|' && (ix + 1 >= input.Length || input[ix + 1] == '|' || Char.IsWhiteSpace(input[ix + 1]));
         }
 
