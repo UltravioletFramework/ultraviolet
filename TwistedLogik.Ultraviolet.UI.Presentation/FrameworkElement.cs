@@ -577,10 +577,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var desiredWidth = DesiredSize.Width;
             var desiredHeight = DesiredSize.Height;
-
-            var fill   = (options & ArrangeOptions.Fill) == ArrangeOptions.Fill;
-            var hAlign = fill ? HorizontalAlignment.Stretch : HorizontalAlignment;
-            var vAlign = fill ? VerticalAlignment.Stretch : VerticalAlignment;
+            
+            var hAlign = HorizontalAlignment;
+            var vAlign = VerticalAlignment;
 
             if (Double.IsNaN(Width) && hAlign == HorizontalAlignment.Stretch)
                 desiredWidth = finalRect.Width;
@@ -634,8 +633,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 yOffset -= area.Y;
             }
 
-            xOffset += margin.Left + LayoutUtil.PerformHorizontalAlignment(finalRectSansMargins.Size, usedSize, fill ? HorizontalAlignment.Left : hAlign);
-            yOffset += margin.Top + LayoutUtil.PerformVerticalAlignment(finalRectSansMargins.Size, usedSize, fill ? VerticalAlignment.Top : vAlign);
+            xOffset += margin.Left + LayoutUtil.PerformHorizontalAlignment(finalRectSansMargins.Size, usedSize, hAlign);
+            yOffset += margin.Top + LayoutUtil.PerformVerticalAlignment(finalRectSansMargins.Size, usedSize, vAlign);
 
             RenderOffset = new Point2D(xOffset, yOffset);
 

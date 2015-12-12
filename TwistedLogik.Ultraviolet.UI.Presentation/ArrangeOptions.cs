@@ -12,17 +12,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// No options.
         /// </summary>
         None = 0x00,
-
-        /// <summary>
-        /// Indicates that the element should attempt to fill all available space,
-        /// even if it doesn't need that much space.
-        /// </summary>
-        Fill = 0x01,
-
+        
         /// <summary>
         /// Forces the element to recalculate its position and clipping rectangle,
         /// even if it believes that its position hasn't changed.
         /// </summary>
-        ForceInvalidatePosition = 0x02,
+        ForceInvalidatePosition = 0x01,
     }
 }

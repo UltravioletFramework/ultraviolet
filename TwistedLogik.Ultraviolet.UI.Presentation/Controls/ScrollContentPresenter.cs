@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             return base.ClipCore();
         }
-
+        
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
@@ -127,9 +127,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (TemplatedParent == null)
                 return finalSize;
 
+            var scrollableHorizontally = CanScrollHorizontally && extentWidth > viewportWidth;
+            var scrollableVertically = CanScrollVertically && extentHeight > viewportHeight;
+
             var contentFinalSize = new Size2D(
-                CanScrollHorizontally ? extentWidth : finalSize.Width,
-                CanScrollVertically ? extentHeight : finalSize.Height
+                scrollableHorizontally ? extentWidth : finalSize.Width,
+                scrollableVertically ? extentHeight : finalSize.Height
             );
 
             var contentSize   = base.ArrangeOverride(contentFinalSize, options);

@@ -43,6 +43,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 selectionPosition = null;
 
             UpdateSelectionAndCaret();
+
+            ScrollToCaret(true, false, false);
         }
 
         /// <summary>
@@ -209,15 +211,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (scrollViewer != null)
                 position = new Point2D(0, scrollViewer.VerticalOffset);
 
-            var owner = TemplatedParent as TextArea;
-            if (owner == null || !owner.Font.IsLoaded)
+            var textFontFace = TextFontFace;
+            if (textFontFace == null)
                 return 0;
-
-            var lineHeight = owner.Font.Resource.Value.GetFace(owner.FontStyle).LineSpacing;
-            if (lineHeight == 0)
-                return 0;
-
-            return (Int32)Display.DipsToPixels(position.Y) / lineHeight;
+            
+            return (Int32)Display.DipsToPixels(position.Y) / textFontFace.LineSpacing;
         }
 
         /// <summary>
@@ -235,15 +233,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (scrollViewer != null)
                 position = new Point2D(0, scrollViewer.VerticalOffset + scrollViewer.ViewportHeight);
 
-            var owner = TemplatedParent as TextArea;
-            if (owner == null || !owner.Font.IsLoaded)
+            var textFontFace = TextFontFace;
+            if (textFontFace == null)
                 return 0;
 
-            var lineHeight = owner.Font.Resource.Value.GetFace(owner.FontStyle).LineSpacing;
-            if (lineHeight == 0)
-                return 0;
-
-            return (Int32)Display.DipsToPixels(position.Y) / lineHeight;
+            return (Int32)Display.DipsToPixels(position.Y) / textFontFace.LineSpacing;
         }
 
         /// <summary>
@@ -740,7 +734,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="data">The routed event metadata for this event invocation.</param>
         internal void HandleKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
-            var owner = TemplatedParent as TextArea;
+            var owner = TemplatedParent as Control;
+            var acceptsReturn = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsReturnProperty));
+            var acceptsTab = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsTabProperty));
+
             var ctrl = (modifiers & ModifierKeys.Control) == ModifierKeys.Control;
 
             switch (key)
@@ -779,7 +776,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 case Key.Return:
                 case Key.Return2:
-                    if (owner != null && owner.AcceptsReturn)
+                    if (acceptsReturn)
                     {
                         InsertTextAtCaret("\n", false);
                         data.Handled = true;
@@ -787,7 +784,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
 
                 case Key.Tab:
-                    if (owner != null && owner.AcceptsTab)
+                    if (acceptsTab)
                     {
                         InsertTextAtCaret("\t", true);
                         data.Handled = true;
@@ -870,25 +867,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             UpdateTextLayoutStream(availableSize);
 
-            var owner = TemplatedParent as TextArea;
-            var ownerFont = (owner == null || !owner.Font.IsLoaded) ? null : owner.Font.Resource.Value;
-            var ownerFontLineSpacing = (ownerFont == null) ? 0 : ownerFont.GetFace(SpriteFontStyle.Regular).LineSpacing;
-            var ownerFontLineSpacingHalf = (Int32)Math.Ceiling(ownerFontLineSpacing / 2f);
+            var caretSize = GetDefaultSizeOfInsertionCaret();
 
-            var widthOfInsertionCaret = Math.Min((Int32)Display.DipsToPixels(CaretWidth), ownerFontLineSpacingHalf);
-            var width = Display.PixelsToDips(textLayoutStream.ActualWidth);
-            width = Math.Max(width, Display.PixelsToDips(caretBounds.Width));
-            width = width + Display.PixelsToDips(widthOfInsertionCaret);
+            var textWidth = textLayoutStream.Settings.Width ?? textLayoutStream.ActualWidth;
+            var textHeight = textLayoutStream.Settings.Height ?? textLayoutStream.ActualHeight;
 
-            var height = Display.PixelsToDips(textLayoutStream.ActualHeight);
-            height = Math.Max(height, Display.PixelsToDips(caretBounds.Height));
+            var desiredWidth = Display.PixelsToDips(textWidth + caretSize.Width);
+            var desiredHeight = Math.Max(Display.PixelsToDips(textHeight), Display.PixelsToDips(caretSize.Height));
 
-            return new Size2D(width, height);
+            return new Size2D(desiredWidth, desiredHeight);
         }
         
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
+            UpdateSelectionAndCaret();
+
             return finalSize;
         }
 
@@ -966,6 +960,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets the font with which the editor draws its text.
+        /// </summary>
+        protected SpriteFont TextFont
+        {
+            get
+            {
+                var owner = TemplatedParent as Control;
+                return (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource : null;                
+            }
+        }
+
+        /// <summary>
+        /// Gets the font face with which the editor draws its text.
+        /// </summary>
+        protected SpriteFontFace TextFontFace
+        {
+            get
+            {
+                var owner = TemplatedParent as Control;
+                if (owner == null || !owner.Font.IsLoaded)
+                    return null;
+
+                return owner.Font.Resource.Value.GetFace(owner.FontStyle);
+            }
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="CaretInsertImage"/> dependency property changes.
         /// </summary>
         private static void HandleCaretInsertImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
@@ -990,6 +1011,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var textAreaEditor = (TextAreaEditor)dobj;
             textAreaEditor.ReloadSelectionImage();
+        }
+        
+        /// <summary>
+        /// Gets the default size of the insertion caret.
+        /// </summary>
+        /// <returns>The default size of the insertion caret.</returns>
+        private Size2 GetDefaultSizeOfInsertionCaret()
+        {
+            var textFontFace = TextFontFace;
+            if (textFontFace == null)
+                return Size2.Zero;
+
+            var fontLineSpacing = textFontFace.LineSpacing;
+            var fontLineSpacingHalf = fontLineSpacing / 2;
+
+            var caretWidth = Math.Min((Int32)Display.DipsToPixels(CaretWidth), fontLineSpacingHalf);
+            var caretHeight = fontLineSpacing;
+
+            return new Size2(caretWidth, caretHeight);
+        }
+
+        /// <summary>
+        /// Gets the default size of the overwrite caret.
+        /// </summary>
+        /// <returns>The default size of the overwrite caret.</returns>
+        private Size2 GetDefaultSizeOfOverwriteCaret()
+        {
+            var textFontFace = TextFontFace;
+            if (textFontFace == null)
+                return Size2.Zero;
+
+            var fontLineSpacing = textFontFace.LineSpacing;
+            var fontLineSpacingHalf = fontLineSpacing / 2;
+
+            var caretWidth = fontLineSpacingHalf;
+            var caretHeight = fontLineSpacing;
+
+            return new Size2(caretWidth, caretHeight);
         }
 
         /// <summary>
@@ -1044,11 +1103,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (View == null)
                 return;
-
-            var owner = TemplatedParent as TextArea;
-            if (owner == null)
-                return;
-
+            
             if (textParserStream.Count == 0)
             {
                 UpdateCaret();
@@ -1056,10 +1111,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 return;
             }
 
-            var wrap = (owner.TextWrapping == TextWrapping.Wrap);
-            var width = wrap ? (Int32?)Display.DipsToPixels(availableSize.Width) : null;
-            
-            var settings = new TextLayoutSettings(owner.Font, width, null, TextFlags.Standard);
+            var owner = TemplatedParent as Control;
+
+            var textFlags = TextFlags.AlignTop;
+            var textWrapping = (owner == null) ? TextWrapping.NoWrap : owner.GetValue<TextWrapping>(TextArea.TextWrappingProperty);
+            var textAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextArea.TextAlignmentProperty);
+
+            var layoutWidth = (textWrapping == TextWrapping.Wrap) ? (Int32?)Display.DipsToPixels(availableSize.Width) : null;
+            var layoutHeight = (Int32?)null;
+
+            switch (textAlignment)
+            {
+                case TextAlignment.Left:
+                    textFlags |= TextFlags.AlignLeft;
+                    break;
+
+                case TextAlignment.Center:
+                    textFlags |= TextFlags.AlignCenter;
+                    break;
+
+                case TextAlignment.Right:
+                    textFlags |= TextFlags.AlignRight;
+                    break;
+            }
+
+            var settings = new TextLayoutSettings(owner.Font, layoutWidth, layoutHeight, textFlags);
             View.Resources.TextRenderer.CalculateLayout(textParserStream, textLayoutStream, settings);
 
             UpdateSelectionAndCaret();
@@ -1073,8 +1149,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (!selectionPosition.HasValue || SelectionLength == 0)
                 return;
 
-            var owner = TemplatedParent as TextArea;
-            if (owner != null && !owner.IsKeyboardFocusWithin)
+            // Don't draw the selection unless we have keyboard focus
+            var owner = TemplatedParent as Control;
+            if (owner == null || !owner.IsKeyboardFocusWithin)
                 return;
 
             // Draw the first line
@@ -1116,13 +1193,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (textLayoutStream.Count == 0)
                 return;
 
-            var owner = TemplatedParent as TextArea;
-            if (owner == null)
-                return;
+            var owner = TemplatedParent as Control;
+            var foreground = (owner == null) ? Color.White : owner.Foreground;
 
             var position = Display.DipsToPixels(UntransformedAbsolutePosition);
             var positionRounded = dc.IsTransformed ? (Vector2)position : (Vector2)(Point2)position;
-            View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutStream, positionRounded, owner.Foreground * dc.Opacity);
+            View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutStream, positionRounded, foreground * dc.Opacity);
         }
 
         /// <summary>
@@ -1130,7 +1206,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void DrawCaret(UltravioletTime time, DrawingContext dc)
         {
-            var owner = TemplatedParent as TextArea;
+            var owner = TemplatedParent as Control;
             if (owner == null || !owner.IsKeyboardFocusWithin || selectionFollowingMouse)
                 return;
 
@@ -1439,9 +1515,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void InsertTextAtPosition(StringSegment str, Int32 position, Boolean overwrite)
         {
-            var owner = TemplatedParent as TextArea;
-            var acceptsReturn = (owner != null && owner.AcceptsReturn);
-            var acceptsTab = (owner != null && owner.AcceptsTab);
+            var owner = TemplatedParent as Control;
+            var acceptsReturn = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsReturnProperty));
+            var acceptsTab = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsTabProperty));
 
             if (caretInsertionMode != TextBoxInsertionMode.Overwrite)
                 overwrite = false;
@@ -1458,10 +1534,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 overwrite = false;
             }            
 
-            var characterCasing = (owner == null) ? CharacterCasing.Normal : owner.CharacterCasing;
+            var characterCasing = (owner == null) ? CharacterCasing.Normal : owner.GetValue<CharacterCasing>(TextArea.CharacterCasingProperty);
             var characterCount = 0;
 
-            var maxLength = (owner == null) ? 0 : owner.MaxLength;
+            var maxLength = (owner == null) ? 0 : owner.GetValue<Int32>(TextArea.MaxLengthProperty);
 
             for (int i = 0; i < str.Length; i++)
             {
@@ -1520,7 +1596,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateTextStringSource()
         {
-            var owner = TemplatedParent as TextArea;
+            var owner = TemplatedParent as Control;
             if (owner == null)
                 return;
 
@@ -1532,85 +1608,108 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateCaret()
         {
-            var owner = TemplatedParent as TextArea;
+            var owner = TemplatedParent as Control;
 
-            var font = (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource.Value.GetFace(SpriteFontStyle.Regular) : null;
-            var fontLineSpacing = (font != null) ? font.LineSpacing : 0;
+            var fontFace = TextFontFace;
+            var fontLineSpacing = (fontFace != null) ? fontFace.LineSpacing : 0;
             var fontLineSpacingHalf = (Int32)Math.Ceiling(fontLineSpacing / 2f);
 
             var styledCaretWidth = (Int32)Display.DipsToPixels(CaretWidth);
             var styledCaretThickness = (Int32)Display.DipsToPixels(CaretThickness);
 
+            var caretAlignment = TextAlignment.Left;
+            var caretRenderX = 0;
+            var caretRenderY = 0;
+            var caretRenderWidth = 0;
+            var caretRenderHeight = 0;
+            
             if (InsertionMode == TextBoxInsertionMode.Overwrite && !IsCaretOnLineBreak())
             {
                 caretInsertionMode = TextBoxInsertionMode.Overwrite;
 
+                var caretDefaultSize = GetDefaultSizeOfOverwriteCaret();
                 var caretX = 0;
                 var caretY = 0;
-                var caretWidth = fontLineSpacingHalf;
-                var caretHeight = styledCaretThickness;
-
+                var caretWidth = caretDefaultSize.Width;
+                var caretHeight = caretDefaultSize.Height;
+                
                 if (textLayoutStream.TotalLength > 0)
                 {
-                    var glyphLineIndex = 0;
-                    var glyphLineWidth = 0;
-                    var glyphLineHeight = 0;
-                    var glyphBounds = View.Resources.TextRenderer.GetGlyphBounds(textLayoutStream,
-                        caretPosition, out glyphLineIndex, out glyphLineWidth, out glyphLineHeight, true);
+                    var glyphLineInfo = default(LineInfo);
+                    var glyphBounds = View.Resources.TextRenderer.GetGlyphBounds(textLayoutStream, caretPosition, out glyphLineInfo, true);
 
                     caretX = glyphBounds.Left;
                     caretY = glyphBounds.Top;
                     caretWidth = glyphBounds.Width;
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, glyphBounds.Height);
-                    caretLineIndex = glyphLineIndex;
+                    caretLineIndex = glyphLineInfo.LineIndex;
                 }
                 else
                 {
+                    caretAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextArea.TextAlignmentProperty);
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, fontLineSpacing);
                     caretLineIndex = 0;
                 }
-
-                caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.Left, 
-                    Math.Max(caretBounds.Top, caretBounds.Bottom - caretHeight), caretWidth, 
-                    Math.Min(caretBounds.Height, caretHeight));
+                
+                caretRenderWidth = caretWidth;
+                caretRenderHeight = Math.Min(caretBounds.Height, styledCaretThickness);
+                caretRenderY = caretBounds.Bottom - caretRenderHeight;
             }
             else
             {
                 caretInsertionMode = TextBoxInsertionMode.Insert;
 
+                var caretDefaultSize = GetDefaultSizeOfInsertionCaret();
                 var caretX = 0;
                 var caretY = 0;
-                var caretWidth = fontLineSpacingHalf;
-                var caretHeight = fontLineSpacing;
-
+                var caretWidth = caretDefaultSize.Width;
+                var caretHeight = caretDefaultSize.Height;
+                
                 if (textLayoutStream.TotalLength > 0)
                 {
                     var caretWidthPx = (Int32)Display.DipsToPixels(CaretWidth);
 
-                    var lineIndex = 0;
-                    var lineWidth = 0;
-                    var lineHeight = 0;
-
+                    var lineInfo = default(LineInfo);
                     var boundsGlyph = default(Ultraviolet.Rectangle?);
-                    var boundsInsert = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream, caretPosition,
-                        out lineIndex, out lineWidth, out lineHeight, out boundsGlyph);
+                    var boundsInsert = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream, 
+                        caretPosition, out lineInfo, out boundsGlyph);
 
                     caretX = boundsInsert.X;
                     caretY = boundsInsert.Y;
                     caretWidth = (boundsGlyph.HasValue && boundsGlyph.Value.Width > 0) ? boundsGlyph.Value.Width : fontLineSpacingHalf;
                     caretHeight = boundsInsert.Height;
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, caretHeight);
-                    caretLineIndex = lineIndex;                    
+                    caretLineIndex = lineInfo.LineIndex;                    
                 }
                 else
                 {
+                    caretAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextArea.TextAlignmentProperty);
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, caretHeight);
                     caretLineIndex = 0;
                 }
 
-                caretRenderBounds = new Ultraviolet.Rectangle(caretBounds.Left, caretBounds.Top,
-                    Math.Min(caretBounds.Width, styledCaretWidth), caretBounds.Height);
+                caretRenderWidth = Math.Min(caretBounds.Width, styledCaretWidth);
+                caretRenderHeight = caretBounds.Height;
+                caretRenderY = caretBounds.Top;
             }
+
+            switch (caretAlignment)
+            {
+                case TextAlignment.Left:
+                    caretRenderX = caretBounds.Left;
+                    break;
+
+                case TextAlignment.Center:
+                    caretRenderX = caretBounds.Center.X - (caretRenderWidth / 2);
+                    break;
+
+                case TextAlignment.Right:
+                    caretRenderX = (caretBounds.Right - caretRenderWidth);
+                    break;
+            }
+
+            caretRenderBounds = new Ultraviolet.Rectangle(caretRenderX, caretRenderY, caretRenderWidth, caretRenderHeight);
+
         }
 
         /// <summary>
@@ -1632,38 +1731,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             else
             {
                 var selectionStart = SelectionStart;
-                var selectionStartLineIndex = 0;
-                var selectionStartLineWidth = 0;
-                var selectionStartLineHeight = 0;
-                var selectionStartGlyphBounds = View.Resources.TextRenderer.GetGlyphBounds(textLayoutStream, selectionStart,
-                    out selectionStartLineIndex, out selectionStartLineWidth, out selectionStartLineHeight, true);
+                var selectionStartLineInfo = default(LineInfo);
+                var selectionStartGlyphBounds = View.Resources.TextRenderer.GetGlyphBounds(textLayoutStream, 
+                    selectionStart, out selectionStartLineInfo, true);
 
                 var selectionEnd = SelectionStart + (SelectionLength - 1);
-                var selectionEndLineIndex = 0;
-                var selectionEndLineWidth = 0;
-                var selectionEndLineHeight = 0;
-                var selectionEndGlyphBounds = View.Resources.TextRenderer.GetGlyphBounds(textLayoutStream, selectionEnd,
-                    out selectionEndLineIndex, out selectionEndLineWidth, out selectionEndLineHeight, true);
+                var selectionEndLineInfo = default(LineInfo);
+                var selectionEndGlyphBounds = View.Resources.TextRenderer.GetGlyphBounds(textLayoutStream, 
+                    selectionEnd, out selectionEndLineInfo, true);
 
-                selectionLineStart = selectionStartLineIndex;
-                selectionLineCount = 1 + (selectionEndLineIndex - selectionStartLineIndex);
+                selectionLineStart = selectionStartLineInfo.LineIndex;
+                selectionLineCount = 1 + (selectionEndLineInfo.LineIndex - selectionStartLineInfo.LineIndex);
 
                 // Top
                 var selectionTopX = selectionStartGlyphBounds.X;
                 var selectionTopY = selectionStartGlyphBounds.Y;
-                var selectionTopWidth = (selectionStartLineIndex == selectionEndLineIndex) ?
-                    selectionEndGlyphBounds.Right - selectionStartGlyphBounds.Left :
-                    selectionStartLineWidth - selectionStartGlyphBounds.X;
-                var selectionTopHeight = selectionStartLineHeight;
+                var selectionTopWidth = (selectionLineCount == 1) ? selectionEndGlyphBounds.Right - selectionStartGlyphBounds.Left :
+                    selectionStartLineInfo.Width - (selectionStartGlyphBounds.X - selectionStartLineInfo.X);
+                var selectionTopHeight = selectionStartLineInfo.Height;
                 selectionTop = new Ultraviolet.Rectangle(selectionTopX, selectionTopY, selectionTopWidth, selectionTopHeight);
 
                 // Bottom
                 if (selectionLineCount > 1)
                 {
-                    var selectionBottomX = 0;
+                    var selectionBottomX = selectionEndLineInfo.X;
                     var selectionBottomY = selectionEndGlyphBounds.Y;
-                    var selectionBottomWidth = selectionEndGlyphBounds.Right;
-                    var selectionBottomHeight = selectionEndLineHeight;
+                    var selectionBottomWidth = selectionEndGlyphBounds.Right - selectionBottomX;
+                    var selectionBottomHeight = selectionEndLineInfo.Height;
                     selectionBottom = new Ultraviolet.Rectangle(selectionBottomX, selectionBottomY, selectionBottomWidth, selectionBottomHeight);
                 }
             }
@@ -1713,7 +1807,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (showMaximumLineWidth)
             {
-                var horizontalOffset = boundsCaret.Right - boundsViewport.Width;
+                var owner = TemplatedParent as Control;
+                var alignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextArea.TextAlignmentProperty);
+                var horizontalOffset = (alignment == TextAlignment.Right) ? boundsCaret.Left : boundsCaret.Right - boundsViewport.Width;
                 scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
             }
             else

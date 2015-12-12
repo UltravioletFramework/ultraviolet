@@ -486,7 +486,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="TextAlignment"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextAlignmentProperty = DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextArea),
-            new PropertyMetadata<TextAlignment>(TextAlignment.Left, PropertyMetadataOptions.AffectsMeasure));
+            new PropertyMetadata<TextAlignment>(TextAlignment.Left, PropertyMetadataOptions.AffectsMeasure, HandleTextAlignmentChanged));
 
         /// <summary>
         /// Identifies the <see cref="TextWrapping"/> dependency property.
@@ -650,7 +650,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             base.OnTextInput(device, ref data);
         }
-
+        
         /// <summary>
         /// Occurs when the control handles a <see cref="ScrollViewer.ScrollChangedEvent"/> routed event.
         /// </summary>
@@ -681,6 +681,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var textArea = (TextArea)dobj;
             if (textArea.PART_Editor != null)
                 textArea.PART_Editor.InsertionMode = newValue;
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="TextAlignment"/> dependency property changes.
+        /// </summary>
+        private static void HandleTextAlignmentChanged(DependencyObject dobj, TextAlignment oldValue, TextAlignment newValue)
+        {
+            var textArea = (TextArea)dobj;
+            if (textArea.PART_Editor != null)
+            {
+                switch (newValue)
+                {
+                    case TextAlignment.Right:
+                        textArea.PART_Editor.HorizontalAlignment = HorizontalAlignment.Right;
+                        break;
+
+                    case TextAlignment.Center:
+                        textArea.PART_Editor.HorizontalAlignment = HorizontalAlignment.Center;
+                        break;
+
+                    default:
+                        textArea.PART_Editor.HorizontalAlignment = HorizontalAlignment.Left;
+                        break;
+                }
+            }
         }
 
         /// <summary>
