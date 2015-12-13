@@ -19,7 +19,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         static TextArea()
         {
-            EventManager.RegisterClassHandler(typeof(TextArea), ScrollViewer.ScrollChangedEvent, new UpfScrollChangedEventHandler(HandleScrollChanged));            
+            EventManager.RegisterClassHandler(typeof(TextArea), ScrollViewer.ScrollChangedEvent, new UpfScrollChangedEventHandler(HandleScrollChanged));
+            EventManager.RegisterClassHandler(typeof(TextArea), SelectionChangedEvent, new UpfRoutedEventHandler(HandleSelectionChanged));
         }
 
         /// <summary>
@@ -32,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
 
         }
-        
+
         /// <summary>
         /// Gets the text area's text.
         /// </summary>
@@ -325,6 +326,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets a value indicating whether the text area has focus and selected text.
+        /// </summary>
+        public Boolean IsSelectionActive
+        {
+            get { return GetValue<Boolean>(IsSelectionActiveProperty); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the selection highlight is displayed when the text area does not have focus.
+        /// </summary>
+        public Boolean IsInactiveSelectionHighlightEnabled
+        {
+            get { return GetValue<Boolean>(IsInactiveSelectionHighlightEnabledProperty); }
+            set { SetValue(IsInactiveSelectionHighlightEnabledProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the text area will accept the return key as a normal character.
         /// </summary>
         public Boolean AcceptsReturn
@@ -473,7 +491,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     PART_Editor.SelectedText = value;
             }
         }
-        
+
         /// <summary>
         /// Gets the horizontal offset of the text area's scroll viewer.
         /// </summary>
@@ -559,6 +577,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Occurs when the selected text is changed.
+        /// </summary>
+        public event UpfRoutedEventHandler SelectionChanged
+        {
+            add { AddHandler(SelectionChangedEvent, value); }
+            remove { RemoveHandler(SelectionChangedEvent, value); }
+        }
+
+        /// <summary>
         /// Identifies the Text dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextArea),
@@ -601,6 +628,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, PropertyMetadataOptions.None));
 
         /// <summary>
+        /// The private access key for the <see cref="IsSelectionActive"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(TextArea),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="IsSelectionActive"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsSelectionActiveProperty = IsSelectionActivePropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <see cref="IsInactiveSelectionHighlightEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsInactiveSelectionHighlightEnabledProperty = DependencyProperty.Register("IsInactiveSelectionHighlightEnabled", typeof(Boolean), typeof(TextArea),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
+
+        /// <summary>
         /// Identifies the <see cref="AcceptsReturn"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AcceptsReturnProperty = KeyboardNavigation.AcceptsReturnProperty.AddOwner(typeof(TextArea));
@@ -629,13 +673,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextArea),
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.Zero, PropertyMetadataOptions.None));
 
+        /// <summary>
+        /// Identifies the <see cref="SelectionChanged"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", 
+            RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(TextArea));
+
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             UpdateScrollViewerSize();
             return base.MeasureOverride(availableSize);
         }
-        
+
         /// <inheritdoc/>
         protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
@@ -702,6 +752,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (PART_Editor != null)
                 PART_Editor.HandleGotKeyboardFocus();
 
+            UpdateIsSelectionActive();
+
             base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
@@ -710,6 +762,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (PART_Editor != null)
                 PART_Editor.HandleLostKeyboardFocus();
+
+            UpdateIsSelectionActive();
 
             base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
@@ -732,7 +786,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         break;
                 }
             }
-               
+
             base.OnKeyDown(device, key, modifiers, ref data);
         }
 
@@ -744,7 +798,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             base.OnTextInput(device, ref data);
         }
-        
+
         /// <summary>
         /// Occurs when the control handles a <see cref="ScrollViewer.ScrollChangedEvent"/> routed event.
         /// </summary>
@@ -756,7 +810,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             data.Handled = true;
         }
-        
+
+        /// <summary>
+        /// Occurs when the control handles a <see cref="SelectionChangedEvent"/> routed event.
+        /// </summary>
+        private static void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
+        {
+            var textArea = (TextArea)dobj;
+            textArea.UpdateIsSelectionActive();
+
+            if (textArea.PART_Editor != null && data.OriginalSource == textArea.PART_Editor)
+            {
+                var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
+                var evtData = new RoutedEventData(textArea);
+                evtDelegate(textArea, ref evtData);
+
+                data.Handled = true;
+            }
+        }
+
         /// <summary>
         /// Occurs when the value of the Text dependency property changes.
         /// </summary>
@@ -813,7 +885,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (textArea.PART_Editor != null)
                 textArea.PART_Editor.InvalidateMeasure();
         }
-        
+
         /// <summary>
         /// Coerces the value of the <see cref="HorizontalScrollBarVisibility"/> property to force the scroll bar
         /// to a disabled state when wrapping is enabled.
@@ -856,7 +928,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (PART_ScrollViewer == null)
                 return;
-            
+
             if (IsHeightConstrained())
             {
                 PART_ScrollViewer.ClearLocalValue(MinHeightProperty);
@@ -884,6 +956,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 {
                     PART_ScrollViewer.ClearLocalValue(MaxHeightProperty);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="IsSelectionActive"/> property.
+        /// </summary>
+        private void UpdateIsSelectionActive()
+        {
+            var isSelectionActive = IsKeyboardFocusWithin;
+
+            if (PART_Editor == null || PART_Editor.SelectionLength == 0)
+                isSelectionActive = false;
+
+            var oldValue = GetValue<Boolean>(IsSelectionActiveProperty);
+            if (oldValue != isSelectionActive)
+            {
+                SetValue(IsSelectionActivePropertyKey, isSelectionActive);
             }
         }
 

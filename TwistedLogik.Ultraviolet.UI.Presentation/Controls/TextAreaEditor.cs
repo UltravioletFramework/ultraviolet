@@ -36,6 +36,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             Contract.EnsureRange(start >= 0 && start <= textLayoutStream.TotalLength, "start");
             Contract.EnsureRange(length >= 0 && start + length <= textLayoutStream.TotalLength, "length");
 
+            BeginTrackingSelectionChanges();
+
             selectionPosition = start;
             caretPosition = start + length;
 
@@ -43,8 +45,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 selectionPosition = null;
 
             UpdateSelectionAndCaret();
-
             ScrollToCaret(true, false, false);
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -107,10 +110,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void Cut()
         {
-            var text = SelectedText;
+            BeginTrackingSelectionChanges();
+            
+            Ultraviolet.GetPlatform().Clipboard.Text = SelectedText;
             DeleteSelection();
 
-            Ultraviolet.GetPlatform().Clipboard.Text = text;
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -118,12 +123,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void Paste()
         {
+            BeginTrackingSelectionChanges();
+            
             var text = Ultraviolet.GetPlatform().Clipboard.Text;
-
-            if (String.IsNullOrEmpty(text))
-                return;
-
             InsertTextAtCaret(text, false);
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -131,13 +136,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void Clear()
         {
+            BeginTrackingSelectionChanges();
+
             caretPosition = 0;
+            caretBlinkTimer = 0;
             selectionPosition = null;
             UpdateSelectionAndCaret();
 
             bufferText.Clear();
             UpdateTextStringSource();
             UpdateTextParserStream();
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -442,6 +452,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             set
             {
+                BeginTrackingSelectionChanges();
+
                 DeleteSelection();
 
                 var caretPositionOld = caretPosition;
@@ -452,6 +464,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var selectionLength = caretPositionNew - caretPositionOld;
 
                 Select(selectionStart, selectionLength);
+
+                EndTrackingSelectionChanges();
             }
         }
 
@@ -548,6 +562,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the color with which the selection highlight is drawn when the control does not have focus.
+        /// </summary>
+        public Color InactiveSelectionColor
+        {
+            get { return GetValue<Color>(InactiveSelectionColorProperty); }
+            set { SetValue(InactiveSelectionColorProperty, value); }
+        }
+
+        /// <summary>
         /// Identifies the <see cref="CaretInsertTopmost"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CaretInsertTopmostProperty = DependencyProperty.Register("CaretInsertTopmost", typeof(Boolean), typeof(TextAreaEditor),
@@ -608,6 +631,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Color>(Color.Blue * 0.4f, PropertyMetadataOptions.None));
 
         /// <summary>
+        /// Identifies the <see cref="InactiveSelectionColor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty InactiveSelectionColorProperty = DependencyProperty.Register("InactiveSelectionColor", typeof(Color), typeof(TextAreaEditor),
+            new PropertyMetadata<Color>(Color.Silver * 0.4f, PropertyMetadataOptions.None));
+
+        /// <summary>
         /// Called when the value of the <see cref="TextArea.TextProperty"/> dependency property changes.
         /// </summary>
         /// <param name="value">The new value of the dependency property.</param>
@@ -620,6 +649,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     return;
             }
 
+            BeginTrackingSelectionChanges();
+
             bufferText.Clear();
             bufferText.Append(value);
 
@@ -630,9 +661,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 pendingScrollToCaret = true;                
             }
-            
+
             UpdateTextStringSource();
             UpdateTextParserStream();
+            
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -641,13 +674,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">The <see cref="StringBuilder"/> that contains the text area's new text.</param>
         internal void HandleTextChanged(StringBuilder value)
         {
+            BeginTrackingSelectionChanges();
+
             selectionPosition = null;
 
             bufferText.Length = 0;
             bufferText.Append(value);
-
-            UpdateTextStringSource();
-            UpdateTextParserStream();
 
             if (caretPosition > value.Length)
             {
@@ -656,6 +688,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 UpdateSelectionAndCaret();
             }
+
+            UpdateTextStringSource();
+            UpdateTextParserStream();
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -671,12 +708,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (button == MouseButton.Left)
             {
+                BeginTrackingSelectionChanges();
+
                 MoveCaretToMouse();
 
                 selectionPosition = caretPosition;
                 selectionFollowingMouse = true;
-
                 UpdateSelectionAndCaret();
+
+                EndTrackingSelectionChanges();
             }
         }
 
@@ -1174,14 +1214,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (!selectionPosition.HasValue || SelectionLength == 0)
                 return;
 
-            // Don't draw the selection unless we have keyboard focus
+            // Don't draw the selection unless we have keyboard focus (unless IsInactiveSelectionHighlightEnabled is true).
             var owner = TemplatedParent as Control;
-            if (owner == null || !owner.IsKeyboardFocusWithin)
+            if (owner == null)
                 return;
+
+            var isActive = owner.IsKeyboardFocusWithin;
+            var isEnabledIfInactive = owner.GetValue<Boolean>(TextArea.IsInactiveSelectionHighlightEnabledProperty);
+            if (!isActive && !isEnabledIfInactive)
+                return;
+
+            var selectionColor = isActive ? SelectionColor : InactiveSelectionColor;
 
             // Draw the first line
             var selectionTopDips = Display.PixelsToDips(selectionTop);
-            DrawImage(dc, SelectionImage, selectionTopDips, SelectionColor, true);
+            DrawImage(dc, SelectionImage, selectionTopDips, selectionColor, true);
 
             // Draw the middle
             if (selectionLineCount > 2)
@@ -1196,7 +1243,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                     var lineBounds = new Ultraviolet.Rectangle(lineInfo.X, lineInfo.Y, lineInfo.Width, lineInfo.Height);
                     var lineBoundsDips = Display.PixelsToDips(lineBounds);
-                    DrawImage(dc, SelectionImage, lineBoundsDips, SelectionColor, true);
+                    DrawImage(dc, SelectionImage, lineBoundsDips, selectionColor, true);
                 }
 
                 textLayoutStream.ReleasePointers();
@@ -1206,7 +1253,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (selectionLineCount > 1)
             {
                 var selectionBottomDips = Display.PixelsToDips(selectionBottom);
-                DrawImage(dc, SelectionImage, selectionBottomDips, SelectionColor, true);
+                DrawImage(dc, SelectionImage, selectionBottomDips, selectionColor, true);
             }
         }
 
@@ -1246,20 +1293,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 				DrawImage(dc, caretImage, caretBoundsDips, caretColor, true);
             }
         }
-
+        
         /// <summary>
         /// Moves the caret to the current mouse position.
         /// </summary>
         private void MoveCaretToMouse()
         {
+            BeginTrackingSelectionChanges();
+
             var mousePosDips = Mouse.GetPosition(this);
             var mousePosPixs = (Point2)Display.DipsToPixels(mousePosDips);
 
             caretBlinkTimer = 0;
             caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, mousePosPixs);
-            UpdateSelectionAndCaret();
 
+            UpdateSelectionAndCaret();
             ScrollToCaret(true, false, false);
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -1267,15 +1318,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void MoveCaretLeft()
         {
+            BeginTrackingSelectionChanges();
+
             var movementAllowed = (caretPosition > 0);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Left))
             {
                 caretBlinkTimer = 0;
                 caretPosition -= 1;
-                UpdateSelectionAndCaret();
 
+                UpdateSelectionAndCaret();
                 ScrollToCaret(false, true, false);
             }
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -1283,15 +1338,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void MoveCaretRight()
         {
+            BeginTrackingSelectionChanges();
+
             var movementAllowed = (caretPosition < textLayoutStream.TotalLength);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Right))
             {
                 caretBlinkTimer = 0;
                 caretPosition += 1;
-                UpdateSelectionAndCaret();
 
+                UpdateSelectionAndCaret();
                 ScrollToCaret(false, false, true);
             }
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -1299,6 +1358,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void MoveCaretUp()
         {
+            BeginTrackingSelectionChanges();
+
             var x = caretBounds.Left;
             var y = caretBounds.Top - 1;
             
@@ -1307,10 +1368,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 caretBlinkTimer = 0;
                 caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
-                UpdateSelectionAndCaret();
 
+                UpdateSelectionAndCaret();
                 ScrollToCaret(true, false, false);
             }
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -1318,6 +1381,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void MoveCaretDown()
         {
+            BeginTrackingSelectionChanges();
+
             var x = caretBounds.Left;
             var y = caretBounds.Bottom;
             
@@ -1326,10 +1391,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 caretBlinkTimer = 0;
                 caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
-                UpdateSelectionAndCaret();
 
+                UpdateSelectionAndCaret();
                 ScrollToCaret(true, false, false);               
             }
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -1337,24 +1404,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void MoveCaretToHome(Boolean moveToBeginningOfText)
         {
+            BeginTrackingSelectionChanges();
+
             var movementAllowed = (caretPosition > 0 && textLayoutStream.TotalLength > 0);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Home))
             {
-                if (moveToBeginningOfText)
-                {
-                    caretPosition = 0;
-                }
-                else
-                {
-                    var lineInfo = textLayoutStream.GetLineInfo(caretLineIndex);
-                    caretPosition = lineInfo.OffsetInGlyphs;
-                }
-
                 caretBlinkTimer = 0;
-                UpdateSelectionAndCaret();
+                caretPosition = moveToBeginningOfText ? 0 : textLayoutStream.GetLineInfo(caretLineIndex).OffsetInGlyphs;
 
+                UpdateSelectionAndCaret();
                 ScrollToCaret(true, false, false);
             }
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -1362,9 +1424,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void MoveCaretToEnd(Boolean moveToEndOfText)
         {
+            BeginTrackingSelectionChanges();
+
             var movementAllowed = (caretPosition < textLayoutStream.TotalLength && textLayoutStream.TotalLength > 0);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.End))
             {
+                caretBlinkTimer = 0;
                 if (moveToEndOfText)
                 {
                     caretPosition = textLayoutStream.TotalLength;
@@ -1377,11 +1442,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         caretPosition--;
                 }
 
-                caretBlinkTimer = 0;
                 UpdateSelectionAndCaret();
-
                 ScrollToCaret(true, false, false);
             }
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -1427,17 +1492,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (length == 0)
                 return false;
 
-            var start = SelectionStart;
+            BeginTrackingSelectionChanges();
 
+            var start = SelectionStart;
             selectionPosition = null;
 
             if (caretPosition > start)
+            {
+                caretBlinkTimer = 0;
                 caretPosition = start;
+            }
 
             bufferText.Remove(start, length);
-
+            
             UpdateTextStringSource();
             UpdateTextParserStream();
+
+            EndTrackingSelectionChanges();
 
             return true;
         }
@@ -1447,6 +1518,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private Boolean DeleteAhead()
         {
+            var result = false;
+
+            BeginTrackingSelectionChanges();
+
             if (!DeleteSelection() && caretPosition < textLayoutStream.TotalLength)
             {
                 bufferText.Remove(caretPosition, 1);
@@ -1455,9 +1530,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 UpdateTextStringSource();
                 UpdateTextParserStream();
 
-                return true;
+                result = true;
             }
-            return false;
+            
+            EndTrackingSelectionChanges();
+
+            return result;
         }
 
         /// <summary>
@@ -1465,6 +1543,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private Boolean DeleteBehind()
         {
+            var result = false;
+
+            BeginTrackingSelectionChanges();
+
             if (!DeleteSelection() && caretPosition > 0)
             {
                 bufferText.Remove(caretPosition - 1, 1);
@@ -1474,9 +1556,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 UpdateTextStringSource();
                 UpdateTextParserStream();
 
-                return true;
+                result = true;
             }
-            return false;
+
+            EndTrackingSelectionChanges();
+
+            return result;
         }
 
         /// <summary>
@@ -1540,6 +1625,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void InsertTextAtPosition(StringSegment str, Int32 position, Boolean overwrite)
         {
+            if (str.Length == 0)
+                return;
+
+            BeginTrackingSelectionChanges();
+
             var owner = TemplatedParent as Control;
             var acceptsReturn = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsReturnProperty));
             var acceptsTab = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsTabProperty));
@@ -1606,6 +1696,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             UpdateTextStringSource();
             UpdateTextParserStream();
+
+            EndTrackingSelectionChanges();
         }
 
         /// <summary>
@@ -1696,7 +1788,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                     var lineInfo = default(LineInfo);
                     var boundsGlyph = default(Ultraviolet.Rectangle?);
-                    var boundsInsert = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream, 
+                    var boundsInsert = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream,
                         caretPosition, out lineInfo, out boundsGlyph);
 
                     caretX = boundsInsert.X;
@@ -1861,6 +1953,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Begins tracking changes to the selection state.
+        /// </summary>
+        private void BeginTrackingSelectionChanges()
+        {
+            if (++selectionTrackingCounter == 1)
+            {
+                storedCaretPosition = caretPosition;
+                storedSelectionPosition = selectionPosition ?? caretPosition;
+            }
+        }
+
+        /// <summary>
+        /// Finishes tracking changes to the selection state and raises a <see cref="TextArea.SelectionChangedEvent"/> 
+        /// routed event if necessary,
+        /// </summary>
+        private void EndTrackingSelectionChanges()
+        {
+            if (--selectionTrackingCounter < 0)
+                throw new InvalidOperationException();
+
+            if (selectionTrackingCounter == 0)
+            {
+                if (caretPosition != storedCaretPosition || (selectionPosition ?? caretPosition) != storedSelectionPosition)
+                    RaiseSelectionChanged();
+
+                storedCaretPosition = 0;
+                storedSelectionPosition = 0;
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="TextArea.SelectionChangedEvent"/> routed event.
+        /// </summary>
+        private void RaiseSelectionChanged()
+        {
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(TextArea.SelectionChangedEvent);
+            var evtData = new RoutedEventData(this);
+
+            evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the caret is currently positioned on a line break.
         /// </summary>
         private Boolean IsCaretOnLineBreak()
@@ -1891,6 +2025,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private Ultraviolet.Rectangle selectionTop;
         private Ultraviolet.Rectangle selectionBottom;
         private Boolean selectionFollowingMouse;
+
+        // Cached values for selection change tracking.
+        private Int32 selectionTrackingCounter;
+        private Int32 storedCaretPosition;
+        private Int32 storedSelectionPosition;
 
         // The editor's internal text buffer.
         private readonly StringBuilder bufferInput = new StringBuilder();
