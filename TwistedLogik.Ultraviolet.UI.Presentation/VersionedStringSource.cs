@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -7,6 +8,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     public struct VersionedStringSource : IEquatable<VersionedStringSource>
     {
+        /// <summary>
+        /// Initializes the <see cref="VersionedStringSource"/> type.
+        /// </summary>
+        static VersionedStringSource()
+        {
+            ObjectResolver.RegisterValueResolver<VersionedStringSource>((value, provider) => new VersionedStringSource(value));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="VersionedStringSource"/> structure that wraps the specified <see cref="String"/> instance.
         /// </summary>

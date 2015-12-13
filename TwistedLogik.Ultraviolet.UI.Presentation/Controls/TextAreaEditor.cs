@@ -800,6 +800,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         internal void HandleKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
             var owner = TemplatedParent as Control;
+            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextArea.IsReadOnlyProperty));
             var acceptsReturn = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsReturnProperty));
             var acceptsTab = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsTabProperty));
 
@@ -826,7 +827,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.X:
                     if (ctrl)
                     {
-                        Cut();
+                        if (!isReadOnly)
+                        {
+                            Cut();
+                        }
                         data.Handled = true;
                     }
                     break;
@@ -834,7 +838,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.V:
                     if (ctrl)
                     {
-                        Paste();
+                        if (!isReadOnly)
+                        {
+                            Paste();
+                        }
                         data.Handled = true;
                     }
                     break;
@@ -843,7 +850,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.Return2:
                     if (acceptsReturn)
                     {
-                        InsertTextAtCaret("\n", false);
+                        if (!isReadOnly)
+                        {
+                            InsertTextAtCaret("\n", false);
+                        }
                         data.Handled = true;
                     }
                     break;
@@ -851,17 +861,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.Tab:
                     if (acceptsTab)
                     {
-                        InsertTextAtCaret("\t", true);
+                        if (!isReadOnly)
+                        {
+                            InsertTextAtCaret("\t", true);
+                        }
                         data.Handled = true;
                     }
                     break;
 
                 case Key.Backspace:
-                    DeleteBehind();
+                    if (!isReadOnly)
+                    {
+                        DeleteBehind();
+                    }
                     break;
 
                 case Key.Delete:
-                    DeleteAhead();
+                    if (!isReadOnly)
+                    {
+                        DeleteAhead();
+                    }
                     break;
 
                 case Key.Left:
@@ -903,11 +922,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="data">The routed event metadata for this event.</param>
         internal void HandleTextInput(KeyboardDevice device, ref RoutedEventData data)
         {
-            device.GetTextInput(bufferInput);
+            var owner = TemplatedParent as Control;
 
+            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextArea.IsReadOnlyProperty));
+            if (isReadOnly)
+                return;
+
+            device.GetTextInput(bufferInput);
             InsertTextAtCaret((StringSegment)bufferInput, true);
 
             data.Handled = true;
+        }
+
+        /// <summary>
+        /// Called when the value of the <see cref="TextArea.IsReadOnly"/> property changes.
+        /// </summary>
+        internal void HandleIsReadOnlyChanged()
+        {
+            UpdateSelectionAndCaret();
         }
 
         /// <summary>
@@ -925,6 +957,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     UpdateCaret();
                 }
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+            UpdateTextParserStream();
+
+            base.OnViewChanged(oldView, newView);
         }
 
         /// <inheritdoc/>
@@ -1279,7 +1319,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private void DrawCaret(UltravioletTime time, DrawingContext dc)
         {
             var owner = TemplatedParent as Control;
-            if (owner == null || !owner.IsKeyboardFocusWithin || selectionFollowingMouse)
+            if (owner == null)
+                return;
+
+            var isReadOnly = owner.GetValue<Boolean>(TextArea.IsReadOnlyProperty);
+            var isReadOnlyCaretVisible = owner.GetValue<Boolean>(TextArea.IsReadOnlyCaretVisibleProperty);
+            if (isReadOnly && !isReadOnlyCaretVisible)
+                return;
+
+            if (selectionFollowingMouse || !owner.IsKeyboardFocusWithin)
                 return;
 
             caretBlinkTimer = (caretBlinkTimer + time.ElapsedTime.TotalMilliseconds) % 1000.0;
@@ -1452,8 +1500,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Moves the caret in the specified direction.
         /// </summary>
-        private void MoveCaretInDirection(CaretNavigationDirection direction, ModifierKeys modifiers = ModifierKeys.None)
+        private Boolean MoveCaretInDirection(CaretNavigationDirection direction, ModifierKeys modifiers = ModifierKeys.None)
         {
+            var owner = TemplatedParent as Control;
+
+            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextArea.IsReadOnlyProperty));
+            var isReadOnlyCaretVisible = (owner != null && owner.GetValue<Boolean>(TextArea.IsReadOnlyCaretVisibleProperty));
+            if (isReadOnly && !isReadOnlyCaretVisible && (modifiers & ModifierKeys.Shift) != ModifierKeys.Shift)
+                return false;
+
             switch (direction)
             {
                 case CaretNavigationDirection.Left:
@@ -1480,6 +1535,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     MoveCaretToEnd((modifiers & ModifierKeys.Control) == ModifierKeys.Control);
                     break;
             }
+
+            return true;
         }
 
         /// <summary>
@@ -1725,7 +1782,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateCaret()
         {
+            if (View == null)
+                return;
+
             var owner = TemplatedParent as Control;
+
+            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextArea.IsReadOnlyProperty));
 
             var fontFace = TextFontFace;
             var fontLineSpacing = (fontFace != null) ? fontFace.LineSpacing : 0;
@@ -1740,7 +1802,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var caretRenderWidth = 0;
             var caretRenderHeight = 0;
             
-            if (InsertionMode == TextBoxInsertionMode.Overwrite && !IsCaretOnLineBreak())
+            if (InsertionMode == TextBoxInsertionMode.Overwrite && !IsCaretOnLineBreak() && !isReadOnly)
             {
                 caretInsertionMode = TextBoxInsertionMode.Overwrite;
 

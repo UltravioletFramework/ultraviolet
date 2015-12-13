@@ -326,6 +326,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this is a read-only text area. A read-only text area cannot be changed by the
+        /// user, but may still be changed programmatically.
+        /// </summary>
+        public Boolean IsReadOnly
+        {
+            get { return GetValue<Boolean>(IsReadOnlyProperty); }
+            set { SetValue(IsReadOnlyProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the caret is visible when this text box is read-only.
+        /// </summary>
+        public Boolean IsReadOnlyCaretVisible
+        {
+            get { return GetValue<Boolean>(IsReadOnlyCaretVisibleProperty); }
+            set { SetValue(IsReadOnlyCaretVisibleProperty, value); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the text area has focus and selected text.
         /// </summary>
         public Boolean IsSelectionActive
@@ -628,6 +647,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, PropertyMetadataOptions.None));
 
         /// <summary>
+        /// Identifies the <see cref="IsReadOnly"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(Boolean), typeof(TextArea),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsReadOnlyChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="IsReadOnlyCaretVisible"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsReadOnlyCaretVisibleProperty = DependencyProperty.Register("IsReadOnlyCaretVisibleProperty", typeof(Boolean), typeof(TextArea),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
+
+        /// <summary>
         /// The private access key for the <see cref="IsSelectionActive"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(TextArea),
@@ -779,9 +810,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 switch (key)
                 {
                     case Key.Insert:
-                        InsertionMode = (InsertionMode == TextBoxInsertionMode.Insert) ?
-                            TextBoxInsertionMode.Overwrite :
-                            TextBoxInsertionMode.Insert;
+                        if (!IsReadOnly)
+                        {
+                            InsertionMode = (InsertionMode == TextBoxInsertionMode.Insert) ?
+                                TextBoxInsertionMode.Overwrite :
+                                TextBoxInsertionMode.Insert;
+                        }
                         data.Handled = true;
                         break;
                 }
@@ -884,6 +918,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (textArea.PART_Editor != null)
                 textArea.PART_Editor.InvalidateMeasure();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsReadOnly"/> dependency property changes.
+        /// </summary>
+        private static void HandleIsReadOnlyChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            var textArea = (TextArea)dobj;            
+            if (textArea.PART_Editor != null)
+                textArea.PART_Editor.HandleIsReadOnlyChanged();
         }
 
         /// <summary>
