@@ -126,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 			if (expressionVerificationResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
             {
                 if (state.WriteErrorsToFile)
-                    WriteErrorsToWorkingDirectory(state, expressionVerificationResult);
+                    WriteErrorsToWorkingDirectory(state, models, expressionVerificationResult);
 
                 return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedExpressionValidationPass,
                     CreateBindingExpressionCompilationErrors(models, expressionVerificationResult.Errors));
@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 			if (finalPassResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
             {
                 if (state.WriteErrorsToFile)
-                    WriteErrorsToWorkingDirectory(state, finalPassResult);
+                    WriteErrorsToWorkingDirectory(state, models, finalPassResult);
 
                 return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedFinalPass,
                     CreateBindingExpressionCompilationErrors(models, finalPassResult.Errors));
@@ -663,8 +663,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// Writes any compiler errors to the working directory.
         /// </summary>
         /// <param name="state">The expression compiler's current state.</param>
+        /// <param name="models">The list of models which were compiled.</param>
         /// <param name="results">The results of the previous compilation pass.</param>
-        private static void WriteErrorsToWorkingDirectory(ExpressionCompilerState state, CompilerResults results)
+        private static void WriteErrorsToWorkingDirectory(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, CompilerResults results)
         {
             var logpath = Path.Combine(GetWorkingDirectory(state), "Compilation Errors.txt");
 			try
@@ -681,15 +682,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 			if (trueErrors.Count > 0)
             {
                 var filesWithErrors = trueErrors.Select(x => x.FileName).Where(x => !String.IsNullOrEmpty(x)).Distinct();
+                var filesWithErrorsPretty = new Dictionary<String, String> { { String.Empty, String.Empty } };
+                
                 foreach (var fileWithErrors in filesWithErrors)
                 {
+                    var modelNameForFile = models.Where(x => x.UniqueID.ToString() == Path.GetFileNameWithoutExtension(fileWithErrors))
+                        .Select(x => x.DataSourceWrapperName).SingleOrDefault();
+
+                    var prettyFileName = Path.ChangeExtension(modelNameForFile, "cs");
+                    filesWithErrorsPretty[fileWithErrors] = prettyFileName;
+
                     var fileWithErrorsSrc = Path.GetFullPath(fileWithErrors);
-                    var fileWithErrorsDst = Path.Combine(GetWorkingDirectory(state), Path.GetFileName(fileWithErrors));
+                    var fileWithErrorsDst = Path.Combine(GetWorkingDirectory(state), prettyFileName);
                     File.Copy(fileWithErrorsSrc, fileWithErrorsDst, true);
                 }
 
 				var errorStrings = trueErrors.Select(x =>
-                    String.Format("{0}\t{1}\t{2}\t{3}", x.ErrorNumber, x.ErrorText, Path.GetFileName(x.FileName), x.Line));
+                    String.Format("{0}\t{1}\t{2}\t{3}", x.ErrorNumber, x.ErrorText, filesWithErrorsPretty[x.FileName ?? String.Empty], x.Line));
                 
                 File.WriteAllLines(logpath, Enumerable.Union(new[] { "Code\tDescription\tFile\tLine" }, errorStrings));
             }
@@ -905,7 +914,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             foreach (var model in models)
             {
-                var path = Path.ChangeExtension(Path.Combine(workingDirectory, model.UniqueID.ToString()), "cs");
+                var path = Path.ChangeExtension(Path.Combine(workingDirectory, model.DataSourceWrapperName), "cs");
                 File.WriteAllText(path, model.DataSourceWrapperSourceCode);
             }
         }
