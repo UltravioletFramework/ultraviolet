@@ -461,7 +461,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public Int32 TextLength
         {
-            get { return textLayoutStream.TotalLength; }
+            get { return bufferText.Length; }
         }
 
         /// <summary>
@@ -480,7 +480,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get { return caretPosition; }
             set
             {
-                Contract.EnsureRange(value >= 0 && value <= textLayoutStream.TotalLength, "value");
+                Contract.EnsureRange(value >= 0 && value <= bufferText.Length, "value");
 
                 selectionPosition = null;
 
@@ -1261,6 +1261,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             View.Resources.TextRenderer.Parse((StringBuilder)bufferText, textParserStream, TextParserOptions.IgnoreCommandCodes);
             InvalidateMeasure();
+
+            pendingTextLayout = true;
         }
 
         /// <summary>
@@ -1268,6 +1270,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateTextLayoutStream(Size2D availableSize)
         {
+            pendingTextLayout = false;
+
             textLayoutStream.Clear();
 
             if (View == null)
@@ -1275,8 +1279,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             
             if (textParserStream.Count == 0)
             {
-                UpdateCaret();
-                UpdateSelection();
+                UpdateSelectionAndCaret();
                 return;
             }
 
@@ -1926,7 +1929,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateCaret()
         {
-            if (View == null)
+            if (View == null || pendingTextLayout)
                 return;
 
             var owner = TemplatedParent as Control;
@@ -2039,7 +2042,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateSelection()
         {
-            if (View == null || textLayoutStream.Count == 0 || !selectionPosition.HasValue)
+            if (View == null || textLayoutStream.Count == 0 || !selectionPosition.HasValue || pendingTextLayout)
                 return;
 
             if (SelectionLength == 0)
@@ -2211,6 +2214,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         // State values.
         private readonly TextParserTokenStream textParserStream = new TextParserTokenStream();
         private readonly TextLayoutCommandStream textLayoutStream = new TextLayoutCommandStream();
+        private Boolean pendingTextLayout = true;
         private Boolean pendingScrollToCaret;
 
         // Caret parameters.
