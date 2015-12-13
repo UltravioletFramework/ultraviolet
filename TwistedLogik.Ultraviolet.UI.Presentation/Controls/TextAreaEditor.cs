@@ -700,13 +700,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Called when the value of the <see cref="TextArea.TextProperty"/> dependency property changes.
         /// </summary>
         /// <param name="value">The new value of the dependency property.</param>
-        internal void HandleTextChanged(VersionedStringSource value)
+        /// <returns><c>true</c> if the editor replaced the text with its own source; otherwise, <c>false</c>.</returns>
+        internal Boolean HandleTextChanged(VersionedStringSource value)
         {
             if (value.IsSourcedFromStringBuilder)
             {
                 var vsb = (VersionedStringBuilder)value;
                 if (vsb.Version == bufferText.Version)
-                    return;
+                    return false;
             }
 
             BeginTrackingSelectionChanges();
@@ -726,6 +727,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             UpdateTextParserStream();
             
             EndTrackingSelectionChanges();
+
+            return true;
         }
 
         /// <summary>

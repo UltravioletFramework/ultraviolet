@@ -639,6 +639,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Occurs when the text area's text changes.
+        /// </summary>
+        public event UpfRoutedEventHandler TextChanged
+        {
+            add { AddHandler(TextChangedEvent, value); }
+            remove { RemoveHandler(TextChangedEvent, value); }
+        }
+
+        /// <summary>
         /// Identifies the Text dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextArea),
@@ -742,6 +751,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Identifies the <see cref="SelectionChanged"/> routed event.
         /// </summary>
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", 
+            RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(TextArea));
+
+        /// <summary>
+        /// Identifies the <see cref="TextChanged"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent("TextChanged",
             RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(TextArea));
 
         /// <inheritdoc/>
@@ -902,9 +917,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleTextChanged(DependencyObject dobj, VersionedStringSource oldValue, VersionedStringSource newValue)
         {
+            var raiseTextChanged = false;
+
             var textArea = (TextArea)dobj;
             if (textArea.PART_Editor != null)
-                textArea.PART_Editor.HandleTextChanged(newValue);
+                raiseTextChanged = !textArea.PART_Editor.HandleTextChanged(newValue);
+
+            if (raiseTextChanged)
+            {
+                var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(TextChangedEvent);
+                var evtData = new RoutedEventData(textArea);
+                evtDelegate(textArea, ref evtData);
+            }
         }
 
         /// <summary>
