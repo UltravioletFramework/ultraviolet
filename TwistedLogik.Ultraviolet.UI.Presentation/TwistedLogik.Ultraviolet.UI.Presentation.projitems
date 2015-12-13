@@ -39,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ArrangeOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssetSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BindingConversions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilationError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilationResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilerOptions.cs" />
@@ -359,6 +360,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvmlPlaceholderAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VersionedStringBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VersionedStringSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VersionedStringSourceTypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VerticalAlignment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)View.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModelWrapperAttribute.cs" />

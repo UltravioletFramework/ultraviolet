@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 return (value == null) ? null : value.ToString();
             }
-            return String.Format(format, value);
+            return (String)BindingConversions.ConvertValue(value, typeof(T), typeof(String), format, true);
         }
 
         /// <summary>
@@ -45,10 +45,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <typeparam name="T">The type of value to produce.</typeparam>
         /// <param name="value">The string to convert.</param>
+        /// <param name="example">An example value which will cause the compiler to perform generic type inference.</param>
         /// <returns>The value that was created.</returns>
-        protected T __UPF_ConvertFromString<T>(String value)
+        protected T __UPF_ConvertFromString<T>(String value, T example)
         {
-            return (T)ObjectResolver.FromString(value, typeof(T));
+            return (T)BindingConversions.ConvertValue(value, typeof(String), typeof(T));
         }
 
         /// <summary>

@@ -316,7 +316,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var isSimpleDependencyProperty = false;
             
             var expText = BindingExpressions.GetBindingMemberPathPart(expressionInfo.Expression);
-            var expTarget = "this";
+            var expTarget = default(String);
             var expTargetType = dataSourceWrapperInfo.DataSourceType;
             var expFormatString = BindingExpressions.GetBindingFormatStringPart(expressionInfo.Expression);
 
@@ -359,13 +359,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 var getexp = default(String);
                 if (isDependencyProperty)
                 {
-                    getexp = String.Format("{0}.GetValue<{1}>({2}.{3})", expTarget,
+                    getexp = String.Format("{0}GetValue<{1}>({2}.{3})", expTarget,
                        GetCSharpTypeName(dprop.PropertyType),
                        GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
                 }
                 else
                 {
-                    getexp = String.Format("{0}.{1}", expTarget, expText);
+                    getexp = String.Format("{0}{1}", expTarget, expText);
                 }
 
                 expFormatString = String.IsNullOrEmpty(expFormatString) ? "null" : String.Format("\"{{0:{0}}}\"", expFormatString);
@@ -397,34 +397,58 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 expressionInfo.SetterLineStart = LineCount;
                 if (isDependencyProperty)
                 {
-                    if (expressionInfo.NullableFixup)
+                    if (expressionInfo.Type == typeof(String) || expressionInfo.Type == typeof(VersionedStringSource))
                     {
-                        WriteLine(targetTypeSpecified ? "set {{ {0}.SetValue<{1}>({2}.{3}, ({4})(value ?? default({1}))); }}" : "set {{ {0}.SetValue<{1}>({2}.{3}, value ?? default({1})); }}", 
-                            expTarget,
-                            GetCSharpTypeName(dprop.PropertyType), 
-                            GetCSharpTypeName(dprop.OwnerType),
-                            dpropField.Name, targetTypeName);
+                        WriteLine("set");
+                        WriteLine("{");
+                        WriteLine("var current = {0}GetValue<{1}>({2}.{3});", 
+                            expTarget, GetCSharpTypeName(dprop.PropertyType), GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
+                        WriteLine("{0}SetValue<{1}>({2}.{3}, __UPF_ConvertFromString(value.ToString(), current))",
+                            expTarget, GetCSharpTypeName(dprop.PropertyType), GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
+                        WriteLine("}");
                     }
                     else
                     {
-                        WriteLine(targetTypeSpecified ? "set {{ {0}.SetValue<{1}>({2}.{3}, ({4})(value)); }}" : "set {{ {0}.SetValue<{1}>({2}.{3}, value); }}", 
-                            expTarget,
-                            GetCSharpTypeName(dprop.PropertyType),
-                            GetCSharpTypeName(dprop.OwnerType), 
-                            dpropField.Name, targetTypeName);
+                        if (expressionInfo.NullableFixup)
+                        {
+                            WriteLine(targetTypeSpecified ? "set {{ {0}SetValue<{1}>({2}.{3}, ({4})(value ?? default({1}))); }}" : "set {{ {0}SetValue<{1}>({2}.{3}, value ?? default({1})); }}",
+                                expTarget,
+                                GetCSharpTypeName(dprop.PropertyType),
+                                GetCSharpTypeName(dprop.OwnerType),
+                                dpropField.Name, targetTypeName);
+                        }
+                        else
+                        {
+                            WriteLine(targetTypeSpecified ? "set {{ {0}SetValue<{1}>({2}.{3}, ({4})(value)); }}" : "set {{ {0}SetValue<{1}>({2}.{3}, value); }}",
+                                expTarget,
+                                GetCSharpTypeName(dprop.PropertyType),
+                                GetCSharpTypeName(dprop.OwnerType),
+                                dpropField.Name, targetTypeName);
+                        }
                     }
                 }
                 else
                 {
-                    if (expressionInfo.NullableFixup)
+                    if (expressionInfo.Type == typeof(String) || expressionInfo.Type == typeof(VersionedStringSource))
                     {
-                        WriteLine(targetTypeSpecified ? "set {{ {0}.{1} = ({3})(value ?? default({2})); }}" : "set {{ {0}.{1} = value ?? default({2}); }}",
-                            expTarget, expText, GetCSharpTypeName(Nullable.GetUnderlyingType(expressionInfo.Type)), targetTypeName);
+                        WriteLine("set");
+                        WriteLine("{");
+                        WriteLine("var current = {0}{1};", expTarget, expText);
+                        WriteLine("{0}{1} = __UPF_ConvertFromString(value.ToString(), current);", expTarget, expText);
+                        WriteLine("}");                        
                     }
                     else
                     {
-                        WriteLine(targetTypeSpecified ? "set {{ {0}.{1} = ({2})(value); }}" : "set {{ {0}.{1} = value; }}", 
-                            expTarget, expText, targetTypeName);
+                        if (expressionInfo.NullableFixup)
+                        {
+                            WriteLine(targetTypeSpecified ? "set {{ {0}{1} = ({3})(value ?? default({2})); }}" : "set {{ {0}{1} = value ?? default({2}); }}",
+                                expTarget, expText, GetCSharpTypeName(Nullable.GetUnderlyingType(expressionInfo.Type)), targetTypeName);
+                        }
+                        else
+                        {
+                            WriteLine(targetTypeSpecified ? "set {{ {0}{1} = ({2})(value); }}" : "set {{ {0}{1} = value; }}",
+                                expTarget, expText, targetTypeName);
+                        }
                     }
                 }
 
@@ -540,12 +564,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 if (expTargetType == null && !state.GetKnownType(match, out expTargetType))
                     throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(match));
 
-                expTarget = String.Format("__UPF_GetElementByName<{0}>(\"{1}\")", GetCSharpTypeName(expTargetType), expPartTarget);
+                expTarget = String.Format("__UPF_GetElementByName<{0}>(\"{1}\").", GetCSharpTypeName(expTargetType), expPartTarget);
 
                 return true;
             }
 
-            expTarget = "this";
+            expTarget = default(String);
             expTargetType = dataSourceWrapperInfo.DataSourceType;
 
             return false;

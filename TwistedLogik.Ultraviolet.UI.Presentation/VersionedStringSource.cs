@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -6,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents a source of string data with an attached version value which is used to track changes to mutable sources.
     /// </summary>
+    [TypeConverter(typeof(VersionedStringSourceTypeConverter))]
     public struct VersionedStringSource : IEquatable<VersionedStringSource>
     {
         /// <summary>
