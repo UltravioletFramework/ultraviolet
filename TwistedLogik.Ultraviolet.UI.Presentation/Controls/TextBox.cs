@@ -2,52 +2,52 @@
 using System.ComponentModel;
 using System.Text;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents an element which allows the user to edit multiple lines of text.
+    /// Represents an element which allows the user to edit a string of text.
     /// </summary>
-    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.TextArea.xml")]
+    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.TextBox.xml")]
     [DefaultProperty("Text")]
-    public class TextArea : Control
+    public class TextBox : Control
     {
         /// <summary>
-        /// Initializes the <see cref="TextArea"/> type.
+        /// Initializes the <see cref="TextBox"/> type.
         /// </summary>
-        static TextArea()
+        static TextBox()
         {
-            EventManager.RegisterClassHandler(typeof(TextArea), ScrollViewer.ScrollChangedEvent, new UpfScrollChangedEventHandler(HandleScrollChanged));
-            EventManager.RegisterClassHandler(typeof(TextArea), SelectionChangedEvent, new UpfRoutedEventHandler(HandleSelectionChanged));
+            EventManager.RegisterClassHandler(typeof(TextBox), ScrollViewer.ScrollChangedEvent, new UpfScrollChangedEventHandler(HandleScrollChanged));
+            EventManager.RegisterClassHandler(typeof(TextBox), SelectionChangedEvent, new UpfRoutedEventHandler(HandleSelectionChanged));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextArea"/> class.
+        /// Initializes a new instance of the <see cref="TextBox"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public TextArea(UltravioletContext uv, String name)
+        public TextBox(UltravioletContext uv, String name)
             : base(uv, name)
         {
 
         }
 
         /// <summary>
-        /// Gets the text area's text.
+        /// Gets the text box's text.
         /// </summary>
-        /// <returns>A <see cref="String"/> instance containing the text area's text.</returns>
+        /// <returns>A <see cref="String"/> instance containing the text box's text.</returns>
         public String GetText()
         {
             return GetValue<VersionedStringSource>(TextProperty).ToString();
         }
 
         /// <summary>
-        /// Gets the text area's text.
+        /// Gets the text box's text.
         /// </summary>
-        /// <param name="stringBuilder">A <see cref="StringBuilder"/> instance to populate with the text area's text.</param>
+        /// <param name="stringBuilder">A <see cref="StringBuilder"/> instance to populate with the text box's text.</param>
         public void GetText(StringBuilder stringBuilder)
         {
             Contract.Require(stringBuilder, "stringBuilder");
@@ -59,18 +59,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the text area's text.
+        /// Sets the text box's text.
         /// </summary>
-        /// <param name="value">A <see cref="String"/> instance to set as the text area's text.</param>
+        /// <param name="value">A <see cref="String"/> instance to set as the text box's text.</param>
         public void SetText(String value)
         {
             SetValue(TextProperty, new VersionedStringSource(value));
         }
 
         /// <summary>
-        /// Sets the text area's text.
+        /// Sets the text box's text.
         /// </summary>
-        /// <param name="value">A <see cref="StringBuilder"/> instance whose contents will be set as the text area's text.</param>
+        /// <param name="value">A <see cref="StringBuilder"/> instance whose contents will be set as the text box's text.</param>
         public void SetText(StringBuilder value)
         {
             if (PART_Editor != null)
@@ -200,7 +200,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Clears the text area's content.
+        /// Clears the text box's content.
         /// </summary>
         public void Clear()
         {
@@ -209,7 +209,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area one line up.
+        /// Scrolls the text box one line up.
         /// </summary>
         public void LineUp()
         {
@@ -225,7 +225,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area one line down.
+        /// Scrolls the text box one line down.
         /// </summary>
         public void LineDown()
         {
@@ -241,7 +241,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area one line to the left.
+        /// Scrolls the text box one line to the left.
         /// </summary>
         public void LineLeft()
         {
@@ -250,7 +250,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area one line to the right.
+        /// Scrolls the text box one line to the right.
         /// </summary>
         public void LineRight()
         {
@@ -259,7 +259,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area one page towards the top of its content.
+        /// Scrolls the text box one page towards the top of its content.
         /// </summary>
         public void PageUp()
         {
@@ -268,7 +268,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area one page towards the bottom of its content.
+        /// Scrolls the text box one page towards the bottom of its content.
         /// </summary>
         public void PageDown()
         {
@@ -277,7 +277,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area one page towards the left of its content.
+        /// Scrolls the text box one page towards the left of its content.
         /// </summary>
         public void PageLeft()
         {
@@ -286,7 +286,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area one page towards the right of its content.
+        /// Scrolls the text box one page towards the right of its content.
         /// </summary>
         public void PageRight()
         {
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area to the beginning of its content.
+        /// Scrolls the text box to the beginning of its content.
         /// </summary>
         public void ScrollToHome()
         {
@@ -304,7 +304,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area to the end of its content.
+        /// Scrolls the text box to the end of its content.
         /// </summary>
         public void ScrollToEnd()
         {
@@ -313,9 +313,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area to the specified horizontal offset.
+        /// Scrolls the text box to the specified horizontal offset.
         /// </summary>
-        /// <param name="offset">The horizontal offset to which to move the text area's scrollable area.</param>
+        /// <param name="offset">The horizontal offset to which to move the text box's scrollable area.</param>
         public void ScrollToHorizontalOffset(Double offset)
         {
             if (PART_ScrollViewer != null)
@@ -323,9 +323,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area to the specified vertical offset.
+        /// Scrolls the text box to the specified vertical offset.
         /// </summary>
-        /// <param name="offset">The vertical offset to which to move the text area's scrollable area.</param>
+        /// <param name="offset">The vertical offset to which to move the text box's scrollable area.</param>
         public void ScrollToVerticalOffset(Double offset)
         {
             if (PART_ScrollViewer != null)
@@ -333,7 +333,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area so that the specified line is in full view.
+        /// Scrolls the text box so that the specified line is in full view.
         /// </summary>
         /// <param name="lineIndex">The index of the line to scroll into view.</param>
         public void ScrollToLine(Int32 lineIndex)
@@ -459,25 +459,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a <see cref="CharacterCasing"/> value which specifies the casing which is applies to the text area's text.
+        /// Gets or sets a <see cref="CharacterCasing"/> value which specifies the casing which is applies to the text box's text.
         /// </summary>
         public CharacterCasing CharacterCasing
         {
             get { return GetValue<CharacterCasing>(CharacterCasingProperty); }
             set { SetValue(CharacterCasingProperty, value); }
         }
-
+        
         /// <summary>
-        /// Gets or sets the text area's current insertion mode.
-        /// </summary>
-        public TextBoxInsertionMode InsertionMode
-        {
-            get { return GetValue<TextBoxInsertionMode>(InsertionModeProperty); }
-            set { SetValue(InsertionModeProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value specifying how the text area's text is aligned.
+        /// Gets or sets a value specifying how the text box's text is aligned.
         /// </summary>
         public TextAlignment TextAlignment
         {
@@ -486,7 +477,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value specifying how the text area's text wraps when it reaches the edge of its container.
+        /// Gets or sets a value specifying how the text box's text wraps when it reaches the edge of its container.
         /// </summary>
         public TextWrapping TextWrapping
         {
@@ -495,7 +486,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a <see cref="ScrollBarVisibility"/> value which specifies whether the text area's horizontal scroll bar is visible.
+        /// Gets or sets a <see cref="ScrollBarVisibility"/> value which specifies whether the text box's horizontal scroll bar is visible.
         /// </summary>
         public ScrollBarVisibility HorizontalScrollBarVisibility
         {
@@ -504,7 +495,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a <see cref="ScrollBarVisibility"/> value which specifies whether the text area's vertical scroll bar is visible.
+        /// Gets or sets a <see cref="ScrollBarVisibility"/> value which specifies whether the text box's vertical scroll bar is visible.
         /// </summary>
         public ScrollBarVisibility VerticalScrollBarVisibility
         {
@@ -513,7 +504,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this is a read-only text area. A read-only text area cannot be changed by the
+        /// Gets or sets a value indicating whether this is a read-only text box. A read-only text box cannot be changed by the
         /// user, but may still be changed programmatically.
         /// </summary>
         public Boolean IsReadOnly
@@ -532,7 +523,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets a value indicating whether the text area has focus and selected text.
+        /// Gets a value indicating whether the text box has focus and selected text.
         /// </summary>
         public Boolean IsSelectionActive
         {
@@ -540,7 +531,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the selection highlight is displayed when the text area does not have focus.
+        /// Gets or sets a value indicating whether the selection highlight is displayed when the text box does not have focus.
         /// </summary>
         public Boolean IsInactiveSelectionHighlightEnabled
         {
@@ -549,7 +540,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the text area will accept the return key as a normal character.
+        /// Gets or sets a value indicating whether the text box will accept the return key as a normal character.
         /// </summary>
         public Boolean AcceptsReturn
         {
@@ -558,7 +549,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the text area will accept the tab key as a normal character. If false,
+        /// Gets or sets a value indicating whether the text box will accept the tab key as a normal character. If false,
         /// tab will instead be used for tab navigation.
         /// </summary>
         public Boolean AcceptsTab
@@ -568,7 +559,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the total number of characters in the text area's text.
+        /// Gets the total number of characters in the text box's text.
         /// </summary>
         public Int32 TextLength
         {
@@ -582,7 +573,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets the maximum length of the text which is entered into the text area.
+        /// Gets or sets the maximum length of the text which is entered into the text box.
         /// </summary>
         public Int32 MaxLength
         {
@@ -591,7 +582,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the total number of lines in the text area's text.
+        /// Gets the total number of lines in the text box's text.
         /// </summary>
         public Int32 LineCount
         {
@@ -680,7 +671,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
         
         /// <summary>
-        /// Gets the horizontal offset of the text area's scroll viewer.
+        /// Gets the horizontal offset of the text box's scroll viewer.
         /// </summary>
         public Double HorizontalOffset
         {
@@ -694,7 +685,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the vertical offset of the text area's scroll viewer.
+        /// Gets the vertical offset of the text box's scroll viewer.
         /// </summary>
         public Double VerticalOffset
         {
@@ -708,7 +699,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the width of the content which is being displayed by the text area's scroll viewer.
+        /// Gets the width of the content which is being displayed by the text box's scroll viewer.
         /// </summary>
         public Double ExtentWidth
         {
@@ -722,7 +713,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the height of the content which is being displayed by the text area's scroll viewer.
+        /// Gets the height of the content which is being displayed by the text box's scroll viewer.
         /// </summary>
         public Double ExtentHeight
         {
@@ -736,7 +727,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the width of the text area's scrollable viewport.
+        /// Gets the width of the text box's scrollable viewport.
         /// </summary>
         public Double ViewportWidth
         {
@@ -750,7 +741,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the height of the text area's scrollable viewport.
+        /// Gets the height of the text box's scrollable viewport.
         /// </summary>
         public Double ViewportHeight
         {
@@ -773,7 +764,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the text area's text changes.
+        /// Occurs when the text box's text changes.
         /// </summary>
         public event UpfRoutedEventHandler TextChanged
         {
@@ -784,68 +775,62 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the Text dependency property.
         /// </summary>
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextArea),
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextBox),
             new PropertyMetadata<VersionedStringSource>(VersionedStringSource.Invalid, PropertyMetadataOptions.None, HandleTextChanged));
 
         /// <summary>
         /// Identifies the <see cref="KeyboardMode"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'keyboard-mode'.</remarks>
-        public static readonly DependencyProperty KeyboardModeProperty = DependencyProperty.Register("KeyboardMode", typeof(KeyboardMode), typeof(TextArea),
+        public static readonly DependencyProperty KeyboardModeProperty = DependencyProperty.Register("KeyboardMode", typeof(KeyboardMode), typeof(TextBox),
             new PropertyMetadata<KeyboardMode>(KeyboardMode.Text, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="CharacterCasing"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CharacterCasingProperty = DependencyProperty.Register("CharacterCasing", typeof(CharacterCasing), typeof(TextArea),
+        public static readonly DependencyProperty CharacterCasingProperty = DependencyProperty.Register("CharacterCasing", typeof(CharacterCasing), typeof(TextBox),
             new PropertyMetadata<CharacterCasing>(CharacterCasing.Normal, PropertyMetadataOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="InsertionMode"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextArea),
-            new PropertyMetadata<TextBoxInsertionMode>(TextBoxInsertionMode.Insert, PropertyMetadataOptions.None, HandleInsertionModeChanged));
-
+        
         /// <summary>
         /// Identifies the <see cref="TextAlignment"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty TextAlignmentProperty = DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextArea),
+        public static readonly DependencyProperty TextAlignmentProperty = DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextBox),
             new PropertyMetadata<TextAlignment>(TextAlignment.Left, PropertyMetadataOptions.AffectsMeasure, HandleTextAlignmentChanged));
 
         /// <summary>
         /// Identifies the <see cref="TextWrapping"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty TextWrappingProperty = DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(TextArea),
+        public static readonly DependencyProperty TextWrappingProperty = DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(TextBox),
             new PropertyMetadata<TextWrapping>(TextWrapping.NoWrap, PropertyMetadataOptions.AffectsMeasure, HandleTextWrappingChanged));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextArea),
+        public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextBox),
             new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, PropertyMetadataOptions.None, null, CoerceHorizontalScrollBarVisibility));
 
         /// <summary>
         /// Identifies the <see cref="VerticalScrollBarVisibility"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextArea),
+        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextBox),
             new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="IsReadOnly"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(Boolean), typeof(TextArea),
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(Boolean), typeof(TextBox),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsReadOnlyChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsReadOnlyCaretVisible"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty IsReadOnlyCaretVisibleProperty = DependencyProperty.Register("IsReadOnlyCaretVisibleProperty", typeof(Boolean), typeof(TextArea),
+        public static readonly DependencyProperty IsReadOnlyCaretVisibleProperty = DependencyProperty.Register("IsReadOnlyCaretVisibleProperty", typeof(Boolean), typeof(TextBox),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
         /// The private access key for the <see cref="IsSelectionActive"/> read-only dependency property.
         /// </summary>
-        private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(TextArea),
+        private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(TextBox),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
@@ -856,49 +841,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="IsInactiveSelectionHighlightEnabled"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty IsInactiveSelectionHighlightEnabledProperty = DependencyProperty.Register("IsInactiveSelectionHighlightEnabled", typeof(Boolean), typeof(TextArea),
+        public static readonly DependencyProperty IsInactiveSelectionHighlightEnabledProperty = DependencyProperty.Register("IsInactiveSelectionHighlightEnabled", typeof(Boolean), typeof(TextBox),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="AcceptsReturn"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty AcceptsReturnProperty = KeyboardNavigation.AcceptsReturnProperty.AddOwner(typeof(TextArea));
+        public static readonly DependencyProperty AcceptsReturnProperty = KeyboardNavigation.AcceptsReturnProperty.AddOwner(typeof(TextBox));
 
         /// <summary>
         /// Identifies the <see cref="AcceptsTab"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty AcceptsTabProperty = DependencyProperty.Register("AcceptsTab", typeof(Boolean), typeof(TextArea),
+        public static readonly DependencyProperty AcceptsTabProperty = DependencyProperty.Register("AcceptsTab", typeof(Boolean), typeof(TextBox),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
         /// <summary>
         /// Identifies the <see cref="MinLines"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MinLinesProperty = DependencyProperty.Register("MinLines", typeof(Int32), typeof(TextArea),
+        public static readonly DependencyProperty MinLinesProperty = DependencyProperty.Register("MinLines", typeof(Int32), typeof(TextBox),
             new PropertyMetadata<Int32>(1, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxLines"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MaxLinesProperty = DependencyProperty.Register("MaxLines", typeof(Int32), typeof(TextArea),
+        public static readonly DependencyProperty MaxLinesProperty = DependencyProperty.Register("MaxLines", typeof(Int32), typeof(TextBox),
             new PropertyMetadata<Int32>(Int32.MaxValue, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxLength"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextArea),
+        public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.Zero, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="SelectionChanged"/> routed event.
         /// </summary>
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", 
-            RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(TextArea));
+            RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(TextBox));
 
         /// <summary>
         /// Identifies the <see cref="TextChanged"/> routed event.
         /// </summary>
         public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent("TextChanged",
-            RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(TextArea));
+            RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(TextBox));
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
@@ -998,23 +983,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (PART_Editor != null)
                 PART_Editor.HandleKeyDown(device, key, modifiers, ref data);
-
-            if (!data.Handled)
-            {
-                switch (key)
-                {
-                    case Key.Insert:
-                        if (!IsReadOnly)
-                        {
-                            InsertionMode = (InsertionMode == TextBoxInsertionMode.Insert) ?
-                                TextBoxInsertionMode.Overwrite :
-                                TextBoxInsertionMode.Insert;
-                        }
-                        data.Handled = true;
-                        break;
-                }
-            }
-
+            
             base.OnKeyDown(device, key, modifiers, ref data);
         }
 
@@ -1034,7 +1003,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (!MathUtil.IsApproximatelyZero(scrollInfo.ViewportHeightChange))
             {
-                ((TextArea)dobj).UpdateScrollViewerSize();
+                ((TextBox)dobj).UpdateScrollViewerSize();
             }
             data.Handled = true;
         }
@@ -1044,14 +1013,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
         {
-            var textArea = (TextArea)dobj;
-            textArea.UpdateIsSelectionActive();
+            var textBox = (TextBox)dobj;
+            textBox.UpdateIsSelectionActive();
 
-            if (textArea.PART_Editor != null && data.OriginalSource == textArea.PART_Editor)
+            if (textBox.PART_Editor != null && data.OriginalSource == textBox.PART_Editor)
             {
                 var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
-                var evtData = new RoutedEventData(textArea);
-                evtDelegate(textArea, ref evtData);
+                var evtData = new RoutedEventData(textBox);
+                evtDelegate(textBox, ref evtData);
 
                 data.Handled = true;
             }
@@ -1064,26 +1033,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var raiseTextChanged = false;
 
-            var textArea = (TextArea)dobj;
-            if (textArea.PART_Editor != null)
-                raiseTextChanged = !textArea.PART_Editor.HandleTextChanged(newValue);
+            var textBox = (TextBox)dobj;
+            if (textBox.PART_Editor != null)
+                raiseTextChanged = !textBox.PART_Editor.HandleTextChanged(newValue);
 
             if (raiseTextChanged)
             {
                 var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(TextChangedEvent);
-                var evtData = new RoutedEventData(textArea);
-                evtDelegate(textArea, ref evtData);
+                var evtData = new RoutedEventData(textBox);
+                evtDelegate(textBox, ref evtData);
             }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="InsertionMode"/> dependency property changes.
-        /// </summary>
-        private static void HandleInsertionModeChanged(DependencyObject dobj, TextBoxInsertionMode oldValue, TextBoxInsertionMode newValue)
-        {
-            var textArea = (TextArea)dobj;
-            if (textArea.PART_Editor != null)
-                textArea.PART_Editor.InsertionMode = newValue;
         }
 
         /// <summary>
@@ -1091,21 +1050,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleTextAlignmentChanged(DependencyObject dobj, TextAlignment oldValue, TextAlignment newValue)
         {
-            var textArea = (TextArea)dobj;
-            if (textArea.PART_Editor != null)
+            var textBox = (TextBox)dobj;
+            if (textBox.PART_Editor != null)
             {
                 switch (newValue)
                 {
                     case TextAlignment.Right:
-                        textArea.PART_Editor.HorizontalAlignment = HorizontalAlignment.Right;
+                        textBox.PART_Editor.HorizontalAlignment = HorizontalAlignment.Right;
                         break;
 
                     case TextAlignment.Center:
-                        textArea.PART_Editor.HorizontalAlignment = HorizontalAlignment.Center;
+                        textBox.PART_Editor.HorizontalAlignment = HorizontalAlignment.Center;
                         break;
 
                     default:
-                        textArea.PART_Editor.HorizontalAlignment = HorizontalAlignment.Left;
+                        textBox.PART_Editor.HorizontalAlignment = HorizontalAlignment.Left;
                         break;
                 }
             }
@@ -1116,11 +1075,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleTextWrappingChanged(DependencyObject dobj, TextWrapping oldValue, TextWrapping newValue)
         {
-            var textArea = (TextArea)dobj;
-            textArea.CoerceValue(HorizontalScrollBarVisibilityProperty);
+            var textBox = (TextBox)dobj;
+            textBox.CoerceValue(HorizontalScrollBarVisibilityProperty);
 
-            if (textArea.PART_Editor != null)
-                textArea.PART_Editor.InvalidateMeasure();
+            if (textBox.PART_Editor != null)
+                textBox.PART_Editor.InvalidateMeasure();
         }
 
         /// <summary>
@@ -1128,9 +1087,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleIsReadOnlyChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
-            var textArea = (TextArea)dobj;            
-            if (textArea.PART_Editor != null)
-                textArea.PART_Editor.HandleIsReadOnlyChanged();
+            var textBox = (TextBox)dobj;            
+            if (textBox.PART_Editor != null)
+                textBox.PART_Editor.HandleIsReadOnlyChanged();
         }
 
         /// <summary>
@@ -1139,8 +1098,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static ScrollBarVisibility CoerceHorizontalScrollBarVisibility(DependencyObject dobj, ScrollBarVisibility value)
         {
-            var textArea = (TextArea)dobj;
-            if (textArea.TextWrapping == TextWrapping.Wrap)
+            var textBox = (TextBox)dobj;
+            if (textBox.TextWrapping == TextWrapping.Wrap)
             {
                 return ScrollBarVisibility.Disabled;
             }
@@ -1159,17 +1118,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets a value indicating whether the text area's height is constrained by a <see cref="FrameworkElement.Height"/>,
+        /// Gets a value indicating whether the text box's height is constrained by a <see cref="FrameworkElement.Height"/>,
         /// <see cref="FrameworkElement.MinHeight"/>, or <see cref="FrameworkElement.MaxHeight"/> value.
         /// </summary>
-        /// <returns><c>true</c> if the text area's height is constrained; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the text box's height is constrained; otherwise, <c>false</c>.</returns>
         private Boolean IsHeightConstrained()
         {
             return !Double.IsNaN(Height) || !MathUtil.IsApproximatelyZero(MinHeight) || !Double.IsPositiveInfinity(MaxHeight);
         }
 
         /// <summary>
-        /// Updates the size constraints of the text area's scroll viewer.
+        /// Updates the size constraints of the text box's scroll viewer.
         /// </summary>
         private void UpdateScrollViewerSize()
         {
@@ -1225,6 +1184,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         // Component references.
         private readonly ScrollViewer PART_ScrollViewer = null;
-        private readonly TextAreaEditor PART_Editor = null;        
+        private readonly TextEditor PART_Editor = null;  
     }
 }

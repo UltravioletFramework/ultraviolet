@@ -155,8 +155,8 @@
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Resources\Controls\Templates\TabItem.xml">
       <Link>Controls\Templates\TabItem.xml</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Resources\Controls\Templates\TextArea.xml">
-      <Link>Controls\Templates\TextArea.xml</Link>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Resources\Controls\Templates\TextBox.xml">
+      <Link>Controls\Templates\TextBox.xml</Link>
     </EmbeddedResource>
     <Content Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Resources\Resources\Content\Fonts\SegoeUITexture.png">
       <Link>Resources\Content\Fonts\SegoeUITexture.png</Link>

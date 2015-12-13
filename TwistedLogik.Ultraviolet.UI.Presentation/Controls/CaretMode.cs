@@ -2,9 +2,9 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents a set of flags which control how text is inserted into a text box.
+    /// Represents the state of a text box's caret.
     /// </summary>
-    public enum TextBoxInsertionMode
+    internal enum CaretMode
     {
         /// <summary>
         /// Text is inserted at the current caret position, moving any existing characters forward.

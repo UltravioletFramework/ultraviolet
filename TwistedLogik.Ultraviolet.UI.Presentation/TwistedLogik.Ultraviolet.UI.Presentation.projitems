@@ -46,6 +46,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)BoundEventBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompiledBindingExpressionAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompiledBindingExpressionKey.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CompiledDataSourceWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ComponentTemplateManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ComponentTemplateManager.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Border.cs" />
@@ -126,11 +127,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Shape.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\StackPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TabControl.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\TextArea.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\TextAreaEditor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\TextAreaEditor.CaretNavigationDirection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\TextEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CaretNavigationDirection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBlock.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\TextBoxInsertionMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CaretMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ToolTip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ToolTipService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\UIElementCollection.cs" />

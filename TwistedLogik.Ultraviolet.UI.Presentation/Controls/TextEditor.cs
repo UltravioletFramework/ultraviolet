@@ -10,17 +10,17 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents the text editor in a <see cref="TextArea"/>.
+    /// Represents the component of a <see cref="TextBox"/> which is responsible for performing text editing.
     /// </summary>
     [UvmlKnownType]
-    public partial class TextAreaEditor : FrameworkElement
+    public class TextEditor : FrameworkElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextAreaEditor"/> control.
+        /// Initializes a new instance of the <see cref="TextEditor"/> control.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public TextAreaEditor(UltravioletContext uv, String name)
+        public TextEditor(UltravioletContext uv, String name)
             : base(uv, name)
         {
 
@@ -238,7 +238,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Clears the text area's text.
+        /// Clears the text editor's text.
         /// </summary>
         public void Clear()
         {
@@ -257,7 +257,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Scrolls the text area so that the specified line is in full view.
+        /// Scrolls the text editor so that the specified line is in full view.
         /// </summary>
         /// <param name="lineIndex">The index of the line to scroll into view.</param>
         public void ScrollToLine(Int32 lineIndex)
@@ -457,7 +457,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the total number of characters in the text area's text.
+        /// Gets the total number of characters in the text editor's text.
         /// </summary>
         public Int32 TextLength
         {
@@ -465,7 +465,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the total number of lines in the text area's text.
+        /// Gets the total number of lines in the text editor's text.
         /// </summary>
         public Int32 LineCount
         {
@@ -633,71 +633,71 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="CaretInsertTopmost"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CaretInsertTopmostProperty = DependencyProperty.Register("CaretInsertTopmost", typeof(Boolean), typeof(TextAreaEditor),
+        public static readonly DependencyProperty CaretInsertTopmostProperty = DependencyProperty.Register("CaretInsertTopmost", typeof(Boolean), typeof(TextEditor),
             new PropertyMetadata<Boolean>(true, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="CaretOverwriteTopmost"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CaretOverwriteTopmostProperty = DependencyProperty.Register("CaretOverwriteTopmost", typeof(Boolean), typeof(TextAreaEditor),
+        public static readonly DependencyProperty CaretOverwriteTopmostProperty = DependencyProperty.Register("CaretOverwriteTopmost", typeof(Boolean), typeof(TextEditor),
             new PropertyMetadata<Boolean>(true, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="CaretInsertImage"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CaretInsertImageProperty = DependencyProperty.Register("CaretInsertImage", typeof(SourcedImage), typeof(TextAreaEditor),
+        public static readonly DependencyProperty CaretInsertImageProperty = DependencyProperty.Register("CaretInsertImage", typeof(SourcedImage), typeof(TextEditor),
             new PropertyMetadata<SourcedImage>(null, PropertyMetadataOptions.None, HandleCaretInsertImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="CaretOverwriteImage"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CaretOverwriteImageProperty = DependencyProperty.Register("CaretOverwriteImage", typeof(SourcedImage), typeof(TextAreaEditor),
+        public static readonly DependencyProperty CaretOverwriteImageProperty = DependencyProperty.Register("CaretOverwriteImage", typeof(SourcedImage), typeof(TextEditor),
             new PropertyMetadata<SourcedImage>(null, PropertyMetadataOptions.None, HandleCaretOverwriteImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="CaretInsertColor"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CaretInsertColorProperty = DependencyProperty.Register("CaretInsertColor", typeof(Color), typeof(TextAreaEditor),
+        public static readonly DependencyProperty CaretInsertColorProperty = DependencyProperty.Register("CaretInsertColor", typeof(Color), typeof(TextEditor),
             new PropertyMetadata<Color>(Color.White, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="CaretOverwriteColor"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CaretOverwriteColorProperty = DependencyProperty.Register("CaretOverwriteColor", typeof(Color), typeof(TextAreaEditor),
+        public static readonly DependencyProperty CaretOverwriteColorProperty = DependencyProperty.Register("CaretOverwriteColor", typeof(Color), typeof(TextEditor),
             new PropertyMetadata<Color>(Color.White, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="CaretWidth"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CaretWidthProperty = DependencyProperty.Register("CaretWidth", typeof(Double), typeof(TextAreaEditor),
+        public static readonly DependencyProperty CaretWidthProperty = DependencyProperty.Register("CaretWidth", typeof(Double), typeof(TextEditor),
             new PropertyMetadata<Double>(1.0, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="CaretThickness"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextAreaEditor),
+        public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextEditor),
             new PropertyMetadata<Double>(4.0, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="SelectionImage"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedImage), typeof(TextAreaEditor),
+        public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedImage), typeof(TextEditor),
             new PropertyMetadata<SourcedImage>(null, PropertyMetadataOptions.None, HandleSelectionImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="SelectionColor"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(Color), typeof(TextAreaEditor),
+        public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(Color), typeof(TextEditor),
             new PropertyMetadata<Color>(Color.Blue * 0.4f, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="InactiveSelectionColor"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty InactiveSelectionColorProperty = DependencyProperty.Register("InactiveSelectionColor", typeof(Color), typeof(TextAreaEditor),
+        public static readonly DependencyProperty InactiveSelectionColorProperty = DependencyProperty.Register("InactiveSelectionColor", typeof(Color), typeof(TextEditor),
             new PropertyMetadata<Color>(Color.Silver * 0.4f, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Called when the value of the <see cref="TextArea.TextProperty"/> dependency property changes.
+        /// Called when the value of the <see cref="TextBox.TextProperty"/> dependency property changes.
         /// </summary>
         /// <param name="value">The new value of the dependency property.</param>
         /// <returns><c>true</c> if the editor replaced the text with its own source; otherwise, <c>false</c>.</returns>
@@ -732,9 +732,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Called when the text area's text is changed by the <see cref="TextArea.SetText(StringBuilder)"/> method.
+        /// Called when the text editor's text is changed by the <see cref="TextBox.SetText(StringBuilder)"/> method.
         /// </summary>
-        /// <param name="value">The <see cref="StringBuilder"/> that contains the text area's new text.</param>
+        /// <param name="value">The <see cref="StringBuilder"/> that contains the text editor's new text.</param>
         internal void HandleTextChanged(StringBuilder value)
         {
             BeginTrackingSelectionChanges();
@@ -863,9 +863,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         internal void HandleKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
             var owner = TemplatedParent as Control;
-            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextArea.IsReadOnlyProperty));
-            var acceptsReturn = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsReturnProperty));
-            var acceptsTab = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsTabProperty));
+            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyProperty));
+            var acceptsReturn = (owner != null && owner.GetValue<Boolean>(TextBox.AcceptsReturnProperty));
+            var acceptsTab = (owner != null && owner.GetValue<Boolean>(TextBox.AcceptsTabProperty));
 
             var ctrl = (modifiers & ModifierKeys.Control) == ModifierKeys.Control;
 
@@ -985,6 +985,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     MoveCaretInDirection(CaretNavigationDirection.PageDown, modifiers);
                     data.Handled = true;
                     break;
+
+                case Key.Insert:
+                    if (!isReadOnly)
+                    {
+                        ToggleInsertionMode();
+                    }
+                    data.Handled = true;
+                    break;
             }
         }
 
@@ -997,7 +1005,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var owner = TemplatedParent as Control;
 
-            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextArea.IsReadOnlyProperty));
+            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyProperty));
             if (isReadOnly)
                 return;
 
@@ -1008,28 +1016,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Called when the value of the <see cref="TextArea.IsReadOnly"/> property changes.
+        /// Called when the value of the <see cref="TextBox.IsReadOnly"/> property changes.
         /// </summary>
         internal void HandleIsReadOnlyChanged()
         {
             UpdateSelectionAndCaret();
-        }
-
-        /// <summary>
-        /// Gets or sets the editor's insertion mode.
-        /// </summary>
-        internal TextBoxInsertionMode InsertionMode
-        {
-            get { return insertionMode; }
-            set
-            {
-                if (insertionMode != value)
-                {
-                    insertionMode = value;
-                    caretBlinkTimer = 0;
-                    UpdateCaret();
-                }
-            }
         }
 
         /// <inheritdoc/>
@@ -1081,8 +1072,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             DrawSelection(time, dc);
 
             var caretTopmost = 
-                (caretInsertionMode == TextBoxInsertionMode.Insert && CaretInsertTopmost) ||
-                (caretInsertionMode == TextBoxInsertionMode.Overwrite && CaretOverwriteTopmost);
+                (actualInsertionMode == CaretMode.Insert && CaretInsertTopmost) ||
+                (actualInsertionMode == CaretMode.Overwrite && CaretOverwriteTopmost);
 
             if (caretTopmost)
             {
@@ -1169,8 +1160,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleCaretInsertImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
         {
-            var textAreaEditor = (TextAreaEditor)dobj;
-            textAreaEditor.ReloadCaretInsertImage();
+            var textEditor = (TextEditor)dobj;
+            textEditor.ReloadCaretInsertImage();
         }
 
         /// <summary>
@@ -1178,8 +1169,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleCaretOverwriteImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
         {
-            var textAreaEditor = (TextAreaEditor)dobj;
-            textAreaEditor.ReloadCaretOverwriteImage();
+            var textEditor = (TextEditor)dobj;
+            textEditor.ReloadCaretOverwriteImage();
         }
 
         /// <summary>
@@ -1187,8 +1178,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleSelectionImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
         {
-            var textAreaEditor = (TextAreaEditor)dobj;
-            textAreaEditor.ReloadSelectionImage();
+            var textEditor = (TextEditor)dobj;
+            textEditor.ReloadSelectionImage();
         }
         
         /// <summary>
@@ -1292,8 +1283,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var owner = TemplatedParent as Control;
 
             var textFlags = TextFlags.AlignTop;
-            var textWrapping = (owner == null) ? TextWrapping.NoWrap : owner.GetValue<TextWrapping>(TextArea.TextWrappingProperty);
-            var textAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextArea.TextAlignmentProperty);
+            var textWrapping = (owner == null) ? TextWrapping.NoWrap : owner.GetValue<TextWrapping>(TextBox.TextWrappingProperty);
+            var textAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextBox.TextAlignmentProperty);
 
             var layoutWidth = (textWrapping == TextWrapping.Wrap) ? (Int32?)Display.DipsToPixels(availableSize.Width) : null;
             var layoutHeight = (Int32?)null;
@@ -1333,7 +1324,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 return;
 
             var isActive = owner.IsKeyboardFocusWithin;
-            var isEnabledIfInactive = owner.GetValue<Boolean>(TextArea.IsInactiveSelectionHighlightEnabledProperty);
+            var isEnabledIfInactive = owner.GetValue<Boolean>(TextBox.IsInactiveSelectionHighlightEnabledProperty);
             if (!isActive && !isEnabledIfInactive)
                 return;
 
@@ -1395,8 +1386,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (owner == null)
                 return;
 
-            var isReadOnly = owner.GetValue<Boolean>(TextArea.IsReadOnlyProperty);
-            var isReadOnlyCaretVisible = owner.GetValue<Boolean>(TextArea.IsReadOnlyCaretVisibleProperty);
+            var isReadOnly = owner.GetValue<Boolean>(TextBox.IsReadOnlyProperty);
+            var isReadOnlyCaretVisible = owner.GetValue<Boolean>(TextBox.IsReadOnlyCaretVisibleProperty);
             if (isReadOnly && !isReadOnlyCaretVisible)
                 return;
 
@@ -1409,8 +1400,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (isCaretVisible)
             {
                 var caretBoundsDips = Display.PixelsToDips(caretRenderBounds);
-                var caretImage = (caretInsertionMode == TextBoxInsertionMode.Insert) ? CaretInsertImage : CaretOverwriteImage;
-                var caretColor = (caretInsertionMode == TextBoxInsertionMode.Insert) ? CaretInsertColor : CaretOverwriteColor;
+                var caretImage = (actualInsertionMode == CaretMode.Insert) ? CaretInsertImage : CaretOverwriteImage;
+                var caretColor = (actualInsertionMode == CaretMode.Insert) ? CaretInsertColor : CaretOverwriteColor;
 				DrawImage(dc, caretImage, caretBoundsDips, caretColor, true);
             }
         }
@@ -1637,8 +1628,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var owner = TemplatedParent as Control;
 
-            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextArea.IsReadOnlyProperty));
-            var isReadOnlyCaretVisible = (owner != null && owner.GetValue<Boolean>(TextArea.IsReadOnlyCaretVisibleProperty));
+            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyProperty));
+            var isReadOnlyCaretVisible = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyCaretVisibleProperty));
             if (isReadOnly && !isReadOnlyCaretVisible && (modifiers & ModifierKeys.Shift) != ModifierKeys.Shift)
                 return false;
 
@@ -1805,6 +1796,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Toggles the editor's insertion mode.
+        /// </summary>
+        private void ToggleInsertionMode()
+        {
+            caretBlinkTimer = 0;
+            caretInsertionMode = (caretInsertionMode == CaretMode.Insert) ?
+                CaretMode.Overwrite : CaretMode.Insert;
+
+            UpdateCaret();
+        }
+
+        /// <summary>
         /// Ends updating the selection via mouse motion.
         /// </summary>
         private void FinishSelection()
@@ -1829,10 +1832,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             BeginTrackingSelectionChanges();
 
             var owner = TemplatedParent as Control;
-            var acceptsReturn = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsReturnProperty));
-            var acceptsTab = (owner != null && owner.GetValue<Boolean>(TextArea.AcceptsTabProperty));
+            var acceptsReturn = (owner != null && owner.GetValue<Boolean>(TextBox.AcceptsReturnProperty));
+            var acceptsTab = (owner != null && owner.GetValue<Boolean>(TextBox.AcceptsTabProperty));
 
-            if (caretInsertionMode != TextBoxInsertionMode.Overwrite)
+            if (actualInsertionMode != CaretMode.Overwrite)
                 overwrite = false;
 
             var selectionStart = SelectionStart;
@@ -1847,10 +1850,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 overwrite = false;
             }            
 
-            var characterCasing = (owner == null) ? CharacterCasing.Normal : owner.GetValue<CharacterCasing>(TextArea.CharacterCasingProperty);
+            var characterCasing = (owner == null) ? CharacterCasing.Normal : owner.GetValue<CharacterCasing>(TextBox.CharacterCasingProperty);
             var characterCount = 0;
 
-            var maxLength = (owner == null) ? 0 : owner.GetValue<Int32>(TextArea.MaxLengthProperty);
+            var maxLength = (owner == null) ? 0 : owner.GetValue<Int32>(TextBox.MaxLengthProperty);
 
             for (int i = 0; i < str.Length; i++)
             {
@@ -1907,7 +1910,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Updates the <see cref="VersionedStringSource"/> instance which is exposed through the <see cref="TextArea.TextProperty"/> dependency property.
+        /// Updates the <see cref="VersionedStringSource"/> instance which is exposed through the <see cref="TextBox.TextProperty"/> dependency property.
         /// </summary>
         private void UpdateTextStringSource()
         {
@@ -1915,7 +1918,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (owner == null)
                 return;
 
-            owner.SetValue(TextArea.TextProperty, new VersionedStringSource(bufferText));
+            owner.SetValue(TextBox.TextProperty, new VersionedStringSource(bufferText));
         }
 
         /// <summary>
@@ -1928,7 +1931,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var owner = TemplatedParent as Control;
 
-            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextArea.IsReadOnlyProperty));
+            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyProperty));
 
             var fontFace = TextFontFace;
             var fontLineSpacing = (fontFace != null) ? fontFace.LineSpacing : 0;
@@ -1943,9 +1946,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var caretRenderWidth = 0;
             var caretRenderHeight = 0;
             
-            if (InsertionMode == TextBoxInsertionMode.Overwrite && !IsCaretOnLineBreak() && !isReadOnly)
+            if (caretInsertionMode == CaretMode.Overwrite && !IsCaretOnLineBreak() && !isReadOnly)
             {
-                caretInsertionMode = TextBoxInsertionMode.Overwrite;
+                actualInsertionMode = CaretMode.Overwrite;
 
                 var caretDefaultSize = GetDefaultSizeOfOverwriteCaret();
                 var caretX = 0;
@@ -1966,7 +1969,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
                 else
                 {
-                    caretAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextArea.TextAlignmentProperty);
+                    caretAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextBox.TextAlignmentProperty);
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, fontLineSpacing);
                     caretLineIndex = 0;
                 }
@@ -1977,7 +1980,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             else
             {
-                caretInsertionMode = TextBoxInsertionMode.Insert;
+                actualInsertionMode = CaretMode.Insert;
 
                 var caretDefaultSize = GetDefaultSizeOfInsertionCaret();
                 var caretX = 0;
@@ -2003,7 +2006,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
                 else
                 {
-                    caretAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextArea.TextAlignmentProperty);
+                    caretAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextBox.TextAlignmentProperty);
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, caretHeight);
                     caretLineIndex = 0;
                 }
@@ -2129,7 +2132,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (showMaximumLineWidth)
             {
                 var owner = TemplatedParent as Control;
-                var alignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextArea.TextAlignmentProperty);
+                var alignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextBox.TextAlignmentProperty);
                 var horizontalOffset = (alignment == TextAlignment.Right) ? boundsCaretDips.Left : boundsCaretDips.Right - boundsViewport.Width;
                 scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
             }
@@ -2168,7 +2171,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Finishes tracking changes to the selection state and raises a <see cref="TextArea.SelectionChangedEvent"/> 
+        /// Finishes tracking changes to the selection state and raises a <see cref="TextBox.SelectionChangedEvent"/> 
         /// routed event if necessary,
         /// </summary>
         private void EndTrackingSelectionChanges()
@@ -2187,11 +2190,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Raises the <see cref="TextArea.SelectionChangedEvent"/> routed event.
+        /// Raises the <see cref="TextBox.SelectionChangedEvent"/> routed event.
         /// </summary>
         private void RaiseSelectionChanged()
         {
-            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(TextArea.SelectionChangedEvent);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(TextBox.SelectionChangedEvent);
             var evtData = new RoutedEventData(this);
 
             evtDelegate(this, ref evtData);
@@ -2204,10 +2207,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             return caretPosition == bufferText.Length || bufferText[caretPosition] == '\n';
         }
-
-        // Property values.
-        private TextBoxInsertionMode insertionMode = TextBoxInsertionMode.Insert;
-
+        
         // State values.
         private readonly TextParserTokenStream textParserStream = new TextParserTokenStream();
         private readonly TextLayoutCommandStream textLayoutStream = new TextLayoutCommandStream();
@@ -2219,7 +2219,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private Int32 caretLineIndex;
         private Ultraviolet.Rectangle caretBounds;
         private Ultraviolet.Rectangle caretRenderBounds;
-        private TextBoxInsertionMode caretInsertionMode = TextBoxInsertionMode.Insert;
+        private CaretMode caretInsertionMode = CaretMode.Insert;
+        private CaretMode actualInsertionMode = CaretMode.Insert;
 
         // Selection parameters.
         private Int32? selectionPosition;

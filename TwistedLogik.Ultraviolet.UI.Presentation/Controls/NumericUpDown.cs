@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (PART_Input != null)
             {
                 PART_Input.DigestImmediately(TextBox.TextProperty);
-                PART_Input.MoveEnd();
+                PART_Input.CaretIndex = PART_Input.TextLength;
             }
             base.OnValueChanged();
         }
@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (PART_Input != null)
             {
                 PART_Input.InvalidateDisplayCache(TextBox.TextProperty);
-                PART_Input.MoveHome();
+                PART_Input.CaretIndex = 0;
             }
             base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
@@ -176,23 +176,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void InvalidatePattern()
         {
-            if (PART_Input == null)
-                return;
+            //if (PART_Input == null)
+            //    return;
 
-            var allowNegative = Minimum < 0;
-            var allowDecimals = DecimalPlaces > 0;
+            //var allowNegative = Minimum < 0;
+            //var allowDecimals = DecimalPlaces > 0;
 
-            var sb = new StringBuilder();
+            //var sb = new StringBuilder();
 
-            if (allowNegative)
-                sb.Append("-?");
+            //if (allowNegative)
+            //    sb.Append("-?");
 
-            sb.Append("[0-9]*");
+            //sb.Append("[0-9]*");
 
-            if (allowDecimals)
-                sb.Append("(\\.[0-9]{0," + DecimalPlaces + ")?");
+            //if (allowDecimals)
+            //    sb.Append("(\\.[0-9]{0," + DecimalPlaces + ")?");
 
-            PART_Input.Pattern = sb.ToString();
+            //PART_Input.Pattern = sb.ToString();
         }
 
         /// <summary>

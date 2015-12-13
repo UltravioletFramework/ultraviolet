@@ -1,26 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
   <View>
-    <Grid Class="textarea-component"
+    <Grid Class="textbox-component"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
 
-      <Image Class="textarea-background"
+      <Image Class="textbox-background"
              SourceColor="{{Background}}"/>
       <ScrollViewer Name="PART_ScrollViewer"
-                    Class="textarea-scrollviewer"
+                    Class="textbox-scrollviewer"
                     ContentMargin="{{Padding}}"
                     ContentClipped="true"
                     HorizontalScrollBarVisibility="{{HorizontalScrollBarVisibility}}"
                     VerticalScrollBarVisibility="{{VerticalScrollBarVisibility}}">
 
-        <TextAreaEditor Name="PART_Editor"/>
+        <TextEditor Name="PART_Editor"/>
       
       </ScrollViewer>
-      <Image Class="textarea-focus-image"
+      <Image Class="textbox-focus-image"
              Opacity="{{IsKeyboardFocused ? 1 : 0}}"
              IsHitTestVisible="false"/>
-      <Border Class="textarea-focus-border"
+      <Border Class="textbox-focus-border"
               Opacity="{{IsKeyboardFocused ? 1 : 0}}"
               IsHitTestVisible="false"/>
 

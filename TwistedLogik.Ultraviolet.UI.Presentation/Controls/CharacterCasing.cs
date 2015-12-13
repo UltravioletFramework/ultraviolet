@@ -1,7 +1,7 @@
 ﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents the casing which is applies to characters in a <see cref="TextArea"/> control.
+    /// Represents the casing which is applies to characters in a <see cref="TextBox"/> control.
     /// </summary>
     public enum CharacterCasing
     {
