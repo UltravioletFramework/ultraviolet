@@ -708,7 +708,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Color>(Color.Silver * 0.4f, PropertyMetadataOptions.None));
         
         /// <summary>
-        /// Identifies the <see cref="TextEntryValidation"/> routed event.
+        /// Identifies the TextEntryValidation attached routed event.
         /// </summary>
         public static readonly RoutedEvent TextEntryValidationEvent = EventManager.RegisterRoutedEvent("TextEntryValidation", 
             RoutingStrategy.Direct, typeof(UpfTextEntryValidationHandler), typeof(TextEditor));
