@@ -122,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <param name="dataSourceWrapperInfo">A <see cref="DataSourceWrapperInfo"/> describing the data source wrapper for which to write an <see cref="IDataSourceWrapper"/> implementation.</param>
         public void WriteIDataSourceWrapperImplementation(DataSourceWrapperInfo dataSourceWrapperInfo)
         {
-            WriteLine("Object IDataSourceWrapper.WrappedDataSource");
+            WriteLine("public override Object WrappedDataSource");
             WriteLine("{");
 
             WriteLine("get { return dataSource; }");
@@ -352,42 +352,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     GetCSharpTypeName(dprop.PropertyType), 
                     GetCSharpTypeName(dprop.OwnerType), dpropField.Name) : expMemberPath;
 
-                expFormatString = String.IsNullOrEmpty(expFormatString) ? "{0}" : String.Format("{{0:{0}}}", expFormatString);
+                expFormatString = String.IsNullOrEmpty(expFormatString) ? "null" : String.Format("\"{{0:{0}}}\"", expFormatString);
 
-                if (expressionInfo.Type == typeof(String))
+                if (expressionInfo.Type == typeof(String) || expressionInfo.Type == typeof(VersionedStringSource))
                 {
                     WriteLine("get");
                     WriteLine("{");
-                    WriteLine("var value = {0};", getexp);
-                    WriteLine("if (value is String)");
-                    WriteLine("{");
-                    WriteLine("return (String)(Object)value;");
-                    WriteLine("}");
-                    WriteLine("if (ReferenceEquals(value, null))");
-                    WriteLine("{");
-                    WriteLine("return null;");
-                    WriteLine("}");
-                    WriteLine("return String.Format(\"{0}\", {1});", expFormatString, expMemberPath);
+                    WriteLine("return ({0})__UPF_ConvertToString({1}, {2});", GetCSharpTypeName(expressionInfo.Type), getexp, expFormatString);
                     WriteLine("}");
                 }
                 else
                 {
-                    if (expressionInfo.Type == typeof(VersionedStringSource))
-                    {
-                        WriteLine("get");
-                        WriteLine("{");
-                        WriteLine("var value = {0};", getexp);
-                        WriteLine("if (value is {0} || value is String)", GetCSharpTypeName(typeof(VersionedStringSource)));
-                        WriteLine("{");
-                        WriteLine("return ({0})value;", GetCSharpTypeName(typeof(VersionedStringSource)));
-                        WriteLine("}");
-                        WriteLine("return ({0})String.Format(\"{1}\", {2});", GetCSharpTypeName(typeof(VersionedStringSource)), expFormatString, expMemberPath);
-                        WriteLine("}");
-                    }
-                    else
-                    {
-                        WriteLine("get {{ return ({0})({1}); }}", GetCSharpTypeName(expressionInfo.Type), getexp);
-                    }
+                    WriteLine("get {{ return ({0})({1}); }}", GetCSharpTypeName(expressionInfo.Type), getexp);
                 }
 
                 expressionInfo.GetterLineEnd = LineCount - 1;

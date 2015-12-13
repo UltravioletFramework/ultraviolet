@@ -37,6 +37,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var lines = File.ReadAllLines(path);
             foreach (var line in lines)
             {
+                if (String.IsNullOrEmpty(line))
+                    continue;
+
                 var components = line.Split(' ');
                 if (components.Length != 2)
                     throw new InvalidDataException();

@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 #pragma warning disable 0184
     [System.CLSCompliant(false)]
     [System.CodeDom.Compiler.GeneratedCode("UPF Binding Expression Compiler", "1.2.0.0")]
-    public sealed partial class MessageBoxViewModel_Impl : TwistedLogik.Ultraviolet.UI.Presentation.IDataSourceWrapper
+    public sealed partial class MessageBoxViewModel_Impl : TwistedLogik.Ultraviolet.UI.Presentation.CompiledDataSourceWrapper
     {
         #region Constructors
         public MessageBoxViewModel_Impl(TwistedLogik.Ultraviolet.UI.Presentation.MessageBoxViewModel dataSource)
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         #endregion
         
         #region IDataSourceWrapper
-        Object IDataSourceWrapper.WrappedDataSource
+        public override Object WrappedDataSource
         {
             get { return dataSource; }
         }
@@ -92,12 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get
             {
-                var value = Caption;
-                if (value is TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource || value is String)
-                {
-                    return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)value;
-                }
-                return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)String.Format("{0}", Caption);
+                return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)__UPF_ConvertToString(Caption, null);
             }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{HasCaption ? Visibility.Visible : Visibility.Collapsed}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
@@ -115,12 +110,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get
             {
-                var value = Text;
-                if (value is TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource || value is String)
-                {
-                    return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)value;
-                }
-                return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)String.Format("{0}", Text);
+                return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)__UPF_ConvertToString(Text, null);
             }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{HasText ? Visibility.Visible : Visibility.Collapsed}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]

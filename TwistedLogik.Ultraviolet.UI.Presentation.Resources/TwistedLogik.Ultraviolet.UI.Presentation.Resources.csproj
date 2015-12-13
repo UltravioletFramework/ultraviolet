@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BindingExpressionCompilerTemplate.t4" />
     <None Include="Controls\Templates\TabItem.xml">
       <SubType>Designer</SubType>
     </None>
@@ -62,9 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BindingExpressionCompilerTemplate.t4" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Content\Fonts\SegoeUITexture.png" />
