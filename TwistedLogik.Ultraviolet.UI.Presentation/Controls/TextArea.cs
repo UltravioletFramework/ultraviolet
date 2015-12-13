@@ -473,6 +473,90 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     PART_Editor.SelectedText = value;
             }
         }
+        
+        /// <summary>
+        /// Gets the horizontal offset of the text area's scroll viewer.
+        /// </summary>
+        public Double HorizontalOffset
+        {
+            get
+            {
+                if (PART_ScrollViewer != null)
+                    return PART_ScrollViewer.HorizontalOffset;
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets the vertical offset of the text area's scroll viewer.
+        /// </summary>
+        public Double VerticalOffset
+        {
+            get
+            {
+                if (PART_ScrollViewer != null)
+                    return PART_ScrollViewer.VerticalOffset;
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets the width of the content which is being displayed by the text area's scroll viewer.
+        /// </summary>
+        public Double ExtentWidth
+        {
+            get
+            {
+                if (PART_ScrollViewer != null)
+                    return PART_ScrollViewer.ExtentWidth;
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets the height of the content which is being displayed by the text area's scroll viewer.
+        /// </summary>
+        public Double ExtentHeight
+        {
+            get
+            {
+                if (PART_ScrollViewer != null)
+                    return PART_ScrollViewer.ExtentHeight;
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets the width of the text area's scrollable viewport.
+        /// </summary>
+        public Double ViewportWidth
+        {
+            get
+            {
+                if (PART_ScrollViewer != null)
+                    return PART_ScrollViewer.ViewportWidth;
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets the height of the text area's scrollable viewport.
+        /// </summary>
+        public Double ViewportHeight
+        {
+            get
+            {
+                if (PART_ScrollViewer != null)
+                    return PART_ScrollViewer.ViewportHeight;
+
+                return 0;
+            }
+        }
 
         /// <summary>
         /// Identifies the Text dependency property.
