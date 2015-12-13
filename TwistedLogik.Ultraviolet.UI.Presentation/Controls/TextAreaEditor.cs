@@ -27,6 +27,112 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets the selected text.
+        /// </summary>
+        /// <returns>A string containing the selected text.</returns>
+        public String GetSelectedText()
+        {
+            var length = SelectionLength;
+            if (length == 0)
+                return String.Empty;
+
+            return bufferText.ToString(SelectionStart, length);
+        }
+
+        /// <summary>
+        /// Gets the selected text.
+        /// </summary>
+        /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the contents of the selection.</param>
+        public void GetSelectedText(StringBuilder stringBuilder)
+        {
+            Contract.Require(stringBuilder, "stringBuilder");
+
+            stringBuilder.Length = 0;
+
+            var length = SelectionLength;
+            if (length == 0)
+                return;
+
+            var start = SelectionStart;
+            for (int i = 0; i < length; i++)
+            {
+                stringBuilder.Append(bufferText[start + i]);
+            }
+        }
+
+        /// <summary>
+        /// Sets the selected text.
+        /// </summary>
+        /// <param name="value">The text to set.</param>
+        public void SetSelectedText(String value)
+        {
+            SetSelectedText(new StringSegment(value));
+        }
+
+        /// <summary>
+        /// Sets the selected text.
+        /// </summary>
+        /// <param name="value">A <see cref="StringBuilder"/> containing the text to set.</param>
+        public void SetSelectedText(StringBuilder value)
+        {
+            SetSelectedText(new StringSegment(value));
+        }
+
+        /// <summary>
+        /// Sets the selected text.
+        /// </summary>
+        /// <param name="value">A <see cref="StringSegment"/> containing the text to set.</param>
+        public void SetSelectedText(StringSegment value)
+        {
+            BeginTrackingSelectionChanges();
+
+            DeleteSelection();
+
+            var caretPositionOld = caretPosition;
+            InsertTextAtCaret(value, false);
+            var caretPositionNew = caretPosition;
+
+            var selectionStart = caretPositionOld;
+            var selectionLength = caretPositionNew - caretPositionOld;
+
+            Select(selectionStart, selectionLength);
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Gets the specified line of text.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line of text to retrieve.</param>
+        /// <returns>A string containing the contents of the specified line of text.</returns>
+        public String GetLineText(Int32 lineIndex)
+        {
+            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, "lineIndex");
+
+            var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
+
+            return bufferText.ToString(lineInfo.OffsetInGlyphs, lineInfo.LengthInGlyphs);
+        }
+
+        /// <summary>
+        /// Gets the specified line of text.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line of text to retrieve.</param>
+        /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the contents of the specified line of text.</param>
+        public void GetLineText(Int32 lineIndex, StringBuilder stringBuilder)
+        {
+            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, "lineIndex");
+            Contract.Require(stringBuilder, "stringBuilder");
+
+            var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
+
+            stringBuilder.Length = 0;
+
+            for (int i = 0; i < lineInfo.LengthInGlyphs; i++)
+                stringBuilder.Append(bufferText[lineInfo.OffsetInGlyphs + i]);
+        }
+
+        /// <summary>
         /// Selects the specified range of text.
         /// </summary>
         /// <param name="start">The index of the first character to select.</param>
@@ -102,7 +208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void Copy()
         {
-            Ultraviolet.GetPlatform().Clipboard.Text = SelectedText;
+            Ultraviolet.GetPlatform().Clipboard.Text = GetSelectedText();
         }
 
         /// <summary>
@@ -112,7 +218,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             BeginTrackingSelectionChanges();
             
-            Ultraviolet.GetPlatform().Clipboard.Text = SelectedText;
+            Ultraviolet.GetPlatform().Clipboard.Text = GetSelectedText();
             DeleteSelection();
 
             EndTrackingSelectionChanges();
@@ -320,20 +426,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the specified line of text.
-        /// </summary>
-        /// <param name="lineIndex">The index of the line of text to retrieve.</param>
-        /// <returns>A string containing the contents of the specified line of text.</returns>
-        public String GetLineText(Int32 lineIndex)
-        {
-            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, "lineIndex");
-
-            var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
-
-            return bufferText.ToString(lineInfo.OffsetInGlyphs, lineInfo.LengthInGlyphs);
-        }
-
-        /// <summary>
         /// Gets a rectangle that represents the leading edge of the specified character.
         /// </summary>
         /// <param name="charIndex">The index of the character for which to retrieve the rectangle.</param>
@@ -436,39 +528,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 Select(boundedStart, boundedLength);
             }
         }
-
-        /// <summary>
-        /// Gets or sets the currently selected text.
-        /// </summary>
-        public String SelectedText
-        {
-            get
-            {
-                var length = SelectionLength;
-                if (length == 0)
-                    return String.Empty;
-
-                return bufferText.ToString(SelectionStart, length);
-            }
-            set
-            {
-                BeginTrackingSelectionChanges();
-
-                DeleteSelection();
-
-                var caretPositionOld = caretPosition;
-                InsertTextAtCaret(value, false);
-                var caretPositionNew = caretPosition;
-
-                var selectionStart = caretPositionOld;
-                var selectionLength = caretPositionNew - caretPositionOld;
-
-                Select(selectionStart, selectionLength);
-
-                EndTrackingSelectionChanges();
-            }
-        }
-
+        
         /// <summary>
         /// Gets or sets a value indicating whether the caret is drawn on top of the text while the caret is in insertion mode.
         /// </summary>

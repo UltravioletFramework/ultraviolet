@@ -77,6 +77,72 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets the selected text.
+        /// </summary>
+        /// <returns>A string containing the selected text.</returns>
+        public String GetSelectedText()
+        {
+            if (PART_Editor != null)
+                return PART_Editor.GetSelectedText();
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the selected text.
+        /// </summary>
+        /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the contents of the selection.</param>
+        public void GetSelectedText(StringBuilder stringBuilder)
+        {
+            if (PART_Editor != null)
+                PART_Editor.GetSelectedText(stringBuilder);
+        }
+
+        /// <summary>
+        /// Sets the selected text.
+        /// </summary>
+        /// <param name="value">The text to set.</param>
+        public void SetSelectedText(String value)
+        {
+            if (PART_Editor != null)
+                PART_Editor.SetSelectedText(value);
+        }
+
+        /// <summary>
+        /// Sets the selected text.
+        /// </summary>
+        /// <param name="value">A <see cref="StringBuilder"/> containing the text to set.</param>
+        public void SetSelectedText(StringBuilder value)
+        {
+            if (PART_Editor != null)
+                PART_Editor.SetSelectedText(value);
+        }
+
+        /// <summary>
+        /// Gets the specified line of text.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line of text to retrieve.</param>
+        /// <returns>A string containing the contents of the specified line of text.</returns>
+        public String GetLineText(Int32 lineIndex)
+        {
+            if (PART_Editor != null)
+                return PART_Editor.GetLineText(lineIndex);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the specified line of text.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line of text to retrieve.</param>
+        /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the contents of the specified line of text.</param>
+        public void GetLineText(Int32 lineIndex, StringBuilder stringBuilder)
+        {
+            if (PART_Editor != null)
+                PART_Editor.GetLineText(lineIndex, stringBuilder);
+        }
+
+        /// <summary>
         /// Selects the specified range of text.
         /// </summary>
         /// <param name="start">The index of the first character to select.</param>
@@ -227,19 +293,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 return PART_Editor.GetLineLength(lineIndex);
 
             return 0;
-        }
-
-        /// <summary>
-        /// Gets the specified line of text.
-        /// </summary>
-        /// <param name="lineIndex">The index of the line of text to retrieve.</param>
-        /// <returns>A string containing the contents of the specified line of text.</returns>
-        public String GetLineText(Int32 lineIndex)
-        {
-            if (PART_Editor != null)
-                return PART_Editor.GetLineText(lineIndex);
-
-            return null;
         }
 
         /// <summary>
@@ -491,26 +544,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     PART_Editor.SelectionLength = value;
             }
         }
-
-        /// <summary>
-        /// Gets the currently selected text.
-        /// </summary>
-        public String SelectedText
-        {
-            get
-            {
-                if (PART_Editor != null)
-                    return PART_Editor.SelectedText;
-
-                return String.Empty;
-            }
-            set
-            {
-                if (PART_Editor != null)
-                    PART_Editor.SelectedText = value;
-            }
-        }
-
+        
         /// <summary>
         /// Gets the horizontal offset of the text area's scroll viewer.
         /// </summary>
