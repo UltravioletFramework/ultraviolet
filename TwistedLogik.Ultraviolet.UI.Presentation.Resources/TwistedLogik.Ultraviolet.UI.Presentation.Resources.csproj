@@ -95,7 +95,6 @@
     <None Include="Controls\Templates\RadioButton.xml" />
     <None Include="Controls\Templates\RepeatButton.xml" />
     <None Include="Controls\Templates\ScrollViewer.xml" />
-    <None Include="Controls\Templates\TextBox.xml" />
     <None Include="Controls\Templates\ToolTip.xml" />
     <None Include="Controls\Templates\VSlider.xml" />
   </ItemGroup>
