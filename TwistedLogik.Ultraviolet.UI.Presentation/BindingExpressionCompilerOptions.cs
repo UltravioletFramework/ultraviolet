@@ -27,6 +27,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the compiler will write its generated files to the working directory
+        /// even if no errors occur.
+        /// </summary>
+        public Boolean WriteCompiledFilesToWorkingDirectory
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the compiler input.
         /// </summary>
         public String Input
