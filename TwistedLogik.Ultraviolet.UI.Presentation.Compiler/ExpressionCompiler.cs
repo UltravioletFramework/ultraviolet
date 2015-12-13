@@ -657,7 +657,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 			var trueErrors = results.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).ToList();
 			if (trueErrors.Count > 0)
             {
-                var filesWithErrors = trueErrors.Select(x => x.FileName).Distinct();
+                var filesWithErrors = trueErrors.Select(x => x.FileName).Where(x => !String.IsNullOrEmpty(x)).Distinct();
                 foreach (var fileWithErrors in filesWithErrors)
                 {
                     var fileWithErrorsSrc = Path.GetFullPath(fileWithErrors);
