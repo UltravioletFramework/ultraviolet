@@ -450,6 +450,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the text box's current keyboard mode.
+        /// </summary>
+        public KeyboardMode KeyboardMode
+        {
+            get { return GetValue<KeyboardMode>(KeyboardModeProperty); }
+            set { SetValue(KeyboardModeProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets a <see cref="CharacterCasing"/> value which specifies the casing which is applies to the text area's text.
         /// </summary>
         public CharacterCasing CharacterCasing
@@ -779,6 +788,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<VersionedStringSource>(VersionedStringSource.Invalid, PropertyMetadataOptions.None, HandleTextChanged));
 
         /// <summary>
+        /// Identifies the <see cref="KeyboardMode"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'keyboard-mode'.</remarks>
+        public static readonly DependencyProperty KeyboardModeProperty = DependencyProperty.Register("KeyboardMode", typeof(KeyboardMode), typeof(TextArea),
+            new PropertyMetadata<KeyboardMode>(KeyboardMode.Text, PropertyMetadataOptions.None));
+
+        /// <summary>
         /// Identifies the <see cref="CharacterCasing"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CharacterCasingProperty = DependencyProperty.Register("CharacterCasing", typeof(CharacterCasing), typeof(TextArea),
@@ -954,6 +970,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
+            Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode);
+
             if (PART_Editor != null)
                 PART_Editor.HandleGotKeyboardFocus();
 
@@ -965,6 +983,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
+            Ultraviolet.GetInput().HideSoftwareKeyboard();
+
             if (PART_Editor != null)
                 PART_Editor.HandleLostKeyboardFocus();
 
