@@ -20,7 +20,7 @@
                Grid.ColumnSpan="2"
                HorizontalAlignment="Stretch"
                VerticalAlignment="Stretch"
-               PreviewMouseWheel="PART_Input_PreviewMouseWheel">{{Value}}</TextBox>
+               TextEditor.TextEntryValidation="HandleTextEntryValidation">{{Value}}</TextBox>
       <RepeatButton Class="updown-button updown-button-up"
                     Focusable="false"
                     Grid.Column="1"

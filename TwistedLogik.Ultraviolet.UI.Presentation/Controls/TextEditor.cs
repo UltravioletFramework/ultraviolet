@@ -10,6 +10,17 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
+    /// Represents the method that is called when a <see cref="TextEditor"/> is validating a character for entry.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="text">The editor's current text.</param>
+    /// <param name="character">The character being inserted into the text.</param>
+    /// <param name="index">The index at which the character is being inserted into the text.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
+    public delegate void UpfTextEntryValidationHandler(DependencyObject element, 
+        StringSegment text, Char character, Int32 index, ref RoutedEventData data);
+
+    /// <summary>
     /// Represents the component of a <see cref="TextBox"/> which is responsible for performing text editing.
     /// </summary>
     [UvmlKnownType]
@@ -695,6 +706,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public static readonly DependencyProperty InactiveSelectionColorProperty = DependencyProperty.Register("InactiveSelectionColor", typeof(Color), typeof(TextEditor),
             new PropertyMetadata<Color>(Color.Silver * 0.4f, PropertyMetadataOptions.None));
+        
+        /// <summary>
+        /// Identifies the <see cref="TextEntryValidation"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent TextEntryValidationEvent = EventManager.RegisterRoutedEvent("TextEntryValidation", 
+            RoutingStrategy.Direct, typeof(UpfTextEntryValidationHandler), typeof(TextEditor));
 
         /// <summary>
         /// Called when the value of the <see cref="TextBox.TextProperty"/> dependency property changes.
@@ -1879,9 +1896,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         break;
                 }
 
-                if (overwrite && position + i < bufferText.Length)
+                if (!IsValidCharacterForEntry(character, position + characterCount))
+                    continue;
+
+                if (overwrite && position + characterCount < bufferText.Length)
                 {
-                    bufferText.Remove(position + i, 1);
+                    bufferText.Remove(position + characterCount, 1);
                 }
                 else
                 {
@@ -1889,7 +1909,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         break;
                 }
 
-                bufferText.Insert(position + i, character);
+                bufferText.Insert(position + characterCount, character);
                 characterCount++;
             }
             
@@ -2209,6 +2229,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private Boolean IsCaretOnLineBreak()
         {
             return caretPosition == bufferText.Length || bufferText[caretPosition] == '\n';
+        }
+
+        /// <summary>
+        /// Gets a value specifying whether the specified character is valid to enter at the specified position in the text.
+        /// </summary>
+        /// <param name="character">The character which is being entered.</param>
+        /// <param name="index">The index at which the character is being entered.</param>
+        /// <returns><c>true</c> if the character is valid for entry; otherwise, <c>false</c>.</returns>
+        private Boolean IsValidCharacterForEntry(Char character, Int32 index)
+        {
+            if (TemplatedParent == null)
+                return true;
+
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfTextEntryValidationHandler>(TextEntryValidationEvent);
+            var evtData = new RoutedEventData(TemplatedParent);
+
+            var text = new StringSegment((StringBuilder)bufferText);
+            evtDelegate(TemplatedParent, text, character, index, ref evtData);
+
+            return !evtData.Handled;
         }
         
         // State values.

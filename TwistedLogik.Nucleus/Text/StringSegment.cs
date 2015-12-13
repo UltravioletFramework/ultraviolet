@@ -399,6 +399,48 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
+        /// Gets the index of the first occurrence of the specified character within the string segment.
+        /// </summary>
+        /// <param name="value">The character for which to search.</param>
+        /// <returns>The index of the first occurrence of the specified character, or -1 if the string segment does not contain the character.</returns>
+        public Int32 IndexOf(Char value)
+        {
+            for (int i = 0; i < Length; i++)
+            {
+                if (this[i] == value)
+                    return i;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Gets the index of the first occurrence of the specified string within the string segment.
+        /// </summary>
+        /// <param name="value">The string for which to search.</param>
+        /// <returns>The index of the first occurrence of the specified string, or -1 if the string segment does not contain the string.</returns>
+        public Int32 IndexOf(String value)
+        {
+            Contract.Require(value, "value");
+
+            for (int i = 0; i < Length; i++)
+            {
+                var matches = 0;
+
+                for (int j = 0; j < value.Length; j++)
+                {
+                    if (this[i + j] != value[j])
+                        break;
+
+                    matches++;
+                }
+
+                if (matches == value.Length)
+                    return i;
+            }
+            return -1;
+        }
+
+        /// <summary>
         /// Gets the character at the specified index within the string segment.
         /// </summary>
         /// <param name="ix">The index of the character to retrieve.</param>
