@@ -19,7 +19,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
     /// Contains methods for compiling UPF binding expressions into a managed assembly.
     /// </summary>
     public class ExpressionCompiler : IBindingExpressionCompiler
-    {
+    {   
+        /// <summary>
+        /// Gets the type associated with the specified placeholder string in the context of the specified type.
+        /// </summary>
+        /// <param name="type">The type for which to evaluate placeholder substitutions.</param>
+        /// <param name="placeholder">The placeholder string for which to evaluate substitutions.</param>
+        /// <returns>The type associated with the specified placeholder, or <c>null</c> if there is no such placeholder.</returns>
+        public static Type GetPlaceholderType(Type type, String placeholder)
+        {
+            var attr = type.GetCustomAttributes(typeof(UvmlPlaceholderAttribute), true).Cast<UvmlPlaceholderAttribute>()
+                .Where(x => String.Equals(placeholder, x.Placeholder, StringComparison.Ordinal)).SingleOrDefault();
+            if (attr != null)
+            {
+                return attr.Type;
+            }
+            return null;
+        }
+
         /// <inheritdoc/>
         public BindingExpressionCompilationResult Compile(UltravioletContext uv, BindingExpressionCompilerOptions options)
         {
@@ -150,7 +167,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     expression.GenerateSetter = false;
                 }
                 
-                WriteSourceCodeForDataSourceWrapper(model);
+                WriteSourceCodeForDataSourceWrapper(state, model);
             });
 
             return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
@@ -169,7 +186,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     expression.GenerateSetter = true;
                 }
 
-                WriteSourceCodeForDataSourceWrapper(model);
+                WriteSourceCodeForDataSourceWrapper(state, model);
             });
             return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
         }
@@ -211,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     }
                 }
 
-                WriteSourceCodeForDataSourceWrapper(model);
+                WriteSourceCodeForDataSourceWrapper(state, model);
             });
             return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
         }
@@ -236,7 +253,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     }
                 }
 
-                WriteSourceCodeForDataSourceWrapper(model);
+                WriteSourceCodeForDataSourceWrapper(state, model);
             });
 
             return CompileDataSourceWrapperSources(state, output, models, referencedAssemblies);
@@ -473,8 +490,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Writes the source code for the specified data source wrapper.
         /// </summary>
+        /// <param name="state">The expression compiler's current state.</param>
         /// <param name="dataSourceWrapperInfo">The <see cref="DataSourceWrapperInfo"/> that describes the data source wrapper being generated.</param>
-        private static void WriteSourceCodeForDataSourceWrapper(DataSourceWrapperInfo dataSourceWrapperInfo)
+        private static void WriteSourceCodeForDataSourceWrapper(ExpressionCompilerState state, DataSourceWrapperInfo dataSourceWrapperInfo)
         {
             using (var writer = new DataSourceWrapperWriter())
             {
@@ -553,7 +571,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 for (int i = 0; i < dataSourceWrapperInfo.Expressions.Count; i++)
                 {
                     var expressionInfo = dataSourceWrapperInfo.Expressions[i];
-                    writer.WriteExpressionProperty(dataSourceWrapperInfo, expressionInfo, i);
+                    writer.WriteExpressionProperty(state, dataSourceWrapperInfo, expressionInfo, i);
                 }
                 writer.WriteLine("#endregion");
 
@@ -808,23 +826,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 return "ref " + parameter.Name;
             }
             return parameter.Name;
-        }
-
-        /// <summary>
-        /// Gets the type associated with the specified placeholder string in the context of the specified type.
-        /// </summary>
-        /// <param name="type">The type for which to evaluate placeholder substitutions.</param>
-        /// <param name="placeholder">The placeholder string for which to evaluate substitutions.</param>
-        /// <returns>The type associated with the specified placeholder, or <c>null</c> if there is no such placeholder.</returns>
-        private static Type GetPlaceholderType(Type type, String placeholder)
-        {
-            var attr = type.GetCustomAttributes(typeof(UvmlPlaceholderAttribute), true).Cast<UvmlPlaceholderAttribute>()
-                .Where(x => String.Equals(placeholder, x.Placeholder, StringComparison.Ordinal)).SingleOrDefault();
-            if (attr != null)
-            {
-                return attr.Type;
-            }
-            return null;
         }
 
         /// <summary>

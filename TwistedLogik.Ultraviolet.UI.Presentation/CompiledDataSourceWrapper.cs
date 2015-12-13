@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -8,6 +10,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     [CLSCompliant(false)]
     public abstract class CompiledDataSourceWrapper : IDataSourceWrapper
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompiledDataSourceWrapper"/> class.
+        /// </summary>
+        /// <param name="namescope">The namescope for this data source wrapper.</param>
+        protected CompiledDataSourceWrapper(Namescope namescope)
+        {
+            Contract.Require(namescope, "namescope");
+
+            this.namescope = namescope;
+        }
+
         /// <inheritdoc/>
         public abstract Object WrappedDataSource { get; }
 
@@ -25,6 +38,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return (value == null) ? null : value.ToString();
             }
             return String.Format(format, value);
-        }        
+        }
+
+        /// <summary>
+        /// Converts the specified string to an instance of the specified type using the Nucleus deserializer.
+        /// </summary>
+        /// <typeparam name="T">The type of value to produce.</typeparam>
+        /// <param name="value">The string to convert.</param>
+        /// <returns>The value that was created.</returns>
+        protected T __UPF_ConvertFromString<T>(String value)
+        {
+            return (T)ObjectResolver.FromString(value, typeof(T));
+        }
+
+        /// <summary>
+        /// Gets the element in the current namescope with the specified name.
+        /// </summary>
+        /// <typeparam name="T">The type of element to retrieve.</typeparam>
+        /// <param name="name">The name of the element to retrieve.</param>
+        /// <returns>The element with the specified name.</returns>
+        protected T __UPF_GetElementByName<T>(String name) where T : FrameworkElement
+        {
+            return namescope.GetElementByName(name) as T;
+        }
+
+        // State values.
+        private readonly Namescope namescope;
     }
 }

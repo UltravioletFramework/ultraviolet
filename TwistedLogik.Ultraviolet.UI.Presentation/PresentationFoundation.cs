@@ -67,11 +67,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="name">The name of the view model wrapper type to instantiate.</param>
         /// <param name="viewModel">The view model instance that will be wrapped by the view model wrapper.</param>
+        /// <param name="namescope">The view model's namescope.</param>
         /// <returns>The view model wrapper that was created, or a reference to <paramref name="viewModel"/> if no valid wrapper exists.</returns>
-        public Object CreateDataSourceWrapperByName(String name, Object viewModel)
+        public Object CreateDataSourceWrapperByName(String name, Object viewModel, Namescope namescope)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(name, "name");
+            Contract.Require(namescope, "namescope");
 
             if (viewModel == null)
                 return null;
@@ -83,8 +85,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 wrapperType = (vmWrapperAttr == null) ? null : vmWrapperAttr.WrapperType;
                 compiledDataSourceWrappers[name] = wrapperType;
             }
-
-            return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new[] { viewModel });
+            
+            return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new Object[] { viewModel, namescope });
         }
 
         /// <summary>
@@ -117,7 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (wrapperType != null && templateInherited)
                 compiledDataSourceWrappers[templateName] = wrapperType;
 
-            return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new[] { viewModel });
+            return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new Object[] { viewModel, viewModel.ComponentTemplateNamescope });
         }
 
         /// <summary>

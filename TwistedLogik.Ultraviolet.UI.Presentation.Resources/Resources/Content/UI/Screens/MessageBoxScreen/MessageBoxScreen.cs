@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public sealed partial class MessageBoxViewModel_Impl : TwistedLogik.Ultraviolet.UI.Presentation.CompiledDataSourceWrapper
     {
         #region Constructors
-        public MessageBoxViewModel_Impl(TwistedLogik.Ultraviolet.UI.Presentation.MessageBoxViewModel dataSource)
+        public MessageBoxViewModel_Impl(TwistedLogik.Ultraviolet.UI.Presentation.MessageBoxViewModel dataSource, TwistedLogik.Ultraviolet.UI.Presentation.Namescope namescope) : base(namescope)
         {
             this.dataSource = dataSource;
         }
@@ -92,7 +92,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get
             {
-                return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)__UPF_ConvertToString(Caption, null);
+                var value = Caption;
+                return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)__UPF_ConvertToString(value, null);
             }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{HasCaption ? Visibility.Visible : Visibility.Collapsed}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
@@ -110,7 +111,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get
             {
-                return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)__UPF_ConvertToString(Text, null);
+                var value = Text;
+                return (TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource)__UPF_ConvertToString(value, null);
             }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{HasText ? Visibility.Visible : Visibility.Collapsed}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]

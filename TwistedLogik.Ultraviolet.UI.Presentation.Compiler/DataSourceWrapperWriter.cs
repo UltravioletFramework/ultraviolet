@@ -108,7 +108,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <param name="dataSourceWrapperInfo">A <see cref="DataSourceWrapperInfo"/> describing the data source for which to write a constructor.</param>
         public void WriteConstructor(DataSourceWrapperInfo dataSourceWrapperInfo)
         {
-            WriteLine("public {0}({1} dataSource)", dataSourceWrapperInfo.DataSourceWrapperName, GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType));
+            WriteLine("public {0}({1} dataSource, {2} namescope) : base(namescope)", dataSourceWrapperInfo.DataSourceWrapperName, 
+                GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType),
+                GetCSharpTypeName(typeof(Namescope)));
             WriteLine("{");
 
             WriteLine("this.dataSource = dataSource;");
@@ -130,7 +132,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             WriteLine("}");
             WriteLine("private readonly {0} dataSource;", GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType));
         }
-
+        
         /// <summary>
         /// Writes a wrapper method for the specified method.
         /// </summary>
@@ -304,18 +306,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Writes a property which wraps a binding expression.
         /// </summary>
+        /// <param name="state">The expression compiler's current state.</param>
         /// <param name="dataSourceWrapperInfo">A <see cref="DataSourceWrapperInfo"/> describing the data source for which to write an expression property.</param>
         /// <param name="expressionInfo">The binding expression for which to write a property.</param>
         /// <param name="id">The expression's identifier within the view model.</param>
-        public void WriteExpressionProperty(DataSourceWrapperInfo dataSourceWrapperInfo, BindingExpressionInfo expressionInfo, Int32 id)
+        public void WriteExpressionProperty(ExpressionCompilerState state, DataSourceWrapperInfo dataSourceWrapperInfo, BindingExpressionInfo expressionInfo, Int32 id)
         {
             var isDependencyProperty = false;
             var isSimpleDependencyProperty = false;
-
-            var expMemberPath = BindingExpressions.GetBindingMemberPathPart(expressionInfo.Expression);
+            
+            var expText = BindingExpressions.GetBindingMemberPathPart(expressionInfo.Expression);
+            var expTarget = "this";
+            var expTargetType = dataSourceWrapperInfo.DataSourceType;
             var expFormatString = BindingExpressions.GetBindingFormatStringPart(expressionInfo.Expression);
 
-            var dprop = DependencyProperty.FindByName(expMemberPath, dataSourceWrapperInfo.DataSourceType);
+            var targeted = GetExpressionTargetInfo(state, dataSourceWrapperInfo, 
+                ref expText, out expTarget, out expTargetType);
+
+            var dprop = DependencyProperty.FindByName(expText, expTargetType);
             var dpropField = default(FieldInfo);
             if (dprop != null)
             {
@@ -331,7 +339,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 if (dpropField == null)
                     throw new InvalidOperationException(PresentationStrings.CannotFindDependencyPropertyField.Format(dprop.OwnerType.Name, dprop.Name));
 
-                if (String.IsNullOrEmpty(expFormatString))
+                if (String.IsNullOrEmpty(expFormatString) && !targeted)
                 {
                     isSimpleDependencyProperty = true;
                 }
@@ -347,10 +355,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             if (expressionInfo.GenerateGetter)
             {
                 expressionInfo.GetterLineStart = LineCount;
-                
-                var getexp = isDependencyProperty ? String.Format("GetValue<{0}>({1}.{2})", 
-                    GetCSharpTypeName(dprop.PropertyType), 
-                    GetCSharpTypeName(dprop.OwnerType), dpropField.Name) : expMemberPath;
+
+                var getexp = default(String);
+                if (isDependencyProperty)
+                {
+                    getexp = String.Format("{0}.GetValue<{1}>({2}.{3})", expTarget,
+                       GetCSharpTypeName(dprop.PropertyType),
+                       GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
+                }
+                else
+                {
+                    getexp = String.Format("{0}.{1}", expTarget, expText);
+                }
 
                 expFormatString = String.IsNullOrEmpty(expFormatString) ? "null" : String.Format("\"{{0:{0}}}\"", expFormatString);
 
@@ -358,7 +374,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 {
                     WriteLine("get");
                     WriteLine("{");
-                    WriteLine("return ({0})__UPF_ConvertToString({1}, {2});", GetCSharpTypeName(expressionInfo.Type), getexp, expFormatString);
+                    WriteLine("var value = {0};", getexp);
+                    WriteLine("return ({0})__UPF_ConvertToString(value, {1});", GetCSharpTypeName(expressionInfo.Type), expFormatString);
                     WriteLine("}");
                 }
                 else
@@ -382,14 +399,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 {
                     if (expressionInfo.NullableFixup)
                     {
-                        WriteLine(targetTypeSpecified ? "set {{ SetValue<{0}>({1}.{2}, ({3})(value ?? default({0}))); }}" : "set {{ SetValue<{0}>({1}.{2}, value ?? default({0})); }}", 
+                        WriteLine(targetTypeSpecified ? "set {{ {0}.SetValue<{1}>({2}.{3}, ({4})(value ?? default({1}))); }}" : "set {{ {0}.SetValue<{1}>({2}.{3}, value ?? default({1})); }}", 
+                            expTarget,
                             GetCSharpTypeName(dprop.PropertyType), 
                             GetCSharpTypeName(dprop.OwnerType),
                             dpropField.Name, targetTypeName);
                     }
                     else
                     {
-                        WriteLine(targetTypeSpecified ? "set {{ SetValue<{0}>({1}.{2}, ({3})(value)); }}" : "set {{ SetValue<{0}>({1}.{2}, value); }}", 
+                        WriteLine(targetTypeSpecified ? "set {{ {0}.SetValue<{1}>({2}.{3}, ({4})(value)); }}" : "set {{ {0}.SetValue<{1}>({2}.{3}, value); }}", 
+                            expTarget,
                             GetCSharpTypeName(dprop.PropertyType),
                             GetCSharpTypeName(dprop.OwnerType), 
                             dpropField.Name, targetTypeName);
@@ -399,12 +418,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 {
                     if (expressionInfo.NullableFixup)
                     {
-                        WriteLine(targetTypeSpecified ? "set {{ {0} = ({2})(value ?? default({1})); }}" : "set {{ {0} = value ?? default({1}); }}",
-                            expMemberPath, GetCSharpTypeName(Nullable.GetUnderlyingType(expressionInfo.Type)), targetTypeName);
+                        WriteLine(targetTypeSpecified ? "set {{ {0}.{1} = ({3})(value ?? default({2})); }}" : "set {{ {0}.{1} = value ?? default({2}); }}",
+                            expTarget, expText, GetCSharpTypeName(Nullable.GetUnderlyingType(expressionInfo.Type)), targetTypeName);
                     }
                     else
                     {
-                        WriteLine(targetTypeSpecified ? "set {{ {0} = ({1})(value); }}" : "set {{ {0} = value; }}", expMemberPath, targetTypeName);
+                        WriteLine(targetTypeSpecified ? "set {{ {0}.{1} = ({2})(value); }}" : "set {{ {0}.{1} = value; }}", 
+                            expTarget, expText, targetTypeName);
                     }
                 }
 
@@ -486,6 +506,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 SafeDispose.Dispose(txtWriter);
                 SafeDispose.Dispose(strWriter);
             }
+        }
+
+        /// <summary>
+        /// Given a targeted binding expression (in the form "foo->bar"), this method extracts the target name, target type, and expression text.
+        /// </summary>
+        private Boolean GetExpressionTargetInfo(ExpressionCompilerState state, DataSourceWrapperInfo dataSourceWrapperInfo,
+            ref String expText, out String expTarget, out Type expTargetType)
+        {
+            const string TargetExpressionDelimiter = "->";
+
+            var delimiterIndex = expText.IndexOf(TargetExpressionDelimiter);
+            if (delimiterIndex >= 0)
+            {
+                var expPartTarget = expText.Substring(0, delimiterIndex);
+                var expPartText = expText.Substring(delimiterIndex + TargetExpressionDelimiter.Length);
+
+                var matchCandidates = (from element in dataSourceWrapperInfo.DataSourceDefinition.Definition.Descendants()
+                                       where (String)element.Attribute("Name") == expPartTarget
+                                       select element.Name.LocalName).ToList();
+
+                if (matchCandidates.Count == 0)
+                    throw new InvalidOperationException(PresentationStrings.ExpressionTargetIsNotFound.Format(expPartTarget));
+
+                if (matchCandidates.Count > 1)
+                    throw new InvalidOperationException(PresentationStrings.ExpressionTargetIsAmbiguous.Format(expPartTarget));
+
+                var match = matchCandidates.Single();
+
+                expText = expPartText;
+                expTargetType = ExpressionCompiler.GetPlaceholderType(dataSourceWrapperInfo.DataSourceType, match);
+
+                if (expTargetType == null && !state.GetKnownType(match, out expTargetType))
+                    throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(match));
+
+                expTarget = String.Format("__UPF_GetElementByName<{0}>(\"{1}\")", GetCSharpTypeName(expTargetType), expPartTarget);
+
+                return true;
+            }
+
+            expTarget = "this";
+            expTargetType = dataSourceWrapperInfo.DataSourceType;
+
+            return false;
         }
 
         // State values.
