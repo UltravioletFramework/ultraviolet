@@ -975,6 +975,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     MoveCaretInDirection(CaretNavigationDirection.End, modifiers);
                     data.Handled = true;
                     break;
+
+                case Key.PageUp:
+                    MoveCaretInDirection(CaretNavigationDirection.PageUp, modifiers);
+                    data.Handled = true;
+                    break;
+
+                case Key.PageDown:
+                    MoveCaretInDirection(CaretNavigationDirection.PageDown, modifiers);
+                    data.Handled = true;
+                    break;
             }
         }
 
@@ -1511,6 +1521,66 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Moves the caret up one page.
+        /// </summary>
+        private void MoveCaretPageUp()
+        {
+            var scrollViewer = Parent as ScrollViewer;
+            if (scrollViewer == null)
+                return;
+
+            BeginTrackingSelectionChanges();
+
+            var x = caretBounds.Left;
+            var y = caretBounds.Top - (Int32)Display.DipsToPixels(scrollViewer.ViewportHeight);
+
+            if (caretLineIndex > 0 && y < 0)
+                y = 0;
+
+            var movementAllowed = (textLayoutStream.Count > 0);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.PageUp))
+            {
+                caretBlinkTimer = 0;
+                caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(true, false, false);
+            }
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Moves the caret down one page.
+        /// </summary>
+        private void MoveCaretPageDown()
+        {
+            var scrollViewer = Parent as ScrollViewer;
+            if (scrollViewer == null)
+                return;
+
+            BeginTrackingSelectionChanges();
+
+            var x = caretBounds.Left;
+            var y = caretBounds.Top + (Int32)Display.DipsToPixels(scrollViewer.ViewportHeight);
+
+            if (caretLineIndex < textLayoutStream.LineCount - 1 && y >= textLayoutStream.ActualHeight)
+                y = textLayoutStream.ActualHeight - 1;
+
+            var movementAllowed = (textLayoutStream.Count > 0);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.PageDown))
+            {
+                caretBlinkTimer = 0;
+                caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(true, false, false);
+            }
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
         /// Moves the caret to the beginning of the current line.
         /// </summary>
         private void MoveCaretToHome(Boolean moveToBeginningOfText)
@@ -1596,6 +1666,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 case CaretNavigationDirection.End:
                     MoveCaretToEnd((modifiers & ModifierKeys.Control) == ModifierKeys.Control);
+                    break;
+
+                case CaretNavigationDirection.PageUp:
+                    MoveCaretPageUp();
+                    break;
+
+                case CaretNavigationDirection.PageDown:
+                    MoveCaretPageDown();
                     break;
             }
 

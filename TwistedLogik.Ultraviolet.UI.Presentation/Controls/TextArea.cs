@@ -4,6 +4,7 @@ using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -205,6 +206,130 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (PART_Editor != null)
                 PART_Editor.Clear();
+        }
+
+        /// <summary>
+        /// Scrolls the text area one line up.
+        /// </summary>
+        public void LineUp()
+        {
+            var font = Font;
+            if (font == null || !font.IsLoaded)
+                return;
+
+            var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
+            var fontLineHeight = fontFace.LineSpacing;
+
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.ScrollToVerticalOffset(PART_ScrollViewer.VerticalOffset - fontLineHeight);
+        }
+
+        /// <summary>
+        /// Scrolls the text area one line down.
+        /// </summary>
+        public void LineDown()
+        {
+            var font = Font;
+            if (font == null || !font.IsLoaded)
+                return;
+
+            var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
+            var fontLineHeight = fontFace.LineSpacing;
+
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.ScrollToVerticalOffset(PART_ScrollViewer.VerticalOffset + fontLineHeight);
+        }
+
+        /// <summary>
+        /// Scrolls the text area one line to the left.
+        /// </summary>
+        public void LineLeft()
+        {
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.LineLeft();
+        }
+
+        /// <summary>
+        /// Scrolls the text area one line to the right.
+        /// </summary>
+        public void LineRight()
+        {
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.LineRight();
+        }
+
+        /// <summary>
+        /// Scrolls the text area one page towards the top of its content.
+        /// </summary>
+        public void PageUp()
+        {
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.PageUp();
+        }
+
+        /// <summary>
+        /// Scrolls the text area one page towards the bottom of its content.
+        /// </summary>
+        public void PageDown()
+        {
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.PageDown();
+        }
+
+        /// <summary>
+        /// Scrolls the text area one page towards the left of its content.
+        /// </summary>
+        public void PageLeft()
+        {
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.PageLeft();
+        }
+
+        /// <summary>
+        /// Scrolls the text area one page towards the right of its content.
+        /// </summary>
+        public void PageRight()
+        {
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.PageRight();
+        }
+
+        /// <summary>
+        /// Scrolls the text area to the beginning of its content.
+        /// </summary>
+        public void ScrollToHome()
+        {
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.ScrollToHome();
+        }
+
+        /// <summary>
+        /// Scrolls the text area to the end of its content.
+        /// </summary>
+        public void ScrollToEnd()
+        {
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.ScrollToEnd();
+        }
+
+        /// <summary>
+        /// Scrolls the text area to the specified horizontal offset.
+        /// </summary>
+        /// <param name="offset">The horizontal offset to which to move the text area's scrollable area.</param>
+        public void ScrollToHorizontalOffset(Double offset)
+        {
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.ScrollToHorizontalOffset(offset);
+        }
+
+        /// <summary>
+        /// Scrolls the text area to the specified vertical offset.
+        /// </summary>
+        /// <param name="offset">The vertical offset to which to move the text area's scrollable area.</param>
+        public void ScrollToVerticalOffset(Double offset)
+        {
+            if (PART_ScrollViewer != null)
+                PART_ScrollViewer.ScrollToVerticalOffset(offset);
         }
 
         /// <summary>

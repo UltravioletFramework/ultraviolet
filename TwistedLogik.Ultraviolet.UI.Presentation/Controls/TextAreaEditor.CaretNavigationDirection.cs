@@ -41,6 +41,16 @@
             /// The caret is being moved to the end of the text.
             /// </summary>
             End,
+
+            /// <summary>
+            /// The caret is being moved up one page.
+            /// </summary>
+            PageUp,
+
+            /// <summary>
+            /// The caret is being moved down one page.
+            /// </summary>
+            PageDown,
         }
     }
 }

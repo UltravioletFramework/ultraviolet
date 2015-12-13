@@ -41,6 +41,88 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Scrolls the viewer's content up by one line.
+        /// </summary>
+        public void LineUp()
+        {
+            ScrollToVerticalOffset(VerticalOffset - ScrollDeltaKey);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer's content down by one line.
+        /// </summary>
+        public void LineDown()
+        {
+            ScrollToVerticalOffset(VerticalOffset + ScrollDeltaKey);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer's content left by one line.
+        /// </summary>
+        public void LineLeft()
+        {
+            ScrollToHorizontalOffset(HorizontalOffset - ScrollDeltaKey);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer's content right by one line.
+        /// </summary>
+        public void LineRight()
+        {
+            ScrollToHorizontalOffset(HorizontalOffset + ScrollDeltaKey);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer's content up by one page.
+        /// </summary>
+        public void PageUp()
+        {
+            ScrollToVerticalOffset(VerticalOffset - ViewportHeight);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer's content down by one page.
+        /// </summary>
+        public void PageDown()
+        {
+            ScrollToVerticalOffset(VerticalOffset + ViewportHeight);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer's content left by one page.
+        /// </summary>
+        public void PageLeft()
+        {
+            ScrollToHorizontalOffset(HorizontalOffset - ViewportWidth);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer's content right by one page.
+        /// </summary>
+        public void PageRight()
+        {
+            ScrollToHorizontalOffset(HorizontalOffset + ViewportWidth);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer to the beginning of its content.
+        /// </summary>
+        public void ScrollToHome()
+        {
+            ScrollToHorizontalOffset(Double.NegativeInfinity);
+            ScrollToVerticalOffset(Double.NegativeInfinity);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer to the end of its content.
+        /// </summary>
+        public void ScrollToEnd()
+        {
+            ScrollToHorizontalOffset(Double.PositiveInfinity);
+            ScrollToVerticalOffset(Double.PositiveInfinity);
+        }
+
+        /// <summary>
         /// Moves the scroll viewer to the specified horizontal offset.
         /// </summary>
         /// <param name="offset">The horizontal offset to which to move the scroll viewer.</param>

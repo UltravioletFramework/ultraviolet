@@ -416,6 +416,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var lineIndex = -1;
             var lineWidth = 0;
             var lineHeight = 0;
+            var lineIsTerminatedByLineBreak = false;
 
             var settings = input.Settings;
             var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
@@ -445,7 +446,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (canSkipLines)
             {
                 SkipToLineContainingGlyph(input, index, ref lineIndex, ref offsetLineX, ref offsetLineY, 
-                    ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs, ref glyphCountSeen);
+                    ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs, ref lineIsTerminatedByLineBreak, ref glyphCountSeen);
 
                 lineOffsetInCommands = input.StreamPositionInObjects;
                 lineOffsetInGlyphs = glyphCountSeen;
@@ -1452,7 +1453,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Moves the specified command stream forward to the beginning of the line that contains the specified coordinates.
         /// </summary>
         private void SkipToLineAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, ref Int32 lineIndex, ref Int32 lineOffset, ref Int32 linePosition, 
-            ref Int32 lineWidth, ref Int32 lineHeight, ref Int32 lineLengthInCommands, ref Int32 lineLengthInGlyphs, ref Int32 glyphCountSeen)
+            ref Int32 lineWidth, ref Int32 lineHeight, ref Int32 lineLengthInCommands, ref Int32 lineLengthInGlyphs, ref Boolean lineIsTerminatedByLineBreak, ref Int32 glyphCountSeen)
         {
             do
             {
@@ -1463,6 +1464,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 lineHeight = cmd->LineHeight;
                 lineLengthInCommands = cmd->LengthInCommands;
                 lineLengthInGlyphs = cmd->LengthInGlyphs;
+                lineIsTerminatedByLineBreak = cmd->TerminatedByLineBreak;
 
                 if (y >= linePosition && y < linePosition + lineHeight)
                     break;
@@ -1477,7 +1479,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Moves the specified command stream forward to the beginning of the line that contains the specified glyph.
         /// </summary>
         private void SkipToLineContainingGlyph(TextLayoutCommandStream input, Int32 glyph, ref Int32 lineIndex, ref Int32 lineOffset, ref Int32 linePosition, 
-            ref Int32 lineWidth, ref Int32 lineHeight, ref Int32 lineLengthInCommands, ref Int32 lineLengthInGlyphs, ref Int32 glyphCountSeen)
+            ref Int32 lineWidth, ref Int32 lineHeight, ref Int32 lineLengthInCommands, ref Int32 lineLengthInGlyphs, ref Boolean lineIsTerminatedByLineBreak, ref Int32 glyphCountSeen)
         {
             do
             {
@@ -1494,6 +1496,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 lineHeight = cmd->LineHeight;
                 lineLengthInCommands = cmd->LengthInCommands;
                 lineLengthInGlyphs = cmd->LengthInGlyphs;
+                lineIsTerminatedByLineBreak = cmd->TerminatedByLineBreak;
 
                 glyphCountSeen += cmd->LengthInGlyphs;
             }
@@ -1604,6 +1607,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var lineStartInGlyphs = 0;
             var lineLengthInCommands = 0;
             var lineLengthInGlyphs = 0;
+            var lineIsTerminatedByLineBreak = false;
 
             input.SeekNextCommand();
 
@@ -1613,7 +1617,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (canSkipLines)
             {
                 SkipToLineAtPosition(input, x, y, ref lineIndex, ref offsetLineX, ref offsetLineY, 
-                    ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs, ref glyphCountSeen);
+                    ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs, ref lineIsTerminatedByLineBreak, ref glyphCountSeen);
                 input.SeekNextCommand();
                 
                 // If our search point comes before the beginning of the line that it's on,
@@ -1743,7 +1747,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             {
                 if (glyph.HasValue)
                 {
-                    var max = (lineStartInGlyphs + lineLengthInGlyphs - 1);
+                    var max = (lineStartInGlyphs + lineLengthInGlyphs - (lineIsTerminatedByLineBreak ? 1 : 0));
                     return Math.Min(max, (x - glyphBounds.Center.X < 0) ? glyph.Value : glyph.Value + 1);
                 }
                 lineAtPosition = input.LineCount - 1;

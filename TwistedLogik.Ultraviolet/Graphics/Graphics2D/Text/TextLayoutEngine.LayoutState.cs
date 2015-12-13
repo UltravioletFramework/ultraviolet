@@ -51,9 +51,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="lineHeight">The height of the line in pixels.</param>
             /// <param name="lengthInCommands">The length of the line of text in commands.</param>
             /// <param name="lengthInGlyphs">The length of the line of text in glyphs.</param>
+            /// <param name="terminatedByLineBreak">A value indicating whether the line is terminated by a line break.</param>
             /// <param name="settings">The layout settings.</param>
             [SecuritySafeCritical]
-            public void WriteLineInfo(TextLayoutCommandStream output, Int32 lineWidth, Int32 lineHeight, Int32 lengthInCommands, Int32 lengthInGlyphs, ref TextLayoutSettings settings)
+            public void WriteLineInfo(TextLayoutCommandStream output, 
+                Int32 lineWidth, Int32 lineHeight, Int32 lengthInCommands, Int32 lengthInGlyphs, Boolean terminatedByLineBreak, ref TextLayoutSettings settings)
             {
                 var offset = 0;
 
@@ -75,6 +77,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     ptr->LineHeight = lineHeight;
                     ptr->LengthInCommands = lengthInCommands;
                     ptr->LengthInGlyphs = lengthInGlyphs;
+                    ptr->TerminatedByLineBreak = terminatedByLineBreak;
                 }
                 output.Seek(outputStreamPosition);
 
@@ -97,13 +100,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="height">The height in pixels which the command contributes to the current line.</param>
             /// <param name="lengthInCommands">The number of layout commands which were ultimately produced in the output stream by this command.</param>
             /// <param name="lengthInText">The number of characters of text which are represented by this command.</param>
-            public void AdvanceLineToNextCommand(Int32 width, Int32 height, Int32 lengthInCommands, Int32 lengthInText)
+            /// <param name="isLineBreak">A value indicating whether the command is a line break.</param>
+            public void AdvanceLineToNextCommand(Int32 width, Int32 height, Int32 lengthInCommands, Int32 lengthInText, Boolean isLineBreak = false)
             {
                 positionX += width;
                 lineLengthInCommands += lengthInCommands;
                 lineLengthInText += lengthInText;
                 lineWidth += width;
                 lineHeight = Math.Max(lineHeight, height);
+
+                if (isLineBreak)
+                    lineIsTerminatedByLineBreak = true;
+
                 totalLength += lengthInText;
             }
 
@@ -130,7 +138,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     lineHeight = settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing;
 
                 output.WriteLineBreak();
-                AdvanceLineToNextCommand(0, lineHeightCurrent, 1, 1);
+                AdvanceLineToNextCommand(0, lineHeightCurrent, 1, 1, isLineBreak: true);
 
                 AdvanceLayoutToNextLine(output, ref settings);
                 AdvanceLineToNextCommand(0, lineHeightCurrent, 0, 0);
@@ -144,7 +152,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="settings">The current layout settings.</param>
             public void FinalizeLine(TextLayoutCommandStream output, ref TextLayoutSettings settings)
             {
-                WriteLineInfo(output, lineWidth, lineHeight, lineLengthInCommands, lineLengthInText, ref settings);
+                WriteLineInfo(output, lineWidth, lineHeight, lineLengthInCommands, lineLengthInText, lineIsTerminatedByLineBreak, ref settings);
 
                 positionX = 0;
                 positionY += lineHeight;
@@ -158,6 +166,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 lineInfoCommandIndex = output.Count;
                 lineBreakCommand = null;
                 lineBreakOffset = null;
+                lineIsTerminatedByLineBreak = false;
                 brokenTextSizeBeforeBreak = null;
                 brokenTextSizeAfterBreak = null;
             }
@@ -551,6 +560,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             private Size2? brokenTextSizeAfterBreak;
             private Int32? minBlockOffset;
             private Int32? minLineOffset;
+            private Boolean lineIsTerminatedByLineBreak;
         }
     }
 }

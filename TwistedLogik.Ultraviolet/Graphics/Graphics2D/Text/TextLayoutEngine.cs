@@ -672,7 +672,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 if (overflowingToken.IsWhiteSpace && !overflowingToken.IsNonBreakingSpace)
                 {
                     output.WriteLineBreak();
-                    state.AdvanceLineToNextCommand(0, 0, 1, 1);
+                    state.AdvanceLineToNextCommand(0, 0, 1, 1, isLineBreak: true);
                     state.AdvanceLayoutToNextLine(output, ref settings);
 
                     if (overflowingToken.Text.Length > 1)

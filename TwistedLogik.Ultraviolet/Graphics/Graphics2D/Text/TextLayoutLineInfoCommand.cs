@@ -15,7 +15,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="lineHeight">The height of the line in pixels.</param>
         /// <param name="lengthInCommands">The length of the line of text in commands.</param>
         /// <param name="lengthInGlyphs">The length of the line in glyphs.</param>
-        public TextLayoutLineInfoCommand(Int32 offset, Int32 lineWidth, Int32 lineHeight, Int32 lengthInCommands, Int32 lengthInGlyphs)
+        /// <param name="terminatedByLineBreak">A value indicating whether this line is terminated by a line break.</param>
+        public TextLayoutLineInfoCommand(Int32 offset, Int32 lineWidth, Int32 lineHeight, Int32 lengthInCommands, Int32 lengthInGlyphs, Boolean terminatedByLineBreak)
         {
             this.commandType = TextLayoutCommandType.LineInfo;
             this.offset = offset;
@@ -23,6 +24,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             this.lineHeight = lineHeight;
             this.lengthInCommands = lengthInCommands;
             this.lengthInGlyphs = lengthInGlyphs;
+            this.terminatedByLineBreak = terminatedByLineBreak;
         }
 
         /// <summary>
@@ -78,6 +80,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             internal set { lengthInGlyphs = value; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this line is terminated by a line break.
+        /// </summary>
+        public Boolean TerminatedByLineBreak
+        {
+            get { return terminatedByLineBreak; }
+            internal set { terminatedByLineBreak = value; }
+        }
+
         // Property values.
         private TextLayoutCommandType commandType;
         private Int32 offset;
@@ -85,5 +96,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private Int32 lineHeight;
         private Int32 lengthInCommands;
         private Int32 lengthInGlyphs;
+        private Boolean terminatedByLineBreak;
     }
 }
