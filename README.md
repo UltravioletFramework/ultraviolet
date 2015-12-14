@@ -38,6 +38,8 @@ Known Issues
 
 * __The imported project "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\CodeSharing\Microsoft.CodeSharing.CSharp.targets" was not found...__
 
+  _This issue has been fixed in Visual Studio 2015 Update 1._
+
   As of version 1.2.1, Ultraviolet makes use of Shared Projects in order to share code between its Desktop and Android builds (and potentially a future iOS build). This error means that Visual Studio is not configured to understand this project type, and as a result, Ultraviolet will not load or compile correctly. If you encounter this error, please consult [this blog post](http://blogs.msdn.com/b/smondal/archive/2015/08/24/the-imported-project-quot-c-program-files-x86-msbuild-microsoft-windowsxaml-v14-0-8-1-microsoft-windows-ui-xaml-csharp-targets-quot-was-not-found.aspx) for potential workarounds.
 
   If you're using Visual Studio 2013, make sure you're using the latest update. If you continue to have issues, try installing the [Shared Project Reference Manager](https://visualstudiogallery.msdn.microsoft.com/315c13a7-2787-4f57-bdf7-adae6ed54450) extension.
