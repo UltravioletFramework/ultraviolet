@@ -222,19 +222,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 data.Handled = true;
                 return;
             }
-
-            // Decimal separator cannot be inserted if we already have a decimal separator.
-            var decimalSeparatorPos = text.IndexOf('.');
-            if (decimalSeparatorPos >= 0 && character == '.')
-            {
-                data.Handled = true;
-                return;
-            }
-
+            
             // Decimal separator can only be inserted if we allow decimal points.
             // Decimal separator can only be inserted if it doesn't introduce more than the allowed number of decimals.
+            var decimalSeparatorPos = text.IndexOf('.');
             if (character == '.')
             {
+                if (decimalSeparatorPos >= 0 || DecimalPlaces == 0)
+                {
+                    data.Handled = true;
+                    return;
+                }
+
                 var decimalsIntroduced = text.Length - index;
                 if (decimalsIntroduced > DecimalPlaces)
                     data.Handled = true;
