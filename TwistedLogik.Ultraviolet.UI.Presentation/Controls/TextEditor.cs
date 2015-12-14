@@ -1051,7 +1051,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Called when the value of the <see cref="TextBox.IsReadOnly"/> property changes.
+        /// Called when the value of the <see cref="Primitives.TextBoxBase.IsReadOnly"/> property changes.
         /// </summary>
         internal void HandleIsReadOnlyChanged()
         {
@@ -2212,7 +2212,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Finishes tracking changes to the selection state and raises a <see cref="TextBox.SelectionChangedEvent"/> 
+        /// Finishes tracking changes to the selection state and raises a <see cref="Primitives.TextBoxBase.SelectionChangedEvent"/> 
         /// routed event if necessary,
         /// </summary>
         private void EndTrackingSelectionChanges()
@@ -2231,7 +2231,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Raises the <see cref="TextBox.SelectionChangedEvent"/> routed event.
+        /// Raises the <see cref="Primitives.TextBoxBase.SelectionChangedEvent"/> routed event.
         /// </summary>
         private void RaiseSelectionChanged()
         {

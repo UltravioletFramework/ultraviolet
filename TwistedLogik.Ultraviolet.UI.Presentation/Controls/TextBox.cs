@@ -665,7 +665,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="IsReadOnly"/> dependency property changes.
+        /// Occurs when the value of the <see cref="Primitives.TextBoxBase.IsReadOnly"/> dependency property changes.
         /// </summary>
         private static void HandleIsReadOnlyChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
@@ -675,7 +675,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Coerces the value of the <see cref="HorizontalScrollBarVisibility"/> property to force the scroll bar
+        /// Coerces the value of the <see cref="Primitives.TextBoxBase.HorizontalScrollBarVisibility"/> property to force the scroll bar
         /// to a disabled state when wrapping is enabled.
         /// </summary>
         private static ScrollBarVisibility CoerceHorizontalScrollBarVisibility(DependencyObject dobj, ScrollBarVisibility value)
