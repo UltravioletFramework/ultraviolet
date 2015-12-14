@@ -215,6 +215,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Appends the specified string to the end of the text box's content.
+        /// </summary>
+        /// <param name="textData">The text to append to the end of the text box's content.</param>
+        public void AppendText(String textData)
+        {
+            if (textData == null)
+                return;
+
+            BeginTrackingSelectionChanges();
+
+            bufferText.Append(textData);
+            UpdateTextStringSource();
+            UpdateTextParserStream();
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
         /// Copies the currently selected text onto the clipboard.
         /// </summary>
         public void Copy()

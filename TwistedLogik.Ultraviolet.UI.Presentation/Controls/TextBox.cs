@@ -22,7 +22,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         static TextBox()
         {
             EventManager.RegisterClassHandler(typeof(TextBox), ScrollViewer.ScrollChangedEvent, new UpfScrollChangedEventHandler(HandleScrollChanged));
-            EventManager.RegisterClassHandler(typeof(TextBox), SelectionChangedEvent, new UpfRoutedEventHandler(HandleSelectionChanged));
 
             HorizontalScrollBarVisibilityProperty.OverrideMetadata(typeof(TextBox),
                 new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, null, CoerceHorizontalScrollBarVisibility));
@@ -569,8 +568,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (TextEditor != null)
                 TextEditor.HandleGotKeyboardFocus();
 
-            UpdateIsSelectionActive();
-
             base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
@@ -581,8 +578,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (TextEditor != null)
                 TextEditor.HandleLostKeyboardFocus();
-
-            UpdateIsSelectionActive();
 
             base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
@@ -618,24 +613,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the control handles a <see cref="SelectionChangedEvent"/> routed event.
-        /// </summary>
-        private static void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
-        {
-            var textBox = (TextBox)dobj;
-            textBox.UpdateIsSelectionActive();
-
-            if (textBox.TextEditor != null && data.OriginalSource == textBox.TextEditor)
-            {
-                var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
-                var evtData = new RoutedEventData(textBox);
-                evtDelegate(textBox, ref evtData);
-
-                data.Handled = true;
-            }
-        }
-
-        /// <summary>
         /// Occurs when the value of the Text dependency property changes.
         /// </summary>
         private static void HandleTextChanged(DependencyObject dobj, VersionedStringSource oldValue, VersionedStringSource newValue)
@@ -647,11 +624,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 raiseTextChanged = !textBox.TextEditor.HandleTextChanged(newValue);
 
             if (raiseTextChanged)
-            {
-                var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(TextChangedEvent);
-                var evtData = new RoutedEventData(textBox);
-                evtDelegate(textBox, ref evtData);
-            }
+                textBox.OnTextChanged();
         }
 
         /// <summary>
@@ -774,22 +747,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
             }
         }
-
-        /// <summary>
-        /// Updates the value of the <see cref="IsSelectionActive"/> property.
-        /// </summary>
-        private void UpdateIsSelectionActive()
-        {
-            var isSelectionActive = IsKeyboardFocusWithin;
-
-            if (TextEditor == null || TextEditor.SelectionLength == 0)
-                isSelectionActive = false;
-
-            var oldValue = GetValue<Boolean>(IsSelectionActiveProperty);
-            if (oldValue != isSelectionActive)
-            {
-                SetValue(IsSelectionActivePropertyKey, isSelectionActive);
-            }
-        }        
     }
 }

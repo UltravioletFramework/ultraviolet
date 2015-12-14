@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
@@ -10,6 +11,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     [UvmlKnownType]
     public abstract class TextBoxBase : Control
     {
+        /// <summary>
+        /// Initializes the <see cref="TextBoxBase"/> type.
+        /// </summary>
+        static TextBoxBase()
+        {
+            EventManager.RegisterClassHandler(typeof(TextBoxBase), SelectionChangedEvent, new UpfRoutedEventHandler(HandleSelectionChanged));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBoxBase"/> class.
         /// </summary>
@@ -57,6 +66,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             if (TextEditor != null)
                 TextEditor.SelectCurrentToken();
+        }
+
+        /// <summary>
+        /// Appends the specified string to the end of the text box's content.
+        /// </summary>
+        /// <param name="textData">The text to append to the end of the text box's content.</param>
+        public void AppendText(String textData)
+        {
+            if (TextEditor != null)
+                TextEditor.AppendText(textData);
         }
 
         /// <summary>
@@ -411,7 +430,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// The private access key for the <see cref="IsSelectionActive"/> read-only dependency property.
         /// </summary>
-        internal static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(TextBoxBase),
+        private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(TextBoxBase),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
@@ -470,6 +489,74 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     return null;
 
                 return PART_Editor.Parent as ScrollViewer;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        {
+            UpdateIsSelectionActive();
+
+            base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        {
+            UpdateIsSelectionActive();
+
+            base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="SelectionChanged"/> routed event.
+        /// </summary>
+        protected virtual void OnSelectionChanged()
+        {
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
+            var evtData = new RoutedEventData(this);
+            evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="TextChanged"/> routed event.
+        /// </summary>
+        protected virtual void OnTextChanged()
+        {
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(TextChangedEvent);
+            var evtData = new RoutedEventData(this);
+            evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
+        /// Occurs when the control handles a <see cref="SelectionChangedEvent"/> routed event.
+        /// </summary>
+        private static void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)dobj;
+            textBox.UpdateIsSelectionActive();
+
+            if (textBox.TextEditor != null && data.OriginalSource == textBox.TextEditor)
+            {
+                textBox.OnSelectionChanged();
+                data.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="IsSelectionActive"/> property.
+        /// </summary>
+        private void UpdateIsSelectionActive()
+        {
+            var isSelectionActive = IsKeyboardFocusWithin;
+
+            if (TextEditor == null || TextEditor.SelectionLength == 0)
+                isSelectionActive = false;
+
+            var oldValue = GetValue<Boolean>(IsSelectionActiveProperty);
+            if (oldValue != isSelectionActive)
+            {
+                SetValue(IsSelectionActivePropertyKey, isSelectionActive);
             }
         }
 
