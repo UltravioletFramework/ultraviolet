@@ -324,7 +324,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the control handles a <see cref="SelectionChangedEvent"/> routed event.
+        /// Occurs when the control handles a <see cref="TextBoxBase.SelectionChangedEvent"/> routed event.
         /// </summary>
         private static void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
         {
