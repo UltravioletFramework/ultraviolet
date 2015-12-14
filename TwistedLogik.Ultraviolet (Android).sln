@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Gluon (Android)", "TwistedLogik.Gluon (Android)\TwistedLogik.Gluon (Android).csproj", "{49A66667-2355-4755-A3AD-4EF9CA638534}"
 EndProject
@@ -47,6 +47,7 @@ Global
 		TwistedLogik.Nucleus\TwistedLogik.Nucleus.projitems*{803b586b-cbac-4e46-a787-bdf837e1ef46}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{97309779-3045-4d98-8de0-5f40a8dc1c5b}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
+		UvDebugSandbox\UvDebugSandbox.projitems*{fec3b657-42e7-4e8e-8760-9fd7eff1d0e5}*SharedItemsImports = 4
 		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{49a66667-2355-4755-a3ad-4ef9ca638534}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{3416af37-8a39-479d-b78f-88d72cadd458}*SharedItemsImports = 4
@@ -123,9 +124,9 @@ Global
 		{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}.Signed|Any CPU.ActiveCfg = Release|Any CPU
-		{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}.Signed|Any CPU.Build.0 = Release|Any CPU
-		{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}.Signed|Any CPU.Deploy.0 = Release|Any CPU
+		{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}.Signed|Any CPU.Deploy.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
