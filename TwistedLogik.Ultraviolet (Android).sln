@@ -37,10 +37,13 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.SD
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI.Presentation", "TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.shproj", "{4E921721-BE4A-4F69-BEE4-61E8A18E0774}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebugSandbox", "UvDebugSandbox\UvDebugSandbox.shproj", "{41B16059-BFE0-4704-8EEE-44339B3834C5}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{b5502009-935a-40ba-b415-abbf55427cad}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
+		UvDebugSandbox\UvDebugSandbox.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{0b17931c-1595-4ada-9086-f26e5f5a387d}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{381b05eb-e12e-451c-a272-2f5c2fd9c106}*SharedItemsImports = 4
