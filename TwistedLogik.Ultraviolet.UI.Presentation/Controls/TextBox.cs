@@ -4,6 +4,7 @@ using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -13,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.TextBox.xml")]
     [DefaultProperty("Text")]
-    public class TextBox : Control
+    public class TextBox : TextBoxBase
     {
         /// <summary>
         /// Initializes the <see cref="TextBox"/> type.
@@ -22,6 +23,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             EventManager.RegisterClassHandler(typeof(TextBox), ScrollViewer.ScrollChangedEvent, new UpfScrollChangedEventHandler(HandleScrollChanged));
             EventManager.RegisterClassHandler(typeof(TextBox), SelectionChangedEvent, new UpfRoutedEventHandler(HandleSelectionChanged));
+
+            HorizontalScrollBarVisibilityProperty.OverrideMetadata(typeof(TextBox),
+                new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, null, CoerceHorizontalScrollBarVisibility));
+
+            IsReadOnlyProperty.OverrideMetadata(typeof(TextBox),
+                new PropertyMetadata<Boolean>(HandleIsReadOnlyChanged));
         }
 
         /// <summary>
@@ -73,8 +80,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">A <see cref="StringBuilder"/> instance whose contents will be set as the text box's text.</param>
         public void SetText(StringBuilder value)
         {
-            if (PART_Editor != null)
-                PART_Editor.HandleTextChanged(value);
+            if (TextEditor != null)
+                TextEditor.HandleTextChanged(value);
         }
 
         /// <summary>
@@ -83,8 +90,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>A string containing the selected text.</returns>
         public String GetSelectedText()
         {
-            if (PART_Editor != null)
-                return PART_Editor.GetSelectedText();
+            if (TextEditor != null)
+                return TextEditor.GetSelectedText();
 
             return null;
         }
@@ -95,8 +102,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the contents of the selection.</param>
         public void GetSelectedText(StringBuilder stringBuilder)
         {
-            if (PART_Editor != null)
-                PART_Editor.GetSelectedText(stringBuilder);
+            if (TextEditor != null)
+                TextEditor.GetSelectedText(stringBuilder);
         }
 
         /// <summary>
@@ -105,8 +112,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">The text to set.</param>
         public void SetSelectedText(String value)
         {
-            if (PART_Editor != null)
-                PART_Editor.SetSelectedText(value);
+            if (TextEditor != null)
+                TextEditor.SetSelectedText(value);
         }
 
         /// <summary>
@@ -115,8 +122,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">A <see cref="StringBuilder"/> containing the text to set.</param>
         public void SetSelectedText(StringBuilder value)
         {
-            if (PART_Editor != null)
-                PART_Editor.SetSelectedText(value);
+            if (TextEditor != null)
+                TextEditor.SetSelectedText(value);
         }
 
         /// <summary>
@@ -126,8 +133,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>A string containing the contents of the specified line of text.</returns>
         public String GetLineText(Int32 lineIndex)
         {
-            if (PART_Editor != null)
-                return PART_Editor.GetLineText(lineIndex);
+            if (TextEditor != null)
+                return TextEditor.GetLineText(lineIndex);
 
             return null;
         }
@@ -139,197 +146,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the contents of the specified line of text.</param>
         public void GetLineText(Int32 lineIndex, StringBuilder stringBuilder)
         {
-            if (PART_Editor != null)
-                PART_Editor.GetLineText(lineIndex, stringBuilder);
-        }
-
-        /// <summary>
-        /// Selects the specified range of text.
-        /// </summary>
-        /// <param name="start">The index of the first character to select.</param>
-        /// <param name="length">The number of characters to select.</param>
-        public void Select(Int32 start, Int32 length)
-        {
-            if (PART_Editor != null)
-                PART_Editor.Select(start, length);
-        }
-
-        /// <summary>
-        /// Selects the entirety of the editor's text.
-        /// </summary>
-        public void SelectAll()
-        {
-            if (PART_Editor != null)
-                PART_Editor.SelectAll();
-        }
-
-        /// <summary>
-        /// Selects the word, whitespace, or symbol at the current caret position.
-        /// </summary>
-        public void SelectCurrentToken()
-        {
-            if (PART_Editor != null)
-                PART_Editor.SelectCurrentToken();
-        }
-
-        /// <summary>
-        /// Copies the currently selected text onto the clipboard.
-        /// </summary>
-        public void Copy()
-        {
-            if (PART_Editor != null)
-                PART_Editor.Copy();
-        }
-
-        /// <summary>
-        /// Cuts the currently selected text onto the clipboard.
-        /// </summary>
-        public void Cut()
-        {
-            if (PART_Editor != null)
-                PART_Editor.Cut();
-        }
-
-        /// <summary>
-        /// Pastes the contents of the clipboard at the current caret position.
-        /// </summary>
-        public void Paste()
-        {
-            if (PART_Editor != null)
-                PART_Editor.Paste();
-        }
-
-        /// <summary>
-        /// Clears the text box's content.
-        /// </summary>
-        public void Clear()
-        {
-            if (PART_Editor != null)
-                PART_Editor.Clear();
-        }
-
-        /// <summary>
-        /// Scrolls the text box one line up.
-        /// </summary>
-        public void LineUp()
-        {
-            var font = Font;
-            if (font == null || !font.IsLoaded)
-                return;
-
-            var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
-            var fontLineHeight = fontFace.LineSpacing;
-
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.ScrollToVerticalOffset(PART_ScrollViewer.VerticalOffset - fontLineHeight);
-        }
-
-        /// <summary>
-        /// Scrolls the text box one line down.
-        /// </summary>
-        public void LineDown()
-        {
-            var font = Font;
-            if (font == null || !font.IsLoaded)
-                return;
-
-            var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
-            var fontLineHeight = fontFace.LineSpacing;
-
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.ScrollToVerticalOffset(PART_ScrollViewer.VerticalOffset + fontLineHeight);
-        }
-
-        /// <summary>
-        /// Scrolls the text box one line to the left.
-        /// </summary>
-        public void LineLeft()
-        {
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.LineLeft();
-        }
-
-        /// <summary>
-        /// Scrolls the text box one line to the right.
-        /// </summary>
-        public void LineRight()
-        {
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.LineRight();
-        }
-
-        /// <summary>
-        /// Scrolls the text box one page towards the top of its content.
-        /// </summary>
-        public void PageUp()
-        {
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.PageUp();
-        }
-
-        /// <summary>
-        /// Scrolls the text box one page towards the bottom of its content.
-        /// </summary>
-        public void PageDown()
-        {
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.PageDown();
-        }
-
-        /// <summary>
-        /// Scrolls the text box one page towards the left of its content.
-        /// </summary>
-        public void PageLeft()
-        {
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.PageLeft();
-        }
-
-        /// <summary>
-        /// Scrolls the text box one page towards the right of its content.
-        /// </summary>
-        public void PageRight()
-        {
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.PageRight();
-        }
-
-        /// <summary>
-        /// Scrolls the text box to the beginning of its content.
-        /// </summary>
-        public void ScrollToHome()
-        {
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.ScrollToHome();
-        }
-
-        /// <summary>
-        /// Scrolls the text box to the end of its content.
-        /// </summary>
-        public void ScrollToEnd()
-        {
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.ScrollToEnd();
-        }
-
-        /// <summary>
-        /// Scrolls the text box to the specified horizontal offset.
-        /// </summary>
-        /// <param name="offset">The horizontal offset to which to move the text box's scrollable area.</param>
-        public void ScrollToHorizontalOffset(Double offset)
-        {
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.ScrollToHorizontalOffset(offset);
-        }
-
-        /// <summary>
-        /// Scrolls the text box to the specified vertical offset.
-        /// </summary>
-        /// <param name="offset">The vertical offset to which to move the text box's scrollable area.</param>
-        public void ScrollToVerticalOffset(Double offset)
-        {
-            if (PART_ScrollViewer != null)
-                PART_ScrollViewer.ScrollToVerticalOffset(offset);
+            if (TextEditor != null)
+                TextEditor.GetLineText(lineIndex, stringBuilder);
         }
 
         /// <summary>
@@ -338,8 +156,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="lineIndex">The index of the line to scroll into view.</param>
         public void ScrollToLine(Int32 lineIndex)
         {
-            if (PART_Editor != null)
-                PART_Editor.ScrollToLine(lineIndex);
+            if (TextEditor != null)
+                TextEditor.ScrollToLine(lineIndex);
         }
 
         /// <summary>
@@ -349,8 +167,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The index of the first character on the specified line.</returns>
         public Int32 GetCharacterIndexFromLineIndex(Int32 lineIndex)
         {
-            if (PART_Editor != null)
-                return PART_Editor.GetCharacterIndexFromLineIndex(lineIndex);
+            if (TextEditor != null)
+                return TextEditor.GetCharacterIndexFromLineIndex(lineIndex);
 
             return 0;
         }
@@ -364,8 +182,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The index of the character at the specified point, or -1 if there is no character at the specified point.</returns>
         public Int32 GetCharacterIndexFromPoint(Point2D point, Boolean snapToText)
         {
-            if (PART_Editor != null)
-                return PART_Editor.GetCharacterIndexFromPoint(point, snapToText);
+            if (TextEditor != null)
+                return TextEditor.GetCharacterIndexFromPoint(point, snapToText);
 
             return -1;
         }
@@ -376,8 +194,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The index of the first visible line of text.</returns>
         public Int32 GetFirstVisibleLineIndex()
         {
-            if (PART_Editor != null)
-                return PART_Editor.GetFirstVisibleLineIndex();
+            if (TextEditor != null)
+                return TextEditor.GetFirstVisibleLineIndex();
 
             return 0;
         }
@@ -388,8 +206,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The index of the last visible line of text.</returns>
         public Int32 GetLastVisibleLineIndex()
         {
-            if (PART_Editor != null)
-                return PART_Editor.GetLastVisibleLineIndex();
+            if (TextEditor != null)
+                return TextEditor.GetLastVisibleLineIndex();
 
             return 0;
         }
@@ -401,8 +219,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The index of the line of text that contains the specified character.</returns>
         public Int32 GetLineIndexFromCharacterIndex(Int32 charIndex)
         {
-            if (PART_Editor != null)
-                return PART_Editor.GetLineIndexFromCharacterIndex(charIndex);
+            if (TextEditor != null)
+                return TextEditor.GetLineIndexFromCharacterIndex(charIndex);
 
             return 0;
         }
@@ -414,8 +232,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The number of characters on the specified line of text.</returns>
         public Int32 GetLineLength(Int32 lineIndex)
         {
-            if (PART_Editor != null)
-                return PART_Editor.GetLineLength(lineIndex);
+            if (TextEditor != null)
+                return TextEditor.GetLineLength(lineIndex);
 
             return 0;
         }
@@ -428,8 +246,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// or <see cref="RectangleD.Empty"/> if the bounding rectangle cannot be determined.</returns>
         public RectangleD GetRectFromCharacterIndex(Int32 charIndex)
         {
-            if (PART_Editor != null)
-                return PART_Editor.GetRectFromCharacterIndex(charIndex);
+            if (TextEditor != null)
+                return TextEditor.GetRectFromCharacterIndex(charIndex);
 
             return RectangleD.Empty;
         }
@@ -443,8 +261,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// or <see cref="RectangleD.Empty"/> if the bounding rectangle cannot be determined.</returns>
         public RectangleD GetRectFromCharacterIndex(Int32 charIndex, Boolean trailingEdge)
         {
-            if (PART_Editor != null)
-                return PART_Editor.GetRectFromCharacterIndex(charIndex, trailingEdge);
+            if (TextEditor != null)
+                return TextEditor.GetRectFromCharacterIndex(charIndex, trailingEdge);
 
             return RectangleD.Empty;
         }
@@ -486,87 +304,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a <see cref="ScrollBarVisibility"/> value which specifies whether the text box's horizontal scroll bar is visible.
-        /// </summary>
-        public ScrollBarVisibility HorizontalScrollBarVisibility
-        {
-            get { return GetValue<ScrollBarVisibility>(HorizontalScrollBarVisibilityProperty); }
-            set { SetValue(HorizontalScrollBarVisibilityProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a <see cref="ScrollBarVisibility"/> value which specifies whether the text box's vertical scroll bar is visible.
-        /// </summary>
-        public ScrollBarVisibility VerticalScrollBarVisibility
-        {
-            get { return GetValue<ScrollBarVisibility>(VerticalScrollBarVisibilityProperty); }
-            set { SetValue(VerticalScrollBarVisibilityProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this is a read-only text box. A read-only text box cannot be changed by the
-        /// user, but may still be changed programmatically.
-        /// </summary>
-        public Boolean IsReadOnly
-        {
-            get { return GetValue<Boolean>(IsReadOnlyProperty); }
-            set { SetValue(IsReadOnlyProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the caret is visible when this text box is read-only.
-        /// </summary>
-        public Boolean IsReadOnlyCaretVisible
-        {
-            get { return GetValue<Boolean>(IsReadOnlyCaretVisibleProperty); }
-            set { SetValue(IsReadOnlyCaretVisibleProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the text box has focus and selected text.
-        /// </summary>
-        public Boolean IsSelectionActive
-        {
-            get { return GetValue<Boolean>(IsSelectionActiveProperty); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the selection highlight is displayed when the text box does not have focus.
-        /// </summary>
-        public Boolean IsInactiveSelectionHighlightEnabled
-        {
-            get { return GetValue<Boolean>(IsInactiveSelectionHighlightEnabledProperty); }
-            set { SetValue(IsInactiveSelectionHighlightEnabledProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the text box will accept the return key as a normal character.
-        /// </summary>
-        public Boolean AcceptsReturn
-        {
-            get { return GetValue<Boolean>(AcceptsReturnProperty); }
-            set { SetValue(AcceptsReturnProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the text box will accept the tab key as a normal character. If false,
-        /// tab will instead be used for tab navigation.
-        /// </summary>
-        public Boolean AcceptsTab
-        {
-            get { return GetValue<Boolean>(AcceptsTabProperty); }
-            set { SetValue(AcceptsTabProperty, value); }
-        }
-
-        /// <summary>
         /// Gets the total number of characters in the text box's text.
         /// </summary>
         public Int32 TextLength
         {
             get
             {
-                if (PART_Editor != null)
-                    return PART_Editor.TextLength;
+                if (TextEditor != null)
+                    return TextEditor.TextLength;
 
                 return 0;
             }
@@ -588,8 +333,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get
             {
-                if (PART_Editor != null)
-                    return PART_Editor.LineCount;
+                if (TextEditor != null)
+                    return TextEditor.LineCount;
 
                 return 0;
             }
@@ -620,15 +365,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get
             {
-                if (PART_Editor != null)
-                    return PART_Editor.CaretIndex;
+                if (TextEditor != null)
+                    return TextEditor.CaretIndex;
 
                 return 0;
             }
             set
             {
-                if (PART_Editor != null)
-                    PART_Editor.CaretIndex = value;
+                if (TextEditor != null)
+                    TextEditor.CaretIndex = value;
             }
         }
 
@@ -639,15 +384,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get
             {
-                if (PART_Editor != null)
-                    return PART_Editor.SelectionStart;
+                if (TextEditor != null)
+                    return TextEditor.SelectionStart;
 
                 return 0;
             }
             set
             {
-                if (PART_Editor != null)
-                    PART_Editor.SelectionStart = value;
+                if (TextEditor != null)
+                    TextEditor.SelectionStart = value;
             }
         }
 
@@ -658,120 +403,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get
             {
-                if (PART_Editor != null)
-                    return PART_Editor.SelectionLength;
+                if (TextEditor != null)
+                    return TextEditor.SelectionLength;
 
                 return 0;
             }
             set
             {
-                if (PART_Editor != null)
-                    PART_Editor.SelectionLength = value;
+                if (TextEditor != null)
+                    TextEditor.SelectionLength = value;
             }
         }
         
-        /// <summary>
-        /// Gets the horizontal offset of the text box's scroll viewer.
-        /// </summary>
-        public Double HorizontalOffset
-        {
-            get
-            {
-                if (PART_ScrollViewer != null)
-                    return PART_ScrollViewer.HorizontalOffset;
-
-                return 0;
-            }
-        }
-
-        /// <summary>
-        /// Gets the vertical offset of the text box's scroll viewer.
-        /// </summary>
-        public Double VerticalOffset
-        {
-            get
-            {
-                if (PART_ScrollViewer != null)
-                    return PART_ScrollViewer.VerticalOffset;
-
-                return 0;
-            }
-        }
-
-        /// <summary>
-        /// Gets the width of the content which is being displayed by the text box's scroll viewer.
-        /// </summary>
-        public Double ExtentWidth
-        {
-            get
-            {
-                if (PART_ScrollViewer != null)
-                    return PART_ScrollViewer.ExtentWidth;
-
-                return 0;
-            }
-        }
-
-        /// <summary>
-        /// Gets the height of the content which is being displayed by the text box's scroll viewer.
-        /// </summary>
-        public Double ExtentHeight
-        {
-            get
-            {
-                if (PART_ScrollViewer != null)
-                    return PART_ScrollViewer.ExtentHeight;
-
-                return 0;
-            }
-        }
-
-        /// <summary>
-        /// Gets the width of the text box's scrollable viewport.
-        /// </summary>
-        public Double ViewportWidth
-        {
-            get
-            {
-                if (PART_ScrollViewer != null)
-                    return PART_ScrollViewer.ViewportWidth;
-
-                return 0;
-            }
-        }
-
-        /// <summary>
-        /// Gets the height of the text box's scrollable viewport.
-        /// </summary>
-        public Double ViewportHeight
-        {
-            get
-            {
-                if (PART_ScrollViewer != null)
-                    return PART_ScrollViewer.ViewportHeight;
-
-                return 0;
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the selected text is changed.
-        /// </summary>
-        public event UpfRoutedEventHandler SelectionChanged
-        {
-            add { AddHandler(SelectionChangedEvent, value); }
-            remove { RemoveHandler(SelectionChangedEvent, value); }
-        }
-
-        /// <summary>
-        /// Occurs when the text box's text changes.
-        /// </summary>
-        public event UpfRoutedEventHandler TextChanged
-        {
-            add { AddHandler(TextChangedEvent, value); }
-            remove { RemoveHandler(TextChangedEvent, value); }
-        }
-
         /// <summary>
         /// Identifies the Text dependency property.
         /// </summary>
@@ -802,59 +445,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public static readonly DependencyProperty TextWrappingProperty = DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(TextBox),
             new PropertyMetadata<TextWrapping>(TextWrapping.NoWrap, PropertyMetadataOptions.AffectsMeasure, HandleTextWrappingChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextBox),
-            new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, PropertyMetadataOptions.None, null, CoerceHorizontalScrollBarVisibility));
-
-        /// <summary>
-        /// Identifies the <see cref="VerticalScrollBarVisibility"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextBox),
-            new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, PropertyMetadataOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="IsReadOnly"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(Boolean), typeof(TextBox),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsReadOnlyChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="IsReadOnlyCaretVisible"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsReadOnlyCaretVisibleProperty = DependencyProperty.Register("IsReadOnlyCaretVisibleProperty", typeof(Boolean), typeof(TextBox),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
-
-        /// <summary>
-        /// The private access key for the <see cref="IsSelectionActive"/> read-only dependency property.
-        /// </summary>
-        private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(TextBox),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="IsSelectionActive"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsSelectionActiveProperty = IsSelectionActivePropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// Identifies the <see cref="IsInactiveSelectionHighlightEnabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsInactiveSelectionHighlightEnabledProperty = DependencyProperty.Register("IsInactiveSelectionHighlightEnabled", typeof(Boolean), typeof(TextBox),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="AcceptsReturn"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty AcceptsReturnProperty = KeyboardNavigation.AcceptsReturnProperty.AddOwner(typeof(TextBox));
-
-        /// <summary>
-        /// Identifies the <see cref="AcceptsTab"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty AcceptsTabProperty = DependencyProperty.Register("AcceptsTab", typeof(Boolean), typeof(TextBox),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
-
+        
         /// <summary>
         /// Identifies the <see cref="MinLines"/> dependency property.
         /// </summary>
@@ -873,17 +464,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.Zero, PropertyMetadataOptions.None));
 
-        /// <summary>
-        /// Identifies the <see cref="SelectionChanged"/> routed event.
-        /// </summary>
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", 
-            RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(TextBox));
+        /// <inheritdoc/>
+        internal override void LineUpInternal()
+        {
+            var font = Font;
+            if (font == null || !font.IsLoaded)
+                return;
 
-        /// <summary>
-        /// Identifies the <see cref="TextChanged"/> routed event.
-        /// </summary>
-        public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent("TextChanged",
-            RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(TextBox));
+            var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
+            var fontLineHeight = fontFace.LineSpacing;
+
+            var scrollViewer = TextEditorScrollViewer;
+            if (scrollViewer != null)
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - fontLineHeight);
+        }
+
+        /// <inheritdoc/>
+        internal override void LineDownInternal()
+        {
+            var font = Font;
+            if (font == null || !font.IsLoaded)
+                return;
+
+            var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
+            var fontLineHeight = fontFace.LineSpacing;
+
+            var scrollViewer = TextEditorScrollViewer;
+            if (scrollViewer != null)
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + fontLineHeight);
+        }
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
@@ -901,8 +510,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 CaptureMouse();
             }
 
-            if (PART_Editor != null && IsMouseWithinEditor())
-                PART_Editor.HandleMouseDown(device, button, ref data);
+            if (TextEditor != null && IsMouseWithinEditor())
+                TextEditor.HandleMouseDown(device, button, ref data);
 
             data.Handled = true;
             base.OnMouseDown(device, button, ref data);
@@ -916,8 +525,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 ReleaseMouseCapture();
             }
 
-            if (PART_Editor != null && IsMouseWithinEditor())
-                PART_Editor.HandleMouseUp(device, button, ref data);
+            if (TextEditor != null && IsMouseWithinEditor())
+                TextEditor.HandleMouseUp(device, button, ref data);
 
             data.Handled = true;
             base.OnMouseUp(device, button, ref data);
@@ -926,8 +535,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            if (IsMouseWithinEditor() && PART_Editor != null)
-                PART_Editor.HandleMouseDoubleClick(device, button, ref data);
+            if (IsMouseWithinEditor() && TextEditor != null)
+                TextEditor.HandleMouseDoubleClick(device, button, ref data);
 
             base.OnMouseDoubleClick(device, button, ref data);
         }
@@ -935,8 +544,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
-            if (PART_Editor != null)
-                PART_Editor.HandleMouseMove(device, ref data);
+            if (TextEditor != null)
+                TextEditor.HandleMouseMove(device, ref data);
 
             data.Handled = true;
             base.OnMouseMove(device, x, y, dx, dy, ref data);
@@ -945,8 +554,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnLostMouseCapture(ref RoutedEventData data)
         {
-            if (PART_Editor != null)
-                PART_Editor.HandleLostMouseCapture();
+            if (TextEditor != null)
+                TextEditor.HandleLostMouseCapture();
 
             data.Handled = true;
             base.OnLostMouseCapture(ref data);
@@ -957,8 +566,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode);
 
-            if (PART_Editor != null)
-                PART_Editor.HandleGotKeyboardFocus();
+            if (TextEditor != null)
+                TextEditor.HandleGotKeyboardFocus();
 
             UpdateIsSelectionActive();
 
@@ -970,8 +579,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             Ultraviolet.GetInput().HideSoftwareKeyboard();
 
-            if (PART_Editor != null)
-                PART_Editor.HandleLostKeyboardFocus();
+            if (TextEditor != null)
+                TextEditor.HandleLostKeyboardFocus();
 
             UpdateIsSelectionActive();
 
@@ -981,8 +590,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
-            if (PART_Editor != null)
-                PART_Editor.HandleKeyDown(device, key, modifiers, ref data);
+            if (TextEditor != null)
+                TextEditor.HandleKeyDown(device, key, modifiers, ref data);
             
             base.OnKeyDown(device, key, modifiers, ref data);
         }
@@ -990,8 +599,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnTextInput(KeyboardDevice device, ref RoutedEventData data)
         {
-            if (PART_Editor != null)
-                PART_Editor.HandleTextInput(device, ref data);
+            if (TextEditor != null)
+                TextEditor.HandleTextInput(device, ref data);
 
             base.OnTextInput(device, ref data);
         }
@@ -1016,7 +625,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var textBox = (TextBox)dobj;
             textBox.UpdateIsSelectionActive();
 
-            if (textBox.PART_Editor != null && data.OriginalSource == textBox.PART_Editor)
+            if (textBox.TextEditor != null && data.OriginalSource == textBox.TextEditor)
             {
                 var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
                 var evtData = new RoutedEventData(textBox);
@@ -1034,8 +643,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var raiseTextChanged = false;
 
             var textBox = (TextBox)dobj;
-            if (textBox.PART_Editor != null)
-                raiseTextChanged = !textBox.PART_Editor.HandleTextChanged(newValue);
+            if (textBox.TextEditor != null)
+                raiseTextChanged = !textBox.TextEditor.HandleTextChanged(newValue);
 
             if (raiseTextChanged)
             {
@@ -1051,20 +660,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static void HandleTextAlignmentChanged(DependencyObject dobj, TextAlignment oldValue, TextAlignment newValue)
         {
             var textBox = (TextBox)dobj;
-            if (textBox.PART_Editor != null)
+            if (textBox.TextEditor != null)
             {
                 switch (newValue)
                 {
                     case TextAlignment.Right:
-                        textBox.PART_Editor.HorizontalAlignment = HorizontalAlignment.Right;
+                        textBox.TextEditor.HorizontalAlignment = HorizontalAlignment.Right;
                         break;
 
                     case TextAlignment.Center:
-                        textBox.PART_Editor.HorizontalAlignment = HorizontalAlignment.Center;
+                        textBox.TextEditor.HorizontalAlignment = HorizontalAlignment.Center;
                         break;
 
                     default:
-                        textBox.PART_Editor.HorizontalAlignment = HorizontalAlignment.Left;
+                        textBox.TextEditor.HorizontalAlignment = HorizontalAlignment.Left;
                         break;
                 }
             }
@@ -1078,8 +687,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var textBox = (TextBox)dobj;
             textBox.CoerceValue(HorizontalScrollBarVisibilityProperty);
 
-            if (textBox.PART_Editor != null)
-                textBox.PART_Editor.InvalidateMeasure();
+            if (textBox.TextEditor != null)
+                textBox.TextEditor.InvalidateMeasure();
         }
 
         /// <summary>
@@ -1088,8 +697,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static void HandleIsReadOnlyChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             var textBox = (TextBox)dobj;            
-            if (textBox.PART_Editor != null)
-                textBox.PART_Editor.HandleIsReadOnlyChanged();
+            if (textBox.TextEditor != null)
+                textBox.TextEditor.HandleIsReadOnlyChanged();
         }
 
         /// <summary>
@@ -1111,7 +720,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private Boolean IsMouseWithinEditor()
         {
-            var mouseTarget = (Control)PART_ScrollViewer ?? this;
+            var mouseTarget = (Control)TextEditorScrollViewer ?? this;
             var mouseBounds = mouseTarget.Bounds;
 
             return mouseBounds.Contains(Mouse.GetPosition(mouseTarget));
@@ -1132,35 +741,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateScrollViewerSize()
         {
-            if (PART_ScrollViewer == null)
+            var scrollViewer = TextEditorScrollViewer;
+            if (scrollViewer == null)
                 return;
 
             if (IsHeightConstrained())
             {
-                PART_ScrollViewer.ClearLocalValue(MinHeightProperty);
-                PART_ScrollViewer.ClearLocalValue(MaxHeightProperty);
+                scrollViewer.ClearLocalValue(MinHeightProperty);
+                scrollViewer.ClearLocalValue(MaxHeightProperty);
             }
             else
             {
-                var heightOfComponents = PART_ScrollViewer.ActualHeight - PART_ScrollViewer.ViewportHeight;
+                var heightOfComponents = scrollViewer.ActualHeight - scrollViewer.ViewportHeight;
                 var heightOfLine = !Font.IsLoaded ? 0 : Font.Resource.Value.GetFace(FontStyle).LineSpacing;
 
                 if (MinLines > 1)
                 {
-                    PART_ScrollViewer.MinHeight = heightOfComponents + (heightOfLine * MinLines);
+                    scrollViewer.MinHeight = heightOfComponents + (heightOfLine * MinLines);
                 }
                 else
                 {
-                    PART_ScrollViewer.ClearLocalValue(MinHeightProperty);
+                    scrollViewer.ClearLocalValue(MinHeightProperty);
                 }
 
                 if (MaxLines < Int32.MaxValue)
                 {
-                    PART_ScrollViewer.MaxHeight = heightOfComponents + (heightOfLine * MaxLines);
+                    scrollViewer.MaxHeight = heightOfComponents + (heightOfLine * MaxLines);
                 }
                 else
                 {
-                    PART_ScrollViewer.ClearLocalValue(MaxHeightProperty);
+                    scrollViewer.ClearLocalValue(MaxHeightProperty);
                 }
             }
         }
@@ -1172,7 +782,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var isSelectionActive = IsKeyboardFocusWithin;
 
-            if (PART_Editor == null || PART_Editor.SelectionLength == 0)
+            if (TextEditor == null || TextEditor.SelectionLength == 0)
                 isSelectionActive = false;
 
             var oldValue = GetValue<Boolean>(IsSelectionActiveProperty);
@@ -1180,10 +790,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 SetValue(IsSelectionActivePropertyKey, isSelectionActive);
             }
-        }
-
-        // Component references.
-        private readonly ScrollViewer PART_ScrollViewer = null;
-        private readonly TextEditor PART_Editor = null;  
+        }        
     }
 }

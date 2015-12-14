@@ -62,6 +62,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DockPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HeaderedContentControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextBoxBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ScrollChangedInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TabItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBoxItem.cs" />
