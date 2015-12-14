@@ -200,14 +200,15 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" />
+      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
     <PreBuildEvent>if $(ConfigurationName)==Signed exit
 cd "$(SolutionDir)UvDebugSandbox (Desktop)\bin\$(ConfigurationName)"
-copy Content.uvarc "$(ProjectDir)" 
-copy TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll "$(ProjectDir)Presentation"</PreBuildEvent>
+mkdir "$(ProjectDir)Presentation"
+copy /Y Content.uvarc "$(ProjectDir)" 
+copy /Y TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll "$(ProjectDir)Presentation"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>

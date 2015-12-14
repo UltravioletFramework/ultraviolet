@@ -319,12 +319,14 @@ CheckBox >> .toggle-focus-image
 // TEXT BOX
 // ============================================================================
 
-TextBox
+    TextBox,
+PasswordBox
 {
 	padding: 6 4 6 4;
 }
 
-TextBox >> TextEditor
+    TextBox >>     TextEditor,
+PasswordBox >> PasswordEditor
 {
 	caret-insert-color: #ffffffff;
 	caret-insert-topmost: true;
@@ -333,22 +335,26 @@ TextBox >> TextEditor
 	selection-color: #ff528cc9;
 }
 
-TextBox >> ScrollViewer >> Border
+    TextBox >> ScrollViewer >> Border,
+PasswordBox >> ScrollViewer >> Border
 {
 	border-thickness: 0;
 }
 
-TextBox >> .textbox-background
+    TextBox >>     .textbox-background,
+PasswordBox >> .passwordbox-background
 {
 	source-image: #Global:Textures:DefaultUI 144 788 124 62 8 8 8 8;
 }
 
-TextBox >> .textbox-scrollviewer
+    TextBox >>     .textbox-scrollviewer,
+PasswordBox >> .passwordbox-scrollviewer
 {
 	margin: 4;
 }
 
-.textbox-focus-border
+    .textbox-focus-border,
+.passwordbox-focus-border
 {
 	margin: 2 2 2 3;
 	border-color: #ff5b9bd1;

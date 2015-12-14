@@ -263,8 +263,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             DependencyPropertySystem.AddOwner(this, ownerType);
 
-            if (typeMetadata != null)
-                OverrideMetadata(ownerType, typeMetadata);
+            OverrideMetadata(ownerType, typeMetadata);
 
             return this;
         }
@@ -277,7 +276,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void OverrideMetadata(Type forType, PropertyMetadata typeMetadata)
         {
             Contract.Require(ownerType, "ownerType");
-            Contract.Require(typeMetadata, "typeMetadata");
 
             if (metadataOverrides.ContainsKey(forType))
                 throw new InvalidOperationException(PresentationStrings.DependencyPropertyAlreadyRegistered);
@@ -290,7 +288,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 PropertyMetadata currentTypeMetadata;
                 if (metadataOverrides.TryGetValue(currentType, out currentTypeMetadata))
                 {
-                    typeMetadata.Merge(currentTypeMetadata, this);
+                    if (typeMetadata == null)
+                    {
+                        typeMetadata = currentTypeMetadata;
+                    }
+                    else
+                    {
+                        typeMetadata.Merge(currentTypeMetadata, this);
+                    }
                     merged = true;
                     break;
                 }
@@ -300,7 +305,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!merged)
             {
                 var baseMetadata = GetMetadataForOwner(ownerType);
-                typeMetadata.Merge(baseMetadata, this);
+                if (typeMetadata == null)
+                {
+                    typeMetadata = baseMetadata;
+                }
+                else
+                {
+                    typeMetadata.Merge(baseMetadata, this);
+                }
                 merged = true;
             }
 

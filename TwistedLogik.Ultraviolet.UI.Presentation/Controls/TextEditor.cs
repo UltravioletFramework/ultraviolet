@@ -5,6 +5,7 @@ using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -74,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Sets the selected text.
         /// </summary>
-        /// <param name="value">The text to set.</param>
+        /// <param name="value">A <see cref="String"/> containing text to set.</param>
         public void SetSelectedText(String value)
         {
             SetSelectedText(new StringSegment(value));
@@ -97,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             BeginTrackingSelectionChanges();
 
-            DeleteSelection();
+            DeleteSelection(value.Length == 0);
 
             var caretPositionOld = caretPosition;
             InsertTextAtCaret(value, false);
@@ -183,6 +184,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (bufferText.Length == 0)
                 return;
 
+            if (MaskCharacter.HasValue)
+            {
+                SelectAll();
+                return;
+            }
+
             var selectedPos = Math.Min(bufferText.Length - 1, caretPosition);
             var selectedChar = bufferText[selectedPos];
 
@@ -225,7 +232,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             BeginTrackingSelectionChanges();
 
-            bufferText.Append(textData);
+            InsertIntoBuffer(textData, bufferText.Length);
             UpdateTextStringSource();
             UpdateTextParserStream();
 
@@ -246,9 +253,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public void Cut()
         {
             BeginTrackingSelectionChanges();
-            
+
             Ultraviolet.GetPlatform().Clipboard.Text = GetSelectedText();
-            DeleteSelection();
+            DeleteSelection(true);
 
             EndTrackingSelectionChanges();
         }
@@ -259,7 +266,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public void Paste()
         {
             BeginTrackingSelectionChanges();
-            
+
             var text = Ultraviolet.GetPlatform().Clipboard.Text;
             InsertTextAtCaret(text, false);
 
@@ -278,7 +285,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             selectionPosition = null;
             UpdateSelectionAndCaret();
 
-            bufferText.Clear();
+            ClearBuffer(true);
+
             UpdateTextStringSource();
             UpdateTextParserStream();
 
@@ -299,7 +307,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
 
-            var boundsViewport = new RectangleD(scrollViewer.HorizontalOffset, scrollViewer.VerticalOffset, 
+            var boundsViewport = new RectangleD(scrollViewer.HorizontalOffset, scrollViewer.VerticalOffset,
                 scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
             var boundsLine = Display.PixelsToDips(new RectangleD(lineInfo.X, lineInfo.Y, lineInfo.Width, lineInfo.Height));
 
@@ -358,9 +366,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             pointX = Display.DipsToPixels(pointX);
             pointY = Display.DipsToPixels(pointY);
-            
+
             var lineAtPosition = default(Int32?);
-            var character = View.Resources.TextRenderer.GetGlyphAtPosition(textLayoutStream, 
+            var character = View.Resources.TextRenderer.GetGlyphAtPosition(textLayoutStream,
                 (Int32)pointX, (Int32)pointY, snapToText, out lineAtPosition);
 
             return character ?? -1;
@@ -384,7 +392,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var textFontFace = TextFontFace;
             if (textFontFace == null)
                 return 0;
-            
+
             return (Int32)Display.DipsToPixels(position.Y) / textFontFace.LineSpacing;
         }
 
@@ -557,7 +565,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 Select(boundedStart, boundedLength);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether the caret is drawn on top of the text while the caret is in insertion mode.
         /// </summary>
@@ -724,11 +732,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public static readonly DependencyProperty InactiveSelectionColorProperty = DependencyProperty.Register("InactiveSelectionColor", typeof(Color), typeof(TextEditor),
             new PropertyMetadata<Color>(Color.Silver * 0.4f, PropertyMetadataOptions.None));
-        
+
         /// <summary>
         /// Identifies the TextEntryValidation attached routed event.
         /// </summary>
-        public static readonly RoutedEvent TextEntryValidationEvent = EventManager.RegisterRoutedEvent("TextEntryValidation", 
+        public static readonly RoutedEvent TextEntryValidationEvent = EventManager.RegisterRoutedEvent("TextEntryValidation",
             RoutingStrategy.Direct, typeof(UpfTextEntryValidationHandler), typeof(TextEditor));
 
         /// <summary>
@@ -747,23 +755,53 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             BeginTrackingSelectionChanges();
 
-            bufferText.Clear();
-            bufferText.Append(value);
+            var valueLength = 0;
+            if (value.IsValid)
+            {
+                if (value.IsSourcedFromString)
+                {
+                    valueLength = ((String)value).Length;
+                }
+                else
+                {
+                    valueLength = ((VersionedStringBuilder)value).Length;
+                }
+            }
+
+            ClearBuffer(valueLength == 0);
+            InsertIntoBuffer(value, bufferText.Length);
 
             if (caretPosition > bufferText.Length)
             {
                 caretBlinkTimer = 0;
                 caretPosition = bufferText.Length;
 
-                pendingScrollToCaret = true;                
+                pendingScrollToCaret = true;
             }
 
             UpdateTextStringSource();
             UpdateTextParserStream();
-            
+
             EndTrackingSelectionChanges();
 
             return true;
+        }
+
+        /// <summary>
+        /// Replaces the editor's text with a string of the specified masking characters.
+        /// </summary>
+        /// <param name="mask">The masking character.</param>
+        internal void ReplaceTextWithMask(Char mask)
+        {
+            var length = bufferText.Length;
+
+            bufferText.Length = 0;
+
+            for (int i = 0; i < length; i++)
+                bufferText.Append(mask);
+
+            UpdateTextStringSource();
+            UpdateTextParserStream();
         }
 
         /// <summary>
@@ -776,8 +814,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             selectionPosition = null;
 
-            bufferText.Length = 0;
-            bufferText.Append(value);
+            ClearBuffer(value.Length == 0);
+            InsertIntoBuffer(value, bufferText.Length);
 
             if (caretPosition > value.Length)
             {
@@ -901,6 +939,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyProperty));
             var acceptsReturn = (owner != null && owner.GetValue<Boolean>(TextBox.AcceptsReturnProperty));
             var acceptsTab = (owner != null && owner.GetValue<Boolean>(TextBox.AcceptsTabProperty));
+            var masked = MaskCharacter.HasValue;
 
             var ctrl = (modifiers & ModifierKeys.Control) == ModifierKeys.Control;
 
@@ -917,7 +956,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.C:
                     if (ctrl)
                     {
-                        Copy();
+                        if (!masked)
+                        {
+                            Copy();
+                        }
                         data.Handled = true;
                     }
                     break;
@@ -925,7 +967,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.X:
                     if (ctrl)
                     {
-                        if (!isReadOnly)
+                        if (!isReadOnly && !masked)
                         {
                             Cut();
                         }
@@ -1081,7 +1123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             return new Size2D(desiredWidth, desiredHeight);
         }
-        
+
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
@@ -1106,7 +1148,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             DrawSelection(time, dc);
 
-            var caretTopmost = 
+            var caretTopmost =
                 (actualInsertionMode == CaretMode.Insert && CaretInsertTopmost) ||
                 (actualInsertionMode == CaretMode.Overwrite && CaretOverwriteTopmost);
 
@@ -1123,7 +1165,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             base.DrawOverride(time, dc);
         }
-        
+
         /// <inheritdoc/>
         protected override void ReloadContentCore(Boolean recursive)
         {
@@ -1137,6 +1179,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             UpdateSelectionAndCaret();
 
             base.ReloadContentCore(recursive);
+        }
+
+        /// <summary>
+        /// Gets a value specifying whether the specified character is valid to enter at the specified position in the text.
+        /// </summary>
+        /// <param name="character">The character which is being entered.</param>
+        /// <param name="index">The index at which the character is being entered.</param>
+        /// <returns><c>true</c> if the character is valid for entry; otherwise, <c>false</c>.</returns>
+        protected virtual Boolean IsValidCharacterForEntry(Char character, Int32 index)
+        {
+            if (TemplatedParent == null)
+                return true;
+
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfTextEntryValidationHandler>(TextEntryValidationEvent);
+            var evtData = new RoutedEventData(TemplatedParent);
+
+            var text = new StringSegment((StringBuilder)bufferText);
+            evtDelegate(TemplatedParent, text, character, index, ref evtData);
+
+            return !evtData.Handled;
+        }
+
+        /// <summary>
+        /// Called when a character is inserted into the text box.
+        /// </summary>
+        /// <param name="offset">The insertion position at which the character was inserted.</param>
+        /// <param name="charRequested">The character that was proposed for insertion, prior to masking.</param>
+        /// <param name="charInserted">The character that was actually inserted into the text.</param>
+        /// <param name="raiseChangeEvents">A value indicating whether events related to the text changing should be raised.</param>
+        protected virtual void OnCharacterInserted(Int32 offset, Char charRequested, Char charInserted, Boolean raiseChangeEvents)
+        {
+
+        }
+
+        /// <summary>
+        /// Called when a character is removed from the text box.
+        /// </summary>
+        /// <param name="offset">The index of the first character that was removed.</param>
+        /// <param name="length">The number of characters that were removed.</param>
+        /// <param name="raiseChangeEvents">A value indicating whether events related to the text changing should be raised.</param>
+        protected virtual void OnCharacterDeleted(Int32 offset, Int32 length, Boolean raiseChangeEvents)
+        {
+
         }
 
         /// <summary>
@@ -1171,7 +1256,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get
             {
                 var owner = TemplatedParent as Control;
-                return (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource : null;                
+                return (owner != null && owner.Font.IsLoaded) ? owner.Font.Resource : null;
             }
         }
 
@@ -1188,6 +1273,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 return owner.Font.Resource.Value.GetFace(owner.FontStyle);
             }
+        }
+
+        /// <summary>
+        /// The text editor's masking character, or <c>null</c> if masking is not enabled.
+        /// </summary>
+        protected virtual Char? MaskCharacter
+        {
+            get { return null; }
         }
 
         /// <summary>
@@ -1216,7 +1309,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var textEditor = (TextEditor)dobj;
             textEditor.ReloadSelectionImage();
         }
-        
+
         /// <summary>
         /// Gets the default size of the insertion caret.
         /// </summary>
@@ -1311,7 +1404,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (View == null)
                 return;
-            
+
             if (textParserStream.Count == 0)
             {
                 UpdateSelectionAndCaret();
@@ -1440,10 +1533,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var caretBoundsDips = Display.PixelsToDips(caretRenderBounds);
                 var caretImage = (actualInsertionMode == CaretMode.Insert) ? CaretInsertImage : CaretOverwriteImage;
                 var caretColor = (actualInsertionMode == CaretMode.Insert) ? CaretInsertColor : CaretOverwriteColor;
-				DrawImage(dc, caretImage, caretBoundsDips, caretColor, true);
+                DrawImage(dc, caretImage, caretBoundsDips, caretColor, true);
             }
         }
-        
+
         /// <summary>
         /// Moves the caret to the current mouse position.
         /// </summary>
@@ -1512,7 +1605,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var x = caretBounds.Left;
             var y = caretBounds.Top - 1;
-            
+
             var movementAllowed = (textLayoutStream.Count > 0);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Up))
             {
@@ -1535,7 +1628,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var x = caretBounds.Left;
             var y = caretBounds.Bottom;
-            
+
             var movementAllowed = (textLayoutStream.Count > 0);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Down))
             {
@@ -1543,7 +1636,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
 
                 UpdateSelectionAndCaret();
-                ScrollToCaret(true, false, false);               
+                ScrollToCaret(true, false, false);
             }
 
             EndTrackingSelectionChanges();
@@ -1712,8 +1805,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Deletes the text in the current selection.
         /// </summary>
+        /// <param name="raiseChangeEvents">A value indicating whether the editor should raise events relating to the text being changed.</param>
         /// <returns><c>true</c> if the selection was deleted; otherwise, <c>false</c>.</returns>
-        private Boolean DeleteSelection()
+        private Boolean DeleteSelection(Boolean raiseChangeEvents)
         {
             var length = SelectionLength;
             if (length == 0)
@@ -1729,9 +1823,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 caretBlinkTimer = 0;
                 caretPosition = start;
             }
-
-            bufferText.Remove(start, length);
             
+            bufferText.Remove(start, length);
+            OnCharacterDeleted(start, length, raiseChangeEvents);
+
             UpdateTextStringSource();
             UpdateTextParserStream();
 
@@ -1749,9 +1844,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             BeginTrackingSelectionChanges();
 
-            if (!DeleteSelection() && caretPosition < textLayoutStream.TotalLength)
+            if (!DeleteSelection(true) && caretPosition < textLayoutStream.TotalLength)
             {
                 bufferText.Remove(caretPosition, 1);
+                OnCharacterDeleted(caretPosition, 1, true);
+                
                 caretBlinkTimer = 0;
 
                 UpdateTextStringSource();
@@ -1759,7 +1856,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 result = true;
             }
-            
+
             EndTrackingSelectionChanges();
 
             return result;
@@ -1774,9 +1871,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             BeginTrackingSelectionChanges();
 
-            if (!DeleteSelection() && caretPosition > 0)
+            if (!DeleteSelection(true) && caretPosition > 0)
             {
                 bufferText.Remove(caretPosition - 1, 1);
+                OnCharacterDeleted(caretPosition - 1, 1, true);
+                
                 caretBlinkTimer = 0;
                 caretPosition -= 1;
 
@@ -1860,6 +1959,107 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Clears the internal text buffer.
+        /// </summary>
+        /// <param name="raiseChangeEvents">A value indicating whether events related to the text changing should be raised.</param>
+        private void ClearBuffer(Boolean raiseChangeEvents)
+        {
+            var lengthDeleted = bufferText.Length;
+
+            bufferText.Clear();
+
+            if (lengthDeleted > 0)
+            {
+                OnCharacterDeleted(0, lengthDeleted, raiseChangeEvents);
+            }
+        }
+
+        /// <summary>
+        /// Appends the specified string to the end of the internal text buffer.
+        /// </summary>
+        private void AppendToBuffer(String str)
+        {
+            InsertIntoBuffer(new StringSegment(str), bufferText.Length);
+        }
+
+        /// <summary>
+        /// Appends the specified string to the end of the internal text buffer.
+        /// </summary>
+        private void AppendToBuffer(StringBuilder str)
+        {
+            InsertIntoBuffer(new StringSegment(str), bufferText.Length);
+        }
+
+        /// <summary>
+        /// Appends the specified string to the end of the internal text buffer.
+        /// </summary>
+        private void AppendToBuffer(VersionedStringSource str)
+        {
+            if (str.IsValid)
+            {
+                if (str.IsSourcedFromString)
+                {
+                    InsertIntoBuffer(new StringSegment((String)str), bufferText.Length);
+                }
+                else
+                {
+                    InsertIntoBuffer(new StringSegment((StringBuilder)(VersionedStringBuilder)str), bufferText.Length);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Inserts the specified string into the internal text buffer at the specified position.
+        /// </summary>
+        private void InsertIntoBuffer(String str, Int32 position)
+        {
+            InsertIntoBuffer(new StringSegment(str), position);
+        }
+
+        /// <summary>
+        /// Inserts the specified string into the internal text buffer at the specified position.
+        /// </summary>
+        private void InsertIntoBuffer(StringBuilder str, Int32 position)
+        {
+            InsertIntoBuffer(new StringSegment(str), position);
+        }
+
+        /// <summary>
+        /// Inserts the specified string into the internal text buffer at the specified position.
+        /// </summary>
+        private void InsertIntoBuffer(VersionedStringSource str, Int32 position)
+        {
+            if (str.IsValid)
+            {
+                if (str.IsSourcedFromString)
+                {
+                    InsertIntoBuffer(new StringSegment((String)str), position);
+                }
+                else
+                {
+                    InsertIntoBuffer(new StringSegment((StringBuilder)(VersionedStringBuilder)str), position);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Inserts the specified string segment into the text buffer at the specified position, performing masking if necessary.
+        /// </summary>
+        private void InsertIntoBuffer(StringSegment str, Int32 position)
+        {
+            var maskCharacter = MaskCharacter;
+            for (int i = 0; i < str.Length; i++)
+            {
+                var charRequested = str[i];
+                var charInserted = maskCharacter ?? charRequested;
+                var finalCharacter = (i + 1 == str.Length);
+
+                bufferText.Insert(position + i, charInserted);
+                OnCharacterInserted(position + i, charRequested, charInserted, finalCharacter);
+            }
+        }
+        
+        /// <summary>
         /// Inserts text at the specified position in the text buffer.
         /// </summary>
         private void InsertTextAtPosition(StringSegment str, Int32 position, Boolean overwrite)
@@ -1879,15 +2079,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var selectionStart = SelectionStart;
             var selectionLength = SelectionLength;
 
-            var selectionDeleted = DeleteSelection();
+            var selectionDeleted = DeleteSelection(false);
             if (selectionDeleted)
             {
                 if (position > selectionStart)
                     position -= selectionLength;
 
                 overwrite = false;
-            }            
+            }
 
+            var mask = MaskCharacter;
             var characterCasing = (owner == null) ? CharacterCasing.Normal : owner.GetValue<CharacterCasing>(TextBox.CharacterCasingProperty);
             var characterCount = 0;
 
@@ -1917,9 +2118,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (!IsValidCharacterForEntry(character, position + characterCount))
                     continue;
 
+                var charRequested = character;
+                var charInserted = mask ?? character;
+                var raiseChangeEvents = (i + 1 == str.Length);
+
                 if (overwrite && position + characterCount < bufferText.Length)
                 {
                     bufferText.Remove(position + characterCount, 1);
+                    OnCharacterDeleted(position + characterCount, 1, false);
                 }
                 else
                 {
@@ -1927,7 +2133,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         break;
                 }
 
-                bufferText.Insert(position + characterCount, character);
+                if (maxLength > 0 && bufferText.Length + 1 >= maxLength)
+                    raiseChangeEvents = true;
+
+                bufferText.Insert(position + characterCount, charInserted);
+                OnCharacterInserted(position + characterCount, charRequested, charInserted, raiseChangeEvents);
+
                 characterCount++;
             }
             
@@ -1959,7 +2170,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (owner == null)
                 return;
 
-            owner.SetValue(TextBox.TextProperty, new VersionedStringSource(bufferText));
+            // HACK
+            if (owner is TextBox)
+            {
+                owner.SetValue(TextBox.TextProperty, new VersionedStringSource(bufferText));
+            }
         }
 
         /// <summary>
@@ -2235,7 +2450,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void RaiseSelectionChanged()
         {
-            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(TextBox.SelectionChangedEvent);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(TextBoxBase.SelectionChangedEvent);
             var evtData = new RoutedEventData(this);
 
             evtDelegate(this, ref evtData);
@@ -2247,26 +2462,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private Boolean IsCaretOnLineBreak()
         {
             return caretPosition == bufferText.Length || bufferText[caretPosition] == '\n';
-        }
-
-        /// <summary>
-        /// Gets a value specifying whether the specified character is valid to enter at the specified position in the text.
-        /// </summary>
-        /// <param name="character">The character which is being entered.</param>
-        /// <param name="index">The index at which the character is being entered.</param>
-        /// <returns><c>true</c> if the character is valid for entry; otherwise, <c>false</c>.</returns>
-        private Boolean IsValidCharacterForEntry(Char character, Int32 index)
-        {
-            if (TemplatedParent == null)
-                return true;
-
-            var evtDelegate = EventManager.GetInvocationDelegate<UpfTextEntryValidationHandler>(TextEntryValidationEvent);
-            var evtData = new RoutedEventData(TemplatedParent);
-
-            var text = new StringSegment((StringBuilder)bufferText);
-            evtDelegate(TemplatedParent, text, character, index, ref evtData);
-
-            return !evtData.Handled;
         }
         
         // State values.
