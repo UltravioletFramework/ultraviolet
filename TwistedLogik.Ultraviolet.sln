@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (Desktop)", "TwistedLogik.Ultraviolet (Desktop)\TwistedLogik.Ultraviolet (Desktop).csproj", "{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}"
 EndProject
@@ -90,8 +90,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Gluon (Desktop)", "TwistedLogik.Gluon (Desktop)\TwistedLogik.Gluon (Desktop).csproj", "{08B2B8D5-152F-45FB-B4EB-8C09010A9908}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebugSandbox", "UvDebugSandbox\UvDebugSandbox.shproj", "{41B16059-BFE0-4704-8EEE-44339B3834C5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Resources", "TwistedLogik.Ultraviolet.UI.Presentation.Resources\TwistedLogik.Ultraviolet.UI.Presentation.Resources.csproj", "{82A54F88-1F78-4D56-A344-02E1FE87B456}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace", "TwistedLogik.Ultraviolet.Profiler.dotTrace\TwistedLogik.Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
 EndProject
@@ -340,12 +338,6 @@ Global
 		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Release|Any CPU.Build.0 = Release|Any CPU
 		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Signed|Any CPU.Build.0 = Signed|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Signed|Any CPU.Build.0 = Signed|Any CPU
 		{E1CD102C-6D6D-4EB2-ABED-1FAD59C9730F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E1CD102C-6D6D-4EB2-ABED-1FAD59C9730F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1CD102C-6D6D-4EB2-ABED-1FAD59C9730F}.Release|Any CPU.ActiveCfg = Release|Any CPU
