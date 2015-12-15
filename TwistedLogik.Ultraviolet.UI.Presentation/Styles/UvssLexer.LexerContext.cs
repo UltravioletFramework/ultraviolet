@@ -339,6 +339,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                         return false;
 
                     var type = GetLastTokenValue(output);
+                    var optionalSelector = false;
 
                     if (String.Equals("set", type, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -347,12 +348,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                         if (!ConsumeStyleName(input, output, line, ref ix))
                             return false;
 
+                        optionalSelector = true;
+                    }
+                    else if (String.Equals("play-storyboard", type, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        optionalSelector = true;
+                    }
+
+                    if (optionalSelector)
+                    {
                         ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
 
                         if (ConsumeOpenParenthesis(input, output, line, ref ix))
                         {
+                            ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
+
                             if (!ConsumeSelector(input, output, ref line, ref ix))
                                 return false;
+
+                            ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
 
                             if (!ConsumeCloseParenthesis(input, output, line, ref ix))
                                 return false;

@@ -726,7 +726,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             var parts       = new List<UvssSelectorPart>();
             var pseudoClass = false;
-
+            
             while (true)
             {
                 var part = ConsumeSelectorPart(state, allowEOF, !pseudoClass, parts.Any());
@@ -1302,13 +1302,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             if (state.CurrentToken.TokenType == UvssLexerTokenType.OpenParenthesis)
             {
-                var selectorOpenParensToken = state.TryConsumeNonWhiteSpace();
-                MatchTokenOrFail(state, selectorOpenParensToken, UvssLexerTokenType.OpenParenthesis);
-
-                selector = ConsumeSelector(state, false);
-
-                var selectorCloseParensToken = state.TryConsumeNonWhiteSpace();
-                MatchTokenOrFail(state, selectorCloseParensToken, UvssLexerTokenType.CloseParenthesis);
+                var tokens      = GetTokensBetweenParentheses(state);
+                var tokensState = new UvssParserState(state.Source, tokens);
+                selector        = ConsumeSelector(tokensState, true);
             }
 
             state.AdvanceBeyondWhiteSpace();
