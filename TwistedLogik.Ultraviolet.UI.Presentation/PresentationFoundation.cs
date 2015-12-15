@@ -308,32 +308,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var instance = (UIElement)ctor.Invoke(isFrameworkElement ? 
                 new Object[] { Ultraviolet, name } : 
                 new Object[] { Ultraviolet });
-
-            if (registration.Layout != null)
-            {
-                UvmlLoader.LoadUserControl((UserControl)instance, registration.Layout, viewModelType);
-            }
-
+            
             return instance;
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the element with the specified name is a user control.
-        /// </summary>
-        /// <param name="name">The name of the element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is a user control; otherwise, <c>false</c>.</returns>
-        public Boolean IsUserControl(String name)
-        {
-            Contract.RequireNotEmpty(name, "name");
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            KnownElement registration;
-            if (!GetKnownElementRegistration(name, out registration))
-                return false;
-
-            return registration.Layout != null;
-        }
-
+        
         /// <summary>
         /// Gets the known type with the specified name.
         /// </summary>
@@ -479,21 +457,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             RegisterElementInternal(registeredTypes, type, null);
         }
-
-        /// <summary>
-        /// Registers a custom element type with the Presentation Foundation.
-        /// </summary>
-        /// <param name="layout">The XML document that defines the custom element's layout.</param>
-        public void RegisterElement(XDocument layout)
-        {
-            Contract.Require(layout, "layout");
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var type = ExtractElementTypeFromLayout(layout);
-
-            RegisterElementInternal(registeredTypes, type, layout);
-        }
-
+        
         /// <summary>
         /// Unregisters a custom element.
         /// </summary>
@@ -527,26 +491,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return registeredTypes.Remove(registration.Name);
         }
-
-        /// <summary>
-        /// Unregisters a custom element.
-        /// </summary>
-        /// <param name="layout">The XML document that defines the custom element's layout.</param>
-        /// <returns><c>true</c> if the custom element was unregistered; otherwise, <c>false</c>.</returns>
-        public Boolean UnregisterKnownElement(XDocument layout)
-        {
-            Contract.Require(layout, "layout");
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var type = ExtractElementTypeFromLayout(layout);
-
-            KnownElement registration;
-            if (!GetKnownElementRegistration(type, out registration))
-                return false;
-
-            return registeredTypes.Remove(registration.Name);
-        }
-
+        
         /// <summary>
         /// Sets the global style sheet used by all Presentation Foundation views.
         /// </summary>
@@ -855,60 +800,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Console.WriteLine("{0}: expression compiler error 1: {1}", exeName, exception.Message);
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified XML document is a valid element layout.
-        /// </summary>
-        /// <param name="layout">The XML document that defines the custom element's layout.</param>
-        /// <returns><c>true</c> if the specified XML document is a valid element layout; otherwise, <c>false</c>.</returns>
-        private static Boolean IsValidElementLayout(XDocument layout)
-        {
-            return layout.Root.Name.LocalName == "UserControl";
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified type is a valid element type.
-        /// </summary>
-        /// <param name="type">The type to evaluate.</param>
-        /// <param name="attr">The element's <see cref="UvmlKnownTypeAttribute"/> instance.</param>
-        /// <returns><c>true</c> if the specified type is a valid element type; otherwise, <c>false</c>.</returns>
-        private static Boolean IsValidElementType(Type type, out UvmlKnownTypeAttribute attr)
-        {
-            attr = null;
-
-            if (!typeof(UIElement).IsAssignableFrom(type))
-                return false;
-
-            attr = type.GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).Cast<UvmlKnownTypeAttribute>().SingleOrDefault();
-
-            return attr != null;
-        }
-
-        /// <summary>
-        /// Extracts the element type associated with the specified layout.
-        /// </summary>
-        /// <param name="layout">The XML document that defines the custom element's layout.</param>
-        /// <returns>The element type associated with the specified layout.</returns>
-        private static Type ExtractElementTypeFromLayout(XDocument layout)
-        {
-            if (!IsValidElementLayout(layout))
-                throw new ArgumentException(PresentationStrings.InvalidUserControlDefinition);
-
-            var attr = layout.Root.Attribute("Type");
-            if (attr == null)
-                throw new InvalidOperationException(PresentationStrings.UserControlDoesNotDefineType);
-
-            var type = Type.GetType(attr.Value, false);
-            if (type == null)
-                throw new InvalidOperationException(PresentationStrings.InvalidUserControlType.Format(attr.Value));
-
-            UvmlKnownTypeAttribute uiElementAttr;
-            if (!IsValidElementType(type, out uiElementAttr))
-                throw new InvalidOperationException(PresentationStrings.InvalidUserControlType.Format(type.Name));
-
-            return type;
-        }
-
+        
         /// <summary>
         /// Loads the assembly which provides binding expression compilation services.
         /// </summary>
@@ -1167,36 +1059,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             registration = null;
             return false;
         }
-
-        /// <summary>
-        /// Gets the registration for the specified known element.
-        /// </summary>
-        /// <param name="layout">The layout document of the known element for which to retrieve a registration.</param>
-        /// <param name="registration">The registration for the known element with the specified layout.</param>
-        /// <returns><c>true</c> if a known element associated with the specified layout exists; otherwise, <c>false</c>.</returns>
-        private Boolean GetKnownElementRegistration(XDocument layout, out KnownElement registration)
-        {
-            var type = ExtractElementTypeFromLayout(layout);
-            foreach (var value in coreTypes.Values)
-            {
-                if (value.Type == type && value is KnownElement)
-                {
-                    registration = (KnownElement)value;
-                    return true;
-                }
-            }
-            foreach (var value in registeredTypes.Values)
-            {
-                if (value.Type == type && value is KnownElement)
-                {
-                    registration = (KnownElement)value;
-                    return true;
-                }
-            }
-            registration = null;
-            return false;
-        }
-
+        
         /// <summary>
         /// Raises the <see cref="GlobalStyleSheetChanged"/> event.
         /// </summary>

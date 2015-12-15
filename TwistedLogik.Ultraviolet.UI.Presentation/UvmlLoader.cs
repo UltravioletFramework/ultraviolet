@@ -85,51 +85,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return view;
         }
-
-        /// <summary>
-        /// Initializes an instance of <see cref="UserControl"/> from the specified layout definition.
-        /// </summary>
-        /// <typeparam name="TViewModelType">The type of view model to which the user control will be bound.</typeparam>
-        /// <param name="userControl">The instance of <see cref="UserControl"/> to initialize.</param>
-        /// <param name="layout">The XML document that specifies the control's layout.</param>
-        public static void LoadUserControl<TViewModelType>(UserControl userControl, XDocument layout)
-        {
-            LoadUserControl(userControl, layout, typeof(TViewModelType));
-        }
-
-        /// <summary>
-        /// Initializes an instance of <see cref="UserControl"/> from the specified layout definition.
-        /// </summary>
-        /// <param name="userControl">The instance of <see cref="UserControl"/> to initialize.</param>
-        /// <param name="layout">The XML document that specifies the control's layout.</param>
-        /// <param name="viewModelType">The type of view model to which the user control will be bound.</param>
-        public static void LoadUserControl(UserControl userControl, XDocument layout, Type viewModelType)
-        {
-            var viewElement = layout.Root.Element("View");
-            if (viewElement == null)
-                return;
-
-            var contentElement = viewElement.Elements().SingleOrDefault();
-            if (contentElement == null)
-                return;
-
-            var uv = userControl.Ultraviolet;
-            var context = new InstantiationContext(uv, null, viewModelType, userControl);
-
-            userControl.BeginInit();
-            userControl.ComponentTemplateNamescope.Clear();
-
-            PopulateElementPropertiesAndEvents(uv, userControl, viewElement, context);
-
-            var content           = InstantiateElement(uv, null, contentElement, context);
-            var contentObjectTree = BuildObjectTree(uv, contentElement, content, context);
-
-            userControl.ComponentRoot = content;
-            userControl.PopulateFieldsFromRegisteredElements();
-            
-            PopulateObjectTree(uv, contentObjectTree, context);
-        }
-
+        
         /// <summary>
         /// Loads the component template of the specified control.
         /// </summary>

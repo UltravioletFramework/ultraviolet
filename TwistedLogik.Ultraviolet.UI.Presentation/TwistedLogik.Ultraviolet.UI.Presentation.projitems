@@ -143,7 +143,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ToolTipService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\UIElementCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\UIElementCollection.IEnumerable.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\UserControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\VSlider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\WrapPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataBindingGetterBuilder.cs" />
