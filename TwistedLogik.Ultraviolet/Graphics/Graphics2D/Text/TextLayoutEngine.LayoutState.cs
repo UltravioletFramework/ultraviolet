@@ -130,15 +130,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// Advances the layout state to the next line of text after inserting a line break character at the end of the current line.
             /// </summary>
             /// <param name="output">The <see cref="TextLayoutCommandStream"/> which is being populated.</param>
+            /// <param name="length">The number of characters in the line break.</param>
             /// <param name="settings">The current layout settings.</param>
-            public void AdvanceLayoutToNextLineWithBreak(TextLayoutCommandStream output, ref TextLayoutSettings settings)
+            public void AdvanceLayoutToNextLineWithBreak(TextLayoutCommandStream output, Int32 length, ref TextLayoutSettings settings)
             {
                 var lineHeightCurrent = lineHeight;
                 if (lineHeightCurrent == 0)
                     lineHeight = settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing;
 
-                output.WriteLineBreak();
-                AdvanceLineToNextCommand(0, lineHeightCurrent, 1, 1, isLineBreak: true);
+                output.WriteLineBreak(new TextLayoutLineBreakCommand(length));
+                AdvanceLineToNextCommand(0, lineHeightCurrent, 1, length, isLineBreak: true);
 
                 AdvanceLayoutToNextLine(output, ref settings);
                 AdvanceLineToNextCommand(0, lineHeightCurrent, 0, 0);
@@ -245,7 +246,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                 var numberOfObjects = part2IsNotDegenerate ? 3 : 2;
                 var numberOfBytes =
-                    sizeof(TextLayoutCommandType) +
+                    sizeof(TextLayoutLineBreakCommand) +
                     sizeof(TextLayoutLineInfoCommand) +
                     (part2IsNotDegenerate ? sizeof(TextLayoutTextCommand) : 0);
 
@@ -253,8 +254,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                 output.InternalObjectStream.ReserveInsert(numberOfObjects, numberOfBytes);
 
-                *(TextLayoutCommandType*)output.Data = TextLayoutCommandType.LineBreak;
-                output.InternalObjectStream.FinalizeObject(sizeof(TextLayoutCommandType));
+                *(TextLayoutLineBreakCommand*)output.Data = new TextLayoutLineBreakCommand(1);
+                output.InternalObjectStream.FinalizeObject(sizeof(TextLayoutLineBreakCommand));
 
                 *(TextLayoutCommandType*)output.Data = TextLayoutCommandType.LineInfo;
                 output.InternalObjectStream.FinalizeObject(sizeof(TextLayoutLineInfoCommand));
@@ -304,7 +305,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             break;
 
                         case TextLayoutCommandType.LineBreak:
-                            brokenLineLengthInText++;
+                            {
+                                var cmd = (TextLayoutLineBreakCommand*)output.Data;
+                                brokenLineLengthInText += cmd->Length;
+                            }
                             break;
                     }
                     brokenLineLengthInCommands++;
@@ -355,7 +359,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             break;
 
                         case TextLayoutCommandType.LineBreak:
-                            lengthInText++;
+                            {
+                                var cmd = (TextLayoutLineBreakCommand*)output.Data;
+                                lengthInText += cmd->Length;
+                            }
                             break;
                     }
 

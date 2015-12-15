@@ -185,7 +185,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns><c>true</c> if the specified character is the start of a newline token; otherwise, <c>false</c>.</returns>
         private static Boolean IsStartOfNewline(StringSource input, Int32 ix)
         {
-            return input[ix] == '\n';
+            return input[ix] == '\n' || input[ix] == '\r';
         }
         
         /// <summary>
@@ -300,8 +300,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The token that was created.</returns>
         private static TextParserToken ConsumeNewlineToken(StringSource input, TextParserOptions options, ref Int32 ix)
         {
-            var sourceOffset = ix++;
             var sourceLength = 1;
+            if (input[ix] == '\r' && ix + 1 < input.Length && input[ix + 1] == '\n')
+                sourceLength = 2;
+
+            var sourceOffset = ix;
+            ix += sourceLength;
+
             var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
             return ParseLexerToken(LexedTokenType.NewLine, segment, sourceOffset, sourceLength, options);
         }

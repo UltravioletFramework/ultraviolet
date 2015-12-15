@@ -616,11 +616,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Writes a <see cref="TextLayoutCommandType.LineBreak"/> command to the current position in the stream.
         /// </summary>
-        public void WriteLineBreak()
+        /// <param name="command">The command to write to the stream.</param>
+        public void WriteLineBreak(TextLayoutLineBreakCommand command)
         {
             stream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutLineBreakCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.LineBreak;
-            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            stream.FinalizeObject(sizeof(TextLayoutLineBreakCommand));
         }
 
         /// <summary>
@@ -800,9 +802,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Reads a <see cref="TextLayoutCommandType.LineBreak"/> command from the current position in the command stream.
         /// </summary>
         /// <returns>The command that was read.</returns>
-        public void ReadLineBreakCommand()
+        public TextLayoutLineBreakCommand ReadLineBreakCommand()
         {
+            var command = *(TextLayoutLineBreakCommand*)stream.Data;
             stream.RawSeekForward();
+            return command;
         }
 
         /// <summary>

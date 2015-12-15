@@ -1,7 +1,7 @@
 ﻿namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
-    /// Represents a lyout command to push a color onto the color stack.
+    /// Represents a layout command to push a color onto the color stack.
     /// </summary>
     public struct TextLayoutColorCommand
     {

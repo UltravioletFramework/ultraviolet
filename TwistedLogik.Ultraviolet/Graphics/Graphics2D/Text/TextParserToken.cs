@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public Boolean IsNewLine
         {
-            get { return tokenType == TextParserTokenType.Text && !text.IsEmpty && text[0] == '\n'; }
+            get { return tokenType == TextParserTokenType.Text && !text.IsEmpty && (text[0] == '\n' || text[0] == '\r'); }
         }
 
         /// <summary>

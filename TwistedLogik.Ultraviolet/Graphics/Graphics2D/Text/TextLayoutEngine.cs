@@ -331,7 +331,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             if (token.IsNewLine)
             {
-                state.AdvanceLayoutToNextLineWithBreak(output, ref settings);
+                state.AdvanceLayoutToNextLineWithBreak(output, token.SourceLength, ref settings);
                 index++;
             }
             else
@@ -671,7 +671,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 var overflowingToken = input[index];
                 if (overflowingToken.IsWhiteSpace && !overflowingToken.IsNonBreakingSpace)
                 {
-                    output.WriteLineBreak();
+                    output.WriteLineBreak(new TextLayoutLineBreakCommand(1));
                     state.AdvanceLineToNextCommand(0, 0, 1, 1, isLineBreak: true);
                     state.AdvanceLayoutToNextLine(output, ref settings);
 

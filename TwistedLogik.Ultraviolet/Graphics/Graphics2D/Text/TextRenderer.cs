@@ -508,11 +508,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     case TextLayoutCommandType.LineBreak:
                         {
-                            if (++glyphCountSeen > index)
+                            var cmd = (TextLayoutLineBreakCommand*)input.Data;
+                            if (glyphCountSeen + cmd->Length > index)
                             {
                                 bounds = new Rectangle(Math.Max(0, offsetLineX + lineWidth - 1), blockOffset + offsetLineY, 0, lineHeight);
                                 boundsFound = true;
                             }
+                            glyphCountSeen += cmd->Length;
                         }
                         input.SeekNextCommand();
                         break;
@@ -1011,7 +1013,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         
                     case TextLayoutCommandType.LineBreak:
                         {
-                            charsSeen++;
+                            var cmd = (TextLayoutLineBreakCommand*)input.Data;
+                            charsSeen += cmd->Length;
                         }
                         input.SeekNextCommand();
                         break;
@@ -1720,7 +1723,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             // Line breaks have no width, and therefore cannot contain the search position;
                             // skip past this command, but make a note of having seen it (after switch).
-                            glyphCountSeen++;
+                            var cmd = (TextLayoutLineBreakCommand*)input.Data;
+                            glyphCountSeen += cmd->Length;
                         }
                         input.SeekNextCommand();
                         break;
