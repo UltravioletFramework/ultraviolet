@@ -154,9 +154,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             Contract.EnsureRange(length >= 0 && start + length <= textLayoutStream.TotalLength, "length");
 
             BeginTrackingSelectionChanges();
-
-            selectionPosition = start;
-            caretPosition = start + length;
+            
+            selectionPosition = AdjustCaretPositionToAvoidCRLF(start, false);
+            caretPosition = AdjustCaretPositionToAvoidCRLF(start + length, true);
 
             if (selectionPosition == caretPosition)
                 selectionPosition = null;
@@ -520,7 +520,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
                 selectionPosition = null;
 
-                caretPosition = value;
+                caretPosition = AdjustCaretPositionToAvoidCRLF(value);
                 caretBlinkTimer = 0;
 
                 UpdateSelectionAndCaret();
@@ -991,7 +991,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     {
                         if (!isReadOnly)
                         {
-                            InsertTextAtCaret("\n", false);
+                            InsertTextAtCaret(Environment.NewLine, false);
                         }
                         data.Handled = true;
                     }
@@ -1310,6 +1310,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Adjusts the specified caret position so that it does not lie in the middle of a carriage return, line feed sequence.
+        /// </summary>
+        private Int32 AdjustCaretPositionToAvoidCRLF(Int32 position, Boolean moveForward = false)
+        {
+            if (position == 0 || position == bufferText.Length)
+                return position;
+
+            if (bufferText[position] == '\n' && bufferText[position - 1] == '\r')
+                return position + (moveForward ? 1 : -1);
+
+            return position;
+        }
+
+        /// <summary>
         /// Gets the default size of the insertion caret.
         /// </summary>
         /// <returns>The default size of the insertion caret.</returns>
@@ -1535,7 +1549,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 DrawImage(dc, caretImage, caretBoundsDips, caretColor, true);
             }
         }
-
+        
         /// <summary>
         /// Moves the caret to the current mouse position.
         /// </summary>
@@ -1566,7 +1580,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Left))
             {
                 caretBlinkTimer = 0;
-                caretPosition -= 1;
+                caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition - 1, false);
 
                 UpdateSelectionAndCaret();
                 ScrollToCaret(false, true, false);
@@ -1586,7 +1600,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Right))
             {
                 caretBlinkTimer = 0;
-                caretPosition += 1;
+                caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition + 1, true);
 
                 UpdateSelectionAndCaret();
                 ScrollToCaret(false, false, true);
@@ -1740,8 +1754,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 {
                     var lineInfo = textLayoutStream.GetLineInfo(caretLineIndex);
                     caretPosition = lineInfo.OffsetInGlyphs + lineInfo.LengthInGlyphs;
-                    if (caretPosition > 0 && bufferText[caretPosition - 1] == '\n')
-                        caretPosition--;
+
+                    if (IsLineBreak(caretPosition - 1, false))
+                        caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition - 1, false);
                 }
 
                 UpdateSelectionAndCaret();
@@ -1845,8 +1860,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             if (!DeleteSelection(true) && caretPosition < textLayoutStream.TotalLength)
             {
-                bufferText.Remove(caretPosition, 1);
-                OnCharacterDeleted(caretPosition, 1, true);
+                var isCRLF = IsStartOfCRLF(caretPosition);
+
+                var length = isCRLF ? 2 : 1;
+                for (int i = 0; i < length; i++)
+                {
+                    bufferText.Remove(caretPosition, 1);
+                    OnCharacterDeleted(caretPosition, 1, (i + 1) == length);
+                }
                 
                 caretBlinkTimer = 0;
 
@@ -1872,11 +1893,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             if (!DeleteSelection(true) && caretPosition > 0)
             {
-                bufferText.Remove(caretPosition - 1, 1);
-                OnCharacterDeleted(caretPosition - 1, 1, true);
-                
-                caretBlinkTimer = 0;
-                caretPosition -= 1;
+                var isCRLF = IsEndOfCRLF(caretPosition);
+
+                var length = isCRLF ? 2 : 1;
+                for (int i = 0; i < length; i++)
+                {
+                    caretPosition--;
+                    caretBlinkTimer = 0;
+
+                    bufferText.Remove(caretPosition, 1);
+                    OnCharacterDeleted(caretPosition, 1, (i + 1) == length);
+                }
 
                 UpdateTextStringSource();
                 UpdateTextParserStream();
@@ -2096,8 +2123,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             for (int i = 0; i < str.Length; i++)
             {
                 var character = str[i];
-                if (character == '\r')
-                    continue;
+                if (character == '\r' && !acceptsReturn)
+                    break;
                 if (character == '\n' && !acceptsReturn)
                     break;
                 if (character == '\t' && !acceptsTab)
@@ -2201,7 +2228,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var caretRenderWidth = 0;
             var caretRenderHeight = 0;
             
-            if (caretInsertionMode == CaretMode.Overwrite && !IsCaretOnLineBreak() && !isReadOnly)
+            if (caretInsertionMode == CaretMode.Overwrite && !IsLineBreak(caretPosition) && !isReadOnly)
             {
                 actualInsertionMode = CaretMode.Overwrite;
 
@@ -2458,11 +2485,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets a value indicating whether the caret is currently positioned on a line break.
         /// </summary>
-        private Boolean IsCaretOnLineBreak()
+        private Boolean IsLineBreak(Int32 position, Boolean includeEndOfText = true)
         {
-            return caretPosition == bufferText.Length || bufferText[caretPosition] == '\n';
+            if (position == bufferText.Length)
+                return includeEndOfText;
+
+            var character = bufferText[position];
+            return character == '\r' || character == '\n';
         }
-        
+
+        /// <summary>
+        /// Gets a value indicating whether the specified position in the text buffer is the 
+        /// start of a carriage return, line feed (CRLF) sequence.
+        /// </summary>
+        private Boolean IsStartOfCRLF(Int32 position)
+        {
+            return position + 2 <= bufferText.Length && 
+                bufferText[position] == '\r' && bufferText[position + 1] == '\n';
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified position in the text buffer is the 
+        /// end of a carriage return, line feed (CRLF) sequence.
+        /// </summary>
+        private Boolean IsEndOfCRLF(Int32 position)
+        {
+            return position - 2 >= 0 &&
+                bufferText[position - 1] == '\n' && bufferText[position - 2] == '\r';
+        }
+
         // State values.
         private readonly TextParserTokenStream textParserStream = new TextParserTokenStream();
         private readonly TextLayoutCommandStream textLayoutStream = new TextLayoutCommandStream();
