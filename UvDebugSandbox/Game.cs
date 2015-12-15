@@ -45,9 +45,10 @@ namespace UvDebugSandbox
         {
             using (var game = new Game())
             {
+                game.resolveContent = args.Contains("-resolve:content");
                 game.compileContent = args.Contains("-compile:content");
                 game.compileExpressions = args.Contains("-compile:expressions");
-                
+
                 game.Run();
             }
         }
@@ -108,11 +109,11 @@ namespace UvDebugSandbox
 
                 this.spriteBatch = SpriteBatch.Create();
                 this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
-                
+
                 this.textRenderer = new TextRenderer();
                 this.textFormatter = new StringFormatter();
                 this.textBuffer = new StringBuilder();
-                
+
                 GC.Collect(2);
 
                 var screenService = new UIScreenService(content);
@@ -231,7 +232,7 @@ namespace UvDebugSandbox
             textFormatter.AddArgument(upf.PerformanceStats.InvalidateArrangeCountLastFrame);
             textFormatter.AddArgument(upf.PerformanceStats.PositionCountLastFrame);
             textFormatter.Format("FPS: {0:decimals:2} FPS\nStyle: {1} / {2}\nMeasure: {3} / {4}\nArrange: {5} / {6}\nPosition: {7}", textBuffer);
-            
+
             textRenderer.Draw(spriteBatch, textBuffer, Vector2.Zero, Color.White, new TextLayoutSettings(spriteFont, null, null, TextFlags.Standard));
 
             spriteBatch.End();
@@ -300,23 +301,16 @@ namespace UvDebugSandbox
         {
             if (ShouldCompileContent())
             {
-                try
-                {
-                    if (Ultraviolet.Platform == UltravioletPlatform.Android)
-                        throw new NotSupportedException();
+                if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                    throw new NotSupportedException();
 
-                    var archive = ContentArchive.FromFileSystem(new[] { "Content" });
-                    using (var stream = File.OpenWrite("Content.uvarc"))
-                    {
-                        using (var writer = new BinaryWriter(stream))
-                        {
-                            archive.Save(writer);
-                        }
-                    }
-                }
-                catch (Exception e)
+                var archive = ContentArchive.FromFileSystem(new[] { "Content" });
+                using (var stream = File.OpenWrite("Content.uvarc"))
                 {
-                    Console.WriteLine("UvDebugSandbox.exe: content compiler error 1: {0}", e.Message);
+                    using (var writer = new BinaryWriter(stream))
+                    {
+                        archive.Save(writer);
+                    }
                 }
             }
         }
@@ -325,27 +319,13 @@ namespace UvDebugSandbox
         /// Compiles the game's binding expressions.
         /// </summary>
         private void CompileBindingExpressions()
-        {            
+        {
             if (ShouldCompileBindingExpressions())
             {
-                try
-                {
-                    var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-                    upf.CompileExpressionsIfSupported("Content");
-                }
-                catch (BindingExpressionCompilerException e)
-                {
-                    foreach (var error in e.Result.Errors)
-                    {
-                        Console.WriteLine("{0}({1},{2}): expression compiler error {3}: {4}", error.Filename, error.Line, error.Column, error.ErrorNumber, error.ErrorText);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("UvDebugSandbox.exe: expression compiler error 2: {0}", e.Message);
-                }
+                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+                upf.CompileExpressionsIfSupported("Content", resolveContent);
             }
-        }
+        }        
         
         // The global content manager.  Manages any content that should remain loaded for the duration of the game's execution.
         private ContentManager content;
@@ -359,6 +339,7 @@ namespace UvDebugSandbox
         private StringBuilder textBuffer;
 
         // State values.
+        private Boolean resolveContent;
         private Boolean compileContent;
         private Boolean compileExpressions;
     }

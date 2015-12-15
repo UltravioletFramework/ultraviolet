@@ -385,14 +385,4 @@
       <Variant>The operation is invalid because the string source contains stale data.</Variant>
     </en-US>
   </String>
-  <String Key="EXPRESSION_TARGET_IS_NOT_FOUND">
-    <en-US>
-      <Variant>The expression target '{0}' could not be found.</Variant>
-    </en-US>
-  </String>
-  <String Key="EXPRESSION_TARGET_IS_AMBIGUOUS">
-    <en-US>
-      <Variant>The expression target '{0}' potentially matches multiple elements.</Variant>
-    </en-US>
-  </String>
 </LocalizedStrings>

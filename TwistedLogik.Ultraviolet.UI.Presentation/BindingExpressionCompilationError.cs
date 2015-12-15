@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Xml;
+using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -22,6 +25,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.column = column;
             this.errorNumber = errorNumber;
             this.errorText = errorText;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BindingExpressionCompilationError"/> class.
+        /// </summary>
+        /// <param name="source">The <see cref="XObject"/> which is the source of the error.</param>
+        /// <param name="filename">The filename of the file which is the source of the error.</param>
+        /// <param name="message">The error message.</param>
+        public BindingExpressionCompilationError(XObject source, String filename, String message)
+        {
+            Contract.Require(source, "source");
+
+            var lineInfo = (IXmlLineInfo)source;
+
+            this.filename = filename ?? (String.IsNullOrEmpty(source.BaseUri) ? null : new Uri(source.BaseUri).LocalPath);
+            this.line = lineInfo.LineNumber;
+            this.column = lineInfo.LinePosition;
+            this.errorNumber = String.Empty;
+            this.errorText = message;
         }
 
         /// <summary>

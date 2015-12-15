@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
@@ -11,18 +12,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSourceDefinition"/> structure.
         /// </summary>
+        /// <param name="definitionPath">The path to the file that contains the definition.</param>
         /// <param name="dataSourceIdentifier">A string which identifies the defined data source.</param>
         /// <param name="dataSourceWrapperName">The name of the type which will be generated to wrap the defined data source.</param>
         /// <param name="dataSourceWrapperNamespace">The namespace that contains the type which will be generated to wrap the defined data source.</param>
         /// <param name="templatedControl">The type of the control with which this data source is associated, if any.</param>
         /// <param name="definition">The XML element that defines the data source.</param>
-        private DataSourceDefinition(String dataSourceIdentifier, String dataSourceWrapperName, String dataSourceWrapperNamespace, Type templatedControl, XElement definition)
+        private DataSourceDefinition(String definitionPath, String dataSourceIdentifier, String dataSourceWrapperName,
+            String dataSourceWrapperNamespace, Type templatedControl, XElement definition)
         {
-            this.dataSourceIdentifier       = dataSourceIdentifier;
-            this.dataSourceWrapperName      = dataSourceWrapperName;
+            this.definitionPath = definitionPath;
+            this.dataSourceIdentifier = dataSourceIdentifier;
+            this.dataSourceWrapperName = dataSourceWrapperName;
             this.dataSourceWrapperNamespace = dataSourceWrapperNamespace;
-            this.templatedControl           = templatedControl;
-            this.definition                 = definition;            
+            this.templatedControl = templatedControl;
+            this.definition = definition;
         }
 
         /// <summary>
@@ -39,7 +43,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var dataSourceWrapperName = name;
             var dataSourceWrapperNamespace = @namespace ?? PresentationFoundationView.DataSourceWrapperNamespaceForViews;
 
-            return new DataSourceDefinition(dataSourceIdentifier, dataSourceWrapperName, dataSourceWrapperNamespace, null, definition);
+            return new DataSourceDefinition(Path.GetFullPath(path), 
+                dataSourceIdentifier, dataSourceWrapperName, dataSourceWrapperNamespace, null, definition);
         }
 
         /// <summary>
@@ -54,7 +59,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var dataSourceWrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templatedControl);
             var dataSourceWrapperNamespace = PresentationFoundationView.DataSourceWrapperNamespaceForComponentTemplates;
 
-            return new DataSourceDefinition(dataSourceIdentifier, dataSourceWrapperName, dataSourceWrapperNamespace, templatedControl, definition);
+            return new DataSourceDefinition(templatedControl.FullName,
+                dataSourceIdentifier, dataSourceWrapperName, dataSourceWrapperNamespace, templatedControl, definition);
+        }
+
+        /// <summary>
+        /// Gets the path to the file that contains the definition.
+        /// </summary>
+        public String DefinitionPath
+        {
+            get { return definitionPath; }
         }
 
         /// <summary>
@@ -98,6 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         // Property values.
+        private readonly String definitionPath;
         private readonly String dataSourceIdentifier;
         private readonly String dataSourceWrapperName;
         private readonly String dataSourceWrapperNamespace;

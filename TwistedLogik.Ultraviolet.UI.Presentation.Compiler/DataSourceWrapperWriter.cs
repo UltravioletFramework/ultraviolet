@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
@@ -321,7 +322,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var expFormatString = BindingExpressions.GetBindingFormatStringPart(expressionInfo.Expression);
 
             var targeted = GetExpressionTargetInfo(state, dataSourceWrapperInfo, 
-                ref expText, out expTarget, out expTargetType);
+                expressionInfo.Source, ref expText, out expTarget, out expTargetType);
 
             var dprop = DependencyProperty.FindByName(expText, expTargetType);
             var dpropField = default(FieldInfo);
@@ -335,9 +336,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                        prop.FieldType == typeof(DependencyProperty) &&
                        prop.GetValue(null) == dprop
                      select prop).SingleOrDefault();
-
+                
                 if (dpropField == null)
-                    throw new InvalidOperationException(PresentationStrings.CannotFindDependencyPropertyField.Format(dprop.OwnerType.Name, dprop.Name));
+                {
+                    throw new BindingExpressionCompilationErrorException(expressionInfo.Source, dataSourceWrapperInfo.DataSourceDefinition.DefinitionPath,
+                        PresentationStrings.CannotFindDependencyPropertyField.Format(dprop.OwnerType.Name, dprop.Name));
+                }
 
                 if (String.IsNullOrEmpty(expFormatString) && !targeted)
                 {
@@ -536,9 +540,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// Given a targeted binding expression (in the form "foo->bar"), this method extracts the target name, target type, and expression text.
         /// </summary>
         private Boolean GetExpressionTargetInfo(ExpressionCompilerState state, DataSourceWrapperInfo dataSourceWrapperInfo,
-            ref String expText, out String expTarget, out Type expTargetType)
+            XObject source, ref String expText, out String expTarget, out Type expTargetType)
         {
             const string TargetExpressionDelimiter = "->";
+
+            var expOriginal = expText;
 
             var delimiterIndex = expText.IndexOf(TargetExpressionDelimiter);
             if (delimiterIndex >= 0)
@@ -548,21 +554,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                 var matchCandidates = (from element in dataSourceWrapperInfo.DataSourceDefinition.Definition.Descendants()
                                        where (String)element.Attribute("Name") == expPartTarget
-                                       select element.Name.LocalName).ToList();
-
+                                       select element).ToList();
+                
                 if (matchCandidates.Count == 0)
-                    throw new InvalidOperationException(PresentationStrings.ExpressionTargetIsNotFound.Format(expPartTarget));
+                {
+                    throw new BindingExpressionCompilationErrorException(source, dataSourceWrapperInfo.DataSourceDefinition.DefinitionPath,
+                        CompilerStrings.ExpressionTargetIsNotFound.Format(expPartTarget));
+                }
 
                 if (matchCandidates.Count > 1)
-                    throw new InvalidOperationException(PresentationStrings.ExpressionTargetIsAmbiguous.Format(expPartTarget));
+                {
+                    throw new BindingExpressionCompilationErrorException(source, dataSourceWrapperInfo.DataSourceDefinition.DefinitionPath,
+                        CompilerStrings.ExpressionTargetIsAmbiguous.Format(expPartTarget));
+                }
 
                 var match = matchCandidates.Single();
+                var matchName = match.Name.LocalName;
 
                 expText = expPartText;
-                expTargetType = ExpressionCompiler.GetPlaceholderType(dataSourceWrapperInfo.DataSourceType, match);
-
-                if (expTargetType == null && !state.GetKnownType(match, out expTargetType))
-                    throw new InvalidOperationException(PresentationStrings.UnrecognizedType.Format(match));
+                expTargetType = ExpressionCompiler.GetPlaceholderType(dataSourceWrapperInfo.DataSourceType, matchName);
+                
+                if (expTargetType == null && !state.GetKnownType(matchName, out expTargetType))
+                {
+                    throw new BindingExpressionCompilationErrorException(source, dataSourceWrapperInfo.DataSourceDefinition.DefinitionPath,
+                        CompilerStrings.ExpressionTargetIsUnrecognizedType.Format(expOriginal, matchName));
+                }
 
                 expTarget = String.Format("__UPF_GetElementByName<{0}>(\"{1}\").", GetCSharpTypeName(expTargetType), expPartTarget);
 

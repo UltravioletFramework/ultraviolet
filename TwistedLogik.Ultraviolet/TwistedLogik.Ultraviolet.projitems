@@ -325,6 +325,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletDebugUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletHostCore.cs" />

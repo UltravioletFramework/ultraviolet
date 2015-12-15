@@ -41,8 +41,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)AssetSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingConversions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilationError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilationErrorException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilationFailedException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilationResult.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilerException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilerOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundEventBuilder.cs" />

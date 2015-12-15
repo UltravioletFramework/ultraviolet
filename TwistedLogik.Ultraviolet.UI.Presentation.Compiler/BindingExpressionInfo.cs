@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 {
@@ -10,12 +11,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Initializes a new instance of the <see cref="BindingExpressionInfo"/> structure.
         /// </summary>
+        /// <param name="source">The XML node that defines the expression.</param>
         /// <param name="expression">The binding expression's text.</param>
         /// <param name="type">The binding expression's type.</param>
-        public BindingExpressionInfo(String expression, Type type)
+        public BindingExpressionInfo(XObject source, String expression, Type type)
         {
+            this.source = source;
             this.expression = expression;
             this.type = type;
+        }
+
+        /// <summary>
+        /// Gets the XML object that defines the expression.
+        /// </summary>
+        public XObject Source
+        {
+            get { return source; }
         }
 
         /// <summary>
@@ -116,6 +127,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         // Property values.
+        private readonly XObject source;
         private readonly String expression;
         private readonly Type type;
         private Boolean nullableFixup;

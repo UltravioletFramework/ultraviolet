@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             }
             return null;
         }
-
+        
         /// <inheritdoc/>
         public BindingExpressionCompilationResult Compile(UltravioletContext uv, BindingExpressionCompilerOptions options)
         {
@@ -81,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             if (String.IsNullOrEmpty(options.Input))
                 throw new ArgumentException(PresentationStrings.InvalidCompilerOptions);
 
-            var definition = CreateDataSourceDefinitionFromXml(options.RequestedViewModelNamespace, options.RequestedViewModelName, options.RequestedViewModelName, options.Input);
+            var definition = CreateDataSourceDefinitionFromXml(options.RequestedViewModelNamespace, options.RequestedViewModelName, options.Input);
             if (definition == null)
                 return BindingExpressionCompilationResult.CreateSucceeded();
 
@@ -329,17 +329,57 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
-        /// Creates a <see cref="DataSourceDefinition"/> structure for the specified XML string.
+        /// Creates a <see cref="DataSourceDefinition"/> structure from the specified XML file.
         /// </summary>
         /// <param name="namespace">The namespace within which to place the compiled view model.</param>
         /// <param name="name">The name of the data source's view model.</param>
         /// <param name="path">The path to the file that defines the data source.</param>
+        /// <returns>The instance of <see cref="DataSourceDefinition"/> that was created, or <c>null</c> if the specified
+        /// XML does not contain a valid view.</returns>
+        private static DataSourceDefinition? CreateDataSourceDefinitionFromFile(String @namespace, String name, String path)
+        {
+            var xdocument = default(XDocument);
+            try
+            {
+                xdocument = XDocument.Load(path, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
+            }
+            catch (IOException) { return null; }
+            catch (XmlException) { return null; }
+
+            return CreateDataSourceDefinitionFromXml(xdocument, @namespace, name, path);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DataSourceDefinition"/> structure for the specified XML string.
+        /// </summary>
+        /// <param name="namespace">The namespace within which to place the compiled view model.</param>
+        /// <param name="name">The name of the data source's view model.</param>
         /// <param name="xml">The XML string to parse.</param>
         /// <returns>The instance of <see cref="DataSourceDefinition"/> that was created, or <c>null</c> if the specified
         /// XML does not contain a valid view.</returns>
-        private static DataSourceDefinition? CreateDataSourceDefinitionFromXml(String @namespace, String name, String path, String xml)
+        private static DataSourceDefinition? CreateDataSourceDefinitionFromXml(String @namespace, String name, String xml)
         {
-            var xdocument = XDocument.Parse(xml);
+            var xdocument = default(XDocument);
+            try
+            {
+                xdocument = XDocument.Parse(xml);
+            }
+            catch (XmlException) { return null; }
+
+            return CreateDataSourceDefinitionFromXml(xdocument, @namespace, name, name);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DataSourceDefinition"/> structure for the specified XML document.
+        /// </summary>
+        /// <param name="xdocument">The XML document from which to load a data source definition.</param>
+        /// <param name="namespace">The namespace within which to place the compiled view model.</param>
+        /// <param name="name">The name of the data source's view model.</param>
+        /// <param name="path">The path to the file that defines the data source.</param>
+        /// <returns>The instance of <see cref="DataSourceDefinition"/> that was created, or <c>null</c> if the specified
+        /// XML does not contain a valid view.</returns>
+        private static DataSourceDefinition? CreateDataSourceDefinitionFromXml(XDocument xdocument, String @namespace, String name, String path)
+        {
             if (xdocument.Root.Name.LocalName != "UIPanelDefinition")
                 return null;
 
@@ -365,10 +405,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             {
                 try
                 {
-                    var fileContent = File.ReadAllText(file);
-
                     var name = PresentationFoundationView.GetDataSourceWrapperNameForView(file);
-                    var definition = CreateDataSourceDefinitionFromXml(null, name, file, fileContent);
+                    var definition = CreateDataSourceDefinitionFromFile(null, name, file);
                     if (definition != null)
                     {
                         result.Add(definition.Value);
@@ -434,17 +472,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var dataSourceWrappedType = dataSourceDefinition.TemplatedControl;
             if (dataSourceWrappedType == null)
             {
-                var definedDataSourceTypeName = (String)dataSourceDefinition.Definition.Attribute("ViewModelType");
+                var definedDataSourceTypeAttr = dataSourceDefinition.Definition.Attribute("ViewModelType");
+                var definedDataSourceTypeName = (String)definedDataSourceTypeAttr;
                 if (definedDataSourceTypeName == null)
                     return null;
-
+                
                 var typeNameCommaIx = definedDataSourceTypeName.IndexOf(',');
                 if (typeNameCommaIx < 0)
-                    throw new InvalidOperationException(CompilerStrings.ViewModelTypeIsNotFullyQualified.Format(dataSourceDefinition.DataSourceIdentifier));
-
+                {
+                    throw new BindingExpressionCompilationErrorException(definedDataSourceTypeAttr, dataSourceDefinition.DefinitionPath,
+                        CompilerStrings.ViewModelTypeIsNotFullyQualified.Format(definedDataSourceTypeName));
+                }
+                
                 var definedDataSourceType = Type.GetType(definedDataSourceTypeName);
                 if (definedDataSourceType == null)
-                    throw new InvalidOperationException(PresentationStrings.ViewModelTypeNotFound.Format(definedDataSourceTypeName));
+                {
+                    throw new BindingExpressionCompilationErrorException(definedDataSourceTypeAttr, dataSourceDefinition.DefinitionPath,
+                        PresentationStrings.ViewModelTypeNotFound.Format(definedDataSourceTypeName));
+                }
 
                 dataSourceWrappedType = definedDataSourceType;
             }
@@ -453,7 +498,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var dataSourceWrapperExpressions = new List<BindingExpressionInfo>();
             foreach (var element in dataSourceDefinition.Definition.Elements())
             {
-                FindBindingExpressionsInDataSource(state, dataSourceWrappedType, element, dataSourceWrapperExpressions);
+                FindBindingExpressionsInDataSource(state, 
+                    dataSourceDefinition, dataSourceWrappedType, element, dataSourceWrapperExpressions);
             }
 
             dataSourceWrapperExpressions = CollapseDataSourceExpressions(dataSourceWrapperExpressions);
@@ -467,17 +513,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             {
                 var xmlDirectiveType = (String)xmlDirective.Attribute("Type");
                 if (String.IsNullOrEmpty(xmlDirectiveType))
-                    throw new InvalidDataException(UltravioletStrings.ViewDirectiveMustHaveType.Format(dataSourceDefinition.DataSourceIdentifier));
+                {
+                    throw new BindingExpressionCompilationErrorException(xmlDirective, dataSourceDefinition.DefinitionPath, 
+                        CompilerStrings.ViewDirectiveMustHaveType);
+                }
 
-                switch (xmlDirectiveType.ToLowerInvariant())
+                var xmlDirectiveTypeName = xmlDirectiveType.ToLowerInvariant();
+                var xmlDirectiveValue = xmlDirective.Value.Trim();
+                switch (xmlDirectiveTypeName)
                 {
                     case "import":
-                        dataSourceImports.Add(xmlDirective.Value.Trim());
+                        {
+                            if (String.IsNullOrEmpty(xmlDirectiveValue))
+                            {
+                                throw new BindingExpressionCompilationErrorException(xmlDirective, dataSourceDefinition.DefinitionPath,
+                                    CompilerStrings.ViewDirectiveHasInvalidValue);
+                            }
+                            dataSourceImports.Add(xmlDirective.Value.Trim());
+                        }
                         break;
 
                     case "reference":
-                        dataSourceReferences.Add(xmlDirective.Value.Trim());
+                        {
+                            if (String.IsNullOrEmpty(xmlDirectiveValue))
+                            {
+                                throw new BindingExpressionCompilationErrorException(xmlDirective, dataSourceDefinition.DefinitionPath,
+                                    CompilerStrings.ViewDirectiveHasInvalidValue);
+                            }
+                            dataSourceReferences.Add(xmlDirective.Value.Trim());
+                        }
                         break;
+
+                    default:
+                        throw new BindingExpressionCompilationErrorException(xmlDirective, dataSourceDefinition.DefinitionPath,
+                            CompilerStrings.ViewDirectiveNotRecognized.Format(xmlDirectiveTypeName));
                 }
             }
 
@@ -594,10 +663,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// Searches the specified XML element tree for binding expressions and adds them to the specified collection.
         /// </summary>
         /// <param name="state">The expression compiler's current state.</param>
+        /// <param name="dataSourceDefinition">The data source definition for the data source which is being compiled.</param>
         /// <param name="dataSourceWrappedType">The type for which a data source wrapper is being compiled.</param>
         /// <param name="element">The root of the XML element tree to search.</param>
         /// <param name="expressions">The list to populate with any binding expressions that are found.</param>
-        private static void FindBindingExpressionsInDataSource(ExpressionCompilerState state, Type dataSourceWrappedType, XElement element, List<BindingExpressionInfo> expressions)
+        private static void FindBindingExpressionsInDataSource(ExpressionCompilerState state, DataSourceDefinition dataSourceDefinition,
+            Type dataSourceWrappedType, XElement element, List<BindingExpressionInfo> expressions)
         {
             var elementName = element.Name.LocalName;
             var elementType = GetPlaceholderType(dataSourceWrappedType, elementName);            
@@ -609,12 +680,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     var attrValue = attr.Value;
                     if (!BindingExpressions.IsBindingExpression(attrValue))
                         continue;
-
+                    
                     var dprop = FindDependencyOrAttachedPropertyByName(state, attr.Name.LocalName, elementType);
                     if (dprop == null)
-                        throw new InvalidOperationException(CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(attr.Name.LocalName));
+                    {
+                        throw new BindingExpressionCompilationErrorException(attr, dataSourceDefinition.DefinitionPath,
+                            CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(attr.Name.LocalName));
+                    }
 
-                    expressions.Add(new BindingExpressionInfo(attrValue, dprop.PropertyType) { GenerateGetter = true });
+                    expressions.Add(new BindingExpressionInfo(attr, attrValue, dprop.PropertyType) { GenerateGetter = true });
                 }
 
                 if (element.Nodes().Count() == 1)
@@ -627,13 +701,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                         {
                             String defaultProperty;
                             if (!state.GetElementDefaultProperty(elementType, out defaultProperty))
-                                throw new InvalidOperationException(CompilerStrings.ElementDoesNotHaveDefaultProperty.Format(elementType.Name));
+                            {
+                                throw new BindingExpressionCompilationErrorException(singleChild, dataSourceDefinition.DefinitionPath,
+                                    CompilerStrings.ElementDoesNotHaveDefaultProperty.Format(elementType.Name));
+                            }
 
                             var dprop = FindDependencyOrAttachedPropertyByName(state, defaultProperty, elementType);
                             if (dprop == null)
-                                throw new InvalidOperationException(CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(defaultProperty));
+                            {
+                                throw new BindingExpressionCompilationErrorException(singleChild, dataSourceDefinition.DefinitionPath,
+                                    CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(defaultProperty));
+                            }
 
-                            expressions.Add(new BindingExpressionInfo(elementValue, dprop.PropertyType) { GenerateGetter = true });
+                            expressions.Add(new BindingExpressionInfo(singleChild, elementValue, dprop.PropertyType) { GenerateGetter = true });
                         }
                     }
                 }
@@ -642,7 +722,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var children = element.Elements();
             foreach (var child in children)
             {
-                FindBindingExpressionsInDataSource(state, dataSourceWrappedType, child, expressions);
+                FindBindingExpressionsInDataSource(state, dataSourceDefinition, 
+                    dataSourceWrappedType, child, expressions);
             }
         }
 

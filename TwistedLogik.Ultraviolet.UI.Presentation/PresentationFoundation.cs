@@ -159,12 +159,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             return null;
         }
-        
+
         /// <summary>
         /// Compiles the binding expressions in the specified content directory tree.
         /// </summary>
         /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
-        public void CompileExpressions(String root)
+        /// <param name="resolveContentFiles">If <c>true</c>, then the expression compiler will attempt to correlate errors with their original
+        /// project files, rather than the copies of those files which exist in the application's build directory. This leads to an improved
+        /// debugging experience, since any changes made to the output versions of these files will be lost when the project is recompiled.</param>
+        public void CompileExpressions(String root, Boolean resolveContentFiles = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, "root");
@@ -176,9 +179,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             options.Input = root;
             options.Output = CompiledExpressionsAssemblyName;
 
-            var result = bindingExpressionCompiler.Compile(Ultraviolet, options);
-            if (result.Failed)
-                throw new BindingExpressionCompilerException(result.Message, result);
+            try
+            {
+                var result = bindingExpressionCompiler.Compile(Ultraviolet, options);
+                if (result.Failed)
+                    throw new BindingExpressionCompilationFailedException(result.Message, result);
+            }
+            catch (Exception e)
+            {
+                LogExceptionToBuildOutputConsole(root, e, resolveContentFiles);
+                throw;
+            }
 
             GC.Collect(2, GCCollectionMode.Forced);
         }
@@ -188,7 +199,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// one one of the platforms which supports doing so. Otherwise, this method has no effect.
         /// </summary>
         /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
-        public void CompileExpressionsIfSupported(String root)
+        /// <param name="resolveContentFiles">If <c>true</c>, then the expression compiler will attempt to correlate errors with their original
+        /// project files, rather than the copies of those files which exist in the application's build directory. This leads to an improved
+        /// debugging experience, since any changes made to the output versions of these files will be lost when the project is recompiled.</param>
+        public void CompileExpressionsIfSupported(String root, Boolean resolveContentFiles = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, "root");
@@ -196,7 +210,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (Ultraviolet.Platform == UltravioletPlatform.Android)
                 return;
             
-            CompileExpressions(root);
+            CompileExpressions(root, resolveContentFiles);
         }
 
         /// <summary>
@@ -803,43 +817,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Loads the assembly which provides binding expression compilation services.
+        /// Logs an exception to the console so that it will be displayed by Visual Studio's Error List window.
         /// </summary>
-        private void LoadBindingExpressionCompiler()
+        private static void LogExceptionToBuildOutputConsole(String root, Exception exception, Boolean resolveContentFiles)
         {
-            if (Ultraviolet.Platform == UltravioletPlatform.Android)
-                throw new NotSupportedException();
-
-            if (bindingExpressionCompiler != null)
-                return;
-
-            var compilerAsmName = BindingExpressionCompilerAssemblyName;
-            if (String.IsNullOrEmpty(compilerAsmName))
-                throw new InvalidOperationException(PresentationStrings.InvalidBindingExpressionCompilerAsm);
-
-            Assembly compilerAsm = null;
-            try
+            if (exception is AggregateException)
             {
-                compilerAsm = Assembly.Load(compilerAsmName);
+                foreach (var innerException in ((AggregateException)exception).InnerExceptions)
+                {
+                    LogExceptionToBuildOutputConsole(root, innerException, resolveContentFiles);
+                }
             }
-            catch (FileNotFoundException e)
+            else
             {
-                throw new InvalidOperationException(PresentationStrings.ExpressionCompilerNotFound.Format(compilerAsmName), e);
-            }
+                var exeName = Assembly.GetEntryAssembly().GetName().Name;
 
-            var compilerType = compilerAsm.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBindingExpressionCompiler))).FirstOrDefault();
-            if (compilerType == null || compilerType.IsAbstract)
-            {
-                throw new InvalidOperationException(PresentationStrings.ExpressionCompilerTypeNotValid);
-            }
+                if (exception is BindingExpressionCompilationFailedException)
+                {
+                    foreach (var error in ((BindingExpressionCompilationFailedException)exception).Result.Errors)
+                    {
+                        var filename = !String.IsNullOrEmpty(error.Filename) && resolveContentFiles ? 
+                            UltravioletDebugUtil.GetOriginalContentFilePath(root, error.Filename) : error.Filename ?? exeName;
 
-            try
-            {
-                bindingExpressionCompiler = (IBindingExpressionCompiler)Activator.CreateInstance(compilerType);
-            }
-            catch (MissingMethodException e)
-            {
-                throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(compilerType.Name), e);
+                        Console.WriteLine("{0}({1},{2}): expression compiler error {3}: {4}", filename, error.Line, error.Column, error.ErrorNumber, error.ErrorText);
+                    }
+                    return;
+                }
+
+                if (exception is BindingExpressionCompilationErrorException)
+                {
+                    var error = ((BindingExpressionCompilationErrorException)exception).Error;
+                    var filename = !String.IsNullOrEmpty(error.Filename) && resolveContentFiles ? 
+                        UltravioletDebugUtil.GetOriginalContentFilePath("Content", error.Filename) : error.Filename ?? exeName;
+
+                    Console.WriteLine("{0}({1},{2}): expression compiler error {3}: {4}", filename, error.Line, error.Column, error.ErrorNumber, error.ErrorText);
+                    return;
+                }
+
+                Console.WriteLine("{0}: expression compiler error 1: {1}", exeName, exception.Message);
             }
         }
 
@@ -894,6 +909,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.InvalidUserControlType.Format(type.Name));
 
             return type;
+        }
+
+        /// <summary>
+        /// Loads the assembly which provides binding expression compilation services.
+        /// </summary>
+        private void LoadBindingExpressionCompiler()
+        {
+            if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                throw new NotSupportedException();
+
+            if (bindingExpressionCompiler != null)
+                return;
+
+            var compilerAsmName = BindingExpressionCompilerAssemblyName;
+            if (String.IsNullOrEmpty(compilerAsmName))
+                throw new InvalidOperationException(PresentationStrings.InvalidBindingExpressionCompilerAsm);
+
+            Assembly compilerAsm = null;
+            try
+            {
+                compilerAsm = Assembly.Load(compilerAsmName);
+            }
+            catch (FileNotFoundException e)
+            {
+                throw new InvalidOperationException(PresentationStrings.ExpressionCompilerNotFound.Format(compilerAsmName), e);
+            }
+
+            var compilerType = compilerAsm.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBindingExpressionCompiler))).FirstOrDefault();
+            if (compilerType == null || compilerType.IsAbstract)
+            {
+                throw new InvalidOperationException(PresentationStrings.ExpressionCompilerTypeNotValid);
+            }
+
+            try
+            {
+                bindingExpressionCompiler = (IBindingExpressionCompiler)Activator.CreateInstance(compilerType);
+            }
+            catch (MissingMethodException e)
+            {
+                throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(compilerType.Name), e);
+            }
         }
 
         /// <summary>
@@ -1208,7 +1264,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (stream == null)
                     return;
 
-                var template = XDocument.Load(stream);
+                var template = XDocument.Load(stream, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
                 ComponentTemplates.SetDefault(type, template);
             }
         }
