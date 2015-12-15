@@ -20,7 +20,7 @@ namespace UvDebugSandbox
         [Conditional("ENABLE_PROFILING")]
         private void InitializeProfilingFactoryMethods(UltravioletContext owner, UltravioletFactory factory)
         {
-            //dotTraceProfiler.RegisterProfiler(owner, factory);
+            // dotTraceProfiler.RegisterProfiler(owner, factory);
         }
     }
 }

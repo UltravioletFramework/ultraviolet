@@ -178,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var result = bindingExpressionCompiler.Compile(Ultraviolet, options);
             if (result.Failed)
-                throw new InvalidOperationException(result.Message);
+                throw new BindingExpressionCompilerException(result.Message, result);
 
             GC.Collect(2, GCCollectionMode.Forced);
         }

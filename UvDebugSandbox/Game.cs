@@ -48,18 +48,8 @@ namespace UvDebugSandbox
                 game.compileContent = args.Contains("-compile:content");
                 game.compileExpressions = args.Contains("-compile:expressions");
                 
-                if (game.ShouldRunInServiceMode())
-                {
-                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-                }
-
                 game.Run();
             }
-        }
-
-        private static void CurrentDomain_UnhandledException(Object sender, UnhandledExceptionEventArgs e)
-        {
-            System.Diagnostics.Debugger.Launch();
         }
 
         /// <summary>
@@ -91,8 +81,6 @@ namespace UvDebugSandbox
         protected override void OnInitialized()
         {
             SetFileSourceFromManifestIfExists("UvDebugSandbox.Content.uvarc");
-
-//            UltravioletProfiler.EnableSection(UltravioletProfilerSections.Frame);
 
             base.OnInitialized();
         }
@@ -216,12 +204,6 @@ namespace UvDebugSandbox
         /// <param name="time">Time elapsed since the last call to Update.</param>
         protected override void OnUpdating(UltravioletTime time)
         {
-            var kb = Ultraviolet.GetInput().GetKeyboard();
-            if (kb.IsKeyPressed(TwistedLogik.Ultraviolet.Input.Key.F2))
-            {
-                UltravioletProfiler.TakeSnapshotOfNextFrame();
-            }
-
             if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
             {
                 Exit();
@@ -318,16 +300,23 @@ namespace UvDebugSandbox
         {
             if (ShouldCompileContent())
             {
-                if (Ultraviolet.Platform == UltravioletPlatform.Android)
-                    throw new NotSupportedException();
-
-                var archive = ContentArchive.FromFileSystem(new[] { "Content" });
-                using (var stream = File.OpenWrite("Content.uvarc"))
+                try
                 {
-                    using (var writer = new BinaryWriter(stream))
+                    if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                        throw new NotSupportedException();
+
+                    var archive = ContentArchive.FromFileSystem(new[] { "Content" });
+                    using (var stream = File.OpenWrite("Content.uvarc"))
                     {
-                        archive.Save(writer);
+                        using (var writer = new BinaryWriter(stream))
+                        {
+                            archive.Save(writer);
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("UvDebugSandbox.exe: content compiler error 1: {0}", e.Message);
                 }
             }
         }
@@ -339,8 +328,22 @@ namespace UvDebugSandbox
         {            
             if (ShouldCompileBindingExpressions())
             {
-                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-                upf.CompileExpressionsIfSupported("Content");                
+                try
+                {
+                    var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+                    upf.CompileExpressionsIfSupported("Content");
+                }
+                catch (BindingExpressionCompilerException e)
+                {
+                    foreach (var error in e.Result.Errors)
+                    {
+                        Console.WriteLine("{0}({1},{2}): expression compiler error {3}: {4}", error.Filename, error.Line, error.Column, error.ErrorNumber, error.ErrorText);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("UvDebugSandbox.exe: expression compiler error 2: {0}", e.Message);
+                }
             }
         }
         

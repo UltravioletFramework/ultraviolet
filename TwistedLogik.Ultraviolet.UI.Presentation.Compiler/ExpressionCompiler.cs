@@ -129,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     WriteErrorsToWorkingDirectory(state, models, expressionVerificationResult);
 
                 return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedExpressionValidationPass,
-                    CreateBindingExpressionCompilationErrors(models, expressionVerificationResult.Errors));
+                    CreateBindingExpressionCompilationErrors(state, models, expressionVerificationResult.Errors));
             }
 
             var setterEliminationPassResult =
@@ -147,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     WriteErrorsToWorkingDirectory(state, models, finalPassResult);
 
                 return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedFinalPass,
-                    CreateBindingExpressionCompilationErrors(models, finalPassResult.Errors));
+                    CreateBindingExpressionCompilationErrors(state, models, finalPassResult.Errors));
             }
 
             return BindingExpressionCompilationResult.CreateSucceeded();
@@ -862,12 +862,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <summary>
         /// Converts a <see cref="CompilerErrorCollection"/> to a collection of <see cref="BindingExpressionCompilationError"/> objects.
         /// </summary>
+        /// <param name="state">The expression compiler's current state.</param>
         /// <param name="models">The list of models which were compiled.</param>
         /// <param name="errors">The collection of errors produced during compilation.</param>
         /// <returns>A list containing the converted errors.</returns>
-        private static List<BindingExpressionCompilationError> CreateBindingExpressionCompilationErrors(IEnumerable<DataSourceWrapperInfo> models, CompilerErrorCollection errors)
+        private static List<BindingExpressionCompilationError> CreateBindingExpressionCompilationErrors(ExpressionCompilerState state,
+            IEnumerable<DataSourceWrapperInfo> models, CompilerErrorCollection errors)
         {
             var result = new List<BindingExpressionCompilationError>();
+
+            var workingDirectory = GetWorkingDirectory(state);
 
             var errorsByFile = errors.Cast<CompilerError>()
                 .Where(x => !x.IsWarning).GroupBy(x => Path.GetFileName(x.FileName)).ToDictionary(x => x.Key, x => x.ToList());
@@ -880,7 +884,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 {
                     foreach (var dataSourceError in dataSourceErrors)
                     {
-                        result.Add(new BindingExpressionCompilationError(model.DataSourceWrapperName,
+                        var fullPathToFile = model.DataSourceWrapperName;
+                        if (state.WriteErrorsToFile)
+                        {
+                            fullPathToFile = Path.GetFullPath(Path.Combine(workingDirectory, 
+                                Path.ChangeExtension(model.DataSourceWrapperName, "cs")));
+                        }
+
+                        result.Add(new BindingExpressionCompilationError(fullPathToFile,
                             dataSourceError.Line, dataSourceError.Column, dataSourceError.ErrorNumber, dataSourceError.ErrorText));
                     }
                 }
