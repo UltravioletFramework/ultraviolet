@@ -50,6 +50,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CompiledBindingExpressionAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompiledBindingExpressionKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompiledDataSourceWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CompileExpressionsFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ComponentTemplateManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ComponentTemplateManager.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Border.cs" />

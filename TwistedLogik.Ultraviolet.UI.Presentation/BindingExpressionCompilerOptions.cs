@@ -8,6 +8,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public class BindingExpressionCompilerOptions
     {
         /// <summary>
+        /// Gets or sets a value indicating whether the compiler should perform a compilation regardless of whether
+        /// there is an up-to-date cache file.
+        /// </summary>
+        public Boolean IgnoreCache
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the compiler should work in the user's temporary directory
         /// rather than the application directory.
         /// </summary>

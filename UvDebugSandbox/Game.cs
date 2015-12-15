@@ -323,7 +323,16 @@ namespace UvDebugSandbox
             if (ShouldCompileBindingExpressions())
             {
                 var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-                upf.CompileExpressionsIfSupported("Content", resolveContent);
+
+                var flags = CompileExpressionsFlags.None;
+
+                if (resolveContent)
+                    flags |= CompileExpressionsFlags.ResolveContentFiles;
+
+                if (compileExpressions)
+                    flags |= CompileExpressionsFlags.IgnoreCache;
+
+                upf.CompileExpressionsIfSupported("Content", flags);
             }
         }        
         

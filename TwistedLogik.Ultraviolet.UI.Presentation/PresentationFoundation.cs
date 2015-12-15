@@ -164,10 +164,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Compiles the binding expressions in the specified content directory tree.
         /// </summary>
         /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
-        /// <param name="resolveContentFiles">If <c>true</c>, then the expression compiler will attempt to correlate errors with their original
-        /// project files, rather than the copies of those files which exist in the application's build directory. This leads to an improved
-        /// debugging experience, since any changes made to the output versions of these files will be lost when the project is recompiled.</param>
-        public void CompileExpressions(String root, Boolean resolveContentFiles = false)
+        /// <param name="flags">A set of <see cref="CompileExpressionsFlags"/> values specifying how the expressions should be compiled.</param>
+        public void CompileExpressions(String root, CompileExpressionsFlags flags = CompileExpressionsFlags.None)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, "root");
@@ -178,6 +176,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             options.WriteErrorsToFile = true;
             options.Input = root;
             options.Output = CompiledExpressionsAssemblyName;
+            options.IgnoreCache = (flags & CompileExpressionsFlags.IgnoreCache) == CompileExpressionsFlags.IgnoreCache;
 
             try
             {
@@ -187,6 +186,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             catch (Exception e)
             {
+                var resolveContentFiles = (flags & CompileExpressionsFlags.ResolveContentFiles) == CompileExpressionsFlags.ResolveContentFiles;
                 LogExceptionToBuildOutputConsole(root, e, resolveContentFiles);
                 throw;
             }
@@ -199,10 +199,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// one one of the platforms which supports doing so. Otherwise, this method has no effect.
         /// </summary>
         /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
-        /// <param name="resolveContentFiles">If <c>true</c>, then the expression compiler will attempt to correlate errors with their original
-        /// project files, rather than the copies of those files which exist in the application's build directory. This leads to an improved
-        /// debugging experience, since any changes made to the output versions of these files will be lost when the project is recompiled.</param>
-        public void CompileExpressionsIfSupported(String root, Boolean resolveContentFiles = false)
+        /// <param name="flags">A set of <see cref="CompileExpressionsFlags"/> values specifying how the expressions should be compiled.</param>
+        public void CompileExpressionsIfSupported(String root, CompileExpressionsFlags flags = CompileExpressionsFlags.None)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, "root");
@@ -210,7 +208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (Ultraviolet.Platform == UltravioletPlatform.Android)
                 return;
             
-            CompileExpressions(root, resolveContentFiles);
+            CompileExpressions(root, flags);
         }
 
         /// <summary>

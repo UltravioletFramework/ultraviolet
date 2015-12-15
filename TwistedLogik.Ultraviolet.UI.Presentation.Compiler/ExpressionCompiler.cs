@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             if (File.Exists(options.Output))
             {
                 var cacheOld = CompilerCache.TryFromFile(cacheFile);
-                if (cacheOld != null && !cacheOld.IsDifferentFrom(cacheNew))
+                if (cacheOld != null && !options.IgnoreCache && !cacheOld.IsDifferentFrom(cacheNew))
                     return BindingExpressionCompilationResult.CreateSucceeded();
             }
 
