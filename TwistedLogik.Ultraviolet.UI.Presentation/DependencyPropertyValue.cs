@@ -691,7 +691,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 animation.GetKeyframes(animationClock.ElapsedTime, out kf1, out kf2);
 
                 // Determine which values correspond to our keyframes.
-                T value1 = (kf1 == null) ? GetValueInternal(false) : (!kf1.HasValue) ? GetValueInternal(false) : kf1.Value;
+                T value1 = (kf1 == null) ? animatedHandOffValue : (!kf1.HasValue) ? GetValueInternal(false) : kf1.Value;
                 T value2 = default(T);
                 if (kf2 == null)
                 {
