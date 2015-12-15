@@ -5,7 +5,7 @@ using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents the component of a <see cref="PasswordEditor"/> which is responsible for performing text editing.
