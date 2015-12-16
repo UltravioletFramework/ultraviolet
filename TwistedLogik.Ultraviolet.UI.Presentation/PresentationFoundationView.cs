@@ -328,6 +328,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             UpdateIsDefaulted();
 
+            focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+
             return true;
         }
 
@@ -357,6 +359,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             UpdateIsDefaulted();
+
+            focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
         }
 
         /// <summary>
@@ -804,6 +808,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal PopupQueue Popups
         {
             get { return popupQueue; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this view's focused element was most recently changed by 
+        /// a keyboard or game pad device.
+        /// </summary>
+        internal Boolean FocusWasMostRecentlyChangedByKeyboardOrGamePad
+        {
+            get { return focusWasMostRecentlyChangedByKeyboardOrGamePad; }
         }
 
         /// <inheritdoc/>
@@ -1802,7 +1815,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!IsInputEnabledAndAllowed)
                 return;
 
-            var suppressKeyNav = false;
+            var originalFocus = elementWithFocus;
+            var performKeyNav = false;
 
             if (elementWithFocus != null)
             {
@@ -1813,26 +1827,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Keyboard.RaisePreviewKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownData);
                     Keyboard.RaiseKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownData);
 
-                    suppressKeyNav = keyDownData.Handled;
+                    performKeyNav = !keyDownData.Handled;
                 }
             }
 
-            if (!suppressKeyNav)
+            if (performKeyNav)
             {
-                if (FocusNavigator.PerformNavigation(this, device, key, ctrl, alt, shift, repeat))
-                    return;
-
-                switch (key)
+                if (!FocusNavigator.PerformNavigation(this, device, key, ctrl, alt, shift, repeat))
                 {
-                    case Key.Return:
-                        ActivateDefaultOrCancelButton(defaultButtons);
-                        break;
+                    switch (key)
+                    {
+                        case Key.Return:
+                            ActivateDefaultOrCancelButton(defaultButtons);
+                            break;
 
-                    case Key.Escape:
-                        ActivateDefaultOrCancelButton(cancelButtons);
-                        break;
+                        case Key.Escape:
+                            ActivateDefaultOrCancelButton(cancelButtons);
+                            break;
+                    }
                 }
             }
+
+            if (originalFocus != elementWithFocus)
+                focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
         }
 
         /// <summary>
@@ -1845,6 +1862,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
+                var originalFocus = elementWithFocus;
+
                 var dobj = elementWithFocus as DependencyObject;
                 if (dobj != null)
                 {
@@ -1852,6 +1871,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Keyboard.RaisePreviewKeyUp(dobj, device, key, ref keyUpData);
                     Keyboard.RaiseKeyUp(dobj, device, key, ref keyUpData);
                 }
+
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
             }
         }
 
@@ -1865,6 +1887,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (elementWithFocus != null)
             {
+                var originalFocus = elementWithFocus;
+
                 var dobj = elementWithFocus as DependencyObject;
                 if (dobj != null)
                 {
@@ -1872,6 +1896,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Keyboard.RaisePreviewTextInput(dobj, device, ref textInputData);
                     Keyboard.RaiseTextInput(dobj, device, ref textInputData);
                 }
+
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
             }
         }
 
@@ -1886,6 +1913,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementUnderMouse;
             if (recipient != null)
             {
+                var originalFocus = elementWithFocus;
+
                 var dipsX      = Display.PixelsToDips(x);
                 var dipsY      = Display.PixelsToDips(y);
                 var dipsDeltaX = Display.PixelsToDips(dx);
@@ -1898,6 +1927,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Mouse.RaisePreviewMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveData);
                     Mouse.RaiseMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveData);
                 }
+
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
         }
 
@@ -1916,6 +1948,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementUnderMouse;            
             if (recipient != null)
             {
+                var originalFocus = elementWithFocus;
+
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
@@ -1930,6 +1964,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         Generic.RaiseGenericInteraction(dobj, device, ref genericInteractionData);
                     }
                 }
+
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
         }
 
@@ -1944,6 +1981,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementUnderMouse;
             if (recipient != null)
             {
+                var originalFocus = elementWithFocus;
+
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
@@ -1951,6 +1990,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Mouse.RaisePreviewMouseUp(dobj, device, button, ref mouseUpData);
                     Mouse.RaiseMouseUp(dobj, device, button, ref mouseUpData);
                 }
+
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
         }
 
@@ -1965,6 +2007,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementUnderMouse;
             if (recipient != null)
             {
+                var originalFocus = elementWithFocus;
+
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
@@ -1972,6 +2016,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Mouse.RaisePreviewMouseClick(dobj, device, button, ref mouseClickData);
                     Mouse.RaiseMouseClick(dobj, device, button, ref mouseClickData);
                 }
+
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
         }
 
@@ -1986,6 +2033,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementUnderMouse;
             if (recipient != null)
             {
+                var originalFocus = elementWithFocus;
+
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
@@ -1993,6 +2042,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Mouse.RaisePreviewMouseDoubleClick(dobj, device, button, ref mouseDoubleClickData);
                     Mouse.RaiseMouseDoubleClick(dobj, device, button, ref mouseDoubleClickData);
                 }
+
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
         }
 
@@ -2007,6 +2059,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementUnderMouse;
             if (recipient != null)
             {
+                var originalFocus = elementWithFocus;
+
                 var dipsX = Display.PixelsToDips(x);
                 var dipsY = Display.PixelsToDips(y);
 
@@ -2017,6 +2071,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Mouse.RaisePreviewMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelData);
                     Mouse.RaiseMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelData);
                 }
+                
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
         }
 
@@ -2031,18 +2088,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var position = GetTouchCoordinates(x, y);
 
             var recipient = elementUnderMouse as DependencyObject;
-            if (recipient == null)
-                return;
-
-            var tapData = new RoutedEventData(recipient);
-            Touch.RaisePreviewTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
-            Touch.RaiseTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
-
-            if (fingerID == 0)
+            if (recipient != null)
             {
-                var genericInteractionData = new RoutedEventData(recipient);
-                Generic.RaisePreviewGenericInteraction(recipient, device, ref genericInteractionData);
-                Generic.RaiseGenericInteraction(recipient, device, ref genericInteractionData);
+                var originalFocus = elementWithFocus;
+
+                var tapData = new RoutedEventData(recipient);
+                Touch.RaisePreviewTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
+                Touch.RaiseTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
+
+                if (fingerID == 0)
+                {
+                    var genericInteractionData = new RoutedEventData(recipient);
+                    Generic.RaisePreviewGenericInteraction(recipient, device, ref genericInteractionData);
+                    Generic.RaiseGenericInteraction(recipient, device, ref genericInteractionData);
+                }
+                
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
         }
 
@@ -2057,14 +2119,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var position = GetTouchCoordinates(x, y);
 
             var recipient = HitTest(position) as DependencyObject;
-            if (recipient == null)
-                return;
+            if (recipient != null)
+            {
+                var originalFocus = elementWithFocus;
 
-            var fingerDownData = new RoutedEventData(recipient);
-            Touch.RaisePreviewFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerDownData);
-            Touch.RaiseFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerDownData);
+                var fingerDownData = new RoutedEventData(recipient);
+                Touch.RaisePreviewFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerDownData);
+                Touch.RaiseFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerDownData);
 
-            elementLastTouched = recipient as IInputElement;
+                elementLastTouched = recipient as IInputElement;
+                
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+            }
         }
 
         /// <summary>
@@ -2078,14 +2145,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var position = GetTouchCoordinates(x, y);
 
             var recipient = elementLastTouched as DependencyObject;
-            if (recipient == null)
-                return;
+            if (recipient != null)
+            {
+                var originalFocus = elementWithFocus;
 
-            var fingerUpData = new RoutedEventData(recipient);
-            Touch.RaisePreviewFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerUpData);
-            Touch.RaiseFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerUpData);
+                var fingerUpData = new RoutedEventData(recipient);
+                Touch.RaisePreviewFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerUpData);
+                Touch.RaiseFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerUpData);
 
-            elementLastTouched = null;
+                elementLastTouched = null;
+                
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+            }
         }
 
         /// <summary>
@@ -2099,14 +2171,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var position = GetTouchCoordinates(x, y);
 
             var recipient = elementLastTouched as DependencyObject;
-            if (recipient == null)
-                return;
+            if (recipient != null)
+            {
+                var originalFocus = elementWithFocus;
 
-            var delta = GetTouchDelta(dx, dy);
+                var delta = GetTouchDelta(dx, dy);
 
-            var fingerMotionData = new RoutedEventData(recipient);
-            Touch.RaisePreviewFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, ref fingerMotionData);
-            Touch.RaiseFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, ref fingerMotionData);
+                var fingerMotionData = new RoutedEventData(recipient);
+                Touch.RaisePreviewFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, ref fingerMotionData);
+                Touch.RaiseFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, ref fingerMotionData);
+                
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+            }
         }
 
         /// <summary>
@@ -2142,9 +2219,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithFocus as DependencyObject;
             if (recipient != null)
             {
+                var originalFocus = elementWithFocus;
+
                 var gamePadAxisChangedData = new RoutedEventData(recipient);
                 GamePad.RaisePreviewAxisChanged(recipient, device, axis, value, ref gamePadAxisChangedData);
                 GamePad.RaiseAxisChanged(recipient, device, axis, value, ref gamePadAxisChangedData);
+
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
             }
         }
 
@@ -2156,7 +2238,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (device.PlayerIndex != 0 || !IsInputEnabledAndAllowed)
                 return;
 
-            var suppressGamePadNav = false;
+            var originalFocus = elementWithFocus;
+            var performGamePadNav = true;
 
             var recipient = elementWithFocus as DependencyObject;
             if (recipient != null)
@@ -2165,11 +2248,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 GamePad.RaisePreviewAxisDown(recipient, device, axis, value, repeat, ref gamePadAxisPressedData);
                 GamePad.RaiseAxisDown(recipient, device, axis, value, repeat, ref gamePadAxisPressedData);
 
-                suppressGamePadNav = gamePadAxisPressedData.Handled;
+                performGamePadNav = !gamePadAxisPressedData.Handled;
             }
 
-            if (!suppressGamePadNav)
+            if (performGamePadNav)
                 FocusNavigator.PerformNavigation(this, device, axis);
+            
+            if (originalFocus != elementWithFocus)
+                focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
         }
 
         /// <summary>
@@ -2179,13 +2265,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (device.PlayerIndex != 0 || !IsInputEnabledAndAllowed)
                 return;
-            
+
             var recipient = elementWithFocus as DependencyObject;
             if (recipient != null)
             {
+                var originalFocus = elementWithFocus;
+
                 var gamePadAxisPressedData = new RoutedEventData(recipient);
                 GamePad.RaisePreviewAxisUp(recipient, device, axis, ref gamePadAxisPressedData);
                 GamePad.RaiseAxisUp(recipient, device, axis, ref gamePadAxisPressedData);
+                
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
             }
         }
 
@@ -2197,6 +2288,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (device.PlayerIndex != 0 || !IsInputEnabledAndAllowed)
                 return;
 
+            var originalFocus = elementWithFocus;
             var suppressGamePadNav = false;
 
             var recipient = elementWithFocus as DependencyObject;
@@ -2226,6 +2318,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return;
                 }
             }
+            
+            if (originalFocus != elementWithFocus)
+                focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
         }
 
         /// <summary>
@@ -2239,9 +2334,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithFocus as DependencyObject;
             if (recipient != null)
             {
+                var originalFocus = elementWithFocus;
+
                 var gamePadAxisChangedData = new RoutedEventData(recipient);
                 GamePad.RaisePreviewButtonUp(recipient, device, button, ref gamePadAxisChangedData);
                 GamePad.RaiseButtonUp(recipient, device, button, ref gamePadAxisChangedData);
+                
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
             }
         }
 
@@ -2274,6 +2374,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean hookedGlobalStyleSheetChanged;
         private Boolean hookedFirstPlayerGamePad;
         private Boolean wasInputPossibleLastFrame;
+        private Boolean focusWasMostRecentlyChangedByKeyboardOrGamePad;
 
         // Popup handling.
         private readonly PopupQueue popupQueue = new PopupQueue();

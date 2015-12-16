@@ -15,7 +15,7 @@
       <Image Class="button-focus-image"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
-             Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+             Opacity="{{IsFocusVisualVisible ? 1 : 0}}"
              IsHitTestVisible="false"/>
       
     </Grid>

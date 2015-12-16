@@ -17,7 +17,7 @@
       
       </ScrollViewer>
       <Image Class="textbox-focus-image"
-             Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+             Opacity="{{IsFocusVisualVisible ? 1 : 0}}"
              IsHitTestVisible="false"/>
       <Border Class="textbox-focus-border"
               Opacity="{{IsKeyboardFocused ? 1 : 0}}"

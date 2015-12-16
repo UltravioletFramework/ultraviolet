@@ -820,6 +820,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether this element should display a focus visual, if it has one.
+        /// </summary>
+        public Boolean IsFocusVisualVisible
+        {
+            get
+            {
+                if (View == null)
+                    return false;
+
+                return IsKeyboardFocused && view.FocusWasMostRecentlyChangedByKeyboardOrGamePad;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the element is visible to hit tests.
         /// </summary>
         public Boolean IsHitTestVisible
