@@ -27,6 +27,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(ScrollViewer), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Local));
             KeyboardNavigation.IsTabStopProperty.OverrideMetadata(typeof(ScrollViewer), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+
+            EventManager.RegisterClassHandler(typeof(ScrollViewer), RangeBase.ValueChangedEvent, new UpfRoutedEventHandler(HandleScrollBarValueChanged));
         }
 
         /// <summary>
@@ -590,9 +592,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles the <see cref="RangeBase.ValueChanged"/> event for the scroll viewer's scroll bars.
         /// </summary>
-        private void HandleScrollValueChanged(DependencyObject element, ref RoutedEventData data)
+        private static void HandleScrollBarValueChanged(DependencyObject element, ref RoutedEventData data)
         {
-            Position(MostRecentPositionOffset);
+            var scrollViewer = (ScrollViewer)element;
+            if (scrollViewer.PART_HScroll == data.OriginalSource || scrollViewer.PART_VScroll == data.OriginalSource)
+            {
+                scrollViewer.Position(scrollViewer.MostRecentPositionOffset);
+                data.Handled = true;
+            }            
         }
 
         // Scroll deltas for various input events.
