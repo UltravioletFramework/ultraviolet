@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
 #if SIGNED
-            BindingExpressionCompilerAssembly = String.Format("TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version={0} Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL", version);
+            BindingExpressionCompilerAssembly = String.Format("TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version={0}, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL", version);
 #else
             BindingExpressionCompilerAssembly = String.Format("TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version={0}, Culture=neutral, processorArchitecture=MSIL", version);
 #endif
