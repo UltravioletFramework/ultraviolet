@@ -19,6 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             EventManager.RegisterClassHandler(typeof(NumericUpDown), Mouse.PreviewMouseWheelEvent, new UpfMouseWheelEventHandler(HandlePreviewMouseWheel));
             EventManager.RegisterClassHandler(typeof(NumericUpDown), Keyboard.PreviewKeyDownEvent, new UpfKeyDownEventHandler(HandlePreviewKeyDown));
+            EventManager.RegisterClassHandler(typeof(NumericUpDown), TextEditor.TextEntryValidationEvent, new UpfTextEntryValidationHandler(HandleTextEntryValidation));
 
             MinimumProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Double>(0.0));
             MaximumProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Double>(100.0));
@@ -203,23 +204,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles text entry validation for the updown's text editor.
         /// </summary>
-        private void HandleTextEntryValidation(DependencyObject element, StringSegment text, Char character, Int32 index, ref RoutedEventData data)
+        private static void HandleTextEntryValidation(DependencyObject element, StringSegment text, Int32 offset, Char character, ref Boolean valid, ref RoutedEventData data)
         {
+            var numericUpDown = (NumericUpDown)element;
+            if (numericUpDown.PART_Input != data.OriginalSource)
+                return;
+
+            data.Handled = true;
+
             // Negative sign must be inserted at the beginning of the text.
             // Negative sign is only allowed if Minimum is less than zero.
             if (character == '-')
             {
-                if (index > 0 || Minimum >= 0)
-                    data.Handled = true;
+                if (offset > 0 || numericUpDown.Minimum >= 0)
+                    valid = false;
 
                 return;
             }
 
             // Nothing can be inserted before the negative sign, if there is one.
             var negativeSignPos = text.IndexOf('-');
-            if (negativeSignPos >= 0 && index < 1)
+            if (negativeSignPos >= 0 && offset < 1)
             {
-                data.Handled = true;
+                valid = false;
                 return;
             }
             
@@ -228,15 +235,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var decimalSeparatorPos = text.IndexOf('.');
             if (character == '.')
             {
-                if (decimalSeparatorPos >= 0 || DecimalPlaces == 0)
+                if (decimalSeparatorPos >= 0 || numericUpDown.DecimalPlaces == 0)
                 {
-                    data.Handled = true;
+                    valid = false;
                     return;
                 }
 
-                var decimalsIntroduced = text.Length - index;
-                if (decimalsIntroduced > DecimalPlaces)
-                    data.Handled = true;
+                var decimalsIntroduced = text.Length - offset;
+                if (decimalsIntroduced > numericUpDown.DecimalPlaces)
+                    valid = false;
 
                 return;
             }
@@ -244,15 +251,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             // Non-digit characters cannot be inserted.
             if (!Char.IsDigit(character))
             {
-                data.Handled = true;
+                valid = false;
                 return;
             }
 
             // Post-decimal digits can only be inserted if we have fewer than DecimalPlaces digits there already.
             var decimalCount = (decimalSeparatorPos < 0) ? 0 : text.Length - (decimalSeparatorPos + 1);
-            if (decimalSeparatorPos >= 0 && decimalSeparatorPos < index && decimalCount >= DecimalPlaces)
+            if (decimalSeparatorPos >= 0 && decimalSeparatorPos < offset && decimalCount >= numericUpDown.DecimalPlaces)
             {
-                data.Handled = true;
+                valid = false;
                 return;
             }
         }

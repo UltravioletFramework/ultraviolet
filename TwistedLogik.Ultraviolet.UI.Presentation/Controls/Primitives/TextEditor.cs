@@ -14,11 +14,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     /// <param name="text">The editor's current text.</param>
+    /// <param name="offset">The offset at which the character is being inserted into the text.</param>
     /// <param name="character">The character being inserted into the text.</param>
-    /// <param name="index">The index at which the character is being inserted into the text.</param>
+    /// <param name="valid">A value indicating whether the character is considered valid for entry.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfTextEntryValidationHandler(DependencyObject element, 
-        StringSegment text, Char character, Int32 index, ref RoutedEventData data);
+        StringSegment text, Int32 offset, Char character, ref Boolean valid, ref RoutedEventData data);
 
     /// <summary>
     /// Represents the component of a <see cref="TextBox"/> which is responsible for performing text editing.
@@ -736,7 +737,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Identifies the TextEntryValidation attached routed event.
         /// </summary>
         public static readonly RoutedEvent TextEntryValidationEvent = EventManager.RegisterRoutedEvent("TextEntryValidation",
-            RoutingStrategy.Direct, typeof(UpfTextEntryValidationHandler), typeof(TextEditor));
+            RoutingStrategy.Bubble, typeof(UpfTextEntryValidationHandler), typeof(TextEditor));
 
         /// <summary>
         /// Called when the value of the <see cref="TextBox.TextProperty"/> dependency property changes.
@@ -1183,10 +1184,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets a value specifying whether the specified character is valid to enter at the specified position in the text.
         /// </summary>
+        /// <param name="offset">The offset at which the character is being entered.</param>
         /// <param name="character">The character which is being entered.</param>
-        /// <param name="index">The index at which the character is being entered.</param>
         /// <returns><c>true</c> if the character is valid for entry; otherwise, <c>false</c>.</returns>
-        protected virtual Boolean IsValidCharacterForEntry(Char character, Int32 index)
+        protected virtual Boolean IsValidCharacterForEntry(Int32 offset, Char character)
         {
             if (TemplatedParent == null)
                 return true;
@@ -1195,9 +1196,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var evtData = new RoutedEventData(TemplatedParent);
 
             var text = new StringSegment((StringBuilder)bufferText);
-            evtDelegate(TemplatedParent, text, character, index, ref evtData);
+            var valid = true;
+            evtDelegate(TemplatedParent, text, offset, character, ref valid, ref evtData);
 
-            return !evtData.Handled;
+            return valid;
         }
 
         /// <summary>
@@ -2141,7 +2143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                         break;
                 }
 
-                if (!IsValidCharacterForEntry(character, position + characterCount))
+                if (!IsValidCharacterForEntry(position + characterCount, character))
                     continue;
 
                 var charRequested = character;
