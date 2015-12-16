@@ -1816,7 +1816,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var originalFocus = elementWithFocus;
-            var performKeyNav = false;
+            var performKeyNav = true;
 
             if (elementWithFocus != null)
             {
