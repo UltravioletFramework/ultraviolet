@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -12,10 +13,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public PresentationFoundationConfiguration()
         {
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
 #if SIGNED
-            BindingExpressionCompilerAssembly = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
+            BindingExpressionCompilerAssembly = String.Format("TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version={0} Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL", version);
 #else
-            BindingExpressionCompilerAssembly = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL";
+            BindingExpressionCompilerAssembly = String.Format("TwistedLogik.Ultraviolet.UI.Presentation.Compiler, Version={0}, Culture=neutral, processorArchitecture=MSIL", version);
 #endif
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.OpenGL
@@ -14,10 +15,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// </summary>
         public OpenGLUltravioletConfiguration()
         {
+            var version = Assembly.GetExecutingAssembly().GetName().Version; 
 #if SIGNED
-            AudioSubsystemAssembly = "TwistedLogik.Ultraviolet.BASS, Version=1.2.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
+            AudioSubsystemAssembly = String.Format("TwistedLogik.Ultraviolet.BASS, Version={0}, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL", version);
 #else
-            AudioSubsystemAssembly = "TwistedLogik.Ultraviolet.BASS, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL";
+            AudioSubsystemAssembly = String.Format("TwistedLogik.Ultraviolet.BASS, Version={0}, Culture=neutral, processorArchitecture=MSIL", version);
 #endif
         }
 
