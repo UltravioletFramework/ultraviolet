@@ -21,6 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             EventManager.RegisterClassHandler(typeof(NumericUpDown), Keyboard.PreviewKeyDownEvent, new UpfKeyDownEventHandler(HandlePreviewKeyDown));
             EventManager.RegisterClassHandler(typeof(NumericUpDown), TextEditor.TextEntryValidationEvent, new UpfTextEntryValidationHandler(HandleTextEntryValidation));
 
+            FocusableProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Boolean>(false));
             MinimumProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Double>(0.0));
             MaximumProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Double>(100.0));
             SmallChangeProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Double>(1.0));
