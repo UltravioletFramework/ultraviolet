@@ -21,9 +21,13 @@ namespace TwistedLogik.Ultraviolet
         {
             Contract.Require(root, "root");
             Contract.RequireNotEmpty(path, "path");
-            
+
+            var entryAssembly = Assembly.GetEntryAssembly();
+            if (entryAssembly == null)
+                return path;
+
             // Produce a URI which is relative to the directory that contains our application executable.
-            var uriExe = GetDirectoryUri(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
+            var uriExe = GetDirectoryUri(Path.GetDirectoryName(entryAssembly.Location));
             var uriRoot = new Uri(uriExe, root);
             var uriPathAbs = new Uri(Path.GetFullPath(path), UriKind.Absolute);
 

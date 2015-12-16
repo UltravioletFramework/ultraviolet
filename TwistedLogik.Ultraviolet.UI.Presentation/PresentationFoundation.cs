@@ -772,8 +772,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
             else
-            {
-                var exeName = Assembly.GetEntryAssembly().GetName().Name;
+            {                
+                var exeAssembly = Assembly.GetEntryAssembly();
+                var exeName = (exeAssembly != null) ? Assembly.GetEntryAssembly().GetName().Name :
+                    System.Diagnostics.Process.GetCurrentProcess().ProcessName;
 
                 if (exception is BindingExpressionCompilationFailedException)
                 {
