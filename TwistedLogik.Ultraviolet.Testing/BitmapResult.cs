@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.Testing
 
         /// <summary>
         /// Specifies that subsequent comparisons should have the specified threshold value.
-        /// The threshold value is the number of pixels which must match the expected image
+        /// The threshold value is the percentage of pixels which must match the expected image
         /// in order for the images to be considered a match.
         /// </summary>
         /// <param name="threshold">The threshold value to set.</param>
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.Testing
                 var filenameDiff = Path.ChangeExtension(filenameNoExtension + "_Diff", "png");
                 diff.Save(filenameDiff, ImageFormat.Png);
 
-                if (mismatchesFound >= mismatchesRequired)
+                if (mismatchesFound > mismatchesRequired)
                 {
                     Assert.Fail("Images do not match");
                 }
@@ -102,6 +102,6 @@ namespace TwistedLogik.Ultraviolet.Testing
 
         // State values.
         private readonly Bitmap bitmap;
-        private Single threshold = 0.01f;
+        private Single threshold = 0.0f;
     }
 }

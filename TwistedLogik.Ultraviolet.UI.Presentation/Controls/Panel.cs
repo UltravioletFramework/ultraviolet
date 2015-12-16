@@ -1,12 +1,16 @@
 ﻿using System;
+using System.ComponentModel;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
     /// Represents a framework element with child elements.
     /// </summary>
-    public abstract class Panel : Control
+    [UvmlKnownType]
+    [DefaultProperty("Children")]
+    public abstract class Panel : FrameworkElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Panel"/> class.
@@ -20,12 +24,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets the relative order of the specified element on its z-plane.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns>The relative order of the specified element on its z-plane.</returns>
+        public static Double GetZIndex(DependencyObject element)
+        {
+            Contract.Require(element, "element");
+
+            return element.GetValue<Int32>(ZIndexProperty);
+        }
+
+        /// <summary>
+        /// Sets the relative order of the specified element on its z-plane.
+        /// </summary>
+        /// <param name="element">The element to modify.</param>
+        /// <param name="value">The relative order of the specified element on its z-plane.</param>
+        public static void SetZIndex(DependencyObject element, Int32 value)
+        {
+            Contract.Require(element, "element");
+
+            element.SetValue(ZIndexProperty, value);
+        }
+
+        /// <summary>
         /// Gets the panel's collection of children.
         /// </summary>
         public UIElementCollection Children
         {
             get { return children; }
         }
+
+        /// <summary>
+        /// Identifies the ZIndex attached property.
+        /// </summary>
+        public static readonly DependencyProperty ZIndexProperty = DependencyProperty.RegisterAttached("ZIndex", typeof(Int32), typeof(Panel),
+            new PropertyMetadata<Int32>(CommonBoxedValues.Int32.Zero, PropertyMetadataOptions.None, HandleZIndexChanged));
 
         /// <inheritdoc/>
         protected internal override void RemoveLogicalChild(UIElement child)
@@ -42,14 +76,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             Contract.EnsureRange(childIndex >= 0 && childIndex < children.Count + 1, "childIndex");
 
-            if (ComponentRoot != null)
-            {
-                if (childIndex == 0)
-                {
-                    return ComponentRoot;
-                }
-                childIndex--;
-            }
             return children[childIndex];
         }
 
@@ -60,9 +86,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected internal override UIElement GetVisualChildByZOrder(Int32 childIndex)
+        {
+            Contract.EnsureRange(childIndex >= 0 && childIndex < children.Count + 1, "childIndex");
+
+            return children.GetByZOrder(childIndex);
+        }
+
+        /// <inheritdoc/>
         protected internal override Int32 LogicalChildrenCount
         {
-            get 
+            get
             {
                 return base.LogicalChildrenCount + children.Count;
             }
@@ -80,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
-            if (!IsHitTestVisible || !Bounds.Contains(point))
+            if (!HitTestUtil.IsPotentialHit(this, point))
                 return null;
 
             var childMatch = HitTestChildren(point);
@@ -89,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 return childMatch;
             }
 
-            return this;
+            return Bounds.Contains(point) ? this : null;
         }
 
         /// <summary>
@@ -102,9 +136,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             for (int i = children.Count - 1; i >= 0; i--)
             {
-                var child = children[i];
+                var child = children.GetByZOrder(i);
 
-                var childMatch = child.HitTest(point - child.RelativeBounds.Location);
+                var childMatch = child.HitTest(TransformToDescendant(child, point));
                 if (childMatch != null)
                 {
                     return childMatch;
@@ -113,20 +147,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             return null;
         }
 
-        /// <inheritdoc/>
-        protected override RectangleD? ClipCore()
+        /// <summary>
+        /// Occurs when the value of the ZIndex attached property changes.
+        /// </summary>
+        private static void HandleZIndexChanged(DependencyObject dobj, Int32 oldValue, Int32 newValue)
         {
-            foreach (var child in children)
-            {
-                if (child.RelativeBounds.Left < 0 || child.RelativeBounds.Top < 0 ||
-                    child.RelativeBounds.Right > RenderSize.Width || child.RelativeBounds.Bottom > RenderSize.Height)
-                {
-                    return AbsoluteBounds;
-                }
-            }
-            return null;
+            var parent = VisualTreeHelper.GetParent(dobj) as Panel;
+            if (parent == null)
+                return;
+
+            parent.HandleChildZIndexChanged();
         }
-        
+
+        /// <summary>
+        /// Called when the z-index of one of the panel's children is changed.
+        /// </summary>
+        private void HandleChildZIndexChanged()
+        {
+            children.SortVisualChildrenByZIndex();
+        }
+
         // Property values.
         private readonly UIElementCollection children;
     }

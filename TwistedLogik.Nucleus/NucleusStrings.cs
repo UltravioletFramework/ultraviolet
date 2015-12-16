@@ -76,6 +76,12 @@ namespace TwistedLogik.Nucleus
         public static readonly StringResource LocalizedStringMissingKey              = new StringResource(StringDatabase, "LOCALIZED_STRING_MISSING_KEY");
         public static readonly StringResource DataObjectFailedValidation             = new StringResource(StringDatabase, "DATA_OBJECT_FAILED_VALIDATION");
         public static readonly StringResource TypeMetadataAlreadyLoaded              = new StringResource(StringDatabase, "TYPE_METADATA_ALREADY_LOADED");
+        public static readonly StringResource SequenceHasNoElements                  = new StringResource(StringDatabase, "SEQUENCE_HAS_NO_ELEMENTS");
+        public static readonly StringResource SequenceHasMoreThanOneElement          = new StringResource(StringDatabase, "SEQUENCE_HAS_MORE_THAN_ONE_ELEMENT");
+        public static readonly StringResource UnsafeStreamMustAcquirePointers        = new StringResource(StringDatabase, "UNSAFE_STREAM_MUST_ACQUIRE_POINTERS");
+        public static readonly StringResource UnsafeStreamHasAlreadyAcquiredPointers = new StringResource(StringDatabase, "UNSAFE_STREAM_HAS_ALREADY_ACQUIRED_POINTERS");
+        public static readonly StringResource UnsafeStreamCanOnlyReserveAtStreamEnd  = new StringResource(StringDatabase, "UNSAFE_STREAM_CAN_ONLY_RESERVE_AT_STREAM_END");
+        public static readonly StringResource UnsafeStreamWouldOverwriteObject       = new StringResource(StringDatabase, "UNSAFE_STREAM_WOULD_OVERWRITE_OBJECT");
 #pragma warning restore 1591
     }
 }

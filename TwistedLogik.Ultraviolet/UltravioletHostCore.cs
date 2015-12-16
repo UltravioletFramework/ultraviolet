@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet
             if (!host.IsActive && InactiveSleepTime.TotalMilliseconds > 0)
                 Thread.Sleep(InactiveSleepTime);
  
-            uv.ProcessWorkItems();
+            uv.ProcessWorkItemsInternal();
 
             if (IsFixedTimeStep)
             {
@@ -62,6 +62,8 @@ namespace TwistedLogik.Ultraviolet
                 {
                     tickTimer.Restart();
                     tickElapsed -= targetElapsedTime.TotalMilliseconds * (int)(tickElapsed / targetElapsedTime.TotalMilliseconds);
+
+                    uv.HandleFrameStart();
 
                     const Double CatchUpThreshold = 1.05;
                     if (frameElapsed > 0 && frameElapsed > targetElapsedTime.TotalMilliseconds * CatchUpThreshold)
@@ -104,7 +106,12 @@ namespace TwistedLogik.Ultraviolet
                     }
 
                     var uvTimeDraw = timeTrackerDraw.Increment(targetElapsedTime, isRunningSlowly);
-                    uv.Draw(uvTimeDraw);
+                    using (UltravioletProfiler.Section(UltravioletProfilerSections.Draw))
+                    {
+                        uv.Draw(uvTimeDraw);
+                    }
+
+                    uv.HandleFrameEnd();
 
                     frameElapsed = frameTimer.Elapsed.TotalMilliseconds;
                 }
@@ -114,6 +121,8 @@ namespace TwistedLogik.Ultraviolet
                 var time = tickTimer.Elapsed.TotalMilliseconds;
                 tickTimer.Restart();
 
+                uv.HandleFrameStart();
+
                 var uvTimeDelta  = TimeSpan.FromTicks((long)(time * TimeSpan.TicksPerMillisecond));
                 var uvTimeUpdate = timeTrackerUpdate.Increment(uvTimeDelta, false);
                 if (!UpdateContext(uv, uvTimeUpdate))
@@ -122,7 +131,12 @@ namespace TwistedLogik.Ultraviolet
                 }
 
                 var uvTimeDraw = uvTimeUpdate;
-                uv.Draw(uvTimeDraw);
+                using (UltravioletProfiler.Section(UltravioletProfilerSections.Draw))
+                {
+                    uv.Draw(uvTimeDraw);
+                }
+
+                uv.HandleFrameEnd();
             }
         }
 
@@ -194,7 +208,10 @@ namespace TwistedLogik.Ultraviolet
         /// <returns><c>true</c> if the host should continue processing; otherwise, <c>false</c>.</returns>
         private Boolean UpdateContext(UltravioletContext uv, UltravioletTime time)
         {
-            uv.Update(time);
+            using (UltravioletProfiler.Section(UltravioletProfilerSections.Update))
+            {
+                uv.Update(time);
+            }
             return !uv.Disposed;
         }
 
@@ -208,15 +225,15 @@ namespace TwistedLogik.Ultraviolet
 
         // Current tick state.
         private readonly UltravioletTimeTracker timeTrackerUpdate = new UltravioletTimeTracker();
-        private readonly UltravioletTimeTracker timeTrackerDraw   = new UltravioletTimeTracker();
-        private readonly Stopwatch tickTimer  = new Stopwatch();
+        private readonly UltravioletTimeTracker timeTrackerDraw = new UltravioletTimeTracker();
+        private readonly Stopwatch tickTimer = new Stopwatch();
         private readonly Stopwatch frameTimer = new Stopwatch();
         private Double tickElapsed;
         private Double frameElapsed;
         private TimeSpan targetElapsedTime = defaultTargetElapsedTime;
         private TimeSpan inactiveSleepTime = defaultInactiveSleepTime;
-        private Boolean isFixedTimeStep    = defaultIsFixedTimeStep;
-        private Boolean isRunningSlowly    = false;
+        private Boolean isFixedTimeStep = defaultIsFixedTimeStep;
+        private Boolean isRunningSlowly = false;
         private Int32 runningSlowlyFrames;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -8,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents an object which builds instances of <see cref="DataBindingSetter{T}"/>.
     /// </summary>
-    internal sealed class DataBindingSetterBuilder : BindingExpressionBuilder
+    internal sealed class DataBindingSetterBuilder : ExpressionBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataBindingSetterBuilder"/> class.
@@ -19,40 +18,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public DataBindingSetterBuilder(Type expressionType, Type dataSourceType, String expression)
             : base(dataSourceType)
         {
-            this.boundType    = expressionType;
+            this.boundType = expressionType;
             this.delegateType = typeof(DataBindingSetter<>).MakeGenericType(expressionType);
 
             CreateReturnTarget();
 
-            var components = BindingExpressions.ParseBindingExpression(expression).ToArray();
-            var current    = AddDataSourceReference();
-            var value      = AddValueParameter();
+            var path = BindingExpressions.GetBindingMemberPathPart(expression);
+            var current = AddDataSourceReference();
+            var value = AddValueParameter();
 
-            for (int i = 0; i < components.Length; i++)
+            if (current.Type.IsValueType)
+                return;
+
+            if (!AddValueAssignment(current, value, path))
             {
-                var component = components[i];
-
-                if (i + 1 < components.Length)
-                {
-                    current = AddSafeReference(expression, current, component);
-                }
-                else
-                {
-                    if (current.Type.IsValueType)
-                        return;
-
-                    if (!AddValueAssignment(current, value, component))
-                    {
-                        return;
-                    }
-                }
+                return;
             }
 
             AddReturn();
             AddReturnLabel();
 
             var lambdaBody = Expression.Block(variables, expressions);
-            var lambda     = Expression.Lambda(delegateType, lambdaBody, parameters);
+            var lambda = Expression.Lambda(delegateType, lambdaBody, parameters);
 
             lambdaExpression = lambda;
         }

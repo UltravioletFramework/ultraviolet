@@ -23,6 +23,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         void RemoveHandler(RoutedEvent evt, Delegate handler);
 
         /// <summary>
+        /// Sets focus on this element.
+        /// </summary>
+        /// <returns><c>true</c> if focus was successfully moved to this element; otherwise, <c>false</c>.</returns>
+        Boolean Focus();
+
+        /// <summary>
         /// Gets or sets a value that indicates whether this element can receive focus.
         /// </summary>
         Boolean Focusable { get; set; }
@@ -61,6 +67,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether this element is the topmost element which is directly under the mouse cursor.
         /// </summary>
         Boolean IsMouseDirectlyOver { get; }
+
+        /// <summary>
+        /// Occurs when the element gains keyboard focus.
+        /// </summary>
+        event UpfRoutedEventHandler PreviewGotKeyboardFocus;
+
+        /// <summary>
+        /// Occurs when the element loses keyboard focus.
+        /// </summary>
+        event UpfRoutedEventHandler PreviewLostKeyboardFocus;
 
         /// <summary>
         /// Occurs when the element gains keyboard focus.
@@ -171,5 +187,97 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the mouse wheel is scrolled while the cursor is over the element.
         /// </summary>
         event UpfMouseWheelEventHandler MouseWheel;
+
+        /// <summary>
+        /// Occurs when the element is tapped via a touch device.
+        /// </summary>
+        event UpfTouchTapEventHandler PreviewTap;
+
+        /// <summary>
+        /// Occurs when a finger is pressed against the element via a touch device.
+        /// </summary>
+        event UpfTouchEventHandler PreviewFingerDown;
+
+        /// <summary>
+        /// Occurs when a finger is removed from the element via a touch device.
+        /// </summary>
+        event UpfTouchEventHandler PreviewFingerUp;
+
+        /// <summary>
+        /// Occurs when a finger moves across the element via a touch device.
+        /// </summary>
+        event UpfTouchMotionEventHandler PreviewFingerMotion;
+
+        /// <summary>
+        /// Occurs when the element is tapped via a touch device.
+        /// </summary>
+        event UpfTouchTapEventHandler Tap;
+
+        /// <summary>
+        /// Occurs when a finger is pressed against the element via a touch device.
+        /// </summary>
+        event UpfTouchEventHandler FingerDown;
+
+        /// <summary>
+        /// Occurs when a finger is removed from the element via a touch device.
+        /// </summary>
+        event UpfTouchEventHandler FingerUp;
+
+        /// <summary>
+        /// Occurs when a finger moves across the element via a touch device.
+        /// </summary>
+        event UpfTouchMotionEventHandler FingerMotion;
+
+        /// <summary>
+        /// Occurs when a game pad axis changes value while the element has focus.
+        /// </summary>
+        event UpfGamePadAxisChangedEventHandler PreviewGamePadAxisChanged;
+
+        /// <summary>
+        /// Occurs when a game pad button is pressed while the element has focus.
+        /// </summary>
+        event UpfGamePadButtonDownEventHandler PreviewGamePadButtonDown;
+
+        /// <summary>
+        /// Occurs when a game pad button is released while the element has focus.
+        /// </summary>
+        event UpfGamePadButtonUpEventHandler PreviewGamePadButtonUp;
+
+        /// <summary>
+        /// Occurs when a game pad axis changes value while the element has focus.
+        /// </summary>
+        event UpfGamePadAxisChangedEventHandler GamePadAxisChanged;
+
+        /// <summary>
+        /// Occurs when a game pad axis is pressed while the element has focus.
+        /// </summary>
+        event UpfGamePadAxisDownEventHandler GamePadAxisDown;
+
+        /// <summary>
+        /// Occurs when a game pad axis is released while the element has focus.
+        /// </summary>
+        event UpfGamePadAxisUpEventHandler GamePadAxisUp;
+
+        /// <summary>
+        /// Occurs when a game pad button is pressed while the element has focus.
+        /// </summary>
+        event UpfGamePadButtonDownEventHandler GamePadButtonDown;
+
+        /// <summary>
+        /// Occurs when a game pad button is released while the element has focus.
+        /// </summary>
+        event UpfGamePadButtonUpEventHandler GamePadButtonUp;
+
+        /// <summary>
+        /// Occurs when the element is tapped (if a touch device is connected) or the primary 
+        /// mouse button is pressed (if not).
+        /// </summary>
+        event UpfGenericInteractionEventHandler PreviewGenericInteraction;
+
+        /// <summary>
+        /// Occurs when the element is tapped (if a touch device is connected) or the primary 
+        /// mouse button is pressed (if not).
+        /// </summary>
+        event UpfGenericInteractionEventHandler GenericInteraction;
     }
 }

@@ -23,11 +23,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             BindArrayBuffer,
             BindElementArrayBuffer,
             BindFramebuffer,
+            BindRenderbuffer,
             UseProgram,
             CreateTexture2D,
             CreateArrayBuffer,
             CreateElementArrayBuffer,
             CreateFramebuffer,
+            CreateRenderbuffer,
         }
 
         /// <summary>
@@ -98,8 +100,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.BindTexture(gl.GL_TEXTURE_2D, texture);
             gl.ThrowIfError();
 
-            OpenGLState.GL_TEXTURE_BINDING_2D.Update(texture);
-            OpenGLState.VerifyCache();
+            GL_TEXTURE_BINDING_2D.Update(texture);
+            VerifyCache();
         }
 
         /// <summary>
@@ -136,10 +138,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.BindVertexArray(vertexArrayObject);
             gl.ThrowIfError();
 
-            OpenGLState.GL_VERTEX_ARRAY_BINDING.Update(vertexArrayObject);
-            OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(arrayBuffer);
-            OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(elementArrayBuffer);
-            OpenGLState.VerifyCache();
+            GL_VERTEX_ARRAY_BINDING.Update(vertexArrayObject);
+            GL_ARRAY_BUFFER_BINDING.Update(arrayBuffer);
+            GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(elementArrayBuffer);
+            VerifyCache();
         }
 
         /// <summary>
@@ -170,8 +172,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.BindBuffer(gl.GL_ARRAY_BUFFER, arrayBuffer);
             gl.ThrowIfError();
 
-            OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(arrayBuffer);
-            OpenGLState.VerifyCache();
+            GL_ARRAY_BUFFER_BINDING.Update(arrayBuffer);
+            VerifyCache();
         }
 
         /// <summary>
@@ -202,15 +204,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, elementArrayBuffer);
             gl.ThrowIfError();
 
-            OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(elementArrayBuffer);
-            OpenGLState.VerifyCache();
+            GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(elementArrayBuffer);
+            VerifyCache();
         }
 
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which binds a framebuffer to the context.
         /// </summary>
         /// <param name="framebuffer">The framebuffer to bind to the OpenGL context.</param>
-        /// <param name="force">A value indicating whether to force-bind the array buffer, even if DSA is available.</param>
+        /// <param name="force">A value indicating whether to force-bind the framebuffer, even if DSA is available.</param>
         public static OpenGLState ScopedBindFramebuffer(UInt32 framebuffer, Boolean force = false)
         {
             var state = pool.Retrieve();
@@ -234,8 +236,40 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
             gl.ThrowIfError();
 
-            OpenGLState.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
-            OpenGLState.VerifyCache();
+            GL_FRAMEBUFFER_BINDING.Update(framebuffer);
+            VerifyCache();
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which binds a renderbuffer to the context.
+        /// </summary>
+        /// <param name="renderbuffer">The renderbuffer to bind to the OpenGL context.</param>
+        /// <param name="force">A value indicating whether to force-bind the renderbuffer, even if DSA is available.</param>
+        public static OpenGLState ScopedBindRenderbuffer(UInt32 renderbuffer, Boolean force = false)
+        {
+            var state = pool.Retrieve();
+
+            state.stateType = OpenGLStateType.BindRenderbuffer;
+            state.disposed = false;
+            state.forced = force;
+            state.newGL_RENDERBUFFER_BINDING = renderbuffer;
+
+            state.Apply();
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately binds a renderbuffer to the OpenGL context and updates the state cache.
+        /// </summary>
+        /// <param name="renderbuffer">The renderbuffer to bind to the OpenGL context.</param>
+        public static void BindRenderbuffer(UInt32 renderbuffer)
+        {
+            gl.BindRenderbuffer(gl.GL_RENDERBUFFER, renderbuffer);
+            gl.ThrowIfError();
+
+            GL_RENDERBUFFER_BINDING.Update(renderbuffer);
+            VerifyCache();
         }
 
         /// <summary>
@@ -264,8 +298,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.UseProgram(program);
             gl.ThrowIfError();
 
-            OpenGLState.GL_CURRENT_PROGRAM.Update(program);
-            OpenGLState.VerifyCache();
+            GL_CURRENT_PROGRAM.Update(program);
+            VerifyCache();
         }
 
         /// <summary>
@@ -274,17 +308,24 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="buffer">The identifier of the buffer that was created.</param>
         public static void CreateArrayBuffer(out UInt32 buffer)
         {
-            if (gl.IsARBDirectStateAccessAvailable)
+            if (SupportsDirectStateAccessCreateFunctions)
             {
                 buffer = gl.CreateBuffer();
+                gl.ThrowIfError();
             }
             else
             {
                 buffer = gl.GenBuffer();
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, buffer);
+                gl.ThrowIfError();
 
-                OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(buffer);
-                OpenGLState.VerifyCache();
+                if (!gl.IsDirectStateAccessAvailable)
+                {
+                    gl.BindBuffer(gl.GL_ARRAY_BUFFER, buffer);
+                    gl.ThrowIfError();
+
+                    GL_ARRAY_BUFFER_BINDING.Update(buffer);
+                    VerifyCache();
+                }
             }
         }
 
@@ -310,17 +351,24 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="buffer">The identifier of the buffer that was created.</param>
         public static void CreateElementArrayBuffer(out UInt32 buffer)
         {
-            if (gl.IsARBDirectStateAccessAvailable)
+            if (SupportsDirectStateAccessCreateFunctions)
             {
                 buffer = gl.CreateBuffer();
+                gl.ThrowIfError();
             }
             else
             {
                 buffer = gl.GenBuffer();
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
+                gl.ThrowIfError();
 
-                OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(buffer);
-                OpenGLState.VerifyCache();
+                if (!gl.IsDirectStateAccessAvailable)
+                {
+                    gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
+                    gl.ThrowIfError();
+
+                    GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(buffer);
+                    VerifyCache();
+                }
             }
         }
 
@@ -346,17 +394,24 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="texture">The identifier of the texture that was created.</param>
         public static void CreateTexture2D(out UInt32 texture)
         {
-            if (gl.IsARBDirectStateAccessAvailable)
+            if (SupportsDirectStateAccessCreateFunctions)
             {
                 texture = gl.CreateTexture(gl.GL_TEXTURE_2D);
+                gl.ThrowIfError();
             }
             else
             {
                 texture = gl.GenTexture();
-                gl.BindTexture(gl.GL_TEXTURE_2D, texture);
+                gl.ThrowIfError();
 
-                OpenGLState.GL_TEXTURE_BINDING_2D.Update(texture);
-                OpenGLState.VerifyCache();
+                if (!gl.IsDirectStateAccessAvailable)
+                {
+                    gl.BindTexture(gl.GL_TEXTURE_2D, texture);
+                    gl.ThrowIfError();
+
+                    GL_TEXTURE_BINDING_2D.Update(texture);
+                    VerifyCache();
+                }
             }
         }
 
@@ -382,17 +437,24 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="framebuffer">The identifier of the framebuffer that was created.</param>
         public static void CreateFramebuffer(out UInt32 framebuffer)
         {
-            if (gl.IsARBDirectStateAccessAvailable)
+            if (SupportsDirectStateAccessCreateFunctions)
             {
                 framebuffer = gl.CreateFramebuffer();
+                gl.ThrowIfError();
             }
             else
             {
                 framebuffer = gl.GenFramebuffer();
-                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
+                gl.ThrowIfError();
 
-                OpenGLState.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
-                OpenGLState.VerifyCache();
+                if (!gl.IsDirectStateAccessAvailable)
+                {
+                    gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
+                    gl.ThrowIfError();
+
+                    GL_FRAMEBUFFER_BINDING.Update(framebuffer);
+                    VerifyCache();
+                }
             }
         }
 
@@ -404,12 +466,68 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var state = pool.Retrieve();
 
-            state.stateType             = OpenGLStateType.CreateFramebuffer;
-            state.disposed              = false;
+            state.stateType = OpenGLStateType.CreateFramebuffer;
+            state.disposed  = false;
 
             state.Apply_CreateFramebuffer(out framebuffer);
 
             return state;
+        }
+
+        /// <summary>
+        /// Immediately creates a renderbuffer and updates the state cache.
+        /// </summary>
+        /// <param name="renderbuffer">The identifier of the renderbuffer that was created.</param>
+        public static void CreateRenderbuffer(out UInt32 renderbuffer)
+        {
+            if (SupportsDirectStateAccessCreateFunctions)
+            {
+                renderbuffer = gl.CreateRenderbuffer();
+                gl.ThrowIfError();
+            }
+            else
+            {
+                renderbuffer = gl.GenRenderbuffer();
+                gl.ThrowIfError();
+
+                if (!gl.IsDirectStateAccessAvailable)
+                {
+                    gl.BindRenderbuffer(gl.GL_RENDERBUFFER, renderbuffer);
+                    gl.ThrowIfError();
+
+                    GL_RENDERBUFFER_BINDING.Update(renderbuffer);
+                    VerifyCache();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which creates a renderbuffer.
+        /// </summary>
+        /// <param name="renderbuffer">The identifier of the renderbuffer that was created.</param>
+        public static OpenGLState ScopedCreateRenderbuffer(out UInt32 renderbuffer)
+        {
+            var state = pool.Retrieve();
+
+            state.stateType = OpenGLStateType.CreateRenderbuffer;
+            state.disposed = false;
+
+            state.Apply_CreateRenderbuffer(out renderbuffer);
+
+            return state;
+        }
+
+        /// <summary>
+        /// Indicates that the specified texture has been deleted and updates the OpenGL state accordingly.
+        /// </summary>
+        /// <param name="texture">The texture to delete.</param>
+        public static void DeleteTexture2D(UInt32 texture)
+        {
+            if (GL_TEXTURE_BINDING_2D == texture)
+            {
+                GL_TEXTURE_BINDING_2D.Update(0);
+                VerifyCache();
+            }
         }
 
         /// <summary>
@@ -420,13 +538,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="elementArrayBuffer">The element array buffer to delete.</param>
         public static void DeleteVertexArrayObject(UInt32 vertexArrayObject, UInt32 arrayBuffer, UInt32 elementArrayBuffer)
         {
-            if (OpenGLState.GL_VERTEX_ARRAY_BINDING == vertexArrayObject)
+            if (GL_VERTEX_ARRAY_BINDING == vertexArrayObject)
             {
-                OpenGLState.GL_VERTEX_ARRAY_BINDING.Update(0);
-                OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(0);
-                OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(0);
-
-                OpenGLState.VerifyCache();
+                GL_VERTEX_ARRAY_BINDING.Update(0);
+                GL_ARRAY_BUFFER_BINDING.Update(0);
+                GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(0);
+                VerifyCache();
             }
         }
 
@@ -458,6 +575,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 case OpenGLStateType.BindFramebuffer:
                     Apply_BindFramebuffer();
+                    break;
+
+                case OpenGLStateType.BindRenderbuffer:
+                    Apply_BindRenderbuffer();
                     break;
 
                 case OpenGLStateType.UseProgram:
@@ -528,6 +649,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
+        private void Apply_BindRenderbuffer()
+        {
+            if (forced || !gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindRenderbuffer(gl.GL_RENDERBUFFER, newGL_RENDERBUFFER_BINDING);
+                gl.ThrowIfError();
+
+                oldGL_RENDERBUFFER_BINDING = OpenGLState.GL_RENDERBUFFER_BINDING.Update(newGL_RENDERBUFFER_BINDING);
+            }
+        }
+
         private void Apply_UseProgram()
         {
             gl.UseProgram(newGL_CURRENT_PROGRAM);
@@ -538,7 +670,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateElementArrayBuffer(out UInt32 buffer)
         {
-            if (gl.IsARBDirectStateAccessAvailable)
+            if (SupportsDirectStateAccessCreateFunctions)
             {
                 buffer = gl.CreateBuffer();
                 gl.ThrowIfError();
@@ -548,17 +680,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 buffer = gl.GenBuffer();
                 gl.ThrowIfError();
 
-                gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
-                gl.ThrowIfError();
+                if (!gl.IsDirectStateAccessAvailable)
+                {
+                    gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
+                    gl.ThrowIfError();
 
-                newGL_ELEMENT_ARRAY_BUFFER_BINDING = buffer;
-                oldGL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(buffer);
+                    newGL_ELEMENT_ARRAY_BUFFER_BINDING = buffer;
+                    oldGL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(buffer);
+                }
             }
         }
 
         private void Apply_CreateArrayBuffer(out UInt32 buffer)
         {
-            if (gl.IsARBDirectStateAccessAvailable)
+            if (SupportsDirectStateAccessCreateFunctions)
             {
                 buffer = gl.CreateBuffer();
                 gl.ThrowIfError();
@@ -568,17 +703,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 buffer = gl.GenBuffer();
                 gl.ThrowIfError();
 
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, buffer);
-                gl.ThrowIfError();
+                if (!gl.IsDirectStateAccessAvailable)
+                {
+                    gl.BindBuffer(gl.GL_ARRAY_BUFFER, buffer);
+                    gl.ThrowIfError();
 
-                newGL_ARRAY_BUFFER_BINDING = buffer;
-                oldGL_ARRAY_BUFFER_BINDING = OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(buffer);
+                    newGL_ARRAY_BUFFER_BINDING = buffer;
+                    oldGL_ARRAY_BUFFER_BINDING = OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(buffer);
+                }
             }
         }
 
         private void Apply_CreateTexture2D(out UInt32 texture)
         {
-            if (gl.IsARBDirectStateAccessAvailable)
+            if (SupportsDirectStateAccessCreateFunctions)
             {
                 texture = gl.CreateTexture(gl.GL_TEXTURE_2D);
                 gl.ThrowIfError();
@@ -588,17 +726,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 texture = gl.GenTexture();
                 gl.ThrowIfError();
 
-                gl.BindTexture(gl.GL_TEXTURE_2D, texture);
-                gl.ThrowIfError();
+                if (!gl.IsDirectStateAccessAvailable)
+                {
+                    gl.BindTexture(gl.GL_TEXTURE_2D, texture);
+                    gl.ThrowIfError();
 
-                newGL_TEXTURE_BINDING_2D = texture;
-                oldGL_TEXTURE_BINDING_2D = OpenGLState.GL_TEXTURE_BINDING_2D.Update(texture);
+                    newGL_TEXTURE_BINDING_2D = texture;
+                    oldGL_TEXTURE_BINDING_2D = OpenGLState.GL_TEXTURE_BINDING_2D.Update(texture);
+                }
             }
         }
 
         private void Apply_CreateFramebuffer(out UInt32 framebuffer)
         {
-            if (gl.IsARBDirectStateAccessAvailable)
+            if (SupportsDirectStateAccessCreateFunctions)
             {
                 framebuffer = gl.CreateFramebuffer();
             }
@@ -607,11 +748,36 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 framebuffer = gl.GenFramebuffer();
                 gl.ThrowIfError();
 
-                gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
+                if (!gl.IsDirectStateAccessAvailable)
+                {
+                    gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
+                    gl.ThrowIfError();
+
+                    newGL_FRAMEBUFFER_BINDING = framebuffer;
+                    oldGL_FRAMEBUFFER_BINDING = OpenGLState.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
+                }
+            }            
+        }
+
+        private void Apply_CreateRenderbuffer(out UInt32 renderbuffer)
+        {
+            if (SupportsDirectStateAccessCreateFunctions)
+            {
+                renderbuffer = gl.CreateRenderbuffer();
+            }
+            else
+            {
+                renderbuffer = gl.GenRenderbuffer();
                 gl.ThrowIfError();
 
-                newGL_FRAMEBUFFER_BINDING = framebuffer;
-                oldGL_FRAMEBUFFER_BINDING = OpenGLState.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
+                if (!gl.IsDirectStateAccessAvailable)
+                {
+                    gl.BindRenderbuffer(gl.GL_RENDERBUFFER, renderbuffer);
+                    gl.ThrowIfError();
+
+                    newGL_RENDERBUFFER_BINDING = renderbuffer;
+                    oldGL_RENDERBUFFER_BINDING = OpenGLState.GL_RENDERBUFFER_BINDING.Update(renderbuffer);
+                }
             }
         }
 
@@ -648,6 +814,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     Dispose_BindFramebuffer();
                     break;
 
+                case OpenGLStateType.BindRenderbuffer:
+                    Dispose_BindRenderbuffer();
+                    break;
+
                 case OpenGLStateType.UseProgram:
                     Dispose_UseProgram();
                     break;
@@ -666,6 +836,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 case OpenGLStateType.CreateFramebuffer:
                     Dispose_CreateFramebuffer();
+                    break;
+
+                case OpenGLStateType.CreateRenderbuffer:
+                    Dispose_CreateRenderbuffer();
                     break;
 
                 default:
@@ -735,6 +909,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
+        private void Dispose_BindRenderbuffer()
+        {
+            if (forced || !gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindRenderbuffer(gl.GL_RENDERBUFFER, oldGL_RENDERBUFFER_BINDING);
+                gl.ThrowIfError();
+
+                OpenGLState.GL_RENDERBUFFER_BINDING.Update(oldGL_RENDERBUFFER_BINDING);
+            }
+        }
+
         private void Dispose_UseProgram()
         {
             gl.UseProgram(oldGL_CURRENT_PROGRAM);
@@ -745,7 +930,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         private void Dispose_CreateArrayBuffer()
         {
-            if (!gl.IsARBDirectStateAccessAvailable)
+            if (!gl.IsDirectStateAccessAvailable)
             {
                 gl.BindBuffer(gl.GL_ARRAY_BUFFER, oldGL_ARRAY_BUFFER_BINDING);
                 gl.ThrowIfError();
@@ -756,7 +941,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         private void Dispose_CreateElementArrayBuffer()
         {
-            if (!gl.IsARBDirectStateAccessAvailable)
+            if (!gl.IsDirectStateAccessAvailable)
             {
                 gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, oldGL_ELEMENT_ARRAY_BUFFER_BINDING);
                 gl.ThrowIfError();
@@ -767,7 +952,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         private void Dispose_CreateTexture2D()
         {
-            if (!gl.IsARBDirectStateAccessAvailable)
+            if (!gl.IsDirectStateAccessAvailable)
             {
                 gl.BindTexture(gl.GL_TEXTURE_2D, oldGL_TEXTURE_BINDING_2D);
                 gl.ThrowIfError();
@@ -778,12 +963,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         private void Dispose_CreateFramebuffer()
         {
-            if (!gl.IsARBDirectStateAccessAvailable)
+            if (!gl.IsDirectStateAccessAvailable)
             {
                 gl.BindFramebuffer(gl.GL_FRAMEBUFFER, oldGL_FRAMEBUFFER_BINDING);
                 gl.ThrowIfError();
 
                 OpenGLState.GL_FRAMEBUFFER_BINDING.Update(oldGL_FRAMEBUFFER_BINDING);
+            }
+        }
+
+        private void Dispose_CreateRenderbuffer()
+        {
+            if (!gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindRenderbuffer(gl.GL_RENDER, oldGL_RENDERBUFFER_BINDING);
+                gl.ThrowIfError();
+
+                OpenGLState.GL_RENDERBUFFER_BINDING.Update(oldGL_RENDERBUFFER_BINDING);
             }
         }
 
@@ -813,9 +1009,25 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public static OpenGLStateInteger GL_FRAMEBUFFER_BINDING { get { return glFramebufferBinding; } }
 
         /// <summary>
+        /// Gets the cached value of GL_RENDERBUFFER_BINDING.
+        /// </summary>
+        public static OpenGLStateInteger GL_RENDERBUFFER_BINDING { get { return glRenderbufferBinding; } }
+
+        /// <summary>
         /// Gets the cached value of GL_CURRENT_PROGRAM.
         /// </summary>
         public static OpenGLStateInteger GL_CURRENT_PROGRAM { get { return glCurrentProgram; } }
+
+        /// <summary>
+        /// Gets a value indicating whether the current OpenGL context has support for vertex array objects (VAOs).
+        /// </summary>
+        public static Boolean SupportsVertexArrayObjects { get { return !gl.IsGLES || gl.IsVersionAtLeast(3, 0); } }
+
+        /// <summary>
+        /// Gets a value indicating whether the current OpenGL context has support for the glCreateX() functions provided by
+        /// ARB_direct_state_access or OpenGL 4.5.
+        /// </summary>
+        public static Boolean SupportsDirectStateAccessCreateFunctions { get { return gl.IsVersionAtLeast(4, 5) || gl.IsARBDirectStateAccessAvailable; } }
 
         // State values.
         private OpenGLStateType stateType;
@@ -827,6 +1039,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private UInt32 newGL_ARRAY_BUFFER_BINDING;
         private UInt32 newGL_ELEMENT_ARRAY_BUFFER_BINDING;
         private UInt32 newGL_FRAMEBUFFER_BINDING;
+        private UInt32 newGL_RENDERBUFFER_BINDING;
         private UInt32 newGL_CURRENT_PROGRAM;
 
         private UInt32 oldGL_TEXTURE_BINDING_2D;
@@ -834,6 +1047,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private UInt32 oldGL_ARRAY_BUFFER_BINDING;
         private UInt32 oldGL_ELEMENT_ARRAY_BUFFER_BINDING;
         private UInt32 oldGL_FRAMEBUFFER_BINDING;
+        private UInt32 oldGL_RENDERBUFFER_BINDING;
         private UInt32 oldGL_CURRENT_PROGRAM;
 
         // Cached OpenGL state values.
@@ -843,6 +1057,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private static readonly OpenGLStateInteger glArrayBufferBinding        = new OpenGLStateInteger("GL_ARRAY_BUFFER_BINDING", gl.GL_ARRAY_BUFFER_BINDING);
         private static readonly OpenGLStateInteger glElementArrayBufferBinding = new OpenGLStateInteger("GL_ELEMENT_ARRAY_BUFFER_BINDING", gl.GL_ELEMENT_ARRAY_BUFFER_BINDING);
         private static readonly OpenGLStateInteger glFramebufferBinding        = new OpenGLStateInteger("GL_FRAMEBUFFER_BINDING", gl.GL_FRAMEBUFFER_BINDING);
+        private static readonly OpenGLStateInteger glRenderbufferBinding       = new OpenGLStateInteger("GL_RENDERBUFFER_BINDING", gl.GL_RENDERBUFFER_BINDING);
         private static readonly OpenGLStateInteger glCurrentProgram            = new OpenGLStateInteger("GL_CURRENT_PROGRAM", gl.GL_CURRENT_PROGRAM);
 
         // The pool of state objects.

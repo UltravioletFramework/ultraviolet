@@ -35,6 +35,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             Contract.Require(content, "content");
 
+            if (!TextureID.IsValid)
+                return;
+
             texture = content.Load<Texture2D>(TextureID);
             if (textureRegion.IsEmpty && texture != null)
             {
@@ -48,6 +51,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public Texture2D Texture
         {
             get { return texture; }
+            protected set
+            {
+                texture = value;
+                textureID = AssetID.Invalid;
+            }
         }
 
         /// <summary>
@@ -122,7 +130,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The image's rendering effects.</param>
         /// <param name="layerDepth">The image's layer depth.</param>
         /// <param name="data">The image's custom data.</param>
-        internal abstract void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        internal abstract void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
             where VertexType : struct, IVertexType
             where SpriteData : struct;
 

@@ -2,6 +2,7 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -22,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (element.Visibility != Visibility.Visible)
                 return false;
 
-            if (element is Popup)
+            if (element is Popup || element is Adorner)
                 return true;
 
             return (element.RenderSize.Width > 0 && element.RenderSize.Height > 0);
@@ -136,7 +137,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     }
                     else
                     {
-                        yOffset = (space.Width - content.Width) / 2.0;
+                        yOffset = (space.Height - content.Height) / 2.0;
                     }
                     break;
 

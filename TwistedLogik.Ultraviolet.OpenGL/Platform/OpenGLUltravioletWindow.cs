@@ -35,6 +35,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
             UpdateWindowedPosition(Position);
             UpdateWindowedClientSize(ClientSize);
+
+            var flags = SDL.GetWindowFlags(ptr);
+
+            this.focused = (flags & SDL_WindowFlags.INPUT_FOCUS) == SDL_WindowFlags.INPUT_FOCUS;
+            this.minimized = (flags & SDL_WindowFlags.MINIMIZED) == SDL_WindowFlags.MINIMIZED;
         }
 
         /// <summary>
@@ -72,14 +77,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                     break;
 
                 case SDL_WindowEventID.MINIMIZED:
+                    minimized = true;
                     OnMinimized();
                     break;
 
                 case SDL_WindowEventID.MAXIMIZED:
+                    minimized = false;
                     OnMaximized();
                     break;
 
                 case SDL_WindowEventID.RESTORED:
+                    minimized = false;
                     OnRestored();
                     break;
 
@@ -89,6 +97,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
                 case SDL_WindowEventID.SIZE_CHANGED:
                     UpdateWindowedClientSize(new Size2(msg.Event.window.data1, msg.Event.window.data2));
+                    break;
+
+                case SDL_WindowEventID.FOCUS_GAINED:
+                    focused = true;
+                    break;
+
+                case SDL_WindowEventID.FOCUS_LOST:
+                    focused = false;
                     break;
             }
         }
@@ -410,11 +426,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                var flags = SDL.GetWindowFlags(ptr);
-
-                return
-                    ((flags & SDL_WindowFlags.MINIMIZED) != SDL_WindowFlags.MINIMIZED) &&
-                    ((flags & SDL_WindowFlags.INPUT_FOCUS) != 0);
+                return focused && !minimized;
             }
         }
 
@@ -563,7 +575,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             SDLMacro.SDL_VERSION(&sysInfo.version);
 
             if (!SDL.GetWindowWMInfo(ptr, &sysInfo))
-                throw new SDL2Exception();
+                return;
 
             switch (sysInfo.subsystem)
             {
@@ -777,6 +789,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         private readonly IntPtr ptr;
         private WindowMode windowMode = WindowMode.Windowed;
         private DisplayMode displayMode;
+        private Boolean focused;
+        private Boolean minimized;
         private Boolean disposed;
 
         // The default window icon.

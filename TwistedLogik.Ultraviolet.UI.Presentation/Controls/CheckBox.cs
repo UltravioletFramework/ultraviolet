@@ -10,6 +10,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public class CheckBox : ToggleButton
     {
         /// <summary>
+        /// Initializes the <see cref="CheckBox"/> type.
+        /// </summary>
+        static CheckBox()
+        {
+            VerticalContentAlignmentProperty.OverrideMetadata(typeof(CheckBox), new PropertyMetadata<VerticalAlignment>(VerticalAlignment.Top));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CheckBox"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>

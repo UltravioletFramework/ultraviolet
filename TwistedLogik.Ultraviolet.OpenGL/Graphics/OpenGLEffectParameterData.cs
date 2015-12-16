@@ -1,5 +1,4 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
@@ -242,12 +241,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Boolean GetBoolean()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Boolean);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return default(Boolean);
 
-            fixed (Byte* pValData = valData)
+            if (dataType == OpenGLEffectParameterDataType.Boolean)
             {
-                return *((Boolean*)pValData);
+                fixed (Byte* pValData = valData)
+                {
+                    return *((Boolean*)pValData);
+                }
             }
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -256,12 +261,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Int32 GetInt32()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Int32);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return default(Int32);
 
-            fixed (Byte* pValData = valData)
+            if (dataType == OpenGLEffectParameterDataType.Int32)
             {
-                return *((Int32*)pValData);
+                fixed (Byte* pValData = valData)
+                {
+                    return *((Int32*)pValData);
+                }
             }
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -270,9 +281,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Int32[] GetInt32Array()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Int32Array);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return null;
 
-            return (Int32[])refData;
+            if (dataType == OpenGLEffectParameterDataType.Int32Array)
+                return (Int32[])refData;
+            
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -281,12 +296,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public UInt32 GetUInt32()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.UInt32);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return default(UInt32);
 
-            fixed (Byte* pValData = valData)
+            if (dataType == OpenGLEffectParameterDataType.UInt32)
             {
-                return *((UInt32*)pValData);
+                fixed (Byte* pValData = valData)
+                {
+                    return *((UInt32*)pValData);
+                }
             }
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -295,9 +316,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public UInt32[] GetUInt32Array()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.UInt32Array);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return null;
 
-            return (UInt32[])refData;
+            if (dataType == OpenGLEffectParameterDataType.UInt32Array)
+                return (UInt32[])refData;
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -306,12 +331,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Single GetSingle()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Single);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return default(Single);
 
-            fixed (Byte* pValData = valData)
+            if (dataType == OpenGLEffectParameterDataType.Single)
             {
-                return *((Single*)pValData);
+                fixed (Byte* pValData = valData)
+                {
+                    return *((Single*)pValData);
+                }
             }
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -320,9 +351,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Single[] GetSingleArray()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.SingleArray);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return null;
 
-            return (Single[])refData;
+            if (dataType == OpenGLEffectParameterDataType.SingleArray)
+                return (Single[])refData;
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -331,12 +366,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Double GetDouble()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Double);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return default(Double);
 
-            fixed (Byte* pValData = valData)
+            if (dataType == OpenGLEffectParameterDataType.Double)
             {
-                return *((Double*)pValData);
+                fixed (Byte* pValData = valData)
+                {
+                    return *((Double*)pValData);
+                }
             }
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -345,9 +386,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Double[] GetDoubleArray()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.DoubleArray);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return null;
 
-            return (Double[])refData;
+            if (dataType == OpenGLEffectParameterDataType.DoubleArray)
+                return (Double[])refData;
+            
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -356,12 +401,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector2 GetVector2()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Vector2);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return default(Vector2);
 
-            fixed (Byte* pValData = valData)
+            if (dataType == OpenGLEffectParameterDataType.Vector2)
             {
-                return *((Vector2*)pValData);
+                fixed (Byte* pValData = valData)
+                {
+                    return *((Vector2*)pValData);
+                }
             }
+            
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -370,9 +421,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector2[] GetVector2Array()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Vector2Array);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return null;
 
-            return (Vector2[])refData;
+            if (dataType == OpenGLEffectParameterDataType.Vector2Array)
+                return (Vector2[])refData;
+            
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -381,12 +436,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector3 GetVector3()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Vector3);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return default(Vector3);
 
-            fixed (Byte* pValData = valData)
+            if (dataType == OpenGLEffectParameterDataType.Vector3)
             {
-                return *((Vector3*)pValData);
+                fixed (Byte* pValData = valData)
+                {
+                    return *((Vector3*)pValData);
+                }
             }
+            
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -395,9 +456,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector3[] GetVector3Array()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Vector3Array);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return null;
 
-            return (Vector3[])refData;
+            if (dataType == OpenGLEffectParameterDataType.Vector3Array)
+                return (Vector3[])refData;
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -406,12 +471,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector4 GetVector4()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Vector4);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return default(Vector4);
 
-            fixed (Byte* pValData = valData)
+            if (dataType == OpenGLEffectParameterDataType.Vector4)
             {
-                return *((Vector4*)pValData);
+                fixed (Byte* pValData = valData)
+                {
+                    return *((Vector4*)pValData);
+                }
             }
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -420,9 +491,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector4[] GetVector4Array()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Vector4Array);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return null;
 
-            return (Vector4[])refData;
+            if (dataType == OpenGLEffectParameterDataType.Vector4Array)
+                return (Vector4[])refData;
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -431,12 +506,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Color GetColor()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Color);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return default(Color);
 
-            fixed (Byte* pValData = valData)
+            if (dataType == OpenGLEffectParameterDataType.Color)
             {
-                return *((Color*)pValData);
+                fixed (Byte* pValData = valData)
+                {
+                    return *((Color*)pValData);
+                }
             }
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -445,12 +526,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Matrix GetMatrix()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Matrix);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return default(Matrix);
 
-            fixed (Byte* pValData = valData)
+            if (dataType == OpenGLEffectParameterDataType.Matrix)
             {
-                return *((Matrix*)pValData);
+                fixed (Byte* pValData = valData)
+                {
+                    return *((Matrix*)pValData);
+                }
             }
+
+            throw new InvalidCastException();
         }
 
         /// <summary>
@@ -459,9 +546,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Texture2D GetTexture2D()
         {
-            Contract.Ensure<InvalidCastException>(dataType == OpenGLEffectParameterDataType.Texture2D);
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return null;
 
-            return (Texture2D)refData;
+            if (dataType == OpenGLEffectParameterDataType.Texture2D)
+                return (Texture2D)refData;
+
+            throw new InvalidCastException();
         }
 
         /// <summary>

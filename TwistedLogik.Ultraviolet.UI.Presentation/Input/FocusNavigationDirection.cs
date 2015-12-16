@@ -17,6 +17,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         Previous,
 
         /// <summary>
+        /// Moves focus to the first control in tab order.
+        /// </summary>
+        First,
+
+        /// <summary>
+        /// Moves focus to the last control in tab order.
+        /// </summary>
+        Last,
+
+        /// <summary>
         /// Moves focus left.
         /// </summary>
         Left,

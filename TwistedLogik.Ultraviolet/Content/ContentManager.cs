@@ -900,14 +900,17 @@ namespace TwistedLogik.Ultraviolet.Content
             var performSubstitution = (flags & AssetResolutionFlags.PerformSubstitution) == AssetResolutionFlags.PerformSubstitution;
             if (performSubstitution && path != null && !Path.HasExtension(asset))
             {
-                var primaryDisplay = Ultraviolet.GetPlatform().Displays.First();
-                var substitution   = ListPossibleSubstitutions(path, primaryDisplay.DensityBucket)
-                    .Take(1).SingleOrDefault();
-
-                if (substitution != null)
+                var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+                if (primaryDisplay != null)
                 {
-                    flags &= ~AssetResolutionFlags.PerformSubstitution;
-                    return GetAssetPath(substitution, extension, out directory, flags);
+                    var substitution = ListPossibleSubstitutions(path, primaryDisplay.DensityBucket)
+                        .Take(1).SingleOrDefault();
+
+                    if (substitution != null)
+                    {
+                        flags &= ~AssetResolutionFlags.PerformSubstitution;
+                        return GetAssetPath(substitution, extension, out directory, flags);
+                    }
                 }
             }
 

@@ -59,6 +59,44 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Creates a new instance of the <see cref="StaticImage"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <returns>The new instance of <see cref="StaticImage"/> that was created.</returns>
+        public static StaticImage Create(Texture2D texture)
+        {
+            return Create(texture, 0, 0, 0, 0);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="StaticImage"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <param name="x">The x-coordinate of the region on the image's texture that contains the image.</param>
+        /// <param name="y">The y-coordinate of the region on the image's texture that contains the image.</param>
+        /// <param name="width">The width of the region on the image's texture that contains the image.</param>
+        /// <param name="height">The height of the region on the image's texture that contains the image.</param>
+        /// <returns>The new instance of <see cref="StaticImage"/> that was created.</returns>
+        public static StaticImage Create(Texture2D texture, Int32 x, Int32 y, Int32 width, Int32 height)
+        {
+            var img = new StaticImage();
+            img.Texture = texture;
+            img.TextureRegion = new Rectangle(x, y, width, height);
+            return img;
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="StaticImage"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <param name="textureRegion">The region of the image's texture which contains the image.</param>
+        /// <returns>The new instance of <see cref="StaticImage"/> that was created.</returns>
+        public static StaticImage Create(Texture2D texture, Rectangle textureRegion)
+        {
+            return Create(texture, textureRegion.X, textureRegion.Y, textureRegion.Width, textureRegion.Height);
+        }
+
+        /// <summary>
         /// Converts the string representation of a static image into an instance of the <see cref="StaticImage"/> class.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
@@ -140,13 +178,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             effects |= SpriteEffects.OriginRelativeToDestination;
 
+            position -= origin;
+
+            var realOrigin = new Vector2(
+                (int)((origin.X / width) * TextureRegion.Width), 
+                (int)((origin.Y / height) * TextureRegion.Height));
+
+            position += realOrigin;
+
             var srcRect = TextureRegion;
-            var dstRect = new Rectangle((Int32)position.X, (Int32)position.Y, width, height);
-            spriteBatch.Draw(Texture, dstRect, srcRect, color, rotation, origin, effects, layerDepth, data);
+            var dstRect = new RectangleF(position.X, position.Y, width, height);
+            spriteBatch.Draw(Texture, dstRect, srcRect, color, rotation, realOrigin, effects, layerDepth, data);
         }
     }
 }

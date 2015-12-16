@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether this binding should suppress digestion, even if it would
         /// otherwise need to be part of the digest cycle.
         /// </summary>
-        public Boolean SuppressDigest
+        public Boolean SuppressDigestForDataBinding
         {
             get { return dpropReference != null; }
         }
@@ -137,7 +137,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 throw new InvalidOperationException(PresentationStrings.BindingIsReadOnly);
             }
-            return getter(dependencyValue.Owner.DependencyDataSource);
+            
+            return getter(PresentationFoundation.GetDataSourceWrapper(dependencyValue.Owner.DependencyDataSource));
         }
 
         /// <summary>
@@ -157,8 +158,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 value = metadata.CoerceValue<T>(owner, value);
             }
-
-            setter(dependencyValue.Owner.DependencyDataSource, value);
+            
+            setter(PresentationFoundation.GetDataSourceWrapper(dependencyValue.Owner.DependencyDataSource), value);
             dependencyValue.DigestImmediately();
         }
 

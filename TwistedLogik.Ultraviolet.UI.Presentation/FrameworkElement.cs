@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -13,6 +15,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     [UvmlKnownType("element")]
     public abstract class FrameworkElement : UIElement, ISupportInitialize
     {
+        /// <summary>
+        /// Initializes the <see cref="FrameworkElement"/> type.
+        /// </summary>
+        static FrameworkElement()
+        {
+            EventManager.RegisterClassHandler(typeof(FrameworkElement), Mouse.QueryCursorEvent, new UpfQueryCursorEventHandler(HandleQueryCursor), true);
+
+            EventManager.RegisterClassHandler(typeof(FrameworkElement), Keyboard.PreviewGotKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(HandlePreviewGotKeyboardFocus));
+
+            EventManager.RegisterClassHandler(typeof(FrameworkElement), ToolTipService.ToolTipOpeningEvent, new UpfToolTipEventHandler(OnToolTipOpeningProxy));
+            EventManager.RegisterClassHandler(typeof(FrameworkElement), ToolTipService.ToolTipClosingEvent, new UpfToolTipEventHandler(OnToolTipClosingProxy));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FrameworkElement"/> class.
         /// </summary>
@@ -25,6 +40,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.visualStateGroups = new VisualStateGroupCollection(this);
             this.visualStateGroups.Create("focus", VSGFocus);
+        }
+
+        /// <inheritdoc/>
+        public override Boolean MoveFocus(FocusNavigationDirection direction)
+        {
+            return FocusNavigator.PerformNavigation(View, this, direction, false);
         }
 
         /// <inheritdoc/>
@@ -84,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return GetValue<Double>(MinWidthProperty); }
             set { SetValue<Double>(MinWidthProperty, value); }
         }
-        
+
         /// <summary>
         /// Gets or sets the element's maximum width in device independent pixels.
         /// </summary>
@@ -158,6 +179,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the transformation which is applied to this element during layout.
+        /// </summary>
+        public Transform LayoutTransform
+        {
+            get { return GetValue<Transform>(LayoutTransformProperty); }
+            set { SetValue<Transform>(LayoutTransformProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the cursor which is set by this element.
+        /// </summary>
+        public SourcedCursor Cursor
+        {
+            get { return GetValue<SourcedCursor>(CursorProperty); }
+            set { SetValue(CursorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this element forces its cursor to be displayed, overriding
+        /// any cursor which has been set by its child elements.
+        /// </summary>
+        public Boolean ForceCursor
+        {
+            get { return GetValue<Boolean>(ForceCursorProperty); }
+            set { SetValue(ForceCursorProperty, value); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the element has been fully initialized.
         /// </summary>
         public Boolean IsInitialized
@@ -184,7 +233,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <remarks>The styling name of this dependency property is 'width'.</remarks>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(Double), typeof(FrameworkElement),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
-        
+
         /// <summary>
         /// Identifies the <see cref="MinWidth"/> dependency property.
         /// </summary>
@@ -238,15 +287,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Identifies the <see cref="HorizontalAlignment"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'halign'.</remarks>
-        public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", "halign", 
-            typeof(HorizontalAlignment), typeof(FrameworkElement), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange));
-        
+        public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.Register("HorizontalAlignment", "halign",
+            typeof(HorizontalAlignment), typeof(FrameworkElement), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Stretch, PropertyMetadataOptions.AffectsArrange));
+
         /// <summary>
         /// Identifies the <see cref="VerticalAlignment"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'valign'.</remarks>
         public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", "valign",
-            typeof(VerticalAlignment), typeof(FrameworkElement), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
+            typeof(VerticalAlignment), typeof(FrameworkElement), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Stretch, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="LayoutTransform"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'layout-transform'.</remarks>
+        public static readonly DependencyProperty LayoutTransformProperty = DependencyProperty.Register("LayoutTransform",
+            typeof(Transform), typeof(FrameworkElement), new PropertyMetadata<Transform>(Transform.Identity, PropertyMetadataOptions.AffectsMeasure, HandleLayoutTransformChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Cursor"/> dependency property.
+        /// </summary>
+        internal static readonly DependencyProperty CursorProperty = DependencyProperty.Register("Cursor", 
+            typeof(SourcedCursor), typeof(FrameworkElement), new PropertyMetadata<SourcedCursor>(null, PropertyMetadataOptions.None, HandleCursorChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="ForceCursor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ForceCursorProperty = DependencyProperty.Register("ForceCursor",
+            typeof(Boolean), typeof(FrameworkElement), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleForceCursorChanged));
+
+        /// <summary>
+        /// Identifies the ToolTip dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ToolTipProperty = ToolTipService.ToolTipProperty.AddOwner(typeof(FrameworkElement));
 
         /// <summary>
         /// Occurs when the element is loaded.
@@ -337,7 +410,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        internal override void OnVisualParentChangedInternal()
+        internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
             var parent = VisualParent as FrameworkElement;
             if (parent != null)
@@ -362,7 +435,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
 
-            base.OnVisualParentChangedInternal();
+            base.OnVisualParentChangedInternal(oldParent, newParent);
         }
 
         /// <inheritdoc/>
@@ -407,34 +480,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
-        /// <summary>
-        /// Registers the element with the specified namescope.
-        /// </summary>
-        /// <param name="namescope">The namescope with which to register the element.</param>
-        internal void RegisterElementWithNamescope(Namescope namescope)
-        {
-            if (String.IsNullOrEmpty(Name))
-                return;
-
-            namescope.RegisterElement(this);
-        }
-
-        /// <summary>
-        /// Unregisters the element from the specified namescope.
-        /// </summary>
-        /// <param name="namescope">The namescope from which to unregister the element.</param>
-        internal void UnregisterElementFromNamescope(Namescope namescope)
-        {
-            if (String.IsNullOrEmpty(Name))
-                return;
-
-            namescope.UnregisterElement(this);
-        }
-
         /// <inheritdoc/>
         internal override Object DependencyDataSource
         {
-            get { return TemplatedParent ?? ViewModel; }
+            get { return DeclarativeViewModelOrTemplate ?? TemplatedParent ?? ViewModel; }
+        }
+
+        /// <inheritdoc/>
+        internal override Boolean HasLayoutTransform
+        {
+            get { return isLayoutTransformed; }
         }
 
         /// <summary>
@@ -453,6 +508,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected internal virtual Int32 LogicalChildrenCount
         {
             get { return 0; }
+        }
+
+        /// <inheritdoc/>
+        protected override Matrix GetTransformMatrix(Boolean inDevicePixels = false)
+        {
+            if (isLayoutTransformed)
+            {
+                return layoutTransformUsedDuringLayout * base.GetTransformMatrix();
+            }
+            return base.GetTransformMatrix(inDevicePixels);
+        }
+
+        /// <inheritdoc/>
+        protected sealed override void ReloadContentCore(Boolean recursive)
+        {
+            ReloadCursor();
+            ReloadContentOverride(recursive);
         }
 
         /// <inheritdoc/>
@@ -481,7 +553,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected sealed override Size2D MeasureCore(Size2D availableSize)
         {
-            var margin = this.Margin;
+            var margin = PerformLayoutRounding(this.Margin);
 
             var xMargin = margin.Left + margin.Right;
             var yMargin = margin.Top + margin.Bottom;
@@ -494,37 +566,60 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var availableWidthSansMargin  = Math.Max(0, availableSize.Width - xMargin);
             var availableHeightSansMargin = Math.Max(0, availableSize.Height - yMargin);
+            var availableSizeSansMargin = new Size2D(availableWidthSansMargin, availableHeightSansMargin);
 
-            var tentativeWidth  = Math.Max(minWidth, Math.Min(maxWidth, availableWidthSansMargin));
-            var tentativeHeight = Math.Max(minHeight, Math.Min(maxHeight, availableHeightSansMargin));
+            isLayoutTransformed = !Transform.IsIdentityTransform(LayoutTransform);
+            if (isLayoutTransformed)
+            {
+                layoutTransformUsedDuringLayout = LayoutTransform.Value;
+
+                availableSizeSansMargin = CalculateMaximumAvailableSizeBeforeLayoutTransform(
+                    availableWidthSansMargin, availableHeightSansMargin, LayoutTransform.Value);
+            }
+
+            var tentativeWidth  = Math.Max(minWidth, Math.Min(maxWidth, availableSizeSansMargin.Width));
+            var tentativeHeight = Math.Max(minHeight, Math.Min(maxHeight, availableSizeSansMargin.Height));
             var tentativeSize   = new Size2D(tentativeWidth, tentativeHeight);
+            tentativeSize = PerformLayoutRounding(tentativeSize);
 
-            var measuredSize   = MeasureOverride(tentativeSize);
+            var measuredSize = MeasureOverride(tentativeSize);
+            measuredSize = PerformLayoutRounding(measuredSize);
+
             var measuredWidth  = measuredSize.Width;
             var measuredHeight = measuredSize.Height;
             
-            measuredWidth  = xMargin + Math.Max(minWidth, Math.Min(maxWidth, measuredWidth));
-            measuredHeight = yMargin + Math.Max(minHeight, Math.Min(maxHeight, measuredHeight));
+            measuredWidth  = Math.Max(minWidth, Math.Min(maxWidth, measuredWidth));
+            measuredHeight = Math.Max(minHeight, Math.Min(maxHeight, measuredHeight));
+            measuredSize = new Size2D(measuredWidth, measuredHeight);
+            
+            layoutTransformSizeDesiredBeforeTransform = measuredSize;
 
-            var finalWidth  = Math.Max(0, measuredWidth);
-            var finalHeight = Math.Max(0, measuredHeight);
+            if (isLayoutTransformed)
+            {
+                var transform = LayoutTransform.Value;
+                RectangleD area = new RectangleD(0, 0, measuredWidth, measuredHeight);
+                RectangleD.TransformAxisAligned(ref area, ref transform, out area);
+                measuredSize = new Size2D(area.Width, area.Height);                
+            }
 
-            return new Size2D(finalWidth, finalHeight);
+            var finalWidth = Math.Max(0, xMargin + measuredSize.Width);
+            var finalHeight = Math.Max(0, yMargin + measuredSize.Height);
+
+            return PerformLayoutRounding(new Size2D(finalWidth, finalHeight));
         }
 
         /// <inheritdoc/>
         protected sealed override Size2D ArrangeCore(RectangleD finalRect, ArrangeOptions options)
         {
-            var margin = Margin;
+            var margin = PerformLayoutRounding(Margin);
 
             var finalRectSansMargins = finalRect - margin;
 
             var desiredWidth = DesiredSize.Width;
             var desiredHeight = DesiredSize.Height;
-
-            var fill   = (options & ArrangeOptions.Fill) == ArrangeOptions.Fill;
-            var hAlign = fill ? HorizontalAlignment.Stretch : HorizontalAlignment;
-            var vAlign = fill ? VerticalAlignment.Stretch : VerticalAlignment;
+            
+            var hAlign = HorizontalAlignment;
+            var vAlign = VerticalAlignment;
 
             if (Double.IsNaN(Width) && hAlign == HorizontalAlignment.Stretch)
                 desiredWidth = finalRect.Width;
@@ -532,22 +627,58 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (Double.IsNaN(Height) && vAlign == VerticalAlignment.Stretch)
                 desiredHeight = finalRect.Height;
 
-            var desiredSize   = new Size2D(desiredWidth, desiredHeight);
+            if (isLayoutTransformed)
+            {
+                desiredWidth = layoutTransformSizeDesiredBeforeTransform.Width;
+                desiredHeight = layoutTransformSizeDesiredBeforeTransform.Height;
+
+                var arrangedSizeAfterLayoutTransform = 
+                    CalculateMaximumAvailableSizeBeforeLayoutTransform(desiredWidth, desiredHeight, layoutTransformUsedDuringLayout);
+
+                if (MathUtil.IsApproximatelyGreaterThanOrEqual(arrangedSizeAfterLayoutTransform.Width, layoutTransformSizeDesiredBeforeTransform.Width) &&
+                    MathUtil.IsApproximatelyGreaterThanOrEqual(arrangedSizeAfterLayoutTransform.Height, layoutTransformSizeDesiredBeforeTransform.Height))
+                {
+                    desiredWidth = arrangedSizeAfterLayoutTransform.Width;
+                    desiredHeight = arrangedSizeAfterLayoutTransform.Height;
+                }
+
+                desiredWidth = desiredWidth + margin.Left + margin.Right;
+                desiredHeight = desiredHeight + margin.Top + margin.Bottom;                
+            }
+
+            var desiredSize = new Size2D(desiredWidth, desiredHeight);
 
             var candidateSize = desiredSize - margin;
-            var usedSize      = ArrangeOverride(candidateSize, options);
+            candidateSize = PerformLayoutRounding(candidateSize);
+            
+            var usedSize = ArrangeOverride(candidateSize, options);
+            usedSize = PerformLayoutRounding(usedSize);
 
             var usedWidth  = Math.Min(usedSize.Width, candidateSize.Width);
             var usedHeight = Math.Min(usedSize.Height, candidateSize.Height);
 
             usedSize = new Size2D(usedWidth, usedHeight);
+            var untransformedUsedSize = usedSize;
 
-            var xOffset = margin.Left + LayoutUtil.PerformHorizontalAlignment(finalRectSansMargins.Size, usedSize, fill ? HorizontalAlignment.Left : hAlign);
-            var yOffset = margin.Top + LayoutUtil.PerformVerticalAlignment(finalRectSansMargins.Size, usedSize, fill ? VerticalAlignment.Top : vAlign);
+            var xOffset = 0.0;
+            var yOffset = 0.0;
+
+            if (isLayoutTransformed)
+            {
+                RectangleD area = new RectangleD(0, 0, usedWidth, usedHeight);
+                RectangleD.TransformAxisAligned(ref area, ref layoutTransformUsedDuringLayout, out area);
+                usedSize = new Size2D(area.Width, area.Height);
+
+                xOffset -= area.X;
+                yOffset -= area.Y;
+            }
+
+            xOffset += margin.Left + LayoutUtil.PerformHorizontalAlignment(finalRectSansMargins.Size, usedSize, hAlign);
+            yOffset += margin.Top + LayoutUtil.PerformVerticalAlignment(finalRectSansMargins.Size, usedSize, vAlign);
 
             RenderOffset = new Point2D(xOffset, yOffset);
 
-            return usedSize;
+            return untransformedUsedSize;
         }
 
         /// <inheritdoc/>
@@ -568,33 +699,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected override void CacheLayoutParametersCore()
         {
             var templatedParentControl = TemplatedParent as Control;
-            if (templatedParentControl != null)
+
+            var namescope = (templatedParentControl != null) ? templatedParentControl.ComponentTemplateNamescope :
+                (View != null) ? View.Namescope : null;
+
+            if (namescope != null)
             {
-                templatedParentControl.ComponentTemplateNamescope.UnregisterElement(this);
-                templatedParentControl.ComponentTemplateNamescope.RegisterElement(this);
+                namescope.UnregisterElement(this);
+                namescope.RegisterElement(this);
             }
 
             base.CacheLayoutParametersCore();
         }
 
         /// <inheritdoc/>
-        protected override void OnGotKeyboardFocus(ref RoutedEventData data)
+        protected override void OnGotFocus(ref RoutedEventData data)
         {
             if (data.OriginalSource == this)
             {
                 VisualStateGroups.GoToState("focus", "focused");
             }
-            base.OnGotKeyboardFocus(ref data);
+            base.OnGotFocus(ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(ref RoutedEventData data)
+        protected override void OnLostFocus(ref RoutedEventData data)
         {
             if (data.OriginalSource == this)
             {
                 VisualStateGroups.GoToState("focus", "blurred");
             }
-            base.OnLostKeyboardFocus(ref data);
+            base.OnLostFocus(ref data);
         }
 
         /// <summary>
@@ -610,8 +745,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// When overridden in a derived class, reloads this element's content 
+        /// and, optionally, the content of any children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to reload content recursively.</param>
+        protected virtual void ReloadContentOverride(Boolean recursive)
+        {
+            if (recursive)
+            {
+                VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+                {
+                    child.ReloadContent((Boolean)state);
+                });
+            }
+        }
+
+        /// <summary>
         /// When overridden in a derived class, draws the element using the 
-        /// specified <see cref="SpriteBatch"/> for a <see cref="FrameworkElement"/> derived class.
+        /// specified <see cref="Graphics.Graphics2D.SpriteBatch"/> for a <see cref="FrameworkElement"/> derived class.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
@@ -620,7 +771,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var children = VisualTreeHelper.GetChildrenCount(this);
             for (int i = 0; i < children; i++)
             {
-                var child = VisualTreeHelper.GetChild(this, i) as UIElement;
+                var child = VisualTreeHelper.GetChildByZOrder(this, i) as UIElement;
                 if (child != null)
                 {
                     child.Draw(time, dc);
@@ -689,11 +840,252 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the control's tool tip is opened.
+        /// </summary>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnToolTipOpening(ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Occurs when the control's tool tip is closed.
+        /// </summary>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnToolTipClosing(ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Reloads the element's cursor image.
+        /// </summary>
+        protected void ReloadCursor()
+        {
+            LoadCursor(Cursor);
+        }
+        
+        /// <summary>
         /// Gets the element's collection of visual state groups.
         /// </summary>
         protected VisualStateGroupCollection VisualStateGroups
         {
             get { return visualStateGroups; }
+        }
+        
+        /// <summary>
+        /// Given a pair of dimensions, this method calculates the size of the largest rectangle that will fit within
+        /// those dimensions after having the specified transformation applied to it.
+        /// </summary>
+        /// <param name="xmax">The available width.</param>
+        /// <param name="ymax">The available height.</param>
+        /// <param name="transform">The transformation matrix to apply.</param>
+        /// <returns>The size of the largest rectangle that will still fit within the available space after the specified transform is applied.</returns>
+        private static Size2D CalculateMaximumAvailableSizeBeforeLayoutTransform(Double xmax, Double ymax, Matrix transform)
+        {
+            /* When using layout transforms, it's possible for an element to produce a desired size which, after the transform
+             * is applied, will cause the element to lie outside of its maximum available layout area. To address this problem,
+             * we need to shrink the available size that is passed into MeasureCore() such that, even if the element is as big
+             * as it possibly can be, its post-transform bounds will still lie within the available layout area.
+             *
+             * To that end, we need to do a bit of calculus. Given the true maximum area (A_true) and a transformation
+             * matrix (M_transform), we need to calculate the largest possible rectangle that will fit within A_true
+             * after it has been subjected to M_transform. This will be the area that we pass into MeasureCore().
+             *
+             * For simplicity's sake, consider the case of a rotation transform. Rotating a rectangle will cause its x-dimension
+             * to point partially along both the x- and y-axes of the untransformed space. If we gradually make the rectangle wider,
+             * it will eventually reach a point where its size along the untransformed x-axis will exceed our maximum width, and another
+             * point where its size along the untransformed y-axis will exceed our maximum width. The smallest of these two widths
+             * is the largest possible width of the transformed rectangle. We can do likewise to constrain the rectangle's height;
+             * the biggest possible rectangle will have a width and height somewhere below the values established by these constraints. 
+             *
+             * We can use trigonometry to establish that there is a simple linear relationship between the width of the transformed 
+             * rectangle and its dimensions along the untransformed x- and y-axes, such that w / sin(theta) = h / cos(theta). We can
+             * use this to graph a pair of lines representing our transformed rectangle's width and height. We can then take the
+             * first derivative in order to find the biggest rectangle that will fit under the lines.
+             *
+             * Let a = w / sin(theta) and b = h / cos(theta).
+             *
+             * The line formed by intercepts a and b forms a right triangle with the axes, so the total area beneath it is .5ab.
+             * Given that we are trying to find the area of a rectangle beneath this line with dimensions x and y, we can equivalently
+             * say that the triangle's total area is .5ay + .5bx. Solving for y, we find that y = (ab - bx) / a. We can then plug
+             * this into the equation for the area of a rectangle, A = xy, to get A = x((ab - bx) / a). Taking the first derivative
+             * and solving for x, we find that x = a / 2. Doing the same for y reveals, likewise, that y = b / 2. Therefore, the 
+             * biggest rectangle has dimensions halfway between the intercepts that form the line. */
+
+            if (Double.IsInfinity(xmax) && Double.IsInfinity(ymax))
+                return new Size2D(Double.PositiveInfinity, Double.PositiveInfinity);
+
+            xmax = Double.IsInfinity(xmax) ? ymax : xmax;
+            ymax = Double.IsInfinity(ymax) ? xmax : ymax;
+
+            if (MathUtil.IsApproximatelyZero(xmax) || MathUtil.IsApproximatelyZero(ymax) || MathUtil.IsApproximatelyZero(transform.Determinant()))
+                return Size2D.Zero;
+            
+            var m11 = transform.M11;
+            var m21 = transform.M21;
+            var m12 = transform.M12;
+            var m22 = transform.M22;
+            
+            var w = 0.0;
+            var h = 0.0;
+
+            var xConstraintInterceptW = MathUtil.IsApproximatelyZero(m11) ? Double.NaN : Math.Abs(xmax / m11);
+            var xConstraintInterceptH = MathUtil.IsApproximatelyZero(m12) ? Double.NaN : Math.Abs(xmax / m12);
+            var yConstraintInterceptW = MathUtil.IsApproximatelyZero(m21) ? Double.NaN : Math.Abs(ymax / m21);
+            var yConstraintInterceptH = MathUtil.IsApproximatelyZero(m22) ? Double.NaN : Math.Abs(ymax / m22);
+
+            var xConstraintIsHorz = Double.IsNaN(xConstraintInterceptW);
+            var xConstraintIsVert = Double.IsNaN(xConstraintInterceptH);
+            var xConstraintIsHorzOrVert = xConstraintIsHorz || xConstraintIsVert;
+            
+            var yConstraintIsHorz = Double.IsNaN(yConstraintInterceptW);
+            var yConstraintIsVert = Double.IsNaN(yConstraintInterceptH);
+            var yConstraintIsHorzOrVert = yConstraintIsHorz || yConstraintIsVert;
+
+            /* Below, we handle special cases where one or both of the constraint lines is vertical or horizontal due to zeroes in
+             * the transformation matrix. This causes some of our intercepts to go undefined, which means their constraint lines
+             * don't constrain one (or either) of our dimensions. */
+
+            if (xConstraintIsHorzOrVert && yConstraintIsHorzOrVert)
+            {
+                w = xConstraintIsVert ? xConstraintInterceptW : yConstraintInterceptW;
+                h = xConstraintIsVert ? yConstraintInterceptH : xConstraintInterceptH;
+                return new Size2D(w, h);
+            }
+
+            if (xConstraintIsVert || yConstraintIsVert)
+            {
+                var slope = xConstraintIsVert ? m21 / m22 : m11 / m12;
+                w = xConstraintIsVert ? Math.Min(yConstraintInterceptW * 0.5, xConstraintInterceptW) : Math.Min(xConstraintInterceptW * 0.5, yConstraintInterceptW);
+                h = (xConstraintIsVert ? yConstraintInterceptH : xConstraintInterceptH) - (slope * w);
+                return new Size2D(w, h);
+            }
+
+            if (xConstraintIsHorz || yConstraintIsHorz)
+            {
+                var slope = xConstraintIsHorz ? m12 / m11 : m22 / m21;
+                h = xConstraintIsHorz ? Math.Min(yConstraintInterceptH * 0.5, xConstraintInterceptH) : Math.Min(xConstraintInterceptH * 0.5, yConstraintInterceptH);
+                w = (xConstraintIsHorz ? yConstraintInterceptW : xConstraintInterceptW) - (slope * h);
+                return new Size2D(w, h);
+            }
+            
+            /* If both constraint lines have a well-defined, non-zero slope, then the dimensions of the maximized rectangle lie halfway between the smaller line's
+             * intercepts, as we established above using the first derivative.
+             *
+             * This is only true if the lines do not cross - otherwise, there is no clear "smaller line." So what we have to do is draw a third line
+             * using the smallest intercept on both axes, then maximize beneath that instead. The result will actually be too small, since it doesn't correspond
+             * to either of our original constraint lines; to address this problem, we scale the resulting size upwards until it saturates our constraints. */
+             
+            w = Math.Min(xConstraintInterceptW, yConstraintInterceptW) * 0.5;
+            h = Math.Min(xConstraintInterceptH, yConstraintInterceptH) * 0.5;
+
+            var constraintXSlope = xConstraintInterceptH / xConstraintInterceptW;
+            var constraintYSlope = yConstraintInterceptH / xConstraintInterceptW;
+
+            var constraintLinesCross = !MathUtil.AreApproximatelyEqual(constraintXSlope, constraintYSlope);
+            if (constraintLinesCross)
+            {
+                RectangleD area = new RectangleD(0, 0, w, h);
+                RectangleD.TransformAxisAligned(ref area, ref transform, out area);
+
+                var scale = Math.Min(xmax / area.Width, ymax / area.Height);
+                w *= scale;
+                h *= scale;
+            }
+
+            return new Size2D(w, h);
+        }
+
+        /// <summary>
+        /// Occurs when the <see cref="Mouse.QueryCursorEvent"/> attached event is raised on an instance of <see cref="FrameworkElement"/>.
+        /// </summary>
+        private static void HandleQueryCursor(DependencyObject dobj, MouseDevice device, ref Cursor cursor, ref RoutedEventData data)
+        {
+            var element = (FrameworkElement)dobj;
+
+            var elementCursor = element.Cursor;
+            if (elementCursor.IsLoaded && (element.ForceCursor || !data.Handled))
+            {
+                cursor = elementCursor.Resource.Cursor;
+                data.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the <see cref="Keyboard.PreviewGotKeyboardFocusEvent"/> attached event is raised on an instance of <see cref="FrameworkElement"/>.
+        /// </summary>
+        private static void HandlePreviewGotKeyboardFocus(DependencyObject dobj, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        {
+            if (data.OriginalSource != dobj)
+                return;
+
+            var element = (FrameworkElement)dobj;
+
+            var scopeFocusedElement = FocusManager.GetFocusedElement(element);
+            if (scopeFocusedElement == null || scopeFocusedElement == element)
+                return;
+
+            if (!Keyboard.IsFocusable(scopeFocusedElement as UIElement))
+                return;
+
+            var viewFocusedElementPrevious = element.View.ElementWithFocus;
+            scopeFocusedElement.Focus();
+            var viewFocusedElementChanged = element.View.ElementWithFocus != viewFocusedElementPrevious;
+
+            if (viewFocusedElementChanged || element.View.ElementWithFocus == scopeFocusedElement)
+            {
+                data.Handled = true;
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="LayoutTransform"/> dependency property changes.
+        /// </summary>
+        private static void HandleLayoutTransformChanged(DependencyObject dobj, Transform oldValue, Transform newValue)
+        {
+            var element = (FrameworkElement)dobj;
+            element.OnTransformChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Cursor"/> dependency property changes.
+        /// </summary>
+        private static void HandleCursorChanged(DependencyObject dobj, SourcedCursor oldValue, SourcedCursor newValue)
+        {
+            var element = (FrameworkElement)dobj;
+            element.ReloadCursor();
+
+            if (element.IsMouseOver && element.View != null)
+                element.View.InvalidateCursor();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ForceCursor"/> dependency property changes.
+        /// </summary>
+        private static void HandleForceCursorChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            var element = (FrameworkElement)dobj;
+
+            if (element.IsMouseOver && element.View != null)
+                element.View.InvalidateCursor();
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnToolTipOpening"/> method.
+        /// </summary>
+        private static void OnToolTipOpeningProxy(DependencyObject dobj, ref RoutedEventData data)
+        {
+            ((FrameworkElement)dobj).OnToolTipOpening(ref data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnToolTipClosing"/> method.
+        /// </summary>
+        private static void OnToolTipClosingProxy(DependencyObject dobj, ref RoutedEventData data)
+        {
+            ((FrameworkElement)dobj).OnToolTipClosing(ref data);
         }
 
         // Standard visual state groups.
@@ -707,6 +1099,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isLoaded;
 
         // State values.
+        private Matrix layoutTransformUsedDuringLayout;
+        private Size2D layoutTransformSizeDesiredBeforeTransform;
+        private Boolean isLayoutTransformed;
         private Boolean isInitializing;
     }
 }

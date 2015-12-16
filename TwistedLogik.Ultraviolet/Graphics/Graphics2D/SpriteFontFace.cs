@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
@@ -45,31 +44,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             this.texture = texture;
             this.ownsTexture = ownsTexture;
 
-            this.regions = (regions == null) ? new[] { CharacterRegion.Default } : regions.ToArray();
-            this.glyphs = glyphs.ToArray();
-            this.lineHeight = glyphs.Max(x => x.Height);
-            this.firstCharacter = firstCharacter;
-            this.substitutionCharacter = substitutionCharacter;
-
-            var ix = 0;
-            var ixSubstitution = (Int32?)null;
-
-            foreach (var r in this.regions)
-            {
-                for (char c = r.Start; c <= r.End; c++)
-                {
-                    if (c == substitutionCharacter)
-                    {
-                        ixSubstitution = ix;
-                    }
-                    glyphIndices[c] = ix++;
-                }
-            }
-
-            if (ixSubstitution == null)
-                throw new ArgumentOutOfRangeException("substitutionCharacter");
-
-            this.substitutionCharacterIndex = ixSubstitution.Value;
+            this.glyphs = new SpriteFontGlyphIndex(regions ?? new[] { CharacterRegion.Default }, glyphs, firstCharacter, substitutionCharacter);
+            this.kerning = new SpriteFontKerning();           
         }
 
         /// <summary>
@@ -80,7 +56,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public Size2 MeasureString(String text)
         {
             var source = new StringSource(text);
-            return MeasureString(ref source);
+            return MeasureString(ref source, 0, text.Length);
+        }
+
+        /// <summary>
+        /// Measures the size of the specified substring of text when rendered using this font.
+        /// </summary>
+        /// <param name="text">The text to measure.</param>
+        /// <param name="start">The index of the first character of the substring to measure.</param>
+        /// <param name="count">The number of characters in the substring to measure.</param>
+        /// <returns>The size of the specified substring of text when rendered using this font.</returns>
+        public Size2 MeasureString(String text, Int32 start, Int32 count)
+        {
+            Contract.EnsureRange(start >= 0 && start < text.Length, "start");
+            Contract.EnsureRange(count >= 0 && start + count <= text.Length, "count");
+
+            var source = new StringSource(text);
+            return MeasureString(ref source, start, count);
         }
 
         /// <summary>
@@ -91,7 +83,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public Size2 MeasureString(StringBuilder text)
         {
             var source = new StringSource(text);
-            return MeasureString(ref source);
+            return MeasureString(ref source, 0, text.Length);
+        }
+
+        /// <summary>
+        /// Measures the size of the specified substring of text when rendered using this font.
+        /// </summary>
+        /// <param name="text">The text to measure.</param>
+        /// <param name="start">The index of the first character of the substring to measure.</param>
+        /// <param name="count">The number of characters in the substring to measure.</param>
+        /// <returns>The size of the specified substring of text when rendered using this font.</returns>
+        public Size2 MeasureString(StringBuilder text, Int32 start, Int32 count)
+        {
+            Contract.EnsureRange(start >= 0 && start < text.Length, "start");
+            Contract.EnsureRange(count >= 0 && start + count <= text.Length, "count");
+
+            var source = new StringSource(text);
+            return MeasureString(ref source, start, count);
         }
 
         /// <summary>
@@ -102,7 +110,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public Size2 MeasureString(StringSegment text)
         {
             var source = new StringSource(text);
-            return MeasureString(ref source);
+            return MeasureString(ref source, 0, text.Length);
+        }
+
+        /// <summary>
+        /// Measures the size of the specified substring of text when rendered using this font.
+        /// </summary>
+        /// <param name="text">The text to measure.</param>
+        /// <param name="start">The index of the first character of the substring to measure.</param>
+        /// <param name="count">The number of characters in the substring to measure.</param>
+        /// <returns>The size of the specified substring of text when rendered using this font.</returns>
+        public Size2 MeasureString(StringSegment text, Int32 start, Int32 count)
+        {
+            Contract.EnsureRange(start >= 0 && start < text.Length, "start");
+            Contract.EnsureRange(count >= 0 && start + count <= text.Length, "count");
+
+            var source = new StringSource(text);
+            return MeasureString(ref source, start, count);
         }
 
         /// <summary>
@@ -175,7 +199,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Char FirstCharacter
         {
-            get { return firstCharacter; }
+            get { return glyphs.FirstCharacter; }
         }
 
         /// <summary>
@@ -184,7 +208,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <remarks>The substitution glyph is used as a replacement for characters which do not exist in the collection.</remarks>
         public Char SubstitutionCharacter
         {
-            get { return substitutionCharacter; }
+            get { return glyphs.SubstitutionCharacter; }
         }
 
         /// <summary>
@@ -192,7 +216,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Int32 Characters
         {
-            get { return glyphs.Length; }
+            get { return glyphs.Count; }
         }
 
         /// <summary>
@@ -216,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Int32 LineSpacing
         {
-            get { return lineHeight; }
+            get { return glyphs.LineSpacing; }
         }
 
         /// <summary>
@@ -226,29 +250,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The position of the specified glyph on the font face's texture.</returns>
         public Rectangle this[Char character]
         {
-            get
-            {
-                Int32 ix;
-                if (!glyphIndices.TryGetValue(character, out ix))
-                {
-                    return glyphs[substitutionCharacterIndex];
-                }
-                return glyphs[ix];
-            }
+            get { return glyphs[character]; }
         }
-
+        
         /// <summary>
-        /// Measures the size of the specified string of text when rendered using this font.
+        /// Measures the size of the specified substring of text when rendered using this font.
         /// </summary>
         /// <param name="source">The text to measure.</param>
-        /// <returns>The size of the specified string of text when rendered using this font.</returns>
-        internal Size2 MeasureString(ref StringSource source)
+        /// <param name="start">The index of the first character of the substring to measure.</param>
+        /// <param name="count">The number of characters in the substring to measure.</param>
+        /// <returns>The size of the specified substring of text when rendered using this font.</returns>
+        internal Size2 MeasureString(ref StringSource source, Int32 start, Int32 count)
         {
             var cx = 0;
             var cy = 0;
-            for (int i = 0; i < source.Length; i++)
+            for (int i = 0; i < count; i++)
             {
-                var character = source[i];
+                var character = source[start + i];
                 switch (character)
                 {
                     case '\r':
@@ -263,8 +281,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                         cx = cx + TabWidth;
                         continue;
                 }
-                cx += MeasureGlyph(ref source, i).Width;
+                cx += MeasureGlyph(ref source, start + i).Width;
             }
+            
             return new Size2(cx, cy + LineSpacing);
         }
 
@@ -277,10 +296,20 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         internal Size2 MeasureGlyph(ref StringSource source, Int32 ix)
         {
             var c1 = source[ix];
-            var c2 = (ix + 1 < source.Length) ? source[ix + 1] : (Char?)null;            
-            var glyph = this[c1];
-            var offset = c2.HasValue ? kerning.Get(c1, c2.GetValueOrDefault()) : 0;
-            return new Size2(glyph.Width + offset, glyph.Height);
+            switch (c1)
+            {
+                case '\n':
+                    return new Size2(0, LineSpacing);
+
+                case '\t':
+                    return new Size2(TabWidth, LineSpacing);
+
+                default:
+                    var c2 = (ix + 1 < source.Length) ? source[ix + 1] : (Char?)null;
+                    var glyph = glyphs[c1];
+                    var offset = c2.HasValue ? kerning.Get(c1, c2.GetValueOrDefault()) : 0;
+                    return new Size2(glyph.Width + offset, glyph.Height);
+            }
         }
 
         /// <summary>
@@ -302,20 +331,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
         // Property values.
         private readonly Texture2D texture;
-        private readonly Char firstCharacter;
-        private readonly Char substitutionCharacter;
-        private readonly Int32 lineHeight;
-
-        // State values.
-        private readonly Int32 substitutionCharacterIndex;
-        private readonly CharacterRegion[] regions;
-        private readonly Rectangle[] glyphs;
         private readonly Boolean ownsTexture;
 
-        private readonly Dictionary<Char, Int32> glyphIndices = 
-            new Dictionary<Char, Int32>();
+        // State values.
+        private readonly SpriteFontGlyphIndex glyphs;
+        private readonly SpriteFontKerning kerning;
 
-        // The font face's kerning information.
-        private readonly SpriteFontKerning kerning = new SpriteFontKerning();
+
+        //private readonly Rectangle[] glyphs;
+        //private readonly Int32[] asciiCache;
+        //private readonly Dictionary<Char, Int32> glyphIndices;            
     }
 }

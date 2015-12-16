@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents the queue that manages the Presentation Foundation's list of active popup windows.
     /// </summary>
-    internal class PopupQueue
+    internal partial class PopupQueue
     {
         /// <summary>
         /// Gets a value indicating whether the queue is currently drawing the specified popup.
@@ -20,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             return position != null && position.Value == popup;
         }
-
+        
         /// <summary>
         /// Draws the contents of the queue.
         /// </summary>
@@ -32,19 +33,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             position = null;
-            next     = null;
 
             while (true)
             {
                 position = (position == null) ? queue.First : position.Next;
                 next     = position.Next;
 
-                dc.Reset();
+                var popup = position.Value;
 
-                position.Value.EnsureIsLoaded(true);
-                position.Value.Draw(time, dc);
+                dc.Reset(popup.View.Display);
 
-                if (next == null)
+                popup.EnsureIsLoaded(true);
+                popup.Draw(time, dc);
+
+                if (position.Next == null)
                     break;
             }
 
@@ -95,11 +97,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             for (var current = queue.Last; current != null; current = current.Previous)
             {
-                var match = current.Value.HitTest(point);
-                if (match != null)
+                if (current.Value.IsHitTestVisible)
                 {
-                    popup = current.Value;
-                    return match;
+                    var match = current.Value.PopupHitTest(point);
+                    if (match != null)
+                    {
+                        popup = current.Value;
+                        return match;
+                    }
                 }
             }
 

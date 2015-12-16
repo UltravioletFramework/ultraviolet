@@ -43,9 +43,9 @@
     <DocumentationFile>
     </DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
-    <OutputPath>bin\Production\</OutputPath>
-    <DefineConstants>TRACE;ANDROID</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>bin\Signed\</OutputPath>
+    <DefineConstants>TRACE;ANDROID SIGNED</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -64,117 +64,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\TwistedLogik.Gluon\DSA\DirectStateAccessARBImpl.cs">
-      <Link>DSA\DirectStateAccessARBImpl.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\DSA\DirectStateAccessEXTImpl.cs">
-      <Link>DSA\DirectStateAccessEXTImpl.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\DSA\DirectStateAccessImpl.cs">
-      <Link>DSA\DirectStateAccessImpl.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\DSA\DirectStateAccessNullImpl.cs">
-      <Link>DSA\DirectStateAccessNullImpl.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_debug_output.cs">
-      <Link>Extensions\ARB_debug_output.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_direct_state_access.cs">
-      <Link>Extensions\ARB_direct_state_access.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_framebuffer_object.cs">
-      <Link>Extensions\ARB_framebuffer_object.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_gpu_shader_fp64.cs">
-      <Link>Extensions\ARB_gpu_shader_fp64.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_imaging.cs">
-      <Link>Extensions\ARB_imaging.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_shadow.cs">
-      <Link>Extensions\ARB_shadow.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_texture_storage.cs">
-      <Link>Extensions\ARB_texture_storage.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\ARB_vertex_array_object.cs">
-      <Link>Extensions\ARB_vertex_array_object.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\EXT_direct_state_access.cs">
-      <Link>Extensions\EXT_direct_state_access.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\EXT_texture_compression_s3t.cs">
-      <Link>Extensions\EXT_texture_compression_s3t.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\EXT_texture_filter_anisotropic.cs">
-      <Link>Extensions\EXT_texture_filter_anisotropic.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Extensions\EXT_texture_sRGB.cs">
-      <Link>Extensions\EXT_texture_sRGB.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_1_1.cs">
-      <Link>gl.Core_1_1.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_1_2.cs">
-      <Link>gl.Core_1_2.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_1_3.cs">
-      <Link>gl.Core_1_3.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_1_4.cs">
-      <Link>gl.Core_1_4.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_1_5.cs">
-      <Link>gl.Core_1_5.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_2_0.cs">
-      <Link>gl.Core_2_0.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_2_1.cs">
-      <Link>gl.Core_2_1.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_3_0.cs">
-      <Link>gl.Core_3_0.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_3_1.cs">
-      <Link>gl.Core_3_1.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_3_2.cs">
-      <Link>gl.Core_3_2.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_3_3.cs">
-      <Link>gl.Core_3_3.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_4_0.cs">
-      <Link>gl.Core_4_0.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_4_2.cs">
-      <Link>gl.Core_4_2.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_4_3.cs">
-      <Link>gl.Core_4_3.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Core_4_4.cs">
-      <Link>gl.Core_4_4.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.DSA.cs">
-      <Link>gl.DSA.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\gl.Initialization.cs">
-      <Link>gl.Initialization.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\GluonStrings.cs">
-      <Link>GluonStrings.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\IOpenGLInitializer.cs">
-      <Link>IOpenGLInitializer.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\Properties\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\TwistedLogik.Gluon\RequireAttribute.cs">
-      <Link>RequireAttribute.cs</Link>
-    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwistedLogik.Nucleus %28Android%29\TwistedLogik.Nucleus %28Android%29.csproj">
+      <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>
+      <Name>TwistedLogik.Nucleus %28Android%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TwistedLogik.Public.snk">
@@ -185,17 +81,8 @@
     <EmbeddedResource Include="..\TwistedLogik.Gluon\Resources\Strings.xml">
       <Link>Resources\Strings.xml</Link>
     </EmbeddedResource>
-    <None Include="..\TwistedLogik.Gluon\TwistedLogik.Gluon.Licenses.txt">
-      <Link>TwistedLogik.Gluon.Licenses.txt</Link>
-    </None>
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus %28Android%29\TwistedLogik.Nucleus %28Android%29.csproj">
-      <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>
-      <Name>TwistedLogik.Nucleus %28Android%29</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <Import Project="..\TwistedLogik.Gluon\TwistedLogik.Gluon.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

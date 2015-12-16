@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="UltravioletSample3.UltravioletSample3" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
-	<uses-sdk android:minSdkVersion="12" />
+	<uses-sdk android:minSdkVersion="10" />
 	<application android:label="UltravioletSample3" android:icon="@drawable/Icon"></application>
 </manifest>

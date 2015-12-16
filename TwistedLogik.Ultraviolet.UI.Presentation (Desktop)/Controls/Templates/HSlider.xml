@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="slider-component"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+      <Image Class="slider-track-background slider-track-background-horizontal"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Center"/>
+      <Track Name="PART_Track"
+             Class="slider-track slider-track-horizontal"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Center"
+             Orientation="Horizontal"/>
+      <Image Class="slider-focus-image"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Opacity="{{IsFocusVisualVisible ? 1 : 0}}"
+             IsHitTestVisible="false"/>
+
+    </Grid>
+  </View>
+</ComponentTemplate>

@@ -1,6 +1,8 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
@@ -44,6 +46,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfMouseWheelEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data);
+
+    /// <summary>
+    /// Represents the method that is called to determine which cursor to display.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The mouse device.</param>
+    /// <param name="cursor">The cursor to display.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
+    public delegate void UpfQueryCursorEventHandler(DependencyObject element, MouseDevice device, ref Cursor cursor, ref RoutedEventData data);
 
     /// <summary>
     /// Represents the mouse device.
@@ -94,13 +105,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             var uiElement = relativeTo as UIElement;
             if (uiElement != null && uiElement.View != null)
             {
-                var device = PrimaryDevice;
-                var dipPos = uiElement.View.Display.PixelsToDips((Point2D)device.Position);
-                var relPos = dipPos - uiElement.AbsolutePosition;
+                var positionPixs = PrimaryDevice.GetPositionInWindow(uiElement.View.Window);
+                if (positionPixs != null)
+                {
+                    var visualRoot = VisualTreeHelper.GetRoot(uiElement) as UIElement;
+                    if (visualRoot == null)
+                        return new Point2D(Double.NaN, Double.NaN);
 
-                return relPos;
+                    var positionDips = uiElement.View.Display.PixelsToDips(positionPixs.Value);
+                    
+                    if (visualRoot is PopupRoot)
+                    {
+                        var popup = visualRoot.Parent as Popup;
+                        if (popup == null)
+                            return new Point2D(Double.NaN, Double.NaN);
+
+                        positionDips = (Vector2)popup.ScreenToPopup((Point2D)positionDips);
+                    }
+                    
+                    return (Point2D)visualRoot.TransformToDescendant(uiElement, positionDips);
+                }
             }
-            return Point2D.Zero;
+            return new Point2D(Double.NaN, Double.NaN);
         }
 
         /// <summary>
@@ -127,6 +153,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(view, "view");
 
             return view.ElementUnderMouse;
+        }
+
+        /// <summary>
+        /// Adds a handler for the QueryCursor attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddQueryCursorHandler(DependencyObject element, UpfQueryCursorEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.AddHandler(element, QueryCursorEvent, handler);
         }
 
         /// <summary>
@@ -338,6 +377,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Removes a handler for the QueryCursor attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveQueryCursorHandler(DependencyObject element, UpfMouseMoveEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.RemoveHandler(element, QueryCursorEvent, handler);
+        }
+
+        /// <summary>
         /// Removes a handler for the PreviewMouseMove attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -546,17 +598,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Identifies the QueryCursor routed event.
+        /// </summary>
+        public static readonly RoutedEvent QueryCursorEvent = EventManager.RegisterRoutedEvent("QueryCursor", RoutingStrategy.Bubble,
+            typeof(UpfQueryCursorEventHandler), typeof(Mouse));
+
+        /// <summary>
         /// Identifies the GotMouseCapture routed event.
         /// </summary>
         /// <remarks>The styling name of this routed event is got-mouse-capture.</remarks>
-        public static readonly RoutedEvent GotMouseCaptureEvent = EventManager.RegisterRoutedEvent("GotMouseCapture", RoutingStrategy.Direct,
+        public static readonly RoutedEvent GotMouseCaptureEvent = EventManager.RegisterRoutedEvent("GotMouseCapture", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the LostMouseCapture routed event.
         /// </summary>
         /// <remarks>The styling name of this routed event is lost-mouse-capture.</remarks>
-        public static readonly RoutedEvent LostMouseCaptureEvent = EventManager.RegisterRoutedEvent("LostMouseCapture", RoutingStrategy.Direct,
+        public static readonly RoutedEvent LostMouseCaptureEvent = EventManager.RegisterRoutedEvent("LostMouseCapture", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Mouse));
 
         /// <summary>

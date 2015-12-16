@@ -3,86 +3,269 @@ using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Testing;
+using TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens;
 using TwistedLogik.Ultraviolet.UI;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 {
     [TestClass]
-    public class PresentationFoundationTests : UltravioletApplicationTestFramework
+    public class PresentationFoundationTests : PresentationFoundationTestFramework
     {
-        [TestMethod]
-        [TestCategory("Rendering")]
-        public void PresentationFoundation_Canvas_CorrectlyArrangesChildren()
+        [ClassInitialize]
+        public static void Initialize(TestContext testContext)
         {
-            var result = RunPresentationTestFor<CanvasTestScreen>(content => new CanvasTestScreen(content));
-
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Canvas_CorrectlyArrangesChildren.png");
+            StandardInitialization(testContext);
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
-        public void PresentationFoundation_Grid_CorrectlyArrangesChildren()
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that a reasonably complex screen featuring multiple control types is correctly laid out by the Presentation Foundation.")]
+        public void UPF_ArrangesComplexScreenCorrectly()
         {
-            var result = RunPresentationTestFor<GridTestScreen>(content => new GridTestScreen(content));
+            var result = RunPresentationTestFor(content => new UPF_ArrangesComplexScreenCorrectly(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Grid_CorrectlyArrangesChildren.png");
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_ArrangesComplexScreenCorrectly.png");
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
-        public void PresentationFoundation_Vertical_StackPanel_CorrectlyArrangesChildren()
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that a UIElement with a non-identity RenderTransform is drawn correctly.")]
+        public void UPF_UIElement_DrawsCorrectly_WithRenderTransform()
         {
-            var result = RunPresentationTestFor<VerticalStackPanelTestScreen>(content => new VerticalStackPanelTestScreen(content));
+            var result = RunPresentationTestFor(content => new UPF_UIElement_DrawsCorrectly_WithRenderTransform(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Vertical_StackPanel_CorrectlyArrangesChildren.png");
+            TheResultingImage(result).WithinThreshold(0.01f)
+                .ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithRenderTransform.png");
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
-        public void PresentationFoundation_Horizontal_StackPanel_CorrectlyArrangesChildren()
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that a UIElement with an Effect is drawn correctly.")]
+        public void UPF_UIElement_DrawsCorrectly_WithEffect()
         {
-            var result = RunPresentationTestFor<HorizontalStackPanelTestScreen>(content => new HorizontalStackPanelTestScreen(content));
+            var result = RunPresentationTestFor(content => new UPF_UIElement_DrawsCorrectly_WithEffect(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Horizontal_StackPanel_CorrectlyArrangesChildren.png");
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithEffect.png");
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
-        public void PresentationFoundation_Vertical_WrapPanel_CorrectlyArrangesChildren()
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that a UIElement with a non-identity RenderTransform and an Effect is drawn correctly.")]
+        public void UPF_UIElement_DrawsCorrectly_WithEffectAndTransform()
         {
-            var result = RunPresentationTestFor<VerticalWrapPanelTestScreen>(content => new VerticalWrapPanelTestScreen(content));
+            var result = RunPresentationTestFor(content => new UPF_UIElement_DrawsCorrectly_WithEffectAndTransform(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Vertical_WrapPanel_CorrectlyArrangesChildren.png");
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform.png");
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
-        public void PresentationFoundation_Horizontal_WrapPanel_CorrectlyArrangesChildren()
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that a UIElement with a non-identity LayoutTransform is correctly arranged relative to other elements.")]
+        public void UPF_UIElement_ArrangesCorrectly_WithLayoutTransform()
         {
-            var result = RunPresentationTestFor<HorizontalWrapPanelTestScreen>(content => new HorizontalWrapPanelTestScreen(content));
+            var result = RunPresentationTestFor(content => new UPF_UIElement_ArrangesCorrectly_WithLayoutTransform(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_Horizontal_WrapPanel_CorrectlyArrangesChildren.png");
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform.png");
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
-        public void PresentationFoundation_DockPanel_CorrectlyArrangesChildren()
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that a UIElement with a non-identity LayoutTransform and a non-identity RenderTransform is correctly arranged relative to other elements.")]
+        public void UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform()
         {
-            var result = RunPresentationTestFor<DockPanelTestScreen>(content => new DockPanelTestScreen(content));
+            var result = RunPresentationTestFor(content => new UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_DockPanel_CorrectlyArrangesChildren.png");
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform.png");
         }
 
         [TestMethod]
-        [TestCategory("Rendering")]
-        public void PresentationFoundation_CorrectlyLaysOutComplexScreen()
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Canvas container correctly arranges its child elements.")]
+        public void UPF_Canvas_ArrangesChildrenCorrectly()
         {
-            var result = RunPresentationTestFor<ComplexScreen>(content => new ComplexScreen(content));
+            var result = RunPresentationTestFor(content => new UPF_Canvas_ArrangesChildrenCorrectly(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\PresentationFoundation_CorrectlyLaysOutComplexScreen.png");
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Canvas_ArrangesChildrenCorrectly.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Grid container correctly arranges its child elements.")]
+        public void UPF_Grid_ArrangesChildrenCorrectly()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Grid_ArrangesChildrenCorrectly(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Grid_ArrangesChildrenCorrectly.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the StackPanel container correctly arranges its child elements when its Orientation property is set to Vertical.")]
+        public void UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation()
+        {
+            var result = RunPresentationTestFor(content => new UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the StackPanel container correctly arranges its child elements when its Orientation property is set to Horizontal.")]
+        public void UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation()
+        {
+            var result = RunPresentationTestFor(content => new UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the WrapPanel container correctly arranges its child elements when its Orientation property is set to Vertical.")]
+        public void UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation()
+        {
+            var result = RunPresentationTestFor(content => new UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the StackPanel container correctly arranges its child elements when its Orientation property is set to Horizontal.")]
+        public void UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation()
+        {
+            var result = RunPresentationTestFor(content => new UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the DockPanel container correctly arranges its child elements.")]
+        public void UPF_DockPanel_ArrangesChildrenCorrectly()
+        {
+            var result = RunPresentationTestFor(content => new UPF_DockPanel_ArrangesChildrenCorrectly(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_DockPanel_ArrangesChildrenCorrectly.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Adorner control is drawn correctly when applied to an element.")]
+        public void UPF_Adorner_DrawsCorrectly()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Adorner_DrawsCorrectly(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Adorner_DrawsCorrectly.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Adorner control is drawn correctly when applied to an element inside of a Popup.")]
+        public void UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Popup control is laid out correctly when it has a placement target.")]
+        public void UPF_Popup_LaidOutCorrectly_WithPlacementTarget()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithPlacementTarget(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTarget.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Popup control is laid out correctly when it has a placement target and the Popup is transformed.")]
+        public void UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Popup control is laid out correctly when it has a placement target which is inside of another Popup.")]
+        public void UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Popup control is laid out correctly when it has a placement target which is transformed.")]
+        public void UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Popup control is laid out correctly when it has a placement target which is transformed and it is inested inside of another Popup.")]
+        public void UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Popup control is laid out correctly when it has a placement rectangle.")]
+        public void UPF_Popup_LaidOutCorrectly_WithPlacementRectangle()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithPlacementRectangle(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Popup control is laid out correctly when it is nested inside of another Popup.")]
+        public void UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the Popup control is drawn correctly when it has a placement target which is inside of another popup and it also has an Effect.")]
+        public void UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that a VisualClone element is drawn correctly when cloning elements with and without shader effects.")]
+        public void UPF_VisualClone_DrawsCorrectly()
+        {
+            var result = RunPresentationTestFor(content => new UPF_VisualClone_DrawsCorrectly(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_VisualClone_DrawsCorrectly.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that a VisualClone element with a transformed parent is drawn correctly when cloning elements with and without shader effects.")]
+        public void UPF_VisualClone_DrawsCorrectly_WhenParentIsTransformed()
+        {
+            var result = RunPresentationTestFor(content => new UPF_VisualClone_DrawsCorrectly_WithTransformedParent(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_VisualClone_DrawsCorrectly_WhenParentIsTransformed.png");
         }
 
         /// <summary>
@@ -90,20 +273,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         /// </summary>
         private Bitmap RunPresentationTestFor<T>(Func<ContentManager, T> ctor) where T : UIScreen
         {
-            return GivenAnUltravioletApplication()
-                .WithPresentationFoundationConfigured()
-                .WithContent(content =>
-                {
-                    var contentManifestFiles = content.GetAssetFilePathsInDirectory("Manifests");
-                    content.Ultraviolet.GetContent().Manifests.Load(contentManifestFiles);
-
-                    var globalStyleSheet = content.Load<UvssDocument>(@"UI\DefaultUIStyles");
-                    content.Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStyleSheet(globalStyleSheet);
-
-                    var screen = ctor(content);
-                    content.Ultraviolet.GetUI().GetScreens().Open(screen);
-                })
-                .SkipFrames(1).Render(uv =>
+            return GivenAPresentationFoundationTestFor<T>(ctor)
+                .Render(uv =>
                 {
                     using (var spriteBatch = SpriteBatch.Create())
                     {

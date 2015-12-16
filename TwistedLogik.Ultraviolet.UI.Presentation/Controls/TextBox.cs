@@ -1,28 +1,33 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Text;
-using System.Text.RegularExpressions;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents a element used for entering a single line of text.
+    /// Represents an element which allows the user to edit a string of text.
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.TextBox.xml")]
     [DefaultProperty("Text")]
-    public partial class TextBox : Control
+    public class TextBox : TextBoxBase
     {
         /// <summary>
-        /// Initializes the <see cref="TextBox"/> class.
+        /// Initializes the <see cref="TextBox"/> type.
         /// </summary>
         static TextBox()
         {
-            FontProperty.AddOwner(typeof(TextBox), new PropertyMetadata<SourcedResource<SpriteFont>>(HandleFontChanged));
+            EventManager.RegisterClassHandler(typeof(TextBox), ScrollViewer.ScrollChangedEvent, new UpfScrollChangedEventHandler(HandleScrollChanged));
+
+            HorizontalScrollBarVisibilityProperty.OverrideMetadata(typeof(TextBox),
+                new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, null, CoerceHorizontalScrollBarVisibility));
+
+            IsReadOnlyProperty.OverrideMetadata(typeof(TextBox),
+                new PropertyMetadata<Boolean>(HandleIsReadOnlyChanged));
         }
 
         /// <summary>
@@ -33,354 +38,466 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public TextBox(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            SetDefaultValue<Boolean>(FocusableProperty, true);
+
         }
 
         /// <summary>
-        /// Moves the caret to the beginning of the text.
+        /// Gets the text box's text.
         /// </summary>
-        public void MoveHome()
+        /// <returns>A <see cref="String"/> instance containing the text box's text.</returns>
+        public String GetText()
         {
-            textCaretPosition = 0;
-            textScrollOffset  = 0;
-            caretBlinkTimer   = 0;
+            return GetValue<VersionedStringSource>(TextProperty).ToString();
         }
 
         /// <summary>
-        /// Moves the caret to the end of the text.
+        /// Gets the text box's text.
         /// </summary>
-        public void MoveEnd()
+        /// <param name="stringBuilder">A <see cref="StringBuilder"/> instance to populate with the text box's text.</param>
+        public void GetText(StringBuilder stringBuilder)
         {
-            if (Text != null)
-            {
-                textCaretPosition = Text.Length;
-                ScrollForwardToCaret();
-            }
-            caretBlinkTimer = 0;
+            Contract.Require(stringBuilder, "stringBuilder");
+
+            var value = GetValue<VersionedStringSource>(TextProperty);
+
+            stringBuilder.Length = 0;
+            stringBuilder.AppendVersionedStringSource(value);
         }
 
         /// <summary>
-        /// Gets or sets the text displayed by the text box.
+        /// Sets the text box's text.
         /// </summary>
-        public String Text
+        /// <param name="value">A <see cref="String"/> instance to set as the text box's text.</param>
+        public void SetText(String value)
         {
-            get { return GetValue<String>(TextProperty); }
-            set { SetValue<String>(TextProperty, value); }
+            SetValue(TextProperty, new VersionedStringSource(value));
         }
 
         /// <summary>
-        /// Gets the currently selected text.
+        /// Sets the text box's text.
         /// </summary>
-        public String SelectedText
+        /// <param name="value">A <see cref="StringBuilder"/> instance whose contents will be set as the text box's text.</param>
+        public void SetText(StringBuilder value)
         {
-            get
-            {
-                if (!IsTextSelected || Text == null)
-                    return null;
-
-                return Text.Substring(SelectionStart, SelectionEnd - SelectionStart);
-            }
+            if (TextEditor != null)
+                TextEditor.HandleTextChanged(value);
         }
 
         /// <summary>
-        /// Gets or sets a regular expression which is used to limit the values
-        /// which can be entered into the text box.
+        /// Gets the selected text.
         /// </summary>
-        public String Pattern
+        /// <returns>A string containing the selected text.</returns>
+        public String GetSelectedText()
         {
-            get { return GetValue<String>(PatternProperty); }
-            set { SetValue<String>(PatternProperty, value); }
+            if (TextEditor != null)
+                return TextEditor.GetSelectedText();
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the selected text.
+        /// </summary>
+        /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the contents of the selection.</param>
+        public void GetSelectedText(StringBuilder stringBuilder)
+        {
+            if (TextEditor != null)
+                TextEditor.GetSelectedText(stringBuilder);
+        }
+
+        /// <summary>
+        /// Sets the selected text.
+        /// </summary>
+        /// <param name="value">The text to set.</param>
+        public void SetSelectedText(String value)
+        {
+            if (TextEditor != null)
+                TextEditor.SetSelectedText(value);
+        }
+
+        /// <summary>
+        /// Sets the selected text.
+        /// </summary>
+        /// <param name="value">A <see cref="StringBuilder"/> containing the text to set.</param>
+        public void SetSelectedText(StringBuilder value)
+        {
+            if (TextEditor != null)
+                TextEditor.SetSelectedText(value);
+        }
+
+        /// <summary>
+        /// Gets the specified line of text.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line of text to retrieve.</param>
+        /// <returns>A string containing the contents of the specified line of text.</returns>
+        public String GetLineText(Int32 lineIndex)
+        {
+            if (TextEditor != null)
+                return TextEditor.GetLineText(lineIndex);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the specified line of text.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line of text to retrieve.</param>
+        /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the contents of the specified line of text.</param>
+        public void GetLineText(Int32 lineIndex, StringBuilder stringBuilder)
+        {
+            if (TextEditor != null)
+                TextEditor.GetLineText(lineIndex, stringBuilder);
+        }
+
+        /// <summary>
+        /// Scrolls the text box so that the specified line is in full view.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line to scroll into view.</param>
+        public void ScrollToLine(Int32 lineIndex)
+        {
+            if (TextEditor != null)
+                TextEditor.ScrollToLine(lineIndex);
+        }
+
+        /// <summary>
+        /// Gets the index of the first character on the specified line.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line for which to retrieve a character index.</param>
+        /// <returns>The index of the first character on the specified line.</returns>
+        public Int32 GetCharacterIndexFromLineIndex(Int32 lineIndex)
+        {
+            if (TextEditor != null)
+                return TextEditor.GetCharacterIndexFromLineIndex(lineIndex);
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the index of the character that is closest to the specified point.
+        /// </summary>
+        /// <param name="point">A point in client space to evaluate.</param>
+        /// <param name="snapToText">A value indicating that the closest character should be returned (if true), 
+        /// or that only characters directly under the specified point should be returned (if false).</param>
+        /// <returns>The index of the character at the specified point, or -1 if there is no character at the specified point.</returns>
+        public Int32 GetCharacterIndexFromPoint(Point2D point, Boolean snapToText)
+        {
+            if (TextEditor != null)
+                return TextEditor.GetCharacterIndexFromPoint(point, snapToText);
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Gets the index of the first visible line of text.
+        /// </summary>
+        /// <returns>The index of the first visible line of text.</returns>
+        public Int32 GetFirstVisibleLineIndex()
+        {
+            if (TextEditor != null)
+                return TextEditor.GetFirstVisibleLineIndex();
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the index of the last visible line of text.
+        /// </summary>
+        /// <returns>The index of the last visible line of text.</returns>
+        public Int32 GetLastVisibleLineIndex()
+        {
+            if (TextEditor != null)
+                return TextEditor.GetLastVisibleLineIndex();
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the index of the line of text that contains the specified character.
+        /// </summary>
+        /// <param name="charIndex">The index of the character to evaluate.</param>
+        /// <returns>The index of the line of text that contains the specified character.</returns>
+        public Int32 GetLineIndexFromCharacterIndex(Int32 charIndex)
+        {
+            if (TextEditor != null)
+                return TextEditor.GetLineIndexFromCharacterIndex(charIndex);
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the number of characters on the specified line of text.
+        /// </summary>
+        /// <param name="lineIndex">The index of the line to evaluate.</param>
+        /// <returns>The number of characters on the specified line of text.</returns>
+        public Int32 GetLineLength(Int32 lineIndex)
+        {
+            if (TextEditor != null)
+                return TextEditor.GetLineLength(lineIndex);
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets a rectangle that represents the leading edge of the specified character.
+        /// </summary>
+        /// <param name="charIndex">The index of the character for which to retrieve the rectangle.</param>
+        /// <returns>A rectangle which represents the bounds of the leading edge of the specified character,
+        /// or <see cref="RectangleD.Empty"/> if the bounding rectangle cannot be determined.</returns>
+        public RectangleD GetRectFromCharacterIndex(Int32 charIndex)
+        {
+            if (TextEditor != null)
+                return TextEditor.GetRectFromCharacterIndex(charIndex);
+
+            return RectangleD.Empty;
+        }
+
+        /// <summary>
+        /// Gets a rectangle that represents the leading or trailing edge of the specified character.
+        /// </summary>
+        /// <param name="charIndex">The index of the character for which to retrieve the rectangle.</param>
+        /// <param name="trailingEdge">A value specifying whether to retrieve the trailing edge of the character.</param>
+        /// <returns>A rectangle which represents the bounds of the leading or trailing edge of the specified character,
+        /// or <see cref="RectangleD.Empty"/> if the bounding rectangle cannot be determined.</returns>
+        public RectangleD GetRectFromCharacterIndex(Int32 charIndex, Boolean trailingEdge)
+        {
+            if (TextEditor != null)
+                return TextEditor.GetRectFromCharacterIndex(charIndex, trailingEdge);
+
+            return RectangleD.Empty;
+        }
+
+        /// <summary>
+        /// Gets or sets the text box's current keyboard mode.
+        /// </summary>
+        public KeyboardMode KeyboardMode
+        {
+            get { return GetValue<KeyboardMode>(KeyboardModeProperty); }
+            set { SetValue(KeyboardModeProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a <see cref="CharacterCasing"/> value which specifies the casing which is applies to the text box's text.
+        /// </summary>
+        public CharacterCasing CharacterCasing
+        {
+            get { return GetValue<CharacterCasing>(CharacterCasingProperty); }
+            set { SetValue(CharacterCasingProperty, value); }
         }
         
         /// <summary>
-        /// Gets or sets the maximum length of the text box's text.
+        /// Gets or sets a value specifying how the text box's text is aligned.
+        /// </summary>
+        public TextAlignment TextAlignment
+        {
+            get { return GetValue<TextAlignment>(TextAlignmentProperty); }
+            set { SetValue(TextAlignmentProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value specifying how the text box's text wraps when it reaches the edge of its container.
+        /// </summary>
+        public TextWrapping TextWrapping
+        {
+            get { return GetValue<TextWrapping>(TextWrappingProperty); }
+            set { SetValue(TextWrappingProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the total number of characters in the text box's text.
+        /// </summary>
+        public Int32 TextLength
+        {
+            get
+            {
+                if (TextEditor != null)
+                    return TextEditor.TextLength;
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum length of the text which is entered into the text box.
         /// </summary>
         public Int32 MaxLength
         {
             get { return GetValue<Int32>(MaxLengthProperty); }
-            set { SetValue<Int32>(MaxLengthProperty, value); }
+            set { SetValue(MaxLengthProperty, value); }
         }
 
         /// <summary>
-        /// Gets or sets the thickness of the caret while the text box's <see cref="InsertionMode"/> property
-        /// is set to <see cref="TextBoxInsertionMode.Overwrite"/>, specified in device independent pixels.
+        /// Gets the total number of lines in the text box's text.
         /// </summary>
-        public Double CaretThickness
+        public Int32 LineCount
         {
-            get { return GetValue<Double>(CaretThicknessProperty); }
-            set { SetValue<Double>(CaretThicknessProperty, value); }
+            get
+            {
+                if (TextEditor != null)
+                    return TextEditor.LineCount;
+
+                return 0;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the image used to draw the caret.
+        /// Gets or sets the minimum number of visible lines.
         /// </summary>
-        public SourcedImage CaretImage
+        public Int32 MinLines
         {
-            get { return GetValue<SourcedImage>(CaretImageProperty); }
-            set { SetValue<SourcedImage>(CaretImageProperty, value); }
+            get { return GetValue<Int32>(MinLinesProperty); }
+            set { SetValue(MinLinesProperty, value); }
         }
 
         /// <summary>
-        /// Gets or sets the color with which the caret is rendered.
+        /// Gets or sets the maximum number of visible lines.
         /// </summary>
-        public Color CaretColor
+        public Int32 MaxLines
         {
-            get { return GetValue<Color>(CaretColorProperty); }
-            set { SetValue<Color>(CaretColorProperty, value); }
+            get { return GetValue<Int32>(MaxLinesProperty); }
+            set { SetValue(MaxLinesProperty, value); }
         }
 
         /// <summary>
-        /// Gets or sets the image used to draw the selection highlight.
+        /// Gets or sets the current position of the insertion caret.
         /// </summary>
-        public SourcedImage SelectionImage
+        public Int32 CaretIndex
         {
-            get { return GetValue<SourcedImage>(SelectionImageProperty); }
-            set { SetValue<SourcedImage>(SelectionImageProperty, value); }
+            get
+            {
+                if (TextEditor != null)
+                    return TextEditor.CaretIndex;
+
+                return 0;
+            }
+            set
+            {
+                if (TextEditor != null)
+                    TextEditor.CaretIndex = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the color used to highlight the text box's selected text.
+        /// Gets or sets the starting point of the selected text.
         /// </summary>
-        public Color SelectionColor
+        public Int32 SelectionStart
         {
-            get { return GetValue<Color>(SelectionColorProperty); }
-            set { SetValue<Color>(SelectionColorProperty, value); }
+            get
+            {
+                if (TextEditor != null)
+                    return TextEditor.SelectionStart;
+
+                return 0;
+            }
+            set
+            {
+                if (TextEditor != null)
+                    TextEditor.SelectionStart = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the text box's current insertion mode.
+        /// Gets or sets the length of the selected text.
         /// </summary>
-        public TextBoxInsertionMode InsertionMode
+        public Int32 SelectionLength
         {
-            get { return GetValue<TextBoxInsertionMode>(InsertionModeProperty); }
-            set { SetValue<TextBoxInsertionMode>(InsertionModeProperty, value); }
+            get
+            {
+                if (TextEditor != null)
+                    return TextEditor.SelectionLength;
+
+                return 0;
+            }
+            set
+            {
+                if (TextEditor != null)
+                    TextEditor.SelectionLength = value;
+            }
         }
+        
+        /// <summary>
+        /// Identifies the Text dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextBox),
+            new PropertyMetadata<VersionedStringSource>(VersionedStringSource.Invalid, PropertyMetadataOptions.None, HandleTextChanged));
 
         /// <summary>
-        /// Gets or sets a value indicating whether text editing is disabled for this control.
+        /// Identifies the <see cref="KeyboardMode"/> dependency property.
         /// </summary>
-        public Boolean IsReadOnly
-        {
-            get { return GetValue<Boolean>(IsReadOnlyProperty); }
-            set { SetValue<Boolean>(IsReadOnlyProperty, value); }
-        }
+        /// <remarks>The styling name of this dependency property is 'keyboard-mode'.</remarks>
+        public static readonly DependencyProperty KeyboardModeProperty = DependencyProperty.Register("KeyboardMode", typeof(KeyboardMode), typeof(TextBox),
+            new PropertyMetadata<KeyboardMode>(KeyboardMode.Text, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="Text"/> dependency property.
+        /// Identifies the <see cref="CharacterCasing"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'text'.</remarks>
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBox),
-            new PropertyMetadata<String>(HandleTextChanged));
+        public static readonly DependencyProperty CharacterCasingProperty = DependencyProperty.Register("CharacterCasing", typeof(CharacterCasing), typeof(TextBox),
+            new PropertyMetadata<CharacterCasing>(CharacterCasing.Normal, PropertyMetadataOptions.None));
+        
+        /// <summary>
+        /// Identifies the <see cref="TextAlignment"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TextAlignmentProperty = DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextBox),
+            new PropertyMetadata<TextAlignment>(TextAlignment.Left, PropertyMetadataOptions.AffectsMeasure, HandleTextAlignmentChanged));
 
         /// <summary>
-        /// Identifies the <see cref="Pattern"/> dependency property.
+        /// Identifies the <see cref="TextWrapping"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'pattern'.</remarks>
-        public static readonly DependencyProperty PatternProperty = DependencyProperty.Register("Pattern", typeof(String), typeof(TextBox),
-            new PropertyMetadata<String>(HandlePatternChanged));
+        public static readonly DependencyProperty TextWrappingProperty = DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(TextBox),
+            new PropertyMetadata<TextWrapping>(TextWrapping.NoWrap, PropertyMetadataOptions.AffectsMeasure, HandleTextWrappingChanged));
+        
+        /// <summary>
+        /// Identifies the <see cref="MinLines"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MinLinesProperty = DependencyProperty.Register("MinLines", typeof(Int32), typeof(TextBox),
+            new PropertyMetadata<Int32>(1, PropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <see cref="MaxLines"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaxLinesProperty = DependencyProperty.Register("MaxLines", typeof(Int32), typeof(TextBox),
+            new PropertyMetadata<Int32>(Int32.MaxValue, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxLength"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'max-length'.</remarks>
         public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
-            new PropertyMetadata<Int32>());
+            new PropertyMetadata<Int32>(CommonBoxedValues.Int32.Zero, PropertyMetadataOptions.None));
 
-        /// <summary>
-        /// Identifies the <see cref="CaretThickness"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'caret-thickness'.</remarks>
-        public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextBox),
-            new PropertyMetadata<Double>(4.0));
-
-        /// <summary>
-        /// Identifies the <see cref="CaretImage"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'caret-image'.</remarks>
-        public static readonly DependencyProperty CaretImageProperty = DependencyProperty.Register("CaretImage", typeof(SourcedImage), typeof(TextBox),
-            new PropertyMetadata<SourcedImage>(HandleCaretImageChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="CaretColor"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'caret-color'.</remarks>
-        public static readonly DependencyProperty CaretColorProperty = DependencyProperty.Register("CaretColor", typeof(Color), typeof(TextBox),
-            new PropertyMetadata<Color>(Color.Blue * 0.4f));
-
-        /// <summary>
-        /// Identifies the <see cref="SelectionImage"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selection-image'.</remarks>
-        public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedImage), typeof(TextBox),
-            new PropertyMetadata<SourcedImage>(HandleSelectionImageChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="SelectionColor"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selection-color'.</remarks>
-        public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(Color), typeof(TextBox),
-            new PropertyMetadata<Color>(Color.Blue * 0.4f));
-
-        /// <summary>
-        /// Identifies the <see cref="InsertionMode"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'insertion-mode'.</remarks>
-        public static readonly DependencyProperty InsertionModeProperty = DependencyProperty.Register("InsertionMode", typeof(TextBoxInsertionMode), typeof(TextBox),
-            new PropertyMetadata<TextBoxInsertionMode>(TextBoxInsertionMode.Insert));
-
-        /// <summary>
-        /// Identifies the <see cref="IsReadOnly"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'read-only'.</remarks>
-        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(Boolean), typeof(TextBox),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
-
-        /// <summary>
-        /// Invalidates the clipping region used for the text box's text.
-        /// </summary>
-        internal void InvalidateTextClip()
+        /// <inheritdoc/>
+        internal override void LineUpInternal()
         {
-            this.textClip = CalculateTextClip();
+            var font = Font;
+            if (font == null || !font.IsLoaded)
+                return;
+
+            var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
+            var fontLineHeight = fontFace.LineSpacing;
+
+            var scrollViewer = TextEditorScrollViewer;
+            if (scrollViewer != null)
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - fontLineHeight);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(ref RoutedEventData data)
+        internal override void LineDownInternal()
         {
-            textSelectionLength = 0;
+            var font = Font;
+            if (font == null || !font.IsLoaded)
+                return;
 
-            base.OnLostKeyboardFocus(ref data);
+            var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
+            var fontLineHeight = fontFace.LineSpacing;
+
+            var scrollViewer = TextEditorScrollViewer;
+            if (scrollViewer != null)
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + fontLineHeight);
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            switch (key)
-            {
-                case Key.Insert:
-                    InsertionMode = (InsertionMode == TextBoxInsertionMode.Insert) ? 
-                        TextBoxInsertionMode.Overwrite :
-                        TextBoxInsertionMode.Insert;
-                    data.Handled = true;
-                    break;
-
-                case Key.A:
-                    if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-                    {
-                        SelectAll();
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.C:
-                    if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-                    {
-                        Copy();
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.X:
-                    if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-                    {
-                        Cut();
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.V:
-                    if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-                    {
-                        Paste();
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Left:
-                    MoveBackward((modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);
-                    data.Handled = true;
-                    break;
-
-                case Key.Right:
-                    MoveForward((modifiers & ModifierKeys.Shift) == ModifierKeys.Shift);
-                    data.Handled = true;
-                    break;
-
-                case Key.Home:
-                    MoveHome();
-                    data.Handled = true;
-                    break;
-
-                case Key.End:
-                    MoveEnd();
-                    data.Handled = true;
-                    break;
-
-                case Key.Backspace:
-                    ProcessBackspace();
-                    data.Handled = true;
-                    break;
-
-                case Key.Delete:
-                    ProcessDelete();
-                    data.Handled = true;
-                    break;
-            }
-
-            base.OnKeyDown(device, key, modifiers, ref data);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnTextInput(KeyboardDevice device, ref RoutedEventData data)
-        {
-            device.GetTextInput(textBuffer);
-            ProcessInsertText(textBuffer.ToString());
-            data.Handled = true;
-
-            base.OnTextInput(device, ref data);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnLostMouseCapture(ref RoutedEventData data)
-        {
-            mouseSelectionInProgress = false;
-
-            base.OnLostMouseCapture(ref data);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
-        {
-            if (mouseSelectionInProgress && !String.IsNullOrEmpty(Text))
-            {
-                // Cursor is inside box
-                var textArea = AbsoluteTextBounds;
-                if (textArea.Left <= x && textArea.Right > x)
-                {
-                    var index = CalculateIndexFromCursor(device);
-                    SelectToIndex(index);
-                    ScrollToSelectionHead();
-                }
-                else
-                {
-                    var delta = (Int32)dx;
-
-                    // Cursor is left of box, moving left
-                    if (x < textArea.Left && delta < 0)
-                    {
-                        MoveSelectionLeft(Math.Abs(delta));
-                        ScrollToSelectionHead();
-                    }
-
-                    // Cursor is right of box, moving right
-                    if (x >= textArea.Right && delta > 0)
-                    {
-                        MoveSelectionRight(Math.Abs(delta));
-                        ScrollToSelectionHead();
-                    }
-                }
-                data.Handled = true;
-            }
-            base.OnMouseMove(device, x, y, dx, dy, ref data);
+            UpdateScrollViewerSize();
+            return base.MeasureOverride(availableSize);
         }
 
         /// <inheritdoc/>
@@ -388,16 +505,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (button == MouseButton.Left)
             {
-                mouseSelectionInProgress = true;
-
                 Focus();
                 CaptureMouse();
-
-                textCaretPosition   = CalculateIndexFromCursor(device);
-                textSelectionLength = 0;
-
-                ScrollForwardToCaret();
             }
+
+            if (TextEditor != null && IsMouseWithinEditor())
+                TextEditor.HandleMouseDown(device, button, ref data);
+
             data.Handled = true;
             base.OnMouseDown(device, button, ref data);
         }
@@ -407,9 +521,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (button == MouseButton.Left)
             {
-                mouseSelectionInProgress = false;
                 ReleaseMouseCapture();
             }
+
+            if (TextEditor != null && IsMouseWithinEditor())
+                TextEditor.HandleMouseUp(device, button, ref data);
+
             data.Handled = true;
             base.OnMouseUp(device, button, ref data);
         }
@@ -417,736 +534,218 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
-            if (button == MouseButton.Left)
-            {
-                SelectAll();
-            }
-            data.Handled = true;
+            if (IsMouseWithinEditor() && TextEditor != null)
+                TextEditor.HandleMouseDoubleClick(device, button, ref data);
+
             base.OnMouseDoubleClick(device, button, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
+        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
-            ReloadCaretImage();
-            ReloadSelectionImage();
+            if (TextEditor != null)
+                TextEditor.HandleMouseMove(device, ref data);
 
-            base.ReloadContentCore(recursive);
-        }
-        
-        /// <summary>
-        /// Draws the element's text.
-        /// </summary>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        protected virtual void DrawText(DrawingContext dc)
-        {
-            if (!Font.IsLoaded || (String.IsNullOrEmpty(Text) && View.ElementWithFocus != this))
-                return;
-
-            var textArea = AbsoluteTextBounds;
-            if (textArea.Width <= 0 || textArea.Height <= 0)
-                return;
-
-            if (textClip != null)
-                dc.PushClipRectangle(textClip.Value);
-
-            DrawTextSelection(dc);
-
-            if (!String.IsNullOrEmpty(Text))
-            {
-                var textCenteringOffset = (Display.DipsToPixels(textArea.Height) - Font.Resource.Value.Regular.LineSpacing) / 2.0;
-                var textPos             = Display.DipsToPixels(textArea.Location + new Point2D(textScrollOffset, textCenteringOffset));
-                dc.SpriteBatch.DrawString(Font.Resource.Value.Regular, Text, (Vector2)textPos, Foreground * dc.Opacity);
-            }
-
-            DrawTextCaret(dc);
-
-            if (textClip != null)
-                dc.PopClipRectangle();
+            data.Handled = true;
+            base.OnMouseMove(device, x, y, dx, dy, ref data);
         }
 
-        /// <summary>
-        /// Draws the text selection box.
-        /// </summary>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        protected virtual void DrawTextSelection(DrawingContext dc)
+        /// <inheritdoc/>
+        protected override void OnLostMouseCapture(ref RoutedEventData data)
         {
-            if (!IsTextSelected || !Font.IsLoaded)
-                return;
+            if (TextEditor != null)
+                TextEditor.HandleLostMouseCapture();
 
-            var selectionStartOffset = CalculateOffsetFromIndex(SelectionStart);
-            var selectionEndOffset   = CalculateOffsetFromIndex(SelectionEnd);
-            var selectionWidth       = selectionEndOffset - selectionStartOffset;
-            var selectionHeight      = Font.Resource.Value.Regular.LineSpacing;
-            var selectionPosition    = RelativeTextBounds + new Point2D(textScrollOffset + selectionStartOffset, 0);
-            var selectionArea        = new RectangleD(selectionPosition.X, selectionPosition.Y, selectionWidth, selectionHeight);
-
-            DrawImage(dc, SelectionImage, selectionArea, SelectionColor);
+            data.Handled = true;
+            base.OnLostMouseCapture(ref data);
         }
 
-        /// <summary>
-        /// Draws the text caret.
-        /// </summary>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        protected virtual void DrawTextCaret(DrawingContext dc)
+        /// <inheritdoc/>
+        protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
-            if (!IsCaretDisplayed || !IsCaretVisible || IsTextSelected)
-                return;
+            Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode);
 
-            var caretOffset = CalculateCaretOffset();
+            if (TextEditor != null)
+                TextEditor.HandleGotKeyboardFocus();
 
-            var textBounds = RelativeTextBounds;
-            var textX      = textBounds.X;
-            var textY      = textBounds.Y;
-            var textWidth  = textBounds.Width;
-            var textHeight = (Font.IsLoaded) ? Font.Resource.Value.Regular.LineSpacing : textBounds.Height;
-
-            if (InsertionMode == TextBoxInsertionMode.Insert)
-            {
-                var caretPosition = new Point2D(textX + textScrollOffset + caretOffset, textY);
-                var caretArea     = new RectangleD(caretPosition.X, caretPosition.Y, CaretWidth, textHeight);
-
-                DrawImage(dc, CaretImage, caretArea, CaretColor);
-            }
-            else
-            {
-                var textLength = (Text == null) ? 0 : Text.Length;
-                var caretChar1 = (textCaretPosition >= textLength) ? ' ' : Text[textCaretPosition];
-                var caretChar2 = (textCaretPosition + 1 >= textLength) ? ' ' : Text[textCaretPosition + 1];
-                var caretWidth = Font.Resource.Value.Regular.MeasureGlyph(caretChar1, caretChar2).Width;
-
-                var caretThickness = (Int32)Display.DipsToPixels(CaretThickness);
-                var caretPosition  = new Point2D(textX + textScrollOffset + caretOffset, textY + textHeight - caretThickness);
-                var caretArea      = new RectangleD(caretPosition.X, caretPosition.Y, caretWidth, caretThickness);
-
-                DrawImage(dc, CaretImage, caretArea, CaretColor);
-            }
+            base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
-        /// <summary>
-        /// Reloads the <see cref="CaretImage"/> resource.
-        /// </summary>
-        protected void ReloadCaretImage()
+        /// <inheritdoc/>
+        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
-            LoadImage(CaretImage);
+            Ultraviolet.GetInput().HideSoftwareKeyboard();
+
+            if (TextEditor != null)
+                TextEditor.HandleLostKeyboardFocus();
+
+            base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
         }
 
-        /// <summary>
-        /// Reloads the <see cref="SelectionImage"/> resource.
-        /// </summary>
-        protected void ReloadSelectionImage()
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
-            LoadImage(SelectionImage);
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Text"/> dependency property changes.
-        /// </summary>
-        private static void HandleTextChanged(DependencyObject dobj, String oldValue, String newValue)
-        {
-            var textbox = (TextBox)dobj;
-
-            textbox.textCaretPosition   = Math.Min(textbox.textCaretPosition, (textbox.Text == null) ? 0 : textbox.Text.Length);
-            textbox.textSelectionLength = 0;
-
-            textbox.textClip = textbox.CalculateTextClip();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Pattern"/> dependency property changes.
-        /// </summary>
-        private static void HandlePatternChanged(DependencyObject dobj, String oldValue, String newValue)
-        {
-            var textbox = (TextBox)dobj;
-            var pattern = textbox.Pattern;
-            textbox.patternRegex = String.IsNullOrEmpty(pattern) ? null : new Regex("^" + pattern + "$", RegexOptions.Singleline);
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="CaretImage"/> dependency property changes.
-        /// </summary>
-        private static void HandleCaretImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
-        {
-            var textbox = (TextBox)dobj;
-            textbox.ReloadCaretImage();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="SelectionImage"/> dependency property changes.
-        /// </summary>
-        private static void HandleSelectionImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
-        {
-            var textbox = (TextBox)dobj;
-            textbox.ReloadSelectionImage();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="Control.Font"/> dependency property changes.
-        /// </summary>
-        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<SpriteFont> oldValue, SourcedResource<SpriteFont> newValue)
-        {
-            var textbox = (TextBox)dobj;
-            textbox.ReloadFont();
-        }
-
-        /// <summary>
-        /// Handles the content presenter's <see cref="UIElement.Updating"/> event.
-        /// </summary>
-        private void PresenterUpdate(UIElement element, UltravioletTime time)
-        {
-            caretBlinkTimer = (caretBlinkTimer + time.ElapsedTime.TotalMilliseconds) % 1000.0; 
-        }
-
-        /// <summary>
-        /// Handles the content presenter's <see cref="UIElement.Drawing"/> event.
-        /// </summary>
-        private void PresenterDraw(UIElement element, UltravioletTime time, DrawingContext dc)
-        {
-            DrawText(dc);
-        }
-
-        /// <summary>
-        /// Processes a text insertion event.
-        /// </summary>
-        /// <param name="text">The text to insert.</param>
-        private void ProcessInsertText(String text)
-        {
-            DeleteSelection();
-
-            var startingCaretPosition = textCaretPosition;
-
-            var charactersUsed      = (Text == null) ? 0 : Text.Length;
-            var charactersAvailable = ((MaxLength == 0) ? Int32.MaxValue : MaxLength) - charactersUsed;
-
-            if (charactersAvailable == 0)
-                return;
-
-            if (text != null && text.Length > charactersAvailable)
-                text = text.Substring(0, charactersAvailable);
-
-            var textLength = (text == null) ? 0 : text.Length;
-
-            if (Text == null)
-            {
-                if (patternRegex != null && !patternRegex.IsMatch(text))
-                    return;
-
-                Text = text;
-                textCaretPosition = textLength;
-            }
-            else
-            {
-                var textTemp = Text;
-
-                if (InsertionMode == TextBoxInsertionMode.Overwrite && startingCaretPosition < Text.Length)
-                    textTemp = textTemp.Remove(startingCaretPosition, 1);
-
-                textTemp = textTemp.Insert(startingCaretPosition, text);
-
-                if (patternRegex != null && !patternRegex.IsMatch(textTemp))
-                    return;
-
-                Text = textTemp;
-                textCaretPosition = Math.Min(Text.Length, startingCaretPosition + textLength);
-            }
-
-            ScrollForwardToCaret();
-
-            caretBlinkTimer = 0;
-        }
-
-        /// <summary>
-        /// Processes a backspace event.
-        /// </summary>
-        private void ProcessBackspace()
-        {
-            if (IsTextSelected)
-            {
-                DeleteSelection();
-            }
-            else
-            {
-                if (textCaretPosition > 0)
-                {
-                    var position = textCaretPosition;
-                    Text = Text.Remove(position - 1, 1);
-                    textCaretPosition = position - 1;
-                }
-            }
-            ScrollBackwardToCaret();
-            caretBlinkTimer = 0;
-        }
-
-        /// <summary>
-        /// Processes a delete event.
-        /// </summary>
-        private void ProcessDelete()
-        {
-            if (IsTextSelected)
-            {
-                DeleteSelection();
-            }
-            else
-            {
-                if (Text != null && textCaretPosition < Text.Length)
-                {
-                    Text = Text.Remove(textCaretPosition, 1);
-                }
-            }
-            ScrollBackwardToCaret();
-            caretBlinkTimer = 0;
-        }
-
-        /// <summary>
-        /// Moves the cursor forward.
-        /// </summary>
-        /// <param name="select">A value indicating whether to update the selection during movement.</param>
-        private void MoveForward(Boolean select)
-        {
-            if (IsTextSelected && !select)
-            {
-                textCaretPosition = SelectionEnd;
-                textSelectionLength = 0;
-            }
-            else
-            {
-                if (Text != null && textCaretPosition < Text.Length)
-                {
-                    textCaretPosition++;
-                    if (select)
-                    {
-                        textSelectionLength--;
-                    }
-                }
-            }
-
-            ScrollForwardToCaret();
+            if (TextEditor != null)
+                TextEditor.HandleKeyDown(device, key, modifiers, ref data);
             
-            caretBlinkTimer = 0;
+            base.OnKeyDown(device, key, modifiers, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTextInput(KeyboardDevice device, ref RoutedEventData data)
+        {
+            if (TextEditor != null)
+                TextEditor.HandleTextInput(device, ref data);
+
+            base.OnTextInput(device, ref data);
         }
 
         /// <summary>
-        /// Moves the cursor backward.
+        /// Occurs when the control handles a <see cref="ScrollViewer.ScrollChangedEvent"/> routed event.
         /// </summary>
-        /// <param name="select">A value indicating whether to update the selection during movement.</param>
-        private void MoveBackward(Boolean select)
+        private static void HandleScrollChanged(DependencyObject dobj, ref ScrollChangedInfo scrollInfo, ref RoutedEventData data)
         {
-            if (IsTextSelected && !select)
+            if (!MathUtil.IsApproximatelyZero(scrollInfo.ViewportHeightChange))
             {
-                textCaretPosition = SelectionStart;
-                textSelectionLength = 0;
+                ((TextBox)dobj).UpdateScrollViewerSize();
+            }
+            data.Handled = true;
+        }
+
+        /// <summary>
+        /// Occurs when the value of the Text dependency property changes.
+        /// </summary>
+        private static void HandleTextChanged(DependencyObject dobj, VersionedStringSource oldValue, VersionedStringSource newValue)
+        {
+            var raiseTextChanged = false;
+
+            var textBox = (TextBox)dobj;
+            if (textBox.TextEditor != null)
+                raiseTextChanged = !textBox.TextEditor.HandleTextChanged(newValue);
+
+            if (raiseTextChanged)
+                textBox.OnTextChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="TextAlignment"/> dependency property changes.
+        /// </summary>
+        private static void HandleTextAlignmentChanged(DependencyObject dobj, TextAlignment oldValue, TextAlignment newValue)
+        {
+            var textBox = (TextBox)dobj;
+            if (textBox.TextEditor != null)
+            {
+                switch (newValue)
+                {
+                    case TextAlignment.Right:
+                        textBox.TextEditor.HorizontalAlignment = HorizontalAlignment.Right;
+                        break;
+
+                    case TextAlignment.Center:
+                        textBox.TextEditor.HorizontalAlignment = HorizontalAlignment.Center;
+                        break;
+
+                    default:
+                        textBox.TextEditor.HorizontalAlignment = HorizontalAlignment.Left;
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="TextWrapping"/> dependency property changes.
+        /// </summary>
+        private static void HandleTextWrappingChanged(DependencyObject dobj, TextWrapping oldValue, TextWrapping newValue)
+        {
+            var textBox = (TextBox)dobj;
+            textBox.CoerceValue(HorizontalScrollBarVisibilityProperty);
+
+            if (textBox.TextEditor != null)
+                textBox.TextEditor.InvalidateMeasure();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Primitives.TextBoxBase.IsReadOnly"/> dependency property changes.
+        /// </summary>
+        private static void HandleIsReadOnlyChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            var textBox = (TextBox)dobj;            
+            if (textBox.TextEditor != null)
+                textBox.TextEditor.HandleIsReadOnlyChanged();
+        }
+
+        /// <summary>
+        /// Coerces the value of the <see cref="Primitives.TextBoxBase.HorizontalScrollBarVisibility"/> property to force the scroll bar
+        /// to a disabled state when wrapping is enabled.
+        /// </summary>
+        private static ScrollBarVisibility CoerceHorizontalScrollBarVisibility(DependencyObject dobj, ScrollBarVisibility value)
+        {
+            var textBox = (TextBox)dobj;
+            if (textBox.TextWrapping == TextWrapping.Wrap)
+            {
+                return ScrollBarVisibility.Disabled;
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the mouse is currently inside of the editor.
+        /// </summary>
+        private Boolean IsMouseWithinEditor()
+        {
+            var mouseTarget = (Control)TextEditorScrollViewer ?? this;
+            var mouseBounds = mouseTarget.Bounds;
+
+            return mouseBounds.Contains(Mouse.GetPosition(mouseTarget));
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the text box's height is constrained by a <see cref="FrameworkElement.Height"/>,
+        /// <see cref="FrameworkElement.MinHeight"/>, or <see cref="FrameworkElement.MaxHeight"/> value.
+        /// </summary>
+        /// <returns><c>true</c> if the text box's height is constrained; otherwise, <c>false</c>.</returns>
+        private Boolean IsHeightConstrained()
+        {
+            return !Double.IsNaN(Height) || !MathUtil.IsApproximatelyZero(MinHeight) || !Double.IsPositiveInfinity(MaxHeight);
+        }
+
+        /// <summary>
+        /// Updates the size constraints of the text box's scroll viewer.
+        /// </summary>
+        private void UpdateScrollViewerSize()
+        {
+            var scrollViewer = TextEditorScrollViewer;
+            if (scrollViewer == null)
+                return;
+
+            if (IsHeightConstrained())
+            {
+                scrollViewer.ClearLocalValue(MinHeightProperty);
+                scrollViewer.ClearLocalValue(MaxHeightProperty);
             }
             else
             {
-                if (textCaretPosition > 0)
+                var heightOfComponents = scrollViewer.ActualHeight - scrollViewer.ViewportHeight;
+                var heightOfLine = !Font.IsLoaded ? 0 : Font.Resource.Value.GetFace(FontStyle).LineSpacing;
+
+                if (MinLines > 1)
                 {
-                    textCaretPosition--;
-                    if (select)
-                    {
-                        textSelectionLength++;
-                    }
+                    scrollViewer.MinHeight = heightOfComponents + (heightOfLine * MinLines);
+                }
+                else
+                {
+                    scrollViewer.ClearLocalValue(MinHeightProperty);
+                }
+
+                if (MaxLines < Int32.MaxValue)
+                {
+                    scrollViewer.MaxHeight = heightOfComponents + (heightOfLine * MaxLines);
+                }
+                else
+                {
+                    scrollViewer.ClearLocalValue(MaxHeightProperty);
                 }
             }
-
-            ScrollBackwardToCaret();
-
-            caretBlinkTimer = 0;
         }
-
-        /// <summary>
-        /// Scrolls the text forward to the position of the caret.
-        /// </summary>
-        private void ScrollForwardToCaret()
-        {
-            ScrollForwardToIndex(textCaretPosition);
-        }
-
-        /// <summary>
-        /// Scrolls the text forwards to the specified character index.
-        /// </summary>
-        /// <param name="ix">The index of the character to which to scroll the text box.</param>
-        private void ScrollForwardToIndex(Int32 ix)
-        {
-            var width  = RelativeTextBounds.Width;
-            var offset = CalculateOffsetFromIndex(ix);
-            if (offset + textScrollOffset > width)
-            {
-                ScrollToOffset((offset - width) + CaretWidth);
-            }
-        }
-
-        /// <summary>
-        /// Scrolls the text backwards to the position of the caret.
-        /// </summary>
-        private void ScrollBackwardToCaret()
-        {
-            ScrollBackwardToIndex(textCaretPosition);
-        }
-
-        /// <summary>
-        /// Scrolls the text backwards to the specified character index.
-        /// </summary>
-        /// <param name="ix">The index of the character to which to scroll the text box.</param>
-        private void ScrollBackwardToIndex(Int32 ix)
-        {
-            var width  = RelativeTextBounds.Width;
-            var offset = CalculateOffsetFromIndex(ix);
-            if (offset + textScrollOffset < 0)
-            {
-                ScrollToOffset((offset - (width / 3)) + CaretWidth);
-            }
-        }
-
-        /// <summary>
-        /// Scrolls the text to the specified offset.
-        /// </summary>
-        /// <param name="offset">The offset to which to scroll the text.</param>
-        private void ScrollToOffset(Double offset)
-        {
-            textScrollOffset = -Math.Max(0, offset);
-        }
-
-        /// <summary>
-        /// Scrolls the text box to the position of the selection head.
-        /// </summary>
-        private void ScrollToSelectionHead()
-        {
-            var offset   = CalculateOffsetFromIndex(SelectionHead);
-            var position = GetRelativeOffsetPosition(offset);
-            switch (position)
-            {
-                case OffsetPosition.Left:
-                    ScrollToOffset(offset);
-                    break;
-
-                case OffsetPosition.Right:
-                    var length = (Text == null) ? 0 : Text.Length;
-                    var next   = CalculateOffsetFromIndex(Math.Min(length, SelectionHead + 1));
-                    ScrollToOffset(next - RelativeTextBounds.Width);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Moves the current selection left by the specified number of characters.
-        /// </summary>
-        /// <param name="count">The number of characters to move the selection.</param>
-        private void MoveSelectionLeft(Int32 count)
-        {
-            if (Text == null)
-                return;
-
-            var minLength = -textCaretPosition;
-            textSelectionLength = Math.Max(minLength, textSelectionLength - count);
-        }
-
-        /// <summary>
-        /// Moves the current selection right by the specified number of characters.
-        /// </summary>
-        /// <param name="count">The number of characters to move the selection.</param>
-        private void MoveSelectionRight(Int32 count)
-        {
-            if (Text == null)
-                return;
-
-            var maxLength = Text.Length - textCaretPosition;
-            textSelectionLength = Math.Min(maxLength, textSelectionLength + count);
-        }
-
-        /// <summary>
-        /// Selects the entire text.
-        /// </summary>
-        private void SelectAll()
-        {
-            if (Text == null)
-                return;
-
-            textCaretPosition   = 0;
-            textSelectionLength = Text.Length;
-        }
-
-        /// <summary>
-        /// Moves the selection so that it is between the current caret position
-        /// and the specified character index.
-        /// </summary>
-        /// <param name="ix">The index which bounds the selection.</param>
-        private void SelectToIndex(Int32 ix)
-        {
-            textSelectionLength = ix - textCaretPosition;
-        }
-
-        /// <summary>
-        /// Deletes the currently selected text.
-        /// </summary>
-        private void DeleteSelection()
-        {
-            if (!IsTextSelected)
-                return;
-
-            var updatedText          = Text.Remove(SelectionStart, SelectionEnd - SelectionStart);
-            var updatedCaretPosition = SelectionStart;
-
-            Text = updatedText;
-
-            textCaretPosition   = updatedCaretPosition;
-            textSelectionLength = 0;
-
-            ScrollBackwardToCaret();
-        }
-
-        /// <summary>
-        /// Copies the current selection.
-        /// </summary>
-        private void Copy()
-        {
-            if (!IsTextSelected)
-                return;
-
-            Ultraviolet.GetPlatform().Clipboard.Text = SelectedText;
-        }
-
-        /// <summary>
-        /// Cuts the current selection.
-        /// </summary>
-        private void Cut()
-        {
-            Copy();
-            DeleteSelection();
-        }
-
-        /// <summary>
-        /// Pastes the contents of the clipboard into the textbox.
-        /// </summary>
-        private void Paste()
-        {
-            var text = Ultraviolet.GetPlatform().Clipboard.Text;
-            if (text != null)
-            {
-                DeleteSelection();
-                ProcessInsertText(text);
-            }
-        }
-
-        /// <summary>
-        /// Gets the position of the specified text offset relative to the currently visible text area.
-        /// </summary>
-        /// <param name="offset">The text offset to evaluate.</param>
-        /// <returns>A <see cref="OffsetPosition"/> value indicating whether the offset is to the left of, to the right of,
-        /// or inside of the currently visible text area.</returns>
-        private OffsetPosition GetRelativeOffsetPosition(Double offset)
-        {
-            var relativeArea   = RelativeTextBounds;
-            var relativeOffset = offset + textScrollOffset;
-
-            if (relativeOffset < 0)
-                return OffsetPosition.Left;
-
-            if (relativeOffset >= relativeArea.Width)
-                return OffsetPosition.Right;
-
-            return OffsetPosition.Visible;
-        }
-
-        /// <summary>
-        /// Calculates the offset of the character beneath the mouse cursor.
-        /// </summary>
-        /// <param name="mouse">The mouse device.</param>
-        /// <returns>The offset of the character beneath the mouse cursor.</returns>
-        private Double CalculateOffsetFromCursor(MouseDevice mouse)
-        {
-            var cursorpos  = Display.PixelsToDips((Point2D)mouse.Position) - AbsolutePosition;
-            var textOffset = (cursorpos.X - RelativeTextBounds.X) - textScrollOffset;
-
-            return textOffset;
-        }
-
-        /// <summary>
-        /// Calculates the index of the character beneath the mouse cursor.
-        /// </summary>
-        /// <param name="mouse">The mouse device.</param>
-        /// <returns>The index of the character beneath the mouse cursor.</returns>
-        private Int32 CalculateIndexFromCursor(MouseDevice mouse)
-        {
-            var textOffset = CalculateOffsetFromCursor(mouse);
-            var textIndex  = CalculateIndexFromOffset(textOffset);
-
-            return textIndex;
-        }
-
-        /// <summary>
-        /// Calculates the index of the character at the specified offset within the text.
-        /// </summary>
-        /// <param name="offset">The offset in pixels for which to calculate an index.</param>
-        /// <returns>The index of the character at the specified offset within the text.</returns>
-        private Int32 CalculateIndexFromOffset(Double offset)
-        {
-            if (String.IsNullOrEmpty(Text) || !Font.IsLoaded)
-                return 0;
-
-            if (offset <= 0)
-                return 0;
-
-            var font     = Font.Resource.Value.Regular;
-            var length   = 0;
-            var pxoffset = (Int32)Display.DipsToPixels(offset);
-
-            for (int i = 0; i < Text.Length; i++)
-            {
-                length += font.MeasureGlyph(Text, i).Width;
-
-                if (pxoffset < length)
-                    return i;
-            }
-
-            return Text.Length;
-        }
-
-        /// <summary>
-        /// Calculates the offset of the specified character index.
-        /// </summary>
-        /// <param name="ix">The index of the character for which to calculate an offset.</param>
-        /// <returns>The offset of the specified character in pixels.</returns>
-        private Double CalculateOffsetFromIndex(Int32 ix)
-        {
-            if (String.IsNullOrEmpty(Text) || !Font.IsLoaded || ix <= 0 || ix > Text.Length)
-                return 0;
-
-            var font      = Font.Resource.Value.Regular;
-            var text      = Text;
-            var endOfLine = ix == text.Length;
-            var segment   = new StringSegment(text, 0, ix);
-            var kerning   = endOfLine ? 0 : font.Kerning.Get(text[ix - 1], endOfLine ? ' ' : text[ix]) / 2;
-            var measure   = font.MeasureString(segment);
-
-            return Display.PixelsToDips(measure.Width + kerning);
-        }
-
-        /// <summary>
-        /// Calculates the current offset of the caret.
-        /// </summary>
-        /// <returns>The offset of the caret in pixels.</returns>
-        private Double CalculateCaretOffset()
-        {
-            return CalculateOffsetFromIndex(textCaretPosition);
-        }
-
-        /// <summary>
-        /// Calculates the clipping rectangle to apply to the control's text.
-        /// </summary>
-        /// <returns>The clipping rectangle to apply to the control's text, or <c>null</c> if no clipping should take place.</returns>
-        private RectangleD? CalculateTextClip()
-        {
-            if (!Font.IsLoaded || (String.IsNullOrEmpty(Text) && View.ElementWithFocus != this))
-                return null;
-
-            return AbsoluteTextBounds;
-        }
-
-        /// <summary>
-        /// Gets the index of the start of the selection.
-        /// </summary>
-        private Int32 SelectionStart
-        {
-            get { return IsTextSelected ? Math.Min(textCaretPosition + textSelectionLength, textCaretPosition) : textCaretPosition; }
-        }
-
-        /// <summary>
-        /// Gets the index of the end of the selection.
-        /// </summary>
-        private Int32 SelectionEnd
-        {
-            get { return IsTextSelected ? Math.Max(textCaretPosition + textSelectionLength, textCaretPosition) : textCaretPosition; }
-        }
-
-        /// <summary>
-        /// Gets the "head" of the current selection, which is the end of the selection
-        /// which is not the current text position.
-        /// </summary>
-        private Int32 SelectionHead
-        {
-            get { return IsTextSelected ? textCaretPosition + textSelectionLength : textCaretPosition; }
-        }
-
-        /// <summary>
-        /// Gets the length of the text box's current text selection.
-        /// </summary>
-        private Int32 SelectionLength
-        {
-            get { return textSelectionLength; }
-        }
-
-        /// <summary>
-        /// Gets the width of the text box's caret in pixels.
-        /// </summary>
-        private Double CaretWidth
-        {
-            get { return 1.0; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the caret is currently being displayed.
-        /// </summary>
-        private Boolean IsCaretDisplayed
-        {
-            get { return View != null && View.ElementWithFocus == this; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the caret is currently visible.
-        /// </summary>
-        private Boolean IsCaretVisible
-        {
-            get { return (Int32)(caretBlinkTimer / 500.0) % 2 == 0; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether any text is currently selected.
-        /// </summary>
-        private Boolean IsTextSelected
-        {
-            get { return textSelectionLength != 0; }
-        }
-
-        /// <summary>
-        /// Gets the bounds of the text box's text region in absolute screen coordinates.
-        /// </summary>
-        private RectangleD AbsoluteTextBounds
-        {
-            get
-            {
-                if (PART_ContentPresenter == null)
-                    return RectangleD.Empty;
-
-                return PART_ContentPresenter.AbsoluteBounds;
-            }
-        }
-
-        /// <summary>
-        /// Gets the bounds of the text box's text region in control-relative coordinates.
-        /// </summary>
-        private RectangleD RelativeTextBounds
-        {
-            get
-            {
-                if (PART_ContentPresenter == null)
-                    return RectangleD.Empty;
-
-                var offset = PART_ContentPresenter.AbsolutePosition - AbsolutePosition;
-                return PART_ContentPresenter.Bounds + offset;
-            }
-        }
-
-        // State values.
-        private readonly StringBuilder textBuffer = new StringBuilder();
-        private Boolean mouseSelectionInProgress;
-        private Int32 textCaretPosition = 0;
-        private Int32 textSelectionLength = 0;
-        private Double textScrollOffset = 0;
-        private Double caretBlinkTimer;
-        private Regex patternRegex;
-        private RectangleD? textClip;
-
-        // Component references.
-        private readonly ContentPresenter PART_ContentPresenter = null;
     }
 }

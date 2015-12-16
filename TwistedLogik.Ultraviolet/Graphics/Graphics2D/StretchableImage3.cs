@@ -67,6 +67,52 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Creates a new instance of the <see cref="StretchableImage3"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <param name="left">The distance in pixels between the left edge of the image and the left edge of the image's center segment.</param>
+        /// <param name="right">The distance in pixels between the right edge of the image and the right edge of the image's center segment.</param>
+        /// <returns>The new instance of <see cref="StretchableImage3"/> that was created.</returns>
+        public static StretchableImage3 Create(Texture2D texture, Int32 left, Int32 right)
+        {
+            return Create(texture, 0, 0, 0, 0, left, right);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="StretchableImage3"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <param name="x">The x-coordinate of the region on the image's texture that contains the image.</param>
+        /// <param name="y">The y-coordinate of the region on the image's texture that contains the image.</param>
+        /// <param name="width">The width of the region on the image's texture that contains the image.</param>
+        /// <param name="height">The height of the region on the image's texture that contains the image.</param>
+        /// <param name="left">The distance in pixels between the left edge of the image and the left edge of the image's center segment.</param>
+        /// <param name="right">The distance in pixels between the right edge of the image and the right edge of the image's center segment.</param>
+        /// <returns>The new instance of <see cref="StretchableImage3"/> that was created.</returns>
+        public static StretchableImage3 Create(Texture2D texture, Int32 x, Int32 y, Int32 width, Int32 height, Int32 left, Int32 right)
+        {
+            var img = new StretchableImage3();
+            img.Texture = texture;
+            img.TextureRegion = new Rectangle(x, y, width, height);
+            img.Left = left;
+            img.Right = right;
+            return img;
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="StretchableImage3"/> class.
+        /// </summary>
+        /// <param name="texture">The texture that contains the image.</param>
+        /// <param name="textureRegion">The region of the image's texture which contains the image.</param>
+        /// <param name="left">The distance in pixels between the left edge of the image and the left edge of the image's center segment.</param>
+        /// <param name="right">The distance in pixels between the right edge of the image and the right edge of the image's center segment.</param>
+        /// <returns>The new instance of <see cref="StretchableImage3"/> that was created.</returns>
+        public static StretchableImage3 Create(Texture2D texture, Rectangle textureRegion, Int32 left, Int32 right)
+        {
+            return Create(texture, textureRegion.X, textureRegion.Y, textureRegion.Width, textureRegion.Height, left, right);
+        }
+
+        /// <summary>
         /// Converts the string representation of a stretchable image into an instance of the <see cref="StretchableImage3"/> class.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
@@ -225,7 +271,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        internal override void Draw<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             effects |= SpriteEffects.OriginRelativeToDestination;
 
@@ -242,7 +288,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws vertical images.
         /// </summary>
-        private void DrawVertical<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        private void DrawVertical<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
             where VertexType : struct, IVertexType
             where SpriteData : struct
         {
@@ -253,7 +299,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             if (height < MinimumRecommendedSize.Height)
             {
-                var scale = height / (float)MinimumRecommendedSize.Height;
+                var scale = height / MinimumRecommendedSize.Height;
                 dstTop    = (Int32)Math.Floor(dstTop * scale);
                 dstBottom = (Int32)Math.Ceiling(dstBottom * scale);
             }
@@ -307,7 +353,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws horizontal images.
         /// </summary>
-        private void DrawHorizontal<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Int32 width, Int32 height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        private void DrawHorizontal<VertexType, SpriteData>(SpriteBatchBase<VertexType, SpriteData> spriteBatch, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
             where VertexType : struct, IVertexType
             where SpriteData : struct
         {
@@ -318,7 +364,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             if (width < MinimumRecommendedSize.Width)
             {
-                var scale = width / (float)MinimumRecommendedSize.Width;
+                var scale = width / MinimumRecommendedSize.Width;
                 dstLeft   = (Int32)Math.Floor(dstLeft * scale);
                 dstRight  = (Int32)Math.Ceiling(dstRight * scale);
             }

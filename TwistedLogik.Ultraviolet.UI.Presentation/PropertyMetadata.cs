@@ -178,6 +178,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 dobj.OnArrangeAffectingPropertyChanged();
             }
+
+            if (IsVisualBoundsAffecting)
+            {
+                dobj.OnVisualBoundsAffectingPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -255,6 +260,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get 
             {
                 return (flags & PropertyMetadataOptions.AffectsMeasure) == PropertyMetadataOptions.AffectsMeasure;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this dependency property potentially affects the visual bounds of its object.
+        /// </summary>
+        internal Boolean IsVisualBoundsAffecting
+        {
+            get
+            {
+                return (flags & PropertyMetadataOptions.AffectsVisualBounds) == PropertyMetadataOptions.AffectsVisualBounds;
             }
         }
 

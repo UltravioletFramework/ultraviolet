@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace TwistedLogik.Nucleus.Collections
 {
@@ -8,7 +7,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// Represents a pre-allocated pool of objects which can expand if all of its objects are consumed.
     /// </summary>
     /// <typeparam name="T">The type of item contained by the pool.</typeparam>
-    public class ExpandingPool<T> : IPool<T>
+    public class ExpandingPool<T> : Pool<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpandingPool{T}"/> class.
@@ -41,14 +40,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <inheritdoc/>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <inheritdoc/>
-        public T Retrieve()
+        public override T Retrieve()
         {
             if (storage.Length == count)
             {
@@ -63,13 +55,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <inheritdoc/>
-        public PooledObjectScope<T> RetrieveScoped()
-        {
-            return new PooledObjectScope<T>(this, Retrieve());
-        }
-
-        /// <inheritdoc/>
-        public void Release(T instance)
+        public override void Release(T instance)
         {
             if (watermarkAllocations + count == 0)
                 throw new InvalidOperationException(NucleusStrings.PoolImbalance);
@@ -85,7 +71,7 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <inheritdoc/>
-        public void ReleaseRef(ref T instance)
+        public override void ReleaseRef(ref T instance)
         {
             if (watermarkAllocations + count == 0)
                 throw new InvalidOperationException(NucleusStrings.PoolImbalance);
@@ -102,38 +88,13 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <inheritdoc/>
-        Object IPool.Retrieve()
-        {
-            return Retrieve();
-        }
-
-        /// <inheritdoc/>
-        PooledObjectScope<Object> IPool.RetrieveScoped()
-        {
-            return new PooledObjectScope<Object>(this, Retrieve());
-        }
-
-        /// <inheritdoc/>
-        void IPool.Release(Object instance)
-        {
-            Release((T)instance);
-        }
-
-        /// <inheritdoc/>
-        void IPool.ReleaseRef(ref Object instance)
-        {
-            Release((T)instance);
-            instance = null;
-        }
-
-        /// <inheritdoc/>
-        public Int32 Count
+        public override Int32 Count
         {
             get { return count; }
         }
 
         /// <inheritdoc/>
-        public Int32 Capacity
+        public override Int32 Capacity
         {
             get { return storage.Length; }
         }
@@ -160,7 +121,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Disposes of all of the objects in the pool, if <typeparamref name="T"/> implements <see cref="System.IDisposable"/>.
         /// </summary>
         /// <param name="disposing"><c>true</c> if the object is being disposed; false if the object is being finalized.</param>
-        protected virtual void Dispose(Boolean disposing)
+        protected override void Dispose(Boolean disposing)
         {
             if (disposing && disposable)
             {
@@ -169,19 +130,6 @@ namespace TwistedLogik.Nucleus.Collections
                     ((IDisposable)item).Dispose();
                 }
             }
-        }
-
-        /// <summary>
-        /// Creates a default allocator for the pooled type.
-        /// </summary>
-        /// <returns>The allocator that was created.</returns>
-        private static Func<T> CreateDefaultAllocator()
-        {
-            var ctor = typeof(T).GetConstructor(Type.EmptyTypes);
-            if (ctor == null)
-                throw new InvalidOperationException(NucleusStrings.MissingDefaultCtor.Format(typeof(T).FullName));
-
-            return Expression.Lambda<Func<T>>(Expression.New(typeof(T))).Compile();
         }
 
         /// <summary>

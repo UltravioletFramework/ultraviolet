@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             return wrapper.HasDefinedValue;
         }
-
+        
         /// <summary>
         /// Immediately digests the specified dependency property, but only if it is currently data bound.
         /// </summary>
@@ -35,6 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (wrapper.IsDataBound)
             {
                 wrapper.DigestImmediately();
+                OnDigestingImmediately(dp);
             }
         }
 
@@ -48,6 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.DigestImmediately();
+            OnDigestingImmediately(dp);
         }
 
         /// <summary>
@@ -56,12 +58,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Digest(UltravioletTime time)
         {
+            var digestCycleID = PresentationFoundation.Instance.DigestCycleID;
+            if (digestCycleID == lastDigestedCycleID)
+                return;
+
+            lastDigestedCycleID = PresentationFoundation.Instance.DigestCycleID;
+
+            foreach (var value in dependencyPropertyValuesOfTypeDependencyObject)
+            {
+                var dobj = (DependencyObject)value.Value.GetUntypedValue();
+                if (dobj != null)
+                {
+                    if (dobj.WasInvalidatedLastDigest)
+                    {
+                        value.Value.HandleForcedInvalidation();
+                    }
+                    dobj.Digest(time);
+                }
+            }
+
             for (int i = 0; i < digestedDependencyProperties.Count; i++)
             {
                 digestedDependencyProperties[i].Digest(time);
             }
-        }
 
+            OnDigesting(time);
+        }
+        
         /// <summary>
         /// Initializes the object's dependency properties.
         /// </summary>
@@ -135,7 +158,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     kvp.Value.ClearStyledValue();
                 }
             }
-            OnClearingStyles();
+
+            if (attachedTriggers != null)
+            {
+                foreach (var trigger in attachedTriggers)
+                {
+                    trigger.DetachInternal(this, false);
+                }
+                attachedTriggers.Clear();
+            }
         }
 
         /// <summary>
@@ -150,7 +181,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     kvp.Value.ClearTriggeredValue();
                 }
             }
-            OnClearingTriggers();
         }
 
         /// <summary>
@@ -264,6 +294,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invalidates the value of this dependency object. During the next digest cycle, it will be
+        /// treated as if it has changed, even if it is the same instance.
+        /// </summary>
+        public void InvalidateDependencyObject()
+        {
+            var digestCycleID = PresentationFoundation.Instance.DigestCycleID;
+            if (digestCycleID == invalidatedDigestCount1 || digestCycleID == invalidatedDigestCount2)
+                return;
+
+            invalidatedDigestCount1 = invalidatedDigestCount2;
+            invalidatedDigestCount2 = digestCycleID;
+        }
+
+        /// <summary>
         /// Invalidates the cached display value for the specified dependency property. This will cause
         /// the interface to display the property's actual value, rather than the value most recently
         /// entered by the user (which may be different if coercion is involved).
@@ -278,10 +322,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the value typed value of the specified dependency property.
+        /// Gets the value of the specified dependency property, without regard for its type.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to retrieve a value.</param>
+        /// <returns>The value of the specified dependency property.</returns>
+        public Object GetUntypedValue(DependencyProperty dp)
+        {
+            Contract.Require(dp, "dp");
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            return wrapper.GetUntypedValue();
+        }
+
+        /// <summary>
+        /// Gets the value of the specified dependency property.
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
-        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a value.</param>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to retrieve a value.</param>
         /// <returns>The value of the specified dependency property.</returns>
         public T GetValue<T>(DependencyProperty dp)
         {
@@ -505,31 +562,117 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
+        /// Attaches a trigger to this object.
         /// </summary>
-        internal abstract Object DependencyDataSource
+        /// <param name="trigger">The trigger to attach to this object.</param>
+        internal void AttachTrigger(Trigger trigger)
+        {
+            if (attachedTriggers == null)
+                attachedTriggers = new List<Trigger>();
+
+            attachedTriggers.Add(trigger);
+        }
+
+        /// <summary>
+        /// Detaches a trigger from this object.
+        /// </summary>
+        /// <param name="trigger">The trigger to detach from this object.</param>
+        internal void DetachTrigger(Trigger trigger)
+        {
+            if (attachedTriggers == null)
+                throw new InvalidOperationException();
+
+            attachedTriggers.Remove(trigger);
+        }
+        
+        /// <summary>
+        /// Enlists a dependency property on this object into the specified storyboard instance.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> that identifies the dependency property to enlist.</param>
+        /// <param name="storyboardInstance">The <see cref="StoryboardInstance"/> into which to enlist the dependency property.</param>
+        /// <param name="animation">The animation to apply to the dependency property.</param>
+        internal void EnlistDependencyPropertyInStoryboard(DependencyProperty dp, StoryboardInstance storyboardInstance, AnimationBase animation)
+        {
+            Contract.Require(dp, "dp");
+            Contract.Require(storyboardInstance, "storyboardInstance");
+            Contract.Require(animation, "animation");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+            
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            storyboardInstance.Enlist(wrapper, animation);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this dependency object was forcibly invalidated during the current digest.
+        /// </summary>
+        public virtual Boolean WasInvalidatedThisDigest
+        {
+            get
+            {
+                var digest = PresentationFoundation.Instance.DigestCycleID;
+                return digest > 0 && (digest == invalidatedDigestCount2);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this dependency object was forcibly invalidated during the previous digest cycle.
+        /// </summary>
+        public virtual Boolean WasInvalidatedLastDigest
+        {
+            get
+            {
+                var digest = PresentationFoundation.Instance.DigestCycleID - 1;
+                return digest > 0 && (digest == invalidatedDigestCount1 || digest == invalidatedDigestCount2);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the object's data source according to the context in which it was declared. Usually this
+        /// will either be a view or a control's templated parent.
+        /// </summary>
+        internal Object DeclarativeDataSource
         {
             get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the object's declarative view model or templated parent.
+        /// </summary>
+        internal Object DeclarativeViewModelOrTemplate
+        {
+            get
+            {
+                var view = DeclarativeDataSource as PresentationFoundationView;
+                if (view != null)
+                {
+                    return view.ViewModel;
+                }
+                return DeclarativeDataSource; 
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the data source from which the object's dependency properties will retrieve values if they are data bound.
+        /// </summary>
+        internal virtual Object DependencyDataSource
+        {
+            get 
+            {
+                return DeclarativeViewModelOrTemplate;
+            }
         }
 
         /// <summary>
         /// Gets the dependency object's containing object.
         /// </summary>
-        internal abstract DependencyObject DependencyContainer
+        internal virtual DependencyObject DependencyContainer
         {
-            get;
+            get { return null; }
         }
-
-        /// <summary>
-        /// Occurs when the dependency object is clearing its styles.
-        /// </summary>
-        internal event UpfEventHandler ClearingStyles;
-
-        /// <summary>
-        /// Occurs when the dependency object is clearing its triggers.
-        /// </summary>
-        internal event UpfEventHandler ClearingTriggers;
-
+        
         /// <summary>
         /// Occurs when the value of one of the object's dependency properties changes.
         /// </summary>
@@ -559,6 +702,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when a dependency property which potentially affects the object's visual bounds is changed.
+        /// </summary>
+        protected internal virtual void OnVisualBoundsAffectingPropertyChanged()
+        {
+
+        }
+
+        /// <summary>
         /// Applies the styles from the specified style sheet to this object.
         /// </summary>
         /// <param name="document">The style sheet to apply to this object.</param>
@@ -568,18 +719,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Applies a style to this object.
+        /// Applies a style to the element.
         /// </summary>
         /// <param name="style">The style which is being applied.</param>
         /// <param name="selector">The selector which caused the style to be applied.</param>
-        /// <param name="dp">The dependency property to which to apply the style, or <c>null</c> if the style does
-        /// not apply to a dependency property.</param>
-        protected internal virtual void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dp)
+        /// <param name="navigationExpression">The navigation expression associated with the style.</param>
+        /// <param name="dprop">A <see cref="DependencyProperty"/> that identifies the dependency property which is being styled.</param>
+        protected internal virtual void ApplyStyle(UvssStyle style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dprop)
         {
-            if (dp != null)
+            if (dprop != null)
             {
-                dp.ApplyStyle(this, style);
+                dprop.ApplyStyle(this, style);
             }
+        }
+
+        /// <summary>
+        /// Called when a dependency property on this object is being immediately digested.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> value which identifies the dependency property being digested.</param>
+        protected virtual void OnDigestingImmediately(DependencyProperty dp)
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the object is being digested.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        protected virtual void OnDigesting(UltravioletTime time)
+        {
+
         }
 
         /// <summary>
@@ -645,6 +814,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dpValueType = typeof(DependencyPropertyValue<>).MakeGenericType(type);
                 valueWrapper = (IDependencyPropertyValue)Activator.CreateInstance(dpValueType, this, dp);
                 dependencyPropertyValues[dp.ID] = valueWrapper;
+
+                if (typeof(DependencyObject).IsAssignableFrom(type))
+                {
+                    dependencyPropertyValuesOfTypeDependencyObject[dp.ID] = valueWrapper;
+                }
             }
             return valueWrapper;
         }
@@ -668,37 +842,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 digestedDependencyProperties.Remove(value);
             }
         }
-
-        /// <summary>
-        /// Raises the <see cref="ClearingStyles"/> event.
-        /// </summary>
-        private void OnClearingStyles()
-        {
-            var temp = ClearingStyles;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="ClearingTriggers"/> event.
-        /// </summary>
-        private void OnClearingTriggers()
-        {
-            var temp = ClearingTriggers;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        
+        // The list of attached triggers.
+        private List<Trigger> attachedTriggers;
 
         // The list of values for this object's dependency properties.
         private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValues =
+            new Dictionary<Int64, IDependencyPropertyValue>();
+        private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValuesOfTypeDependencyObject =
             new Dictionary<Int64, IDependencyPropertyValue>();
 
         // The list of dependency properties which need to participate in the digest cycle.
         private readonly List<IDependencyPropertyValue> digestedDependencyProperties = 
             new List<IDependencyPropertyValue>();
+
+        // State values.
+        private Int64 lastDigestedCycleID;
+        private Int64 invalidatedDigestCount1;
+        private Int64 invalidatedDigestCount2;
     }
 }

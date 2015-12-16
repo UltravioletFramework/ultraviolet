@@ -1,13 +1,12 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
     /// <summary>
     /// Represents a pool of <see cref="SimpleClock"/> instances.
     /// </summary>
-    internal class SimpleClockPool : UltravioletResource
+    internal partial class SimpleClockPool : UltravioletResource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleClockPool"/> class.
@@ -22,14 +21,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <summary>
         /// Retrieves a clock from the pool.
         /// </summary>
-        /// <param name="loopBehavior">A <see cref="LoopBehavior"/> value specifying the clock's loop behavior.</param>
-        /// <param name="duration">The clock's duration.</param>
+        /// <param name="owner">The object that owns the clock.</param>
         /// <returns>The clock that was retrieved.</returns>
-        public SimpleClock Retrieve(LoopBehavior loopBehavior, TimeSpan duration)
+        public UpfPool<SimpleClock>.PooledObject Retrieve(Object owner)
         {
-            var clock = pool.Retrieve();
-            clock.HandleRetrieved(pool, loopBehavior, duration);
-            activeClocks.AddLast(clock);
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            Initialize();
+
+            var clock = pool.Retrieve(owner);
+            var clockValue = clock.Value;
+
+            clockValue.PooledObject = clock;
             return clock;
         }
 
@@ -37,12 +40,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Releases a clock into the pool.
         /// </summary>
         /// <param name="clock">The clock to release into the pool.</param>
-        public void Release(SimpleClock clock)
+        public void Release(UpfPool<SimpleClock>.PooledObject clock)
         {
             Contract.Require(clock, "clock");
+            Contract.EnsureNotDisposed(this, Disposed);
 
-            clock.HandleReleased();
-            activeClocks.Remove(clock);
+            Initialize();
+
+            clock.Value.PooledObject = null;
             pool.Release(clock);
         }
 
@@ -50,13 +55,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Releases a clock into the pool.
         /// </summary>
         /// <param name="clock">The clock to release into the pool.</param>
-        public void ReleaseRef(ref SimpleClock clock)
+        public void ReleaseRef(ref UpfPool<SimpleClock>.PooledObject clock)
         {
             Contract.Require(clock, "clock");
+            Contract.EnsureNotDisposed(this, Disposed);
 
-            clock.HandleReleased();
-            activeClocks.Remove(clock);
-            pool.ReleaseRef(ref clock);
+            Initialize();
+
+            clock.Value.PooledObject = null;
+            pool.Release(clock);
+
+            clock = null;
+        }
+
+        /// <summary>
+        /// Initializes the pool.
+        /// </summary>
+        public void Initialize()
+        {
+            if (pool != null)
+                return;
+
+            this.pool = new PoolImpl(Ultraviolet, 32, 256, () => new SimpleClock(LoopBehavior.None, TimeSpan.Zero));
         }
 
         /// <summary>
@@ -67,35 +87,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             get { return instance.Value; }
         }
 
+        /// <summary>
+        /// Gets the number of active objects which have been allocated from the pool.
+        /// </summary>
+        public Int32 Active
+        {
+            get { return (pool == null) ? 0 : pool.Active; }
+        }
+
+        /// <summary>
+        /// Gets the number of available objects in the pool.
+        /// </summary>
+        public Int32 Available
+        {
+            get { return (pool == null) ? 0 : pool.Available; }
+        }
+
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing && !Ultraviolet.Disposed)
             {
                 Ultraviolet.GetUI().Updating -= SimpleClockPool_Updating;
+
+                SafeDispose.DisposeRef(ref pool);
             }
 
             base.Dispose(disposing);
         }
-
+        
         /// <summary>
         /// Updates the active clock instances when the UI subsystem is updated.
         /// </summary>
         private void SimpleClockPool_Updating(IUltravioletSubsystem subsystem, UltravioletTime time)
         {
-            for (var node = activeClocks.First; node != null; node = node.Next)
+            if (pool == null)
+                return;
+
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.BeginUpdate();
+
+            pool.Update(time, (value, state) =>
             {
-                node.Value.Update(time);
-            }
+                value.Value.Update((UltravioletTime)state);
+            });
+
+            upf.PerformanceStats.EndUpdate();
         }
-
-        // The list of active clock objects.
-        private PooledLinkedList<SimpleClock> activeClocks = 
-            new PooledLinkedList<SimpleClock>(32);
-
+        
         // The pool of available clock objects.
-        private ExpandingPool<SimpleClock> pool = 
-            new ExpandingPool<SimpleClock>(32, () => new SimpleClock(LoopBehavior.None, TimeSpan.Zero));
+        private UpfPool<SimpleClock> pool;
 
         // The singleton instance of the clock pool.
         private static UltravioletSingleton<SimpleClockPool> instance = 

@@ -42,11 +42,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (ConsumeWhiteSpaceAndComments(input, output, ref line, ref ix))
                     return true;
 
+                if (ConsumeTemplatedChildSelector(input, output, line, ref ix))
+                    return true;
+                if (ConsumeLogicalChildSelector(input, output, line, ref ix))
+                    return true;
                 if (ConsumeChildSelector(input, output, line, ref ix))
                     return true;
                 if (ConsumeUniversalSelector(input, output, line, ref ix))
                     return true;
-                if (ConsumeIdentifier(input, output, line, ref ix, ref isStoryboardIdentifier))
+                if (ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref isStoryboardIdentifier))
                 {
                     if (!storyboard && isStoryboardIdentifier)
                     {
@@ -93,6 +97,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     return true;
                 if (ConsumeComma(input, output, line, ref ix))
                     return true;
+                if (ConsumePipe(input, output, line, ref ix))
+                    return true;
+                if (ConsumeIndexOperator(input, output, line, ref ix))
+                    return true;
 
                 return false;
             }
@@ -137,7 +145,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     return true;
                 if (ConsumeUniversalSelector(input, output, line, ref ix))
                     return true;
-                if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                if (ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref storyboard))
                     return true;
                 if (ConsumeNumber(input, output, line, ref ix))
                     return true;
@@ -200,7 +208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
                 var storyboard = false;
 
-                if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                if (ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref storyboard))
                 {
                     if (LastTokenHasValue(output, "property"))
                     {
@@ -285,7 +293,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     {
                         ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
 
-                        if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                        if (ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref storyboard))
                             continue;
                         if (ConsumeComma(input, output, line, ref ix))
                             continue;
@@ -327,10 +335,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                         return true;
                     }
 
-                    if (!ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                    if (!ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref storyboard))
                         return false;
 
                     var type = GetLastTokenValue(output);
+                    var optionalSelector = false;
 
                     if (String.Equals("set", type, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -339,12 +348,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                         if (!ConsumeStyleName(input, output, line, ref ix))
                             return false;
 
+                        optionalSelector = true;
+                    }
+                    else if (String.Equals("play-storyboard", type, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        optionalSelector = true;
+                    }
+
+                    if (optionalSelector)
+                    {
                         ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
 
                         if (ConsumeOpenParenthesis(input, output, line, ref ix))
                         {
+                            ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
+
                             if (!ConsumeSelector(input, output, ref line, ref ix))
                                 return false;
+
+                            ConsumeAllWhiteSpaceAndComments(input, output, ref line, ref ix);
 
                             if (!ConsumeCloseParenthesis(input, output, line, ref ix))
                                 return false;

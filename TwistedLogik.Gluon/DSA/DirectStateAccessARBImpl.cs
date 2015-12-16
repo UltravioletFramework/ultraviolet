@@ -24,6 +24,11 @@ namespace TwistedLogik.Gluon
                 glNamedFramebufferTexture(framebuffer, attachment, texture, level);
             }
 
+            public override void NamedFramebufferRenderbuffer(uint framebuffer, uint target, uint attachment, uint renderbuffertarget, uint renderbuffer)
+            {
+                glNamedFramebufferRenderbuffer(framebuffer, attachment, renderbuffertarget, renderbuffer);
+            }
+
             public override uint CheckNamedFramebufferStatus(uint framebuffer, uint target)
             {
                 return glCheckNamedFramebufferStatus(framebuffer, target);

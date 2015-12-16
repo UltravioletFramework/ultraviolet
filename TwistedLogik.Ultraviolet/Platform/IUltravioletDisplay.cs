@@ -249,6 +249,14 @@ namespace TwistedLogik.Ultraviolet.Platform
         Vector2 DipsToInches(Vector2 dips);
         
         /// <summary>
+        /// Gets the display's index within Ultraviolet's display list.
+        /// </summary>
+        Int32 Index
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the display's bounds.
         /// </summary>
         Rectangle Bounds

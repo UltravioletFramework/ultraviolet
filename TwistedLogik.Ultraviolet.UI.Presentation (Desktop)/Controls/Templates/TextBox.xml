@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="textbox-component"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+      <Image Class="textbox-background"
+             SourceColor="{{Background}}"/>
+      <ScrollViewer Class="textbox-scrollviewer"
+                    ContentMargin="{{Padding}}"
+                    ContentClipped="true"
+                    HorizontalScrollBarVisibility="{{HorizontalScrollBarVisibility}}"
+                    VerticalScrollBarVisibility="{{VerticalScrollBarVisibility}}">
+
+        <TextEditor Name="PART_Editor"/>
+      
+      </ScrollViewer>
+      <Image Class="textbox-focus-image"
+             Opacity="{{IsFocusVisualVisible ? 1 : 0}}"
+             IsHitTestVisible="false"/>
+      <Border Class="textbox-focus-border"
+              Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+              IsHitTestVisible="false"/>
+
+    </Grid>
+  </View>
+</ComponentTemplate>

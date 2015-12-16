@@ -3,11 +3,19 @@
 namespace TwistedLogik.Ultraviolet.Input
 {
     /// <summary>
-    /// Represents the method that is called when a game pad button is pressed or released.
+    /// Represents the method that is called when a game pad button is pressed.
     /// </summary>
     /// <param name="device">The <see cref="GamePadDevice"/> that raised the event.</param>
     /// <param name="button">The <see cref="GamePadButton"/> value that represents the button that was pressed.</param>
-    public delegate void GamePadButtonEventHandler(GamePadDevice device, GamePadButton button);
+    /// <param name="repeat">A value indicating whether this is a repeated button press.</param>
+    public delegate void GamePadButtonPressedEventHandler(GamePadDevice device, GamePadButton button, Boolean repeat);
+
+    /// <summary>
+    /// Represents the method that is called when a game pad button is pressed.
+    /// </summary>
+    /// <param name="device">The <see cref="GamePadDevice"/> that raised the event.</param>
+    /// <param name="button">The <see cref="GamePadButton"/> value that represents the button that was released.</param>
+    public delegate void GamePadButtonReleasedEventHandler(GamePadDevice device, GamePadButton button);
 
     /// <summary>
     /// Represents the method that is called when a game pad axis changes its value.
@@ -16,6 +24,23 @@ namespace TwistedLogik.Ultraviolet.Input
     /// <param name="axis">The <see cref="GamePadAxis"/> value that represents the axis that changed.</param>
     /// <param name="value">The axis' value.</param>
     public delegate void GamePadAxisEventHandler(GamePadDevice device, GamePadAxis axis, Single value);
+
+    /// <summary>
+    /// Represents the method that is called when a game pad axis is pressed.
+    /// </summary>
+    /// <param name="device">The <see cref="GamePadDevice"/> that raised the event.</param>
+    /// <param name="axis">The <see cref="GamePadAxis"/> value that represents the axis that was pressed.</param>
+    /// <param name="value">The axis' value.</param>
+    /// <param name="repeat">A value indicating whether this is a repeated axis press.</param>
+    public delegate void GamePadAxisPressedEventHandler(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat);
+
+    /// <summary>
+    /// Represents the method that is called when a game pad axis is released.
+    /// </summary>
+    /// <param name="device">The <see cref="GamePadDevice"/> that raised the event.</param>
+    /// <param name="axis">The <see cref="GamePadAxis"/> value that represents the axis that was released.</param>
+    /// <param name="value">The axis' value.</param>
+    public delegate void GamePadAxisReleasedEventHandler(GamePadDevice device, GamePadAxis axis, Single value);
 
     /// <summary>
     /// Represents the method that is called when a game pad axis vector changes its value.
@@ -36,8 +61,64 @@ namespace TwistedLogik.Ultraviolet.Input
         public GamePadDevice(UltravioletContext uv)
             : base(uv)
         {
-
+            AxisDownThreshold = 0.75f;
         }
+
+        /// <summary>
+        /// Gets the direction in which the specified joystick is pointed, using the specified minimum threshold value.
+        /// If no threshold is specified, the value of <see cref="AxisDownThreshold"/> is used instead.
+        /// </summary>
+        /// <param name="joystick">A <see cref="GamePadJoystick"/> value that represents the joystick to evaluate.</param>
+        /// <param name="threshold">The threshold value at which the joystick is considered to be pointed in a particular direction.</param>
+        /// <returns>A set of <see cref="GamePadJoystickDirection"/> values which represent the joystick's direction.</returns>
+        public abstract GamePadJoystickDirection GetJoystickDirection(GamePadJoystick joystick, Single? threshold = null);
+
+        /// <summary>
+        /// Gets the <see cref="GamePadJoystickDirection"/> value that corresponds to the state of the specified axis.
+        /// </summary>
+        /// <param name="axis">A <see cref="GamePadAxis"/> value to evaluate.</param>
+        /// <param name="threshold">The threshold value at which an axis is considered to be pointed in a particular direction.</param>
+        /// <returns>A set of <see cref="GamePadJoystickDirection"/> values which represent the specified axis' direction.</returns>
+        public abstract GamePadJoystickDirection GetJoystickDirectionFromAxis(GamePadAxis axis, Single? threshold = null);
+
+        /// <summary>
+        /// Gets the value of the specified game pad axis.
+        /// </summary>
+        /// <param name="axis">The <see cref="GamePadAxis"/> value to retrieve.</param>
+        /// <returns>The value of the specified game pad axis.</returns>
+        public abstract Single GetAxisValue(GamePadAxis axis);
+
+        /// <summary>
+        /// Gets a value indicating whether the specified game pad axis is currently considered "down"
+        /// in accordance with the <see cref="AxisDownThreshold"/> property.
+        /// </summary>
+        /// <param name="axis">The <see cref="GamePadAxis"/> to evaluate.</param>
+        /// <returns><c>true</c> if the axis is down; otherwise, <c>false</c>.</returns>
+        public abstract Boolean IsAxisDown(GamePadAxis axis);
+
+        /// <summary>
+        /// Gets a value indicating whether the specified game pad axis is currently considered "up"
+        /// in accordance with the <see cref="AxisDownThreshold"/> property.
+        /// </summary>
+        /// <param name="axis">The <see cref="GamePadAxis"/> to evaluate.</param>
+        /// <returns><c>true</c> if the axis is up; otherwise, <c>false</c>.</returns>
+        public abstract Boolean IsAxisUp(GamePadAxis axis);
+
+        /// <summary>
+        /// Gets a value indicating whether the specified game pad axis is currently considered "pressed"
+        /// in accordance with the <see cref="AxisDownThreshold"/> property.
+        /// </summary>
+        /// <param name="axis">The <see cref="GamePadAxis"/> to evaluate.</param>
+        /// <returns><c>true</c> if the axis is pressed; otherwise, <c>false</c>.</returns>
+        public abstract Boolean IsAxisPressed(GamePadAxis axis);
+
+        /// <summary>
+        /// Gets a value indicating whether the specified game pad axis is currently considered "released"
+        /// in accordance with the <see cref="AxisDownThreshold"/> property.
+        /// </summary>
+        /// <param name="axis">The <see cref="GamePadAxis"/> to evaluate.</param>
+        /// <returns><c>true</c> if the axis is released; otherwise, <c>false</c>.</returns>
+        public abstract Boolean IsAxisReleased(GamePadAxis axis);
 
         /// <summary>
         /// Gets the device's name.
@@ -53,6 +134,15 @@ namespace TwistedLogik.Ultraviolet.Input
         public abstract Int32 PlayerIndex
         {
             get;
+        }
+
+        /// <summary>
+        /// Gets or sets the threshold at which an axis is considered to be "down."
+        /// </summary>
+        public abstract Single AxisDownThreshold
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -122,17 +212,29 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Occurs when one of the game pad's buttons is pressed.
         /// </summary>
-        public event GamePadButtonEventHandler ButtonPressed;
+        public event GamePadButtonPressedEventHandler ButtonPressed;
 
         /// <summary>
         /// Occurs when one of the game pad's buttons is released.
         /// </summary>
-        public event GamePadButtonEventHandler ButtonReleased;
+        public event GamePadButtonReleasedEventHandler ButtonReleased;
 
         /// <summary>
         /// Occurs when the value of one of the game pad's axes changes.
         /// </summary>
         public event GamePadAxisEventHandler AxisChanged;
+
+        /// <summary>
+        /// Occurs when one of the game pad's axes enters the "pressed" state, as determined by
+        /// the value of the <see cref="AxisDownThreshold"/> property.
+        /// </summary>
+        public event GamePadAxisPressedEventHandler AxisPressed;
+
+        /// <summary>
+        /// Occurs when one of the game pad's axes leaves hte "pressed" state, as determined by
+        /// the value of the <see cref="AxisDownThreshold"/> property.
+        /// </summary>
+        public event GamePadAxisReleasedEventHandler AxisReleased;
 
         /// <summary>
         /// Occurs when the value of the game pad's left joystick vector changes.
@@ -148,12 +250,13 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Raises the <see cref="ButtonPressed"/> event.
         /// </summary>
         /// <param name="button">The <see cref="GamePadButton"/> value that represents the button that was pressed.</param>
-        protected virtual void OnButtonPressed(GamePadButton button)
+        /// <param name="repeat">A value indicating whether this is a repeated button press.</param>
+        protected virtual void OnButtonPressed(GamePadButton button, Boolean repeat)
         {
             var temp = ButtonPressed;
             if (temp != null)
             {
-                temp(this, button);
+                temp(this, button, repeat);
             }
         }
 
@@ -178,6 +281,35 @@ namespace TwistedLogik.Ultraviolet.Input
         protected virtual void OnAxisChanged(GamePadAxis axis, Single value)
         {
             var temp = AxisChanged;
+            if (temp != null)
+            {
+                temp(this, axis, value);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="AxisPressed"/> event.
+        /// </summary>
+        /// <param name="axis">The <see cref="GamePadAxis"/> that was pressed.</param>
+        /// <param name="value">The axis' value.</param>
+        /// <param name="repeat">A value indicating whether this is a repeated axis press.</param>
+        protected virtual void OnAxisPressed(GamePadAxis axis, Single value, Boolean repeat)
+        {
+            var temp = AxisPressed;
+            if (temp != null)
+            {
+                temp(this, axis, value, repeat);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="AxisReleased"/> event.
+        /// </summary>
+        /// <param name="axis">The <see cref="GamePadAxis"/> that was released.</param>
+        /// <param name="value">The axis' value.</param>
+        protected virtual void OnAxisReleased(GamePadAxis axis, Single value)
+        {
+            var temp = AxisReleased;
             if (temp != null)
             {
                 temp(this, axis, value);

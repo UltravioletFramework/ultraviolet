@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -12,6 +13,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public class ProgressBar : RangeBase
     {
         /// <summary>
+        /// Initializes the <see cref="ProgressBar"/> type.
+        /// </summary>
+        static ProgressBar()
+        {
+            FocusableProperty.OverrideMetadata(typeof(ProgressBar), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+            MaximumProperty.OverrideMetadata(typeof(ProgressBar), new PropertyMetadata<Double>(100.0));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ProgressBar"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -19,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ProgressBar(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            SetDefaultValue<Double>(MaximumProperty, 100.0);
+
         }
 
         /// <summary>
@@ -119,13 +129,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White));
 
         /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
+        protected override void ReloadContentOverride(Boolean recursive)
         {
             ReloadBarImage();
             ReloadFillImage();
             ReloadOverlayImage();
 
-            base.ReloadContentCore(recursive);
+            base.ReloadContentOverride(recursive);
         }
 
         /// <inheritdoc/>

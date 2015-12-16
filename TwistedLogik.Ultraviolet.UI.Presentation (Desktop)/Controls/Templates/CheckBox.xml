@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="checkbox-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Image Class="toggle-box"
+             Grid.Row="0"
+             Grid.Column="0"
+             SourceColor="{{Background}}"
+             VerticalAlignment="{{VerticalContentAlignment}}"/>
+      <Image Class="toggle-mark"
+             Grid.Row="0"
+             Grid.Column="0"
+             VerticalAlignment="{{VerticalContentAlignment}}" IsHitTestVisible="false"/>
+      <ContentPresenter Class="toggle-content"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        VerticalAlignment="Stretch"/>
+      <Image Class="toggle-focus-image"
+             Grid.Row="0"
+             Grid.Column="1"
+             Opacity="{{IsFocusVisualVisible ? 1 : 0}}"
+             IsHitTestVisible="false"/>
+
+    </Grid>
+  </View>
+</ComponentTemplate>

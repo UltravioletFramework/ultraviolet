@@ -270,4 +270,34 @@
       <Variant>Type metadata has already been loaded for this assembly.</Variant>
     </en-US>
   </String>
+  <String Key="SEQUENCE_HAS_NO_ELEMENTS">
+    <en-US>
+      <Variant>Sequence contains no elements.</Variant>
+    </en-US>
+  </String>
+  <String Key="SEQUENCE_HAS_MORE_THAN_ONE_ELEMENT">
+    <en-US>
+      <Variant>Sequence contains more than one element.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSAFE_STREAM_MUST_ACQUIRE_POINTERS">
+    <en-US>
+      <Variant>You must call AcquirePointers() before performing this operation on this stream.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSAFE_STREAM_HAS_ALREADY_ACQUIRED_POINTERS">
+    <en-US>
+      <Variant>AcquirePointers() cannot be called again until ReleasePointers() is called.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSAFE_STREAM_CAN_ONLY_RESERVE_AT_STREAM_END">
+    <en-US>
+      <Variant>Reserve() and ReserveMultiple() can only be called when the stream's current position is at the end of the stream.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSAFE_STREAM_WOULD_OVERWRITE_OBJECT">
+    <en-US>
+      <Variant>The operation is invalid because an attempt was made to overwrite an existing object.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

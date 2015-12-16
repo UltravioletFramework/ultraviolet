@@ -74,9 +74,9 @@
     <CodeAnalysisRuleDirectories>;D:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
-    <OutputPath>bin\Production\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>bin\Signed\</OutputPath>
+    <DefineConstants>TRACE;SIGNED</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -85,8 +85,8 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>..\UltravioletStyleRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|x86'">
-    <OutputPath>bin\x86\Production\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|x86'">
+    <OutputPath>bin\x86\Signed\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
@@ -128,6 +128,10 @@
     <Compile Include="Collections\PooledObjectScopeTest.cs" />
     <Compile Include="Collections\PriorityQueueTest.cs" />
     <Compile Include="Collections\ExpandingPoolTest.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.UnsafeObjectTypeTwo.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.UnsafeObjectTypeOne.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.UnsafeObjectType.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.cs" />
     <Compile Include="Data\ObjectLoaderTest.ArrayComplexModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.EnumerableComplexModel.cs" />
     <Compile Include="Data\ObjectLoaderTest.EnumerableModel.cs" />
@@ -162,6 +166,15 @@
     <Compile Include="Data\MersenneTwisterTest.cs" />
     <Compile Include="Messages\LocalMessageQueueTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Splinq\HashSetExtensionsTest.cs" />
+    <Compile Include="Splinq\StackExtensionsTest.cs" />
+    <Compile Include="Splinq\QueueExtensionsTest.cs" />
+    <Compile Include="Splinq\PooledLinkedListExtensionsTest.cs" />
+    <Compile Include="Splinq\LinkedListExtensionsTest.cs" />
+    <Compile Include="Splinq\ObservableListExtensionsTest.cs" />
+    <Compile Include="Splinq\ObservableDictionaryExtensionsTest.cs" />
+    <Compile Include="Splinq\DictionaryExtensionsTest.cs" />
+    <Compile Include="Splinq\ListExtensionsTest.cs" />
     <Compile Include="Text\LocalizationTest.cs" />
     <Compile Include="Text\StringPtr16Test.cs" />
     <Compile Include="Text\StringSegmentTest.cs" />
@@ -170,13 +183,13 @@
     <Compile Include="Text\TokenizerTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
+      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
+      <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Nucleus.Testing\TwistedLogik.Nucleus.Testing.csproj">
       <Project>{6a17d1a8-ac32-4bb4-8446-d76f6b160246}</Project>
       <Name>TwistedLogik.Nucleus.Testing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
-      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>TwistedLogik.Nucleus</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

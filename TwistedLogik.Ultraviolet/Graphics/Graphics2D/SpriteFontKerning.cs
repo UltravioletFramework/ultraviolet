@@ -16,6 +16,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The kerning offset for the specified pair of characters.</returns>
         public Int32 Get(Char c1, Char c2)
         {
+            if (c1 < asciiLookup.Length && !asciiLookup[c1])
+                return DefaultAdjustment;
+
             int offset;
             if (!kerning.TryGetValue(new SpriteFontKerningPair(c1, c2), out offset))
             {
@@ -31,6 +34,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The kerning offset for the specified pair of characters.</returns>
         public Int32 Get(SpriteFontKerningPair pair)
         {
+            var c1 = pair.FirstCharacter;
+            if (c1 < asciiLookup.Length && !asciiLookup[c1])
+                return DefaultAdjustment;
+
             int offset;
             if (!kerning.TryGetValue(pair, out offset))
             {
@@ -49,6 +56,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             var pair = new SpriteFontKerningPair(c1, c2);
             kerning[pair] = value;
+
+            if (c1 < asciiLookup.Length)
+                asciiLookup[c1] = true;
         }
 
         /// <summary>
@@ -59,6 +69,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public void Set(SpriteFontKerningPair pair, Int32 value)
         {
             kerning[pair] = value;
+
+            var c1 = pair.FirstCharacter;
+            if (c1 < asciiLookup.Length)
+                asciiLookup[c1] = true;
         }
 
         /// <summary>
@@ -90,6 +104,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><c>true</c> if the kerning data contains the specified character pair; otherwise, <c>false</c>.</returns>
         public Boolean Contains(Char c1, Char c2)
         {
+            if (c1 < asciiLookup.Length && !asciiLookup[c1])
+                return false;
+
             return kerning.ContainsKey(new SpriteFontKerningPair(c1, c2));
         }
 
@@ -100,6 +117,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><c>true</c> if the kerning data contains the specified character pair; otherwise, <c>false</c>.</returns>
         public Boolean Contains(SpriteFontKerningPair pair)
         {
+            var c1 = pair.FirstCharacter;
+            if (c1 < asciiLookup.Length && !asciiLookup[c1])
+                return false;
+
             return kerning.ContainsKey(pair);
         }
 
@@ -113,7 +134,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         // Kerning values.
-        private readonly Dictionary<SpriteFontKerningPair, Int32> kerning = 
+        private readonly Boolean[] asciiLookup = new Boolean[SpriteFont.ExtendedAsciiCount];
+        private readonly Dictionary<SpriteFontKerningPair, Int32> kerning =
             new Dictionary<SpriteFontKerningPair, Int32>();
     }
 }

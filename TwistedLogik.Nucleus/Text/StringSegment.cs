@@ -39,13 +39,13 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
-        /// <param name="source">The <see cref="SourceString"/> that contains this segment.</param>
+        /// <param name="source">The source <see cref="String"/> that contains this segment.</param>
         /// <param name="start">The index of the string segment's first character within its parent string.</param>
         /// <param name="length">The number of characters in the string segment.</param>
         public StringSegment(String source, Int32 start, Int32 length)
         {
             Contract.Require(source, "string");
-            Contract.EnsureRange(start >= 0 && start < source.Length, "start");
+            Contract.EnsureRange(start >= 0 && start <= source.Length, "start");
             Contract.EnsureRange(length >= 0 && start + length <= source.Length, "length");
 
             this.sourceString  = source;
@@ -57,13 +57,13 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
-        /// <param name="source">The <see cref="SourceStringBuilder"/> that contains this segment.</param>
+        /// <param name="source">The source <see cref="StringBuilder"/> that contains this segment.</param>
         /// <param name="start">The index of the string segment's first character within its parent string.</param>
         /// <param name="length">The number of characters in the string segment.</param>
         public StringSegment(StringBuilder source, Int32 start, Int32 length)
         {
             Contract.Require(source, "source");
-            Contract.EnsureRange(start >= 0 && start < source.Length, "start");
+            Contract.EnsureRange(start >= 0 && start <= source.Length, "start");
             Contract.EnsureRange(length >= 0 && start + length <= source.Length, "length");
 
             this.sourceString  = null;
@@ -73,13 +73,40 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Implicitly converts a string to a string segment.
+        /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
-        /// <param name="s">The <see cref="SourceString"/> to convert.</param>
+        /// <param name="source">The source <see cref="StringSegment"/> that contains this segment.</param>
+        /// <param name="start">The index of the string segment's first character within its parent string.</param>
+        /// <param name="length">The number of characters in the string segment.</param>
+        public StringSegment(StringSegment source, Int32 start, Int32 length)
+        {
+            Contract.EnsureRange(start >= 0 && start <= source.Length, "start");
+            Contract.EnsureRange(length >= 0 && start + length <= source.Length, "length");
+
+            this.sourceString = source.sourceString;
+            this.sourceBuilder = source.sourceBuilder;
+            this.start = source.start + start;
+            this.length = length;
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="String"/> to a string segment.
+        /// </summary>
+        /// <param name="s">The <see cref="String"/> to convert.</param>
         /// <returns>The converted <see cref="StringSegment"/>.</returns>
         public static implicit operator StringSegment(String s)
         {
-            return new StringSegment(s);
+            return (s == null) ? Empty : new StringSegment(s);
+        }
+        
+        /// <summary>
+        /// Explicitly converts a <see cref="StringBuilder"/> to a string segment.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/> to convert.</param>
+        /// <returns>The converted <see cref="StringSegment"/>.</returns>
+        public static explicit operator StringSegment(StringBuilder sb)
+        {
+            return (sb == null) ? Empty : new StringSegment(sb);
         }
 
         /// <summary>
@@ -187,6 +214,30 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
+        /// Creates a new <see cref="StringSegment"/> from the same source as the specified segment.
+        /// </summary>
+        /// <param name="segment">The segment from which to retrieve a string source.</param>
+        /// <param name="start">The index of the string segment's first character within its parent string.</param>
+        /// <param name="length">The number of characters in the string segment.</param>
+        /// <returns>The string segment that was created.</returns>
+        public static StringSegment FromSource(StringSegment segment, Int32 start, Int32 length)
+        {
+            if (segment.sourceString != null)
+                return new StringSegment(segment.sourceString, start, length);
+
+            if (segment.sourceBuilder != null)
+                return new StringSegment(segment.sourceBuilder, start, length);
+
+            if (start != 0)
+                throw new ArgumentOutOfRangeException("start");
+
+            if (length != 0)
+                throw new ArgumentOutOfRangeException("length");
+
+            return Empty;
+        }
+
+        /// <summary>
         /// Converts the object to a human-readable string.
         /// </summary>
         /// <returns>A human-readable string that represents the object.</returns>
@@ -194,7 +245,7 @@ namespace TwistedLogik.Nucleus.Text
         {
             if (sourceBuilder != null)
             {
-                return sourceBuilder.ToString();
+                return sourceBuilder.ToString(Start, Length);
             }
             if (sourceString != null)
             {
@@ -348,6 +399,48 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
+        /// Gets the index of the first occurrence of the specified character within the string segment.
+        /// </summary>
+        /// <param name="value">The character for which to search.</param>
+        /// <returns>The index of the first occurrence of the specified character, or -1 if the string segment does not contain the character.</returns>
+        public Int32 IndexOf(Char value)
+        {
+            for (int i = 0; i < Length; i++)
+            {
+                if (this[i] == value)
+                    return i;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Gets the index of the first occurrence of the specified string within the string segment.
+        /// </summary>
+        /// <param name="value">The string for which to search.</param>
+        /// <returns>The index of the first occurrence of the specified string, or -1 if the string segment does not contain the string.</returns>
+        public Int32 IndexOf(String value)
+        {
+            Contract.Require(value, "value");
+
+            for (int i = 0; i < Length; i++)
+            {
+                var matches = 0;
+
+                for (int j = 0; j < value.Length; j++)
+                {
+                    if (this[i + j] != value[j])
+                        break;
+
+                    matches++;
+                }
+
+                if (matches == value.Length)
+                    return i;
+            }
+            return -1;
+        }
+
+        /// <summary>
         /// Gets the character at the specified index within the string segment.
         /// </summary>
         /// <param name="ix">The index of the character to retrieve.</param>
@@ -392,6 +485,25 @@ namespace TwistedLogik.Nucleus.Text
         public Int32 Length
         {
             get { return length; }
+        }
+
+        /// <summary>
+        /// Gets the number of characters in the segment's source string.
+        /// </summary>
+        public Int32 SourceLength
+        {
+            get
+            {
+                if (sourceString != null)
+                {
+                    return sourceString.Length;
+                }
+                if (sourceBuilder != null)
+                {
+                    return sourceBuilder.Length;
+                }
+                return 0;
+            }
         }
 
         /// <summary>

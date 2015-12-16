@@ -1,12 +1,12 @@
-﻿using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Collections;
+﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
     /// <summary>
     /// Represents the Presentation Foundation's internal pool of <see cref="StoryboardClock"/> objects.
     /// </summary>
-    internal class StoryboardClockPool : UltravioletResource
+    internal partial class StoryboardClockPool : UltravioletResource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoryboardClockPool"/> class.
@@ -15,21 +15,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         private StoryboardClockPool(UltravioletContext uv)
             : base(uv)
         {
-
+            uv.GetUI().Updating += StoryboardClockPool_Updating;
         }
 
         /// <summary>
         /// Retrieves a clock from the pool.
         /// </summary>
-        /// <param name="storyboard">The storyboard that will be driven by this clock.</param>
+        /// <param name="storyboardInstance">The storyboard instance that will be driven by this clock.</param>
         /// <returns>The clock that was retrieved.</returns>
-        public StoryboardClock Retrieve(Storyboard storyboard)
+        public UpfPool<StoryboardClock>.PooledObject Retrieve(StoryboardInstance storyboardInstance)
         {
-            Contract.Require(storyboard, "storyboard");
+            Contract.Require(storyboardInstance, "storyboardInstance");
+            Contract.EnsureNotDisposed(this, Disposed);
 
-            var clock = pool.Retrieve();
-            clock.Storyboard = storyboard;
+            Initialize();
 
+            var clock = pool.Retrieve(storyboardInstance);
+
+            clock.Value.StoryboardInstance = storyboardInstance;
             return clock;
         }
 
@@ -37,11 +40,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Releases a clock into the pool.
         /// </summary>
         /// <param name="clock">The clock to release into the pool.</param>
-        public void Release(StoryboardClock clock)
+        public void Release(UpfPool<StoryboardClock>.PooledObject clock)
         {
             Contract.Require(clock, "clock");
+            Contract.EnsureNotDisposed(this, Disposed);
 
-            clock.Storyboard = null;
+            Initialize();
+
+            clock.Value.StoryboardInstance.Stop();
+            clock.Value.StoryboardInstance = null;
             pool.Release(clock);
         }
 
@@ -49,12 +56,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Releases a clock into the pool.
         /// </summary>
         /// <param name="clock">The clock to release into the pool.</param>
-        public void ReleaseRef(ref StoryboardClock clock)
+        public void ReleaseRef(ref UpfPool<StoryboardClock>.PooledObject clock)
         {
             Contract.Require(clock, "clock");
+            Contract.EnsureNotDisposed(this, Disposed);
 
-            clock.Storyboard = null;
-            pool.ReleaseRef(ref clock);
+            Initialize();
+
+            clock.Value.StoryboardInstance.Stop();
+            clock.Value.StoryboardInstance = null;
+            pool.Release(clock);
+
+            clock = null;
+        }
+
+        /// <summary>
+        /// Ensures that the underlying pool exists.
+        /// </summary>
+        public void Initialize()
+        {
+            if (pool != null)
+                return;
+
+            this.pool = new PoolImpl(Ultraviolet, 32, 256, () => new StoryboardClock());
         }
 
         /// <summary>
@@ -65,9 +89,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             get { return instance.Value; }
         }
 
+        /// <summary>
+        /// Gets the number of active objects which have been allocated from the pool.
+        /// </summary>
+        public Int32 Active
+        {
+            get { return (pool == null) ? 0 : pool.Active; }
+        }
+
+        /// <summary>
+        /// Gets the number of available objects in the pool.
+        /// </summary>
+        public Int32 Available
+        {
+            get { return (pool == null) ? 0 : pool.Available; }
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing && !Ultraviolet.Disposed)
+            {
+                Ultraviolet.GetUI().Updating -= StoryboardClockPool_Updating;
+
+                SafeDispose.DisposeRef(ref pool);
+            }
+
+            base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Updates the active clock instances when the UI subsystem is updated.
+        /// </summary>
+        private void StoryboardClockPool_Updating(IUltravioletSubsystem subsystem, UltravioletTime time)
+        {
+            if (pool == null)
+                return;
+
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.PerformanceStats.BeginUpdate();
+
+            pool.Update(time, (value, state) =>
+            {
+                value.Value.Update((UltravioletTime)state);
+            });
+
+            upf.PerformanceStats.EndUpdate();
+        }
+
         // Storyboard clocks.
-        private ExpandingPool<StoryboardClock> pool = 
-            new ExpandingPool<StoryboardClock>(64, () => new StoryboardClock());
+        private UpfPool<StoryboardClock> pool;
 
         // The singleton instance of the clock pool.
         private static UltravioletSingleton<StoryboardClockPool> instance = 

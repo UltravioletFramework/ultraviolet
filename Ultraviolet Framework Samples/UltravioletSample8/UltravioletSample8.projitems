@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>658a523e-fda7-4e1f-a3f2-932b401a50d9</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>UltravioletSample8</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Assets\GlobalFontID.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Assets\GlobalSoundEffectID.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\GameInputActions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\IUltravioletInputExtensions.cs" />
+  </ItemGroup>
+</Project>

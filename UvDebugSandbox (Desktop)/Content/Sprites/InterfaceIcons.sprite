@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Sprite>
+  <Animations Texture="..\UI\DefaultUI">
+    <Animation Name="foo">
+      <Frame X="18" Y="449" Width="16" Height="17" />
+    </Animation>
+  </Animations>
+</Sprite>

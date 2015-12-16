@@ -38,8 +38,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         public void Draw(UltravioletTime time)
         {
             var oglwin = (OpenGLUltravioletWindow)current;
-
+            
             oglwin.Draw(time);
+        }
+
+        /// <summary>
+        /// Swaps the back buffer and the front buffer.
+        /// </summary>
+        public void Swap()
+        {
+            var oglwin = (OpenGLUltravioletWindow)current;
+
             SDL.GL_SwapWindow((IntPtr)oglwin);
         }
 
@@ -358,7 +367,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             // Retrieve the caption for our window.
             var caption = Localization.Strings.Contains("WINDOW_CAPTION") ? 
                 Localization.Get("WINDOW_CAPTION") : UltravioletStrings.DefaultWindowCaption.Value;
-            
+
             // Set the OpenGL attributes for the window we're about to create.
             if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, configuration.MultiSampleBuffers) < 0)
                 throw new SDL2Exception();
@@ -378,8 +387,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 {
                     throw new InvalidOperationException(OpenGLStrings.CannotCreateHeadlessContextOnAndroid);
                 }
-                const Int32 SDL_GL_CONTEXT_PROFILE_ES = (int)0x0004; 
-                SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+
+                const Int32 SDL_GL_CONTEXT_PROFILE_ES = (int)0x0004;
+                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES) < 0)
+                    throw new SDL2Exception();
             }
 
             // Initialize the hidden master window used to create the OpenGL context.
@@ -396,9 +407,22 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 masterFlags |= SDL_WindowFlags.HIDDEN;
             }
 
+            // Attempt to create the OpenGL window. If that fails, reduce our requirements and try again before failing.
             var masterptr = SDL.CreateWindow(isRunningOnAndroid ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
             if (masterptr == IntPtr.Zero)
-                throw new SDL2Exception();
+            {
+                if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, 0) < 0)
+                    throw new SDL2Exception();
+
+                if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, 0) < 0)
+                    throw new SDL2Exception();
+
+                masterptr = SDL.CreateWindow(isRunningOnAndroid ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
+                if (masterptr == IntPtr.Zero)
+                {
+                    throw new SDL2Exception();
+                }
+            }
 
             this.master = new OpenGLUltravioletWindow(masterptr);
 
@@ -514,6 +538,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// </summary>
         private void DesignateCurrentOpenGLWindow(IUltravioletWindow window, IntPtr context)
         {
+            var shuttingDown = (window == null && context == IntPtr.Zero);
+
             if (context == IntPtr.Zero)
             {
                 if (glcontext == IntPtr.Zero)
@@ -529,7 +555,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 throw new SDL2Exception();
 
             if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0)
-                throw new SDL2Exception();
+            {
+                if (!shuttingDown)
+                    throw new SDL2Exception();
+            }
 
             glwin = win;
             glcontext = context;

@@ -14,7 +14,8 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="factory">The <see cref="UltravioletFactory"/> to initialize.</param>
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
-            factory.SetFactoryMethod<SpriteBatchFactory>((uv) => new SpriteBatch(uv));
+            factory.SetFactoryMethod(owner.IsRunningInServiceMode ? 
+                new SpriteBatchFactory((uv) => null) : new SpriteBatchFactory((uv) => new SpriteBatch(uv)));
         }
     }
 }

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="tabitem-grid">
+
+      <Image Class="tabitem-background"/>
+      <ContentPresenter Class="tabitem-content"
+                        ContentSource="Header"
+                        HorizontalAlignment="{{HorizontalContentAlignment}}"
+                        VerticalAlignment="{{VerticalContentAlignment}}"
+                        Margin="{{Padding}}"/>
+      <Image Class="tabitem-focus-image"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Opacity="{{IsFocusVisualVisible ? 1 : 0}}"
+             IsHitTestVisible="false"/>
+
+
+    </Grid>
+  </View>
+</ComponentTemplate>

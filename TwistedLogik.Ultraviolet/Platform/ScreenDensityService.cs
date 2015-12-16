@@ -45,9 +45,13 @@ namespace TwistedLogik.Ultraviolet.Platform
                 case ScreenDensityBucket.Desktop:
                     return "pcdpi";
                 case ScreenDensityBucket.Low:
-                    return "ldpi";                
+                    return "ldpi";
+                case ScreenDensityBucket.Retina:
+                    return "retina";
                 case ScreenDensityBucket.Medium:
                     return "mdpi";
+                case ScreenDensityBucket.RetinaHD:
+                    return "retinahd";
                 case ScreenDensityBucket.High:
                     return "hdpi";
                 case ScreenDensityBucket.ExtraHigh:

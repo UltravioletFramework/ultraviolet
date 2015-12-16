@@ -5,8 +5,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a control which renders a border around its content.
     /// </summary>
-    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.Border.xml")]
-    public class Border : ContentControl
+    [UvmlKnownType]
+    public class Border : Decorator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
@@ -50,32 +50,87 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <remarks>The styling name of this dependency property is 'border-color'.</remarks>
         public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(Color), typeof(Border),
             new PropertyMetadata<Color>(UltravioletBoxedValues.Color.Black));
-        
+
+        /// <inheritdoc/>
+        protected override Size2D MeasureOverride(Size2D availableSize)
+        {
+            var totalPadding = BorderThickness + Padding;
+            var totalPaddingWidth = totalPadding.Left + totalPadding.Right;
+            var totalPaddingHeight = totalPadding.Top + totalPadding.Bottom;
+
+            var child = Child;
+            if (child == null)
+            {
+                return new Size2D(totalPaddingWidth, totalPaddingHeight);
+            }
+
+            var childAvailableSize = availableSize - totalPadding;
+            child.Measure(childAvailableSize);
+
+            return new Size2D(
+                child.DesiredSize.Width + totalPaddingWidth, 
+                child.DesiredSize.Height + totalPaddingHeight);
+        }
+
+        /// <inheritdoc/>
+        protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
+        {
+            var totalPadding = BorderThickness + Padding;
+            var totalPaddingWidth = totalPadding.Left + totalPadding.Right;
+            var totalPaddingHeight = totalPadding.Top + totalPadding.Bottom;
+
+            var child = Child;
+            if (child != null)
+            {
+                var childArrangeRect = new RectangleD(
+                    totalPadding.Left, 
+                    totalPadding.Right,
+                    Math.Max(0, finalSize.Width - totalPaddingWidth), 
+                    Math.Max(0, finalSize.Height - totalPaddingHeight));
+
+                child.Arrange(childArrangeRect, options);
+            }
+
+            return finalSize;
+        }
+
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            var borderColor     = BorderColor;
+            var borderColor = BorderColor;
             var borderThickness = BorderThickness;
-            var borderArea      = new RectangleD(0, 0, RelativeBounds.Width, RelativeBounds.Height);
+
+            var borderArea = new RectangleD(0, 0, UntransformedRelativeBounds.Width, UntransformedRelativeBounds.Height);
 
             var leftSize = Math.Min(borderThickness.Left, borderArea.Width);
-            var leftArea = new RectangleD(borderArea.Left, borderArea.Top, leftSize, borderArea.Height);
+            if (leftSize > 0)
+            {
+                var leftArea = new RectangleD(borderArea.Left, borderArea.Top, leftSize, borderArea.Height);
+                DrawBlank(dc, leftArea, borderColor);
+            }
 
             var topSize = Math.Min(borderThickness.Top, borderArea.Height);
-            var topArea = new RectangleD(borderArea.Left, borderArea.Top, borderArea.Width, topSize);
+            if (topSize > 0)
+            {
+                var topArea = new RectangleD(borderArea.Left, borderArea.Top, borderArea.Width, topSize);
+                DrawBlank(dc, topArea, borderColor);
+            }
 
             var rightSize = Math.Min(borderThickness.Right, borderArea.Width);
-            var rightPos  = Math.Max(borderArea.Left, borderArea.Right - rightSize);
-            var rightArea = new RectangleD(rightPos, borderArea.Top, rightSize, borderArea.Height);
+            if (rightSize > 0)
+            {
+                var rightPos = Math.Max(borderArea.Left, borderArea.Right - rightSize);
+                var rightArea = new RectangleD(rightPos, borderArea.Top, rightSize, borderArea.Height);
+                DrawBlank(dc, rightArea, borderColor);
+            }
 
             var bottomSize = Math.Min(borderThickness.Bottom, borderArea.Height);
-            var bottomPos  = Math.Max(borderArea.Top, borderArea.Bottom - bottomSize);
-            var bottomArea = new RectangleD(borderArea.Left, bottomPos, borderArea.Width, bottomSize);
-
-            DrawBlank(dc, leftArea, borderColor);
-            DrawBlank(dc, topArea, borderColor);
-            DrawBlank(dc, rightArea, borderColor);
-            DrawBlank(dc, bottomArea, borderColor);
+            if (bottomSize > 0)
+            {
+                var bottomPos = Math.Max(borderArea.Top, borderArea.Bottom - bottomSize);
+                var bottomArea = new RectangleD(borderArea.Left, bottomPos, borderArea.Width, bottomSize);
+                DrawBlank(dc, bottomArea, borderColor);
+            }
 
             base.DrawOverride(time, dc);
         }

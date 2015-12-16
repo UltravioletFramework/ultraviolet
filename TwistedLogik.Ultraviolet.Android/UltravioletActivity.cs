@@ -3,14 +3,16 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Android.App;
 using Org.Libsdl.App;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
+using TwistedLogik.Ultraviolet.Android.Input;
 using TwistedLogik.Ultraviolet.Android.Platform;
 using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Messages;
 using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.SDL2.Native;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -107,6 +109,44 @@ namespace TwistedLogik.Ultraviolet
 
             running  = false;
             finished = true;
+        }
+
+        /// <summary>
+        /// Shows the software keyboard, if one is available.
+        /// </summary>
+        /// <param name="mode">The display mode of the software keyboard.</param>
+        public void ShowSoftwareKeyboard(KeyboardMode mode)
+        {
+            switch (mode)
+            {
+                case KeyboardMode.Text:
+                    MCurrentInputType = (int)global::Android.Text.InputTypes.ClassText;
+                    break;
+
+                case KeyboardMode.Number:
+                    MCurrentInputType = (int)global::Android.Text.InputTypes.ClassNumber;
+                    break;
+
+                case KeyboardMode.Phone:
+                    MCurrentInputType = (int)global::Android.Text.InputTypes.ClassPhone;
+                    break;
+
+                case KeyboardMode.Datetime:
+                    MCurrentInputType = (int)global::Android.Text.InputTypes.ClassDatetime;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException("mode");
+            }
+            SDL.StartTextInput();
+        }
+
+        /// <summary>
+        /// Hides the software keyboard.
+        /// </summary>
+        public void HideSoftwareKeyboard()
+        {
+            SDL.StopTextInput();
         }
 
         /// <inheritdoc/>
@@ -285,6 +325,8 @@ namespace TwistedLogik.Ultraviolet
 
                     uv.Updating -= uv_Updating;
                     uv.Shutdown -= uv_Shutdown;
+                    uv.WindowDrawing -= uv_WindowDrawing;
+                    uv.WindowDrawn -= uv_WindowDrawn;
 
                     hostcore = null;
                 }
@@ -337,6 +379,26 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Called when one of the application's windows is about to be drawn.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="window">The window that is about to be drawn.</param>
+        protected virtual void OnWindowDrawing(UltravioletTime time, IUltravioletWindow window)
+        {
+
+        }
+
+        /// <summary>
+        /// Called after one of the application's windows has been drawn.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="window">The window that was just drawn.</param>
+        protected virtual void OnWindowDrawn(UltravioletTime time, IUltravioletWindow window)
+        {
+
+        }
+
+        /// <summary>
         /// Called when the application is being shut down.
         /// </summary>
         protected virtual void OnShutdown()
@@ -365,6 +427,7 @@ namespace TwistedLogik.Ultraviolet
             base.OnCreate(savedInstanceState);
 
             AndroidScreenDensityService.Activity = this;
+            AndroidSoftwareKeyboardService.Activity = this;
         }
 
         /// <inheritdoc/>
@@ -495,7 +558,7 @@ namespace TwistedLogik.Ultraviolet
         {
             LoadSettings();
 
-            uv = OnCreatingUltravioletContext();
+            uv = UltravioletContext.EnsureSuccessfulCreation(OnCreatingUltravioletContext);
             if (uv == null)
                 throw new InvalidOperationException(UltravioletStrings.ContextNotCreated);
 
@@ -509,6 +572,8 @@ namespace TwistedLogik.Ultraviolet
             this.uv.Messages.Subscribe(this, UltravioletMessages.Quit);
             this.uv.Updating += uv_Updating;
             this.uv.Shutdown += uv_Shutdown;
+            this.uv.WindowDrawing += uv_WindowDrawing;
+            this.uv.WindowDrawn += uv_WindowDrawn;
 
             this.uv.GetPlatform().Windows.PrimaryWindowChanging += uv_PrimaryWindowChanging;
             this.uv.GetPlatform().Windows.PrimaryWindowChanged  += uv_PrimaryWindowChanged;
@@ -620,6 +685,22 @@ namespace TwistedLogik.Ultraviolet
         private void uv_Shutdown(UltravioletContext uv)
         {
             OnShutdown();
+        }
+
+        /// <summary>
+        /// Handles the Ultraviolet context's <see cref="UltravioletContext.WindowDrawing"/> event.
+        /// </summary>
+        private void uv_WindowDrawing(UltravioletContext uv, UltravioletTime time, IUltravioletWindow window)
+        {
+            OnWindowDrawing(time, window);
+        }
+
+        /// <summary>
+        /// Handles the Ultraviolet context's <see cref="UltravioletContext.WindowDrawn"/> event.
+        /// </summary>
+        private void uv_WindowDrawn(UltravioletContext uv, UltravioletTime time, IUltravioletWindow window)
+        {
+            OnWindowDrawn(time, window);
         }
 
         /// <summary>

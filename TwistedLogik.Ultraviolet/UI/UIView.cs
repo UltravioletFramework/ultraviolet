@@ -10,9 +10,10 @@ namespace TwistedLogik.Ultraviolet.UI
     /// Represents a factory method which constructs instances of the <see cref="UIView"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
+    /// <param name="uiPanel">The <see cref="UIPanel"/> that is creating the view.</param>
     /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view's containing panel.</param>
     /// <returns>The instance of <see cref="UIView"/> that was created.</returns>
-    public delegate UIView UIViewFactory(UltravioletContext uv, UIPanelDefinition uiPanelDefinition);
+    public delegate UIView UIViewFactory(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition);
 
     /// <summary>
     /// Represents a 
@@ -23,40 +24,37 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Initializes a new instance of the <see cref="UIView"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="panel">The panel that owns the view.</param>
         /// <param name="viewModelType">The view's associated view model type.</param>
-        public UIView(UltravioletContext uv, Type viewModelType)
+        public UIView(UltravioletContext uv, UIPanel panel, Type viewModelType)
             : base(uv)
         {
+            Contract.Require(panel, "panel");
+
+            this.panel = panel;
             this.viewModelType = viewModelType;
         }
 
         /// <summary>
         /// Creates a new instance of the <see cref="UIView"/> class.
         /// </summary>
+        /// <param name="uiPanel">The <see cref="UIPanel"/> which is creating the view.</param>
         /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view's containing panel.</param>
         /// <returns>The instance of <see cref="UIView"/> that was created.</returns>
-        public static UIView Create(UIPanelDefinition uiPanelDefinition)
+        public static UIView Create(UIPanel uiPanel, UIPanelDefinition uiPanelDefinition)
         {
+            Contract.Require(uiPanel, "uiPanel");
             Contract.Require(uiPanelDefinition, "uiPanelDefinition");
 
             var uv       = UltravioletContext.DemandCurrent();
             var factory  = uv.TryGetFactoryMethod<UIViewFactory>();
             if (factory != null)
             {
-                return factory(uv, uiPanelDefinition);
+                return factory(uv, uiPanel, uiPanelDefinition);
             }
 
             return null;
         }
-
-        /// <summary>
-        /// Cleans up the view and its elements.
-        /// </summary>
-        /// <remarks>The <see cref="Cleanup()"/> method releases any internal resources which the view
-        /// and its elements may be holding, allowing them to be reused by the Presentation Foundation.
-        /// The view remains usable after a call to this method, but certain state values (such as
-        /// animations, dependency property values, etc.) may be reset.</remarks>
-        public abstract void Cleanup();
 
         /// <summary>
         /// Draws the view.
@@ -70,39 +68,13 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public abstract void Update(UltravioletTime time);
-
-        /// <summary>
-        /// Grants focus to the view.
-        /// </summary>
-        public void Focus()
-        {
-            if (focused)
-                return;
-
-            focused = true;
-
-            OnFocused();
-        }
-
-        /// <summary>
-        /// Removes focus from the view.
-        /// </summary>
-        public void Blur()
-        {
-            if (!focused)
-                return;
-
-            focused = false;
-
-            OnBlurred();
-        }
-
+        
         /// <summary>
         /// Sets the content managers used to load UI assets.
         /// </summary>
         /// <param name="global">The content manager used to load globally-sourced assets.</param>
         /// <param name="local">The content manager used to load locally-sourced assets.</param>
-        public void SetContentManagers(ContentManager global, ContentManager local)
+        public virtual void SetContentManagers(ContentManager global, ContentManager local)
         {
             this.globalContent = global;
             this.localContent  = local;
@@ -114,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Sets the view's associated view model.
         /// </summary>
         /// <param name="viewModel">The view's associated view model.</param>
-        public void SetViewModel(Object viewModel)
+        public virtual void SetViewModel(Object viewModel)
         {
             if (viewModel != null && viewModel.GetType() != viewModelType)
                 throw new ArgumentException(UltravioletStrings.IncompatibleViewModel.Format(viewModelType));
@@ -129,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="window">The window on which to position the view.</param>
         /// <param name="area">The area on the window in which to position the view.</param>
-        public void SetViewPosition(IUltravioletWindow window, Rectangle area)
+        public virtual void SetViewPosition(IUltravioletWindow window, Rectangle area)
         {
             Contract.Require(window, "window");
 
@@ -241,6 +213,28 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
+        /// Gets the view's view model object.
+        /// </summary>
+        /// <returns>The view's view model object.</returns>
+        public virtual T GetViewModel<T>() where T : class
+        {
+            return ViewModel as T;
+        }
+
+        /// <summary>
+        /// Gets the panel that owns the view.
+        /// </summary>
+        public UIPanel Panel
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return panel;
+            }
+        }
+
+        /// <summary>
         /// Gets the content manager used to load globally-sourced assets.
         /// </summary>
         public ContentManager GlobalContent
@@ -319,15 +313,51 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             get { return area.Height; }
         }
-
+        
         /// <summary>
-        /// Gets a value indicating whether the view has input focus.
+        /// Gets or sets a value indicating whether input is enabled for this view.
+        /// If <c>false</c>, then the view will not receive any input events.
         /// </summary>
-        public Boolean Focused
+        public Boolean IsInputEnabled
         {
-            get { return focused; }
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return isInputEnabled;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                this.isInputEnabled = value;
+            }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether input is allowed for this view.
+        /// If <c>false</c>, then the view will not receive any input events.
+        /// </summary>
+        /// <remarks>While <see cref="IsInputEnabled"/> may be changed at any time, the value of <see cref="IsInputAllowed"/> is managed
+        /// by Ultraviolet itself and corresponds to the <see cref="UIPanel.IsReadyForInput"/> property on the panel that owns the view.</remarks>
+        public Boolean IsInputAllowed
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return panel.IsReadyForInput;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether input is currently both enabled and allowed on this view.
+        /// </summary>
+        public Boolean IsInputEnabledAndAllowed
+        {
+            get { return IsInputEnabled && IsInputAllowed; }
+        }
+        
         /// <summary>
         /// Gets the window in which the view is being rendered.
         /// </summary>
@@ -345,21 +375,25 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Called when the view is focused.
+        /// Occurs when the view is about to be opened.
         /// </summary>
-        protected virtual void OnFocused()
-        {
-
-        }
+        protected internal abstract void OnOpening();
 
         /// <summary>
-        /// Called when the view is blurred.
+        /// Occurs when the view has been opened.
         /// </summary>
-        protected virtual void OnBlurred()
-        {
+        protected internal abstract void OnOpened();
 
-        }
+        /// <summary>
+        /// Occurs when the view is about to be closed.
+        /// </summary>
+        protected internal abstract void OnClosing();
 
+        /// <summary>
+        /// Occurs when the view has been closed.
+        /// </summary>
+        protected internal abstract void OnClosed();
+        
         /// <summary>
         /// Called when the view's content managers are changed.
         /// </summary>
@@ -392,13 +426,28 @@ namespace TwistedLogik.Ultraviolet.UI
 
         }
 
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                var vm = GetViewModel<IDisposable>();
+                if (vm != null)
+                {
+                    vm.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
+
         // Property values.
+        private readonly UIPanel panel;
         private readonly Type viewModelType;
         private ContentManager globalContent;
         private ContentManager localContent;
         private Object viewModel;
         private Rectangle area;
-        private Boolean focused;
+        private Boolean isInputEnabled = true;
         private IUltravioletWindow window;
     }
 }

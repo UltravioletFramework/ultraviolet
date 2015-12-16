@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
@@ -10,11 +11,11 @@ using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.OpenGL;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation;
+using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 using UvDebugSandbox.Assets;
 using UvDebugSandbox.Input;
 using UvDebugSandbox.UI;
 using UvDebugSandbox.UI.Screens;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace UvDebugSandbox
 {
@@ -22,9 +23,9 @@ namespace UvDebugSandbox
     /// Represents the main application object.
     /// </summary>
 #if ANDROID
-    [Android.App.Activity(Label = "GameActivity", MainLauncher = true, ConfigurationChanges = 
-        Android.Content.PM.ConfigChanges.Orientation | 
-        Android.Content.PM.ConfigChanges.ScreenSize | 
+    [Android.App.Activity(Label = "GameActivity", MainLauncher = true, ConfigurationChanges =
+        Android.Content.PM.ConfigChanges.Orientation |
+        Android.Content.PM.ConfigChanges.ScreenSize |
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
     public class Game : UltravioletActivity
 #else
@@ -44,6 +45,10 @@ namespace UvDebugSandbox
         {
             using (var game = new Game())
             {
+                game.resolveContent = args.Contains("-resolve:content");
+                game.compileContent = args.Contains("-compile:content");
+                game.compileExpressions = args.Contains("-compile:expressions");
+
                 game.Run();
             }
         }
@@ -55,6 +60,7 @@ namespace UvDebugSandbox
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var configuration = new OpenGLUltravioletConfiguration();
+            configuration.EnableServiceMode = ShouldRunInServiceMode();
             PopulateConfiguration(configuration);
 
             PresentationFoundation.Configure(configuration);
@@ -75,7 +81,7 @@ namespace UvDebugSandbox
         /// </summary>
         protected override void OnInitialized()
         {
-            SetFileSourceFromManifestIfExists("UltravioletGame.Content.uvarc");
+            SetFileSourceFromManifestIfExists("UvDebugSandbox.Content.uvarc");
 
             base.OnInitialized();
         }
@@ -87,25 +93,34 @@ namespace UvDebugSandbox
         {
             this.content = ContentManager.Create("Content");
 
-            LoadLocalizationDatabases();
-            LoadInputBindings();
-            LoadContentManifests();
-            LoadCursors();
-            LoadPresentation();
+            if (Ultraviolet.IsRunningInServiceMode)
+            {
+                CompileContent();
+                CompileBindingExpressions();
+                Environment.Exit(0);
+            }
+            else
+            {
+                LoadLocalizationDatabases();
+                LoadInputBindings();
+                LoadContentManifests();
+                LoadCursors();
+                LoadPresentation();
 
-            this.spriteBatch = SpriteBatch.Create();
-            this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+                this.spriteBatch = SpriteBatch.Create();
+                this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
 
-            this.textRenderer = new TextRenderer();
-            this.textFormatter = new StringFormatter();
-            this.textBuffer = new StringBuilder();
+                this.textRenderer = new TextRenderer();
+                this.textFormatter = new StringFormatter();
+                this.textBuffer = new StringBuilder();
 
-            GC.Collect(2);
+                GC.Collect(2);
 
-            var screenService = new UIScreenService(content);
-            var screen = screenService.Get<DebugViewScreen>();
+                var screenService = new UIScreenService(content);
+                var screen = screenService.Get<DebugViewScreen>();
 
-            Ultraviolet.GetUI().GetScreens().Open(screen);
+                Ultraviolet.GetUI().GetScreens().Open(screen);
+            }
 
             base.OnLoadingContent();
         }
@@ -155,6 +170,7 @@ namespace UvDebugSandbox
             uvContent.Manifests.Load(contentManifestFiles);
 
             uvContent.Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
+            uvContent.Manifests["Global"]["Sprites"].PopulateAssetLibrary(typeof(GlobalSpriteID));
         }
 
         /// <summary>
@@ -171,8 +187,15 @@ namespace UvDebugSandbox
         /// </summary>
         protected void LoadPresentation()
         {
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+
             var globalStyleSheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
-            Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStyleSheet(globalStyleSheet);
+            upf.SetGlobalStyleSheet(globalStyleSheet);
+
+            CompileBindingExpressions();
+            upf.LoadCompiledExpressions();
+
+            Diagnostics.DrawDiagnosticsVisuals = true;
         }
 
         /// <summary>
@@ -210,11 +233,7 @@ namespace UvDebugSandbox
             textFormatter.AddArgument(upf.PerformanceStats.PositionCountLastFrame);
             textFormatter.Format("FPS: {0:decimals:2} FPS\nStyle: {1} / {2}\nMeasure: {3} / {4}\nArrange: {5} / {6}\nPosition: {7}", textBuffer);
 
-            spriteBatch.DrawString(spriteFont, textBuffer, Vector2.One * 8f, Color.White);
-
-            var size = Ultraviolet.GetPlatform().Windows.GetCurrent().ClientSize;
-            var settings = new TextLayoutSettings(spriteFont, size.Width, size.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle);
-            textRenderer.Draw(spriteBatch, "Welcome to the |c:FFFF00C0|Ultraviolet Framework|c|!", Vector2.Zero, Color.White, settings);
+            textRenderer.Draw(spriteBatch, textBuffer, Vector2.Zero, Color.White, new TextLayoutSettings(spriteFont, null, null, TextFlags.Standard));
 
             spriteBatch.End();
 
@@ -244,6 +263,79 @@ namespace UvDebugSandbox
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the game should run in service mode.
+        /// </summary>
+        /// <returns><c>true</c> if the game should run in service mode; otherwise, <c>false</c>.</returns>
+        private Boolean ShouldRunInServiceMode()
+        {
+            return compileContent || compileExpressions;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the game should compile its content into an archive.
+        /// </summary>
+        /// <returns></returns>
+        private Boolean ShouldCompileContent()
+        {
+            return compileContent;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the game should compile binding expressions.
+        /// </summary>
+        /// <returns><c>true</c> if the game should compile binding expressions; otherwise, <c>false</c>.</returns>
+        private Boolean ShouldCompileBindingExpressions()
+        {
+#if DEBUG
+            return true;
+#else
+            return compileExpressions || System.Diagnostics.Debugger.IsAttached;
+#endif
+        }
+
+        /// <summary>
+        /// Compiles the game's content into an archive file.
+        /// </summary>
+        private void CompileContent()
+        {
+            if (ShouldCompileContent())
+            {
+                if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                    throw new NotSupportedException();
+
+                var archive = ContentArchive.FromFileSystem(new[] { "Content" });
+                using (var stream = File.OpenWrite("Content.uvarc"))
+                {
+                    using (var writer = new BinaryWriter(stream))
+                    {
+                        archive.Save(writer);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Compiles the game's binding expressions.
+        /// </summary>
+        private void CompileBindingExpressions()
+        {
+            if (ShouldCompileBindingExpressions())
+            {
+                var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+
+                var flags = CompileExpressionsFlags.None;
+
+                if (resolveContent)
+                    flags |= CompileExpressionsFlags.ResolveContentFiles;
+
+                if (compileExpressions)
+                    flags |= CompileExpressionsFlags.IgnoreCache;
+
+                upf.CompileExpressionsIfSupported("Content", flags);
+            }
+        }        
+        
         // The global content manager.  Manages any content that should remain loaded for the duration of the game's execution.
         private ContentManager content;
 
@@ -254,5 +346,10 @@ namespace UvDebugSandbox
         private TextRenderer textRenderer;
         private StringFormatter textFormatter;
         private StringBuilder textBuffer;
+
+        // State values.
+        private Boolean resolveContent;
+        private Boolean compileContent;
+        private Boolean compileExpressions;
     }
 }

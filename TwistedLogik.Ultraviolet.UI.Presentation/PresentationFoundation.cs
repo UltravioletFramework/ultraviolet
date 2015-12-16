@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
@@ -28,36 +30,243 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             RegisterCoreTypes();
 
-            this.styleQueue    = new LayoutQueue(InvalidateStyle, false);
-            this.measureQueue  = new LayoutQueue(InvalidateMeasure);
-            this.arrangeQueue  = new LayoutQueue(InvalidateArrange);
+            this.outOfBandRenderer = uv.IsRunningInServiceMode ? null : new OutOfBandRenderer(uv);
+
+            this.styleQueue = new LayoutQueue(InvalidateStyle, false);
+            this.measureQueue = new LayoutQueue(InvalidateMeasure);
+            this.arrangeQueue = new LayoutQueue(InvalidateArrange);
         }
 
         /// <summary>
         /// Modifies the specified <see cref="UltravioletConfiguration"/> instance so that the Ultraviolet
         /// Presentation Foundation will be registered as the context's view provider.
         /// </summary>
-        /// <param name="configuration">The <see cref="UltravioletConfiguration"/> instance to modify.</param>
-        public static void Configure(UltravioletConfiguration configuration)
+        /// <param name="ultravioletConfig">The <see cref="UltravioletConfiguration"/> instance to modify.</param>
+        /// <param name="presentationConfig">Configuration settings for the Ultraviolet Presentation Foundation.</param>
+        public static void Configure(UltravioletConfiguration ultravioletConfig, PresentationFoundationConfiguration presentationConfig = null)
         {
-            Contract.Require(configuration, "configuration");
+            Contract.Require(ultravioletConfig, "configuration");
 
-            configuration.ViewProviderAssembly = typeof(PresentationFoundation).Assembly.FullName;
+            ultravioletConfig.ViewProviderAssembly = typeof(PresentationFoundation).Assembly.FullName;
+            ultravioletConfig.ViewProviderConfiguration = presentationConfig;
         }
 
         /// <summary>
-        /// Updates the state of the Presentation Foundation.
+        /// Draws a diagnostics panel containing various Presentation Foundation performance metrics.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        public void Update(UltravioletTime time)
+        public void DrawDiagnosticsPanel()
+        {
+            if (diagnosticsPanel == null)
+                diagnosticsPanel = new DiagnosticsPanel(Ultraviolet);
+
+            diagnosticsPanel.Draw();
+        }
+
+        /// <summary>
+        /// Creates a new view model wrapper instance of the specified type which wraps the specified view model, if such a wrapper exists.
+        /// </summary>
+        /// <param name="name">The name of the view model wrapper type to instantiate.</param>
+        /// <param name="viewModel">The view model instance that will be wrapped by the view model wrapper.</param>
+        /// <param name="namescope">The view model's namescope.</param>
+        /// <returns>The view model wrapper that was created, or a reference to <paramref name="viewModel"/> if no valid wrapper exists.</returns>
+        public Object CreateDataSourceWrapperByName(String name, Object viewModel, Namescope namescope)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(name, "name");
+            Contract.Require(namescope, "namescope");
+
+            if (viewModel == null)
+                return null;
+
+            Type wrapperType;
+            if (!compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
+            {
+                var vmWrapperAttr = viewModel.GetType().GetCustomAttributes(typeof(ViewModelWrapperAttribute), false).Cast<ViewModelWrapperAttribute>().SingleOrDefault();
+                wrapperType = (vmWrapperAttr == null) ? null : vmWrapperAttr.WrapperType;
+                compiledDataSourceWrappers[name] = wrapperType;
+            }
+            
+            return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new Object[] { viewModel, namescope });
+        }
+
+        /// <summary>
+        /// Creates a new view model wrapper instance for the specified control's component template.
+        /// </summary>
+        /// <param name="viewModel">The control for which to create a view model wrapper.</param>
+        /// <returns>The view model wrapper that was created, or a reference to <paramref name="viewModel"/> if no valid wrapper exists.</returns>
+        public Object CreateDataSourceWrapperForControl(Control viewModel)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(viewModel, "control");
+
+            if (viewModel == null)
+                return null;
+
+            var wrapperType = default(Type);
+            var templateType = viewModel.GetType();
+            var templateName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templateType);
+            var templateInherited = false;
+
+            for (var current = templateType; current != null; current = current.BaseType)
+            {
+                var nameCurrent = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(current);
+                if (compiledDataSourceWrappers.TryGetValue(nameCurrent, out wrapperType))
+                    break;
+
+                templateInherited = true;
+            }
+
+            if (wrapperType != null && templateInherited)
+                compiledDataSourceWrappers[templateName] = wrapperType;
+
+            return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new Object[] { viewModel, viewModel.ComponentTemplateNamescope });
+        }
+
+        /// <summary>
+        /// Gets the data source wrapper type for the view with the specified asset path.
+        /// </summary>
+        /// <param name="path">The path to the view for which to retrieve a data source wrapper type.</param>
+        /// <returns>The data source wrapper type for the view with the specified path, or <c>null</c> if no such wrapper exists.</returns>
+        public Type GetDataSourceWrapperTypeByViewPath(String path)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(path, "path");
+
+            var name = PresentationFoundationView.GetDataSourceWrapperNameForView(path);
+
+            Type wrapperType;
+            if (compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
+            {
+                return wrapperType;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the data source wrapper type with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the data source wrapper type to retrieve.</param>
+        /// <returns>The data source wrapper type with the specified name, or <c>null</c> if no such wrapper exists.</returns>
+        public Type GetDataSourceWrapperTypeByName(String name)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(name, "name");
+
+            Type wrapperType;
+            if (compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
+            {
+                return wrapperType;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Compiles the binding expressions in the specified content directory tree.
+        /// </summary>
+        /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
+        /// <param name="flags">A set of <see cref="CompileExpressionsFlags"/> values specifying how the expressions should be compiled.</param>
+        public void CompileExpressions(String root, CompileExpressionsFlags flags = CompileExpressionsFlags.None)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(root, "root");
+            
+            LoadBindingExpressionCompiler();
+
+            var options = new BindingExpressionCompilerOptions();
+            options.WriteErrorsToFile = true;
+            options.Input = root;
+            options.Output = CompiledExpressionsAssemblyName;
+            options.IgnoreCache = (flags & CompileExpressionsFlags.IgnoreCache) == CompileExpressionsFlags.IgnoreCache;
+
+            try
+            {
+                var result = bindingExpressionCompiler.Compile(Ultraviolet, options);
+                if (result.Failed)
+                    throw new BindingExpressionCompilationFailedException(result.Message, result);
+            }
+            catch (Exception e)
+            {
+                var resolveContentFiles = (flags & CompileExpressionsFlags.ResolveContentFiles) == CompileExpressionsFlags.ResolveContentFiles;
+                LogExceptionToBuildOutputConsole(root, e, resolveContentFiles);
+                throw;
+            }
+
+            GC.Collect(2, GCCollectionMode.Forced);
+        }
+
+        /// <summary>
+        /// Compiles the binding expressions in the specified content directory tree if the application is running
+        /// one one of the platforms which supports doing so. Otherwise, this method has no effect.
+        /// </summary>
+        /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
+        /// <param name="flags">A set of <see cref="CompileExpressionsFlags"/> values specifying how the expressions should be compiled.</param>
+        public void CompileExpressionsIfSupported(String root, CompileExpressionsFlags flags = CompileExpressionsFlags.None)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(root, "root");
+
+            if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                return;
+            
+            CompileExpressions(root, flags);
+        }
+
+        /// <summary>
+        /// Loads the assembly that contains the application's compiled binding expressions.
+        /// </summary>
+        public void LoadCompiledExpressions()
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            PerformanceStats.BeginFrame();
+            Assembly compiledExpressionsAssembly = null;
+            try
+            {
+                switch (Ultraviolet.Platform)
+                {
+                    case UltravioletPlatform.Windows:
+                    case UltravioletPlatform.Linux:
+                    case UltravioletPlatform.OSX:
+                        compiledExpressionsAssembly = Assembly.LoadFrom(CompiledExpressionsAssemblyName);
+                        break;
 
-            ProcessStyleQueue();
-            ProcessMeasureQueue();
-            ProcessArrangeQueue();
+                    case UltravioletPlatform.Android:
+                        compiledExpressionsAssembly = Assembly.Load(CompiledExpressionsAssemblyName);
+                        break;
+
+                    default:
+                        throw new NotSupportedException();
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                throw new InvalidOperationException(PresentationStrings.CompiledExpressionsAssemblyNotFound, e);
+            }
+
+            compiledDataSourceWrappers.Clear();            
+            foreach (var dataSourceWrapperType in compiledExpressionsAssembly.GetTypes())
+            {
+                compiledDataSourceWrappers.Add(dataSourceWrapperType.Name, dataSourceWrapperType);
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection of types which are known to the Presentation Foundation.
+        /// </summary>
+        /// <returns>A dictionary containing the types which are known to the Presentation Foundation, using
+        /// the UVML names of the types as the dictionary key.</returns>
+        public IDictionary<String, Type> GetKnownTypes()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var types = new Dictionary<String, Type>();
+
+            foreach (var kvp in coreTypes)
+                types[kvp.Key] = kvp.Value.Type;
+
+            foreach (var kvp in registeredTypes)
+                types[kvp.Key] = kvp.Value.Type;
+
+            return types;
         }
 
         /// <summary>
@@ -66,11 +275,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <typeparam name="TViewModel">The type of view model to which the element will be bound.</typeparam>
         /// <param name="typeName">The name of the element to instantiate.</param>
         /// <param name="name">The ID with which to create the element.</param>
-        /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
         /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
-        public UIElement InstantiateElementByName<TViewModel>(String typeName, String name, String bindingContext = null)
+        public UIElement InstantiateElementByName<TViewModel>(String typeName, String name)
         {
-            return InstantiateElementByName(typeName, name, typeof(TViewModel), bindingContext);
+            return InstantiateElementByName(typeName, name, typeof(TViewModel));
         }
 
         /// <summary>
@@ -79,15 +287,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="typeName">The name of the element to instantiate.</param>
         /// <param name="name">The ID with which to create the element.</param>
         /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
-        /// <param name="bindingContext">The binding context to apply to the element which is instantiated.</param>
         /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
-        public UIElement InstantiateElementByName(String typeName, String name, Type viewModelType, String bindingContext = null)
+        public UIElement InstantiateElementByName(String typeName, String name, Type viewModelType)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-
-            if (bindingContext != null && !BindingExpressions.IsBindingExpression(bindingContext))
-                throw new ArgumentException("bindingContext");
-
+            
             KnownElement registration;
             if (!GetKnownElementRegistration(typeName, out registration))
                 return null;
@@ -104,32 +308,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var instance = (UIElement)ctor.Invoke(isFrameworkElement ? 
                 new Object[] { Ultraviolet, name } : 
                 new Object[] { Ultraviolet });
-
-            if (registration.Layout != null)
-            {
-                UvmlLoader.LoadUserControl((UserControl)instance, registration.Layout, viewModelType, bindingContext);
-            }
-
+            
             return instance;
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the element with the specified name is a user control.
-        /// </summary>
-        /// <param name="name">The name of the element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is a user control; otherwise, <c>false</c>.</returns>
-        public Boolean IsUserControl(String name)
-        {
-            Contract.RequireNotEmpty(name, "name");
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            KnownElement registration;
-            if (!GetKnownElementRegistration(name, out registration))
-                return false;
-
-            return registration.Layout != null;
-        }
-
+        
         /// <summary>
         /// Gets the known type with the specified name.
         /// </summary>
@@ -245,6 +427,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Registers any UVML-known types in the specified assembly.
+        /// </summary>
+        /// <param name="asm">The assembly for which to register known types.</param>
+        public void RegisterKnownTypes(Assembly asm)
+        {
+            Contract.Require(asm, "asm");
+            
+            var knownTypes = from t in asm.GetTypes()
+                             let attr = t.GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault()
+                             where
+                              attr != null
+                             select t;
+
+            foreach (var knownType in knownTypes)
+            {
+                RegisterElementInternal(registeredTypes, knownType, null);
+            }
+        }
+
+        /// <summary>
         /// Registers a custom element type with the Presentation Foundation.
         /// </summary>
         /// <param name="type">The type that implements the custom element.</param>
@@ -255,21 +457,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             RegisterElementInternal(registeredTypes, type, null);
         }
-
-        /// <summary>
-        /// Registers a custom element type with the Presentation Foundation.
-        /// </summary>
-        /// <param name="layout">The XML document that defines the custom element's layout.</param>
-        public void RegisterElement(XDocument layout)
-        {
-            Contract.Require(layout, "layout");
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var type = ExtractElementTypeFromLayout(layout);
-
-            RegisterElementInternal(registeredTypes, type, layout);
-        }
-
+        
         /// <summary>
         /// Unregisters a custom element.
         /// </summary>
@@ -303,34 +491,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return registeredTypes.Remove(registration.Name);
         }
-
-        /// <summary>
-        /// Unregisters a custom element.
-        /// </summary>
-        /// <param name="layout">The XML document that defines the custom element's layout.</param>
-        /// <returns><c>true</c> if the custom element was unregistered; otherwise, <c>false</c>.</returns>
-        public Boolean UnregisterKnownElement(XDocument layout)
-        {
-            Contract.Require(layout, "layout");
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            var type = ExtractElementTypeFromLayout(layout);
-
-            KnownElement registration;
-            if (!GetKnownElementRegistration(type, out registration))
-                return false;
-
-            return registeredTypes.Remove(registration.Name);
-        }
-
+        
         /// <summary>
         /// Sets the global style sheet used by all Presentation Foundation views.
         /// </summary>
         /// <param name="styleSheet">The global style sheet to set.</param>
         public void SetGlobalStyleSheet(UvssDocument styleSheet)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             this.globalStyleSheet = styleSheet;
             OnGlobalStyleSheetChanged();
+        }
+
+        /// <summary>
+        /// Initializes the specified collection of the Presentation Foundation's internal object pools.
+        /// </summary>
+        /// <param name="pools">A collection of <see cref="InternalPool"/> values indicating which pools to initialize.</param>
+        /// <remarks>In order to save memory, the Presentation Foundation does not initialize any of its internal object pools until 
+        /// it determines that they are required. This method allows an application to manually initialize any pools which it
+        /// knows ahead of time that it's going to need.</remarks>
+        public void InitializeInternalPools(params InternalPool[] pools)
+        {
+            if (pools == null)
+                return;
+
+            foreach (var pool in pools)
+            {
+                switch (pool)
+                {
+                    case InternalPool.SimpleClocks:
+                        SimpleClockPool.Instance.Initialize();
+                        break;
+
+                    case InternalPool.StoryboardInstances:
+                        StoryboardInstancePool.Instance.Initialize();
+                        break;
+
+                    case InternalPool.StoryboardClocks:
+                        StoryboardClockPool.Instance.Initialize();
+                        break;
+
+                    case InternalPool.OutOfBandRenderer:
+                        OutOfBandRenderer.InitializePools();
+                        break;
+
+                    case InternalPool.WeakReferences:
+                        WeakReferencePool.Instance.Initialize();
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -338,7 +548,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public PresentationFoundationPerformanceStats PerformanceStats
         {
-            get { return performanceStats; }
+            get 
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return performanceStats; 
+            }
         }
 
         /// <summary>
@@ -346,7 +561,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public ComponentTemplateManager ComponentTemplates
         {
-            get { return componentTemplateManager; }
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return componentTemplateManager; 
+            }
         }
 
         /// <summary>
@@ -363,6 +583,80 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event EventHandler GlobalStyleSheetChanged;
 
         /// <summary>
+        /// Gets the data source wrapper that exposes the specified object's compiled binding expressions, if it has one.
+        /// </summary>
+        /// <param name="obj">The object for which to retrieve a data source wrapper.</param>
+        /// <returns>The data source wrapper for the specified object, or a reference to the original object if it does not have a data source wrapper.</returns>
+        internal static Object GetDataSourceWrapper(Object obj)
+        {
+            var control = obj as Control;
+            if (control != null)
+            {
+                return control.DataSourceWrapper;
+            }
+            return obj;
+        }
+
+        /// <summary>
+        /// Performs the layout process for any elements which currently need it.
+        /// </summary>
+        internal void PerformLayout()
+        {
+            using (UltravioletProfiler.Section(PresentationProfilerSections.Layout))
+            {
+                while (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
+                {
+                    // 1. Style
+                    using (UltravioletProfiler.Section(PresentationProfilerSections.Style))
+                    {
+                        while (ElementNeedsStyle)
+                        {
+                            var element = styleQueue.Dequeue();
+                            if (element.IsStyleValid)
+                                continue;
+
+                            element.Style(element.View.StyleSheet);
+                            element.InvalidateMeasure();
+                        }
+                    }
+
+                    // 2. Measure
+                    using (UltravioletProfiler.Section(PresentationProfilerSections.Measure))
+                    {
+                        while (ElementNeedsMeasure && !ElementNeedsStyle)
+                        {
+                            var element = measureQueue.Dequeue();
+                            if (element.IsMeasureValid)
+                                continue;
+
+                            element.Measure(element.MostRecentAvailableSize);
+                            element.InvalidateArrange();
+                        }
+                    }
+
+                    // 3. Arrange
+                    using (UltravioletProfiler.Section(PresentationProfilerSections.Arrange))
+                    {
+                        while (ElementNeedsArrange && !ElementNeedsStyle && !ElementNeedsMeasure)
+                        {
+                            var element = arrangeQueue.Dequeue();
+                            if (element.IsArrangeValid)
+                                continue;
+
+                            element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
+                        }
+                    }
+
+                    if (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
+                        continue;
+
+                    // 4. Raise LayoutUpdated events
+                    RaiseLayoutUpdated();
+                }
+            }
+        }
+
+        /// <summary>
         /// Removes the specified UI element from all of the Foundation's processing queues.
         /// </summary>
         /// <param name="element">The element to remove from the queues.</param>
@@ -373,6 +667,53 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             StyleQueue.Remove(element);
             MeasureQueue.Remove(element);
             ArrangeQueue.Remove(element);
+        }
+
+        /// <summary>
+        /// Indicates that the specified element is interested in receiving <see cref="UIElement.LayoutUpdated"/> events.
+        /// </summary>
+        /// <param name="element">The element to register.</param>
+        internal void RegisterForLayoutUpdated(UIElement element)
+        {
+            elementsWithLayoutUpdatedHandlers.AddLast(element);
+        }
+
+        /// <summary>
+        /// Indicates that the specified element is no longer interested in receiving <see cref="UIElement.LayoutUpdated"/> events.
+        /// </summary>
+        /// <param name="element">The element to unregister.</param>
+        internal void UnregisterForLayoutUpdated(UIElement element)
+        {
+            elementsWithLayoutUpdatedHandlers.Remove(element);
+        }
+
+        /// <summary>
+        /// Gets the singleton instance of the Presentation Foundation.
+        /// </summary>
+        internal static PresentationFoundation Instance
+        {
+            get { return instance; }
+        }
+
+        /// <summary>
+        /// Gets the identifier of the current digest cycle.
+        /// </summary>
+        internal Int64 DigestCycleID
+        {
+            get { return digestCycleID; }
+        }
+
+        /// <summary>
+        /// Gets the renderer which is used to draw elements out-of-band.
+        /// </summary>
+        internal OutOfBandRenderer OutOfBandRenderer
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return outOfBandRenderer;
+            }
         }
 
         /// <summary>
@@ -400,56 +741,152 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets a value indicating whether the specified XML document is a valid element layout.
+        /// Gets or sets the name of the assembly from which to load the binding expressions compiler.
         /// </summary>
-        /// <param name="layout">The XML document that defines the custom element's layout.</param>
-        /// <returns><c>true</c> if the specified XML document is a valid element layout; otherwise, <c>false</c>.</returns>
-        private static Boolean IsValidElementLayout(XDocument layout)
+        internal String BindingExpressionCompilerAssemblyName
         {
-            return layout.Root.Name.LocalName == "UserControl";
+            get;
+            set;
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                SafeDispose.Dispose(outOfBandRenderer);
+            }
+            base.Dispose(disposing);
         }
 
         /// <summary>
-        /// Gets a value indicating whether the specified type is a valid element type.
+        /// Logs an exception to the console so that it will be displayed by Visual Studio's Error List window.
         /// </summary>
-        /// <param name="type">The type to evaluate.</param>
-        /// <param name="attr">The element's <see cref="UvmlKnownTypeAttribute"/> instance.</param>
-        /// <returns><c>true</c> if the specified type is a valid element type; otherwise, <c>false</c>.</returns>
-        private static Boolean IsValidElementType(Type type, out UvmlKnownTypeAttribute attr)
+        private static void LogExceptionToBuildOutputConsole(String root, Exception exception, Boolean resolveContentFiles)
         {
-            attr = null;
+            if (exception is AggregateException)
+            {
+                foreach (var innerException in ((AggregateException)exception).InnerExceptions)
+                {
+                    LogExceptionToBuildOutputConsole(root, innerException, resolveContentFiles);
+                }
+            }
+            else
+            {
+                var exeName = Assembly.GetEntryAssembly().GetName().Name;
 
-            if (!typeof(UIElement).IsAssignableFrom(type))
-                return false;
+                if (exception is BindingExpressionCompilationFailedException)
+                {
+                    foreach (var error in ((BindingExpressionCompilationFailedException)exception).Result.Errors)
+                    {
+                        var filename = !String.IsNullOrEmpty(error.Filename) && resolveContentFiles ? 
+                            UltravioletDebugUtil.GetOriginalContentFilePath(root, error.Filename) : error.Filename ?? exeName;
 
-            attr = type.GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).Cast<UvmlKnownTypeAttribute>().SingleOrDefault();
+                        Console.WriteLine("{0}({1},{2}): expression compiler error {3}: {4}", filename, error.Line, error.Column, error.ErrorNumber, error.ErrorText);
+                    }
+                    return;
+                }
 
-            return attr != null;
+                if (exception is BindingExpressionCompilationErrorException)
+                {
+                    var error = ((BindingExpressionCompilationErrorException)exception).Error;
+                    var filename = !String.IsNullOrEmpty(error.Filename) && resolveContentFiles ? 
+                        UltravioletDebugUtil.GetOriginalContentFilePath("Content", error.Filename) : error.Filename ?? exeName;
+
+                    Console.WriteLine("{0}({1},{2}): expression compiler error {3}: {4}", filename, error.Line, error.Column, error.ErrorNumber, error.ErrorText);
+                    return;
+                }
+
+                Console.WriteLine("{0}: expression compiler error 1: {1}", exeName, exception.Message);
+            }
+        }
+        
+        /// <summary>
+        /// Loads the assembly which provides binding expression compilation services.
+        /// </summary>
+        private void LoadBindingExpressionCompiler()
+        {
+            if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                throw new NotSupportedException();
+
+            if (bindingExpressionCompiler != null)
+                return;
+
+            var compilerAsmName = BindingExpressionCompilerAssemblyName;
+            if (String.IsNullOrEmpty(compilerAsmName))
+                throw new InvalidOperationException(PresentationStrings.InvalidBindingExpressionCompilerAsm);
+
+            Assembly compilerAsm = null;
+            try
+            {
+                compilerAsm = Assembly.Load(compilerAsmName);
+            }
+            catch (FileNotFoundException e)
+            {
+                throw new InvalidOperationException(PresentationStrings.ExpressionCompilerNotFound.Format(compilerAsmName), e);
+            }
+
+            var compilerType = compilerAsm.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBindingExpressionCompiler))).FirstOrDefault();
+            if (compilerType == null || compilerType.IsAbstract)
+            {
+                throw new InvalidOperationException(PresentationStrings.ExpressionCompilerTypeNotValid);
+            }
+
+            try
+            {
+                bindingExpressionCompiler = (IBindingExpressionCompiler)Activator.CreateInstance(compilerType);
+            }
+            catch (MissingMethodException e)
+            {
+                throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(compilerType.Name), e);
+            }
         }
 
         /// <summary>
-        /// Extracts the element type associated with the specified layout.
+        /// Called when the Ultraviolet context blah blah blah
         /// </summary>
-        /// <param name="layout">The XML document that defines the custom element's layout.</param>
-        /// <returns>The element type associated with the specified layout.</returns>
-        private static Type ExtractElementTypeFromLayout(XDocument layout)
+        /// <param name="uv"></param>
+        private void OnFrameStart(UltravioletContext uv)
         {
-            if (!IsValidElementLayout(layout))
-                throw new ArgumentException(PresentationStrings.InvalidUserControlDefinition);
+            PerformanceStats.OnFrameStart();
+        }
 
-            var attr = layout.Root.Attribute("Type");
-            if (attr == null)
-                throw new InvalidOperationException(PresentationStrings.UserControlDoesNotDefineType);
+        /// <summary>
+        /// Called when the Ultraviolet context is about to update its subsystems.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        private void OnUpdatingSubsystems(UltravioletContext uv, UltravioletTime time)
+        {
+            digestCycleID++;
+        }
 
-            var type = Type.GetType(attr.Value, false);
-            if (type == null)
-                throw new InvalidOperationException(PresentationStrings.InvalidUserControlType.Format(attr.Value));
+        /// <summary>
+        /// Called when the Ultraviolet UI subsystem is being updated.
+        /// </summary>
+        /// <param name="subsystem">The Ultraviolet subsystem.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        private void OnUpdatingUI(IUltravioletSubsystem subsystem, UltravioletTime time)
+        {
+            PerformanceStats.BeginUpdate();
 
-            UvmlKnownTypeAttribute uiElementAttr;
-            if (!IsValidElementType(type, out uiElementAttr))
-                throw new InvalidOperationException(PresentationStrings.InvalidUserControlType.Format(type.Name));
+            PerformLayout();
+            OutOfBandRenderer.Update();
 
-            return type;
+            PerformanceStats.EndUpdate();
+        }
+
+        /// <summary>
+        /// Called when the Ultraviolet context is about to draw a frame.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        private void OnDrawing(UltravioletContext uv, UltravioletTime time)
+        {
+            if (uv.IsRunningInServiceMode)
+                return;
+
+            OutOfBandRenderer.DrawRenderTargets(time);
         }
 
         /// <summary>
@@ -528,9 +965,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 defaultProperty = defaultPropertyAttr.Name;
             }
-
+            
             var ctor = type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
-            if (ctor == null)
+            if (ctor == null && !type.IsAbstract)
                 throw new InvalidOperationException(PresentationStrings.UIElementInvalidCtor.Format(type.Name));
 
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
@@ -622,36 +1059,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             registration = null;
             return false;
         }
-
-        /// <summary>
-        /// Gets the registration for the specified known element.
-        /// </summary>
-        /// <param name="layout">The layout document of the known element for which to retrieve a registration.</param>
-        /// <param name="registration">The registration for the known element with the specified layout.</param>
-        /// <returns><c>true</c> if a known element associated with the specified layout exists; otherwise, <c>false</c>.</returns>
-        private Boolean GetKnownElementRegistration(XDocument layout, out KnownElement registration)
-        {
-            var type = ExtractElementTypeFromLayout(layout);
-            foreach (var value in coreTypes.Values)
-            {
-                if (value.Type == type && value is KnownElement)
-                {
-                    registration = (KnownElement)value;
-                    return true;
-                }
-            }
-            foreach (var value in registeredTypes.Values)
-            {
-                if (value.Type == type && value is KnownElement)
-                {
-                    registration = (KnownElement)value;
-                    return true;
-                }
-            }
-            registration = null;
-            return false;
-        }
-
+        
         /// <summary>
         /// Raises the <see cref="GlobalStyleSheetChanged"/> event.
         /// </summary>
@@ -663,54 +1071,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 temp(this, EventArgs.Empty);
             }
         }
-
-        /// <summary>
-        /// Processes the queue of elements with invalid styling states.
-        /// </summary>
-        private void ProcessStyleQueue()
-        {
-            while (styleQueue.Count > 0)
-            {
-                var element = styleQueue.Dequeue();
-                if (element.IsStyleValid)
-                    continue;
-
-                element.Style(element.View.StyleSheet);
-                element.InvalidateMeasure();
-            }
-        }
-
-        /// <summary>
-        /// Processes the queue of elements with invalid measurement states.
-        /// </summary>
-        private void ProcessMeasureQueue()
-        {
-            while (measureQueue.Count > 0)
-            {
-                var element = measureQueue.Dequeue();
-                if (element.IsMeasureValid)
-                    continue;
-
-                element.Measure(element.MostRecentAvailableSize);
-                element.InvalidateArrange();
-            }
-        }
-
-        /// <summary>
-        /// Processes the queue of elements with invalid arrangement states.
-        /// </summary>
-        private void ProcessArrangeQueue()
-        {
-            while (arrangeQueue.Count > 0)
-            {
-                var element = arrangeQueue.Dequeue();
-                if (element.IsArrangeValid)
-                    continue;
-
-                element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
-            }
-        }
-
+        
         /// <summary>
         /// Invalidates the specified element's style.
         /// </summary>
@@ -719,7 +1080,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (element.IsStyleValid)
             {
                 element.InvalidateStyleInternal();
-                PerformanceStats.InvalidateStyleCountLastFrame++;
+                PerformanceStats.InvalidateStyleCount++;
             }
         }
 
@@ -731,7 +1092,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (element.IsMeasureValid)
             {
                 element.InvalidateMeasureInternal();
-                PerformanceStats.InvalidateMeasureCountLastFrame++;
+                PerformanceStats.InvalidateMeasureCount++;
             }
         }
 
@@ -743,7 +1104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (element.IsArrangeValid)
             {
                 element.InvalidateArrangeInternal();
-                PerformanceStats.InvalidateArrangeCountLastFrame++;
+                PerformanceStats.InvalidateArrangeCount++;
             }
         }
 
@@ -764,10 +1125,60 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (stream == null)
                     return;
 
-                var template = XDocument.Load(stream);
+                var template = XDocument.Load(stream, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
                 ComponentTemplates.SetDefault(type, template);
             }
         }
+
+        /// <summary>
+        /// Raises the <see cref="UIElement.LayoutUpdated"/> event for elements which have registered handlers.
+        /// </summary>
+        private void RaiseLayoutUpdated()
+        {
+            elementsWithLayoutUpdatedHandlers.ForEach((element) =>
+            {
+                element.RaiseLayoutUpdated();
+            });
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether any elements are awaiting styling.
+        /// </summary>
+        private Boolean ElementNeedsStyle
+        {
+            get { return styleQueue.Count > 0; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether any elements are awaiting measurement.
+        /// </summary>
+        private Boolean ElementNeedsMeasure
+        {
+            get { return measureQueue.Count > 0; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether any elements are awaiting arrangement.
+        /// </summary>
+        private Boolean ElementNeedsArrange
+        {
+            get { return arrangeQueue.Count > 0; }
+        }
+
+        // The singleton instance of the Ultraviolet Presentation Foundation.
+        private static readonly UltravioletSingleton<PresentationFoundation> instance =
+            new UltravioletSingleton<PresentationFoundation>((uv) =>
+            {
+                var instance = new PresentationFoundation(uv);
+                uv.FrameStart += instance.OnFrameStart;
+                uv.UpdatingSubsystems += instance.OnUpdatingSubsystems;
+                uv.GetUI().Updating += instance.OnUpdatingUI;
+                uv.Drawing += instance.OnDrawing;
+                return instance;
+            });
+
+        // The diagnostics panel used to display performance metrics.
+        private DiagnosticsPanel diagnosticsPanel;
 
         // Performance stats.
         private readonly PresentationFoundationPerformanceStats performanceStats = 
@@ -785,12 +1196,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly Dictionary<String, KnownType> registeredTypes = 
             new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
 
+        // The registry of compiled data source wrappers.
+        private readonly Dictionary<String, Type> compiledDataSourceWrappers =
+            new Dictionary<String, Type>(StringComparer.Ordinal);
+        
+        // The out-of-band element renderer.
+        private readonly OutOfBandRenderer outOfBandRenderer;
+
         // The queues of elements with invalid layouts.
         private readonly LayoutQueue styleQueue;
         private readonly LayoutQueue measureQueue;
         private readonly LayoutQueue arrangeQueue;
+        private readonly WeakLinkedList<UIElement> elementsWithLayoutUpdatedHandlers = 
+            new WeakLinkedList<UIElement>();
 
         // The global style sheet.
         private UvssDocument globalStyleSheet;
+
+        // The compiler used to compile the game's binding expressions.
+        private const String CompiledExpressionsAssemblyName = "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll";
+        private IBindingExpressionCompiler bindingExpressionCompiler;
+
+        // The identifier of the current digest cycle.
+        private Int64 digestCycleID = 1;
     }
 }

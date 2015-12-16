@@ -1,19 +1,44 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using UvDebugSandbox.UI.Dialogs;
 
 namespace UvDebugSandbox.UI.Screens
 {
+    // Adorners must subclass the abstract base class Adorner.
+    public class SimpleCircleAdorner : Adorner
+    {
+        // Be sure to call the base class constructor.
+        public SimpleCircleAdorner(UIElement adornedElement)
+          : base(adornedElement)
+        {
+
+        }
+
+        protected override void OnDrawing(UltravioletTime time, DrawingContext dc)
+        {
+            DrawBlank(dc, new RectangleD(-8, -8, 16, 16), Color.Red);
+            DrawBlank(dc, new RectangleD(AdornedElement.RenderSize.Width - 8, -8, 16, 16), Color.Red);
+            DrawBlank(dc, new RectangleD(-8, AdornedElement.RenderSize.Height - 8, 16, 16), Color.Red);
+            DrawBlank(dc, new RectangleD(AdornedElement.RenderSize.Width - 8, AdornedElement.RenderSize.Height - 8, 16, 16), Color.Red);
+
+            base.OnDrawing(time, dc);
+        }
+    }
+
     public class DebugViewModel
     {
         private PresentationFoundationView view;
 
-        public DebugViewModel(PresentationFoundationView view)
+        public DebugViewModel(PresentationFoundationView view, DebugScreen owner)
         {
             Enable = true;
             this.view = view;
+            this.mb = new MessageBoxModal(owner);
         }
 
         public void PrintVisualTree(UIElement element)
@@ -21,6 +46,23 @@ namespace UvDebugSandbox.UI.Screens
             var root = view.LayoutRoot;
             PrintVisualTreeNode(root, 0);
         }
+
+        private MessageBoxModal mb;
+
+        public void Test(DependencyObject dobj, ref RoutedEventData data)
+        {
+            var task = MessageBox.ShowAsync(mb, "Hello, world!", "Caption Here", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            task.ContinueWith(result =>
+            {
+                Console.WriteLine(result);
+            });
+        }
+
+        public void Test2(DependencyObject dobj, ref RoutedEventData data)
+        {
+            MessageBox.Show(mb, "Hello, world!", "Caption Here", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.No);
+        }
+
 
         private void PrintVisualTreeNode(DependencyObject dobj, Int32 indentLayer)
         {
@@ -44,6 +86,9 @@ namespace UvDebugSandbox.UI.Screens
             get;
             set;
         }
+
+        public Single Angle { get { return (DateTime.Now.Millisecond / 1000.0f) * 360f; } }
+        public Single Angle3 { get; set; }
 
         public Int32 Index
         {
@@ -89,29 +134,32 @@ namespace UvDebugSandbox.UI.Screens
             view.Ultraviolet.Host.Exit();
         }
 
-        public void HandleClick(DependencyObject dobj, ref RoutedEventData data)
+        public void HandleClick1(DependencyObject dobj, ref RoutedEventData data)
         {
-            asdf.IsOpen = !asdf.IsOpen;
+            sp1.Focus();
         }
 
-        private readonly Popup asdf = null;
+        public void HandleClick2(DependencyObject dobj, ref RoutedEventData data)
+        {
+            sp2.Focus();
+        }
+
+        public void Loading(DependencyObject dobj, ref RoutedEventData data)
+        {
+
+
+        }
+
+        private readonly StackPanel sp1 = null;
+        private readonly StackPanel sp2 = null;
     }
 
-    public class DebugViewScreen : UvDebugScreen
+    public class DebugViewScreen : DebugScreen
     {
         public DebugViewScreen(ContentManager globalContent, UIScreenService uiScreenService)
             : base("Content/UI/Screens/DebugViewScreen", "DebugViewScreen", globalContent, uiScreenService)
         {
-
-        }
-
-        protected override void OnViewLoaded()
-        {
-            if (View != null)
-            {
-                View.SetViewModel(new DebugViewModel((PresentationFoundationView)View));
-            }
-            base.OnViewLoaded();
+            View.SetViewModel(new DebugViewModel((PresentationFoundationView)View, this));
         }
     }
 }

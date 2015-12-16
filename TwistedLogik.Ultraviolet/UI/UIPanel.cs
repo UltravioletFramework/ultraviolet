@@ -72,37 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the panel.</param>
         public abstract void Draw(UltravioletTime time, SpriteBatch spriteBatch);
-
-        /// <summary>
-        /// Grants input focus to the panel.
-        /// </summary>
-        public void Focus()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            isFocused = true;
-
-            if (view != null)
-            {
-                view.Focus();
-            }
-        }
-
-        /// <summary>
-        /// Removes input focus from the panel.
-        /// </summary>
-        public void Blur()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            isFocused = false;
-
-            if (view != null)
-            {
-                view.Blur();
-            }
-        }
-
+        
         /// <summary>
         /// Gets the content manager which is used to load globally-available assets.
         /// </summary>
@@ -206,20 +176,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 return state; 
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the panel has input focus.
-        /// </summary>
-        public Boolean IsFocused
-        {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return isFocused; 
-            }
-        }
-
+        
         /// <summary>
         /// Gets a value indicating whether the screen is in a transition state.
         /// </summary>
@@ -538,22 +495,14 @@ namespace TwistedLogik.Ultraviolet.UI
                 temp(this);
             }
         }
-
-        /// <summary>
-        /// Occurs when the panel's view is loaded.
-        /// </summary>
-        protected virtual void OnViewLoaded()
-        {
-
-        }
-
+        
         /// <summary>
         /// Loads the view from the specified panel definition.
         /// </summary>
         /// <param name="definition">The panel definition from which to load the view.</param>
         protected void LoadView(UIPanelDefinition definition)
         {
-            var view = UIView.Create(definition);
+            var view = UIView.Create(this, definition);
             if (view != null)
             {
                 if (window != null)
@@ -561,9 +510,6 @@ namespace TwistedLogik.Ultraviolet.UI
                     var area = new Rectangle(X, Y, Width, Height);
                     view.SetViewPosition(window, area);
                 }
-
-                if (IsFocused)
-                    view.Focus();
             }
 
             this.view = view;
@@ -590,11 +536,22 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         protected void UpdateView(UltravioletTime time)
         {
-            if (view != null && State == UIPanelState.Open)
+            if (view != null && State != UIPanelState.Closed)
+            {
+                UpdateViewPosition();
+                view.Update(time);
+            }
+        }
+
+        /// <summary>
+        /// Updates the position of the panel's view.
+        /// </summary>
+        protected void UpdateViewPosition()
+        {
+            if (view != null && State != UIPanelState.Closed)
             {
                 var area = new Rectangle(X, Y, Width, Height);
                 view.SetViewPosition(Window, area);
-                view.Update(time);
             }
         }
 
@@ -721,6 +678,14 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
+        /// Raises the <see cref="Opening"/> event.
+        /// </summary>
+        internal virtual void HandleOpening()
+        {
+            OnOpening();
+        }
+
+        /// <summary>
         /// Raises the <see cref="Opened"/> event.
         /// </summary>
         internal virtual void HandleOpened()
@@ -731,6 +696,14 @@ namespace TwistedLogik.Ultraviolet.UI
                 tcsOpened.SetResult(this);
                 tcsOpened = null;
             }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Closing"/> event.
+        /// </summary>
+        internal virtual void HandleClosing()
+        {
+            OnClosing();
         }
 
         /// <summary>
@@ -751,7 +724,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         internal virtual void HandleViewLoaded()
         {
-            OnViewLoaded();
+
         }
 
         /// <summary>
@@ -782,14 +755,14 @@ namespace TwistedLogik.Ultraviolet.UI
             }
 
             CancelPendingTasks();
-            CreateTaskCompletionSourceIfNeeded(async, ref tcsOpened);
+            var task = CreateTaskCompletionSourceIfNeeded(async, ref tcsOpened);
 
             var remaining = 1.0 - TransitionPosition;
 
             this.state = UIPanelState.Opening;
             this.transitionDuration = remaining * duration.TotalMilliseconds;
             this.transitionDirection = 1;
-            OnOpening();
+            HandleOpening();
 
             if (this.transitionDuration == 0)
             {
@@ -798,7 +771,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 HandleOpened();
             }
 
-            return async ? tcsOpened.Task : null;
+            return async ? task : null;
         }
 
         /// <summary>
@@ -812,16 +785,14 @@ namespace TwistedLogik.Ultraviolet.UI
             }
 
             CancelPendingTasks();
-            CreateTaskCompletionSourceIfNeeded(async, ref tcsClosed);
+            var task = CreateTaskCompletionSourceIfNeeded(async, ref tcsClosed);
 
             var remaining = TransitionPosition;
 
             this.state = UIPanelState.Closing;
             this.transitionDuration = remaining * duration.TotalMilliseconds;
             this.transitionDirection = -1;
-            this.Blur();
-
-            OnClosing();
+            HandleClosing();
 
             if (this.transitionDuration == 0)
             {
@@ -830,7 +801,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 HandleClosed();
             }
 
-            return async ? tcsClosed.Task : null;
+            return async ? task : null;
         }
 
         /// <summary>
@@ -854,7 +825,6 @@ namespace TwistedLogik.Ultraviolet.UI
         private readonly ContentManager localContent;
         private UIView view;
         private UIPanelState state = UIPanelState.Closed;
-        private Boolean isFocused;
         private Double transitionPosition = 0f;
         private Double transitionDuration = 0f;
         private Double transitionDirection = 0f;

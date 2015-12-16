@@ -20,6 +20,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the type of the element contained by the specified generic list type.
+        /// </summary>
+        /// <param name="type">The generic list type to evaluate.</param>
+        /// <returns>The type of the list's elements.</returns>
+        public static Type GetGenericListElementType(this Type type)
+        {
+            var ifaces = type.GetInterfaces();
+            foreach (var iface in ifaces)
+            {
+                if (iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IList<>))
+                {
+                    return iface.GetGenericArguments()[0];
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified type is a primitive numeric type.
         /// </summary>
         /// <param name="type">The type to evaluate.</param>

@@ -258,7 +258,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (!Double.IsNaN(bottom))
                     childY = finalSize.Height - (bottom + childHeight);
 
-                child.Arrange(new RectangleD(childX, childY, childWidth, childHeight), ArrangeOptions.Fill);
+                child.Arrange(new RectangleD(childX, childY, childWidth, childHeight));
             }
 
             return finalSize;

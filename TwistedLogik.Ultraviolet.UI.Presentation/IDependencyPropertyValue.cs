@@ -10,6 +10,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     internal interface IDependencyPropertyValue
     {
         /// <summary>
+        /// Called when the property's value is forcibly invalidated.
+        /// </summary>
+        void HandleForcedInvalidation();
+
+        /// <summary>
         /// Called when the data source attached to the object which owns this value changes.
         /// </summary>
         /// <param name="dataSource">The new value of the <see cref="DependencyObject.DependencyDataSource"/> property.</param>
@@ -38,6 +43,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="animation">The animation to apply to the value, or <c>null</c> to disable animation.</param>
         /// <param name="clock">The clock which controls the animation's playback.</param>
         void Animate(AnimationBase animation, Clock clock);
+
+        /// <summary>
+        /// Starts the specified storyboard animation on this property.
+        /// </summary>
+        /// <param name="animation">The animation to apply to the value.</param>
+        /// <param name="storyboardInstance">The storyboard instance which is applying the value.</param>
+        void BeginStoryboard(AnimationBase animation, StoryboardInstance storyboardInstance);
+
+        /// <summary>
+        /// Stops the specified storyboard animation in this property.
+        /// </summary>
+        /// <param name="animation">The animation to stop.</param>
+        /// <param name="storyboardInstance">The storyboard instance which applied the value.</param>
+        void StopStoryboard(AnimationBase animation, StoryboardInstance storyboardInstance);
 
         /// <summary>
         /// Binds the dependency property.
@@ -114,6 +133,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Called when the value's associated clock is resumed.
         /// </summary>
         void ClockResumed();
+
+        /// <summary>
+        /// Gets the dependency property's calculated value without regard for its type.
+        /// </summary>
+        /// <returns>The dependency property's calculated value.</returns>
+        Object GetUntypedValue();
 
         /// <summary>
         /// Gets or sets the dependency object which owns this property value.

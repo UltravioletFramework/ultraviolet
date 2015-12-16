@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -70,6 +71,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override RectangleD? ClipCore()
+        {
+            var scrollViewer = TemplatedParent as ScrollViewer;
+            if (scrollViewer != null && scrollViewer.ContentClipped)
+            {
+                return UntransformedAbsoluteBounds;
+            }
+            return base.ClipCore();
+        }
+        
+        /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
             var templatedParentElement = TemplatedParent as UIElement;
@@ -115,16 +127,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (TemplatedParent == null)
                 return finalSize;
 
+            var scrollableHorizontally = CanScrollHorizontally && extentWidth > viewportWidth;
+            var scrollableVertically = CanScrollVertically && extentHeight > viewportHeight;
+
             var contentFinalSize = new Size2D(
-                CanScrollHorizontally ? extentWidth : finalSize.Width,
-                CanScrollVertically ? extentHeight : finalSize.Height
+                scrollableHorizontally ? extentWidth : finalSize.Width,
+                scrollableVertically ? extentHeight : finalSize.Height
             );
 
             var contentSize   = base.ArrangeOverride(contentFinalSize, options);
-            var presenterSize = new Size2D(
-                Math.Min(finalSize.Width, contentSize.Width),
-                Math.Min(finalSize.Height, contentSize.Height)
-            );
+            var presenterSize = finalSize;
 
             extentWidth  = contentSize.Width;
             extentHeight = contentSize.Height;

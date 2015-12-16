@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="updown-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <TextBox Name="PART_Input"
+               Class="updown-input"
+               KeyboardMode="Number"
+               Background="{{Background}}"
+               Foreground="{{Foreground}}"
+               Grid.RowSpan="2"
+               Grid.ColumnSpan="2"
+               HorizontalAlignment="Stretch"
+               VerticalAlignment="Stretch">{{Value}}</TextBox>
+      <RepeatButton Class="updown-button updown-button-up"
+                    Focusable="false"
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Click="Increment">
+
+        <Image Class="updown-button-up-arrow"/>
+
+      </RepeatButton>
+      <RepeatButton Class="updown-button updown-button-down"
+                    Focusable="false"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Click="Decrement">
+
+        <Image Class="updown-button-down-arrow"/>
+
+      </RepeatButton>
+
+    </Grid>
+  </View>
+</ComponentTemplate>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
@@ -28,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Writes an asset identifier to the stream.
         /// </summary>
         /// <param name="writer">The binary writer with which to write the asset identifier.</param>
-        /// <param name="id">The <see cref="Nullable{AssetID}"/> structure to write to the stream.</param>
+        /// <param name="id">The <see cref="System.Nullable{AssetID}"/> structure to write to the stream.</param>
         public static void Write(this BinaryWriter writer, AssetID? id)
         {
             writer.Write(id.HasValue);

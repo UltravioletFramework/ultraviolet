@@ -44,6 +44,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
+            public void HandleForcedInvalidation()
+            {
+                var value = GetValue();
+                metadata.HandleChanged(Owner, property, value, value);
+            }
+
+            /// <inheritdoc/>
             public void HandleDataSourceChanged(Object dataSource)
             {
                 if (cachedBoundValue != null)
@@ -67,8 +74,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 Contract.Require(action, "action");
 
+                var oldValue = GetValue();
+
                 triggeredValueSource = action;
                 triggeredValue       = action.GetValue<T>();
+
+                UpdateRequiresDigest(oldValue);
             }
 
             /// <inheritdoc/>
@@ -129,9 +140,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="duration">The animation's duration.</param>
             public void Animate(T value, EasingFunction fn, LoopBehavior loopBehavior, TimeSpan duration)
             {
-                var clock = SimpleClockPool.Instance.Retrieve(loopBehavior, duration);
-                clock.Start();
-                Animate(value, fn, clock);
+                var clock = SimpleClockPool.Instance.Retrieve(this);
+                var clockValue = clock.Value;
+
+                clockValue.SetLoopBehavior(loopBehavior);
+                clockValue.SetDuration(duration);
+                clockValue.Start();
+
+                Animate(value, fn, clockValue);
+            }
+
+            /// <inheritdoc/>
+            public void BeginStoryboard(AnimationBase animation, StoryboardInstance storyboardInstance)
+            {
+                Animate(animation, storyboardInstance.StoryboardClock);
+                this.storyboardInstance = storyboardInstance;
+            }
+
+            /// <inheritdoc/>
+            public void StopStoryboard(AnimationBase animation, StoryboardInstance storyboardInstance)
+            {
+                if (this.storyboardInstance != storyboardInstance)
+                    return;
+
+                ClearAnimation();
             }
 
             /// <inheritdoc/>
@@ -199,9 +231,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 ReleasePooledAnimationClock();
 
-                this.animation       = null;
-                this.animationClock  = null;
-                this.animationEasing = null;
+                this.animation          = null;
+                this.animationClock     = null;
+                this.animationEasing    = null;
+                this.storyboardInstance = null;
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -253,6 +286,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 cachedBoundValue.SetFormatString(formatString);
             }
 
+            /// <inheritdoc/>
+            public Object GetUntypedValue()
+            {
+                return GetValue();
+            }
+
             /// <summary>
             /// Sets the dependency property's value.
             /// </summary>
@@ -265,10 +304,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 if (IsDataBound)
                 {
-                    if (cachedBoundValue.IsWritable)
-                    {
-                        cachedBoundValue.Set(value);
-                    }
+                    SetCachedBoundValue(value);
                 }
                 else
                 {
@@ -479,6 +515,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
+            /// Gets a value indicating whether the property's coerced value is different from its cached bound value.
+            /// </summary>
+            private Boolean IsCoercedValueDifferentFromCachedBoundValue()
+            {
+                return IsCoerced && !comparer(coercedValue, cachedBoundValue.Get());
+            }
+
+            /// <summary>
+            /// Sets the property's bound value.
+            /// </summary>
+            private void SetCachedBoundValue(T value)
+            {
+                if (!cachedBoundValue.IsWritable)
+                    return;
+
+                if (cachedBoundValue.SuppressDigestForDataBinding && GetValueSource() == ValueSource.BoundValue)
+                {
+                    var oldValue = GetValue();
+
+                    value = UpdateCoercedValue(value);
+                    cachedBoundValue.Set(value);
+
+                    var newValue = GetValue();
+
+                    if (!comparer(oldValue, newValue))
+                    {
+                        metadata.HandleChanged<T>(Owner, property, oldValue, newValue);
+                    }
+                }
+                else
+                {
+                    cachedBoundValue.Set(value);
+                }
+            }
+
+            /// <summary>
             /// Checks to determine whether the property's underlying value has changed,
             /// and if so, handles it appropriately.
             /// </summary>
@@ -491,38 +563,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     UpdateAnimation(time);
                 }
 
-                var value    = default(T);
-                var changed  = false;
+                var value = default(T);
+                var potentiallyChanged = false;
 
                 if (cachedBoundValue != null)
                 {
-                    if (cachedBoundValue.CheckHasChanged())
+                    if (cachedBoundValue.CheckHasChanged() || IsCoercedValueDifferentFromCachedBoundValue())
                     {
-                        value   = cachedBoundValue.Get();
-                        changed = true;
+                        value = cachedBoundValue.Get();
+                        potentiallyChanged = true;
                     }
                 }
                 else
                 {
-                    value    = GetValue();
-                    changed  = !comparer(value, previousValue);
+                    value = GetValue();
+                    potentiallyChanged = !comparer(value, previousValue);
                 }
 
-                if (changed)
+                if (potentiallyChanged)
                 {
                     var oldValue = original;
                     var newValue = value;
 
                     if (IsCoerced)
                     {
-                        coercedValue = metadata.CoerceValue<T>(owner, value);
-                        changed      = !comparer(coercedValue, original);
-                        newValue     = coercedValue;
+                        coercedValue = metadata.CoerceValue(owner, value);
+                        potentiallyChanged = !comparer(coercedValue, original);
+                        newValue = coercedValue;
                     }
 
-                    if (changed)
+                    var definitelyChanged = potentiallyChanged;
+                    if (definitelyChanged)
                     {
-                        metadata.HandleChanged<T>(Owner, property, oldValue, newValue);
+                        metadata.HandleChanged(Owner, property, oldValue, newValue);
                     }
                 }
                 previousValue = value;
@@ -563,8 +636,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var requiresDigestNew = IsDataBound || IsAnimated || 
                     (metadata.IsInherited && !hasLocalValue && !hasStyledValue);
 
-                if (cachedBoundValue != null && cachedBoundValue.SuppressDigest)
-                    requiresDigestNew = false;
+                if (GetValueSource() == ValueSource.BoundValue)
+                {
+                    if (cachedBoundValue != null && cachedBoundValue.SuppressDigestForDataBinding)
+                        requiresDigestNew = false;
+                }
 
                 if (requiresDigestNew != requiresDigest)
                 {
@@ -685,9 +761,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (simpleClock == null)
                     return;
 
-                if (simpleClock.IsPooled)
+                if (simpleClock.PooledObject != null)
                 {
-                    SimpleClockPool.Instance.Release(simpleClock);
+                    SimpleClockPool.Instance.Release(simpleClock.PooledObject);
                     animationClock = null;
                 }
             }
@@ -730,7 +806,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     return cachedBoundValue.Get();
                 }
-                if (hasLocalValue)
+                if (HasLocalValue)
                 {
                     return localValue;
                 }
@@ -738,7 +814,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     return triggeredValue;
                 }
-                if (hasStyledValue)
+                if (HasStyledValue)
                 {
                     return styledValue;
                 }
@@ -762,6 +838,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return coercedValue;
                 }
                 return value;
+            }
+
+            /// <summary>
+            /// Gets a <see cref="ValueSource"/> value which indicates from where the data property is currently
+            /// retrieving its value.
+            /// </summary>
+            /// <returns>The <see cref="ValueSource"/> value for this dependency property.</returns>
+            private ValueSource GetValueSource()
+            {
+                if (IsCoerced)
+                {
+                    return ValueSource.CoervedValue;
+                }
+                if (IsAnimated)
+                {
+                    return ValueSource.AnimatedValue;
+                }
+                if (IsDataBound)
+                {
+                    return ValueSource.BoundValue;
+                }
+                if (HasLocalValue)
+                {
+                    return ValueSource.LocalValue;
+                }
+                if (HasTriggeredValue)
+                {
+                    return ValueSource.TriggeredValue;
+                }
+                if (HasStyledValue)
+                {
+                    return ValueSource.StyledValue;
+                }
+                if (metadata.IsInherited && Owner.DependencyContainer != null)
+                {
+                    return ValueSource.InheritedValue;
+                }
+                return ValueSource.DefaultValue;
             }
 
             // Property values.
@@ -793,6 +907,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private T animatedTargetValue;
             private T animatedHandOffValue;
             private EasingFunction animationEasing;
+            private StoryboardInstance storyboardInstance;
         }
     }
 }

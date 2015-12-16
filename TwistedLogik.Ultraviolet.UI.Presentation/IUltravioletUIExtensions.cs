@@ -16,19 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(ui, "ui");
 
-            return instance;
+            return PresentationFoundation.Instance;
         }
-
-        // The singleton instance of the Ultraviolet Presentation Foundation.
-        private static readonly UltravioletSingleton<PresentationFoundation> instance = 
-            new UltravioletSingleton<PresentationFoundation>((uv) =>
-            {
-                var instance = new PresentationFoundation(uv);
-                uv.GetUI().Updating += (s, t) =>
-                {
-                    instance.Update(t);
-                };
-                return instance;
-            });
     }
 }

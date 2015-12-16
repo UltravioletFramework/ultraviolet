@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="listbox-component"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+      <Image Class="listbox-background"
+             SourceColor="{{Background}}"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"/>
+      <Border Class="listbox-border"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch">
+
+        <ScrollViewer Name="PART_ScrollViewer" 
+                      Class="listbox-scrollviewer"
+                      HorizontalAlignment="Stretch"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalAlignment="Stretch"
+                      VerticalScrollBarVisibility="Auto">
+
+          <ItemsPanel HorizontalAlignment="Stretch"
+                      KeyboardNavigation.DirectionalNavigation="Contained"/>
+
+        </ScrollViewer>
+
+      </Border>
+
+    </Grid>
+  </View>
+</ComponentTemplate>

@@ -349,9 +349,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Attempts to consume an Identifier token.
+        /// Attempts to consume an Identifier token or a keyword token.
         /// </summary>
-        private static Boolean ConsumeIdentifier(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix, ref Boolean storyboard)
+        private static Boolean ConsumeIdentifierOrKeyword(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix, ref Boolean storyboard)
         {
             if (IsPastEndOfStream(input, ix))
                 return false;
@@ -364,11 +364,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             while (ix < input.Length && IsValidInIdentifier(input[ix])) { ix++; length++; }
 
-            var value = input.Substring(start, length);
-            var token = new UvssLexerToken(UvssLexerTokenType.Identifier, start, length, line, value);
+            var tokenType = UvssLexerTokenType.Identifier;
+            var tokenValue = input.Substring(start, length);
+
+            switch (tokenValue.ToLowerInvariant())
+            {
+                case "as":
+                    tokenType = UvssLexerTokenType.AsOperator;
+                    break;
+            }
+
+            var token = new UvssLexerToken(tokenType, start, length, line, tokenValue);
             output.Add(token);
 
-            if (value.StartsWith("@"))
+            if (tokenValue.StartsWith("@"))
                 storyboard = true;
 
             return true;
@@ -388,6 +397,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static Boolean IsValidInIdentifier(Char c)
         {
             return Char.IsLetterOrDigit(c) || c == '_' || c == '-';
+        }
+
+        /// <summary>
+        /// Attempts to consume a TemplatedChildSelector token.
+        /// </summary>
+        private static Boolean ConsumeTemplatedChildSelector(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
+        {
+            if (IsPastEndOfStream(input, ix + 1))
+                return false;
+
+            if (input[ix] != '>' || input[ix + 1] != '>')
+                return false;
+
+            var token = new UvssLexerToken(UvssLexerTokenType.TemplatedChildSelector, ix, 2, line);
+            output.Add(token);
+
+            ix += 2;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to consume a LogicalChildSelector token.
+        /// </summary>
+        private static Boolean ConsumeLogicalChildSelector(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
+        {
+            if (IsPastEndOfStream(input, ix + 1))
+                return false;
+
+            if (input[ix] != '>' || input[ix + 1] != '?')
+                return false;
+
+            var token = new UvssLexerToken(UvssLexerTokenType.LogicalChildSelector, ix, 2, line);
+            output.Add(token);
+
+            ix += 2;
+
+            return true;
         }
 
         /// <summary>
@@ -577,6 +624,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Attempts to consume a Pipe token.
+        /// </summary>
+        private static Boolean ConsumePipe(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
+        {
+            return ConsumePunctuation(UvssLexerTokenType.Pipe, '|', input, output, line, ref ix);
+        }
+
+        /// <summary>
         /// Consumes any WhiteSpace, SingleLineComment, or MultiLineComment tokens at the current position in the stream.
         /// </summary>
         private static Boolean ConsumeWhiteSpaceAndComments(String input, IList<UvssLexerToken> output, ref Int32 line, ref Int32 ix)
@@ -635,6 +690,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             if (ConsumeCloseParenthesis(input, output, line, ref ix))
                 return true;
 
+            if (ConsumePipe(input, output, line, ref ix))
+                return true;
             if (ConsumeComma(input, output, line, ref ix))
                 return true;
             if (ConsumeColon(input, output, line, ref ix))
@@ -645,6 +702,52 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// Attempts to consume a IndexOperator token.
+        /// </summary>
+        private static Boolean ConsumeIndexOperator(String input, IList<UvssLexerToken> output, Int32 line, ref Int32 ix)
+        {
+            var position = ix;
+
+            if (input[position] != '[')
+                return false;
+
+            var start = position;
+            var length = 0;
+
+            position++;
+
+            while (true)            
+            {
+                if (ix >= input.Length)
+                    return false;
+
+                if (input[position] == ']')
+                    break;
+
+                if (!Char.IsDigit(input[position]))
+                    return false;
+
+                length++;
+                position++;
+            }
+
+            position++;
+
+            if (length == 0)
+                return false;
+
+            length += 2;
+
+            var value = input.Substring(start, length);
+            var token = new UvssLexerToken(UvssLexerTokenType.IndexOperator, start, length, line, value);
+            output.Add(token);
+
+            ix = position;
+
+            return true;
         }
 
         /// <summary>
@@ -680,7 +783,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     continue;
                 }
 
-                if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                if (ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref storyboard))
                     continue;
                 if (ConsumeValues(input, output, line, ref ix))
                     continue;
@@ -706,9 +809,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
                 if (ConsumeUniversalSelector(input, output, line, ref ix))
                     continue;
+                if (ConsumeTemplatedChildSelector(input, output, line, ref ix))
+                    continue;
+                if (ConsumeLogicalChildSelector(input, output, line, ref ix))
+                    continue;
                 if (ConsumeChildSelector(input, output, line, ref ix))
                     continue;
-                if (ConsumeIdentifier(input, output, line, ref ix, ref storyboard))
+                if (ConsumeIdentifierOrKeyword(input, output, line, ref ix, ref storyboard))
                     continue;
                 if (ConsumeColon(input, output, line, ref ix))
                     continue;

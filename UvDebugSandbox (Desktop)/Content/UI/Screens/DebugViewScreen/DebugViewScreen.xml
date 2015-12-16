@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <StyleSheet>DebugViewScreenStyles</StyleSheet>
+  <View ViewModelType="UvDebugSandbox.UI.Screens.DebugViewModel, UvDebugSandbox">
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+
+      <Rectangle Name="rect" Width="200" Height="200" HorizontalAlignment="Center" FillColor="#ff0000ff" Opacity="{{slider->Value}}">
+        <Rectangle.Effect>
+          <DropShadowEffect/>
+        </Rectangle.Effect>        
+      </Rectangle>
+      <HSlider Margin="0 16 0 0" Name="slider"/>
+      <NumericUpDown Name="numupdown" Width="100"></NumericUpDown>
+      <NumericTextBlock>{{numupdown->Value}}</NumericTextBlock>
+      <TextBox></TextBox>
+      <Button>1</Button>
+      <Button>2</Button>
+      
+    </StackPanel>
+    
+  </View>
+</UIPanelDefinition>

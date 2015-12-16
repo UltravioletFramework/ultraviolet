@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="button-component"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+      <Image Class="button-background"
+             SourceColor="{{Background}}"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"/>
+      <ContentPresenter Class="button-content"
+                        HorizontalAlignment="{{HorizontalContentAlignment}}"
+                        VerticalAlignment="{{VerticalContentAlignment}}"
+                        Margin="{{Padding}}"/>
+      <Image Class="button-focus-image"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Opacity="{{IsFocusVisualVisible ? 1 : 0}}"
+             IsHitTestVisible="false"/>
+
+    </Grid>
+  </View>
+</ComponentTemplate>

@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// </summary>
         public OpenGLUltravioletConfiguration()
         {
-#if PRODUCTION
+#if SIGNED
             AudioSubsystemAssembly = "TwistedLogik.Ultraviolet.BASS, Version=1.2.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
 #else
             AudioSubsystemAssembly = "TwistedLogik.Ultraviolet.BASS, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL";
@@ -97,6 +97,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the context will disable hardware input by default.
+        /// </summary>
+        public Boolean IsHardwareInputDisabled
+        {
+            get { return isHardwareInputDisabled; }
+            set { isHardwareInputDisabled = value; }
+        }
+
+        /// <summary>
         /// The default configuration for the OpenGL/SDL2 implementation.
         /// </summary>
         public static readonly OpenGLUltravioletConfiguration Default = new OpenGLUltravioletConfiguration();
@@ -104,9 +113,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         // Property values.
         private String audioSubsystemAssembly;
         private Version minimumOpenGLVersion;
-        private Int32 backBufferDepthSize = 24;
-        private Int32 backBufferStencilSize = 8;
+        private Int32 backBufferDepthSize = 16;
+        private Int32 backBufferStencilSize = 1;
         private Int32 multiSampleBuffers = 1;
         private Int32 multiSampleSamples = 4;
+        private Boolean isHardwareInputDisabled;
     }
 }

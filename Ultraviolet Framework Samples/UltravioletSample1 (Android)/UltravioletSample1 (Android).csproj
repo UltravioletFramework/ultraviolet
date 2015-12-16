@@ -38,9 +38,9 @@
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
-    <JavaMaximumHeapSize />
-    <JavaOptions />
-    <MonoDroidExtraArgs />
+    <Debugger>Xamarin</Debugger>
+    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
+    <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,19 +51,23 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <AndroidLinkSkip>System.Core</AndroidLinkSkip>
+    <AndroidLinkSkip>
+    </AndroidLinkSkip>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <BundleAssemblies>False</BundleAssemblies>
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
-    <JavaMaximumHeapSize />
-    <JavaOptions />
-    <MonoDroidExtraArgs />
+    <Debugger>Xamarin</Debugger>
+    <AotAssemblies>False</AotAssemblies>
+    <EnableLLVM>False</EnableLLVM>
+    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
+    <EnableProguard>False</EnableProguard>
+    <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
-    <OutputPath>bin\Production\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>bin\Signed\</OutputPath>
     <DefineConstants>TRACE;ANDROID</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -79,9 +83,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Android\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="org.libsdl.app, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Android\org.libsdl.app.dll</HintPath>
+    <Reference Include="Org.Libsdl.App">
+      <HintPath>..\Dependencies\Android\Org.Libsdl.App.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -116,12 +119,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\UltravioletSample1\Game.cs">
-      <Link>Game.cs</Link>
-    </Compile>
-    <Compile Include="..\UltravioletSample1\Properties\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +159,18 @@
     <AndroidNativeLibrary Include="..\Dependencies\Android\x86\libSDL2main.so">
       <Link>lib\x86\libSDL2main.so</Link>
     </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\arm64-v8a\libbass.so">
+      <Link>lib\arm64-v8a\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\arm64-v8a\libbass_fx.so">
+      <Link>lib\arm64-v8a\libbass_fx.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\arm64-v8a\libSDL2.so">
+      <Link>lib\arm64-v8a\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\Android\arm64-v8a\libSDL2main.so">
+      <Link>lib\arm64-v8a\libSDL2main.so</Link>
+    </AndroidNativeLibrary>
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -175,10 +185,11 @@
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
+  <Import Project="..\UltravioletSample1\UltravioletSample1.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="254c229d-ba03-4ced-a139-f4213f8af6d9" />
+      <UserProperties ProjectLinkReference="254c229d-ba03-4ced-a139-f4213f8af6d9" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

@@ -179,6 +179,47 @@ namespace TwistedLogik.Ultraviolet.Tests
         }
 
         [TestMethod]
+        public void Matrix_ConcatsCorrectly()
+        {
+            var matrix1 = new Matrix(
+                 100, 200, 300, 400,
+                 500, 600, 700, 800,
+                 900, 1000, 1100, 1200,
+                1300, 1400, 1500, 1600);
+
+            var matrix2 = new Matrix(
+                 10, 20, 30, 40,
+                 50, 60, 70, 80,
+                 90, 100, 110, 120,
+                130, 140, 150, 160);
+
+            var result = Matrix.Concat(matrix1, matrix2);
+
+            TheResultingValue(result).ShouldBe(matrix2 * matrix1);
+        }
+
+        [TestMethod]
+        public void Matrix_ConcatsCorrectlyWithOutParam()
+        {
+            var matrix1 = new Matrix(
+                 100, 200, 300, 400,
+                 500, 600, 700, 800,
+                 900, 1000, 1100, 1200,
+                1300, 1400, 1500, 1600);
+
+            var matrix2 = new Matrix(
+                 10, 20, 30, 40,
+                 50, 60, 70, 80,
+                 90, 100, 110, 120,
+                130, 140, 150, 160);
+
+            var result = Matrix.Identity;
+            Matrix.Concat(ref matrix1, ref matrix2, out result);
+
+            TheResultingValue(result).ShouldBe(matrix2 * matrix1);
+        }
+
+        [TestMethod]
         public void Matrix_AddsCorrectly()
         {
             var matrix1 = new Matrix(
@@ -774,6 +815,78 @@ namespace TwistedLogik.Ultraviolet.Tests
                  0.00f,  0.50f,  0.00f,  0.00f,
                 -0.25f,  0.00f,  0.00f,  1.00f
             );
+        }
+
+        [TestMethod]
+        public void Matrix_TryInvertCalculatedCorrectly()
+        {
+            var matrix = new Matrix(
+                4, 0, 0, 0,
+                0, 0, 2, 0,
+                0, 1, 2, 0,
+                1, 0, 0, 1);
+
+            Matrix result;
+            var succeeded = Matrix.TryInvert(matrix, out result);
+
+            TheResultingValue(succeeded).ShouldBe(true);
+            TheResultingValue(result).ShouldBe(
+                 0.25f, 0.00f, 0.00f, 0.00f,
+                 0.00f, -1.00f, 1.00f, 0.00f,
+                 0.00f, 0.50f, 0.00f, 0.00f,
+                -0.25f, 0.00f, 0.00f, 1.00f
+            );
+        }
+
+        [TestMethod]
+        public void Matrix_TryInvertRefCalculatedCorrectly()
+        {
+            var matrix = new Matrix(
+                4, 0, 0, 0,
+                0, 0, 2, 0,
+                0, 1, 2, 0,
+                1, 0, 0, 1);
+
+            Matrix result;
+            var succeeded = Matrix.TryInvertRef(ref matrix, out result);
+
+            TheResultingValue(succeeded).ShouldBe(true);
+            TheResultingValue(result).ShouldBe(
+                 0.25f, 0.00f, 0.00f, 0.00f,
+                 0.00f, -1.00f, 1.00f, 0.00f,
+                 0.00f, 0.50f, 0.00f, 0.00f,
+                -0.25f, 0.00f, 0.00f, 1.00f
+            );
+        }
+
+        [TestMethod]
+        public void Matrix_TryInvertFailsForSingularMatrix()
+        {
+            var matrix = new Matrix(
+                16,  2,  3, 13,
+                 5, 11, 10,  8,
+                 9,  7,  6, 12,
+                 4, 14, 15,  1);
+
+            Matrix result;
+            var succeeded = Matrix.TryInvert(matrix, out result);
+
+            TheResultingValue(succeeded).ShouldBe(false);
+        }
+
+        [TestMethod]
+        public void Matrix_TryInvertRefFailsForSingularMatrix()
+        {
+            var matrix = new Matrix(
+                16,  2,  3, 13,
+                 5, 11, 10,  8,
+                 9,  7,  6, 12,
+                 4, 14, 15,  1);
+
+            Matrix result;
+            var succeeded = Matrix.TryInvertRef(ref matrix, out result);
+
+            TheResultingValue(succeeded).ShouldBe(false);
         }
 
         [TestMethod]

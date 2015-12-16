@@ -95,11 +95,6 @@
       <Variant>The specified expression '{0}' is not a valid binding expression.</Variant>
     </en-US>
   </String>
-  <String Key="INVALID_BINDING_CONTEXT">
-    <en-US>
-      <Variant>The specified binding context '{0}' is not a valid binding expression.</Variant>
-    </en-US>
-  </String>
   <String Key="BINDING_IS_READ_ONLY">
     <en-US>
       <Variant>Attempted to write to a read-only data binding.</Variant>
@@ -303,6 +298,91 @@
   <String Key="INVALID_ASSET_IDENTIFIER">
     <en-US>
       <Variant>The asset identifier '{0}' is not valid.</Variant>
+    </en-US>
+  </String>
+  <String Key="ELEMENT_IS_NOT_AN_ANCESTOR">
+    <en-US>
+      <Variant>The specified element is not an ancestor of this element.</Variant>
+    </en-US>
+  </String>
+  <String Key="ELEMENT_IS_NOT_A_DESCENDANT">
+    <en-US>
+      <Variant>The specified element is not a descendant of this element.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_TRANSFORMATION">
+    <en-US>
+      <Variant>The specified transformation is not valid.</Variant>
+    </en-US>
+  </String>
+  <String Key="DRAWING_CONTEXT_DOES_NOT_HAVE_SPRITEBATCH">
+    <en-US>
+      <Variant>The operation is invalid because the drawing context is not associated with a SpriteBatch object.</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPILED_EXPRESSIONS_ASSEMBLY_NOT_FOUND">
+    <en-US>
+      <Variant>Could not find the compiled expressions assembly.</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPILED_EXPRESSION_NOT_FOUND">
+    <en-US>
+      <Variant>Could not find a compiled implementation of the binding expression '{0}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="EXPRESSION_COMPILER_NOT_FOUND">
+    <en-US>
+      <Variant>Could not find the expression compiler assembly '{0}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="EXPRESSION_COMPILER_TYPE_NOT_VALID">
+    <en-US>
+      <Variant>Could not find a valid expression compiler type.</Variant>
+    </en-US>
+  </String>
+  <String Key="CANNOT_FIND_DEPENDENCY_PROPERTY_FIELD">
+    <en-US>
+      <Variant>Could not find the field which declares dependency property '{1}' for owner type '{0}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_BINDING_EXPRESSION_COMPILER_ASM">
+    <en-US>
+      <Variant>Could not load the binding expressions compiler because no compiler assembly was specified.</Variant>
+    </en-US>
+  </String>
+  <String Key="ATTACHABLE_PROPERTY_NOT_FOUND">
+    <en-US>
+      <Variant>The attachable property '{0}' was not found in type '{1}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="INCOMPATIBLE_TYPE">
+    <en-US>
+      <Variant>The type '{0}' is not assignable from the type '{1}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="FACTORY_METHOD_MISSING">
+    <en-US>
+      <Variant>The factory method '{0}' could not be found on the current Ultraviolet context.</Variant>
+    </en-US>
+  </String>
+  <String Key="FACTORY_METHOD_INVALID_RESULT">
+    <en-US>
+      <Variant>The factory method '{0}' produced an invalid result.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_COMPILER_OPTIONS">
+    <en-US>
+      <Variant>The specified compiler options are not valid.</Variant>
+    </en-US>
+  </String>
+  <String Key="CANNOT_FIND_VIEW_MODEL_WRAPPER">
+    <en-US>
+      <Variant>Cannot locate the view wrapper type named '{0}'. You may need to recompile your application's binding expressions assembly.</Variant>
+    </en-US>
+  </String>
+  <String Key="VERSIONED_STRING_SOURCE_IS_STALE">
+    <en-US>
+      <Variant>The operation is invalid because the string source contains stale data.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

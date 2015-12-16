@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <inheritdoc/>
-        protected internal override void Attach(DependencyObject dobj)
+        protected override void Attach(DependencyObject dobj)
         {
             var routedEvent = EventManager.FindByStylingName(Ultraviolet, dobj, eventName.Owner, eventName.Name);
             if (routedEvent == null)
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <inheritdoc/>
-        protected internal override void Detach(DependencyObject dobj)
+        protected override void Detach(DependencyObject dobj)
         {
             var routedEvent = EventManager.FindByStylingName(Ultraviolet, dobj, eventName.Owner, eventName.Name);
             if (routedEvent == null)

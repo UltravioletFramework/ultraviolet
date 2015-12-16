@@ -10,31 +10,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     public abstract class Trigger
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Trigger"/> class.
+        /// Attaches the trigger to the specified dependency object.
         /// </summary>
-        public Trigger()
+        /// <param name="dobj">The dependency object to which to attach the trigger.</param>
+        /// <param name="invokeOnObject">A value indicating whether to invoke <see cref="DependencyObject.AttachTrigger(Trigger)"/> on the dependency object.</param>
+        internal void AttachInternal(DependencyObject dobj, Boolean invokeOnObject)
         {
-            cachedDelegateHandleClearingStyles = HandleClearingStyles;
+            Attach(dobj);
+
+            if (invokeOnObject)
+                dobj.AttachTrigger(this);
         }
 
         /// <summary>
         /// Attaches the trigger to the specified dependency object.
         /// </summary>
         /// <param name="dobj">The dependency object to which to attach the trigger.</param>
-        protected internal virtual void Attach(DependencyObject dobj)
+        /// <param name="invokeOnObject">A value indicating whether to invoke <see cref="DependencyObject.DetachTrigger(Trigger)"/> on the dependency object.</param>
+        internal void DetachInternal(DependencyObject dobj, Boolean invokeOnObject)
+        {
+            Detach(dobj);
+
+            if (invokeOnObject)
+                dobj.DetachTrigger(this);
+        }
+
+        /// <summary>
+        /// Attaches the trigger to the specified dependency object.
+        /// </summary>
+        /// <param name="dobj">The dependency object to which to attach the trigger.</param>
+        protected virtual void Attach(DependencyObject dobj)
         {
             CreateAttachment(dobj);
-            dobj.ClearingStyles += cachedDelegateHandleClearingStyles;
         }
 
         /// <summary>
         /// Detaches the trigger from the specified dependency object.
         /// </summary>
         /// <param name="dobj">The dependency object from which to detatch the trigger.</param>
-        protected internal virtual void Detach(DependencyObject dobj)
+        protected virtual void Detach(DependencyObject dobj)
         {
             DeleteAttachment(dobj);
-            dobj.ClearingStyles -= cachedDelegateHandleClearingStyles;
         }
 
         /// <summary>
@@ -164,7 +180,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         });
 
         // State values.
-        private readonly UpfEventHandler cachedDelegateHandleClearingStyles;
         private readonly TriggerActionCollection actions = new TriggerActionCollection();
         private readonly Dictionary<DependencyObject, Boolean> attachments = 
             new Dictionary<DependencyObject, Boolean>();

@@ -304,6 +304,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             return new Vector2(x, y);
         }
 
+        /// inheritdoc/>
+        public Int32 Index
+        {
+            get { return displayIndex; }
+        }
+
         /// <inheritdoc/>
         public Rectangle Bounds
         {

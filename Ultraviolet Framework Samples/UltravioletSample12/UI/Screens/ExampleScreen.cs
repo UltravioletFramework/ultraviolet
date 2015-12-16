@@ -10,13 +10,8 @@ namespace UltravioletSample.UI.Screens
             : base("Content/UI/Screens/ExampleScreen", "ExampleScreen", globalContent)
         {
             Contract.Require(uiScreenService, "uiScreenService");
-        }
 
-        protected override void OnViewLoaded()
-        {
             View.SetViewModel(new ExampleViewModel(Ultraviolet));
-
-            base.OnViewLoaded();
         }
     }
 }

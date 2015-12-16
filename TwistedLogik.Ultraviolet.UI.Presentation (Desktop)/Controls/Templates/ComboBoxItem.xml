@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View HorizontalAlignment="Stretch">
+    <Grid Class="comboboxitem-component"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+      <Image Class="comboboxitem-highlight"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             IsHitTestVisible="false"
+             Opacity="{{HighlightOpacity}}"/>
+      <ContentPresenter Class="comboboxitem-content"
+                        HorizontalAlignment="{{HorizontalContentAlignment}}"
+                        VerticalAlignment="{{VerticalContentAlignment}}"
+                        Margin="{{Padding}}"/>
+      <Image Class="comboboxitem-focus-image"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Opacity="{{IsFocusVisualVisible ? 1 : 0}}"
+             IsHitTestVisible="false"/>
+      <Border Class="comboboxitem-focus-border"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
+              Opacity="{{IsKeyboardFocused ? 1 : 0}}"
+              IsHitTestVisible="false"/>
+
+    </Grid>
+  </View>
+</ComponentTemplate>

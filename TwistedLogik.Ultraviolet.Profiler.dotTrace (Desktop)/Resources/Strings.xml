@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="SECTION_ALREADY_ACTIVE">
+    <en-US>
+      <Variant>The specified section is already active.</Variant>
+    </en-US>
+  </String>
+  <String Key="SECTION_NOT_ACTIVE">
+    <en-US>
+      <Variant>The specified section is not active.</Variant>
+    </en-US>
+  </String>
+  <String Key="SECTION_ALREADY_ENABLED">
+    <en-US>
+      <Variant>The specified section is already enabled.</Variant>
+    </en-US>
+  </String>
+  <String Key="SECTION_NOT_ENABLED">
+    <en-US>
+      <Variant>The specified section is not enabled.</Variant>
+    </en-US>
+  </String>
+  <String Key="SNAPSHOT_ALREADY_IN_PROGRESS">
+    <en-US>
+      <Variant>A snapshot is already in progress.</Variant>
+    </en-US>
+  </String>
+  <String Key="SNAPSHOT_NOT_IN_PROGRESS">
+    <en-US>
+      <Variant>A snapshot is not in progress.</Variant>
+    </en-US>
+  </String>
+  <String Key="SNAPSHOTTING_FRAME">
+    <en-US>
+      <Variant>Operation is invalid because a frame snapshot is in progress.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

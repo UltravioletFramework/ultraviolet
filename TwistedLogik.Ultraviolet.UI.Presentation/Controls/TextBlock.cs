@@ -1,5 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Text;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
@@ -24,20 +27,60 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets the label's text.
+        /// Gets the text area's text.
         /// </summary>
-        public String Text
+        /// <returns>A <see cref="String"/> instance containing the text area's text.</returns>
+        public String GetText()
         {
-            get { return GetValue<String>(TextProperty); }
-            set { SetValue<String>(TextProperty, value); }
+            return GetValue<VersionedStringSource>(TextProperty).ToString();
         }
 
         /// <summary>
-        /// Identifies the <see cref="Text"/> dependency property.
+        /// Gets the text area's text.
+        /// </summary>
+        /// <param name="stringBuilder">A <see cref="StringBuilder"/> instance to populate with the text area's text.</param>
+        public void GetText(StringBuilder stringBuilder)
+        {
+            Contract.Require(stringBuilder, "stringBuilder");
+
+            var value = GetValue<VersionedStringSource>(TextProperty);
+
+            stringBuilder.Length = 0;
+            stringBuilder.AppendVersionedStringSource(value);
+        }
+
+        /// <summary>
+        /// Sets the text area's text.
+        /// </summary>
+        /// <param name="value">A <see cref="String"/> instance to set as the text area's text.</param>
+        public void SetText(String value)
+        {
+            SetValue(TextProperty, new VersionedStringSource(value));
+        }
+
+        /// <summary>
+        /// Sets the text area's text.
+        /// </summary>
+        /// <param name="value">A <see cref="StringBuilder"/> instance whose contents will be set as the text area's text.</param>
+        public void SetText(StringBuilder value)
+        {
+            SetValue(TextProperty, (value == null) ? VersionedStringSource.Invalid : new VersionedStringSource(value.ToString()));
+        }
+
+        /// <summary>
+        /// Identifies the Text dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'text'.</remarks>
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(String), typeof(TextBlock),
-            new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure, HandleTextChanged));
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextBlock),
+            new PropertyMetadata<VersionedStringSource>(VersionedStringSource.Invalid, PropertyMetadataOptions.AffectsMeasure, HandleTextChanged));
+
+        /// <inheritdoc/>
+        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+            UpdateTextParserResult();
+
+            base.OnViewChanged(oldView, newView);
+        }
 
         /// <inheritdoc/>
         protected override void OnInitialized()
@@ -49,10 +92,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            if (textLayoutResult.Count > 0)
+            if (textLayoutCommands.Count > 0)
             {
-                var position = (Vector2)Display.DipsToPixels(AbsolutePosition);
-                View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, position, Foreground * dc.Opacity);
+                var position = Display.DipsToPixels(UntransformedAbsolutePosition);
+                var positionRounded = dc.IsTransformed ? (Vector2)position : (Vector2)(Point2)position;
+                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutCommands, positionRounded, Foreground * dc.Opacity);
             }
             base.DrawOverride(time, dc);
         }
@@ -60,9 +104,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
+            if (Name == "bar")
+                Console.WriteLine();
+
             UpdateTextLayoutResult(availableSize);
 
-            var sizePixels = new Size2D(textLayoutResult.ActualWidth, textLayoutResult.ActualHeight);
+            var sizePixels = new Size2D(textLayoutCommands.ActualWidth, textLayoutCommands.ActualHeight);
             var sizeDips   = Display.PixelsToDips(sizePixels);
 
             return sizeDips;
@@ -77,9 +124,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="Text"/> dependency property changes.
+        /// Occurs when the value of the Text dependency property changes.
         /// </summary>
-        private static void HandleTextChanged(DependencyObject dobj, String oldValue, String newValue)
+        private static void HandleTextChanged(DependencyObject dobj, VersionedStringSource oldValue, VersionedStringSource newValue)
         {
             var label = (TextBlock)dobj;
             label.UpdateTextParserResult();
@@ -92,10 +139,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             textParserResult.Clear();
 
-            var text = Text;
-            if (!String.IsNullOrEmpty(text))
+            if (View == null)
+                return;
+
+            var text = GetValue<VersionedStringSource>(TextProperty);
+            if (text.IsValid)
             {
-                View.Resources.TextRenderer.Parse(text, textParserResult);
+                var textString = text.ToString();
+                View.Resources.TextRenderer.Parse(textString, textParserResult);
             }
         }
 
@@ -105,25 +156,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="availableSize">The size of the space that is available for laying out text.</param>
         private void UpdateTextLayoutResult(Size2D availableSize)
         {
-            textLayoutResult.Clear();
+            textLayoutCommands.Clear();
 
             if (textParserResult.Count > 0 && Font.IsLoaded)
             {
                 var unconstrainedWidth  = Double.IsPositiveInfinity(availableSize.Width)  && HorizontalAlignment != HorizontalAlignment.Stretch;
                 var unconstrainedHeight = Double.IsPositiveInfinity(availableSize.Height) && VerticalAlignment != VerticalAlignment.Stretch;
 
-                var constraintX = unconstrainedWidth  ? null : (Int32?)Display.DipsToPixels(availableSize.Width);
-                var constraintY = unconstrainedHeight ? null : (Int32?)Display.DipsToPixels(availableSize.Height);
+                var constraintX = unconstrainedWidth  ? null : (Int32?)Math.Ceiling(Display.DipsToPixels(availableSize.Width));
+                var constraintY = unconstrainedHeight ? null : (Int32?)Math.Ceiling(Display.DipsToPixels(availableSize.Height));
 
                 var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);
                 var settings = new TextLayoutSettings(Font, constraintX, constraintY, flags, FontStyle);
 
-                View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
+                View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
             }
         }
 
         // State values.
-        private readonly TextParserResult textParserResult = new TextParserResult();
-        private readonly TextLayoutResult textLayoutResult = new TextLayoutResult();
+        private readonly TextParserTokenStream textParserResult = new TextParserTokenStream();
+        private readonly TextLayoutCommandStream textLayoutCommands = new TextLayoutCommandStream();
     }
 }

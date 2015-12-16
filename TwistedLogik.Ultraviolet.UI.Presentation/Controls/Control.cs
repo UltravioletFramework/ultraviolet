@@ -1,6 +1,8 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -14,11 +16,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
+        static Control()
+        {
+            FocusableProperty.OverrideMetadata(typeof(Control), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
         public Control(UltravioletContext uv, String name)
             : base(uv, name)
         {
+            var upf = uv.GetUI().GetPresentationFoundation();
+            dataSourceWrapper = upf.CreateDataSourceWrapperForControl(this);
+
             LoadComponentRoot();
         }
 
@@ -77,6 +90,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Identifies the IsTabStop dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsTabStopProperty = KeyboardNavigation.IsTabStopProperty.AddOwner(typeof(Control));
+
+        /// <summary>
         /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'font'.</remarks>
@@ -107,15 +125,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'content-halign'.</remarks>
         public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", "content-halign",
-            typeof(HorizontalAlignment), typeof(ContentControl), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange));
+            typeof(HorizontalAlignment), typeof(Control), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'content-valign'.</remarks>
         public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", "content-valign",
-            typeof(VerticalAlignment), typeof(ContentControl), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
-
+            typeof(VerticalAlignment), typeof(Control), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
+        
         /// <summary>
         /// Populates any fields of this object which represent references
         /// to components in the current component tree.
@@ -123,6 +141,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         internal void PopulateFieldsFromRegisteredElements()
         {
             componentTemplateNamescope.PopulateFieldsFromRegisteredElements(this);
+        }
+
+        /// <summary>
+        /// Gets the data source wrapper which exposes the compiled binding expressions for the control.
+        /// </summary>
+        internal Object DataSourceWrapper
+        {
+            get { return dataSourceWrapper; }
         }
 
         /// <summary>
@@ -202,12 +228,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the control supports custom scrolling behavior.
+        /// </summary>
+        protected internal virtual Boolean HandlesScrolling
+        {
+            get { return false; }
+        }
+
         /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
+        protected override void ReloadContentOverride(Boolean recursive)
         {
             ReloadFont();
 
-            base.ReloadContentCore(recursive);
+            base.ReloadContentOverride(recursive);
         }
 
         /// <inheritdoc/>
@@ -277,8 +311,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             UvmlLoader.LoadComponentTemplate(this, template);
         }
 
-        // Property values.
-        private UIElement componentRoot;
+        // The control's data source wrapper, which exposes its compiled binding expressions.
+        private readonly Object dataSourceWrapper;
+
+        // The control's component template.
         private readonly Namescope componentTemplateNamescope = new Namescope();
+        private UIElement componentRoot;
     }
 }

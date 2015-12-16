@@ -29,13 +29,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             factory.SetFactoryMethod<DynamicIndexBufferFactory>((uv, itype, icount) => new OpenGLIndexBuffer(uv, itype, icount, gl.GL_DYNAMIC_DRAW));
             factory.SetFactoryMethod<Surface2DFactory>((uv, width, height) => new OpenGLSurface2D(uv, width, height));
             factory.SetFactoryMethod<Surface2DFromSourceFactory>((uv, source) => new OpenGLSurface2D(uv, source));
-            factory.SetFactoryMethod<Texture2DFactory>((uv, width, height) => new OpenGLTexture2D(uv, width, height));
+            factory.SetFactoryMethod<Texture2DFactory>((uv, width, height, immutable) => new OpenGLTexture2D(uv, width, height, immutable));
             factory.SetFactoryMethod<RenderTarget2DFactory>((uv, width, height) => new OpenGLRenderTarget2D(uv, width, height));
-            factory.SetFactoryMethod<RenderBuffer2DFactory>((uv, format, width, height) => new OpenGLRenderBuffer2D(uv, format, width, height));
+            factory.SetFactoryMethod<RenderBuffer2DFactory>((uv, format, width, height, options) => new OpenGLRenderBuffer2D(uv, format, width, height, options));
 
             // Core effects
             factory.SetFactoryMethod<BasicEffectFactory>((uv) => new OpenGLBasicEffect(uv));
             factory.SetFactoryMethod<SpriteBatchEffectFactory>((uv) => new OpenGLSpriteBatchEffect(uv));
+            factory.SetFactoryMethod<BlurEffectFactory>((uv) => new OpenGLBlurEffect(uv));
 
             // BlendState
             var blendStateOpaque = OpenGLBlendState.CreateOpaque(owner);

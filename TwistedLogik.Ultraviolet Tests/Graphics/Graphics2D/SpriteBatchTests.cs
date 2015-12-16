@@ -10,6 +10,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D
     {
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensures that the SpriteBatch class can render text using the DrawString() method.")]
         public void SpriteBatch_CanRenderSimpleStrings()
         {
             var spriteBatch = default(SpriteBatch);

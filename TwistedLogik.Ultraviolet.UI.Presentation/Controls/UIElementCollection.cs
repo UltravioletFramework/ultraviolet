@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -21,6 +22,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             this.visualParent   = visualParent;
             this.visualChildren = new VisualCollection(visualParent);
             this.logicalParent  = logicalParent;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="UIElement"/> with the specified index within the collection.
+        /// </summary>
+        /// <param name="index">The index of the element to retrieve.</param>
+        /// <returns>The <see cref="UIElement"/> with the specified index within the collection.</returns>
+        public UIElement Get(Int32 index)
+        {
+            return (UIElement)visualChildren.Get(index);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="UIElement"/> with the specified position in the collection's z-order.
+        /// </summary>
+        /// <param name="index">The position within the z-order of the visual to retrieve.</param>
+        /// <returns>The <see cref="UIElement"/> with the specified position in the collection's z-order.</returns>
+        public UIElement GetByZOrder(Int32 index)
+        {
+            return (UIElement)visualChildren.GetByZOrder(index);
         }
 
         /// <inheritdoc/>
@@ -70,12 +91,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         /// <inheritdoc/>
         public Boolean Remove(UIElement item)
-            {
+        {
             Contract.Require(item, "element");
 
             if (visualChildren.Remove(item))
             {
-                AddLogicalChild(item);
+                RemoveLogicalChild(item);
                 visualParent.InvalidateMeasure();
                 return true;
             }
@@ -117,7 +138,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets the visual parent of items in the collection.
         /// </summary>
         public UIElement VisualParent
-            {
+        {
             get { return visualParent; }
         }
 
@@ -142,6 +163,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Creates a copy of the visual child collection which is sorted by z-index.
+        /// </summary>
+        internal void SortVisualChildrenByZIndex()
+        {
+            visualChildren.SortByZIndex();
+        }
+
+        /// <summary>
         /// Adds the specified child to the collection's parent.
         /// </summary>
         /// <param name="child">The child to add to the collection's parent.</param>
@@ -149,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var uiElement = child as UIElement;
             if (uiElement != null)
-        {
+            {
                 uiElement.Parent = logicalParent;
             }
         }
@@ -162,7 +191,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var uiElement = child as UIElement;
             if (uiElement != null)
-        {
+            {
                 uiElement.Parent = null;
             }
         }

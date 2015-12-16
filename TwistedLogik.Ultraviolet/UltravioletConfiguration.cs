@@ -28,6 +28,15 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets or sets an object which provides configuration values for the view provider.
+        /// </summary>
+        public Object ViewProviderConfiguration
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to create a debug context.
         /// </summary>
         public Boolean Debug
@@ -59,6 +68,23 @@ namespace TwistedLogik.Ultraviolet
         /// A headless context will not create a default window upon initialization.
         /// </summary>
         public Boolean Headless
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether service mode is enabled. 
+        /// </summary>
+        /// <remarks>
+        /// <para>In service mode, the graphics subsystem is never intialized and no windows are ever created. 
+        /// This is different from headless mode, where the context's primary window is invisible but
+        /// still exists.</para>
+        /// <para>This mode is primarily useful in circumstances where an Ultraviolet-based application has to run in the context of a
+        /// Windows service, for example on a build server. The Windows security model prevents services from accessing the graphics device,
+        /// so we need to avoid doing so or else we'll run into errors.</para>
+        /// </remarks>
+        public Boolean EnableServiceMode
         {
             get;
             set;

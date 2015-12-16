@@ -83,13 +83,13 @@ namespace UltravioletSample
                 "Licensed under Creative Commons: By Attribution 3.0\n" +
                 "|c:FF808080|http://creativecommons.org/licenses/by/3.0/|c|\n\n\n";
             var settings = new TextLayoutSettings(spriteFont, width, height, TextFlags.AlignMiddle | TextFlags.AlignCenter);
-            textRenderer.CalculateLayout(attribution, textLayoutResult, settings);
-            textRenderer.Draw(spriteBatch, textLayoutResult, Vector2.Zero, Color.White);
+            textRenderer.CalculateLayout(attribution, textLayoutCommands, settings);
+            textRenderer.Draw(spriteBatch, textLayoutCommands, Vector2.Zero, Color.White);
 
             var timerSize = spriteFont.Regular.MeasureString(stringBuffer);
             var timerPosition = new Vector2(
-                textLayoutResult.Bounds.Left + ((textLayoutResult.Bounds.Width - timerSize.Width) / 2f), 
-                textLayoutResult.Bounds.Bottom - timerSize.Height);
+                (Int32)(textLayoutCommands.Bounds.Left + ((textLayoutCommands.Bounds.Width - timerSize.Width) / 2f)), 
+                (Int32)(textLayoutCommands.Bounds.Bottom - timerSize.Height));
             spriteBatch.DrawString(spriteFont.Regular, stringBuffer, timerPosition, Color.White);
 
             spriteBatch.End();
@@ -104,12 +104,12 @@ namespace UltravioletSample
             LoadInputBindings();
             LoadContentManifests();
 
-            this.spriteFont       = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
-            this.spriteBatch      = SpriteBatch.Create();
-            this.stringBuffer     = new StringBuilder();
-            this.stringFormatter  = new StringFormatter();
-            this.textRenderer     = new TextRenderer();
-            this.textLayoutResult = new TextLayoutResult();
+            this.spriteFont         = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+            this.spriteBatch        = SpriteBatch.Create();
+            this.stringBuffer       = new StringBuilder();
+            this.stringFormatter    = new StringFormatter();
+            this.textRenderer       = new TextRenderer();
+            this.textLayoutCommands = new TextLayoutCommandStream();
 
             this.song       = this.content.Load<Song>(GlobalSongID.DeepHaze);
             this.songPlayer = SongPlayer.Create();
@@ -166,7 +166,7 @@ namespace UltravioletSample
         private StringBuilder stringBuffer;
         private StringFormatter stringFormatter;
         private TextRenderer textRenderer;
-        private TextLayoutResult textLayoutResult;
+        private TextLayoutCommandStream textLayoutCommands;
         private Song song;
         private SongPlayer songPlayer;
     }

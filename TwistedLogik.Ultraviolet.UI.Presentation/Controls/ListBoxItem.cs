@@ -2,6 +2,7 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -11,6 +12,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.ListBoxItem.xml")]
     public class ListBoxItem : ContentControl
     {
+        /// <summary>
+        /// Initializes the <see cref="ListBoxItem"/> type.
+        /// </summary>
+        static ListBoxItem()
+        {
+            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(ListBoxItem), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Once));
+            KeyboardNavigation.TabNavigationProperty.OverrideMetadata(typeof(ListBoxItem), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Local));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ListBoxItem"/> class.
         /// </summary>
@@ -38,23 +48,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty IsSelectedProperty = Selector.IsSelectedProperty.AddOwner(typeof(ListBoxItem),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsSelectedChanged));
 
-        /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        /// <summary>
+        /// Gets the opacity of the list box item's selection highlight.
+        /// </summary>
+        public Double HighlightOpacity
         {
-            if (!data.Handled && button == MouseButton.Left)
-            {
-                var list = ItemsControl.ItemsControlFromItemContainer(this) as ListBox;
-                if (list != null)
-                {
-                    list.HandleItemClicked(this);
-                }
-            }
-
-            data.Handled = true;
-
-            base.OnMouseDown(device, button, ref data);
+            get { return GetValue<Double>(HighlightOpacityProperty); }
+            private set { SetValue<Double>(HighlightOpacityPropertyKey, value); }
         }
+        
+        /// <summary>
+        /// The private access key for the <see cref="HighlightOpacity"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey HighlightOpacityPropertyKey = DependencyProperty.RegisterReadOnly("HighlightOpacity", typeof(Double), typeof(ListBoxItem),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero));
 
+        /// <summary>
+        /// Identifies the <see cref="HighlightOpacity"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'highlight-opacity'.</remarks>
+        public static readonly DependencyProperty HighlightOpacityProperty = HighlightOpacityPropertyKey.DependencyProperty;
+
+        /// <inheritdoc/>
+        protected override void OnGenericInteraction(UltravioletResource device, ref RoutedEventData data)
+        {
+            if (!data.Handled)
+            {
+                Select();
+                data.Handled = true;
+            }
+            base.OnGenericInteraction(device, ref data);
+        }
+        
         /// <inheritdoc/>
         protected override void OnMouseEnter(MouseDevice device, ref RoutedEventData data)
         {
@@ -75,13 +100,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnMouseLeave(device, ref data);
         }
 
-        /// <summary>
-        /// Gets the opacity of the list box item's selection highlight.
-        /// </summary>
-        protected Double HighlightOpacity
+        /// <inheritdoc/>
+        protected override void OnFingerDown(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, ref RoutedEventData data)
         {
-            get { return GetValue<Double>(HighlightOpacityProperty); }
-            private set { SetValue<Double>(HighlightOpacityProperty, value); }
+            HighlightOpacity = 1.0;
+            base.OnFingerDown(device, fingerID, x, y, pressure, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, ref RoutedEventData data)
+        {
+            HighlightOpacity = (HighlightOnSelect && IsSelected) || (HighlightOnMouseOver && IsMouseDirectlyOver) ? 1.0 : 0.0;
+            base.OnFingerUp(device, fingerID, x, y, pressure, ref data);
         }
 
         /// <summary>
@@ -101,7 +131,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get;
             set;
         }
-
+        
         /// <summary>
         /// Occurs when the value of the <see cref="IsSelected"/> dependency property changes.
         /// </summary>
@@ -128,9 +158,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Identifies the <see cref="HighlightOpacity"/> dependency property.
+        /// Selects the item.
         /// </summary>
-        private static readonly DependencyProperty HighlightOpacityProperty = DependencyProperty.Register("HighlightOpacity", typeof(Double), typeof(ListBoxItem),
-            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero));
+        private void Select()
+        {
+            var list = ItemsControl.ItemsControlFromItemContainer(this) as ListBox;
+            if (list != null)
+            {
+                Focus();
+                list.HandleItemClicked(this);
+            }
+        }
     }
 }

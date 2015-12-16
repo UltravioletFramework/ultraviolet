@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -16,12 +15,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="name">The known element's name in XML.</param>
             /// <param name="type">The known element's type.</param>
             /// <param name="defaultProperty">The element's default property.</param>
-            /// <param name="layout">The XML document that defines the element's layout, if it has one.</param>
-            public KnownElement(String name, Type type, String defaultProperty, XDocument layout = null)
+            public KnownElement(String name, Type type, String defaultProperty)
                 : base(name, type)
             {
                 this.defaultProperty = defaultProperty;
-                this.layout          = layout;
             }
 
             /// <summary>
@@ -31,18 +28,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 get { return defaultProperty; }
             }
-
-            /// <summary>
-            /// Gets the XML document that defines the element's layout, if it has one.
-            /// </summary>
-            public XDocument Layout
-            {
-                get { return layout; }
-            }
-
+            
             // Property values.
             private readonly String defaultProperty;
-            private readonly XDocument layout;
         }
     }
 }

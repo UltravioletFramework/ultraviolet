@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
@@ -8,8 +10,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents a list of selectable items.
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.ListBox.xml")]
+    [UvmlPlaceholder("ItemsPanel", typeof(StackPanel))]
     public class ListBox : Selector
     {
+        /// <summary>
+        /// Initializes the <see cref="ListBox"/> type.
+        /// </summary>
+        static ListBox()
+        {
+            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(ListBox), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Contained));
+            KeyboardNavigation.TabNavigationProperty.OverrideMetadata(typeof(ListBox), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Once));
+            KeyboardNavigation.IsTabStopProperty.OverrideMetadata(typeof(ListBox), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ListBox"/> class.
         /// </summary>
@@ -86,6 +99,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected internal override Boolean HandlesScrolling
+        {
+            get { return true; }
+        }
+
+        /// <inheritdoc/>
         protected override DependencyObject GetContainerForItemOverride()
         {
             return new ListBoxItem(Ultraviolet, null);
@@ -137,29 +156,222 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnSelectedItemsChanged();
         }
 
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        {
+            switch (key)
+            {
+                case Key.Space:
+                case Key.Return:
+                    if (key == Key.Return && !GetValue<Boolean>(KeyboardNavigation.AcceptsReturnProperty))
+                        break;
+
+                    var listBoxItem = ItemsControlUtil.FindContainer<ListBoxItem>(this, data.OriginalSource);
+                    if (listBoxItem != null)
+                    {
+                        HandleItemClicked(listBoxItem);
+                        data.Handled = true;
+                    }
+                    break;
+
+                case Key.Left:
+                case Key.Right:
+                    if (PART_ScrollViewer != null)
+                    {
+                        PART_ScrollViewer.HandleKeyScrolling(key, modifiers, ref data);
+                    }
+                    data.Handled = true;
+                    break;
+
+                case Key.Up:
+                    if (SelectionMode == SelectionMode.Single)
+                    {
+                        MoveSelectedItem(FocusNavigationDirection.Up, modifiers);
+                    }
+                    data.Handled = true;
+                    break;
+
+                case Key.Down:
+                    if (SelectionMode == SelectionMode.Single)
+                    {
+                        MoveSelectedItem(FocusNavigationDirection.Down, modifiers);
+                    }
+                    data.Handled = true;
+                    break;
+
+                case Key.Home:
+                    var firstItem = ItemsControlUtil.GetFirstItem<ListBoxItem>(this, PART_ScrollViewer);
+                    if (firstItem != null && firstItem.Focus())
+                    {
+                        HandleItemClickedAndScrollIntoView(firstItem);
+                    }
+                    data.Handled = true;
+                    break;
+
+                case Key.End:
+                    var lastItem = ItemsControlUtil.GetLastItem<ListBoxItem>(this, PART_ScrollViewer);
+                    if (lastItem != null && lastItem.Focus())
+                    {
+                        HandleItemClickedAndScrollIntoView(lastItem);
+                    }
+                    data.Handled = true;
+                    break;
+
+                case Key.PageUp:
+                    var pageUpTarget = ItemsControlUtil.GetPageUpNext<ListBoxItem>(this, PART_ScrollViewer);
+                    if (pageUpTarget != null && pageUpTarget.Focus())
+                    {
+                        HandleItemClickedAndScrollIntoView(pageUpTarget, false);
+                    }
+                    data.Handled = true;
+                    break;
+
+                case Key.PageDown:
+                    var pageDownTarget = ItemsControlUtil.GetPageDownNext<ListBoxItem>(this, PART_ScrollViewer);
+                    if (pageDownTarget != null && pageDownTarget.Focus())
+                    {
+                        HandleItemClickedAndScrollIntoView(pageDownTarget, false);
+                    }
+                    data.Handled = true;
+                    break;
+            }
+
+            base.OnKeyDown(device, key, modifiers, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        {
+            if (GamePad.UseAxisForDirectionalNavigation && (axis == GamePad.DirectionalNavigationAxisX || axis == GamePad.DirectionalNavigationAxisY))
+            {
+                var direction = device.GetJoystickDirectionFromAxis(axis);
+                switch (direction)
+                {
+                    case GamePadJoystickDirection.Left:
+                        if (PART_ScrollViewer != null)
+                        {
+                            PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                        }
+                        break;
+
+                    case GamePadJoystickDirection.Right:
+                        if (PART_ScrollViewer != null)
+                        {
+                            PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                        }
+                        break;
+
+                    case GamePadJoystickDirection.Up:
+                        if (SelectionMode == SelectionMode.Single)
+                        {
+                            MoveSelectedItem(FocusNavigationDirection.Up);
+                        }
+                        break;
+
+                    case GamePadJoystickDirection.Down:
+                        if (SelectionMode == SelectionMode.Single)
+                        {
+                            MoveSelectedItem(FocusNavigationDirection.Down);
+                        }
+                        break;
+                }
+                data.Handled = true;
+            }
+            
+            base.OnGamePadAxisDown(device, axis, value, repeat, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        {
+            if (GamePad.ConfirmButton == button)
+            {
+                var listBoxItem = ItemsControlUtil.FindContainer<ListBoxItem>(this, data.OriginalSource);
+                if (listBoxItem != null)
+                {
+                    HandleItemClicked(listBoxItem);
+                    data.Handled = true;
+                }
+            }
+            else
+            {
+                if (!GamePad.UseAxisForDirectionalNavigation)
+                {
+                    switch (button)
+                    {
+                        case GamePadButton.DPadLeft:
+                            if (PART_ScrollViewer != null)
+                            {
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                            }
+                            data.Handled = true;
+                            break;
+
+                        case GamePadButton.DPadRight:
+                            if (PART_ScrollViewer != null)
+                            {
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                            }
+                            data.Handled = true;
+                            break;
+
+                        case GamePadButton.DPadUp:
+                            if (SelectionMode == SelectionMode.Single)
+                            {
+                                MoveSelectedItem(FocusNavigationDirection.Up);
+                            }
+                            data.Handled = true;
+                            break;
+
+                        case GamePadButton.DPadDown:
+                            if (SelectionMode == SelectionMode.Single)
+                            {
+                                MoveSelectedItem(FocusNavigationDirection.Down);
+                            }
+                            data.Handled = true;
+                            break;
+                    }
+                }
+            }
+
+            base.OnGamePadButtonDown(device, button, repeat, ref data);
+        }
+
+        /// <summary>
+        /// Selects the specified item and scrolls it into view.
+        /// </summary>
+        private void HandleItemClickedAndScrollIntoView(ListBoxItem item, Boolean buffer = true)
+        {
+            HandleItemClicked(item);
+            ItemsControlUtil.ScrollItemIntoView<ListBoxItem>(this, PART_ScrollViewer, item, buffer);
+        }
+
         /// <summary>
         /// Handles clicking on an item when the list box is in single selection mode.
         /// </summary>
         /// <param name="item">The item that was clicked.</param>
         private void HandleItemClickedSingle(Object item)
         {
-            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            var dobj = item as DependencyObject;
+            if (dobj == null)
+                return;
+
+            BeginChangeSelection();
+
+            if (GetIsSelected(dobj))
             {
-                UnselectItem(item);
+                if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                {
+                    UnselectItem(item);
+                }
             }
             else
             {
-                var dobj = item as DependencyObject;
-                if (dobj == null || !GetIsSelected(dobj))
-                {
-                    BeginChangeSelection(); 
-                    
-                    UnselectAllItems();
-                    SelectItem(item);
-
-                    EndChangeSelection();
-                }
+                UnselectAllItems();
+                SelectItem(item);
             }
+
+            EndChangeSelection();
         }
 
         /// <summary>
@@ -183,8 +395,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
         }
 
+        /// <summary>
+        /// Moves the selected item in the specified direction.
+        /// </summary>
+        private void MoveSelectedItem(FocusNavigationDirection direction, ModifierKeys modifiers = ModifierKeys.None)
+        {
+            var selection = Keyboard.GetFocusedElement(View) as UIElement;
+            if (selection != null && selection.MoveFocus(direction))
+            {
+                var focused = Keyboard.GetFocusedElement(View) as UIElement;
+                var listBoxItem = ItemsControlUtil.FindContainer<ListBoxItem>(this, focused);
+                if (listBoxItem != null && (modifiers & ModifierKeys.Control) != ModifierKeys.Control)
+                {
+                    HandleItemClickedAndScrollIntoView(listBoxItem);
+                }
+            }
+        }
+
         // Property values.
         private readonly ListBoxSelectedItems selectedItems = 
             new ListBoxSelectedItems();
+
+        // Component references.
+        private readonly ScrollViewer PART_ScrollViewer = null;
     }
 }

@@ -7,4 +7,13 @@
     <Asset Name="DefaultUI">..\UI\DefaultUI</Asset>
     <Asset Name="DefaultUIBackground">..\UI\DefaultUIBackground</Asset>
   </ContentGroup>
+  <ContentGroup Name="SoundEffects" Directory="SoundEffects" Type="TwistedLogik.Ultraviolet.Audio.SoundEffect">
+    <Asset Name="Click1">Click1</Asset>
+    <Asset Name="Rollover1">rollover1</Asset>
+    <Asset Name="Rollover2">rollover2</Asset>
+    <Asset Name="Rollover3">rollover3</Asset>
+  </ContentGroup>
+  <ContentGroup Name="Cursors" Directory="Cursors" Type="TwistedLogik.Ultraviolet.CursorCollection">
+    <Asset Name="Cursors">Cursors</Asset>
+  </ContentGroup>
 </ContentManifest>

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
@@ -13,6 +13,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public class NumericUpDown : RangeBase
     {
         /// <summary>
+        /// Initializes the <see cref="NumericUpDown"/> type.
+        /// </summary>
+        static NumericUpDown()
+        {
+            EventManager.RegisterClassHandler(typeof(NumericUpDown), Mouse.PreviewMouseWheelEvent, new UpfMouseWheelEventHandler(HandlePreviewMouseWheel));
+            EventManager.RegisterClassHandler(typeof(NumericUpDown), Keyboard.PreviewKeyDownEvent, new UpfKeyDownEventHandler(HandlePreviewKeyDown));
+            EventManager.RegisterClassHandler(typeof(NumericUpDown), TextEditor.TextEntryValidationEvent, new UpfTextEntryValidationHandler(HandleTextEntryValidation));
+
+            FocusableProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Boolean>(false));
+            MinimumProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Double>(0.0));
+            MaximumProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Double>(100.0));
+            SmallChangeProperty.OverrideMetadata(typeof(NumericUpDown), new PropertyMetadata<Double>(1.0));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NumericUpDown"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -20,12 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public NumericUpDown(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            SetDefaultValue<Double>(MinimumProperty, 0.0);
-            SetDefaultValue<Double>(MaximumProperty, 100.0);
-            SetDefaultValue<Double>(SmallChangeProperty, 1.0);
-
             InvalidateFormatString();
-            InvalidatePattern();
         }
 
         /// <summary>
@@ -50,47 +60,82 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (PART_Input != null)
             {
                 PART_Input.DigestImmediately(TextBox.TextProperty);
-                PART_Input.MoveEnd();
+                PART_Input.CaretIndex = PART_Input.TextLength;
             }
             base.OnValueChanged();
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(ref RoutedEventData data)
+        protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        {
+            if (PART_Input != null)
+            {
+                PART_Input.Focus();
+            }
+            base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
             if (PART_Input != null)
             {
                 PART_Input.InvalidateDisplayCache(TextBox.TextProperty);
+                PART_Input.CaretIndex = 0;
             }
-            base.OnLostKeyboardFocus(ref data);
+            base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
+        }
+        
+        /// <inheritdoc/>
+        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        {
+            if (GamePad.UseAxisForDirectionalNavigation)
+            {
+                var direction = device.GetJoystickDirectionFromAxis(axis);
+                switch (direction)
+                {
+                    case GamePadJoystickDirection.Up:
+                        IncreaseSmall();
+                        data.Handled = true;
+                        break;
+
+                    case GamePadJoystickDirection.Down:
+                        DecreaseSmall();
+                        data.Handled = true;
+                        break;
+                }
+            }
+
+            base.OnGamePadAxisDown(device, axis, value, repeat, ref data);
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
         {
-            switch (key)
+            if (!GamePad.UseAxisForDirectionalNavigation)
             {
-                case Key.Up:
-                    IncreaseSmall();
-                    data.Handled = true;
-                    break;
+                switch (button)
+                {
+                    case GamePadButton.DPadUp:
+                        IncreaseSmall();
+                        data.Handled = true;
+                        break;
 
-                case Key.Down:
-                    DecreaseSmall();
-                    data.Handled = true;
-                    break;
+                    case GamePadButton.DPadDown:
+                        DecreaseSmall();
+                        data.Handled = true;
+                        break;
+                }
             }
-
-            base.OnKeyDown(device, key, modifiers, ref data);
+            base.OnGamePadButtonDown(device, button, repeat, ref data);
         }
-
+        
         /// <summary>
         /// Occurs when the value of the <see cref="DecimalPlaces"/> dependency property changes.
         /// </summary>
         private static void HandleDecimalPlacesChanged(DependencyObject dobj, Int32 oldValue, Int32 newValue)
         {
             var updown = (NumericUpDown)dobj;
-            updown.InvalidatePattern();
             updown.InvalidateFormatString();
         }
 
@@ -109,31 +154,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             DecreaseSmall();
         }
-
-        /// <summary>
-        /// Invalidates the updown's input pattern.
-        /// </summary>
-        private void InvalidatePattern()
-        {
-            if (PART_Input == null)
-                return;
-
-            var allowNegative = Minimum < 0;
-            var allowDecimals = DecimalPlaces > 0;
-
-            var sb = new StringBuilder();
-
-            if (allowNegative)
-                sb.Append("-?");
-
-            sb.Append("[0-9]*");
-
-            if (allowDecimals)
-                sb.Append("(\\.[0-9]{0," + DecimalPlaces + ")?");
-
-            PART_Input.Pattern = sb.ToString();
-        }
-
+        
         /// <summary>
         /// Invalidates the updown's format string.
         /// </summary>
@@ -142,18 +163,105 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (PART_Input == null)
                 return;
 
-            PART_Input.SetFormatString(TextBox.TextProperty, DecimalPlaces > 0 ? 
+            PART_Input.SetFormatString(TextBox.TextProperty, DecimalPlaces > 0 ?
                 "0." + new String('0', DecimalPlaces) : "0");
+        }
+        
+        /// <summary>
+        /// Handles the <see cref="Mouse.PreviewMouseWheelEvent"/> routed event.
+        /// </summary>
+        private static void HandlePreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
+        {
+            var numericUpDown = (NumericUpDown)element;
+            if (numericUpDown.PART_Input.IsKeyboardFocused)
+            {
+                numericUpDown.Value += y;
+            }
         }
 
         /// <summary>
-        /// Handles the input box's <see cref="UIElement.PreviewMouseWheel"/> event.
+        /// Handles the <see cref="Keyboard.PreviewKeyDownEvent"/> routed event.
         /// </summary>
-        private void PART_Input_PreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
+        private static void HandlePreviewKeyDown(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
-            if (PART_Input != null && PART_Input.IsFocused)
+            var numericUpDown = (NumericUpDown)element;
+            if (numericUpDown.PART_Input == data.OriginalSource)
             {
-                Value += y;
+                switch (key)
+                {
+                    case Key.Up:
+                        numericUpDown.IncreaseSmall();
+                        data.Handled = true;
+                        break;
+
+                    case Key.Down:
+                        numericUpDown.DecreaseSmall();
+                        data.Handled = true;
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles text entry validation for the updown's text editor.
+        /// </summary>
+        private static void HandleTextEntryValidation(DependencyObject element, StringSegment text, Int32 offset, Char character, ref Boolean valid, ref RoutedEventData data)
+        {
+            var numericUpDown = (NumericUpDown)element;
+            if (numericUpDown.PART_Input != data.OriginalSource)
+                return;
+
+            data.Handled = true;
+
+            // Negative sign must be inserted at the beginning of the text.
+            // Negative sign is only allowed if Minimum is less than zero.
+            if (character == '-')
+            {
+                if (offset > 0 || numericUpDown.Minimum >= 0)
+                    valid = false;
+
+                return;
+            }
+
+            // Nothing can be inserted before the negative sign, if there is one.
+            var negativeSignPos = text.IndexOf('-');
+            if (negativeSignPos >= 0 && offset < 1)
+            {
+                valid = false;
+                return;
+            }
+            
+            // Decimal separator can only be inserted if we allow decimal points.
+            // Decimal separator can only be inserted if it doesn't introduce more than the allowed number of decimals.
+            var decimalSeparatorPos = text.IndexOf('.');
+            if (character == '.')
+            {
+                if (decimalSeparatorPos >= 0 || numericUpDown.DecimalPlaces == 0)
+                {
+                    valid = false;
+                    return;
+                }
+
+                var decimalsIntroduced = text.Length - offset;
+                if (decimalsIntroduced > numericUpDown.DecimalPlaces)
+                    valid = false;
+
+                return;
+            }
+
+            // Non-digit characters cannot be inserted.
+            if (!Char.IsDigit(character))
+            {
+                valid = false;
+                return;
+            }
+
+            // Post-decimal digits can only be inserted if we have fewer than DecimalPlaces digits there already.
+            var decimalCount = (decimalSeparatorPos < 0) ? 0 : text.Length - (decimalSeparatorPos + 1);
+            if (decimalSeparatorPos >= 0 && decimalSeparatorPos < offset && decimalCount >= numericUpDown.DecimalPlaces)
+            {
+                valid = false;
+                return;
             }
         }
 

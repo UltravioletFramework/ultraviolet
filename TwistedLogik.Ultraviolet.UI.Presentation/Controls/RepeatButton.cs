@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Security;
 using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents a button that raises its <see cref="ButtonBase.Click"/> event repeatedly while it is pressed.
+    /// Represents a button that raises its <see cref="Primitives.ButtonBase.Click"/> event repeatedly while it is pressed.
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.RepeatButton.xml")]
     public class RepeatButton : Button
     {
         /// <summary>
-        /// Contains native Win32 functions.
+        /// Initializes the <see cref="RepeatButton"/> type.
         /// </summary>
-        private static class Native
+        static RepeatButton()
         {
-            [DllImport("user32.dll", SetLastError = true)]
-            public static extern bool SystemParametersInfo(uint action, uint param, ref uint vparam, uint init);
+            ClickModeProperty.OverrideMetadata(typeof(RepeatButton), new PropertyMetadata<ClickMode>(ClickMode.Press));
         }
 
         /// <summary>
@@ -29,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public RepeatButton(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            SetDefaultValue<ClickMode>(ClickModeProperty, ClickMode.Press);
+
         }
 
         /// <summary>
@@ -43,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets the interval between repeated <see cref="ButtonBase.Click"/> events, in milliseconds.
+        /// Gets or sets the interval between repeated <see cref="Primitives.ButtonBase.Click"/> events, in milliseconds.
         /// </summary>
         public Double Interval
         {
@@ -56,14 +53,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'delay'.</remarks>
         public static readonly DependencyProperty DelayProperty = DependencyProperty.Register("Delay", typeof(Double), typeof(RepeatButton),
-            new PropertyMetadata<Double>(GetDefaultDelay()));
+            new PropertyMetadata<Double>(SystemParameters.KeyboardDelay));
         
         /// <summary>
         /// Identifies the <see cref="Interval"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'interval'.</remarks>
         public static readonly DependencyProperty IntervalProperty = DependencyProperty.Register("Interval", typeof(Double), typeof(RepeatButton),
-            new PropertyMetadata<Double>(GetDefaultInterval()));
+            new PropertyMetadata<Double>(SystemParameters.KeyboardSpeed));
 
         /// <inheritdoc/>
         protected override void OnUpdating(UltravioletTime time)
@@ -94,45 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             base.OnMouseDown(device, button, ref data);
         }
-
-        /// <summary>
-        /// Gets the default value for the <see cref="Delay"/> dependency property.
-        /// </summary>
-        /// <returns>The property's default value.</returns>
-        [SecuritySafeCritical]
-        private static Double GetDefaultDelay()
-        {
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                const UInt32 SPI_GETKEYBOARDDELAY = 0x0016;
-
-                uint delay = 0;
-                Native.SystemParametersInfo(SPI_GETKEYBOARDDELAY, 0, ref delay, 0);
-
-                return (1 + delay) * 250.0;
-            }
-            return 500.0;
-        }
-
-        /// <summary>
-        /// Gets the default value for the <see cref="Interval"/> dependency property.
-        /// </summary>
-        /// <returns>The property's default value.</returns>
-        [SecuritySafeCritical]
-        private static Double GetDefaultInterval()
-        {
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                const UInt32 SPI_GETKEYBOARDSPEED = 0x000A;
-
-                uint speed = 0;
-                Native.SystemParametersInfo(SPI_GETKEYBOARDSPEED, 0, ref speed, 0);
-
-                return 33.0 + ((31 - speed) * (367.0 / 31));
-            }
-            return 33.0;
-        }
-
+        
         /// <summary>
         /// Updates the button's repetition state.
         /// </summary>
@@ -145,9 +104,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var input = Ultraviolet.GetInput();
             if (input.IsMouseSupported())
             {
-                var mouse = input.GetMouse();
-                if (!AbsoluteBounds.Contains(mouse.X, mouse.Y))
+                var position = Mouse.GetPosition(this);
+                if (!Bounds.Contains(position))
+                {
                     return;
+                }
             }
 
             repeatTimer += time.ElapsedTime.TotalMilliseconds;

@@ -44,6 +44,13 @@ namespace UltravioletSample
             return new OpenGLUltravioletContext(this, configuration);
         }
 
+        protected override void OnInitialized()
+        {
+            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
+
+            base.OnInitialized();
+        }
+
         protected override void OnLoadingContent()
         {
             this.content = ContentManager.Create("Content");
@@ -109,8 +116,13 @@ namespace UltravioletSample
 
         private void LoadPresentation()
         {
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+
             var globalStylesheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
-            Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStyleSheet(globalStylesheet);
+            upf.SetGlobalStyleSheet(globalStylesheet);
+
+            upf.CompileExpressionsIfSupported("Content");
+            upf.LoadCompiledExpressions();
         }
 
         private void LoadContentManifests()

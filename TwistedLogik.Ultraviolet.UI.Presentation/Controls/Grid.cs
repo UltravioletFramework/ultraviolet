@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -191,8 +192,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var clip = (RectangleD?)null;
 
-            foreach (var child in Children)
+            for (int i = 0; i < Children.Count; i++)
             {
+                var child = Children.GetByZOrder(i);
                 if (child.ClipRectangle != clip)
                 {
                     if (clip.HasValue)
@@ -256,6 +258,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             MeasureVirtualCells(3);
 
+            RoundDimensions(ColumnDefinitions);
+            RoundDimensions(RowDefinitions);
+
             var desiredWidth = 0.0;
             var desiredHeight = 0.0;
 
@@ -302,8 +307,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             for (int i = Children.Count - 1; i >= 0; i--)
             {
-                var child = Children[i];
-
+                var child = Children.GetByZOrder(i);
+                
                 var childCol = GetColumn(child);
                 var childColSpan = GetColumnSpan(child);
 
@@ -316,7 +321,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (row < childRow || row >= childRow + childRowSpan)
                     continue;
 
-                var childMatch = child.HitTest(point - child.RelativeBounds.Location);
+                var childMatch = child.HitTest(TransformToDescendant(child, point));
                 if (childMatch != null)
                 {
                     return childMatch;
@@ -817,6 +822,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 def.Position = position;
                 position += def.ActualDimension;
             }
+        }
+        
+        /// <summary>
+        /// Performs layout rounding on the specified definition collection.
+        /// </summary>
+        /// <param name="definitions">The definition collection on which to perform layout rounding.</param>
+        private void RoundDimensions(IDefinitionBaseCollection definitions)
+        {
+            if (definitions.Count == 0)
+                return;
+
+            var errorContent = 0.0;
+            var error = 0.0;
+
+            for (int i = 0; i < definitions.Count - 1; i++)
+            {
+                var oldValueContent = definitions[i].MeasuredContentDimension;
+                var oldValue = definitions[i].MeasuredDimension;
+
+                definitions[i].MeasuredContentDimension = PerformLayoutRounding(oldValueContent);
+                definitions[i].MeasuredDimension = PerformLayoutRounding(oldValue);
+
+                errorContent += (definitions[i].MeasuredContentDimension - oldValueContent);
+                error += (definitions[i].MeasuredDimension - oldValue);
+            }
+
+            definitions[definitions.Count - 1].MeasuredContentDimension += errorContent;
+            definitions[definitions.Count - 1].MeasuredDimension += error;
         }
 
         /// <summary>

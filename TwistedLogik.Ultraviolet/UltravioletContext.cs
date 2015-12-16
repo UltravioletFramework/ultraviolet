@@ -5,10 +5,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
+using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.UI;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -27,6 +30,21 @@ namespace TwistedLogik.Ultraviolet
     public delegate void UltravioletContextEventHandler(UltravioletContext uv);
 
     /// <summary>
+    /// Represents the method that is called when an Ultraviolet context is about to draw the current scene.
+    /// </summary>
+    /// <param name="uv">The Ultraviolet context.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+    public delegate void UltravioletContextDrawEventHandler(UltravioletContext uv, UltravioletTime time);
+
+    /// <summary>
+    /// Represents the method that is called when an Ultraviolet context has drawn or is about to draw a particular window.
+    /// </summary>
+    /// <param name="uv">The Ultraviolet context.</param>
+    /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+    /// <param name="window">The window that was drawn or is about to be drawn.</param>
+    public delegate void UltravioletContextWindowDrawEventHandler(UltravioletContext uv, UltravioletTime time, IUltravioletWindow window);
+
+    /// <summary>
     /// Represents the method that is called when an Ultraviolet context updates the application state.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
@@ -41,6 +59,30 @@ namespace TwistedLogik.Ultraviolet
         IDisposable
     {
         /// <summary>
+        /// Contains native method declarations.
+        /// </summary>
+        private static class Native
+        {
+            #region Native Methods
+
+            [StructLayout(LayoutKind.Sequential)]
+            public struct utsname
+            {
+                public IntPtr sysname;
+                public IntPtr nodename;
+                public IntPtr release;
+                public IntPtr version;
+                public IntPtr machine;
+                public IntPtr domainname;
+            }
+
+            [DllImport("libc")]
+            public static extern unsafe int uname(IntPtr buf);
+
+            #endregion
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UltravioletContext"/> class.
         /// </summary>
         /// <param name="host">The object that is hosting the Ultraviolet context.</param>
@@ -51,6 +93,9 @@ namespace TwistedLogik.Ultraviolet
             Contract.Require(configuration, "configuration");
 
             AcquireContext();
+            DetectPlatform();
+
+            this.isRunningInServiceMode = configuration.EnableServiceMode;
 
             this.host = host;
 
@@ -106,11 +151,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNotDisposed(this, disposed);
             Contract.Ensure(thread == Thread.CurrentThread, UltravioletStrings.WorkItemsMustBeProcessedOnMainThread);
 
-            Task workItem;
-            while (queuedWorkItems.TryDequeue(out workItem))
-            {
-                workItem.RunSynchronously();
-            }
+            ProcessWorkItemsInternal();
         }
 
         /// <summary>
@@ -124,6 +165,24 @@ namespace TwistedLogik.Ultraviolet
         public virtual void UpdateSuspended()
         {
 
+        }
+
+        /// <summary>
+        /// Called when a new frame is started.
+        /// </summary>
+        public void HandleFrameStart()
+        {
+            UltravioletProfiler.BeginSection(UltravioletProfilerSections.Frame);
+            OnFrameStart();
+        }
+
+        /// <summary>
+        /// Called when a frame is completed.
+        /// </summary>
+        public void HandleFrameEnd()
+        {
+            OnFrameEnd();
+            UltravioletProfiler.EndSection(UltravioletProfilerSections.Frame);
         }
 
         /// <summary>
@@ -367,6 +426,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 var task = new Task(workItem);
                 queuedWorkItems.Enqueue(task);
+                Interlocked.Increment(ref pendingWorkItemCount);
                 return task;
             }
         }
@@ -394,6 +454,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 var task = new Task(workItem, state);
                 queuedWorkItems.Enqueue(task);
+                Interlocked.Increment(ref pendingWorkItemCount);
                 return task;
             }
         }
@@ -421,6 +482,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 var task = new Task<T>(workItem);
                 queuedWorkItems.Enqueue(task);
+                Interlocked.Increment(ref pendingWorkItemCount);
                 return task;
             }
         }
@@ -449,6 +511,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 var task = new Task<T>(workItem, state);
                 queuedWorkItems.Enqueue(task);
+                Interlocked.Increment(ref pendingWorkItemCount);
                 return task;
             }
         }
@@ -476,21 +539,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-#if ANDROID
-                return UltravioletPlatform.Android;
-#else
-                switch (Environment.OSVersion.Platform)
-                {
-                    case PlatformID.Win32NT:
-                        return UltravioletPlatform.Windows;
-
-                    case PlatformID.Unix:
-                        return UltravioletPlatform.Linux;
-
-                    default:
-                        throw new NotSupportedException();
-                }
-#endif
+                return this.platform;
             }
         }
 
@@ -513,6 +562,39 @@ namespace TwistedLogik.Ultraviolet
         public IMessageQueue<UltravioletMessageID> Messages
         {
             get { return messages; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the context is currently processing messages
+        /// from the physical input devices.
+        /// </summary>
+        public Boolean IsHardwareInputDisabled
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return isHardwareInputDisabled;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                isHardwareInputDisabled = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the context is running in service mode.
+        /// </summary>
+        public Boolean IsRunningInServiceMode
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return isRunningInServiceMode;
+            }
         }
 
         /// <summary>
@@ -559,6 +641,37 @@ namespace TwistedLogik.Ultraviolet
         public static event EventHandler ContextInitialized;
 
         /// <summary>
+        /// Occurs when a new frame is started.
+        /// </summary>
+        public event UltravioletContextEventHandler FrameStart;
+
+        /// <summary>
+        /// Occurs when a frame is completed.
+        /// </summary>
+        public event UltravioletContextEventHandler FrameEnd;
+
+        /// <summary>
+        /// Occurs when the context is preparing to draw the current scene. This event is called
+        /// before the context associates itself to any windows.
+        /// </summary>
+        public event UltravioletContextDrawEventHandler Drawing;
+
+        /// <summary>
+        /// Occurs when the context is preparing to draw a particular window.
+        /// </summary>
+        public event UltravioletContextWindowDrawEventHandler WindowDrawing;
+
+        /// <summary>
+        /// Occurs after the context has drawn a particular window.
+        /// </summary>
+        public event UltravioletContextWindowDrawEventHandler WindowDrawn;
+
+        /// <summary>
+        /// Occurs when the context is about to update the state of its subsystems.
+        /// </summary>
+        public event UltravioletContextUpdateEventHandler UpdatingSubsystems;
+
+        /// <summary>
         /// Occurs when the context is updating the application's state.
         /// </summary>
         public event UltravioletContextUpdateEventHandler Updating;
@@ -572,6 +685,36 @@ namespace TwistedLogik.Ultraviolet
         /// Occurs when the Ultraviolet context is being shut down.
         /// </summary>
         public event UltravioletContextEventHandler Shutdown;
+
+        /// <summary>
+        /// Ensures that the specified function produces a valid instance of <see cref="UltravioletContext"/>. If it does not,
+        /// then the current context is immediately disposed.
+        /// </summary>
+        /// <param name="fn">The function which will create the Ultraviolet context.</param>
+        /// <returns>The Ultraviolet context that was created.</returns>
+        internal static UltravioletContext EnsureSuccessfulCreation(Func<UltravioletContext> fn)
+        {
+            Contract.Require(fn, "fn");
+
+            try
+            {
+                var context = fn();
+                if (context == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                return context;
+            }
+            catch
+            {
+                var current = RequestCurrent();
+                if (current != null)
+                {
+                    current.Dispose();
+                }
+                throw;
+            }
+        }
 
         /// <summary>
         /// Retrieves the current Ultraviolet context, throwing an exception if it does not exist.
@@ -592,6 +735,23 @@ namespace TwistedLogik.Ultraviolet
                 throw new InvalidOperationException(UltravioletStrings.ContextMissing);
 
             return current;
+        }
+
+        /// <summary>
+        /// Processes all queued work items.
+        /// </summary>
+        internal void ProcessWorkItemsInternal()
+        {
+            var count = Interlocked.CompareExchange(ref pendingWorkItemCount, 0, 0);
+            if (count == 0)
+                return;
+
+            Task workItem;
+            while (queuedWorkItems.TryDequeue(out workItem))
+            {
+                workItem.RunSynchronously();
+                Interlocked.Decrement(ref pendingWorkItemCount);
+            }
         }
 
         /// <summary>
@@ -654,6 +814,20 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Initializes the context's view provider.
+        /// </summary>
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        protected void InitializeViewProvider(UltravioletConfiguration configuration)
+        {
+            var initializerFactory = TryGetFactoryMethod<UIViewProviderInitializerFactory>();
+            if (initializerFactory != null)
+            {
+                var initializer = initializerFactory();
+                initializer.Initialize(this, configuration.ViewProviderConfiguration);
+            }
+        }
+
+        /// <summary>
         /// Updates the context's state.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
@@ -696,9 +870,87 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Raises the <see cref="FrameStart"/> event.
+        /// </summary>
+        protected virtual void OnFrameStart()
+        {
+            var temp = FrameStart;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="FrameEnd"/> event.
+        /// </summary>
+        protected virtual void OnFrameEnd()
+        {
+            var temp = FrameEnd;
+            if (temp != null)
+            {
+                temp(this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Drawing"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        protected virtual void OnDrawing(UltravioletTime time)
+        {
+            var temp = Drawing;
+            if (temp != null)
+            {
+                temp(this, time);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="WindowDrawing"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="window">The window that is about to be drawn.</param>
+        protected virtual void OnWindowDrawing(UltravioletTime time, IUltravioletWindow window)
+        {
+            var temp = WindowDrawing;
+            if (temp != null)
+            {
+                temp(this, time, window);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="WindowDrawn"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="window">The window that was just drawn.</param>
+        protected virtual void OnWindowDrawn(UltravioletTime time, IUltravioletWindow window)
+        {
+            var temp = WindowDrawn;
+            if (temp != null)
+            {
+                temp(this, time, window);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="UpdatingSubsystems"/> event.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="Update(UltravioletTime)"/>.</param>
+        protected virtual void OnUpdatingSubsystems(UltravioletTime time)
+        {
+            var temp = UpdatingSubsystems;
+            if (temp != null)
+            {
+                temp(this, time);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="Updating"/> event.
         /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        /// <param name="time">Time elapsed since the last call to <see cref="Update(UltravioletTime)"/>.</param>
         protected virtual void OnUpdating(UltravioletTime time)
         {
             var temp = Updating;
@@ -795,6 +1047,12 @@ namespace TwistedLogik.Ultraviolet
             InitializeFactoryMethodsInAssembly(asmImpl);
             InitializeFactoryMethodsInCompatibilityShim();
             InitializeFactoryMethodsInViewProvider(configuration);
+
+            var asmEntry = Assembly.GetEntryAssembly();
+            if (asmEntry != null)
+            {
+                InitializeFactoryMethodsInAssembly(asmEntry);
+            }
         }
 
         /// <summary>
@@ -810,6 +1068,7 @@ namespace TwistedLogik.Ultraviolet
                 {
                     case UltravioletPlatform.Windows:
                     case UltravioletPlatform.Linux:
+                    case UltravioletPlatform.OSX:
                         shim = Assembly.LoadFrom("TwistedLogik.Ultraviolet.Desktop.dll");
                         break;
 
@@ -824,6 +1083,26 @@ namespace TwistedLogik.Ultraviolet
                 if (shim != null)
                 {
                     InitializeFactoryMethodsInAssembly(shim);
+                }
+
+                /* NOTE:
+                 * There appears to be a bug in recent versions of Mono on OSX which cause the
+                 * first call into System.Drawing to freeze the application for 15+ seconds
+                 * while the font cache is rebuilt. To work around this, we provide an OSX
+                 * platform shim which overrides some of the System.Drawing-based services
+                 * in the Desktop shim. Currently, this shim is optional; we can fall back to
+                 * the bugged implementation if it isn't present. */
+                if (Platform == UltravioletPlatform.OSX)
+                {
+                    try
+                    {
+                        var osxOverrideShim = Assembly.LoadFrom("TwistedLogik.Ultraviolet.OSX.dll");
+                        if (osxOverrideShim != null)
+                        {
+                            InitializeFactoryMethodsInAssembly(osxOverrideShim);
+                        }
+                    }
+                    catch (FileNotFoundException) { }
                 }
             }
             catch (FileNotFoundException e)
@@ -888,6 +1167,55 @@ namespace TwistedLogik.Ultraviolet
             }
         }
 
+        /// <summary>
+        /// Detects the platform on which the context is running.
+        /// </summary>
+        private void DetectPlatform()
+        {
+#if ANDROID
+            this.platform = UltravioletPlatform.Android;
+#else
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32NT:
+                    this.platform = UltravioletPlatform.Windows;
+                    break;
+
+                case PlatformID.Unix:
+                    {
+                        var buf = IntPtr.Zero;
+                        try
+                        {
+                            buf = Marshal.AllocHGlobal(8192);
+                            if (Native.uname(buf) == 0)
+                            {
+                                var os = Marshal.PtrToStringAnsi(buf);
+                                if (String.Equals("Darwin", os, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    this.platform = UltravioletPlatform.OSX;
+                                }
+                                else
+                                {
+                                    this.platform = UltravioletPlatform.Linux;
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            if (buf != IntPtr.Zero)
+                            {
+                                Marshal.FreeHGlobal(buf);
+                            }
+                        }
+                    }
+                    break;
+
+                default:
+                    throw new NotSupportedException();
+            }
+#endif
+        }
+
         // The singleton instance of the Ultraviolet context.
         private static readonly Object syncObject = new Object();
         private static UltravioletContext current;
@@ -897,9 +1225,13 @@ namespace TwistedLogik.Ultraviolet
         private readonly UltravioletFactory factory = new UltravioletFactory();
         private readonly ConcurrentQueue<Task> queuedWorkItems = new ConcurrentQueue<Task>();
         private readonly Thread thread;
+        private Int32 pendingWorkItemCount;
+        private Boolean isHardwareInputDisabled;
+        private Boolean isRunningInServiceMode;
         private Boolean isInitialized;
         private Boolean disposed;
         private Boolean disposing;
+        private UltravioletPlatform platform;
 
         // The context's list of pending tasks.
         private readonly List<Task> tasksPending = new List<Task>();

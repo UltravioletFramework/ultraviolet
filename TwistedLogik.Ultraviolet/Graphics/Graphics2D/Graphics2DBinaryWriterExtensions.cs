@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
@@ -29,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Writes a sprite animation identifier to the stream.
         /// </summary>
         /// <param name="writer">The <see cref="BinaryReader"/> with which to write the sprite animation identifier.</param>
-        /// <param name="id">The <see cref="Nullable{SpriteAnimationID}"/> to write to the stream.</param>
+        /// <param name="id">The <see cref="System.Nullable{SpriteAnimationID}"/> to write to the stream.</param>
         public static void Write(this BinaryWriter writer, SpriteAnimationID? id)
         {
             writer.Write(id.HasValue);

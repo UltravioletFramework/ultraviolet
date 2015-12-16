@@ -21,6 +21,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Clears the collection.
+        /// </summary>
+        public void Clear()
+        {
+            foreach (var existingClassName in classes)
+                owner.OnClassRemoved(existingClassName);
+
+            classes.Clear();
+            owner.InvalidateStyle();
+        }
+
+        /// <summary>
+        /// Sets the collection to contain only the specified class.
+        /// </summary>
+        /// <param name="className">The name of the class to set as the sole class in this collection.</param>
+        public void Set(String className)
+        {
+            var wasAlreadySet = false;
+
+            foreach (var existingClassName in classes)
+            {
+                if (!String.IsNullOrEmpty(className) && String.Equals(existingClassName, className, StringComparison.Ordinal))
+                {
+                    wasAlreadySet = true;
+                    continue;
+                }
+                owner.OnClassRemoved(existingClassName);
+            }
+
+            classes.Clear();
+
+            if (!String.IsNullOrEmpty(className))
+            {
+                if (!wasAlreadySet)
+                {
+                    classes.Add(className);
+                    owner.OnClassAdded(className);
+                }
+            }
+
+            owner.InvalidateStyle();
+        }
+
+        /// <summary>
         /// Adds a class to the collection.
         /// </summary>
         /// <param name="className">The name of the class to add to the collection.</param>
@@ -101,6 +145,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly UIElement owner;
 
         // State values.
-        private readonly HashSet<String> classes = new HashSet<String>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly HashSet<String> classes = new HashSet<String>(StringComparer.OrdinalIgnoreCase);
     }
 }

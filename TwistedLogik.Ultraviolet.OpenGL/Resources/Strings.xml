@@ -70,11 +70,6 @@
       <Variant>Invalid kerning pair.</Variant>
     </en-US>
   </String>
-  <String Key="BUFFER_IS_TOO_SMALL">
-    <en-US>
-      <Variant>Buffer '{0}' is too small for the requested data.</Variant>
-    </en-US>
-  </String>
   <String Key="RENDER_TARGET_NEEDS_BUFFERS">
     <en-US>
       <Variant>The specified render target is not ready for rendering because no render buffers are attached.</Variant>
@@ -85,9 +80,14 @@
       <Variant>The specified render target is not ready for rendering because its framebuffer is not complete: {0}</Variant>
     </en-US>
   </String>
-  <String Key="RENDER_TARGET_CANNOT_BE_USED_AS_TEXTURE">
+  <String Key="RENDER_BUFFER_CANNOT_BE_USED_AS_TEXTURE">
     <en-US>
-      <Variant>A render target cannot be used as a texture while it is bound to the device for writing.</Variant>
+      <Variant>A render buffer cannot be used as a texture while it is bound to the device for writing.</Variant>
+    </en-US>
+  </String>
+  <String Key="RENDER_BUFFER_WILL_NOT_BE_SAMPLED">
+    <en-US>
+      <Variant>The specified render buffer is not valid for this operation because it was created with the RenderBufferOptions.WillNotBeSampled flag.</Variant>
     </en-US>
   </String>
   <String Key="RENDER_BUFFER_IS_WRONG_SIZE">
@@ -178,6 +178,16 @@
   <String Key="INVALID_CONTENT_ARCHIVE">
     <en-US>
       <Variant>The specified content archive contains invalid data.</Variant>
+    </en-US>
+  </String>
+  <String Key="CANNOT_RESIZE_ATTACHED_RENDER_BUFFER">
+    <en-US>
+      <Variant>The render buffer cannot be resized because it has been attached to a render target. Resize the render target instead.</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXTURE_IS_IMMUTABLE">
+    <en-US>
+      <Variant>The specified operation is invalid for this texture because it is using immutable storage.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
@@ -14,8 +15,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the base class for scroll bars.
     /// </summary>
+    [UvmlKnownType]
     public abstract class ScrollBarBase : RangeBase
     {
+        /// <summary>
+        /// Initializes the <see cref="ScrollBarBase"/> type.
+        /// </summary>
+        static ScrollBarBase()
+        {
+            FocusableProperty.OverrideMetadata(typeof(ScrollBarBase), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ScrollBarBase"/> class.
         /// </summary>
@@ -90,6 +100,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 PART_Track.InvalidateArrange();
             }
             base.OnValueChanged();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
+        {
+            data.Handled = true;
+
+            base.OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, ref data);
         }
 
         /// <summary>

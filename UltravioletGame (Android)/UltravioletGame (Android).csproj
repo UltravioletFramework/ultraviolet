@@ -25,13 +25,23 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ANDROID</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;ANDROID</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AndroidLinkSkip />
+    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <BundleAssemblies>False</BundleAssemblies>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+    <Debugger>Xamarin</Debugger>
+    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
+    <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,20 +54,24 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <AndroidLinkSkip>System.Core</AndroidLinkSkip>
+    <AndroidLinkSkip>
+    </AndroidLinkSkip>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <BundleAssemblies>False</BundleAssemblies>
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
-    <JavaMaximumHeapSize />
-    <JavaOptions />
-    <MonoDroidExtraArgs />
+    <Debugger>Xamarin</Debugger>
+    <AotAssemblies>False</AotAssemblies>
+    <EnableLLVM>False</EnableLLVM>
+    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
+    <EnableProguard>False</EnableProguard>
+    <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
-    <OutputPath>bin\Production\</OutputPath>
-    <DefineConstants>TRACE;ANDROID</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>bin\Signed\</OutputPath>
+    <DefineConstants>TRACE;ANDROID SIGNED</DefineConstants>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
@@ -69,8 +83,9 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="org.libsdl.app">
-      <HintPath>..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
+    <Reference Include="Org.Libsdl.App, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\SDL2\Android\Org.Libsdl.App.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -95,6 +110,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Content.uvarc" />
+    <AndroidNativeLibrary Include="..\Dependencies\BASS\Android\arm64-v8a\libbass.so">
+      <Link>lib\arm64-v8a\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\BASS\Android\arm64-v8a\libbass_fx.so">
+      <Link>lib\arm64-v8a\libbass_fx.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\arm64-v8a\libSDL2.so">
+      <Link>lib\arm64-v8a\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\arm64-v8a\libSDL2main.so">
+      <Link>lib\arm64-v8a\libSDL2main.so</Link>
+    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so">
       <Link>lib\armeabi-v7a\libSDL2.so</Link>
     </AndroidNativeLibrary>
@@ -178,9 +205,7 @@
       <Name>TwistedLogik.Ultraviolet.SDL2 %28Android%29</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Fonts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

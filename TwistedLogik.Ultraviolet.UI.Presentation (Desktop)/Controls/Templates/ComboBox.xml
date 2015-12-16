@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+
+      <!-- Selection box -->
+      <ToggleButton Name="PART_SelectionBox"
+                    Class="combobox-selectionbox"
+                    KeyboardNavigation.IsTabStop="false"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalContentAlignment="Left"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsChecked="{{IsDropDownOpen}}">
+      </ToggleButton>
+      <ContentPresenter Name="PART_ContentPresenter"
+                        Class="combobox-content"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Content="{{SelectionBoxItem}}"
+                        ContentStringFormat="{{SelectionBoxItemStringFormat}}"
+                        IsHitTestVisible="false"/>
+      <Image Name="PART_Arrow"
+             Class="combobox-arrow combobox-arrow-closed"
+             VerticalAlignment="Center"
+             Grid.Row="0"
+             Grid.Column="1"
+             IsHitTestVisible="false"/>
+      <Image Class="combobox-focus-image"
+             Grid.Row="0"
+             Grid.Column="0"
+             Grid.ColumnSpan="2"
+             Opacity="{{IsFocusVisualVisible ? 1 : 0}}"
+             IsHitTestVisible="false"/>
+
+      <!-- Popup list -->
+      <Popup Name="PART_Popup"
+             Class="combobox-dropdown-popup"
+             PlacementTarget="PART_SelectionBox"
+             IsOpen="{{IsDropDownOpen}}">
+
+        <Popup.Effect>
+          <DropShadowEffect/>
+        </Popup.Effect>
+
+        <Grid Class="combobox-dropdown-grid"
+              MinWidth="{{ActualWidth}}">
+
+          <Image Class="combobox-dropdown-background"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch"/>
+          <Border Class="combobox-dropdown-border"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
+
+            <ScrollViewer Name="PART_ScrollViewer" 
+                          Class="combobox-dropdown-scrollviewer"
+                          HorizontalAlignment="Stretch"
+                          HorizontalContentAlignment="Stretch"
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalAlignment="Stretch"
+                          VerticalContentAlignment="Stretch"
+                          VerticalScrollBarVisibility="Auto"
+                          MaxHeight="{{ActualMaxDropDownHeight}}">
+
+              <ItemsPanel Name="PART_ItemsPanel" 
+                          HorizontalAlignment="Stretch"
+                          KeyboardNavigation.DirectionalNavigation="Contained"/>
+
+            </ScrollViewer>
+
+          </Border>
+
+        </Grid>
+
+      </Popup>
+
+    </Grid>
+  </View>
+</ComponentTemplate>

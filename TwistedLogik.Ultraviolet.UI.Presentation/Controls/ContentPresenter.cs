@@ -1,5 +1,7 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -100,12 +102,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            if (textLayoutResult != null && textLayoutResult.Count > 0 && containingControl != null)
+            if (textLayoutCommands != null && textLayoutCommands.Count > 0 && containingControl != null)
             {
-                var position = Display.DipsToPixels(AbsolutePosition + ContentOffset);
-                var color    = containingControl.Foreground;
-
-                View.Resources.TextRenderer.Draw(dc.SpriteBatch, textLayoutResult, (Vector2)position, color);
+                var position = Display.DipsToPixels(UntransformedAbsolutePosition + ContentOffset);
+                var positionRounded = dc.IsTransformed ? (Vector2)position : (Vector2)(Point2)position;
+                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutCommands, positionRounded, containingControl.Foreground * dc.Opacity);
             }
 
             base.DrawOverride(time, dc);
@@ -114,11 +115,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
+            DigestDataBoundContentProperties();
+
             var content = Content;
-            var contentText = content as String;
-            if (contentText != null)
+            if (content == null)
+                return Size2D.Zero;
+
+            var contentElement = content as UIElement;
+            if (contentElement != null)
             {
-                if (contentText == String.Empty)
+                contentElement.Measure(availableSize);
+
+                if (textParserResult != null)
+                    textParserResult.Clear();
+
+                if (textLayoutCommands != null)
+                    textLayoutCommands.Clear();
+
+                return new Size2D(
+                    Math.Min(availableSize.Width, contentElement.DesiredSize.Width),
+                    Math.Min(availableSize.Height, contentElement.DesiredSize.Height));
+            }
+            else
+            {
+                if (textParserResult == null || textParserResult.Count == 0)
                 {
                     if (containingControl != null && containingControl.Font.IsLoaded)
                     {
@@ -128,45 +148,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     return Size2D.Zero;
                 }
 
-                UpdateTextParserCache();
                 UpdateTextLayoutCache(availableSize);
 
-                var textWidth  = Display.PixelsToDips(textLayoutResult.ActualWidth);
-                var textHeight = Display.PixelsToDips(textLayoutResult.ActualHeight);
+                var textWidth  = Display.PixelsToDips(textLayoutCommands.ActualWidth);
+                var textHeight = Display.PixelsToDips(textLayoutCommands.ActualHeight);
                 return new Size2D(textWidth, textHeight);
             }
-            else
-            {
-                if (textParserResult != null)
-                    textParserResult.Clear();
-
-                if (textLayoutResult != null)
-                    textLayoutResult.Clear();
-            }
-
-            var contentElement = content as UIElement;
-            if (contentElement != null)
-            {
-                contentElement.Measure(availableSize);
-                return new Size2D(
-                    Math.Min(availableSize.Width, contentElement.DesiredSize.Width),
-                    Math.Min(availableSize.Height, contentElement.DesiredSize.Height));
-            }
-
-            return Size2D.Zero;
         }
 
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
-            var content = Content;
+            DigestDataBoundContentProperties();
 
-            var contentText = content as String;
-            if (contentText != null)
-            {
-                UpdateTextLayoutCache(finalSize);
-                return finalSize;
-            }
+            var content = Content;
 
             var contentElement = content as UIElement;
             if (contentElement != null)
@@ -175,6 +170,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 contentElement.Arrange(contentElementRect, options);
 
                 return finalSize;
+            }
+            else
+            {
+                if (textParserResult != null && textParserResult.Count > 0)
+                {
+                    UpdateTextLayoutCache(finalSize);
+                    return finalSize;
+                }
             }
 
             return Size2D.Zero;
@@ -197,9 +200,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var contentElement = Content as UIElement;
             if (contentElement != null)
             {
-                if (!AbsoluteBounds.Contains(contentElement.AbsoluteBounds))
+                if (!Bounds.Contains(contentElement.UntransformedRelativeBounds))
                 {
-                    return AbsoluteBounds;
+                    return UntransformedAbsoluteBounds;
                 }
             }
 
@@ -324,9 +327,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (contentElement == null)
             {
                 if (textParserResult == null)
-                    textParserResult = new TextParserResult();
+                    textParserResult = new TextParserTokenStream();
 
-                var contentAsString = String.Format(ContentStringFormat ?? "{0}", content);
+                var contentAsString = default(String);
+                var contentFormat = ContentStringFormat;
+                if (contentFormat == null)
+                {
+                    contentAsString = (content == null) ? String.Empty : content.ToString();
+                }
+                else
+                {
+                    contentAsString = String.Format(contentFormat, content);
+                }
+
                 View.Resources.TextRenderer.Parse(contentAsString, textParserResult);
             }
 
@@ -339,8 +352,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="availableSize">The amount of space in which the element's text can be laid out.</param>
         private void UpdateTextLayoutCache(Size2D availableSize)
         {
-            if (textLayoutResult != null)
-                textLayoutResult.Clear();
+            if (textLayoutCommands != null)
+                textLayoutCommands.Clear();
 
             if (View == null || containingControl == null)
                 return;
@@ -350,8 +363,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var contentElement = content as UIElement;
             if (contentElement == null)
             {
-                if (textLayoutResult == null)
-                    textLayoutResult = new TextLayoutResult();
+                if (textLayoutCommands == null)
+                    textLayoutCommands = new TextLayoutCommandStream();
 
                 var font = containingControl.Font;
                 if (font.IsLoaded)
@@ -359,17 +372,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     var availableSizeInPixels = Display.DipsToPixels(availableSize);
 
                     var settings = new TextLayoutSettings(font,
-                        (Int32)availableSizeInPixels.Width,
-                        (Int32)availableSizeInPixels.Height, TextFlags.Standard, containingControl.FontStyle);
+                        (Int32)Math.Ceiling(availableSizeInPixels.Width),
+                        (Int32)Math.Ceiling(availableSizeInPixels.Height), TextFlags.Standard, containingControl.FontStyle);
 
-                    View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutResult, settings);
+                    View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
                 }
             }
         }
 
+        /// <summary>
+        /// Digests any content-related dependency properties on this control which are currently data bound.
+        /// </summary>
+        private void DigestDataBoundContentProperties()
+        {
+            DigestImmediatelyIfDataBound(ContentSourceProperty);
+            DigestImmediatelyIfDataBound(ContentStringFormatProperty);
+            DigestImmediatelyIfDataBound(ContentProperty);
+        }
+
         // Cached parser/layout results for content text.
-        private TextParserResult textParserResult;
-        private TextLayoutResult textLayoutResult;
+        private TextParserTokenStream textParserResult;
+        private TextLayoutCommandStream textLayoutCommands;
 
         // Cached layout parameters.
         private Control containingControl;

@@ -42,7 +42,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource RoutedEventAlreadyRegistered         = new StringResource(StringDatabase, "ROUTED_EVENT_ALREADY_REGISTERED");
         public static readonly StringResource CannotResolveBindingExpression       = new StringResource(StringDatabase, "CANNOT_RESOLVE_BINDING_EXPRESSION");
         public static readonly StringResource InvalidBindingExpression             = new StringResource(StringDatabase, "INVALID_BINDING_EXPRESSION");
-        public static readonly StringResource InvalidBindingContext                = new StringResource(StringDatabase, "INVALID_BINDING_CONTEXT");
         public static readonly StringResource BindingIsReadOnly                    = new StringResource(StringDatabase, "BINDING_IS_READ_ONLY");
         public static readonly StringResource BindingIsWriteOnly                   = new StringResource(StringDatabase, "BINDING_IS_WRITE_ONLY");
         public static readonly StringResource UIElementInvalidCtor                 = new StringResource(StringDatabase, "UIELEMENT_INVALID_CTOR");
@@ -53,9 +52,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource NoViewModel                          = new StringResource(StringDatabase, "NO_VIEW_MODEL");
         public static readonly StringResource ElementWithNameAlreadyExists         = new StringResource(StringDatabase, "ELEMENT_WITH_NAME_ALREADY_EXISTS");
         public static readonly StringResource AmbiguousDependencyProperty          = new StringResource(StringDatabase, "AMBIGUOUS_DEPENDENCY_PROPERTY");
-        public static readonly StringResource UserControlDoesNotDefineType         = new StringResource(StringDatabase, "USER_CONTROL_DOES_NOT_DEFINE_TYPE");
-        public static readonly StringResource InvalidUserControlDefinition         = new StringResource(StringDatabase, "INVALID_USER_CONTROL_DEFINITION");
-        public static readonly StringResource InvalidUserControlType               = new StringResource(StringDatabase, "INVALID_USER_CONTROL_TYPE");
         public static readonly StringResource InvalidChildElements                 = new StringResource(StringDatabase, "INVALID_CHILD_ELEMENTS");
         public static readonly StringResource InvalidElementPropertyValue          = new StringResource(StringDatabase, "INVALID_ELEMENT_PROPERTY_VALUE");
         public static readonly StringResource ComponentRootAlreadyLoaded           = new StringResource(StringDatabase, "COMPONENT_ROOT_ALREADY_LOADED");
@@ -84,6 +80,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource TypeIsNotComparable                  = new StringResource(StringDatabase, "TYPE_IS_NOT_COMPARABLE");
         public static readonly StringResource InvalidTriggerComparison             = new StringResource(StringDatabase, "INVALID_TRIGGER_COMPARISON");
         public static readonly StringResource InvalidAssetIdentifier               = new StringResource(StringDatabase, "INVALID_ASSET_IDENTIFIER");
+        public static readonly StringResource ElementIsNotAnAncestor               = new StringResource(StringDatabase, "ELEMENT_IS_NOT_AN_ANCESTOR");
+        public static readonly StringResource ElementIsNotADescendant              = new StringResource(StringDatabase, "ELEMENT_IS_NOT_A_DESCENDANT");
+        public static readonly StringResource InvalidTransformation                = new StringResource(StringDatabase, "INVALID_TRANSFORMATION");
+        public static readonly StringResource DrawingContextDoesNotHaveSpriteBatch = new StringResource(StringDatabase, "DRAWING_CONTEXT_DOES_NOT_HAVE_SPRITEBATCH");
+        public static readonly StringResource CompiledExpressionsAssemblyNotFound  = new StringResource(StringDatabase, "COMPILED_EXPRESSIONS_ASSEMBLY_NOT_FOUND");
+        public static readonly StringResource CompiledExpressionNotFound           = new StringResource(StringDatabase, "COMPILED_EXPRESSION_NOT_FOUND");
+        public static readonly StringResource ExpressionCompilerNotFound           = new StringResource(StringDatabase, "EXPRESSION_COMPILER_NOT_FOUND");
+        public static readonly StringResource ExpressionCompilerTypeNotValid       = new StringResource(StringDatabase, "EXPRESSION_COMPILER_TYPE_NOT_VALID");
+        public static readonly StringResource CannotFindDependencyPropertyField    = new StringResource(StringDatabase, "CANNOT_FIND_DEPENDENCY_PROPERTY_FIELD");
+        public static readonly StringResource InvalidBindingExpressionCompilerAsm  = new StringResource(StringDatabase, "INVALID_BINDING_EXPRESSION_COMPILER_ASM");
+        public static readonly StringResource AttachablePropertyNotFound           = new StringResource(StringDatabase, "ATTACHABLE_PROPERTY_NOT_FOUND");
+        public static readonly StringResource IncompatibleType                     = new StringResource(StringDatabase, "INCOMPATIBLE_TYPE");
+        public static readonly StringResource FactoryMethodMissing                 = new StringResource(StringDatabase, "FACTORY_METHOD_MISSING");
+        public static readonly StringResource FactoryMethodInvalidResult           = new StringResource(StringDatabase, "FACTORY_METHOD_INVALID_RESULT");
+        public static readonly StringResource InvalidCompilerOptions               = new StringResource(StringDatabase, "INVALID_COMPILER_OPTIONS");
+        public static readonly StringResource CannotFindViewModelWrapper           = new StringResource(StringDatabase, "CANNOT_FIND_VIEW_MODEL_WRAPPER");
+        public static readonly StringResource VersionedStringSourceIsStale         = new StringResource(StringDatabase, "VERSIONED_STRING_SOURCE_IS_STALE");
 #pragma warning restore 1591
     }
 }

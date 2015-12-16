@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Drawing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.OpenGL;
+using TwistedLogik.Ultraviolet.SDL2;
+using TwistedLogik.Ultraviolet.SDL2.Messages;
+using TwistedLogik.Ultraviolet.SDL2.Native;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace TwistedLogik.Ultraviolet.Testing
@@ -14,19 +17,17 @@ namespace TwistedLogik.Ultraviolet.Testing
     /// <summary>
     /// An Ultraviolet application used for unit testing.
     /// </summary>
-    internal class UltravioletTestApplication : UltravioletApplication, IUltravioletTestApplication
+    internal partial class UltravioletTestApplication : UltravioletApplication, IUltravioletTestApplication
     {
         /// <summary>
         /// Initializes a new instance of the UltravioletTestApplication class.
         /// </summary>
-        /// <param name="rtsAttribute">The <see cref="RenderToScreenAttribute"/> attached to the current test class.</param>
         /// <param name="headless">A value indicating whether to create a headless context.</param>
-        public UltravioletTestApplication(RenderToScreenAttribute rtsAttribute, Boolean headless = false)
+        public UltravioletTestApplication(Boolean headless = false)
             : base("TwistedLogik", "Ultraviolet Unit Tests")
         {
             PreserveApplicationSettings = false;
-
-            this.rtsAttribute = rtsAttribute;
+            
             this.headless = headless;
         }
 
@@ -72,27 +73,28 @@ namespace TwistedLogik.Ultraviolet.Testing
             framesToSkip = frameCount;
             return this;
         }
+        
+        /// <inheritdoc/>
+        public IUltravioletTestApplication OnFrame(Int32 frame, Action<IUltravioletTestApplication> action)
+        {
+            if (frameActions == null)
+                frameActions = new List<FrameAction>();
 
+            frameActions.Add(new FrameAction(frame, action));
+
+            return this;
+        }
+        
         /// <inheritdoc/>
         public Bitmap Render(Action<UltravioletContext> renderer)
         {
             if (headless)
                 throw new InvalidOperationException("Cannot render a headless window.");
 
-            if (rtsAttribute != null)
-            {
-                this.shouldExit = () => Ultraviolet.GetInput().GetKeyboard().IsKeyPressed(Key.Escape);
-            }
-            else
-            {
-                this.shouldExit = () => true;
-            }
+            this.shouldExit = () => true;
 
             this.renderer = renderer;
             this.Run();
-
-            if (rtsAttribute != null)
-                Assert.Inconclusive("Test was rendered to the screen for visual debugging.");
 
             return bmp;
         }
@@ -117,13 +119,75 @@ namespace TwistedLogik.Ultraviolet.Testing
             RunFor(TimeSpan.Zero);
         }
 
-        /// <summary>
-        /// Called when the application is creating its Ultraviolet context.
-        /// </summary>
-        /// <returns>The Ultraviolet context.</returns>
+        /// <inheritdoc/>
+        public void RunAllFrameActions()
+        {
+            RunUntil(() =>
+            {
+                return !frameActions.Any(x => x.Frame >= frameCount);
+            });
+        }
+
+        /// <inheritdoc/>
+        public void SpoofKeyDown(Scancode scancode, Key key, Boolean ctrl, Boolean alt, Boolean shift)
+        {
+            var data = Ultraviolet.Messages.CreateMessageData<SDL2EventMessageData>();
+            data.Event = new SDL_Event()
+            {
+                key = new SDL_KeyboardEvent()
+                {
+                    type = (uint)SDL_EventType.KEYDOWN,
+                    windowID = (uint)Ultraviolet.GetPlatform().Windows.GetPrimary().ID,                     
+                    keysym = new SDL_Keysym()
+                    {
+                        keycode = (SDL_Keycode)key,
+                        scancode = (SDL_Scancode)scancode,                      
+                        mod = 
+                            (ctrl ? SDL_Keymod.CTRL : SDL_Keymod.NONE) |
+                            (alt ? SDL_Keymod.ALT : SDL_Keymod.NONE) |
+                            (shift ? SDL_Keymod.SHIFT : SDL_Keymod.NONE),
+                    },
+                }
+            };
+            Ultraviolet.Messages.Publish(SDL2UltravioletMessages.SDLEvent, data);
+        }
+
+        /// <inheritdoc/>
+        public void SpoofKeyUp(Scancode scancode, Key key, Boolean ctrl, Boolean alt, Boolean shift)
+        {
+            var data = Ultraviolet.Messages.CreateMessageData<SDL2EventMessageData>();
+            data.Event = new SDL_Event()
+            {
+                key = new SDL_KeyboardEvent()
+                {
+                    type = (uint)SDL_EventType.KEYUP,
+                    windowID = (uint)Ultraviolet.GetPlatform().Windows.GetPrimary().ID,
+                    keysym = new SDL_Keysym()
+                    {
+                        keycode = (SDL_Keycode)key,
+                        scancode = (SDL_Scancode)scancode,
+                        mod =
+                            (ctrl ? SDL_Keymod.CTRL : SDL_Keymod.NONE) |
+                            (alt ? SDL_Keymod.ALT : SDL_Keymod.NONE) |
+                            (shift ? SDL_Keymod.SHIFT : SDL_Keymod.NONE),
+                    },
+                }
+            };
+            Ultraviolet.Messages.Publish(SDL2UltravioletMessages.SDLEvent, data);
+        }
+
+        /// <inheritdoc/>
+        public void SpoofKeyPress(Scancode scancode, Key key, Boolean ctrl, Boolean alt, Boolean shift)
+        {
+            SpoofKeyDown(scancode, key, ctrl, alt, shift);
+            SpoofKeyUp(scancode, key, ctrl, alt, shift);
+        }
+
+        /// <inheritdoc/>
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var configuration = new OpenGLUltravioletConfiguration() { Headless = headless };
+            configuration.IsHardwareInputDisabled = true;
             configuration.Debug = true;
             configuration.DebugLevels = DebugLevels.Error | DebugLevels.Warning;
             configuration.DebugCallback = (uv, level, message) =>
@@ -140,9 +204,7 @@ namespace TwistedLogik.Ultraviolet.Testing
             return new OpenGLUltravioletContext(this, configuration);
         }
 
-        /// <summary>
-        /// Called after the application has been initialized.
-        /// </summary>
+        /// <inheritdoc/>
         protected override void OnInitialized()
         {
             if (!headless)
@@ -153,28 +215,33 @@ namespace TwistedLogik.Ultraviolet.Testing
                 initializer(Ultraviolet);
             }
 
-            if (rtsAttribute != null && rtsAttribute.LaunchDebugger)
-            {
-                if (Debugger.Launch() && Debugger.IsAttached)
-                {
-                    Debugger.Break();
-                }
-            }
+            Ultraviolet.FrameStart += OnFrameStart;
+            
             base.OnInitialized();
         }
 
-        /// <summary>
-        /// Called when the application is loading content.
-        /// </summary>
+        /// <inheritdoc/>
+        protected override void OnShutdown()
+        {
+            if (!Ultraviolet.Disposed)
+            {
+                Ultraviolet.FrameStart -= OnFrameStart;
+            }
+            base.OnShutdown();
+        }
+
+        /// <inheritdoc/>
         protected override void OnLoadingContent()
         {
             var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
 
             if (!headless)
             {
-                rbuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, window.ClientSize.Width, window.ClientSize.Height);
+                rtargetColorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, window.ClientSize.Width, window.ClientSize.Height);
+                rtargetDepthStencilBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, window.ClientSize.Width, window.ClientSize.Height);
                 rtarget = RenderTarget2D.Create(window.ClientSize.Width, window.ClientSize.Height);
-                rtarget.Attach(rbuffer);
+                rtarget.Attach(rtargetColorBuffer);
+                rtarget.Attach(rtargetDepthStencilBuffer);
             }
 
             if (loader != null)
@@ -186,10 +253,7 @@ namespace TwistedLogik.Ultraviolet.Testing
             base.OnLoadingContent();
         }
 
-        /// <summary>
-        /// Called when the application state is being updated.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <inheritdoc/>
         protected override void OnUpdating(UltravioletTime time)
         {
             if (framesToSkip == 0)
@@ -202,18 +266,12 @@ namespace TwistedLogik.Ultraviolet.Testing
             base.OnUpdating(time);
         }
 
-        /// <summary>
-        /// Called when the scene is being drawn.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
+        /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time)
         {
             if (framesToSkip == 0)
             {
-                if (rtsAttribute == null)
-                {
-                    Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
-                }
+                Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
                 Ultraviolet.GetGraphics().Clear(Color.Black);
 
                 if (renderer != null)
@@ -221,17 +279,31 @@ namespace TwistedLogik.Ultraviolet.Testing
                     renderer(Ultraviolet);
                 }
 
-                if (rtsAttribute == null)
-                {
-                    Ultraviolet.GetGraphics().SetRenderTarget(null);
-                    bmp = ConvertRenderTargetToBitmap(rtarget);
-                }
+                Ultraviolet.GetGraphics().SetRenderTarget(null);
+                bmp = ConvertRenderTargetToBitmap(rtarget);
             }
             else
             {
                 framesToSkip--;
             }
             base.OnDrawing(time);
+        }
+
+        /// <summary>
+        /// Occurs at the start of a frame.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        private void OnFrameStart(UltravioletContext uv)
+        {
+            if (frameActions != null)
+            {
+                var actions = frameActions.Where(x => x.Frame == frameCount);
+                foreach (var action in actions)
+                {
+                    action.Action(this);
+                }
+            }
+            frameCount++;
         }
 
         /// <summary>
@@ -258,7 +330,6 @@ namespace TwistedLogik.Ultraviolet.Testing
         }
 
         // State values.
-        private readonly RenderToScreenAttribute rtsAttribute;
         private readonly Boolean headless;
         private Boolean configureUPF;
         private String audioSubsystem;
@@ -268,10 +339,13 @@ namespace TwistedLogik.Ultraviolet.Testing
         private Action<ContentManager> loader;
         private Action<UltravioletContext> renderer;
         private Bitmap bmp;
+        private Int32 frameCount;
         private Int32 framesToSkip;
+        private List<FrameAction> frameActions;
 
         // The render target to which the test scene will be rendered.
         private RenderTarget2D rtarget;
-        private RenderBuffer2D rbuffer;
+        private RenderBuffer2D rtargetColorBuffer;
+        private RenderBuffer2D rtargetDepthStencilBuffer;
     }
 }

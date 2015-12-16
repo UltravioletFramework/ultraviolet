@@ -152,7 +152,12 @@
   </String>
   <String Key="BEGIN_MUST_BE_CALLED_BEFORE_DRAW">
     <en-US>
-      <Variant>Begin must be called successfully before a Draw can be called.</Variant>
+      <Variant>Begin must be called successfully before Draw can be called.</Variant>
+    </en-US>
+  </String>
+  <String Key="BEGIN_MUST_BE_CALLED_BEFORE_STATE_QUERY">
+    <en-US>
+      <Variant>Begin must be called successfully before the sprite batch's state can be queried.</Variant>
     </en-US>
   </String>
   <String Key="STATE_IS_IMMUTABLE_AFTER_BIND">
@@ -185,9 +190,19 @@
       <Variant>Unrecognized icon '{0}'</Variant>
     </en-US>
   </String>
+  <String Key="UNRECOGNIZED_GLYPH_SHADER">
+    <en-US>
+      <Variant>Unrecognized glyph shader '{0}'</Variant>
+    </en-US>
+  </String>
   <String Key="UNRECOGNIZED_STYLE">
     <en-US>
       <Variant>Unrecognized style '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="UNRECOGNIZED_LAYOUT_COMMAND">
+    <en-US>
+      <Variant>Recognized layout command '{0}'</Variant>
     </en-US>
   </String>
   <String Key="INVALID_LAYOUT_SETTINGS">
@@ -473,6 +488,36 @@
   <String Key="INCOMPATIBLE_VIEW_MODEL">
     <en-US>
       <Variant>The specified view model cannot be bound to this view because the view requires a view model of type '{0}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_OPERATION_WHILE_BOUND">
+    <en-US>
+      <Variant>The specified operation is not currently valid because the resource in question is bound to the device.</Variant>
+    </en-US>
+  </String>
+  <String Key="BUFFER_IS_WRONG_SIZE">
+    <en-US>
+      <Variant>The specified buffer is either too big or too small for this operation.</Variant>
+    </en-US>
+  </String>
+  <String Key="VIEW_DIRECTIVE_MUST_HAVE_TYPE">
+    <en-US>
+      <Variant>One of the view directives in '{0}' is invalid because it does not specify a type attribute.</Variant>
+    </en-US>
+  </String>
+  <String Key="NOT_SUPPORTED_IN_SERVICE_MODE">
+    <en-US>
+      <Variant>This operation is not supported because the Ultraviolet context is running in service mode.</Variant>
+    </en-US>
+  </String>
+  <String Key="CONTEXT_DOES_NOT_HAVE_PROFILER">
+    <en-US>
+      <Variant>This operation is invalid because the Ultraviolet context does not have an associated performance profiler.</Variant>
+    </en-US>
+  </String>
+  <String Key="LINE_INFO_IS_NOT_FROM_SAME_SOURCE">
+    <en-US>
+      <Variant>The specified LineInfo object was not created by this command stream.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

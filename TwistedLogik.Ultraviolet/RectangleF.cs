@@ -190,7 +190,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="offsetX">The amount by which to offset the rectangle along the x-axis.</param>
         /// <param name="offsetY">The amount by which to offset the rectangle along the y-axis.</param>
         /// <returns>The offset <see cref="RectangleF"/>.</returns>
-        public static RectangleF Offset(RectangleF rectangle, Int32 offsetX, Int32 offsetY)
+        public static RectangleF Offset(RectangleF rectangle, Single offsetX, Single offsetY)
         {
             return new RectangleF(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
         }
@@ -202,7 +202,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="offsetX">The amount by which to offset the rectangle along the x-axis.</param>
         /// <param name="offsetY">The amount by which to offset the rectangle along the y-axis.</param>
         /// <param name="result">The offset <see cref="RectangleF"/>.</param>
-        public static void Offset(ref RectangleF rectangle, Int32 offsetX, Int32 offsetY, out RectangleF result)
+        public static void Offset(ref RectangleF rectangle, Single offsetX, Single offsetY, out RectangleF result)
         {
             result = new RectangleF(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
         }
@@ -241,8 +241,8 @@ namespace TwistedLogik.Ultraviolet
             return new RectangleF(
                 rectangle.X - horizontalAmount,
                 rectangle.Y - verticalAmount,
-                rectangle.Width + horizontalAmount,
-                rectangle.Height + verticalAmount
+                rectangle.Width + (2f * horizontalAmount),
+                rectangle.Height + (2f * verticalAmount)
             );
         }
 
@@ -258,8 +258,8 @@ namespace TwistedLogik.Ultraviolet
             result = new RectangleF(
                 rectangle.X - horizontalAmount,
                 rectangle.Y - verticalAmount,
-                rectangle.Width + horizontalAmount,
-                rectangle.Height + verticalAmount
+                rectangle.Width + (2f * horizontalAmount),
+                rectangle.Height + (2f * verticalAmount)
             );
         }
 
@@ -329,6 +329,58 @@ namespace TwistedLogik.Ultraviolet
             var isEmpty = (minRight <= maxLeft || minBottom <= maxTop);
 
             result = isEmpty ? RectangleF.Empty : new RectangleF(maxLeft, maxTop, minRight - maxLeft, minBottom - maxTop);
+        }
+
+        /// <summary>
+        /// Transforms the specified rectangle and retrieves the axis-aligned bounding box of the result.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to transform.</param>
+        /// <param name="transform">The transform matrix.</param>
+        /// <returns>The axis-aligned bounding box of <paramref name="rectangle"/> after it has been transformed.</returns>
+        public static RectangleF TransformAxisAligned(RectangleF rectangle, Matrix transform)
+        {
+            var tl = new Vector2(rectangle.Left, rectangle.Top);
+            var tr = new Vector2(rectangle.Right, rectangle.Top);
+            var bl = new Vector2(rectangle.Left, rectangle.Bottom);
+            var br = new Vector2(rectangle.Right, rectangle.Bottom);
+
+            Vector2.Transform(ref tl, ref transform, out tl);
+            Vector2.Transform(ref tr, ref transform, out tr);
+            Vector2.Transform(ref bl, ref transform, out bl);
+            Vector2.Transform(ref br, ref transform, out br);
+
+            var minX = Math.Min(Math.Min(tl.X, tr.X), Math.Min(bl.X, br.X));
+            var maxX = Math.Max(Math.Max(tl.X, tr.X), Math.Max(bl.X, br.X));
+            var minY = Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(bl.Y, br.Y));
+            var maxY = Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(bl.Y, br.Y));
+
+            return new RectangleF(minX, minY, maxX - minX, maxY - minY);
+        }
+
+        /// <summary>
+        /// Transforms the specified rectangle and retrieves the axis-aligned bounding box of the result.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to transform.</param>
+        /// <param name="transform">The transform matrix.</param>
+        /// <param name="result">The axis-aligned bounding box of <paramref name="rectangle"/> after it has been transformed.</param>
+        public static void TransformAxisAligned(ref RectangleF rectangle, ref Matrix transform, out RectangleF result)
+        {
+            var tl = new Vector2((Single)rectangle.Left, (Single)rectangle.Top);
+            var tr = new Vector2((Single)rectangle.Right, (Single)rectangle.Top);
+            var bl = new Vector2((Single)rectangle.Left, (Single)rectangle.Bottom);
+            var br = new Vector2((Single)rectangle.Right, (Single)rectangle.Bottom);
+
+            Vector2.Transform(ref tl, ref transform, out tl);
+            Vector2.Transform(ref tr, ref transform, out tr);
+            Vector2.Transform(ref bl, ref transform, out bl);
+            Vector2.Transform(ref br, ref transform, out br);
+
+            var minX = Math.Min(Math.Min(tl.X, tr.X), Math.Min(bl.X, br.X));
+            var maxX = Math.Max(Math.Max(tl.X, tr.X), Math.Max(bl.X, br.X));
+            var minY = Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(bl.Y, br.Y));
+            var maxY = Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(bl.Y, br.Y));
+
+            result = new RectangleF(minX, minY, maxX - minX, maxY - minY);
         }
 
         /// <summary>

@@ -20,11 +20,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="SourcedImage"/> structure.
         /// </summary>
-        /// <param name="image">The asset identifier of the resource.</param>
+        /// <param name="resource">The texture image resouce which this object represents.</param>
         /// <param name="source">An <see cref="AssetSource"/> value describing how to load the resource.</param>
-        public SourcedImage(TextureImage image, AssetSource source)
+        public SourcedImage(TextureImage resource, AssetSource source)
         {
-            this.resource  = image;
+            this.resource  = resource;
             this.source = source;
         }
 

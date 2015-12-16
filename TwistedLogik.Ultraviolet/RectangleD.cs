@@ -199,7 +199,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="offsetX">The amount by which to offset the rectangle along the x-axis.</param>
         /// <param name="offsetY">The amount by which to offset the rectangle along the y-axis.</param>
         /// <returns>The offset <see cref="RectangleD"/>.</returns>
-        public static RectangleD Offset(RectangleD rectangle, Int32 offsetX, Int32 offsetY)
+        public static RectangleD Offset(RectangleD rectangle, Double offsetX, Double offsetY)
         {
             return new RectangleD(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
         }
@@ -211,7 +211,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="offsetX">The amount by which to offset the rectangle along the x-axis.</param>
         /// <param name="offsetY">The amount by which to offset the rectangle along the y-axis.</param>
         /// <param name="result">The offset <see cref="RectangleD"/>.</param>
-        public static void Offset(ref RectangleD rectangle, Int32 offsetX, Int32 offsetY, out RectangleD result)
+        public static void Offset(ref RectangleD rectangle, Double offsetX, Double offsetY, out RectangleD result)
         {
             result = new RectangleD(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
         }
@@ -222,7 +222,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="rectangle">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="offset">The amount by which to offset the rectangle.</param>
         /// <returns>The offset <see cref="RectangleD"/>.</returns>
-        public static RectangleD Offset(RectangleD rectangle, Vector2 offset)
+        public static RectangleD Offset(RectangleD rectangle, Point2D offset)
         {
             return new RectangleD(rectangle.X + offset.X, rectangle.Y + offset.Y, rectangle.Width, rectangle.Height);
         }
@@ -233,7 +233,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="rectangle">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="offset">The amount by which to offset the rectangle.</param>
         /// <param name="result">The offset <see cref="RectangleD"/>.</param>
-        public static void Offset(ref RectangleD rectangle, ref Vector2 offset, out RectangleD result)
+        public static void Offset(ref RectangleD rectangle, ref Point2D offset, out RectangleD result)
         {
             result = new RectangleD(rectangle.X + offset.X, rectangle.Y + offset.Y, rectangle.Width, rectangle.Height);
         }
@@ -250,8 +250,8 @@ namespace TwistedLogik.Ultraviolet
             return new RectangleD(
                 rectangle.X - horizontalAmount,
                 rectangle.Y - verticalAmount,
-                rectangle.Width + horizontalAmount,
-                rectangle.Height + verticalAmount
+                rectangle.Width + (2.0 * horizontalAmount),
+                rectangle.Height + (2.0 * verticalAmount)
             );
         }
 
@@ -267,8 +267,8 @@ namespace TwistedLogik.Ultraviolet
             result = new RectangleD(
                 rectangle.X - horizontalAmount,
                 rectangle.Y - verticalAmount,
-                rectangle.Width + horizontalAmount,
-                rectangle.Height + verticalAmount
+                rectangle.Width + (2.0 * horizontalAmount),
+                rectangle.Height + (2.0 * verticalAmount)
             );
         }
 
@@ -338,6 +338,58 @@ namespace TwistedLogik.Ultraviolet
             var isEmpty = (minRight <= maxLeft || minBottom <= maxTop);
 
             result = isEmpty ? RectangleD.Empty : new RectangleD(maxLeft, maxTop, minRight - maxLeft, minBottom - maxTop);
+        }
+
+        /// <summary>
+        /// Transforms the specified rectangle and retrieves the axis-aligned bounding box of the result.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to transform.</param>
+        /// <param name="transform">The transform matrix.</param>
+        /// <returns>The axis-aligned bounding box of <paramref name="rectangle"/> after it has been transformed.</returns>
+        public static RectangleD TransformAxisAligned(RectangleD rectangle, Matrix transform)
+        {
+            var tl = new Vector2((Single)rectangle.Left, (Single)rectangle.Top);
+            var tr = new Vector2((Single)rectangle.Right, (Single)rectangle.Top);
+            var bl = new Vector2((Single)rectangle.Left, (Single)rectangle.Bottom);
+            var br = new Vector2((Single)rectangle.Right, (Single)rectangle.Bottom);
+
+            Vector2.Transform(ref tl, ref transform, out tl);
+            Vector2.Transform(ref tr, ref transform, out tr);
+            Vector2.Transform(ref bl, ref transform, out bl);
+            Vector2.Transform(ref br, ref transform, out br);
+
+            var minX = Math.Min(Math.Min(tl.X, tr.X), Math.Min(bl.X, br.X));
+            var maxX = Math.Max(Math.Max(tl.X, tr.X), Math.Max(bl.X, br.X));
+            var minY = Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(bl.Y, br.Y));
+            var maxY = Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(bl.Y, br.Y));
+
+            return new RectangleD(minX, minY, maxX - minX, maxY - minY);
+        }
+
+        /// <summary>
+        /// Transforms the specified rectangle and retrieves the axis-aligned bounding box of the result.
+        /// </summary>
+        /// <param name="rectangle">The rectangle to transform.</param>
+        /// <param name="transform">The transform matrix.</param>
+        /// <param name="result">The axis-aligned bounding box of <paramref name="rectangle"/> after it has been transformed.</param>
+        public static void TransformAxisAligned(ref RectangleD rectangle, ref Matrix transform, out RectangleD result)
+        {
+            var tl = new Vector2((Single)rectangle.Left, (Single)rectangle.Top);
+            var tr = new Vector2((Single)rectangle.Right, (Single)rectangle.Top);
+            var bl = new Vector2((Single)rectangle.Left, (Single)rectangle.Bottom);
+            var br = new Vector2((Single)rectangle.Right, (Single)rectangle.Bottom);
+
+            Vector2.Transform(ref tl, ref transform, out tl);
+            Vector2.Transform(ref tr, ref transform, out tr);
+            Vector2.Transform(ref bl, ref transform, out bl);
+            Vector2.Transform(ref br, ref transform, out br);
+
+            var minX = Math.Min(Math.Min(tl.X, tr.X), Math.Min(bl.X, br.X));
+            var maxX = Math.Max(Math.Max(tl.X, tr.X), Math.Max(bl.X, br.X));
+            var minY = Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(bl.Y, br.Y));
+            var maxY = Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(bl.Y, br.Y));
+
+            result = new RectangleD(minX, minY, maxX - minX, maxY - minY);
         }
 
         /// <summary>

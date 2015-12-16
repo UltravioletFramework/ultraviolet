@@ -51,6 +51,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (String.IsNullOrEmpty(element.Name))
                 return;
 
+            FrameworkElement existing;
+            if (elementsByName.TryGetValue(element.Name, out existing))
+            {
+                if (existing != element)
+                    return;
+            }
             elementsByName.Remove(element.Name);
         }
 
@@ -74,6 +80,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void PopulateFieldsFromRegisteredElements(Object obj)
         {
             Contract.Require(obj, "obj");
+
+            if (obj is IDataSourceWrapper)
+                obj = ((IDataSourceWrapper)obj).WrappedDataSource;
 
             var type = obj.GetType();
 

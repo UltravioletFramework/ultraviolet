@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
     /// Represents a control which displays a single item of content.
     /// </summary>
+    [UvmlKnownType]
     [DefaultProperty("Content")]
     public abstract class ContentControl : Control, IItemContainer
     {
@@ -19,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
 
         }
-
+        
         /// <inheritdoc/>
         void IItemContainer.PrepareItemContainer(Object item)
         {
@@ -72,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// The private access key for the <see cref="HasContent"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey HasContentPropertyKey = DependencyProperty.RegisterReadOnly("HasContent", typeof(Boolean), typeof(ContentControl),
-            new PropertyMetadata<Boolean>());
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
         /// <summary>
         /// Identifies the <see cref="HasContent"/> dependency property.
@@ -133,7 +135,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Content"/> property is changed.
         /// </summary>
-        protected virtual void OnContentChanged()
+        /// <param name="oldValue">The old value of the <see cref="Content"/> property.</param>
+        /// <param name="newValue">The new value of the <see cref="Content"/> property.</param>
+        protected virtual void OnContentChanged(Object oldValue, Object newValue)
         {
 
         }
@@ -166,7 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
             }
 
-            control.OnContentChanged();
+            control.OnContentChanged(oldValue, newValue);
         }
 
         // State values.

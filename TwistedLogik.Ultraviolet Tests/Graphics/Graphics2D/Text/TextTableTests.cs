@@ -27,6 +27,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [TestMethod]
         [TestCategory("Rendering")]
+        [Description("Ensures that the TextTable class correctly renders based on the values in a view model.")]
         public void TextTable_RendersFromViewModel()
         {
             const Int32 TablePadding = 4;
@@ -78,8 +79,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     spriteBatch.End();
                 });
-
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png");
+            
+            TheResultingImage(result).
+                ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png");
         }
     }
 }

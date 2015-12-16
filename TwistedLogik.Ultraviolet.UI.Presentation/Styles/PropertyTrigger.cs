@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <inheritdoc/>
-        protected internal override void Attach(DependencyObject dobj)
+        protected override void Attach(DependencyObject dobj)
         {
             if (IsAttachedTo(dobj))
                 return;
@@ -42,13 +42,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 DependencyProperty.RegisterChangeNotification(dobj, dprop, this);
             }
 
-            Evaluate(dobj);
-
             base.Attach(dobj);
+
+            Evaluate(dobj);
         }
 
         /// <inheritdoc/>
-        protected internal override void Detach(DependencyObject dobj)
+        protected override void Detach(DependencyObject dobj)
         {
             if (!IsAttachedTo(dobj))
                 return;

@@ -32,9 +32,9 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
-    <OutputPath>bin\Production\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>bin\Signed\</OutputPath>
+    <DefineConstants>TRACE;SIGNED</DefineConstants>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
@@ -56,16 +56,17 @@
   <ItemGroup>
     <Compile Include="BitmapResult.cs" />
     <Compile Include="CircleDResult.cs" />
+    <Compile Include="Graphics\Graphics2D\Text\LineInfoResult.cs" />
     <Compile Include="IUltravioletTestApplication.cs" />
     <Compile Include="Point2DResult.cs" />
     <Compile Include="Point2FResult.cs" />
     <Compile Include="RectangleDResult.cs" />
-    <Compile Include="RenderToScreenAttribute.cs" />
     <Compile Include="Size2DResult.cs" />
     <Compile Include="Point2Result.cs" />
     <Compile Include="Size3DResult.cs" />
     <Compile Include="UltravioletApplicationTestFramework.cs" />
     <Compile Include="UltravioletTestApplication.cs" />
+    <Compile Include="UltravioletTestApplication.FrameAction.cs" />
     <Compile Include="Vector4Result.cs" />
     <Compile Include="Vector3Result.cs" />
     <Compile Include="Vector2Result.cs" />
@@ -84,41 +85,37 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Gluon\TwistedLogik.Gluon.csproj">
-      <Project>{0e4bafbf-5211-4e2f-af39-092ec6671581}</Project>
-      <Name>TwistedLogik.Gluon</Name>
+    <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
+      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
+      <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Nucleus.Testing\TwistedLogik.Nucleus.Testing.csproj">
       <Project>{6a17d1a8-ac32-4bb4-8446-d76f6b160246}</Project>
       <Name>TwistedLogik.Nucleus.Testing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
-      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
-      <Name>TwistedLogik.Nucleus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS %28Desktop%29\TwistedLogik.Ultraviolet.BASS %28Desktop%29.csproj">
       <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>
-      <Name>TwistedLogik.Ultraviolet.BASS</Name>
+      <Name>TwistedLogik.Ultraviolet.BASS %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj">
       <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
       <Name>TwistedLogik.Ultraviolet.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29.csproj">
       <Project>{40d272db-90e1-4332-a32f-6effeb44fe87}</Project>
-      <Name>TwistedLogik.Ultraviolet.OpenGL</Name>
+      <Name>TwistedLogik.Ultraviolet.OpenGL %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29.csproj">
       <Project>{50aefa93-fe53-414a-89fc-c061c165c673}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2</Name>
+      <Name>TwistedLogik.Ultraviolet.SDL2 %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29\TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29.csproj">
       <Project>{7379d9e1-bb01-4b05-b4f7-5d39b393348f}</Project>
-      <Name>TwistedLogik.Ultraviolet.UI.Presentation</Name>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28Desktop%29\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
-      <Name>TwistedLogik.Ultraviolet</Name>
+      <Name>TwistedLogik.Ultraviolet %28Desktop%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

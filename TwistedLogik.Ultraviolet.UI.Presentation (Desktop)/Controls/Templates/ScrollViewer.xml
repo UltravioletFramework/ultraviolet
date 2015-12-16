@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="scrollviewer-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <Border
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+
+        <Canvas
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+          <Image Class="scrollviewer-background"
+                 Canvas.Left="0"
+                 Canvas.Top="0"
+                 Canvas.Right="0"
+                 Canvas.Bottom="0"/>
+          <ScrollContentPresenter Name="PART_ContentPresenter"
+                                  Margin="{{ContentMargin}}"
+                                  Canvas.Left="0"
+                                  Canvas.Top="0"
+                                  Canvas.Right="0"
+                                  Canvas.Bottom="0"/>
+
+        </Canvas>
+
+
+      </Border>
+      <HScrollBar Name="PART_HScroll"
+                  Class="scrollviewer-hscroll"
+                  Grid.Column="0"
+                  Grid.Row="1"
+                  HorizontalAlignment="Stretch"
+                  SmallChange="16"
+                  LargeChange="{{ViewportWidth}}"/>
+      <VScrollBar Name="PART_VScroll"
+                  Class="scrollviewer-vscroll"
+                  Grid.Column="1"
+                  Grid.Row="0"
+                  VerticalAlignment="Stretch"
+                  SmallChange="16"
+                  LargeChange="{{ViewportHeight}}"/>
+      <Rectangle Class="scrollviewer-rect"
+                 FillColor="{{Background}}"
+                 Grid.Column="1"
+                 Grid.Row="1"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch"/>
+
+    </Grid>
+  </View>
+</ComponentTemplate>

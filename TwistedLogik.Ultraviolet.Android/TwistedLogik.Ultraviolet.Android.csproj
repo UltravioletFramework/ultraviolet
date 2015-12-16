@@ -37,9 +37,9 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
-    <OutputPath>..\Binaries\Android\Production\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>..\Binaries\Android\Signed\</OutputPath>
+    <DefineConstants>TRACE;SIGNED</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -50,9 +50,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android.Export" />
     <Reference Include="mscorlib" />
-    <Reference Include="org.libsdl.app">
-      <HintPath>..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
+    <Reference Include="Org.Libsdl.App, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\SDL2\Android\Org.Libsdl.App.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,6 +65,7 @@
     <Compile Include="AndroidFactoryInitializer.cs" />
     <Compile Include="Graphics\AndroidSurfaceSource.cs" />
     <Compile Include="Graphics\AndroidSurfaceSaver.cs" />
+    <Compile Include="Input\AndroidSoftwareKeyboardService.cs" />
     <Compile Include="Platform\AndroidIconLoader.cs" />
     <Compile Include="Platform\AndroidScreenDensityService.cs" />
     <Compile Include="Platform\AndroidScreenRotationService.cs" />
@@ -79,7 +82,12 @@
       <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
       <Name>TwistedLogik.Ultraviolet %28Android%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2 %28Android%29\TwistedLogik.Ultraviolet.SDL2 %28Android%29.csproj">
+      <Project>{b5502009-935a-40ba-b415-abbf55427cad}</Project>
+      <Name>TwistedLogik.Ultraviolet.SDL2 %28Android%29</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

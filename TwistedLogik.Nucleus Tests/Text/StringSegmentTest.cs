@@ -16,5 +16,41 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingString(segment.ToString())
                 .ShouldBe("llo,");
         }
+
+        [TestMethod]
+        public void StringSegment_IndexOfCharacter_ReturnsCorrectValueForExistingCharacter()
+        {
+            var segment = new StringSegment("Hello, world!");
+            var result = segment.IndexOf('w');
+
+            TheResultingValue(result).ShouldBe(7);
+        }
+
+        [TestMethod]
+        public void StringSegment_IndexOfCharacter_ReturnsNegativeOneForNonExistingCharacter()
+        {
+            var segment = new StringSegment("Hello, world!");
+            var result = segment.IndexOf('z');
+
+            TheResultingValue(result).ShouldBe(-1);
+        }
+
+        [TestMethod]
+        public void StringSegment_IndexOfString_ReturnsCorrectValueForExistingCharacter()
+        {
+            var segment = new StringSegment("Hello, world!");
+            var result = segment.IndexOf("world");
+
+            TheResultingValue(result).ShouldBe(7);
+        }
+
+        [TestMethod]
+        public void StringSegment_IndexOfString_ReturnsNegativeOneForNonExistingCharacter()
+        {
+            var segment = new StringSegment("Hello, world!");
+            var result = segment.IndexOf("zorld");
+
+            TheResultingValue(result).ShouldBe(-1);
+        }
     }
 }

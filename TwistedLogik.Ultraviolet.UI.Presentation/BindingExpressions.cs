@@ -63,31 +63,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (IsNullBindingExpression(expression))
                 return false;
 
-            return !braces || expression.StartsWith("{{") && expression.EndsWith("}}");
-        }
-        
-        /// <summary>
-        /// Gets a value indicating whether the specified binding expression is 
-        /// globally-scoped using the :: operator.
-        /// </summary>
-        /// <param name="expression">The expression string to evaluate.</param>
-        /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
-        /// <returns><c>true</c> if the specified string represents a globally-scoped binding expression; otherwise, <c>false</c>.</returns>
-        public static Boolean IsGloballyScopedBindingExpression(String expression, Boolean braces = true)
-        {
-            if (String.IsNullOrEmpty(expression))
+            if (!braces)
+                return true;
+
+            if (!expression.StartsWith("{{"))
                 return false;
 
-            if (IsNullBindingExpression(expression))
+            var closingBracesIx = expression.IndexOf("}}", "{{".Length);
+            if (closingBracesIx < 0)
                 return false;
 
-            if (IsBindingExpression(expression))
-            {
-                return braces ? expression.StartsWith("{{::") : expression.StartsWith("::");
-            }
+            if (closingBracesIx == expression.Length - "}}".Length)
+                return true;
+
+            if (expression[closingBracesIx + "}}".Length] == '[' && expression.EndsWith("]"))
+                return true;
+
             return false;
         }
-
+        
         /// <summary>
         /// Gets a value indicating whether the specified binding expression is
         /// the special representation of a null reference (i.e. the {{null}} expression).
@@ -114,57 +108,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return GetSimpleDependencyProperty(dataSourceType, expression, braces) != null;
         }
-
-        /// <summary>
-        /// Parses the specified binding expression into its constituent components.
-        /// </summary>
-        /// <param name="expression">The binding expression to parse.</param>
-        /// <param name="braces">A value indicating whether the expression's containing braces are included.</param>
-        /// <returns>The specified binding expression's constituent components.</returns>
-        public static IEnumerable<String> ParseBindingExpression(String expression, Boolean braces = true)
-        {
-            if (!IsBindingExpression(expression, braces))
-                throw new ArgumentException(PresentationStrings.InvalidBindingExpression.Format(expression));
-
-            var path       = GetBindingMemberPathPartInternal(expression, braces);
-            var components = path.Split('.');
-
-            return components;
-        }
-
-        /// <summary>
-        /// Combines two binding expressions into a single binding expression.
-        /// </summary>
-        /// <param name="expression1">The first binding expression.</param>
-        /// <param name="expression2">The second binding expression.</param>
-        /// <param name="braces">A value indicating whether the expressions' containing braces are included.</param>
-        /// <returns>A binding expression that represents the combination of the specified binding expressions.</returns>
-        public static String Combine(String expression1, String expression2, Boolean braces = true)
-        {
-            Contract.Ensure<ArgumentException>(String.IsNullOrEmpty(expression1) || IsBindingExpression(expression1, braces), "expression1");
-            Contract.Ensure<ArgumentException>(String.IsNullOrEmpty(expression2) || IsBindingExpression(expression2, braces), "expression2");
-
-            if (String.IsNullOrEmpty(expression1))
-                return expression2;
-            if (String.IsNullOrEmpty(expression2))
-                return expression1;
-
-            if (IsGloballyScopedBindingExpression(expression2, braces))
-                return expression2;
-
-            var fmt1 = GetBindingFormatStringPartInternal(expression1, braces);
-            var fmt2 = GetBindingFormatStringPartInternal(expression2, braces);
-            
-            var path1 = GetBindingMemberPathPartInternal(expression1, braces);
-            var path2 = GetBindingMemberPathPartInternal(expression2, braces);
-
-            var combinedPath = path1 + "." + path2;
-            var combinedFmt  = fmt2 ?? fmt1;
-            var combinedExp  = String.Format((combinedFmt == null) ? "{0}" : "{0} | {1}", combinedPath, combinedFmt);
-
-            return braces ? "{{" + combinedExp + "}}" : combinedExp;
-        }
-
+                
         /// <summary>
         /// Gets the part of a binding expression which represents the member navigation path.
         /// </summary>
@@ -206,56 +150,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The type of the binding expression.</returns>
         public static Type GetExpressionType(Type dataSourceType, String expression, Boolean braces = true)
         {
-            var components = ParseBindingExpression(expression);
-            var currentType = dataSourceType;
-            foreach (var component in components)
-            {
-                var members = currentType.GetMember(component, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (members == null || !members.Any())
-                    return null;
+            Contract.Require(dataSourceType, "dataSourceType");
+            Contract.RequireNotEmpty(expression, "expression");
 
-                var member = members.Where(x => 
-                    x.MemberType == MemberTypes.Property ||
-                    x.MemberType == MemberTypes.Field).FirstOrDefault() ?? members.First();
+            var expMemberPath = GetBindingMemberPathPart(expression, braces);
 
-                currentType = GetMemberType(member);
-            }
-            return currentType;
+            var members = dataSourceType.GetMember(expMemberPath, BindingFlags.Public | BindingFlags.Instance);
+            if (members == null || !members.Any())
+                return null;
+
+            var member = members.Where(x =>
+                x.MemberType == MemberTypes.Property ||
+                x.MemberType == MemberTypes.Field).FirstOrDefault() ?? members.First();
+
+            return GetMemberType(member);
         }
 
         /// <summary>
         /// Creates an event handler which is bound to a method on a view model.
         /// </summary>
-        /// <param name="uiElement">The interface element to which the event will be bound.</param>
-        /// <param name="dataSourceType">The type of the data source to which the expression is being being bound.</param>
-        /// <param name="delegateType">The type of the event handler which is being bound.</param>
-        /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
+        /// <param name="dataSource">The data source for the binding expression.</param>
+        /// <param name="dataSourceType">The type of the data source for the binding expression.</param>
+        /// <param name="delegateType">The type of the delegate to create.</param>
+        /// <param name="expression">The binding expression from which to create the delegate.</param>
         /// <returns>A <see cref="Delegate"/> which represents the bound event handler.</returns>
-        public static Delegate CreateViewModelBoundEventDelegate(UIElement uiElement, Type dataSourceType, Type delegateType, String expression)
+        public static Delegate CreateBoundEventDelegate(Object dataSource, Type dataSourceType, Type delegateType, String expression)
         {
-            Contract.Require(uiElement, "uiElement");
+            Contract.Require(dataSource, "dataSource");
             Contract.Require(dataSourceType, "dataSourceType");
             Contract.Require(delegateType, "delegateType");
             Contract.RequireNotEmpty(expression, "expression");
 
-            var builder = new BoundEventBuilder(uiElement, dataSourceType, delegateType, expression, false);
-            return builder.Compile();
-        }
-
-        /// <summary>
-        /// Creates an event handler which is bound to a method on an element.
-        /// </summary>
-        /// <param name="uiElement">The element to which the event will be bound.</param>
-        /// <param name="delegateType">The type of the event handler which is being bound.</param>
-        /// <param name="expression">The binding expression that represents the method to bind to the event.</param>
-        /// <returns>A <see cref="Delegate"/> which represents the bound event handler.</returns>
-        public static Delegate CreateElementBoundEventDelegate(UIElement uiElement, Type delegateType, String expression)
-        {
-            Contract.Require(uiElement, "uiElement");
-            Contract.Require(delegateType, "delegateType");
-            Contract.RequireNotEmpty(expression, "expression");
-
-            var builder = new BoundEventBuilder(uiElement, uiElement.GetType(), delegateType, expression, true);
+            var builder = new BoundEventBuilder(dataSource, dataSourceType, delegateType, expression);
             return builder.Compile();
         }
 
@@ -373,11 +299,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!IsBindingExpression(expression, braces))
                 throw new ArgumentException(PresentationStrings.InvalidBindingExpression.Format(expression));
 
-            var components = ParseBindingExpression(expression, braces);
-            if (components.Count() != 1)
+            var expMemberPath = GetBindingMemberPathPart(expression, braces);
+
+            var expProperty = dataSourceType.GetProperty(expMemberPath);
+            if (expProperty == null)
                 return null;
 
-            return DependencyProperty.FindByName(components.Single(), dataSourceType);
+            var expAttribute = (CompiledBindingExpressionAttribute)expProperty.GetCustomAttributes(typeof(CompiledBindingExpressionAttribute), false).SingleOrDefault();
+            if (expAttribute == null)
+                return null;
+
+            if (expAttribute.SimpleDependencyPropertyOwner == null)
+                return null;
+
+            return DependencyProperty.FindByName(expAttribute.SimpleDependencyPropertyName, expAttribute.SimpleDependencyPropertyOwner);
         }
 
         /// <summary>
@@ -485,25 +420,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The part of the binding expression which represents the member navigation path, or <c>null</c> if no such part exists.</returns>
         private static String GetBindingMemberPathPartInternal(String expression, Boolean braces = true)
         {
-            var ixDelimiter = expression.IndexOf('|');
-            if (ixDelimiter >= 0)
-            {
-                var offset = braces ? 
-                    expression.StartsWith("{{::") ? 4 : 2 : 
-                    expression.StartsWith("::") ? 2 : 0;
+            if (!braces)
+                return expression;
 
-                return expression.Substring(offset, ixDelimiter - offset).Trim();
-            }
-            else
-            {
-                if (braces)
-                {
-                    return (expression.StartsWith("{{::") ? 
-                    expression.Substring(4, expression.Length - 6) : 
-                    expression.Substring(2, expression.Length - 4)).Trim();
-                }
-                return (expression.StartsWith("::") ? expression.Substring(2) : expression).Trim();
-            }
+            var closingBracesIndex = expression.IndexOf("}}", "{{".Length);
+
+            var offset = braces ? "{{".Length : 0;
+            return expression.Substring(offset, closingBracesIndex - offset).Trim();
         }
 
         /// <summary>
@@ -514,13 +437,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The part of the binding expression which represents the format string, or <c>null</c> if no such part exists.</returns>
         private static String GetBindingFormatStringPartInternal(String expression, Boolean braces = true)
         {
-            var ixDelimiter = expression.IndexOf('|');
-            if (ixDelimiter >= 0)
-            {
-                var length = (expression.Length - (braces ? 2 : 0)) - (ixDelimiter + 1);
-                return expression.Substring(ixDelimiter + 1, length).Trim();
-            }
-            return null;
+            if (!braces)
+                return null;
+
+            var closingBracesIndex = expression.IndexOf("}}", "{{".Length);
+            if (closingBracesIndex == expression.Length - "}}".Length)
+                return null;            
+
+            var openFormatIndex = closingBracesIndex + "}}".Length;
+            if (expression[openFormatIndex] != '[' || !expression.EndsWith("]"))
+                return null;
+
+            var start = openFormatIndex + 1;
+            var length = expression.Length - (1 + start);
+            return expression.Substring(start, length);
         }
 
         /// <summary>
@@ -531,7 +461,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             return new DataBindingGetter<T>((ds) =>
             {
-                return ((DependencyObject)ds).GetValue<T>(dprop);
+                var wrapper = ds as IDataSourceWrapper;
+                if (wrapper != null)
+                {
+                    return ((DependencyObject)wrapper.WrappedDataSource).GetValue<T>(dprop);
+                }
+                else
+                {
+                    return ((DependencyObject)ds).GetValue<T>(dprop);
+                }
             });
         }
 
@@ -543,7 +481,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             return new DataBindingSetter<T>((ds, value) =>
             {
-                ((DependencyObject)ds).SetValue<T>(dprop, value);
+                var wrapper = ds as IDataSourceWrapper;
+                if (wrapper != null)
+                {
+                    ((DependencyObject)wrapper.WrappedDataSource).SetValue(dprop, value);
+                }
+                else
+                {
+                    ((DependencyObject)ds).SetValue(dprop, value);
+                }
             });
         }
 

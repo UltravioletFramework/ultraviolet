@@ -240,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private Single y;
 
         // State values.
-        private TextLayoutResult layout = new TextLayoutResult();
+        private TextLayoutCommandStream layout = new TextLayoutCommandStream();
         private Func<ViewModelType, String> getBoundData;        
     }
 }

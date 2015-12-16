@@ -39,10 +39,10 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
-    <OutputPath>..\Binaries\AnyCPU\Production\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>..\Binaries\AnyCPU\Production\TwistedLogik.Nucleus.Design.XML</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>..\Binaries\AnyCPU\Signed\</OutputPath>
+    <DefineConstants>TRACE;SIGNED</DefineConstants>
+    <DocumentationFile>..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.Design.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
@@ -50,10 +50,10 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Production' And '$(OS)' != 'Unix'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed' And '$(OS)' != 'Unix'">
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Production' And '$(OS)' != 'Unix'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed' And '$(OS)' != 'Unix'">
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <ItemGroup>
@@ -79,12 +79,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.csproj">
-      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
-      <Name>TwistedLogik.Nucleus</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\TwistedLogik.Public.snk">
       <Link>TwistedLogik.Public.snk</Link>
     </None>
@@ -102,6 +96,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Text\StringResource.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
+      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
+      <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

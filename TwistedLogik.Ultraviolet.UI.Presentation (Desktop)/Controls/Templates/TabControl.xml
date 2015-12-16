@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <DockPanel Class="tabcontrol-dock" 
+               LastChildFill="true">
+
+      <ItemsPanel Name="PART_ItemsPanel" 
+                  Class="tabcontrol-tabs" 
+                  DockPanel.Dock="{{TabStripPlacement}}"/>
+      <Grid Class="tabcontrol-page" 
+            KeyboardNavigation.DirectionalNavigation="Contained"
+            KeyboardNavigation.TabNavigation="Local">
+    
+        <Image Class="tabcontrol-background"/>
+        <ContentPresenter Name="PART_ContentPresenter"
+                          Class="tabcontrol-content"/>
+      
+      </Grid>
+    
+    </DockPanel>
+  </View>
+</ComponentTemplate>

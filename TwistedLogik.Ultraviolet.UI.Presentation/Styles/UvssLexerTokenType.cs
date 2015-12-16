@@ -77,6 +77,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         ChildSelector,
 
         /// <summary>
+        /// Represents the logical child selector (>?).
+        /// </summary>
+        LogicalChildSelector,
+
+        /// <summary>
+        /// Represents the templated child selector (>>).
+        /// </summary>
+        TemplatedChildSelector,
+
+        /// <summary>
         /// Represents the universal selector (*).
         /// </summary>
         UniversalSelector,
@@ -100,5 +110,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Represents a comparison operator. 
         /// </summary>
         ComparisonOperator,
+
+        /// <summary>
+        /// Represents the pipe symbol (|).
+        /// </summary>
+        Pipe,
+
+        /// <summary>
+        /// Represents the "as" operator.
+        /// </summary>
+        AsOperator,
+
+        /// <summary>
+        /// Represents the index operator.
+        /// </summary>
+        IndexOperator,
     }
 }

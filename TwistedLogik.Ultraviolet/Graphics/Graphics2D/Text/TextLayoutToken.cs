@@ -15,13 +15,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="bounds">The token's bounds relative to its layout region.</param>
         /// <param name="fontFace">The token's font face.</param>
         /// <param name="icon">The token's icon.</param>
+        /// <param name="glyphShader">The token's glyph shader.</param>
         /// <param name="color">The token's color.</param>
-        internal TextLayoutToken(StringSegment text, Rectangle bounds, SpriteFontFace fontFace, InlineIconInfo? icon, Color? color)
+        internal TextLayoutToken(StringSegment text, Rectangle bounds, SpriteFontFace fontFace, TextIconInfo? icon, GlyphShader glyphShader, Color? color)
         {
             this.text = text;
             this.bounds = bounds;
             this.fontFace = fontFace;
             this.icon = icon;
+            this.glyphShader = glyphShader;
             this.color = color;
         }
 
@@ -55,7 +57,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             return
                 this.color == token.color &&
                 this.fontFace == token.fontFace &&
-                this.icon.GetValueOrDefault().Equals(token.icon.GetValueOrDefault());
+                this.icon.GetValueOrDefault().Equals(token.icon.GetValueOrDefault()) &&
+                this.glyphShader == token.glyphShader;
         }
 
         /// <summary>
@@ -97,9 +100,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the token's icon.
         /// </summary>
-        public InlineIconInfo? Icon
+        public TextIconInfo? Icon
         {
             get { return icon; }
+        }
+
+        /// <summary>
+        /// Gets the token's glyph shader.
+        /// </summary>
+        public GlyphShader GlyphShader
+        {
+            get { return glyphShader; }
         }
 
         /// <summary>
@@ -114,7 +125,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private readonly StringSegment text;
         private Rectangle bounds;
         private readonly SpriteFontFace fontFace;
-        private readonly InlineIconInfo? icon;
+        private readonly TextIconInfo? icon;
+        private readonly GlyphShader glyphShader;
         private readonly Color? color;
     }
 }

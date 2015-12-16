@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.Input
         {
             var ctor = typeof(T).GetConstructor(new[] { typeof(UltravioletContext) });
             if (ctor == null)
-                throw new InvalidOperationException(UltravioletStrings.NoValidConstructor);
+                throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(typeof(T).Name));
 
             return new UltravioletSingleton<T>((uv) =>
             {
@@ -315,7 +315,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <returns>The binding that was created.</returns>
         protected InputBinding CreateKeyboardBinding(Key key, Boolean control = false, Boolean alt = false, Boolean shift = false)
         {
-            return new KeyboardInputBinding(Ultraviolet, key, control, alt, shift);
+            return Ultraviolet.GetInput().IsKeyboardSupported() ? new KeyboardInputBinding(Ultraviolet, key, control, alt, shift) : null;
         }
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <returns>The binding that was created.</returns>
         protected InputBinding CreateMouseBinding(MouseButton button, Boolean control = false, Boolean alt = false, Boolean shift = false)
         {
-            return new MouseInputBinding(Ultraviolet, button, control, alt, shift);
+            return Ultraviolet.GetInput().IsMouseSupported() ? new MouseInputBinding(Ultraviolet, button, control, alt, shift) : null;
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <returns>The binding that was created.</returns>
         protected InputBinding CreateGamePadBinding(Int32 playerIndex, GamePadButton button)
         {
-            return new GamePadInputBinding(Ultraviolet, playerIndex, button);
+            return Ultraviolet.GetInput().IsGamePadSupported() ? new GamePadInputBinding(Ultraviolet, playerIndex, button) : null;
         }
 
         /// <summary>

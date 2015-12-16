@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
@@ -13,6 +12,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     public sealed class PresentationFoundationViewResources : DependencyObject
     {
+        /// <summary>
+        /// Initializes the <see cref="PresentationFoundationViewResources"/> type.
+        /// </summary>
+        static PresentationFoundationViewResources()
+        {
+            /* required to correctly initialize static fields in Release configuration */
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PresentationFoundationViewResources"/> class.
         /// </summary>
@@ -30,7 +37,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public SourcedImage BlankImage
         {
             get { return GetValue<SourcedImage>(BlankImageProperty); }
-            internal set { SetValue<SourcedImage>(BlankImageProperty, value); }
+            internal set { SetValue(BlankImageProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the view's default cursor.
+        /// </summary>
+        public SourcedCursor Cursor
+        {
+            get { return GetValue<SourcedCursor>(CursorProperty); }
+            internal set { SetValue(CursorProperty, value); }
         }
 
         /// <summary>
@@ -61,14 +77,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Identifies the <see cref="BlankImage"/> dependency property.
         /// </summary>
         internal static readonly DependencyProperty BlankImageProperty = DependencyProperty.Register("BlankImage", typeof(SourcedImage), typeof(PresentationFoundationViewResources),
-            new PropertyMetadata<SourcedImage>(HandleBlankImagePropertyChanged));
-        
+            new PropertyMetadata<SourcedImage>(HandleBlankImageChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Cursor"/> dependency property.
+        /// </summary>
+        internal static readonly DependencyProperty CursorProperty = DependencyProperty.Register("Cursor", typeof(SourcedCursor), typeof(PresentationFoundationViewResources),
+            new PropertyMetadata<SourcedCursor>(HandleCursorChanged));
+
         /// <summary>
         /// Reloads the view's resources.
         /// </summary>
         internal void Reload()
         {
             ReloadBlankImage();
+            ReloadCursor();
         }
 
         /// <summary>
@@ -79,16 +102,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             view.LoadImage(BlankImage);
         }
 
-        /// <inheritdoc/>
-        internal sealed override Object DependencyDataSource
+        /// <summary>
+        /// Reloads the cursor exposed by the <see cref="Cursor"/> property.
+        /// </summary>
+        internal void ReloadCursor()
         {
-            get { return null; }
-        }
-
-        /// <inheritdoc/>
-        internal sealed override DependencyObject DependencyContainer
-        {
-            get { return null; }
+            view.LoadCursor(Cursor);
         }
 
         /// <inheritdoc/>
@@ -102,7 +121,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var dp = DependencyProperty.FindByStylingName(style.Name, GetType());
                     if (dp != null)
                     {
-                        base.ApplyStyle(style, rule.Selectors[0], dp);
+                        var navexp = NavigationExpression.FromUvssNavigationExpression(view.Ultraviolet, rule.NavigationExpression);
+                        base.ApplyStyle(style, rule.Selectors[0], navexp, dp);
                     }
                 }
             }
@@ -110,18 +130,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, DependencyProperty dp)
+        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dp)
         {
-            base.ApplyStyle(style, selector, dp);
+            base.ApplyStyle(style, selector, navigationExpression, dp);
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="BlankImageProperty"/> dependency property changes.
+        /// Occurs when the value of the <see cref="BlankImage"/> dependency property changes.
         /// </summary>
-        private static void HandleBlankImagePropertyChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
+        private static void HandleBlankImageChanged(DependencyObject dobj, SourcedImage oldValue, SourcedImage newValue)
         {
             var resources = (PresentationFoundationViewResources)dobj;
             resources.ReloadBlankImage();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Cursor"/> dependency property changes.
+        /// </summary>
+        private static void HandleCursorChanged(DependencyObject dobj, SourcedCursor oldValue, SourcedCursor newValue)
+        {
+            var resources = (PresentationFoundationViewResources)dobj;
+            resources.ReloadCursor();
         }
 
         // Property values.

@@ -100,7 +100,7 @@ namespace UltravioletSample
             var width  = window.ClientSize.Width;
             var height = window.ClientSize.Height;
 
-            if (textLayoutResult.Settings.Width != width || textLayoutResult.Settings.Height != height)
+            if (textLayoutCommands.Settings.Width != width || textLayoutCommands.Settings.Height != height)
             {
                 const string text = 
                     "Ultraviolet Formatting Commands\n" +
@@ -121,10 +121,10 @@ namespace UltravioletSample
                     "[|icon:ok| OK] [|icon:cancel| Cancel]";
 
                 var settings = new TextLayoutSettings(spriteFontGaramond, width, height, TextFlags.AlignMiddle | TextFlags.AlignCenter);
-                textRenderer.CalculateLayout(text, textLayoutResult, settings);
+                textRenderer.CalculateLayout(text, textLayoutCommands, settings);
             }
 
-            textRenderer.Draw(spriteBatch, textLayoutResult, Vector2.Zero, Color.White);
+            textRenderer.Draw(spriteBatch, textLayoutCommands, Vector2.Zero, Color.White);
         }
 
         protected override void OnLoadingContent()
@@ -142,9 +142,9 @@ namespace UltravioletSample
             this.textRenderer.RegisterFont("segoe", this.spriteFontSegoe);
             this.textRenderer.RegisterFont("garamond", this.spriteFontGaramond);
 
-            this.textRenderer.RegisterStyle("preset1", new TextStyle() { Color = Color.Lime, Font = "garamond", Bold = true });
-            this.textRenderer.RegisterStyle("preset2", new TextStyle() { Color = Color.Red, Font = "garamond", Italic = true });
-
+            this.textRenderer.RegisterStyle("preset1", new TextStyle(spriteFontGaramond, true, null, Color.Lime));
+            this.textRenderer.RegisterStyle("preset2", new TextStyle(spriteFontSegoe, null, true, Color.Red));
+            
             var spriteOK     = this.content.Load<Sprite>(GlobalSpriteID.OK);
             var spriteCancel = this.content.Load<Sprite>(GlobalSpriteID.Cancel);
 
@@ -201,6 +201,6 @@ namespace UltravioletSample
         private SpriteFont spriteFontGaramond;
         private SpriteBatch spriteBatch;
         private TextRenderer textRenderer;
-        private readonly TextLayoutResult textLayoutResult = new TextLayoutResult();
+        private readonly TextLayoutCommandStream textLayoutCommands = new TextLayoutCommandStream();
     }
 }

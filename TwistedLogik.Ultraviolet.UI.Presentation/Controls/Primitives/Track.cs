@@ -21,30 +21,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             this.Thumb = new Button(uv, null) 
             { 
                 HorizontalAlignment = HorizontalAlignment.Stretch, 
-                VerticalAlignment   = VerticalAlignment.Stretch 
+                VerticalAlignment   = VerticalAlignment.Stretch,
+                Focusable           = false,
             };
             this.Thumb.Classes.Add("track-thumb");
             this.Thumb.ChangeLogicalAndVisualParents(this, this);
+            KeyboardNavigation.SetIsTabStop(this.Thumb, false);
 
             this.IncreaseButton = new RepeatButton(uv, null) 
             { 
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment   = VerticalAlignment.Stretch,
-                Opacity             = 0
+                Opacity             = 0,
+                Focusable           = false,
             };
             this.IncreaseButton.Classes.Add("track-increase");
             this.IncreaseButton.Click += HandleIncreaseButtonClick;
             this.IncreaseButton.ChangeLogicalAndVisualParents(this, this);
+            KeyboardNavigation.SetIsTabStop(this.IncreaseButton, false);
 
             this.DecreaseButton = new RepeatButton(uv, null) 
             { 
                 HorizontalAlignment = HorizontalAlignment.Stretch, 
                 VerticalAlignment   = VerticalAlignment.Stretch,
-                Opacity             = 0
+                Opacity             = 0,
+                Focusable           = false,
             };
             this.DecreaseButton.Classes.Add("track-decrease");
             this.DecreaseButton.Click += HandleDecreaseButtonClick;
             this.DecreaseButton.ChangeLogicalAndVisualParents(this, this);
+            KeyboardNavigation.SetIsTabStop(this.DecreaseButton, false);
 
             Mouse.AddPreviewMouseMoveHandler(this.Thumb, HandleThumbPreviewMouseMove);
             Mouse.AddPreviewMouseDownHandler(this.Thumb, HandleThumbPreviewMouseDown);
@@ -384,15 +390,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var button = element as Button;
             if (button != null && button.IsMouseCaptured)
             {
+                var relativeMousePosition = Mouse.GetPosition(this);
+
                 var oldValue = Value;
                 if (Orientation == Orientation.Vertical)
                 {
-                    var relY = y - (AbsolutePosition.Y + thumbDragOffset);
+                    var relY = relativeMousePosition.Y - thumbDragOffset;
                     Value = OffsetToValue(relY, RenderSize.Height, Thumb.RenderSize.Height);
                 }
                 else
                 {
-                    var relX = x - (AbsolutePosition.X + thumbDragOffset);
+                    var relX = relativeMousePosition.X - thumbDragOffset;
                     Value = OffsetToValue(relX, RenderSize.Width, Thumb.RenderSize.Width);
                 }
 
@@ -412,17 +420,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void HandleThumbPreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton pressed, ref RoutedEventData data)
         {
-            var uiElement = (UIElement)element;
+            var relativeMousePosition = Mouse.GetPosition(Thumb);
 
             if (Orientation == Orientation.Vertical)
             {
                 thumbDragging   = true;
-                thumbDragOffset = Display.PixelsToDips(device.Y) - uiElement.AbsoluteBounds.Y;
+                thumbDragOffset = relativeMousePosition.Y;
             }
             else
             {
                 thumbDragging   = true;
-                thumbDragOffset = Display.PixelsToDips(device.X) - uiElement.AbsoluteBounds.X;
+                thumbDragOffset = relativeMousePosition.X;
             }
         }
         

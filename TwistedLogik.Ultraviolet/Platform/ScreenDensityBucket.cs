@@ -17,9 +17,19 @@ namespace TwistedLogik.Ultraviolet.Platform
         Low,
 
         /// <summary>
+        /// OS X Retina DPI (~144 dpi).
+        /// </summary>
+        Retina,
+
+        /// <summary>
         /// Medium mobile DPI (~160 dpi).
         /// </summary>
         Medium,
+
+        /// <summary>
+        /// OS X Retina HD DPI (~216 DPI).
+        /// </summary>
+        RetinaHD,
 
         /// <summary>
         /// High mobile DPI (~240 dpi).

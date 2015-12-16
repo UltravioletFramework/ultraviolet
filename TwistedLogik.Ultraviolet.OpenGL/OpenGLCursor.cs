@@ -2,7 +2,6 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics;
-using TwistedLogik.Ultraviolet.SDL2;
 using TwistedLogik.Ultraviolet.SDL2.Native;
 
 namespace TwistedLogik.Ultraviolet.OpenGL
@@ -34,7 +33,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
                 if (this.cursor == null)
                 {
-                    throw new SDL2Exception();
+                    this.width  = 0;
+                    this.height = 0;
                 }
             }
             else
