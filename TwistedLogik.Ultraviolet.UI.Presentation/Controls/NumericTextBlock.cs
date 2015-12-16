@@ -64,10 +64,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 View.Resources.StringFormatter.AddArgument(Value);
                 View.Resources.StringFormatter.Format(Format ?? "{0}", View.Resources.StringBuffer);
 
-                var face     = font.Resource.Value.GetFace(FontStyle);
-                var position = (Vector2)Display.PixelsToDips(UntransformedAbsolutePosition);
+                var face = font.Resource.Value.GetFace(FontStyle);
+                var position = Display.DipsToPixels(UntransformedAbsolutePosition);
+                var positionRounded = dc.IsTransformed ? (Vector2)position : (Vector2)(Point2)position;
 
-                dc.DrawString(face, View.Resources.StringBuffer, position, Foreground);
+                dc.DrawString(face, View.Resources.StringBuffer, positionRounded, Foreground);
             }
             base.DrawOverride(time, dc);
         }
