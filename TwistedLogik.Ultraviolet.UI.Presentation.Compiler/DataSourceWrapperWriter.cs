@@ -407,7 +407,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                         WriteLine("{");
                         WriteLine("var current = {0}GetValue<{1}>({2}.{3});", 
                             expTarget, GetCSharpTypeName(dprop.PropertyType), GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
-                        WriteLine("{0}SetValue<{1}>({2}.{3}, __UPF_ConvertFromString(value.ToString(), current))",
+                        WriteLine("{0}SetValue<{1}>({2}.{3}, __UPF_ConvertFromString(value.ToString(), current));",
                             expTarget, GetCSharpTypeName(dprop.PropertyType), GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
                         WriteLine("}");
                     }

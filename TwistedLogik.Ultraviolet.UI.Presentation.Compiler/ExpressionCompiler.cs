@@ -741,6 +741,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
+        /// Writes the source code of the specified collection of wrappers to the working directory.
+        /// </summary>
+        /// <param name="state">The expression compiler's current state.</param>
+        /// <param name="models">The list of models which were compiled.</param>
+        private static void WriteCompiledFilesToWorkingDirectory(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models)
+        {
+            var workingDirectory = GetWorkingDirectory(state);
+            Directory.CreateDirectory(workingDirectory);
+
+            foreach (var model in models)
+            {
+                var path = Path.ChangeExtension(Path.Combine(workingDirectory, model.DataSourceWrapperName), "cs");
+                File.WriteAllText(path, model.DataSourceWrapperSourceCode);
+            }
+        }
+
+        /// <summary>
         /// Writes any compiler errors to the working directory.
         /// </summary>
         /// <param name="state">The expression compiler's current state.</param>
@@ -992,23 +1009,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             state.WriteErrorsToFile = options.WriteErrorsToFile;
 
             return state;
-        }
-
-        /// <summary>
-        /// Writes the source code of the specified collection of wrappers to the working directory.
-        /// </summary>
-        /// <param name="state">The expression compiler's current state.</param>
-        /// <param name="models">The list of models which were compiled.</param>
-        private void WriteCompiledFilesToWorkingDirectory(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models)
-        {
-            var workingDirectory = GetWorkingDirectory(state);
-            Directory.CreateDirectory(workingDirectory);
-
-            foreach (var model in models)
-            {
-                var path = Path.ChangeExtension(Path.Combine(workingDirectory, model.DataSourceWrapperName), "cs");
-                File.WriteAllText(path, model.DataSourceWrapperSourceCode);
-            }
         }
 
         // Regular expressions for error parsing
