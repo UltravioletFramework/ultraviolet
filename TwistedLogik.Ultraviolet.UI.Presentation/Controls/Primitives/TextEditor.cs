@@ -2194,15 +2194,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void UpdateTextStringSource()
         {
-            var owner = TemplatedParent as Control;
-            if (owner == null)
-                return;
-
-            // HACK
-            if (owner is TextBox)
-            {
+            var owner = TemplatedParent as TextBox;
+            if (owner != null)
                 owner.SetValue(TextBox.TextProperty, new VersionedStringSource(bufferText));
-            }
         }
 
         /// <summary>
