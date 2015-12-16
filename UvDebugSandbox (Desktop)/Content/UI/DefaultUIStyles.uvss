@@ -4,7 +4,11 @@
  * under the CC BY 3.0 license. This style also includes sound effects provided by Kenney (www.kenney.nl).
  */
 
- View { blank-image: #Global:Textures:DefaultUI 137 459 14 23; }
+View 
+{ 
+	cursor: #Global:Cursors:Cursors Normal;
+	blank-image: #Global:Textures:DefaultUI 137 459 14 23; 
+}
 
 // ============================================================================
 // GLOBAL SETTINGS
@@ -322,6 +326,7 @@ CheckBox >> .toggle-focus-image
     TextBox, 
 PasswordBox
 {
+	cursor: #Global:Cursors:Cursors IBeam;
 	padding: 6 4 6 4;
 }
 

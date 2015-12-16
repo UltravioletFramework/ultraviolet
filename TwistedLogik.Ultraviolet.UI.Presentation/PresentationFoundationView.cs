@@ -263,6 +263,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invalidates the view's cursor.
+        /// </summary>
+        public void InvalidateCursor()
+        {
+            var cursor = default(Cursor);
+
+            var uiElementUnderMouse = elementUnderMouse as UIElement;
+            if (uiElementUnderMouse != null)
+            {
+                var evtDelegate = EventManager.GetInvocationDelegate<UpfQueryCursorEventHandler>(Mouse.QueryCursorEvent);
+                var evtData = new RoutedEventData(uiElementUnderMouse);
+                evtDelegate(uiElementUnderMouse, Mouse.PrimaryDevice, ref cursor, ref evtData);
+            }
+
+            if (cursor == null && Resources.Cursor.IsLoaded)
+                cursor = Resources.Cursor.Resource.Cursor;
+
+            Ultraviolet.GetPlatform().Cursor = cursor;
+        }
+
+        /// <summary>
         /// Grants input focus within this view to the specified element.
         /// </summary>
         /// <param name="element">The element to which to grant input focus.</param>
@@ -601,6 +622,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     if (LocalContent != null)
                     {
                         image.Resource.Load(LocalContent);
+                    }
+                    break;
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        /// <summary>
+        /// Loads the specified sourced cursor.
+        /// </summary>
+        /// <param name="cursor">The identifier of the cursor to load.</param>
+        public void LoadCursor(SourcedCursor cursor)
+        {
+            if (cursor.Resource == null)
+                return;
+
+            switch (cursor.Source)
+            {
+                case AssetSource.Global:
+                    if (GlobalContent != null)
+                    {
+                        cursor.Resource.Load(GlobalContent);
+                    }
+                    break;
+
+                case AssetSource.Local:
+                    if (LocalContent != null)
+                    {
+                        cursor.Resource.Load(LocalContent);
                     }
                     break;
 
@@ -1931,6 +1982,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
+
+            InvalidateCursor();
         }
 
         /// <summary>

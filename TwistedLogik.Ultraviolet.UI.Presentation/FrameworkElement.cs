@@ -20,6 +20,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         static FrameworkElement()
         {
+            EventManager.RegisterClassHandler(typeof(FrameworkElement), Mouse.QueryCursorEvent, new UpfQueryCursorEventHandler(HandleQueryCursor), true);
+
             EventManager.RegisterClassHandler(typeof(FrameworkElement), Keyboard.PreviewGotKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(HandlePreviewGotKeyboardFocus));
 
             EventManager.RegisterClassHandler(typeof(FrameworkElement), ToolTipService.ToolTipOpeningEvent, new UpfToolTipEventHandler(OnToolTipOpeningProxy));
@@ -186,6 +188,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the cursor which is set by this element.
+        /// </summary>
+        public SourcedCursor Cursor
+        {
+            get { return GetValue<SourcedCursor>(CursorProperty); }
+            set { SetValue(CursorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this element forces its cursor to be displayed, overriding
+        /// any cursor which has been set by its child elements.
+        /// </summary>
+        public Boolean ForceCursor
+        {
+            get { return GetValue<Boolean>(ForceCursorProperty); }
+            set { SetValue(ForceCursorProperty, value); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the element has been fully initialized.
         /// </summary>
         public Boolean IsInitialized
@@ -282,6 +303,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <remarks>The styling name of this dependency property is 'layout-transform'.</remarks>
         public static readonly DependencyProperty LayoutTransformProperty = DependencyProperty.Register("LayoutTransform",
             typeof(Transform), typeof(FrameworkElement), new PropertyMetadata<Transform>(Transform.Identity, PropertyMetadataOptions.AffectsMeasure, HandleLayoutTransformChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Cursor"/> dependency property.
+        /// </summary>
+        internal static readonly DependencyProperty CursorProperty = DependencyProperty.Register("Cursor", 
+            typeof(SourcedCursor), typeof(FrameworkElement), new PropertyMetadata<SourcedCursor>(null, PropertyMetadataOptions.None, HandleCursorChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="ForceCursor"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ForceCursorProperty = DependencyProperty.Register("ForceCursor",
+            typeof(Boolean), typeof(FrameworkElement), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleForceCursorChanged));
 
         /// <summary>
         /// Identifies the ToolTip dependency property.
@@ -485,6 +518,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return layoutTransformUsedDuringLayout * base.GetTransformMatrix();
             }
             return base.GetTransformMatrix(inDevicePixels);
+        }
+
+        /// <inheritdoc/>
+        protected sealed override void ReloadContentCore(Boolean recursive)
+        {
+            ReloadCursor();
+            ReloadContentOverride(recursive);
         }
 
         /// <inheritdoc/>
@@ -705,6 +745,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// When overridden in a derived class, reloads this element's content 
+        /// and, optionally, the content of any children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to reload content recursively.</param>
+        protected virtual void ReloadContentOverride(Boolean recursive)
+        {
+            if (recursive)
+            {
+                VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+                {
+                    child.ReloadContent((Boolean)state);
+                });
+            }
+        }
+
+        /// <summary>
         /// When overridden in a derived class, draws the element using the 
         /// specified <see cref="Graphics.Graphics2D.SpriteBatch"/> for a <see cref="FrameworkElement"/> derived class.
         /// </summary>
@@ -801,6 +857,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         }
 
+        /// <summary>
+        /// Reloads the element's cursor image.
+        /// </summary>
+        protected void ReloadCursor()
+        {
+            LoadCursor(Cursor);
+        }
+        
         /// <summary>
         /// Gets the element's collection of visual state groups.
         /// </summary>
@@ -934,6 +998,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the <see cref="Mouse.QueryCursorEvent"/> attached event is raised on an instance of <see cref="FrameworkElement"/>.
+        /// </summary>
+        private static void HandleQueryCursor(DependencyObject dobj, MouseDevice device, ref Cursor cursor, ref RoutedEventData data)
+        {
+            var element = (FrameworkElement)dobj;
+
+            var elementCursor = element.Cursor;
+            if (elementCursor.IsLoaded && (element.ForceCursor || !data.Handled))
+            {
+                cursor = elementCursor.Resource.Cursor;
+                data.Handled = true;
+            }
+        }
+
+        /// <summary>
         /// Occurs when the <see cref="Keyboard.PreviewGotKeyboardFocusEvent"/> attached event is raised on an instance of <see cref="FrameworkElement"/>.
         /// </summary>
         private static void HandlePreviewGotKeyboardFocus(DependencyObject dobj, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
@@ -968,6 +1047,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (FrameworkElement)dobj;
             element.OnTransformChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Cursor"/> dependency property changes.
+        /// </summary>
+        private static void HandleCursorChanged(DependencyObject dobj, SourcedCursor oldValue, SourcedCursor newValue)
+        {
+            var element = (FrameworkElement)dobj;
+            element.ReloadCursor();
+
+            if (element.IsMouseOver && element.View != null)
+                element.View.InvalidateCursor();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ForceCursor"/> dependency property changes.
+        /// </summary>
+        private static void HandleForceCursorChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            var element = (FrameworkElement)dobj;
+
+            if (element.IsMouseOver && element.View != null)
+                element.View.InvalidateCursor();
         }
 
         /// <summary>

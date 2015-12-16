@@ -17,4 +17,7 @@
   <ContentGroup Name="Sprites" Directory="Sprites" Type="TwistedLogik.Ultraviolet.Graphics.Graphics2D.Sprite">
     <Asset Name="InterfaceIcons">InterfaceIcons</Asset>
   </ContentGroup>
+  <ContentGroup Name="Cursors" Directory="Cursors" Type="TwistedLogik.Ultraviolet.CursorCollection">
+    <Asset Name="Cursors">Cursors</Asset>
+  </ContentGroup>
 </ContentManifest>

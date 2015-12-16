@@ -12,4 +12,7 @@
     <Asset Name="Click1">Click1</Asset>
     <Asset Name="Rollover3">rollover3</Asset>
   </ContentGroup>
+  <ContentGroup Name="Cursors" Directory="Cursors" Type="TwistedLogik.Ultraviolet.CursorCollection">
+    <Asset Name="Cursors">Cursors</Asset>
+  </ContentGroup>
 </ContentManifest>

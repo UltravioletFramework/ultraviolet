@@ -237,11 +237,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
+        protected override void ReloadContentOverride(Boolean recursive)
         {
             ReloadFont();
 
-            base.ReloadContentCore(recursive);
+            base.ReloadContentOverride(recursive);
         }
 
         /// <inheritdoc/>

@@ -301,9 +301,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
         
         /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
+        protected override void ReloadContentOverride(Boolean recursive)
         {
-            base.ReloadContentCore(recursive);
+            base.ReloadContentOverride(recursive);
             root.ReloadContent(recursive);
         }
 

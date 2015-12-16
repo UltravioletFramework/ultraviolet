@@ -1167,7 +1167,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
+        protected override void ReloadContentOverride(Boolean recursive)
         {
             ReloadCaretInsertImage();
             ReloadCaretOverwriteImage();
@@ -1178,7 +1178,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             UpdateSelectionAndCaret();
 
-            base.ReloadContentCore(recursive);
+            base.ReloadContentOverride(recursive);
         }
 
         /// <summary>

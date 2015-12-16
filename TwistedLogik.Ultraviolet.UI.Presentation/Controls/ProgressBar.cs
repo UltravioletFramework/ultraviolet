@@ -129,13 +129,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White));
 
         /// <inheritdoc/>
-        protected override void ReloadContentCore(Boolean recursive)
+        protected override void ReloadContentOverride(Boolean recursive)
         {
             ReloadBarImage();
             ReloadFillImage();
             ReloadOverlayImage();
 
-            base.ReloadContentCore(recursive);
+            base.ReloadContentOverride(recursive);
         }
 
         /// <inheritdoc/>

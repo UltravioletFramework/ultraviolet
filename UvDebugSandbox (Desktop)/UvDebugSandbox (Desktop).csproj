@@ -194,6 +194,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\UI\Screens\DebugViewScreen\DebugViewScreenStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\UI\Screens\DebugViewScreen\DebugViewScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -252,5 +255,8 @@
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
   <PropertyGroup>
     <PostBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">if not $(ConfigurationName)==Signed ( UvDebugSandbox.exe -resolve:content -compile:content -compile:expressions )</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>REM if not $(ConfigurationName)==Signed ( UvDebugSandbox.exe -resolve:content -compile:content -compile:expressions )</PostBuildEvent>
   </PropertyGroup>
 </Project>

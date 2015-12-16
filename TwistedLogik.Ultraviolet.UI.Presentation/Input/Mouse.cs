@@ -48,6 +48,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     public delegate void UpfMouseWheelEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data);
 
     /// <summary>
+    /// Represents the method that is called to determine which cursor to display.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The mouse device.</param>
+    /// <param name="cursor">The cursor to display.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
+    public delegate void UpfQueryCursorEventHandler(DependencyObject element, MouseDevice device, ref Cursor cursor, ref RoutedEventData data);
+
+    /// <summary>
     /// Represents the mouse device.
     /// </summary>
     [UvmlKnownType]
@@ -144,6 +153,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(view, "view");
 
             return view.ElementUnderMouse;
+        }
+
+        /// <summary>
+        /// Adds a handler for the QueryCursor attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddQueryCursorHandler(DependencyObject element, UpfQueryCursorEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.AddHandler(element, QueryCursorEvent, handler);
         }
 
         /// <summary>
@@ -355,6 +377,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Removes a handler for the QueryCursor attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveQueryCursorHandler(DependencyObject element, UpfMouseMoveEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.RemoveHandler(element, QueryCursorEvent, handler);
+        }
+
+        /// <summary>
         /// Removes a handler for the PreviewMouseMove attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -561,6 +596,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             IInputElementHelper.RemoveHandler(element, MouseWheelEvent, handler);
         }
+
+        /// <summary>
+        /// Identifies the QueryCursor routed event.
+        /// </summary>
+        public static readonly RoutedEvent QueryCursorEvent = EventManager.RegisterRoutedEvent("QueryCursor", RoutingStrategy.Bubble,
+            typeof(UpfQueryCursorEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Identifies the GotMouseCapture routed event.

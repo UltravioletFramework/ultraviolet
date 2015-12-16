@@ -1,30 +1,29 @@
 ﻿using System;
 using TwistedLogik.Nucleus.Data;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// Represents an asset which can be loaded from either the global or local content source.
     /// </summary>
-    public struct SourcedImage : IEquatable<SourcedImage>, IInterpolatable<SourcedImage>
+    public struct SourcedCursor : IEquatable<SourcedCursor>, IInterpolatable<SourcedCursor>
     {
         /// <summary>
-        /// Initializes the <see cref="SourcedImage"/> type.
+        /// Initializes the <see cref="SourcedCursor"/> type.
         /// </summary>
-        static SourcedImage()
+        static SourcedCursor()
         {
-            Tweening.Interpolators.RegisterDefault<SourcedImage>();
+            Tweening.Interpolators.RegisterDefault<SourcedCursor>();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SourcedImage"/> structure.
+        /// Initializes a new instance of the <see cref="SourcedCursor"/> structure.
         /// </summary>
-        /// <param name="resource">The texture image resouce which this object represents.</param>
+        /// <param name="resource">The cursor resource which this object represents.</param>
         /// <param name="source">An <see cref="AssetSource"/> value describing how to load the resource.</param>
-        public SourcedImage(TextureImage resource, AssetSource source)
+        public SourcedCursor(SourcedCursorResource resource, AssetSource source)
         {
-            this.resource  = resource;
+            this.resource = resource;
             this.source = source;
         }
 
@@ -33,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="sourced">The <see cref="SourcedImage"/> to convert.</param>
         /// <returns>The underlying value of the sourced asset.</returns>
-        public static implicit operator TextureImage(SourcedImage sourced)
+        public static implicit operator SourcedCursorResource(SourcedCursor sourced)
         {
             return sourced.Resource;
         }
@@ -41,10 +40,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Returns <c>true</c> if the specified sourced assets are equal.
         /// </summary>
-        /// <param name="id1">The first <see cref="SourcedImage"/> to compare.</param>
-        /// <param name="id2">The second <see cref="SourcedImage"/> to compare.</param>
+        /// <param name="id1">The first <see cref="SourcedCursor"/> to compare.</param>
+        /// <param name="id2">The second <see cref="SourcedCursor"/> to compare.</param>
         /// <returns><c>true</c> if the specified sourced assets are equal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator ==(SourcedImage id1, SourcedImage id2)
+        public static Boolean operator ==(SourcedCursor id1, SourcedCursor id2)
         {
             return id1.Equals(id2);
         }
@@ -55,28 +54,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="id1">The first <see cref="SourcedImage"/> to compare.</param>
         /// <param name="id2">The second <see cref="SourcedImage"/> to compare.</param>
         /// <returns><c>true</c> if the specified sourced assets are unequal; otherwise, <c>false</c>.</returns>
-        public static Boolean operator !=(SourcedImage id1, SourcedImage id2)
+        public static Boolean operator !=(SourcedCursor id1, SourcedCursor id2)
         {
             return !id1.Equals(id2);
         }
 
         /// <summary>
-        /// Parses a string into an instance of <see cref="SourcedImage"/>.
+        /// Parses a string into an instance of <see cref="SourcedCursor"/>.
         /// </summary>
         /// <param name="str">The string to parse.</param>
-        /// <returns>The <see cref="SourcedImage"/> instance that was created from the specified string.</returns>
-        public static SourcedImage Parse(String str)
+        /// <returns>The <see cref="SourcedCursor"/> instance that was created from the specified string.</returns>
+        public static SourcedCursor Parse(String str)
         {
             return Parse(str, null);
         }
 
         /// <summary>
-        /// Parses a string into an instance of <see cref="SourcedImage"/>.
+        /// Parses a string into an instance of <see cref="SourcedCursor"/>.
         /// </summary>
         /// <param name="str">The string to parse.</param>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        /// <returns>The <see cref="SourcedImage"/> instance that was created from the specified string.</returns>
-        public static SourcedImage Parse(String str, IFormatProvider provider)
+        /// <returns>The <see cref="SourcedCursor"/> instance that was created from the specified string.</returns>
+        public static SourcedCursor Parse(String str, IFormatProvider provider)
         {
             var source = AssetSource.Global;
 
@@ -91,12 +90,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 str    = str.Substring(0, str.Length - " global".Length);
             }
 
-            var asset = (TextureImage)ObjectResolver.FromString(str.Trim(), typeof(TextureImage), provider);
-            return new SourcedImage(asset, source);
+            var asset = (SourcedCursorResource)ObjectResolver.FromString(str.Trim(), typeof(SourcedCursorResource), provider);
+            return new SourcedCursor(asset, source);
         }
 
         /// <inheritdoc/>
-        public SourcedImage Interpolate(SourcedImage target, Single t)
+        public SourcedCursor Interpolate(SourcedCursor target, Single t)
         {
             return (t >= 1) ? target : this;
         }
@@ -122,11 +121,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public override Boolean Equals(Object obj)
         {
-            return obj is SourcedImage && Equals((SourcedImage)obj);
+            return obj is SourcedCursor && Equals((SourcedCursor)obj);
         }
 
         /// <inheritdoc/>
-        public Boolean Equals(SourcedImage other)
+        public Boolean Equals(SourcedCursor other)
         {
             return
                 this.resource  == other.resource &&
@@ -136,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets the sourced resource.
         /// </summary>
-        public TextureImage Resource
+        public SourcedCursorResource Resource
         {
             get { return resource; }
         }
@@ -166,7 +165,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // Property values.
-        private readonly TextureImage resource;
+        private readonly SourcedCursorResource resource;
         private readonly AssetSource source;
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
@@ -48,6 +49,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         static UIElement()
         {
             RegisterInputClassHandlers();
+
+            EventManager.RegisterClassHandler(typeof(UIElement), Mouse.QueryCursorEvent, new UpfQueryCursorEventHandler(OnQueryCursorProxy));
         }
 
         /// <summary>
@@ -1107,6 +1110,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UpfEventHandler FocusableChanged;
 
         /// <summary>
+        /// Occurs when the element is queried to determine which cursor to display.
+        /// </summary>
+        public event UpfQueryCursorEventHandler QueryCursor
+        {
+            add { AddHandler(Mouse.QueryCursorEvent, value); }
+            remove { RemoveHandler(Mouse.QueryCursorEvent, value); }
+        }
+
+        /// <summary>
         /// The private access key for the <see cref="ActualWidth"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey ActualWidthPropertyKey = DependencyProperty.RegisterReadOnly("ActualWidth", typeof(Double), typeof(UIElement),
@@ -1879,7 +1891,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 child.OnAncestorTransformChanged((Boolean)state);
             });
         }
-        
+
+        /// <summary>
+        /// Invoked by the <see cref="Mouse.QueryCursorEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="cursor">The cursor to display.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnQueryCursor(MouseDevice device, ref Cursor cursor, ref RoutedEventData data)
+        {
+
+        }
+
         /// <inheritdoc/>
         protected override Visual HitTestCore(Point2D point)
         {
@@ -1960,17 +1983,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         /// <summary>
         /// When overridden in a derived class, reloads this element's content 
-        /// and the content of any children of this element.
+        /// and, optionally, the content of any children of this element.
         /// </summary>
+        /// <param name="recursive">A value indicating whether to reload content recursively.</param>
         protected virtual void ReloadContentCore(Boolean recursive)
         {
-            if (recursive)
-            {
-                VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
-                {
-                    child.ReloadContent((Boolean)state);
-                });
-            }
+
         }
 
         /// <summary>
@@ -2328,6 +2346,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Loads the specified sourced cursor.
+        /// </summary>
+        /// <param name="cursor">The sourced cursor to load.</param>
+        protected void LoadCursor(SourcedCursor cursor)
+        {
+            if (View == null)
+                return;
+
+            View.LoadCursor(cursor);
+        }
+
+        /// <summary>
         /// Loads the specified sourced resource.
         /// </summary>
         /// <typeparam name="T">The type of resource being loaded.</typeparam>
@@ -2559,6 +2589,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected virtual Boolean IsEnabledCore
         {
             get { return true; }
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnQueryCursor"/> method.
+        /// </summary>
+        private static void OnQueryCursorProxy(DependencyObject element, MouseDevice device, ref Cursor cursor, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnQueryCursor(device, ref cursor, ref data);
         }
 
         /// <summary>
