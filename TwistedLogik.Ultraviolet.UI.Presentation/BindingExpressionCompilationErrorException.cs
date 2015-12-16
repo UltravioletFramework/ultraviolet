@@ -25,6 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="filename">The filename of the file which is the source of the error.</param>
         /// <param name="message">The error message.</param>
         public BindingExpressionCompilationErrorException(XObject source, String filename, String message)
+            : base(message)
         {
             this.Error = new BindingExpressionCompilationError(source, filename, message);
         }
