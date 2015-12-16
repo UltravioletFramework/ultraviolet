@@ -9,6 +9,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     public class VersionedStringSourceTypeConverter : TypeConverter
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VersionedStringSourceTypeConverter"/> class.
+        /// </summary>
+        public VersionedStringSourceTypeConverter()
+        {
+            stringTypeConverter = TypeDescriptor.GetConverter(typeof(String));
+        }
+
         /// <inheritdoc/>
         public override Boolean CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
@@ -16,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 return true;
             }
-            return base.CanConvertTo(context, destinationType);
+            return stringTypeConverter.CanConvertTo(context, destinationType);
         }
 
         /// <inheritdoc/>
@@ -26,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 return value.ToString();
             }
-            return base.ConvertTo(context, culture, value, destinationType);
+            return stringTypeConverter.ConvertTo(context, culture, ((VersionedStringSource)value).ToString(), destinationType);
         }
 
         /// <inheritdoc/>
@@ -36,17 +44,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 return true;
             }
-            return base.CanConvertFrom(context, sourceType);
+            return stringTypeConverter.CanConvertFrom(context, sourceType);
         }
 
         /// <inheritdoc/>
         public override Object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)
         {
-            if (value is String)
-            {
-                return new VersionedStringSource((String)value);
-            }
-            return base.ConvertFrom(context, culture, value);
+            if (!(value is String))
+                value = stringTypeConverter.ConvertFrom(context, culture, value);
+
+            return new VersionedStringSource((String)value);
         }
+        
+        // If we don't know how to do a conversion, fall back to String.
+        private readonly TypeConverter stringTypeConverter;
     }
 }
