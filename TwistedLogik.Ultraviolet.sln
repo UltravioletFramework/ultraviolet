@@ -97,9 +97,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace (Android)", "TwistedLogik.Ultraviolet.Profiler.dotTrace (Android)\TwistedLogik.Ultraviolet.Profiler.dotTrace (Android).csproj", "{003BE843-DB95-40D7-A4D9-E50F599E59E1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Versioning", "Versioning", "{07FF5D2C-C057-4218-835E-4A5CB372FB5C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Versioning", "Versioning", "{903EB0FA-C534-4717-B659-85635CE51A55}"
 	ProjectSection(SolutionItems) = preProject
 		Version.cs = Version.cs
+		Version.tt = Version.tt
 	EndProjectSection
 EndProject
 Global

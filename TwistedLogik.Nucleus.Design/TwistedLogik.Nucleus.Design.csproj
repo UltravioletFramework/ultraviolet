@@ -70,6 +70,9 @@
   <ItemGroup>
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\DataObjectTypeConverter.cs" />
     <Compile Include="MaskedUInt64TypeConverter.cs" />
@@ -105,6 +108,16 @@
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
       <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Version.tt">
+      <Link>Properties\Version.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

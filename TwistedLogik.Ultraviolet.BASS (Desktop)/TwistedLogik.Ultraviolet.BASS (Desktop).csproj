@@ -145,6 +145,9 @@
   <ItemGroup>
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -170,6 +173,16 @@
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.BASS\Resources\Strings.xml">
       <Link>Resources\Strings.xml</Link>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Version.tt">
+      <Link>Properties\Version.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="..\TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

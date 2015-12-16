@@ -72,6 +72,9 @@
   <ItemGroup>
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs">
@@ -123,6 +126,11 @@
     <EmbeddedResource Include="Controls\Templates\VSlider.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Version.tt">
+      <Link>Properties\Version.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </Content>
     <Content Include="Resources\Content\Fonts\SegoeUITexture.png" />
     <None Include="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

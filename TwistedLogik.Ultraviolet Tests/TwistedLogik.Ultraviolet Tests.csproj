@@ -120,6 +120,9 @@
   <ItemGroup>
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="AssemblyInitialize.cs" />
     <Compile Include="Audio\BASS_SoundEffectPlayerTests.cs" />
@@ -613,6 +616,11 @@
     <None Include="Content\Cursors\CursorsImage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="..\Version.tt">
+      <Link>Properties\Version.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </Content>
     <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -682,7 +690,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

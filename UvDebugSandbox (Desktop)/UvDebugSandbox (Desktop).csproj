@@ -252,6 +252,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
   <PropertyGroup>
     <PostBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">if not $(ConfigurationName)==Signed ( UvDebugSandbox.exe -resolve:content -compile:content -compile:expressions )</PostBuildEvent>

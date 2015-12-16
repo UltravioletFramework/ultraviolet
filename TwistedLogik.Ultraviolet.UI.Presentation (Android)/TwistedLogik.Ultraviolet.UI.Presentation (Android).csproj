@@ -75,6 +75,9 @@
     </Compile>
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -101,7 +104,13 @@
       <Link>Resources\Strings.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="..\Version.tt">
+      <Link>Properties\Version.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29\Controls\Primitives\Templates\HScrollBar.xml">
       <Link>Controls\Primitives\Templates\HScrollBar.xml</Link>
