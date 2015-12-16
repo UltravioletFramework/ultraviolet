@@ -2625,7 +2625,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             
             if (oldValue == null && newValue != null)
             {
-                element.RequiredOutOfBandTargets = Math.Min(1, 1 + newValue.AdditionalRenderTargetsRequired);
+                element.RequiredOutOfBandTargets = Math.Max(1, 1 + newValue.AdditionalRenderTargetsRequired);
             }
             else if (oldValue != null && newValue == null)
             {
@@ -2928,7 +2928,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (upf.OutOfBandRenderer.IsDrawingRenderTargets)
                 return;
 
-            upf.OutOfBandRenderer.Register(this, RequiredOutOfBandTargets);
+            upf.OutOfBandRenderer.Register(this, RequiredOutOfBandTargets - 1);
         }
 
         /// <summary>

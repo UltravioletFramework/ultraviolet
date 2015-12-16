@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         /// <inheritdoc/>
         public override Int32 AdditionalRenderTargetsRequired
         {
-            get { return 1; }
+            get { return 2; }
         }
 
         /// <summary>
@@ -106,10 +106,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         /// <inheritdoc/>
         protected internal override void DrawRenderTargets(DrawingContext dc, UIElement element, OutOfBandRenderTarget target)
         {
-            var shadowTarget = target.Next.RenderTarget;
-
             var gfx = dc.Ultraviolet.GetGraphics();
-            gfx.SetRenderTarget(shadowTarget);
+            
+            // Calculate the shadow's offset from the element
+            var cumulativeTransform = target.VisualTransform;
+
+            var shadowVectorStart = new Vector2(0, 0);
+            Vector2.Transform(ref shadowVectorStart, ref cumulativeTransform, out shadowVectorStart);
+
+            var shadowVectorEnd = Vector2.Transform(new Vector2(1, 0), Matrix.CreateRotationZ(Radians.FromDegrees(-Direction)));
+            Vector2.Transform(ref shadowVectorEnd, ref cumulativeTransform, out shadowVectorEnd);
+
+            var shadowDepth = (Int32)element.View.Display.DipsToPixels(ShadowDepth);
+            var shadowVector = Vector2.Normalize(shadowVectorEnd - shadowVectorStart) * shadowDepth;
+
+            // Draw the horizontal blur pass
+            var pass1Target = target.Next;
+            gfx.SetRenderTarget(pass1Target.RenderTarget);
             gfx.Clear(Color.Transparent);
 
             effect.Value.Radius = GetBlurRadiusInPixels(element);
@@ -118,23 +131,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
             dc.Draw(target.ColorBuffer, Vector2.Zero, Color);
             dc.End();
+
+            // Draw the vertical blur pass
+            var pass2Target = target.Next.Next;
+            gfx.SetRenderTarget(pass2Target.RenderTarget);
+            gfx.Clear(Color.Transparent);
+
+            effect.Value.Radius = GetBlurRadiusInPixels(element);
+            effect.Value.Direction = BlurDirection.Vertical;
+
+            dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
+            dc.Draw(pass1Target.ColorBuffer, shadowVector, null, Color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            dc.End();
+
+            // Draw the element on top of the shadow
+            dc.Begin(SpriteSortMode.Immediate, null, Matrix.Identity);
+            dc.Draw(target.ColorBuffer, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            dc.End();
         }
 
         /// <inheritdoc/>
         protected internal override void Draw(DrawingContext dc, UIElement element, OutOfBandRenderTarget target)
         {
-            var cumulativeTransform = target.VisualTransform;
-            
-            var shadowVectorStart = new Vector2(0, 0);
-            Vector2.Transform(ref shadowVectorStart, ref cumulativeTransform, out shadowVectorStart);
-
-            var shadowVectorEnd = Vector2.Transform(new Vector2(1, 0), Matrix.CreateRotationZ(Radians.FromDegrees(-Direction)));
-            Vector2.Transform(ref shadowVectorEnd, ref cumulativeTransform, out shadowVectorEnd);
-
-            var display = element.View.Display;
-            var shadowDepth = (Int32)display.DipsToPixels(ShadowDepth);
-            var shadowVector = Vector2.Normalize(shadowVectorEnd - shadowVectorStart) * shadowDepth;
-
             var state = dc.GetCurrentState();
 
             var position = (Vector2)element.View.Display.DipsToPixels(target.VisualBounds.Location);
@@ -142,18 +160,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
 
             dc.End();
 
-            effect.Value.Radius = GetBlurRadiusInPixels(element);
-            effect.Value.Direction = BlurDirection.Vertical;
-
-            dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
-
-            var shadowTexture = target.Next.ColorBuffer;
-            dc.Draw(shadowTexture, positionRounded + shadowVector, null, Color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
-            
-            dc.End();
-
             dc.Begin(SpriteSortMode.Immediate, null, Matrix.Identity);
-            dc.Draw(target.ColorBuffer, positionRounded, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            dc.Draw(target.Next.Next.ColorBuffer, positionRounded, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);            
             dc.End();
 
             dc.Begin(state);

@@ -130,6 +130,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 additionalTargetObject.Resize(targetObject.Width, targetObject.Height);
 
                 currentTarget.NextInternal = additionalTarget;
+                currentTarget = additionalTarget.Value;
             }
 
             registeredElements.Add(weakRef);
