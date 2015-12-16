@@ -1,6 +1,8 @@
 echo off
 set DIR=..\..\Binaries\%2\%1
 
+copy "..\..\Version.cs" "..\Version.cs" /Y
+
 if not exist %DIR% goto notexist
 
 if %2 EQU Android (

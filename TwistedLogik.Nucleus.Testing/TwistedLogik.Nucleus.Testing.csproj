@@ -54,6 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
     <Compile Include="DoubleResult.cs" />
     <Compile Include="StringResult.cs" />
     <Compile Include="LocalizedStringVariantResult.cs" />

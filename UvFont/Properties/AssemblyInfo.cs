@@ -6,10 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Ultraviolet Font Generation Utilty")]
-[assembly: AssemblyProduct("Ultraviolet Framework")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("TwistedLogik Software")]
-[assembly: AssemblyCopyright("Copyright © Cole Campbell 2010-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -23,13 +20,3 @@ using System.Runtime.InteropServices;
 // project is exposed to COM. On other platforms, it unique identifies the
 // title storage container when deploying this assembly to the device.
 [assembly: Guid("e04b8d97-5bf7-4951-ab02-54e897433017")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]

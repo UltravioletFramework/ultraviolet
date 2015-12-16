@@ -103,6 +103,9 @@
     <None Include="Content\Manifests\Global.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="..\Dependencies\TwistedLogik.Ultraviolet.BASS.dll.config">
       <Link>TwistedLogik.Ultraviolet.BASS.dll.config</Link>

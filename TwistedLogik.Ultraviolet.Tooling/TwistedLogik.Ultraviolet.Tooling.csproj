@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
     <Compile Include="CommandLineParser.cs" />
     <Compile Include="InvalidCommandLineException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

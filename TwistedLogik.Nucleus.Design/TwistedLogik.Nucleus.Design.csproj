@@ -68,6 +68,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
     <Compile Include="Data\DataObjectTypeConverter.cs" />
     <Compile Include="MaskedUInt64TypeConverter.cs" />
     <Compile Include="MaskedUInt32TypeConverter.cs" />

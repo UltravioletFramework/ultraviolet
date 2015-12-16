@@ -65,6 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
     <Compile Include="dotTraceProfiler.ControlState.cs" />
     <Compile Include="dotTraceProfiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletSample1 (Desktop)", "UltravioletSample1 (Desktop)\UltravioletSample1 (Desktop).csproj", "{254C229D-BA03-4CED-A139-F4213F8AF6D9}"
 EndProject
@@ -108,6 +108,11 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UltravioletSample11", "UltravioletSample11\UltravioletSample11.shproj", "{10F3B9D4-DF14-457A-8012-4697522A181A}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UltravioletSample12", "UltravioletSample12\UltravioletSample12.shproj", "{6BE6DA33-0089-41C0-A4E1-B51F145A22EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Versioning", "Versioning", "{887FECBC-8D41-4FF5-B0FB-89B618494D86}"
+	ProjectSection(SolutionItems) = preProject
+		Version.cs = Version.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

@@ -1,6 +1,8 @@
 #!/bin/bash
 # Copies sample dependencies from the Binaries folder
 
+cp "../../Version.cs" "../Version.cs"
+
 cp "../../Binaries/AnyCPU/Release/Newtonsoft.Json.dll" Newtonsoft.Json.dll
 cp "../../Binaries/AnyCPU/Release/TwistedLogik.Gluon.dll" TwistedLogik.Gluon.dll
 cp "../../Binaries/AnyCPU/Release/TwistedLogik.Nucleus.dll" TwistedLogik.Nucleus.dll

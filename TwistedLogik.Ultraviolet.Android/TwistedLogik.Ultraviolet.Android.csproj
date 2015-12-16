@@ -62,6 +62,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
     <Compile Include="AndroidFactoryInitializer.cs" />
     <Compile Include="Graphics\AndroidSurfaceSource.cs" />
     <Compile Include="Graphics\AndroidSurfaceSaver.cs" />
