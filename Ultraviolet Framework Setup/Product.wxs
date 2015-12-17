@@ -101,6 +101,9 @@
       <ComponentRef Id="SDL2_x64_unix" />
       <ComponentRef Id="bass_x64_unix" />
       <ComponentRef Id="bass_fx_x64_unix" />
+      <ComponentRef Id="SDL2_x64_osx" />
+      <ComponentRef Id="bass_x64_osx" />
+      <ComponentRef Id="bass_fx_x64_osx" />
       <!-- Dependencies (Android) -->
       <ComponentRef Id="Android_TwistedLogik.Gluon" />
       <ComponentRef Id="Android_TwistedLogik.Nucleus" />
@@ -344,6 +347,17 @@
                   </Component>
                   <Component Id="bass_fx_x64_unix">
                     <File Id="bass_fx_x64_unix" Source="..\Dependencies\BASS\x64\unix\libbass_fx.so" />
+                  </Component>
+                </Directory>
+                <Directory Id="Dependencies_x64_osx" Name="osx">
+                  <Component Id="SDL2_x64_osx">
+                    <File Id="SDL2_x64_osx" Source="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" />
+                  </Component>
+                  <Component Id="bass_x64_osx">
+                    <File Id="bass_x64_osx" Source="..\Dependencies\BASS\x64\osx\libbass.dylib" />
+                  </Component>
+                  <Component Id="bass_fx_x64_osx">
+                    <File Id="bass_fx_x64_osx" Source="..\Dependencies\BASS\x64\osx\libbass_fx.dylib" />
                   </Component>
                 </Directory>
               </Directory>
