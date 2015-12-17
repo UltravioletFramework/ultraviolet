@@ -1,6 +1,13 @@
 ﻿<Properties StartupItem="UvDebugSandbox (Desktop)/UvDebugSandbox (Desktop).csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../../../../../../Library/Frameworks/Mono.framework/Versions/4.2.1/lib/mono/4.5/Microsoft.Common.targets">
+    <Files>
+      <File FileName="TwistedLogik.Ultraviolet.UI.Presentation/Controls/Primitives/TextEditor.cs" Line="2269" Column="25" />
+      <File FileName="TwistedLogik.Ultraviolet.UI.Presentation/Controls/TextBox.cs" Line="485" Column="17" />
+      <File FileName="TwistedLogik.Ultraviolet.UI.Presentation/Controls/ScrollChangedInfo.cs" Line="73" Column="58" />
+      <File FileName="../../../../../../Library/Frameworks/Mono.framework/Versions/4.2.1/lib/mono/4.5/Microsoft.Common.targets" Line="14" Column="28" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
