@@ -1157,7 +1157,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         color = glyphData.Color;
                 }
 
-                spriteBatch.DrawSprite(icon.Icon.Controller, iconPosition, iconWidth, iconHeight, color, iconRotation);
+                var iconSprite = icon.Icon;
+                var iconController = iconSprite.Controller;
+                var iconFrame = iconController.GetFrame();
+
+                spriteBatch.DrawSprite(iconController, iconPosition + iconFrame.Origin, iconWidth, iconHeight, color, iconRotation);
             }
 
             charsSeen += 1;

@@ -134,15 +134,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="settings">The current layout settings.</param>
             public void AdvanceLayoutToNextLineWithBreak(TextLayoutCommandStream output, Int32 length, ref TextLayoutSettings settings)
             {
+                var lineSpacing = settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing;
+
                 var lineHeightCurrent = lineHeight;
                 if (lineHeightCurrent == 0)
-                    lineHeight = settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing;
+                    lineHeightCurrent = lineSpacing;
 
                 output.WriteLineBreak(new TextLayoutLineBreakCommand(length));
                 AdvanceLineToNextCommand(0, lineHeightCurrent, 1, length, isLineBreak: true);
 
                 AdvanceLayoutToNextLine(output, ref settings);
-                AdvanceLineToNextCommand(0, lineHeightCurrent, 0, 0);
+                AdvanceLineToNextCommand(0, 0, 0, 0);
+
+                lineHeightTentative = lineSpacing;
             }
 
             /// <summary>
@@ -153,6 +157,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="settings">The current layout settings.</param>
             public void FinalizeLine(TextLayoutCommandStream output, ref TextLayoutSettings settings)
             {
+                if (lineHeight == 0)
+                    lineHeight = lineHeightTentative;
+
                 WriteLineInfo(output, lineWidth, lineHeight, lineLengthInCommands, lineLengthInText, lineIsTerminatedByLineBreak, ref settings);
 
                 positionX = 0;
@@ -162,6 +169,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 lineCount++;
                 lineWidth = 0;
                 lineHeight = 0;
+                lineHeightTentative = 0;
                 lineLengthInText = 0;
                 lineLengthInCommands = 0;
                 lineInfoCommandIndex = output.Count;
@@ -179,7 +187,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="settings">The current layout settings.</param>
             public void FinalizeLayout(TextLayoutCommandStream output, ref TextLayoutSettings settings)
             {
-                if (LineHeight > 0)
+                if (LineHeightTentative > 0 || LineHeight > 0)
                     FinalizeLine(output, ref settings);
 
                 WriteBlockInfo(output, ActualWidth, ActualHeight, LineCount, ref settings);
@@ -428,6 +436,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             /// <summary>
+            /// Gets or sets the tentative height of the line in pixels. This height will only be used if
+            /// the line has no rendered tokens.
+            /// </summary>
+            public Int32 LineHeightTentative
+            {
+                get { return lineHeightTentative; }
+                set { lineHeightTentative = value; }
+            }
+
+            /// <summary>
             /// Gets or sets the number of text characters on the current line.
             /// </summary>
             public Int32 LineLengthInText
@@ -555,6 +573,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             private Int32 lineCount;
             private Int32 lineWidth;
             private Int32 lineHeight;
+            private Int32 lineHeightTentative;
             private Int32 lineLengthInText;
             private Int32 lineLengthInCommands;
             private Int32 actualWidth;
