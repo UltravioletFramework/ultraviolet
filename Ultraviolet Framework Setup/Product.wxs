@@ -76,6 +76,7 @@
       <ComponentRef Id="TwistedLogik.Ultraviolet.WindowsForms" />
       <ComponentRef Id="TwistedLogik.Ultraviolet.WindowsForms_XML" />
       <ComponentRef Id="TwistedLogik.Ultraviolet.Desktop" />
+      <ComponentRef Id="TwistedLogik.Ultraviolet.OSX" />
       <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation"/>
       <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation_XML"/>
       <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation.Compiler"/>
@@ -221,6 +222,9 @@
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.Desktop">
                 <File Id="TwistedLogik.Ultraviolet.Desktop" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.Desktop.dll" />
+              </Component>
+              <Component Id="TwistedLogik.Ultraviolet.OSX">
+                <File Id="TwistedLogik.Ultraviolet.OSX" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.OSX.dll" />
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.UI.Presentation">
                 <File Id="TwistedLogik.Ultraviolet.UI.Presentation" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.dll" />
