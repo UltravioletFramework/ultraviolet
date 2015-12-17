@@ -1,0 +1,58 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>Ultraviolet Game (1.3)</Name>
+    <Description>A project for creating a game based on the Ultraviolet Framework.</Description>
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType>
+    </ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>UltravioletGame</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="UltravioletGame.csproj" File="UltravioletGame.csproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" TargetFileName="App.config">App.config</ProjectItem>
+      <Folder Name="Assets" TargetFolderName="Assets">
+        <ProjectItem ReplaceParameters="true" TargetFileName="GlobalFontID.cs">GlobalFontID.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Content" TargetFolderName="Content">
+        <Folder Name="Cursors" TargetFolderName="Cursors">
+          <ProjectItem ReplaceParameters="true" TargetFileName="Cursors.xml">Cursors.xml</ProjectItem>
+          <ProjectItem ReplaceParameters="false" TargetFileName="CursorsImage.png">CursorsImage.png</ProjectItem>
+        </Folder>
+        <Folder Name="Fonts" TargetFolderName="Fonts">
+          <ProjectItem ReplaceParameters="true" TargetFileName="SegoeUI.xml">SegoeUI.xml</ProjectItem>
+          <ProjectItem ReplaceParameters="false" TargetFileName="SegoeUITexture.png">SegoeUITexture.png</ProjectItem>
+        </Folder>
+        <Folder Name="Localization" TargetFolderName="Localization">
+          <ProjectItem ReplaceParameters="true" TargetFileName="GameStrings.xml">GameStrings.xml</ProjectItem>
+        </Folder>
+        <Folder Name="Manifests" TargetFolderName="Manifests">
+          <ProjectItem ReplaceParameters="false" TargetFileName="Global.manifest">Global.manifest</ProjectItem>
+        </Folder>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Game.cs">Game.cs</ProjectItem>
+      <Folder Name="Input" TargetFolderName="Input">
+        <ProjectItem ReplaceParameters="true" TargetFileName="GameInputActions.cs">GameInputActions.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="IUltravioletInputExtensions.cs">IUltravioletInputExtensions.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="README-SDL.txt">README-SDL.txt</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="uv.ico">uv.ico</ProjectItem>
+      <Folder Name="x64" TargetFolderName="x64">
+        <Folder Name="unix" TargetFolderName="unix" />
+        <Folder Name="win32nt" TargetFolderName="win32nt" />
+      </Folder>
+      <Folder Name="x86" TargetFolderName="x86">
+        <Folder Name="unix" TargetFolderName="unix" />
+        <Folder Name="win32nt" TargetFolderName="win32nt" />
+      </Folder>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

@@ -196,6 +196,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game.vstemplate" />
+    <None Include="__TemplateIcon.ico" />
     <None Include="Content\Cursors\Cursors.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

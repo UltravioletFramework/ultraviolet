@@ -1,0 +1,55 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>Ultraviolet Tool (Windows Forms, 1.3)</Name>
+    <Description>A project for creating a Windows Forms-based tool based on the Ultraviolet Framework.</Description>
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType>
+    </ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>UltravioletTool</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="UltravioletTool.csproj" File="UltravioletTool.csproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" TargetFileName="App.config">App.config</ProjectItem>
+      <Folder Name="Assets" TargetFolderName="Assets">
+        <ProjectItem ReplaceParameters="true" TargetFileName="GlobalFontID.cs">GlobalFontID.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Content" TargetFolderName="Content">
+        <Folder Name="Fonts" TargetFolderName="Fonts">
+          <ProjectItem ReplaceParameters="true" TargetFileName="SegoeUI.xml">SegoeUI.xml</ProjectItem>
+          <ProjectItem ReplaceParameters="false" TargetFileName="SegoeUITexture.png">SegoeUITexture.png</ProjectItem>
+        </Folder>
+        <Folder Name="Localization" TargetFolderName="Localization">
+          <ProjectItem ReplaceParameters="true" TargetFileName="GameStrings.xml">GameStrings.xml</ProjectItem>
+        </Folder>
+        <Folder Name="Manifests" TargetFolderName="Manifests">
+          <ProjectItem ReplaceParameters="false" TargetFileName="Global.manifest">Global.manifest</ProjectItem>
+        </Folder>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Program.cs">Program.cs</ProjectItem>
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Resources.resx">Resources.resx</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Resources.Designer.cs">Resources.Designer.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Settings.settings">Settings.settings</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Settings.Designer.cs">Settings.Designer.cs</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="README-SDL.txt">README-SDL.txt</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="UltravioletToolForm.cs">UltravioletToolForm.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="UltravioletToolForm.Designer.cs">UltravioletToolForm.Designer.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="UltravioletToolForm.resx">UltravioletToolForm.resx</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="uv.ico">uv.ico</ProjectItem>
+      <Folder Name="x64" TargetFolderName="x64">
+        <Folder Name="win32nt" TargetFolderName="win32nt" />
+      </Folder>
+      <Folder Name="x86" TargetFolderName="x86">
+        <Folder Name="win32nt" TargetFolderName="win32nt" />
+      </Folder>
+    </Project>
+  </TemplateContent>
+</VSTemplate>
