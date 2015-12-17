@@ -2268,8 +2268,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 
                 if (textLayoutStream.TotalLength > 0)
                 {
-                    var caretWidthPx = (Int32)Display.DipsToPixels(CaretWidth);
-
                     var lineInfo = default(LineInfo);
                     var boundsGlyph = default(Ultraviolet.Rectangle?);
                     var boundsInsert = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream,

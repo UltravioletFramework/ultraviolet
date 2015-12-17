@@ -35,12 +35,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the horizontal offset of the <see cref="ScrollViewer"/> control.
         /// </summary>
-        public Double HorizontalOffset { get { return HorizontalOffset; } }
+        public Double HorizontalOffset { get { return horizontalOffset; } }
 
         /// <summary>
         /// Gets the change in the horizontal offset of the <see cref="ScrollViewer"/> control.
         /// </summary>
-        public Double HorizontalChange { get { return HorizontalChange; } }
+        public Double HorizontalChange { get { return horizontalChange; } }
 
         /// <summary>
         /// Gets the vertical offset of the <see cref="ScrollViewer"/> control.
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the change in height of the <see cref="ScrollViewer"/> control.
         /// </summary>
-        public Double ExtentHeightChange { get { return ExtentHeightChange; } }
+        public Double ExtentHeightChange { get { return extentHeightChange; } }
 
         /// <summary>
         /// Gets the width of the <see cref="ScrollViewer"/> control's viewport.
