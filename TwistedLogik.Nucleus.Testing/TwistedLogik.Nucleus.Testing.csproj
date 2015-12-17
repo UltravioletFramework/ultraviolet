@@ -80,7 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Version.tt">
-      <Link>Version.tt</Link>
+      <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
