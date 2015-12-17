@@ -11,7 +11,7 @@
     <ProvideDefaultName>true</ProvideDefaultName>
     <LocationField>Enabled</LocationField>
     <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
-    <Icon>__TemplateIcon.ico</Icon>
+    <Icon>uv.ico</Icon>
   </TemplateData>
   <TemplateContent>
     <Project TargetFileName="UltravioletGame.csproj" File="UltravioletGame.csproj" ReplaceParameters="true">

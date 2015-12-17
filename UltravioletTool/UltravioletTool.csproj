@@ -199,8 +199,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Program.vstemplate" />
-    <None Include="__TemplateIcon.ico" />
     <None Include="Content\Fonts\SegoeUI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
