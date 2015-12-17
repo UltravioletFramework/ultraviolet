@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <Product Id="*" Name="Ultraviolet Framework 1.2" Language="1033" Version="1.2.0.0" Manufacturer="TwistedLogik Software" UpgradeCode="167cedac-b1a9-47d8-8646-8b986f178343">
+  <Product Id="*" Name="Ultraviolet Framework 1.3" Language="1033" Version="1.3.0.0" Manufacturer="TwistedLogik Software" UpgradeCode="167cedac-b1a9-47d8-8646-8b986f178343">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" InstallPrivileges="elevated" />
 
     <InstallExecuteSequence>
@@ -19,12 +19,10 @@
     <UIRef Id="WixUI_Mondo" />
     <UIRef Id="WixUI_ErrorProgressText" />
     <UI>
-      <ProgressText Action="VS2010InstallVSTemplates">Updating project templates for Visual Studio 2010...</ProgressText>
-      <ProgressText Action="VCSHARP2010InstallVSTemplates">Updating project templates for Visual C# 2010 Express...</ProgressText>
-      <ProgressText Action="VS2012InstallVSTemplates">Updating project templates for Visual Studio 2012...</ProgressText>
-      <ProgressText Action="VS2012WDExpressInstallVSTemplates">Updating project templates for Visual Studio 2012 Express for Windows Desktop...</ProgressText>
       <ProgressText Action="VS2013InstallVSTemplates">Updating project templates for Visual Studio 2013...</ProgressText>
       <ProgressText Action="VS2013WDExpressInstallVSTemplates">Updating project templates for Visual Studio 2013 Express for Windows Desktop...</ProgressText>
+      <ProgressText Action="VS2015InstallVSTemplates">Updating project templates for Visual Studio 2015...</ProgressText>
+      <ProgressText Action="VS2015CommunityInstallVSTemplates">Updating project templates for Visual Studio Community 2015...</ProgressText>
     </UI>
     <WixVariable Id="WixUILicenseRtf" Value="Payload/Resources/license.rtf" />
 
@@ -35,32 +33,10 @@
     </Condition>
     
     <!-- Visual Studio installation directories -->
-    <PropertyRef Id="VS2010_PROJECTTEMPLATES_DIR"/>
-    <PropertyRef Id="VS2010_IDE_VCSHARP_PROJECTSYSTEM_INSTALLED"/>
-    <PropertyRef Id="VS2012_PROJECTTEMPLATES_DIR"/>
-    <PropertyRef Id="VS2012_IDE_VCSHARP_PROJECTSYSTEM_INSTALLED"/>
     <PropertyRef Id="VS2013_PROJECTTEMPLATES_DIR"/>
     <PropertyRef Id="VS2013_IDE_VCSHARP_PROJECTSYSTEM_INSTALLED"/>
-
-    <Property Id="VS2010EXPRESS_IDE">
-      <RegistrySearch Id="VS2010EXPRESS_IDE_SEARCH" Root="HKLM" Key="SOFTWARE\Microsoft\VCSExpress\10.0" Name="InstallDir" Type="directory" Win64="no" />
-    </Property>
-    <Property Id="VS2010EXPRESS_IDE_X64">
-      <RegistrySearch Id="VS2010EXPRESS_IDE_SEARCH_X64" Root="HKLM" Key="SOFTWARE\Microsoft\VCSExpress\10.0" Name="InstallDir" Type="directory" Win64="yes" />
-    </Property>
-    <SetProperty Id="VS2010EXPRESS_IDE" After="AppSearch" Value="[VS2010EXPRESS_IDE_X64]">
-      VS2010EXPRESS_IDE_X64
-    </SetProperty>
-    
-    <Property Id="VS2012EXPRESS_IDE">
-      <RegistrySearch Id="VS2012EXPRESS_IDE_SEARCH" Root="HKLM" Key="SOFTWARE\Microsoft\WDExpress\11.0" Name="InstallDir" Type="directory" Win64="no" />
-    </Property>
-    <Property Id="VS2012EXPRESS_IDE_X64">
-      <RegistrySearch Id="VS2012EXPRESS_IDE_SEARCH_X64" Root="HKLM" Key="SOFTWARE\Microsoft\WDExpress\11.0" Name="InstallDir" Type="directory" Win64="yes" />
-    </Property>
-    <SetProperty Id="VS2012EXPRESS_IDE" After="AppSearch" Value="[VS2012EXPRESS_IDE_X64]">
-      VS2012EXPRESS_IDE_X64
-    </SetProperty>
+    <PropertyRef Id="VS2015_PROJECTTEMPLATES_DIR"/>
+    <PropertyRef Id="VS2015_IDE_VCSHARP_PROJECTSYSTEM_INSTALLED"/>
     
     <Property Id="VS2013EXPRESS_IDE">
       <RegistrySearch Id="VS2013EXPRESS_IDE_SEARCH" Root="HKLM" Key="SOFTWARE\Microsoft\WDExpress\12.0" Name="InstallDir" Type="directory" Win64="no" />
@@ -73,19 +49,13 @@
     </SetProperty>
 
     <!-- Visual Studio project template installers -->
-    <CustomActionRef Id="VS2010InstallVSTemplates" />
-    <CustomActionRef Id="VCSHARP2010InstallVSTemplates" />
-    <CustomActionRef Id="VS2012InstallVSTemplates" />
-    <CustomActionRef Id="VS2012WDExpressInstallVSTemplates" />
     <CustomActionRef Id="VS2013InstallVSTemplates" />
     <CustomActionRef Id="VS2013WDExpressInstallVSTemplates" />
+    <CustomActionRef Id="VS2015InstallVSTemplates" />
     <InstallExecuteSequence>
-      <Custom Action="VS2010InstallVSTemplates" Before="InstallFinalize" />
-      <Custom Action="VCSHARP2010InstallVSTemplates" Before="InstallFinalize" />
-      <Custom Action="VS2012InstallVSTemplates" Before="InstallFinalize" />
-      <Custom Action="VS2012WDExpressInstallVSTemplates" Before="InstallFinalize" />
       <Custom Action="VS2013InstallVSTemplates" Before="InstallFinalize" />
       <Custom Action="VS2013WDExpressInstallVSTemplates" Before="InstallFinalize" />
+      <Custom Action="VS2015InstallVSTemplates" Before="InstallFinalize" />
     </InstallExecuteSequence>
     
     <!-- Ultraviolet Framework features -->
@@ -108,6 +78,7 @@
       <ComponentRef Id="TwistedLogik.Ultraviolet.Desktop" />
       <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation"/>
       <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation_XML"/>
+      <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation.Compiler"/>
       <ComponentRef Id="Newtonsoft.Json" />
       <ComponentRef Id="Tools_PATH"/>
       <ComponentRef Id="Tools_UvFont"/>
@@ -164,42 +135,6 @@
     </Feature>
     <!-- Visual Studio integration -->
     <Feature Id="VSIntegrationFeature" Level="1" Title="Visual Studio Integration" Description="Integrates the Ultraviolet Framework with Visual Studio." Display="expand">
-      <!-- VS2010 -->
-      <Feature Id="VS2010IntegrationFeature" Level="0" Title="Visual Studio 2010 Integration" Description="Installs project templates for Visual Studio 2010.">
-        <Condition Level="1">
-          <![CDATA[VS2010_IDE_VCSHARP_PROJECTSYSTEM_INSTALLED OR REMOVE]]>
-        </Condition>
-        <ComponentRef Id="VS2010RegKey" />
-        <ComponentRef Id="VS2010UltravioletGame.zip" />
-        <ComponentRef Id="VS2010UltravioletTool.zip" />
-      </Feature>
-      <!-- VS2010 Express -->
-      <Feature Id="VS2010ExpressIntegrationFeature" Level="0" Title="Visual C# 2010 Express Integration" Description="Installs project templates for Visual C# 2010 Express.">
-        <Condition Level="1">
-          <![CDATA[VS2010EXPRESS_IDE<>"" OR REMOVE]]>
-        </Condition>
-        <ComponentRef Id="VS2010CSExpressRegKey" />
-        <ComponentRef Id="VS2010CSExpressUltravioletGame.zip" />
-        <ComponentRef Id="VS2010CSExpressUltravioletTool.zip" />
-      </Feature>
-      <!-- VS2012 -->
-      <Feature Id="VS2012IntegrationFeature" Level="0" Title="Visual Studio 2012 Integration" Description="Installs project templates for Visual Studio 2012.">
-        <Condition Level="1">
-          <![CDATA[VS2012_IDE_VCSHARP_PROJECTSYSTEM_INSTALLED OR REMOVE]]>
-        </Condition>
-        <ComponentRef Id="VS2012RegKey" />
-        <ComponentRef Id="VS2012UltravioletGame.zip" />
-        <ComponentRef Id="VS2012UltravioletTool.zip" />
-      </Feature>
-      <!-- VS2012 Express -->
-      <Feature Id="VS2012ExpressIntegrationFeature" Level="0" Title="Visual Studio 2012 Express for Windows Desktop Integration" Description="Installs project templates for Visual Studio 2012 Express for Windows Desktop.">
-        <Condition Level="1">
-          <![CDATA[VS2012EXPRESS_IDE<>"" OR REMOVE]]>
-        </Condition>
-        <ComponentRef Id="VS2012WDExpressRegKey" />
-        <ComponentRef Id="VS2012WDExpressUltravioletGame.zip" />
-        <ComponentRef Id="VS2012WDExpressUltravioletTool.zip" />
-      </Feature>
       <!-- VS2013 -->
       <Feature Id="VS2013IntegrationFeature" Level="0" Title="Visual Studio 2013 Integration" Description="Installs project templates for Visual Studio 2013.">
         <Condition Level="1">
@@ -218,6 +153,15 @@
         <ComponentRef Id="VS2013WDExpressUltravioletGame.zip" />
         <ComponentRef Id="VS2013WDExpressUltravioletTool.zip" />
       </Feature>
+      <!-- VS2015 -->
+      <Feature Id="VS2015IntegrationFeature" Level="0" Title="Visual Studio 2015 Integration" Description="Installs project templates for Visual Studio 2015.">
+        <Condition Level="1">
+          <![CDATA[VS2015_IDE_VCSHARP_PROJECTSYSTEM_INSTALLED OR REMOVE]]>
+        </Condition>
+        <ComponentRef Id="VS2015RegKey" />
+        <ComponentRef Id="VS2015UltravioletGame.zip" />
+        <ComponentRef Id="VS2015UltravioletTool.zip" />
+      </Feature>
     </Feature>    
   </Product>
   <Fragment>
@@ -225,19 +169,19 @@
       <Directory Id="ProgramFilesFolder">
         <!-- Core Components - References -->
         <Directory Id="UltravioletCoreFolder" Name="Ultraviolet Framework">
-          <Directory Id="UltravioletCoreVersionFolder" Name="v1.2">
+          <Directory Id="UltravioletCoreVersionFolder" Name="v1.3">
             <!-- References -->
             <Directory Id="References" Name="References">
               <!-- Add References folder to AssemblyFoldersEx for VS Add Reference dialog -->
               <Component Id="AssemblyFoldersEx_x86">
                 <Condition>NOT VersionNT64</Condition>
-                <RegistryKey Root="HKLM" Key="Software\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Ultraviolet Framework 1.2">
+                <RegistryKey Root="HKLM" Key="Software\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Ultraviolet Framework 1.3">
                   <RegistryValue Type="string" Value="[References]"/>
                 </RegistryKey>
               </Component>
               <Component Id="AssemblyFoldersEx_x64">
                 <Condition>VersionNT64</Condition>
-                <RegistryKey Root="HKLM" Key="Software\Wow6432Node\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Ultraviolet Framework 1.2">
+                <RegistryKey Root="HKLM" Key="Software\Wow6432Node\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Ultraviolet Framework 1.3">
                   <RegistryValue Type="string" Value="[References]"/>
                 </RegistryKey>
               </Component>
@@ -283,6 +227,9 @@
               </Component>
               <Component Id="TwistedLogik.Ultraviolet.UI.Presentation_XML">
                 <File Id="TwistedLogik.Ultraviolet.UI.Presentation_XML" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.xml" />
+              </Component>
+              <Component Id="TwistedLogik.Ultraviolet.UI.Presentation.Compiler">
+                <File Id="TwistedLogik.Ultraviolet.UI.Presentation.Compiler" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll" />
               </Component>
               <Component Id="Newtonsoft.Json">
                 <File Id="Newtonsoft.Json" Source="..\Dependencies\Newtonsoft.Json.dll" />
@@ -457,54 +404,14 @@
             </Directory>
           </Directory>
         </Directory>
-        <!-- VS2010 Express -->
-        <Directory Id="VS2010EXPRESS_IDE" Name="IDE">
-          <Directory Id="VS2010CSExpressFolder" Name="VCSExpress">
-            <Directory Id="VS2010CSExpressProjectTemplatesFolder" Name="ProjectTemplates">
-              <Directory Id="VS2010CSExpressCSharpFolder" Name="CSharp">
-                <Directory Id="VS2010CSExpressUltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
-                  <Component Id="VS2010CSExpressRegKey">
-                    <RegistryValue Id="VS2010CSExpressRegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2010CSIntegration" Value="1" Type="integer" />
-                  </Component>
-                  <Component Id="VS2010CSExpressUltravioletGame.zip">
-                    <File Id="VS2010CSExpressUltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
-                  </Component>
-                  <Component Id="VS2010CSExpressUltravioletTool.zip">
-                    <File Id="VS2010CSExpressUltravioletTool.zip" Source="..\Ultraviolet Tool (Windows Forms).zip" />
-                  </Component>
-                </Directory>
-              </Directory>
-            </Directory>                     
-          </Directory>
-        </Directory>
-        <!-- VS2012 Express -->
-        <Directory Id="VS2012EXPRESS_IDE" Name="VS2012ExpressDir">
-          <Directory Id="VS2012WDExpressFolder" Name="WDExpress">
-            <Directory Id="VS2012WDExpressProjectTemplatesFolder" Name="ProjectTemplates">
-              <Directory Id="VS2012WDExpressCSharpFolder" Name="CSharp">
-                <Directory Id="VS2012WDExpressUltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
-                  <Component Id="VS2012WDExpressRegKey">
-                    <RegistryValue Id="VS2012WDExpressRegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2012WDIntegration" Value="1" Type="integer" />
-                  </Component>
-                  <Component Id="VS2012WDExpressUltravioletGame.zip">
-                    <File Id="VS2012WDExpressUltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
-                  </Component>
-                  <Component Id="VS2012WDExpressUltravioletTool.zip">
-                    <File Id="VS2012WDExpressUltravioletTool.zip" Source="..\Ultraviolet Tool (Windows Forms).zip" />
-                  </Component>
-                </Directory>
-              </Directory>
-            </Directory>                     
-          </Directory>
-        </Directory>
         <!-- VS2013 Express -->
         <Directory Id="VS2013EXPRESS_IDE" Name="VS2013ExpressDir">
           <Directory Id="VS2013WDExpressFolder" Name="WDExpress">
             <Directory Id="VS2013WDExpressProjectTemplatesFolder" Name="ProjectTemplates">
               <Directory Id="VS2013WDExpressCSharpFolder" Name="CSharp">
-                <Directory Id="VS2013WDExpressUltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
+                <Directory Id="VS2013WDExpressUltravioletFrameworkFolder" Name="Ultraviolet Framework 1.3">
                   <Component Id="VS2013WDExpressRegKey">
-                    <RegistryValue Id="VS2013WDExpressRegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2013WDIntegration" Value="1" Type="integer" />
+                    <RegistryValue Id="VS2013WDExpressRegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.3\Features" Name="VS2013WDIntegration" Value="1" Type="integer" />
                   </Component>
                   <Component Id="VS2013WDExpressUltravioletGame.zip">
                     <File Id="VS2013WDExpressUltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
@@ -516,51 +423,35 @@
               </Directory>
             </Directory>                     
           </Directory>
-        </Directory>
-        <!-- VS2010 -->
-        <Directory Id="VS2010_PROJECTTEMPLATES_DIR" Name="VS2010Dir">
-          <Directory Id="VS2010CSharpFolder" Name="CSharp">
-            <Directory Id="VS2010UltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
-              <Component Id="VS2010RegKey">
-                <RegistryValue Id="VS2010RegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2010Integration" Value="1" Type="integer" />
-              </Component>
-              <Component Id="VS2010UltravioletGame.zip">
-                <File Id="VS2010UltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
-              </Component>
-              <Component Id="VS2010UltravioletTool.zip">
-                <File Id="VS2010UltravioletTool.zip" Source="..\Ultraviolet Tool (Windows Forms).zip" />
-              </Component>
-            </Directory>
-          </Directory>
-        </Directory>
-        <!-- VS2012 -->
-        <Directory Id="VS2012_PROJECTTEMPLATES_DIR" Name="VS2012Dir">
-          <Directory Id="VS2012CSharpFolder" Name="CSharp">
-            <Directory Id="VS2012UltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
-              <Component Id="VS2012RegKey">
-                <RegistryValue Id="VS2012RegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2012Integration" Value="1" Type="integer" />
-              </Component>
-              <Component Id="VS2012UltravioletGame.zip">
-                <File Id="VS2012UltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
-              </Component>
-              <Component Id="VS2012UltravioletTool.zip">
-                <File Id="VS2012UltravioletTool.zip" Source="..\Ultraviolet Tool (Windows Forms).zip" />
-              </Component>
-            </Directory>
-          </Directory>
-        </Directory>
+        </Directory>        
         <!-- VS2013 -->
         <Directory Id="VS2013_PROJECTTEMPLATES_DIR" Name="VS2013Dir">
           <Directory Id="VS2013CSharpFolder" Name="CSharp">
-            <Directory Id="VS2013UltravioletFrameworkFolder" Name="Ultraviolet Framework 1.2">
+            <Directory Id="VS2013UltravioletFrameworkFolder" Name="Ultraviolet Framework 1.3">
               <Component Id="VS2013RegKey">
-                <RegistryValue Id="VS2013RegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.2\Features" Name="VS2013Integration" Value="1" Type="integer" />
+                <RegistryValue Id="VS2013RegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.3\Features" Name="VS2013Integration" Value="1" Type="integer" />
               </Component>
               <Component Id="VS2013UltravioletGame.zip">
                 <File Id="VS2013UltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
               </Component>
               <Component Id="VS2013UltravioletTool.zip">
                 <File Id="VS2013UltravioletTool.zip" Source="..\Ultraviolet Tool (Windows Forms).zip" />
+              </Component>
+            </Directory>
+          </Directory>
+        </Directory>
+        <!-- VS2015 -->
+        <Directory Id="VS2015_PROJECTTEMPLATES_DIR" Name="VS2015Dir">
+          <Directory Id="VS2015CSharpFolder" Name="CSharp">
+            <Directory Id="VS2015UltravioletFrameworkFolder" Name="Ultraviolet Framework 1.3">
+              <Component Id="VS2015RegKey">
+                <RegistryValue Id="VS2015RegKey" Root="HKLM" Key="SOFTWARE\TwistedLogik\Ultraviolet Framework 1.3\Features" Name="VS2015Integration" Value="1" Type="integer" />
+              </Component>
+              <Component Id="VS2015UltravioletGame.zip">
+                <File Id="VS2015UltravioletGame.zip" Source="..\Ultraviolet Game.zip" />
+              </Component>
+              <Component Id="VS2015UltravioletTool.zip">
+                <File Id="VS2015UltravioletTool.zip" Source="..\Ultraviolet Tool (Windows Forms).zip" />
               </Component>
             </Directory>
           </Directory>
