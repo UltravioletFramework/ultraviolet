@@ -1,4 +1,4 @@
-﻿namespace SafeProjectName
+﻿namespace SAFE_PROJECT_NAME
 {
     partial class UltravioletToolForm
     {

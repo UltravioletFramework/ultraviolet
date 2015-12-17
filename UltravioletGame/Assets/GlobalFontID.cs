@@ -1,6 +1,6 @@
 ﻿using TwistedLogik.Ultraviolet.Content;
 
-namespace SafeProjectName.Assets
+namespace SAFE_PROJECT_NAME.Assets
 {
     /// <summary>
     /// Contains the asset identifiers of the application's global font resources.

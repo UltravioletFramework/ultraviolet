@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SafeProjectName.Properties {
+namespace SAFE_PROJECT_NAME.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

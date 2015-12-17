@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using SafeProjectName.Assets;
-using SafeProjectName.Input;
+using SAFE_PROJECT_NAME.Assets;
+using SAFE_PROJECT_NAME.Input;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet;
@@ -12,7 +12,7 @@ using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.OpenGL;
 using TwistedLogik.Ultraviolet.Platform;
 
-namespace SafeProjectName
+namespace SAFE_PROJECT_NAME
 {
     /// <summary>
     /// Represents the main application object.
@@ -30,7 +30,7 @@ namespace SafeProjectName
         /// <summary>
         /// Initializes a new instance of the Game 
         /// </summary>
-        public Game() : base("YOUR_COMPANY_NAME", "ProjectName") { }
+        public Game() : base("YOUR_ORGANIZATION", "PROJECT_NAME") { }
 
         /// <summary>
         /// The application's entry point.

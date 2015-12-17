@@ -1,5 +1,5 @@
 ﻿using System;
-using SafeProjectName.Assets;
+using SAFE_PROJECT_NAME.Assets;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet;
@@ -9,7 +9,7 @@ using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.OpenGL;
 using TwistedLogik.Ultraviolet.WindowsForms;
 
-namespace SafeProjectName
+namespace SAFE_PROJECT_NAME
 {
     /// <summary>
     /// The primary form in an Ultraviolet tool application.
