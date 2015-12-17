@@ -47,8 +47,6 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebugSandbox", "UvDebugSa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (Desktop)", "UvDebugSandbox (Desktop)\UvDebugSandbox (Desktop).csproj", "{A8C85C23-03C2-41C6-8331-48835D257634}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Resources", "TwistedLogik.Ultraviolet.UI.Presentation.Resources\TwistedLogik.Ultraviolet.UI.Presentation.Resources.csproj", "{82A54F88-1F78-4D56-A344-02E1FE87B456}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler", "TwistedLogik.Ultraviolet.UI.Presentation.Compiler\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.csproj", "{D27AB499-F06F-47EA-8645-285CF2315EC2}"
 EndProject
 Global
@@ -106,12 +104,6 @@ Global
 		{7DA6158B-A0B9-4100-904E-22FD86949608}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7DA6158B-A0B9-4100-904E-22FD86949608}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{7DA6158B-A0B9-4100-904E-22FD86949608}.Signed|Any CPU.Build.0 = Signed|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
-		{82A54F88-1F78-4D56-A344-02E1FE87B456}.Signed|Any CPU.Build.0 = Signed|Any CPU
 		{A8C85C23-03C2-41C6-8331-48835D257634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8C85C23-03C2-41C6-8331-48835D257634}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8C85C23-03C2-41C6-8331-48835D257634}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -156,7 +148,6 @@ Global
 		{F6C64886-59BF-4DFD-AF10-53C1700EE20D}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = TwistedLogik.Ultraviolet (Desktop)\TwistedLogik.Ultraviolet (Desktop).csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 120
@@ -185,6 +176,7 @@ Global
 		$2.inheritsSet = Mono
 		$2.inheritsScope = text/x-csharp
 		$2.scope = text/x-csharp
+		StartupItem = TwistedLogik.Ultraviolet (Desktop)\TwistedLogik.Ultraviolet (Desktop).csproj
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{08b2b8d5-152f-45fb-b4eb-8c09010a9908}*SharedItemsImports = 4

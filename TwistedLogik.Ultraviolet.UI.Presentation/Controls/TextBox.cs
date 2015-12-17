@@ -467,7 +467,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         internal override void LineUpInternal()
         {
             var font = Font;
-            if (font == null || !font.IsLoaded)
+            if (!font.IsLoaded)
                 return;
 
             var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
@@ -482,7 +482,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         internal override void LineDownInternal()
         {
             var font = Font;
-            if (font == null || !font.IsLoaded)
+            if (!font.IsLoaded)
                 return;
 
             var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
