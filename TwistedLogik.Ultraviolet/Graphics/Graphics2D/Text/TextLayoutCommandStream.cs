@@ -619,7 +619,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WriteLineBreak(TextLayoutLineBreakCommand command)
         {
-            stream.Reserve(sizeof(TextLayoutCommandType));
+            stream.Reserve(sizeof(TextLayoutLineBreakCommand));
             *(TextLayoutLineBreakCommand*)stream.Data = command;
             *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.LineBreak;
             stream.FinalizeObject(sizeof(TextLayoutLineBreakCommand));
