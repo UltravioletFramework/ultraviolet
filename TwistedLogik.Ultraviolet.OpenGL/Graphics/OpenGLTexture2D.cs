@@ -23,13 +23,22 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.Require(surface, "surface");
 
             var mode = gl.GL_NONE;
-            if (surface.BytesPerPixel == 3) mode = gl.GL_RGB;
-            if (surface.BytesPerPixel == 4) mode = gl.GL_RGBA;
+            var internalformat = gl.GL_NONE;
+            if (surface.BytesPerPixel == 3)
+            {
+                mode = gl.GL_RGB;
+                internalformat = gl.IsGLES2 ? gl.GL_RGB : gl.GL_RGB;
+            }
+            if (surface.BytesPerPixel == 4)
+            {
+                mode = gl.GL_RGBA;
+                internalformat = gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8;
+            }
 
             if (mode == gl.GL_NONE)
                 throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
 
-            CreateNativeTexture(uv, gl.GL_RGBA8, surface.Width, surface.Height, mode, 
+            CreateNativeTexture(uv, internalformat, surface.Width, surface.Height, mode, 
                 gl.GL_UNSIGNED_BYTE, surface.Native->pixels, true);
         }
 
@@ -44,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public OpenGLTexture2D(UltravioletContext uv, Int32 width, Int32 height, Boolean immutable)
             : base(uv)
         {
-            CreateNativeTexture(uv, gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, null, immutable);
+            CreateNativeTexture(uv, gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, null, immutable);
         }
 
         /// <summary>
@@ -318,6 +327,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             switch (internalformat)
             {
+                case gl.GL_RED:
                 case gl.GL_R8:
                 case gl.GL_R8_SNORM:
                 case gl.GL_R16:
@@ -332,6 +342,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 case gl.GL_R32UI:
                     return gl.GL_RED;
 
+                case gl.GL_RG:
                 case gl.GL_RG8:
                 case gl.GL_RG8_SNORM:
                 case gl.GL_RG16:
@@ -346,6 +357,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 case gl.GL_RG32UI:
                     return gl.GL_RG;
 
+                case gl.GL_RGB:
                 case gl.GL_R3_G3_B2:
                 case gl.GL_RGB4:
                 case gl.GL_RGB5:
@@ -369,6 +381,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 case gl.GL_RGB32UI:
                     return gl.GL_RGB;
 
+                case gl.GL_RGBA:
                 case gl.GL_RGB5_A1:
                 case gl.GL_RGBA8:
                 case gl.GL_RGBA8_SNORM:

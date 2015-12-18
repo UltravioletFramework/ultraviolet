@@ -24,6 +24,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override Boolean SupportsDepthStencilTextures
+        {
+            get { return !gl.IsGLES2; }
+        }
+
+        /// <inheritdoc/>
         public override Int32 MaximumTextureSize
         {
             get { return maximumTextureSize; }

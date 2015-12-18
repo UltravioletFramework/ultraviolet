@@ -16,12 +16,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal OutOfBandRenderTarget(UltravioletContext uv)
             : base(uv)
         {
-            this.colorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, 1, 1, RenderBufferOptions.None);
-            this.depthBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, 1, 1, RenderBufferOptions.WillNotBeSampled);
+            renderTarget = RenderTarget2D.Create(1, 1);
 
-            this.renderTarget = RenderTarget2D.Create(1, 1);
-            this.renderTarget.Attach(this.colorBuffer);
-            this.renderTarget.Attach(this.depthBuffer);
+            colorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, 1, 1, RenderBufferOptions.None);
+            renderTarget.Attach(colorBuffer);
+
+            if (uv.GetGraphics().Capabilities.SupportsDepthStencilTextures)
+            {
+                depthBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, 1, 1, RenderBufferOptions.WillNotBeSampled);
+                renderTarget.Attach(depthBuffer);
+            }
+            else
+            {
+                depthBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth16, 1, 1, RenderBufferOptions.WillNotBeSampled);
+                renderTarget.Attach(depthBuffer);
+
+                stencilBuffer = RenderBuffer2D.Create(RenderBufferFormat.Stencil8, 1, 1, RenderBufferOptions.WillNotBeSampled);
+                renderTarget.Attach(stencilBuffer);
+            }
         }
 
         /// <summary>
@@ -100,6 +112,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 isReady = value;
             }
         }
+        
+        /// <summary>
+        /// Gets a value indicating whether the render target has a dedicated stencil buffer.
+        /// </summary>
+        public Boolean HasDedicatedStencilBuffer
+        {
+            get { return stencilBuffer != null; }
+        }
 
         /// <summary>
         /// Gets the cumulative transform of all ancestors of the rendered element.
@@ -172,7 +192,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the <see cref="RenderBuffer2D"/> that represents this element's depth/stencil buffer.
+        /// Gets the <see cref="RenderBuffer2D"/> that represents this element's depth buffer (which may have stencil components).
         /// </summary>
         public RenderBuffer2D DepthBuffer
         {
@@ -181,6 +201,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 return depthBuffer;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="RenderBuffer2D"/> that represents thie element's dedicated stencil buffer, if it has one.
+        /// </summary>
+        public RenderBuffer2D StencilBuffer
+        {
+            get
+            {
+                return stencilBuffer;
             }
         }
 
@@ -209,6 +240,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 SafeDispose.Dispose(renderTarget);
                 SafeDispose.Dispose(colorBuffer);
                 SafeDispose.Dispose(depthBuffer);
+                SafeDispose.Dispose(stencilBuffer);
             }
             base.Dispose(disposing);
         }
@@ -218,5 +250,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly RenderTarget2D renderTarget;
         private readonly RenderBuffer2D colorBuffer;
         private readonly RenderBuffer2D depthBuffer;
+        private readonly RenderBuffer2D stencilBuffer;
     }
 }

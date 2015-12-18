@@ -141,7 +141,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (colorAttachments == 0 && depthStencilAttachments == 0)
+            if (colorAttachments == 0 && depthAttachments == 0 && stencilAttachments == 0)
                 throw new InvalidOperationException(OpenGLStrings.RenderTargetNeedsBuffers);
 
             if (framebufferStatus != gl.GL_FRAMEBUFFER_COMPLETE)
@@ -360,6 +360,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     AttachDepthStencilBuffer(buffer);
                     break;
 
+                case RenderBufferFormat.Stencil8:
+                    AttachStencilBuffer(buffer);
+                    break;
+
                 default:
                     throw new NotSupportedException();
             }
@@ -404,7 +408,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="buffer">The depth buffer to attach to the render target.</param>
         private void AttachDepthBuffer(OpenGLRenderBuffer2D buffer)
         {
-            Contract.Ensure(depthStencilAttachments == 0, OpenGLStrings.RenderBufferExceedsTargetCapacity);
+            Contract.Ensure(depthAttachments == 0, OpenGLStrings.RenderBufferExceedsTargetCapacity);
 
             if (buffer.WillNotBeSampled)
             {
@@ -425,7 +429,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 }
             }
 
-            depthStencilAttachments++;
+            depthAttachments++;
         }
 
         /// <summary>
@@ -434,7 +438,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="buffer">The depth/stencil buffer to attach to the render target.</param>
         private void AttachDepthStencilBuffer(OpenGLRenderBuffer2D buffer)
         {
-            Contract.Ensure(depthStencilAttachments == 0, OpenGLStrings.RenderBufferExceedsTargetCapacity);
+            Contract.Ensure(depthAttachments == 0 && stencilAttachments == 0, OpenGLStrings.RenderBufferExceedsTargetCapacity);
 
             if (buffer.WillNotBeSampled)
             {
@@ -455,7 +459,38 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 }
             }
 
-            depthStencilAttachments++;
+            depthAttachments++;
+            stencilAttachments++;
+        }
+
+        /// <summary>
+        /// Attaches a stencil buffer to the render target.
+        /// </summary>
+        /// <param name="buffer">The stencil buffer to attach to the render target.</param>
+        private void AttachStencilBuffer(OpenGLRenderBuffer2D buffer)
+        {
+            Contract.Ensure(stencilAttachments == 0, OpenGLStrings.RenderBufferExceedsTargetCapacity);
+
+            if (buffer.WillNotBeSampled)
+            {
+                gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
+                gl.ThrowIfError();
+            }
+            else
+            {
+                if (!glFramebufferTextureIsSupported)
+                {
+                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
+                    gl.ThrowIfError();
+                }
+                else
+                {
+                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
+                    gl.ThrowIfError();
+                }
+            }
+
+            stencilAttachments++;
         }
 
         /// <summary>
@@ -507,7 +542,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private readonly Boolean glFramebufferTextureIsSupported;
         private readonly UInt32 framebuffer;
         private Int32 colorAttachments;
-        private Int32 depthStencilAttachments;
+        private Int32 depthAttachments;
+        private Int32 stencilAttachments;
         private UInt32 framebufferStatus = gl.GL_FRAMEBUFFER_UNDEFINED;
 
         // The target's list of attached buffers.

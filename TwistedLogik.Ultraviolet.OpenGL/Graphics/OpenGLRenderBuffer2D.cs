@@ -37,10 +37,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
             else
             {
+                var isGles2 = gl.IsGLES && gl.IsVersionAtMost(2, 0);
+
                 switch (format)
                 {
                     case RenderBufferFormat.Color:
-                        this.texture = new OpenGLTexture2D(uv, gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable);
+                        this.texture = new OpenGLTexture2D(uv, gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable);
                         break;
 
                     case RenderBufferFormat.Depth24Stencil8:
@@ -53,6 +55,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                     case RenderBufferFormat.Depth16:
                         this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT16, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_SHORT, IntPtr.Zero, immutable);
+                        break;
+
+                    case RenderBufferFormat.Stencil8:
+                        this.texture = new OpenGLTexture2D(uv, gl.GL_STENCIL_INDEX8, width, height, gl.GL_STENCIL, gl.GL_UNSIGNED_INT, IntPtr.Zero, immutable);
                         break;
 
                     default:
@@ -334,7 +340,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 switch (format)
                 {
                     case RenderBufferFormat.Color:
-                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_RGBA8, width, height);
+                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.IsGLES2 ? gl.GL_RGBA4 : gl.GL_RGBA8, width, height);
                         gl.ThrowIfError();
                         break;
 
@@ -353,12 +359,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                         gl.ThrowIfError();
                         break;
 
+                    case RenderBufferFormat.Stencil8:
+                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_STENCIL_INDEX8, width, height);
+                        break;
+
                     default:
                         throw new NotSupportedException("format");
                 }
             }
         }
-
+        
         // Property values.
         private readonly RenderBufferFormat format;
         private Int32 width;

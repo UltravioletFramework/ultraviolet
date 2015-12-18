@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 {
                     using (var imgSurface = new SDL_Surface(source.Width, source.Height))
                     {
-                        var imgTexture = new OpenGLTexture2D(manager.Ultraviolet, gl.GL_RGBA8, 
+                        var imgTexture = new OpenGLTexture2D(manager.Ultraviolet, gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8, 
                             source.Width, source.Height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, source.Data, true);
 
                         return imgTexture;

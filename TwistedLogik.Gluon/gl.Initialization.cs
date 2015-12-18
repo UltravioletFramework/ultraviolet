@@ -238,6 +238,22 @@ namespace TwistedLogik.Gluon
         }
 
         /// <summary>
+        /// Gets a value indicating whether the OpenGL context is an OpenGL ES 2 context.
+        /// </summary>
+        public static Boolean IsGLES2
+        {
+            get { return IsGLES && majorVersion == 2; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the OpenGL context is an OpenGL ES 3 context.
+        /// </summary>
+        public static Boolean IsGLES3
+        {
+            get { return IsGLES && majorVersion == 3; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether Gluon thinks it's running inside of an emulator.
         /// </summary>
         public static Boolean IsEmulated

@@ -25,5 +25,10 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// The buffer contains 16 bits of depth data.
         /// </summary>
         Depth16,
+
+        /// <summary>
+        /// The buffer contains 8 bits of stencil data.
+        /// </summary>
+        Stencil8,
     }
 }

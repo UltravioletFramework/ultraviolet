@@ -8,6 +8,12 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public sealed class DummyGraphicsCapabilities : GraphicsCapabilities
     {
         /// <inheritdoc/>
+        public override Boolean SupportsDepthStencilTextures
+        {
+            get { return false; }
+        }
+
+        /// <inheritdoc/>
         public override Int32 MaximumTextureSize
         {
             get { return 0; }
