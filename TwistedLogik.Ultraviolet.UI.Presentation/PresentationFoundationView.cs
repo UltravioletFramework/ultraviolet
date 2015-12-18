@@ -1998,6 +1998,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             UpdateElementUnderMouse();
 
+            var handled = false;
             var recipient = elementUnderMouse;            
             if (recipient != null)
             {
@@ -2010,17 +2011,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Mouse.RaisePreviewMouseDown(dobj, device, button, ref mouseDownData);
                     Mouse.RaiseMouseDown(dobj, device, button, ref mouseDownData);
 
+                    if (mouseDownData.Handled)
+                        handled = true;
+
                     if (!Generic.IsTouchDeviceAvailable && button == MouseButton.Left)
                     {
                         var genericInteractionData = new RoutedEventData(dobj);
                         Generic.RaisePreviewGenericInteraction(dobj, device, ref genericInteractionData);
                         Generic.RaiseGenericInteraction(dobj, device, ref genericInteractionData);
+
+                        if (genericInteractionData.Handled)
+                            handled = true;
                     }
                 }
 
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
+
+            if (!handled)
+                Ultraviolet.GetInput().HideSoftwareKeyboard();
         }
 
         /// <summary>
@@ -2140,6 +2150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var position = GetTouchCoordinates(x, y);
 
+            var handled = false;
             var recipient = elementUnderMouse as DependencyObject;
             if (recipient != null)
             {
@@ -2149,16 +2160,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Touch.RaisePreviewTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
                 Touch.RaiseTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
 
+                if (tapData.Handled)
+                    handled = true;
+
                 if (fingerID == 0)
                 {
                     var genericInteractionData = new RoutedEventData(recipient);
                     Generic.RaisePreviewGenericInteraction(recipient, device, ref genericInteractionData);
                     Generic.RaiseGenericInteraction(recipient, device, ref genericInteractionData);
+
+                    if (genericInteractionData.Handled)
+                        handled = true;
                 }
                 
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
+
+            if (!handled)
+                Ultraviolet.GetInput().HideSoftwareKeyboard();
         }
 
         /// <summary>

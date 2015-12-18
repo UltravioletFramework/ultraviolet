@@ -220,6 +220,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(PasswordBox));
 
         /// <inheritdoc/>
+        protected override void OnGenericInteraction(UltravioletResource device, ref RoutedEventData data)
+        {
+            Ultraviolet.GetInput().ShowSoftwareKeyboard();
+            data.Handled = true;
+
+            base.OnGenericInteraction(device, ref data);
+        }
+
+        /// <inheritdoc/>
         protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
         {
             if (button == MouseButton.Left)
