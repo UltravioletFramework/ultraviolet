@@ -37,8 +37,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
             else
             {
-                var isGles2 = gl.IsGLES && gl.IsVersionAtMost(2, 0);
-
                 switch (format)
                 {
                     case RenderBufferFormat.Color:
