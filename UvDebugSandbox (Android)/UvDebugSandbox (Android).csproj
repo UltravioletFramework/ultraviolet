@@ -128,18 +128,6 @@
     <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\x86\libSDL2main.so">
       <Link>lib\x86\libSDL2main.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\Dependencies\BASS\Android\arm64-v8a\libbass.so">
-      <Link>lib\arm64-v8a\libbass.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\Dependencies\BASS\Android\arm64-v8a\libbass_fx.so">
-      <Link>lib\arm64-v8a\libbass_fx.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\arm64-v8a\libSDL2.so">
-      <Link>lib\arm64-v8a\libSDL2.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\Dependencies\SDL2\Android\arm64-v8a\libSDL2main.so">
-      <Link>lib\arm64-v8a\libSDL2main.so</Link>
-    </AndroidNativeLibrary>
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -200,7 +188,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" />
+      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
