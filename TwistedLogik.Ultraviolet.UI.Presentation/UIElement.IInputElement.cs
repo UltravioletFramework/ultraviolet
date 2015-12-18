@@ -186,6 +186,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        public event UpfKeyboardEventHandler PreviewTextEditing
+        {
+            add { AddHandler(Keyboard.PreviewTextEditingEvent, value); }
+            remove { RemoveHandler(Keyboard.PreviewTextEditingEvent, value); }
+        }
+
+        /// <inheritdoc/>
         public event UpfKeyDownEventHandler PreviewKeyDown
         {
             add { AddHandler(Keyboard.PreviewKeyDownEvent, value); }
@@ -204,6 +211,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             add { AddHandler(Keyboard.TextInputEvent, value); }
             remove { RemoveHandler(Keyboard.TextInputEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfKeyboardEventHandler TextEditing
+        {
+            add { AddHandler(Keyboard.TextEditingEvent, value); }
+            remove { RemoveHandler(Keyboard.TextEditingEvent, value); }
         }
 
         /// <inheritdoc/>
@@ -616,6 +630,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invoked when a <see cref="Keyboard.TextEditingEvent"/> attached routed event occurs.
+        /// </summary>
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnTextEditing(KeyboardDevice device, ref RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
         /// Invoked by the <see cref="Mouse.GotMouseCaptureEvent"/> attached routed event.
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
@@ -867,6 +891,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.KeyDownEvent, new UpfKeyDownEventHandler(OnKeyDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.KeyUpEvent, new UpfKeyEventHandler(OnKeyUpProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.TextInputEvent, new UpfKeyboardEventHandler(OnTextInputProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.TextEditingEvent, new UpfKeyboardEventHandler(OnTextEditingProxy));
 
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.GotMouseCaptureEvent, new UpfRoutedEventHandler(OnGotMouseCaptureProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.LostMouseCaptureEvent, new UpfRoutedEventHandler(OnLostMouseCaptureProxy));
@@ -948,6 +973,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void OnTextInputProxy(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
         {
             ((UIElement)element).OnTextInput(device, ref data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnTextEditing"/> method.
+        /// </summary>
+        private static void OnTextEditingProxy(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnTextEditing(device, ref data);
         }
 
         /// <summary>

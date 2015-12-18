@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         public UInt32 type;
         public UInt32 timestamp;
         public UInt32 windowID;
-        public fixed char text[TEXT_SIZE];
+        public fixed Byte text[TEXT_SIZE];
         public Int32 start;
         public Int32 length;
     }

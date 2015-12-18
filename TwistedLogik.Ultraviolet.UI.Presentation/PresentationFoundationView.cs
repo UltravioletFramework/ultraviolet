@@ -1114,6 +1114,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 keyboard.KeyPressed  += keyboard_KeyPressed;
                 keyboard.KeyReleased += keyboard_KeyReleased;
                 keyboard.TextInput   += keyboard_TextInput;
+                keyboard.TextEditing += keyboard_TextEditing;
             }
         }
 
@@ -1209,6 +1210,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 keyboard.KeyPressed  -= keyboard_KeyPressed;
                 keyboard.KeyReleased -= keyboard_KeyReleased;
                 keyboard.TextInput   -= keyboard_TextInput;
+                keyboard.TextEditing -= keyboard_TextEditing;
             }
         }
 
@@ -1946,6 +1948,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var textInputData = new RoutedEventData(dobj);
                     Keyboard.RaisePreviewTextInput(dobj, device, ref textInputData);
                     Keyboard.RaiseTextInput(dobj, device, ref textInputData);
+                }
+
+                if (originalFocus != elementWithFocus)
+                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="KeyboardDevice.TextEditing"/> event.
+        /// </summary>
+        private void keyboard_TextEditing(IUltravioletWindow window, KeyboardDevice device)
+        {
+            if (!IsInputEnabledAndAllowed)
+                return;
+
+            if (elementWithFocus != null)
+            {
+                var originalFocus = elementWithFocus;
+
+                var dobj = elementWithFocus as DependencyObject;
+                if (dobj != null)
+                {
+                    var textEditingData = new RoutedEventData(dobj);
+                    Keyboard.RaisePreviewTextEditing(dobj, device, ref textEditingData);
+                    Keyboard.RaiseTextEditing(dobj, device, ref textEditingData);
                 }
 
                 if (originalFocus != elementWithFocus)

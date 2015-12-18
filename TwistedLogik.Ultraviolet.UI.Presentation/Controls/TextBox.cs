@@ -609,6 +609,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnTextInput(device, ref data);
         }
 
+        /// <inheritdoc/>
+        protected override void OnTextEditing(KeyboardDevice device, ref RoutedEventData data)
+        {
+            if (TextEditor != null)
+                TextEditor.HandleTextEditing(device, ref data);
+
+            base.OnTextEditing(device, ref data);
+        }
+
         /// <summary>
         /// Occurs when the control handles a <see cref="ScrollViewer.ScrollChangedEvent"/> routed event.
         /// </summary>

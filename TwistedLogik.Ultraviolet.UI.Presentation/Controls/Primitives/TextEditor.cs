@@ -1086,8 +1086,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (isReadOnly)
                 return;
 
+            if (lengthOfEditInProgress > 0)
+                DeleteSpan(caretPosition - lengthOfEditInProgress, lengthOfEditInProgress, false);
+
+            lengthOfEditInProgress = 0;
+
             device.GetTextInput(bufferInput);
             InsertTextAtCaret((StringSegment)bufferInput, true);
+
+            data.Handled = true;
+        }
+
+        /// <summary>
+        /// Called when the editor should handle a text editing event.
+        /// </summary>
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="data">The routed event metadata for this event.</param>
+        internal void HandleTextEditing(KeyboardDevice device, ref RoutedEventData data)
+        {
+            var owner = TemplatedParent as Control;
+
+            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyProperty));
+            if (isReadOnly)
+                return;
+
+            if (lengthOfEditInProgress > 0)
+                DeleteSpan(caretPosition - lengthOfEditInProgress, lengthOfEditInProgress, false);
+
+            device.GetTextInput(bufferInput);
+            InsertTextAtCaret((StringSegment)bufferInput, false);
+            lengthOfEditInProgress = bufferInput.Length;
 
             data.Handled = true;
         }
@@ -1852,6 +1880,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Deletes the specified span of text.
+        /// </summary>
+        /// <param name="start">The first character to delete.</param>
+        /// <param name="length">The number of characters to delete.</param>
+        /// <param name="raiseChangeEvents">A value indicating whether the editor should raise events relating to the text being changed.</param>
+        /// <returns><c>true</c> if the span was deleted; otherwise, <c>false</c>.</returns>
+        private Boolean DeleteSpan(Int32 start, Int32 length, Boolean raiseChangeEvents)
+        {
+            BeginTrackingSelectionChanges();
+
+            if (SelectionLength > 0)
+                Select(caretPosition, 0);
+
+            if (caretPosition > start)
+            {
+                caretBlinkTimer = 0;
+                caretPosition = start;
+            }
+
+            var clampedLength = Math.Min(length, bufferText.Length - start);
+            bufferText.Remove(start, clampedLength);
+            OnCharacterDeleted(start, length, raiseChangeEvents);
+
+            UpdateTextStringSource();
+            UpdateTextParserStream();
+
+            EndTrackingSelectionChanges();
+
+            return true;
+        }
+
+        /// <summary>
         /// Deletes the text ahead of the caret.
         /// </summary>
         private Boolean DeleteAhead()
@@ -2535,6 +2595,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private Int32 selectionTrackingCounter;
         private Int32 storedCaretPosition;
         private Int32 storedSelectionPosition;
+
+        // Text editing.
+        private Int32 lengthOfEditInProgress;
 
         // The editor's internal text buffer.
         private readonly StringBuilder bufferInput = new StringBuilder();

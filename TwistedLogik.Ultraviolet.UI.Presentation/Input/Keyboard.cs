@@ -404,6 +404,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
+        /// Identifies the PreviewTextEditing attached event.
+        /// </summary>
+        /// <remarks>The styling name of this routed event is preview-text-input.</remarks>
+        public static readonly RoutedEvent PreviewTextEditingEvent = EventManager.RegisterRoutedEvent("PreviewTextEditing", RoutingStrategy.Tunnel,
+            typeof(UpfKeyboardEventHandler), typeof(Keyboard));
+
+        /// <summary>
         /// Identifies the PreviewKeyDown attached event.
         /// </summary>
         /// <remarks>The styling name of this routed event is preview-key-down.</remarks>
@@ -422,6 +429,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <remarks>The styling name of this routed event is text-input.</remarks>
         public static readonly RoutedEvent TextInputEvent = EventManager.RegisterRoutedEvent("TextInput", RoutingStrategy.Bubble,
+            typeof(UpfKeyboardEventHandler), typeof(Keyboard));
+
+        /// <summary>
+        /// Identifies the TextEditing attached event.
+        /// </summary>
+        /// <remarks>The styling name of this routed event is text-input.</remarks>
+        public static readonly RoutedEvent TextEditingEvent = EventManager.RegisterRoutedEvent("TextEditing", RoutingStrategy.Bubble,
             typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
@@ -499,6 +513,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Raises the PreviewTextEditing attached event for the specified element.
+        /// </summary>
+        internal static void RaisePreviewTextEditing(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
+        {
+            var temp = EventManager.GetInvocationDelegate<UpfKeyboardEventHandler>(PreviewTextEditingEvent);
+            if (temp != null)
+            {
+                temp(element, device, ref data);
+            }
+        }
+
+        /// <summary>
         /// Raises the KeyDown attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewKeyDown(DependencyObject element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref RoutedEventData data)
@@ -528,6 +554,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         internal static void RaiseTextInput(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
         {
             var temp = EventManager.GetInvocationDelegate<UpfKeyboardEventHandler>(TextInputEvent);
+            if (temp != null)
+            {
+                temp(element, device, ref data);
+            }
+        }
+
+        /// <summary>
+        /// Raises the TextEditing attached event for the specified element.
+        /// </summary>
+        internal static void RaiseTextEditing(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
+        {
+            var temp = EventManager.GetInvocationDelegate<UpfKeyboardEventHandler>(TextEditingEvent);
             if (temp != null)
             {
                 temp(element, device, ref data);

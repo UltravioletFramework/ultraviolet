@@ -183,6 +183,11 @@ namespace TwistedLogik.Ultraviolet.Input
         public event TextInputEventHandler TextInput;
 
         /// <summary>
+        /// Occurs when text is being edited.
+        /// </summary>
+        public event TextInputEventHandler TextEditing;
+
+        /// <summary>
         /// Raises the <see cref="ButtonPressed"/> event.
         /// </summary>
         /// <param name="window">The window that raised the event.</param>
@@ -251,6 +256,19 @@ namespace TwistedLogik.Ultraviolet.Input
         protected virtual void OnTextInput(IUltravioletWindow window)
         {
             var temp = TextInput;
+            if (temp != null)
+            {
+                temp(window, this);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="TextEditing"/> event.
+        /// </summary>
+        /// <param name="window">The window that raised the event.</param>
+        protected virtual void OnTextEditing(IUltravioletWindow window)
+        {
+            var temp = TextEditing;
             if (temp != null)
             {
                 temp(window, this);

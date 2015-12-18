@@ -46,6 +46,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                         OnKeyUp(ref evt.key);
                         break;
 
+                    case SDL_EventType.TEXTEDITING:
+                        OnTextEditing(ref evt.edit);
+                        break;
+
                     case SDL_EventType.TEXTINPUT:
                         OnTextInput(ref evt.text);
                         break;
@@ -237,6 +241,21 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
             OnButtonReleased(window, (Scancode)evt.keysym.scancode);
             OnKeyReleased(window, (Key)evt.keysym.keycode);
+        }
+
+        /// <summary>
+        /// Handles SDL2's TEXTEDITING event.
+        /// </summary>
+        private void OnTextEditing(ref SDL_TextEditingEvent evt)
+        {
+            var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
+            fixed (byte* input = evt.text)
+            {
+                if (ConvertTextInputToUtf16(input))
+                {
+                    OnTextEditing(window);
+                }
+            }
         }
 
         /// <summary>
