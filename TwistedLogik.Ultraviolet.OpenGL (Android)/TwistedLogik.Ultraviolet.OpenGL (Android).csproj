@@ -166,6 +166,36 @@
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\SpriteBatchEffectES.vert">
       <Link>Resources\SpriteBatchEffectES.vert</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius1.frag">
+      <Link>Resources\BlurEffectRadius1.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius1ES.frag">
+      <Link>Resources\BlurEffectRadius1ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius3.frag">
+      <Link>Resources\BlurEffectRadius3.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius3ES.frag">
+      <Link>Resources\BlurEffectRadius3ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius5.frag">
+      <Link>Resources\BlurEffectRadius5.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius5ES.frag">
+      <Link>Resources\BlurEffectRadius5ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius7.frag">
+      <Link>Resources\BlurEffectRadius7.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius7ES.frag">
+      <Link>Resources\BlurEffectRadius7ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius9.frag">
+      <Link>Resources\BlurEffectRadius9.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius9ES.frag">
+      <Link>Resources\BlurEffectRadius9ES.frag</Link>
+    </EmbeddedResource>
     <None Include="..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>

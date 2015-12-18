@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 
@@ -22,6 +24,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
+        protected override void OnRadiusChanged()
+        {
+            UpdateRadius();
+            base.OnRadiusChanged();
+        }
+
+        /// <inheritdoc/>
         protected override void OnDirectionChanged()
         {
             UpdateDirection();
@@ -33,6 +42,45 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         {
             UpdateResolution();
             base.OnTextureSizeChanged();
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the arbitary-radius blur shader should be loaded.
+        /// </summary>
+        private static Boolean IsArbitaryRadiusBlurAvailable
+        {
+            get { return !gl.IsGLES || gl.IsVersionAtLeast(3, 0); }
+        }
+
+        /// <summary>
+        /// Updates the value of the Radius effect parameter.
+        /// </summary>
+        private void UpdateRadius()
+        {
+            var programIndex = UnrolledFragmentShaderCount;
+
+            var nearestUnrolledRadius = (Int32)Radius;
+
+            if (nearestUnrolledRadius > 9)
+                nearestUnrolledRadius = 9;
+
+            if (nearestUnrolledRadius % 2 == 0)
+                nearestUnrolledRadius--;
+
+            if (nearestUnrolledRadius < 1)
+                nearestUnrolledRadius = 1;
+
+            var useUnrolledShader = (gl.IsGLES && gl.IsVersionAtMost(2, 0)) || (Int32)Radius == nearestUnrolledRadius;
+            if (useUnrolledShader)
+            {
+                programIndex = (nearestUnrolledRadius - 1) / 2;
+            }
+            else
+            {
+                Parameters["Radius"].SetValue(Radius);
+            }
+
+            ((OpenGLEffectPass)CurrentTechnique.Passes[0]).ProgramIndex = programIndex;
         }
 
         /// <summary>
@@ -66,19 +114,39 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
 
             var programs = new[] 
             { 
-                new OpenGLShaderProgram(uv, vertShader, fragShader, false),
+                new OpenGLShaderProgram(uv, vertShader, fragShader_Radius1, false),
+                new OpenGLShaderProgram(uv, vertShader, fragShader_Radius3, false),
+                new OpenGLShaderProgram(uv, vertShader, fragShader_Radius5, false),
+                new OpenGLShaderProgram(uv, vertShader, fragShader_Radius7, false),
+                new OpenGLShaderProgram(uv, vertShader, fragShader_Radius9, false),
+                IsArbitaryRadiusBlurAvailable ? new OpenGLShaderProgram(uv, vertShader, fragShader, false) : null,
             };
 
-            var passes     = new[] { new OpenGLEffectPass(uv, null, programs) };
+            var passes     = new[] { new OpenGLEffectPass(uv, null, programs.Where(x => x != null).ToArray()) };
             var techniques = new[] { new OpenGLEffectTechnique(uv, null, passes) };
             return new OpenGLEffectImplementation(uv, techniques);
         }
+
+        // Unrolled fragment shaders
+        const Int32 UnrolledFragmentShaderCount = 5;
+
+        private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius1 =
+            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius1.frag")); });
+        private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius3 =
+            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius3.frag")); });
+        private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius5 =
+            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius5.frag")); });
+        private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius7 =
+            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius7.frag")); });
+        private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius9 =
+            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius9.frag")); });
 
         // Shaders
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShader = 
             new UltravioletSingleton<OpenGLVertexShader>((uv) => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffect.vert")); });
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader = 
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffect.frag")); });
+            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return 
+                IsArbitaryRadiusBlurAvailable ? new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffect.frag")) : null; });
 
         // Cached effect parameters
         private readonly EffectParameter epDirection;

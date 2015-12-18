@@ -26,7 +26,6 @@ namespace TwistedLogik.Ultraviolet.Graphics
             this.epView       = Parameters["View"];
             this.epProjection = Parameters["Projection"];
             this.epMix        = Parameters["Mix"];
-            this.epRadius     = Parameters["Radius"];
 
             this.Radius = 5f;
         }
@@ -143,14 +142,17 @@ namespace TwistedLogik.Ultraviolet.Graphics
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return epRadius.GetValueSingle();
+                return radius;
             }
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                epRadius.SetValue(value);
-                OnRadiusChanged();
+                if (radius != value)
+                {
+                    radius = value;
+                    OnRadiusChanged();
+                }
             }
         }
 
@@ -204,12 +206,12 @@ namespace TwistedLogik.Ultraviolet.Graphics
         // Property values.
         private BlurDirection direction;
         private Size2 textureSize;
+        private Single radius;
 
         // Cached effect parameters.
         private readonly EffectParameter epWorld;
         private readonly EffectParameter epView;
         private readonly EffectParameter epProjection;
         private readonly EffectParameter epMix;
-        private readonly EffectParameter epRadius;      
     }
 }
