@@ -170,16 +170,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.BASS\Resources\Strings.xml">
-      <Link>Resources\Strings.xml</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Resources\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

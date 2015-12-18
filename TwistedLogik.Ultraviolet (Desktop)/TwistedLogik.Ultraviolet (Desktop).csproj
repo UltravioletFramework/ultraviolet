@@ -157,11 +157,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet\Resources\Strings.xml">
-      <Link>Resources\Strings.xml</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\TwistedLogik.Public.snk">
       <Link>TwistedLogik.Public.snk</Link>
     </None>
@@ -178,6 +173,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Resources\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
