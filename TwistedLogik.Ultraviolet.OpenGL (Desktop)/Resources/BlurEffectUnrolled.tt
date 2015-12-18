@@ -32,14 +32,14 @@ void main()
 	var coefficientSum = incGaussX;
 #>
 	vec4 avgValue = vec4(0.0, 0.0, 0.0, 0.0);
-	avgValue += texture2D(Texture, vTextureCoordinate.xy) * <#=incGaussX#>;
+	avgValue += texture(Texture, vTextureCoordinate.xy) * <#=incGaussX#>;
 <#+ 
 	incGaussX *= incGaussY;
 	incGaussY *= incGaussZ;
 #>
 <#+for (int i = 1; i <= (Int32)radius; i++) {#>
-	avgValue += texture2D(Texture, vTextureCoordinate.xy - (float(<#=i#>) * step * Direction)) * <#=incGaussX#>;
-	avgValue += texture2D(Texture, vTextureCoordinate.xy + (float(<#=i#>) * step * Direction)) * <#=incGaussX#>;
+	avgValue += texture(Texture, vTextureCoordinate.xy - (float(<#=i#>) * step * Direction)) * <#=incGaussX#>;
+	avgValue += texture(Texture, vTextureCoordinate.xy + (float(<#=i#>) * step * Direction)) * <#=incGaussX#>;
 <#+
 	coefficientSum += 2.0 * incGaussX;
 	incGaussX *= incGaussY;
@@ -50,6 +50,6 @@ void main()
 	vec4 outBlurred = blur * vColor.a;	
 	vec4 outColored = vColor * blur.a;
 		
-	gl_FragColor = mix(outBlurred, outColored, Mix);
+	fColor = mix(outBlurred, outColored, Mix);
 }
 <#+}#>

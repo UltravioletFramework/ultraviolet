@@ -18,13 +18,13 @@ void main()
 	float step = 1.0 / Resolution;
 
 	vec4 avgValue = vec4(0.0, 0.0, 0.0, 0.0);
-	avgValue += texture2D(Texture, vTextureCoordinate.xy) * 0.398942280401433;
-	avgValue += texture2D(Texture, vTextureCoordinate.xy - (float(1) * step * Direction)) * 0.241970724519143;
-	avgValue += texture2D(Texture, vTextureCoordinate.xy + (float(1) * step * Direction)) * 0.241970724519143;
+	avgValue += texture(Texture, vTextureCoordinate.xy) * 0.398942280401433;
+	avgValue += texture(Texture, vTextureCoordinate.xy - (float(1) * step * Direction)) * 0.241970724519143;
+	avgValue += texture(Texture, vTextureCoordinate.xy + (float(1) * step * Direction)) * 0.241970724519143;
 
 	vec4 blur = avgValue / 0.882883729439719;
 	vec4 outBlurred = blur * vColor.a;	
 	vec4 outColored = vColor * blur.a;
 		
-	gl_FragColor = mix(outBlurred, outColored, Mix);
+	fColor = mix(outBlurred, outColored, Mix);
 }
