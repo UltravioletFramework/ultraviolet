@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, (int)SDL_GLprofile.CORE) < 0)
                     throw new SDL2Exception();
 
-                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, 3) < 0)
+                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, versionRequested.Major) < 0)
                     throw new SDL2Exception();
 
                 if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, versionRequested.Minor) < 0)
