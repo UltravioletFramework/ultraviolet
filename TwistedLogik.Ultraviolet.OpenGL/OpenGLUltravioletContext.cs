@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (SDL.Init(sdlFlags) != 0)
                 throw new SDL2Exception();
 
-            var versionRequired  = new Version(3, 0);
+            var versionRequired  = new Version(3, 1);
             var versionRequested = configuration.MinimumOpenGLVersion;
             if (versionRequested == null || versionRequested < versionRequired)
             {

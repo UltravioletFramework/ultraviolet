@@ -597,7 +597,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 return gl.IsVersionAtLeast(2, 0);
             }
 
-            if (gl.IsVersionAtLeast(3, 0) || (
+            if (gl.IsVersionAtLeast(3, 1) || (
                 gl.IsExtensionSupported("GL_ARB_vertex_array_object") &&
                 gl.IsExtensionSupported("GL_ARB_framebuffer_object")))
             {
