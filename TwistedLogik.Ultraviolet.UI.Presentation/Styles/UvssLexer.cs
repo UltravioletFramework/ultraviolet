@@ -396,7 +396,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         private static Boolean IsValidInIdentifier(Char c)
         {
-            return Char.IsLetterOrDigit(c) || c == '_' || c == '-';
+            return Char.IsLetterOrDigit(c) || c == '_' || c == '-' || c == '!';
         }
 
         /// <summary>

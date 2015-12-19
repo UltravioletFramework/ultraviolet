@@ -202,9 +202,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="s">The string to evaluate.</param>
         /// <returns><c>true</c> if the specified string is a selector for an element; otherwise, false.</returns>
-        private static Boolean IsSelectorForElement(String s)
+        private static Boolean IsSelectorForElement(String s, out String element, out Boolean specific)
         {
-            return !IsSelectorForID(s) && !IsSelectorForClass(s);
+            if (!IsSelectorForID(s) && !IsSelectorForClass(s))
+            {
+                if (s.EndsWith("!"))
+                {
+                    element = s.Substring(0, s.Length - 1);
+                    specific = true;
+                }
+                else
+                {
+                    element = s;
+                    specific = false;
+                }
+                return true;
+            }
+
+            element = null;
+            specific = false;
+
+            return false;
         }
 
         /// <summary>
@@ -769,13 +787,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns>A new <see cref="UvssSelectorPart"/> object representing the selector part that was consumed.</returns>
         private static UvssSelectorPart ConsumeSelectorPart(UvssParserState state, Boolean allowEOF, Boolean allowPseudoClass, Boolean allowChild)
         {
-            var element     = default(String);
-            var id          = default(String);
+            var element = default(String);
+            var id = default(String);
             var pseudoClass = default(String);
-            var classes     = new List<String>();
-            var valid       = false;
-            var qualifier   = UvssSelectorPartQualifier.None;
-            var universal   = false;
+            var classes = new List<String>();
+            var valid = false;
+            var qualifier = UvssSelectorPartQualifier.None;
+            var universal = false;
+            var elementIsExact = false;
 
             while (true)
             {
@@ -837,19 +856,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
                     if (token.TokenType == UvssLexerTokenType.UniversalSelector)
                     {
-                        valid     = true;
+                        valid = true;
                         universal = true;
                         continue;
                     }
                     else
                     {
-                        if (IsSelectorForElement(token.Value))
+                        var typename = default(String);
+                        var specific = false;
+
+                        if (IsSelectorForElement(token.Value, out typename, out specific))
                         {
                             if (element != null || universal)
                                 ThrowUnexpectedValue(state, token);
 
-                            valid   = true;
-                            element = token.Value;
+                            valid = true;
+                            element = typename;
+                            elementIsExact = specific;
                             continue;
                         }
                     }
@@ -860,7 +883,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                             ThrowUnexpectedValue(state, token);
 
                         valid = true;
-                        id    = token.Value;
+                        id = token.Value;
                         continue;
                     }
 
@@ -893,7 +916,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 ThrowUnexpectedToken(state, token);
             }
 
-            return valid ? new UvssSelectorPart(qualifier, element, id, pseudoClass, classes) : null;
+            return valid ? new UvssSelectorPart(qualifier, element, elementIsExact, id, pseudoClass, classes) : null;
         }
 
         /// <summary>

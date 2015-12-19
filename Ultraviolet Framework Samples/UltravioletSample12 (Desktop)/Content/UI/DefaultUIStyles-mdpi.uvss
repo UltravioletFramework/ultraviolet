@@ -24,7 +24,7 @@ View
 // BUTTONS
 // ============================================================================
 
-Button, RepeatButton, ToggleButton
+Button, RepeatButton, ToggleButton!
 {
 	padding: 10 7 10 9;
 		
@@ -43,7 +43,7 @@ Button, RepeatButton, ToggleButton
 	}
 }
 
-ToggleButton
+ToggleButton!
 {
 	transition (common, hover): null;
 	transition (common, pressed): null;
@@ -59,16 +59,16 @@ ToggleButton
 	}
 }
 
-	  Button >> .button-background, 
-RepeatButton >> .button-background,
-ToggleButton >> .button-background
+	  Button  >> .button-background, 
+RepeatButton  >> .button-background,
+ToggleButton! >> .button-background
 {
 	source-image: #Global:Textures:DefaultUI 1 593 142 66 8 8 8 8;
 }
 
-	  Button >> .button-focus-image, 
-RepeatButton >> .button-focus-image,
-ToggleButton >> .button-focus-image
+	  Button  >> .button-focus-image, 
+RepeatButton  >> .button-focus-image,
+ToggleButton! >> .button-focus-image
 {
 	margin: 4;
 	source-color: #ff000000;

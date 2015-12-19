@@ -190,8 +190,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (!element.Ultraviolet.GetUI().GetPresentationFoundation().GetKnownType(part.Element, false, out partElementType))
                     return false;
 
-                if (!partElementType.IsAssignableFrom(element.GetType()))
-                    return false;
+                if (part.ElementIsExact)
+                {
+                    if (partElementType != element.GetType())
+                        return false;
+                }
+                else
+                {
+                    if (!partElementType.IsAssignableFrom(element.GetType()))
+                        return false;
+                }
             }
 
             if (part.HasClasses)

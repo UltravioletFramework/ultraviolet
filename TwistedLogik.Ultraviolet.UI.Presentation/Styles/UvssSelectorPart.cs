@@ -14,21 +14,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="qualifier">The qualifier value for this selector part, if it has one.</param>
         /// <param name="element">The name of the element type that matches this selector part.</param>
+        /// <param name="elementIsxact">A value indicating whether the element type that matches this 
+        /// selector part must be an exact match.</param>
         /// <param name="id">The identifier of the element that matches this selector part.</param>
         /// <param name="pseudoClass">The selector part's pseudo-class, if any.</param>
         /// <param name="classes">The list of classes which match this selector part.</param>
-        internal UvssSelectorPart(UvssSelectorPartQualifier qualifier, String element, String id, String pseudoClass, IEnumerable<String> classes)
+        internal UvssSelectorPart(UvssSelectorPartQualifier qualifier, String element, Boolean elementIsExact,
+            String id, String pseudoClass, IEnumerable<String> classes)
         {
-            var rawID          = (id != null && id.StartsWith("#")) ? id.Substring(1) : id;
+            var rawID = (id != null && id.StartsWith("#")) ? id.Substring(1) : id;
             var rawPseudoClass = (pseudoClass != null && pseudoClass.StartsWith(":")) ? pseudoClass.Substring(1) : pseudoClass;
-            var rawClassNames  = from c in classes select c.StartsWith(".") ? c.Substring(1) : c;
+            var rawClassNames = from c in classes select c.StartsWith(".") ? c.Substring(1) : c;
 
-            this.qualifier   = qualifier;
-            this.element     = element;
-            this.id          = rawID;
+            this.qualifier = qualifier;
+            this.element = element;
+            this.elementIsExact = elementIsExact;
+            this.id = rawID;
             this.pseudoClass = rawPseudoClass;
-            this.classes     = new UvssClassCollection(rawClassNames);
-            this.priority    = CalculatePriority();
+            this.classes = new UvssClassCollection(rawClassNames);
+            this.priority = CalculatePriority();
         }
 
         /// <inheritdoc/>
@@ -89,6 +93,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         public Boolean HasElement
         {
             get { return !String.IsNullOrEmpty(Element); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this selelector part must exactly match element types.
+        /// </summary>
+        public Boolean ElementIsExact
+        {
+            get { return HasElement && elementIsExact; }
         }
 
         /// <summary>
@@ -184,6 +196,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         // Property values.
         private readonly Int32 priority;
         private readonly UvssSelectorPartQualifier qualifier;
+        private readonly Boolean elementIsExact;
         private readonly String element;
         private readonly String id;
         private readonly String pseudoClass;
