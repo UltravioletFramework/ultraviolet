@@ -177,7 +177,7 @@ RadioButton
 	transition (checkstate, unchecked): radiobutton-to-unchecked;
 	transition (checkstate, checked): radiobutton-to-checked;
 
-	trigger event checked
+	trigger event checked-by-user
 	{
 		play-sfx { #Global:SoundEffects:Click1 }
 	}
@@ -240,15 +240,15 @@ CheckBox
 	transition (checkstate, checked): checkbox-to-checked;
 	transition (checkstate, indeterminate): checkbox-to-indeterminate;
 
-	trigger event checked
+	trigger event checked-by-user
 	{
 		play-sfx { #Global:SoundEffects:Click1 }
 	}
-	trigger event unchecked
+	trigger event unchecked-by-user
 	{
 		play-sfx { #Global:SoundEffects:Click1 }
 	}
-	trigger event indeterminate
+	trigger event indeterminate-by-user
 	{
 		play-sfx { #Global:SoundEffects:Click1 }
 	}
