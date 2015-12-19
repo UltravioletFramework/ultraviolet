@@ -13,6 +13,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     public sealed partial class UvssDocument
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="UvssDocument"/> class with no rules or storyboards.
+        /// </summary>
+        public UvssDocument()
+            : this(null, null)
+        {
+
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UvssDocument"/> class.
         /// </summary>
         /// <param name="rules">A collection containing the document's rules.</param>
