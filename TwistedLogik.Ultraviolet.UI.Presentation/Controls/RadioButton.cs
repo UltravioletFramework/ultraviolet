@@ -29,11 +29,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnToggle()
+        protected override void OnToggle(Boolean toggledByUser)
         {
             if (!IsChecked.GetValueOrDefault())
             {
                 IsChecked = true;
+                if (toggledByUser)
+                {
+                    OnCheckedByUser();
+                }
             }
         }
 

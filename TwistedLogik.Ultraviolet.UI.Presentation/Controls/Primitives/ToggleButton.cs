@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public Boolean? IsChecked
         {
             get { return GetValue<Boolean?>(IsCheckedProperty); }
-            set { SetValue<Boolean?>(IsCheckedProperty, value); }
+            set { SetValue(IsCheckedProperty, value); }
         }
 
         /// <summary>
@@ -44,9 +44,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public Boolean IsThreeState
         {
             get { return GetValue<Boolean>(IsThreeStateProperty); }
-            set { SetValue<Boolean>(IsThreeStateProperty, value); }
+            set { SetValue(IsThreeStateProperty, value); }
         }
-
+        
         /// <summary>
         /// Occurs when the toggle button is checked.
         /// </summary>
@@ -54,6 +54,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             add { AddHandler(CheckedEvent, value); }
             remove { RemoveHandler(CheckedEvent, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the toggle button is checked as a result of user interaction.
+        /// </summary>
+        public event UpfRoutedEventHandler CheckedByUser
+        {
+            add { AddHandler(CheckedByUserEvent, value); }
+            remove { RemoveHandler(CheckedByUserEvent, value); }
         }
 
         /// <summary>
@@ -66,12 +75,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Occures when the toggle button is neither checked nor unchecked.
+        /// Occurs when the toggle button is unchecked as a result of user interaction.
+        /// </summary>
+        public event UpfRoutedEventHandler UncheckedByUser
+        {
+            add { AddHandler(UncheckedByUserEvent, value); }
+            remove { RemoveHandler(UncheckedByUserEvent, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the toggle button enters an indeterminate state.
         /// </summary>
         public event UpfRoutedEventHandler Indeterminate
         {
             add { AddHandler(IndeterminateEvent, value); }
             remove { RemoveHandler(IndeterminateEvent, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the toggle button enters an indeterminate state as a result of user interaction.
+        /// </summary>
+        public event UpfRoutedEventHandler IndeterminateByUser
+        {
+            add { AddHandler(IndeterminateByUserEvent, value); }
+            remove { RemoveHandler(IndeterminateByUserEvent, value); }
         }
 
         /// <summary>
@@ -87,12 +114,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <remarks>The styling name of this dependency property is 'three-state'.</remarks>
         public static readonly DependencyProperty IsThreeStateProperty = DependencyProperty.Register("IsThreeState", typeof(Boolean), typeof(ToggleButton),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
-
+        
         /// <summary>
         /// Identifies the <see cref="Checked"/> routed event.
         /// </summary>
         /// <remarks>The styling name of this routed event is 'checked'.</remarks>
         public static readonly RoutedEvent CheckedEvent = EventManager.RegisterRoutedEvent("Checked", RoutingStrategy.Bubble, 
+            typeof(UpfRoutedEventHandler), typeof(ToggleButton));
+
+        /// <summary>
+        /// Identifies the <see cref="CheckedByUser"/> routed event.
+        /// </summary>
+        /// <remarks>The styling name of this routed event is 'checked-by-user'.</remarks>
+        public static readonly RoutedEvent CheckedByUserEvent = EventManager.RegisterRoutedEvent("CheckedByUser", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
         /// <summary>
@@ -103,23 +137,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
         /// <summary>
+        /// Identifies the <see cref="UncheckedByUser"/> routed event.
+        /// </summary>
+        /// <remarks>The styling name of this routed event is 'unchecked-by-user'.</remarks>
+        public static readonly RoutedEvent UncheckedByUserEvent = EventManager.RegisterRoutedEvent("UncheckedByUser", RoutingStrategy.Bubble,
+            typeof(UpfRoutedEventHandler), typeof(ToggleButton));
+
+        /// <summary>
         /// Identifies the <see cref="Indeterminate"/> routed event.
         /// </summary>
         /// <remarks>The styling name of this routed event is 'indeterminate'.</remarks>
         public static readonly RoutedEvent IndeterminateEvent = EventManager.RegisterRoutedEvent("Indeterminate", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
+        /// <summary>
+        /// Identifies the <see cref="IndeterminateByUser"/> routed event.
+        /// </summary>
+        /// <remarks>The styling name of this routed event is 'indeterminate-by-user'.</remarks>
+        public static readonly RoutedEvent IndeterminateByUserEvent = EventManager.RegisterRoutedEvent("IndeterminateByUser", RoutingStrategy.Bubble,
+            typeof(UpfRoutedEventHandler), typeof(ToggleButton));
+
         /// <inheritdoc/>
         protected override void OnClick()
         {
-            OnToggle();
+            OnToggle(true);
             base.OnClick();
         }
 
         /// <summary>
         /// Toggles the value of the <see cref="IsChecked"/> property.
         /// </summary>
-        protected virtual void OnToggle()
+        /// <param name="toggledByUser">A value indicating whether this state change was caused by a user interaction.</param>
+        protected virtual void OnToggle(Boolean toggledByUser = false)
         {
             var isChecked = IsChecked;
             if (IsThreeState)
@@ -129,20 +178,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     if (isChecked.Value)
                     {
                         IsChecked = null;
+                        if (toggledByUser)
+                        {
+                            OnIndeterminateByUser();
+                        }
                     }
                     else
                     {
                         IsChecked = true;
+                        if (toggledByUser)
+                        {
+                            OnCheckedByUser();
+                        }
                     }
                 }
                 else
                 {
                     IsChecked = false;
+                    if (toggledByUser)
+                    {
+                        OnUncheckedByUser();
+                    }
                 }
             }
             else
             {
                 IsChecked = !isChecked.GetValueOrDefault();
+                if (toggledByUser)
+                {
+                    if (IsChecked.GetValueOrDefault())
+                    {
+                        OnCheckedByUser();
+                    }
+                    else
+                    {
+                        OnUncheckedByUser();
+                    }
+                }
             }
         }
 
@@ -151,8 +223,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnChecked()
         {
-            var evtData     = new RoutedEventData(this);
+            var evtData = new RoutedEventData(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(CheckedEvent);
+            evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="CheckedByUser"/> event.
+        /// </summary>
+        protected virtual void OnCheckedByUser()
+        {
+            var evtData = new RoutedEventData(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(CheckedByUserEvent);
             evtDelegate(this, ref evtData);
         }
 
@@ -161,8 +243,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnUnchecked()
         {
-            var evtData     = new RoutedEventData(this);
+            var evtData = new RoutedEventData(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(UncheckedEvent);
+            evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="UncheckedByUser"/> event.
+        /// </summary>
+        protected virtual void OnUncheckedByUser()
+        {
+            var evtData = new RoutedEventData(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(UncheckedByUserEvent);
             evtDelegate(this, ref evtData);
         }
 
@@ -171,8 +263,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnIndeterminate()
         {
-            var evtData     = new RoutedEventData(this);
+            var evtData = new RoutedEventData(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(IndeterminateEvent);
+            evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="IndeterminateByUser"/> event.
+        /// </summary>
+        protected virtual void OnIndeterminateByUser()
+        {
+            var evtData = new RoutedEventData(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(IndeterminateByUserEvent);
             evtDelegate(this, ref evtData);
         }
 
@@ -223,6 +325,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 VisualStateGroups.GoToState("checkstate", "indeterminate");
             }
-        }
+        }        
     }
 }
