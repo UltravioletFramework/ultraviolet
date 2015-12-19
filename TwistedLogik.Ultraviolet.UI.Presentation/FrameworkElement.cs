@@ -205,6 +205,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return GetValue<Boolean>(ForceCursorProperty); }
             set { SetValue(ForceCursorProperty, value); }
         }
+        
+        /// <summary>
+        /// Gets or sets an object that contains information about the element.
+        /// </summary>
+        public Object Tag
+        {
+            get { return GetValue<Object>(TagProperty); }
+            set { SetValue(TagProperty, value); }
+        }
 
         /// <summary>
         /// Gets a value indicating whether the element has been fully initialized.
@@ -220,7 +229,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsLoaded
         {
             get { return isLoaded; }
-        }
+        }        
 
         /// <summary>
         /// Occurs when the element is initialized.
@@ -315,6 +324,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public static readonly DependencyProperty ForceCursorProperty = DependencyProperty.Register("ForceCursor",
             typeof(Boolean), typeof(FrameworkElement), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleForceCursorChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Tag"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TagProperty = DependencyProperty.Register("Tag",
+            typeof(Object), typeof(FrameworkElement), new PropertyMetadata<Object>(null, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the ToolTip dependency property.
