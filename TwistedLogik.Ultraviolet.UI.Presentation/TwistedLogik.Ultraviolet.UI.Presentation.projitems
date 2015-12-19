@@ -306,7 +306,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssClassCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssClassCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssDocument.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssDocument.PrioritizedStyleData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssDocumentImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssDocumentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssException.cs" />

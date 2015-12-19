@@ -48,6 +48,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets a value indicating whether this selector has a higher (or equal) priority than the specified selector.
+        /// </summary>
+        /// <param name="selector">The selector to compare to this selector.</param>
+        /// <returns><c>true</c> if this selector's priority is higher than or the same as the specified selector; otherwise, <c>false</c>.</returns>
+        public Boolean IsHigherPriorityThan(UvssSelector selector)
+        {
+            Contract.Require(selector, "selector");
+            
+            if (IsDirectlyTargeted && !selector.IsDirectlyTargeted)
+                return true;
+
+            if (!IsDirectlyTargeted && selector.IsDirectlyTargeted)
+                return false;
+
+            return Priority >= selector.Priority;
+        }
+
+        /// <summary>
         /// Gets the selector's relative priority.
         /// </summary>
         public Int32 Priority
@@ -72,17 +90,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets a value indicating whether this is a directly targeted rule (i.e., it's last selector part specifies an element by name).
+        /// </summary>
+        public Boolean IsDirectlyTargeted
+        {
+            get
+            {
+                if (parts.Count == 0)
+                    return false;
+
+                return parts[parts.Count - 1].HasID;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this selector matches the view's resource manager.
         /// </summary>
         /// <returns><c>true</c> if this selector matches the view's resource manager; otherwise, <c>false</c>.</returns>
-        public Boolean IsViewResourceSelector()
+        public Boolean IsViewResourceSelector
         {
-            if (parts.Count != 1)
-                return false;
+            get
+            {
+                if (parts.Count != 1)
+                    return false;
 
-            var part = parts[0];
+                var part = parts[0];
 
-            return !part.HasClasses && !part.HasID && String.Equals(part.Element, "view", StringComparison.OrdinalIgnoreCase);
+                return !part.HasClasses && !part.HasID && String.Equals(part.Element, "view", StringComparison.OrdinalIgnoreCase);
+            }
         }
 
         /// <summary>

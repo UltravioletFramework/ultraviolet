@@ -37,10 +37,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         {
             if (selectors.Count != 1)
                 return false;
-
-            var selector = selectors[0];
-
-            return selector.IsViewResourceSelector();
+            
+            return selectors[0].IsViewResourceSelector;
         }
 
         /// <summary>
@@ -51,17 +49,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns><c>true</c> if the rule matches the specified UI element; otherwise, <c>false</c>.</returns>
         public Boolean MatchesElement(UIElement element, out UvssSelector selector)
         {
-            var priority = 0;
-
             selector = null;
             foreach (var potentialMatch in selectors)
             {
                 if (potentialMatch.MatchesElement(element))
                 {
-                    if (potentialMatch.Priority >= priority)
+                    if (selector == null || potentialMatch.IsHigherPriorityThan(selector))
                     {
                         selector = potentialMatch;
-                        priority = selector.Priority;
                     }
                 }
             }

@@ -33,9 +33,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var priority = CalculatePriorityFromSelector(selector, style.IsImportant);
 
             PrioritizedStyle existing;
-            if (!styles.TryGetValue(key, out existing) || existing.Priority <= priority)
+            if (!styles.TryGetValue(key, out existing))
             {
                 styles[key] = new PrioritizedStyle(style, selector, priority);
+            }
+            else
+            {
+                if (selector.IsHigherPriorityThan(existing.Selector) && (style.IsImportant || !existing.Style.IsImportant))
+                {
+                    styles[key] = new PrioritizedStyle(style, selector, priority);
+                }
             }
         }
 
@@ -54,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var priority = CalculatePriorityFromSelector(selector, false);
 
             PrioritizedTrigger existing;
-            if (!triggers.TryGetValue(key, out existing) || existing.Priority <= priority)
+            if (!triggers.TryGetValue(key, out existing) || selector.IsHigherPriorityThan(existing.Selector))
             {
                 triggers[key] = new PrioritizedTrigger(trigger, selector, priority);
             }
