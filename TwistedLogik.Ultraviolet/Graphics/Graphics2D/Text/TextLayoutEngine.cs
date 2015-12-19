@@ -685,8 +685,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     }
                     return true;
                 }
-                
-                GetFittedSubstring(font, availableWidth, ref tokenText, ref tokenSize, ref state, hyphenate);
+
+                if (!GetFittedSubstring(font, availableWidth, ref tokenText, ref tokenSize, ref state, hyphenate) && state.LineWidth == 0)
+                    return false;
 
                 var overflowingTokenBounds = (tokenText.Length == 0) ? Rectangle.Empty :
                     new Rectangle(state.PositionX, state.PositionY, tokenSize.Width, tokenSize.Height);
