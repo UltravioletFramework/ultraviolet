@@ -40,6 +40,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Immediately digests all of the object's dependency properties.
+        /// </summary>
+        public void DigestImmediately()
+        {
+            for (int i = 0; i < digestedDependencyProperties.Count; i++)
+            {
+                var wrapper = digestedDependencyProperties[i];
+                wrapper.DigestImmediately();
+                OnDigestingImmediately(wrapper.Property);
+            }
+        }
+
+        /// <summary>
         /// Immediately digests the specified dependency property.
         /// </summary>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to digest.</param>

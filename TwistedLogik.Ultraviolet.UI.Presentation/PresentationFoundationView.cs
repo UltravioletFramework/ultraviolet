@@ -874,6 +874,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected override void OnOpening()
         {
             EnsureIsLoaded();
+
+            ImmediatelyDigestVisualTree(layoutRoot);
             
             var defaultButton = GetFirstDefaultButton();
             if (defaultButton != null)
@@ -1637,6 +1639,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     target.HandleDefaultOrCancelActivated();
                 }
             }
+        }
+
+        /// <summary>
+        /// Performs an immediate digest on all dependencies properties defined by the specified 
+        /// element and its visual descendants.
+        /// </summary>
+        /// <param name="dobj">The dependency object to digest.</param>
+        private void ImmediatelyDigestVisualTree(DependencyObject dobj)
+        {
+            dobj.DigestImmediately();
+
+            VisualTreeHelper.ForEachChild(dobj, this, (child, state) =>
+            {
+                ((PresentationFoundationView)state).ImmediatelyDigestVisualTree(child);
+            });
         }
 
         /// <summary>
