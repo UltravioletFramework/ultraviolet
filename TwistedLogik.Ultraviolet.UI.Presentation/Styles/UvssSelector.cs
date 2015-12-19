@@ -151,7 +151,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             if (part.HasElement)
             {
-                if (!String.Equals(element.UvmlName, part.Element, StringComparison.OrdinalIgnoreCase))
+                var partElementType = default(Type);
+                if (!element.Ultraviolet.GetUI().GetPresentationFoundation().GetKnownType(part.Element, false, out partElementType))
+                    return false;
+
+                if (!partElementType.IsAssignableFrom(element.GetType()))
                     return false;
             }
 
@@ -166,7 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             return true;
         }
-
+        
         /// <summary>
         /// Gets a value indicating whether the specified UI element has an ancestor that matches the specified selector part.
         /// </summary>

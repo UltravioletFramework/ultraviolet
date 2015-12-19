@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.classes = new UIElementClassCollection(this);
             this.uvmlName = (attr == null || attr.Name == null) ? GetType().Name : attr.Name;
         }
-
+        
         /// <summary>
         /// Initializes the element's dependency properties and the dependency properties
         /// of any children of this element.

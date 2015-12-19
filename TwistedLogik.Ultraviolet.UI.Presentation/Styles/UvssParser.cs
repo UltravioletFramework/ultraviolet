@@ -471,7 +471,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             if (state.CurrentToken.TokenType != UvssLexerTokenType.Identifier)
             {
-                filter.Add("element");
+                filter.Add("FrameworkElement");
             }
             else
             {
