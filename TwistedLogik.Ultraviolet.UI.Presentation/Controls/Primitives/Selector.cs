@@ -228,6 +228,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
+        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+            if (newView != null)
+            {
+                RebuildSelection();
+            }
+            base.OnViewChanged(oldView, newView);
+        }
+
+        /// <inheritdoc/>
         protected override void OnIsKeyboardFocusWithinChanged()
         {
             SetValue<Boolean>(IsSelectionActivePropertyKey, IsKeyboardFocusWithin);
@@ -324,12 +334,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Indicates that the control is done changing its collection and raises a SelectionChange event.
         /// </summary>
-        protected void EndChangeSelection()
+        /// <param name="raiseChangedEvents">A value indicating whether events should be raised indicating that the selection changed.</param>
+        protected void EndChangeSelection(Boolean raiseChangedEvents = true)
         {
             if (suspendSelectionChangedLevel == 0)
                 throw new InvalidOperationException();
 
-            if (--suspendSelectionChangedLevel == 0)
+            if (--suspendSelectionChangedLevel == 0 && raiseChangedEvents)
             {
                 UpdateSelectionPropertiesAndRaiseSelectionChanged();
                 RaiseSelectedItemsChanged();
@@ -398,6 +409,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 ((Selector)dobj).OnSelectionChanged();
             }
+        }
+
+        /// <summary>
+        /// Rebuilds the selector's selection collection.
+        /// </summary>
+        private void RebuildSelection()
+        {
+            var wasChanged = false;
+            BeginChangeSelection();
+
+            for (int i = 0; i < Items.Count; i++)
+            {
+                var item = Items[i] as DependencyObject;
+                if (item == null)
+                    continue;
+                
+                var shouldBeSelected = (SelectedIndex == i);
+                if (shouldBeSelected != item.GetValue<Boolean>(IsSelectedProperty))
+                {
+                    wasChanged = true;
+                    item.SetValue(IsSelectedProperty, shouldBeSelected);
+                }
+            }
+
+            EndChangeSelection(wasChanged);
         }
 
         /// <summary>

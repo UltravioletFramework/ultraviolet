@@ -92,6 +92,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+            if (newView != null)
+            {
+                UpdateTextParserCache();
+            }
+            base.OnViewChanged(oldView, newView);
+        }
+
+        /// <inheritdoc/>
         protected override void CacheLayoutParametersCore()
         {
             containingControl = FindContainingControl();
