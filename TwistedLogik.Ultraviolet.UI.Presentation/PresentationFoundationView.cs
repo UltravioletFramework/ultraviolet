@@ -888,25 +888,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
             }
 
-            RaiseViewLifecycleEvent(layoutRoot, View.Opening);
+            RaiseViewLifecycleEvent(layoutRoot, View.OpeningEvent);
         }
 
         /// <inheritdoc/>
         protected override void OnOpened()
         {
-            RaiseViewLifecycleEvent(layoutRoot, View.Opened);
+            RaiseViewLifecycleEvent(layoutRoot, View.OpenedEvent);
         }
 
         /// <inheritdoc/>
         protected override void OnClosing()
         {
-            RaiseViewLifecycleEvent(layoutRoot, View.Closing);
+            RaiseViewLifecycleEvent(layoutRoot, View.ClosingEvent);
         }
 
         /// <inheritdoc/>
         protected override void OnClosed()
         {
-            RaiseViewLifecycleEvent(layoutRoot, View.Closed);
+            RaiseViewLifecycleEvent(layoutRoot, View.ClosedEvent);
 
             layoutRoot.Cleanup();
         }

@@ -9,25 +9,25 @@
         /// <summary>
         /// Identifies the Opening routed event.
         /// </summary>
-        public static readonly RoutedEvent Opening = EventManager.RegisterRoutedEvent("Opening", 
+        public static readonly RoutedEvent OpeningEvent = EventManager.RegisterRoutedEvent("Opening", 
             RoutingStrategy.Direct, typeof(UpfRoutedEventHandler), typeof(View));
 
         /// <summary>
         /// Identifies the Opened routed event.
         /// </summary>
-        public static readonly RoutedEvent Opened = EventManager.RegisterRoutedEvent("Opened",
+        public static readonly RoutedEvent OpenedEvent = EventManager.RegisterRoutedEvent("Opened",
             RoutingStrategy.Direct, typeof(UpfRoutedEventHandler), typeof(View));
 
         /// <summary>
         /// Identifies the Closing routed event.
         /// </summary>
-        public static readonly RoutedEvent Closing = EventManager.RegisterRoutedEvent("Closing",
+        public static readonly RoutedEvent ClosingEvent = EventManager.RegisterRoutedEvent("Closing",
             RoutingStrategy.Direct, typeof(UpfRoutedEventHandler), typeof(View));
 
         /// <summary>
         /// Identifies the Closed routed event.
         /// </summary>
-        public static readonly RoutedEvent Closed = EventManager.RegisterRoutedEvent("Closed",
+        public static readonly RoutedEvent ClosedEvent = EventManager.RegisterRoutedEvent("Closed",
             RoutingStrategy.Direct, typeof(UpfRoutedEventHandler), typeof(View));
     }
 }
