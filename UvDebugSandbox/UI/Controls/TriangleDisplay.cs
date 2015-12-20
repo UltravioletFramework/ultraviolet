@@ -127,7 +127,7 @@ namespace UvDebugSandbox.Content.UI.Controls
             {
                 var twopi = 2.0f * (Single)Math.PI;
                 var delta = twopi * (Single)(dx / ActualWidth);
-                TriangleRotation = (TriangleRotation + delta) % twopi;
+                TriangleRotation = Math.Max(0, Math.Min(twopi, TriangleRotation + delta));
             }
             base.OnMouseMove(device, x, y, dx, dy, ref data);
         }

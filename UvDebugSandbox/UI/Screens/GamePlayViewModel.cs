@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
@@ -25,6 +26,10 @@ namespace UvDebugSandbox.UI.Screens
 
             this.owner = owner;
             this.escMenuDialog = escMenuDialog;
+
+            this.V1Color = Color.Red;
+            this.V2Color = Color.Lime;
+            this.V3Color = Color.Blue;
         }
 
         /// <summary>
@@ -50,10 +55,7 @@ namespace UvDebugSandbox.UI.Screens
         {
             if (key == Key.Escape)
             {
-                // NOTE: We need to execute the continuation synchronously because the Ultraviolet context is
-                // funamentally not threadsafe. Doing otherwise can cause crashes.
-                Modal.ShowDialogAsync(escMenuDialog).ContinueWith(HandleEscMenuDialogResult, 
-                    TaskContinuationOptions.ExecuteSynchronously);
+                Modal.ShowDialogAsync(escMenuDialog).ContinueWith(HandleEscMenuDialogResult);
 
                 data.Handled = true;
             }
@@ -89,6 +91,33 @@ namespace UvDebugSandbox.UI.Screens
         /// Gets or sets the zoom of the displayed triangle.
         /// </summary>
         public Single TriangleZoom
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the color of the first triangle vertex.
+        /// </summary>
+        public Color V1Color
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the color of the second triangle vertex.
+        /// </summary>
+        public Color V2Color
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the color of the third triangle vertex.
+        /// </summary>
+        public Color V3Color
         {
             get;
             set;

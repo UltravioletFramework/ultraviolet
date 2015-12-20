@@ -9,11 +9,11 @@
                 ToolTipService.ToolTip="When checked, the displayed triangle will automatically rotate.">Spin</CheckBox>
 
       <StackPanel Name="vertex-colors-panel">
-        <TriangleColorSelector Name="v1Color" VertexColor="#ffff0000" 
+        <TriangleColorSelector Name="v1Color" VertexColor="{{V1Color}}" 
                                ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|first|b| vertex.">V1:</TriangleColorSelector>
-        <TriangleColorSelector Name="v2Color" VertexColor="#ff00ff00"
+        <TriangleColorSelector Name="v2Color" VertexColor="{{V2Color}}"
                                ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|second|b| vertex.">V2:</TriangleColorSelector>
-        <TriangleColorSelector Name="v3Color" VertexColor="#ff0000ff"
+        <TriangleColorSelector Name="v3Color" VertexColor="{{V3Color}}"
                                ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|third|b| vertex.">V3:</TriangleColorSelector>
       </StackPanel>
 
@@ -43,9 +43,9 @@
             <TriangleDisplay Name="display" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                              TriangleRotation="{{TriangleRotation}}"
                              TriangleZoom="{{TriangleZoom}}"
-                             V1Color="{{v1Color->VertexColor}}"
-                             V2Color="{{v2Color->VertexColor}}"
-                             V3Color="{{v3Color->VertexColor}}"/>
+                             V1Color="{{V1Color}}"
+                             V2Color="{{V2Color}}"
+                             V3Color="{{V3Color}}"/>
           </Border>
         </Grid>
 

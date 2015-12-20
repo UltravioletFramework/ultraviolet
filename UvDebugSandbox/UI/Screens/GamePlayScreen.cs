@@ -20,14 +20,13 @@ namespace UvDebugSandbox.UI.Screens
             : base("Content/UI/Screens/GamePlayScreen", "GamePlayScreen", globalContent, uiScreenService)
         {
             this.escMenuDialog = new EscMenuDialog(this);
-            View.SetViewModel(new GamePlayViewModel(this, escMenuDialog));
         }
 
         /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
             var vm = View.GetViewModel<GamePlayViewModel>();
-            if (vm.IsTriangleSpinning)
+            if (vm != null && vm.IsTriangleSpinning)
             {
                 var rotMax = (Single)(Math.PI * 2.0);
                 var rotDelta = (Single)(rotMax * time.ElapsedTime.TotalSeconds);
@@ -35,7 +34,14 @@ namespace UvDebugSandbox.UI.Screens
             }
             base.Update(time);
         }
-        
+
+        /// <inheritdoc/>
+        protected override void OnOpening()
+        {
+            View.SetViewModel(new GamePlayViewModel(this, escMenuDialog));
+            base.OnOpening();
+        }
+
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {

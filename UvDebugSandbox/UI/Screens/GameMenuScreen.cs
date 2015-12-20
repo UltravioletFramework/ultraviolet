@@ -15,7 +15,14 @@ namespace UvDebugSandbox.UI.Screens
         public GameMenuScreen(ContentManager globalContent, UIScreenService uiScreenService)
             : base("Content/UI/Screens/GameMenuScreen", "GameMenuScreen", globalContent, uiScreenService)
         {
+
+        }
+
+        /// <inheritdoc/>
+        protected override void OnOpening()
+        {
             View.SetViewModel(new GameMenuViewModel(this));
-        }        
+            base.OnOpening();
+        }
     }
 }
