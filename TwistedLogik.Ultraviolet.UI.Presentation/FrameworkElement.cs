@@ -412,6 +412,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Ensures that the element has been initialized.
+        /// </summary>
+        internal void EnsureIsInitialized()
+        {
+            if (IsInitialized || isInitializing)
+                return;
+
+            BeginInit();
+            EndInit();
+        }
+
+        /// <summary>
         /// Ensures that the value of the element's <see cref="IsLoaded"/> property matches the specified value.
         /// </summary>
         /// <param name="value">A value indicating whether the element should be loaded or unloaded.</param>
@@ -725,6 +737,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             base.CacheLayoutParametersCore();
+        }
+        
+        /// <inheritdoc/>
+        protected override void OnLogicalParentChanged()
+        {
+            EnsureIsInitialized();
+
+            base.OnLogicalParentChanged();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnVisualParentChanged(Visual oldParent, Visual newParent)
+        {
+            EnsureIsInitialized();
+
+            base.OnVisualParentChanged(oldParent, newParent);
         }
 
         /// <inheritdoc/>

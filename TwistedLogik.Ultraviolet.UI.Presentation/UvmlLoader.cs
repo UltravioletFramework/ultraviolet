@@ -74,7 +74,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var rootAdornerDecorator = new AdornerDecorator(uv, null);
             root.Child = rootAdornerDecorator;
-            rootAdornerDecorator.BeginInit();
 
             var rootGrid = (Grid)InstantiateElement(uv, null, xml, context, "Grid");
             rootAdornerDecorator.Child = rootGrid;
@@ -230,18 +229,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var frameworkElement = instance as FrameworkElement;
             if (frameworkElement != null)
-                frameworkElement.TemplatedParent = context.TemplatedParent;
-
-            foreach (var className in classList)
             {
-                instance.Classes.Add(className);
+                frameworkElement.BeginInit();
+                frameworkElement.TemplatedParent = context.TemplatedParent;
             }
 
-            PopulateParentDefaultPropertyWithChildIfApplicable(uv, parent, instance, context);
+            foreach (var className in classList)
+                instance.Classes.Add(className);
 
-            var fe = instance as FrameworkElement;
-            if (fe != null)
-                fe.BeginInit();
+            PopulateParentDefaultPropertyWithChildIfApplicable(uv, parent, instance, context);
 
             instance.DeclarativeDataSource = context.DeclarativeDataSource;
 
