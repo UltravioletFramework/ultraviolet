@@ -572,8 +572,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             LoadViewResources(combinedStyleSheet);
 
-            layoutRoot.InvalidateStyle(true);
-            layoutRoot.Style(combinedStyleSheet);
+            if (Panel.State != UIPanelState.Closed)
+            {
+                layoutRoot.InvalidateStyle(true);
+                layoutRoot.Style(combinedStyleSheet);
+            }
         }
 
         /// <summary>
@@ -876,6 +879,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected override void OnOpening()
         {
             EnsureIsLoaded();
+
+            layoutRoot.InvalidateStyle(true);
+            layoutRoot.Style(combinedStyleSheet);
 
             ImmediatelyDigestVisualTree(layoutRoot);
 
