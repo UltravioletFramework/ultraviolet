@@ -50,8 +50,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="modal">The modal dialog box to open.</param>
         /// <param name="duration">The amount of time over which to transition the modal dialog 
         /// box's state, or <c>null</c> to use the default transition time.</param>
-        /// <returns>A <see cref="Task"/> that completes when the modal dialog box is closed.</returns>
-        public static Task<Boolean?> ShowDialogAsync(Modal modal, TimeSpan? duration = null)
+        /// <returns>A <see cref="ModalTask{T}"/> that completes when the modal dialog box is closed.</returns>
+        public static ModalTask<Boolean?> ShowDialogAsync(Modal modal, TimeSpan? duration = null)
         {
             return ShowDialogAsync(null, modal, duration);
         }
@@ -64,8 +64,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="modal">The modal dialog box to open.</param>
         /// <param name="duration">The amount of time over which to transition the modal dialog 
         /// box's state, or <c>null</c> to use the default transition time.</param>
-        /// <returns>A <see cref="Task"/> that completes when the modal dialog box is closed.</returns>
-        public static Task<Boolean?> ShowDialogAsync(IUltravioletWindow window, Modal modal, TimeSpan? duration = null)
+        /// <returns>A <see cref="ModalTask{T}"/> that completes when the modal dialog box is closed.</returns>
+        public static ModalTask<Boolean?> ShowDialogAsync(IUltravioletWindow window, Modal modal, TimeSpan? duration = null)
         {
             Contract.Require(modal, "modal");
 
@@ -230,11 +230,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="window">The window in which to show the modal.</param>
         /// <param name="duration">The amount of time over which to transition the screen's state, or <c>null</c> to use the default transition time.</param>
         /// <returns>A <see cref="Task"/> which completes when the modal is closed.</returns>
-        private Task<Boolean?> ShowAsync(IUltravioletWindow window, TimeSpan? duration = null)
+        private ModalTask<Boolean?> ShowAsync(IUltravioletWindow window, TimeSpan? duration = null)
         {
             var screen = Screen;
             if (screen == null)
-                return new Task<Boolean?>(() => true);
+                return new ModalTask<Boolean?>(new Task<Boolean?>(() => true));
 
             var wasOpen = open;
 
@@ -244,12 +244,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.taskCompletionSource = new TaskCompletionSource<Boolean?>();
 
             if (wasOpen)
-                return this.taskCompletionSource.Task;
+                return new ModalTask<Boolean?>(this.taskCompletionSource.Task);
 
             OnOpening();
             Open(window, screen, duration);
 
-            return this.taskCompletionSource.Task;
+            return new ModalTask<Boolean?>(this.taskCompletionSource.Task);
         }
 
         /// <summary>

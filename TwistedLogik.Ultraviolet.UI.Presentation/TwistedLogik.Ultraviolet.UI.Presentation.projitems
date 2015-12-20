@@ -240,6 +240,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)MessageBoxScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageBoxViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ModalTask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ModalTaskOfT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Namescope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OutOfBandRenderer.cs" />
