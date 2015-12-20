@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
@@ -47,18 +48,18 @@ namespace UvDebugSandbox.UI.Controls
             get
             {
                 var vertexColor = VertexColor;
-                for (int i = 0; i < AvailableColors.Length; i++)
+                for (int i = 0; i < AvailableColors.Count; i++)
                 {
-                    if (vertexColor.Equals(AvailableColors[i]))
+                    if (vertexColor.Equals(AvailableColors[i].Color))
                         return i;
                 }
                 return -1;
             }
             set
             {
-                if (value >= 0 && value < AvailableColors.Length)
+                if (value >= 0 && value < AvailableColors.Count)
                 {
-                    VertexColor = AvailableColors[value];
+                    VertexColor = AvailableColors[value].Color;
                 }
                 else
                 {
@@ -73,7 +74,14 @@ namespace UvDebugSandbox.UI.Controls
         public static readonly DependencyProperty VertexColorProperty = DependencyProperty.Register("VertexColor", typeof(Color), typeof(TriangleColorSelector),
             new PropertyMetadata<Color>(Color.Red, PropertyMetadataOptions.None));
 
-        // State values.
-        private static readonly Color[] AvailableColors = new[] { Color.Red, Color.Lime, Color.Blue };
+        /// <summary>
+        /// The set of colors which is available for selection.
+        /// </summary>
+        public static readonly ReadOnlyCollection<AvailableVertexColor> AvailableColors = new ReadOnlyCollection<AvailableVertexColor>(new[] 
+        {
+            new AvailableVertexColor("Red", Color.Red),
+            new AvailableVertexColor("Green", Color.Lime),
+            new AvailableVertexColor("Blue", Color.Blue)
+        });
     }
 }

@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Game.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\GameInputActions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\IUltravioletInputExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\AvailableVertexColor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TriangleColorSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TriangleDisplay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Dialogs\EscMenuDialog.cs" />
