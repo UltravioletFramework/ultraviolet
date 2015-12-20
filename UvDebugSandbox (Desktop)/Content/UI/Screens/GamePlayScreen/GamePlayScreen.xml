@@ -5,12 +5,16 @@
     <Grid Name="container" Focusable="true" KeyDown="HandleKeyDown" View.Opened="HandleViewOpened">
       <Image Name="container-background"/>
 
-      <CheckBox Name="spin" IsChecked="{{IsTriangleSpinning}}">Spin</CheckBox>
+      <CheckBox Name="spin" IsChecked="{{IsTriangleSpinning}}"
+                ToolTipService.ToolTip="When checked, the displayed triangle will automatically rotate.">Spin</CheckBox>
 
       <StackPanel Name="vertex-colors-panel">
-        <TriangleColorSelector Name="v1Color" VertexColor="#ffff0000">V1:</TriangleColorSelector>
-        <TriangleColorSelector Name="v2Color" VertexColor="#ff00ff00">V2:</TriangleColorSelector>
-        <TriangleColorSelector Name="v3Color" VertexColor="#ff0000ff">V3:</TriangleColorSelector>
+        <TriangleColorSelector Name="v1Color" VertexColor="#ffff0000" 
+                               ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|first|b| vertex.">V1:</TriangleColorSelector>
+        <TriangleColorSelector Name="v2Color" VertexColor="#ff00ff00"
+                               ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|second|b| vertex.">V2:</TriangleColorSelector>
+        <TriangleColorSelector Name="v3Color" VertexColor="#ff0000ff"
+                               ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|third|b| vertex.">V3:</TriangleColorSelector>
       </StackPanel>
 
       <DockPanel Name="controls-panel" LastChildFill="true">
