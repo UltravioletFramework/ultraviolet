@@ -104,9 +104,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            if (Name == "bar")
-                Console.WriteLine();
-
             UpdateTextLayoutResult(availableSize);
 
             var sizePixels = new Size2D(textLayoutCommands.ActualWidth, textLayoutCommands.ActualHeight);
