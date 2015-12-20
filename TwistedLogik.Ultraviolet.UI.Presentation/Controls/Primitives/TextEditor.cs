@@ -1455,6 +1455,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
 
             var owner = TemplatedParent as Control;
+            if (owner == null || !owner.Font.IsLoaded)
+                return;
 
             var textFlags = TextFlags.AlignTop;
             var textWrapping = (owner == null) ? TextWrapping.NoWrap : owner.GetValue<TextWrapping>(TextBox.TextWrappingProperty);

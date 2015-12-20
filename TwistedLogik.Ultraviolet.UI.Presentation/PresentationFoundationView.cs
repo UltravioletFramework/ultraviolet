@@ -572,7 +572,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             LoadViewResources(combinedStyleSheet);
 
-            if (Panel.State != UIPanelState.Closed)
+            if (viewIsOpen)
             {
                 layoutRoot.InvalidateStyle(true);
                 layoutRoot.Style(combinedStyleSheet);
@@ -878,10 +878,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected override void OnOpening()
         {
+            viewIsOpen = true;
+
             EnsureIsLoaded();
 
             layoutRoot.InvalidateStyle(true);
             layoutRoot.Style(combinedStyleSheet);
+            UpdateLayout();
 
             ImmediatelyDigestVisualTree(layoutRoot);
 
@@ -919,8 +922,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             RaiseViewLifecycleEvent(layoutRoot, View.ClosedEvent);
 
             Cleanup();
-
             layoutRoot.Cleanup();
+
+            viewIsOpen = false;
         }
 
         /// <inheritdoc/>
@@ -969,11 +973,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected override void OnViewSizeChanged()
         {
-            var dipsArea = Display.PixelsToDips(Area);
-
-            layoutRoot.Measure(dipsArea.Size);
-            layoutRoot.Arrange(dipsArea);
-
+            UpdateLayout();
             base.OnViewSizeChanged();
         }
 
@@ -1101,6 +1101,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 this.combinedStyleSheet.Append(this.localStyleSheet);
             }
+        }
+
+        /// <summary>
+        /// Performs a measure and arrange on the layout root.
+        /// </summary>
+        private void UpdateLayout()
+        {
+            if (!viewIsOpen)
+                return;
+
+            var dipsArea = Display.PixelsToDips(Area);
+            layoutRoot.Measure(dipsArea.Size);
+            layoutRoot.Arrange(dipsArea);
         }
 
         /// <summary>
@@ -2563,6 +2576,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private IInputElement elementWithFocus;
         private IInputElement elementLastTouched;
         private CaptureMode mouseCaptureMode;
+        private Boolean viewIsOpen;
         private Boolean hookedGlobalStyleSheetChanged;
         private Boolean hookedFirstPlayerGamePad;
         private Boolean wasInputPossibleLastFrame;
