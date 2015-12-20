@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="qualifier">The qualifier value for this selector part, if it has one.</param>
         /// <param name="element">The name of the element type that matches this selector part.</param>
-        /// <param name="elementIsxact">A value indicating whether the element type that matches this 
+        /// <param name="elementIsExact">A value indicating whether the element type that matches this 
         /// selector part must be an exact match.</param>
         /// <param name="id">The identifier of the element that matches this selector part.</param>
         /// <param name="pseudoClass">The selector part's pseudo-class, if any.</param>

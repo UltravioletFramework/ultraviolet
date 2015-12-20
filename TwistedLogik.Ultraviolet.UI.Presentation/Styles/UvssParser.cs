@@ -201,26 +201,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Determines whether the specified string is a selector for an element.
         /// </summary>
         /// <param name="s">The string to evaluate.</param>
+        /// <param name="typename">The name of the element type which is matched by the selector.</param>
+        /// <param name="exact">A value indicating whether the selector requires an exact match.</param>
         /// <returns><c>true</c> if the specified string is a selector for an element; otherwise, false.</returns>
-        private static Boolean IsSelectorForElement(String s, out String element, out Boolean specific)
+        private static Boolean IsSelectorForElement(String s, out String typename, out Boolean exact)
         {
             if (!IsSelectorForID(s) && !IsSelectorForClass(s))
             {
                 if (s.EndsWith("!"))
                 {
-                    element = s.Substring(0, s.Length - 1);
-                    specific = true;
+                    typename = s.Substring(0, s.Length - 1);
+                    exact = true;
                 }
                 else
                 {
-                    element = s;
-                    specific = false;
+                    typename = s;
+                    exact = false;
                 }
                 return true;
             }
 
-            element = null;
-            specific = false;
+            typename = null;
+            exact = false;
 
             return false;
         }
