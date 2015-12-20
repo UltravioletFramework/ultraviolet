@@ -3,13 +3,13 @@
 namespace TwistedLogik.Nucleus.Collections
 {
     /// <summary>
-    /// Represents the method that is called when the <see cref="INotifyCollectionChanged{T}.CollectionReset"/> event is raised.
+    /// Represents the method that is called when the <see cref="INotifyCollectionChanged.CollectionReset"/> event is raised.
     /// </summary>
     /// <param name="collection">The collection that was changed.</param>
     public delegate void CollectionResetEventHandler(INotifyCollectionChanged collection);
 
     /// <summary>
-    /// Represents the method that is called when the <see cref="INotifyCollectionChanged{T}.CollectionItemAdded"/> event is raised.
+    /// Represents the method that is called when the <see cref="INotifyCollectionChanged.CollectionItemAdded"/> event is raised.
     /// </summary>
     /// <param name="collection">The collection that was changed.</param>
     /// <param name="item">The item that was added to the collection.</param>
@@ -17,7 +17,7 @@ namespace TwistedLogik.Nucleus.Collections
     public delegate void CollectionItemAddedEventHandler(INotifyCollectionChanged collection, Int32? index, Object item);
 
     /// <summary>
-    /// Represents the method that is called when the <see cref="INotifyCollectionChanged{T}.CollectionItemRemoved"/> event is raised.
+    /// Represents the method that is called when the <see cref="INotifyCollectionChanged.CollectionItemRemoved"/> event is raised.
     /// </summary>
     /// <param name="collection">The collection that was changed.</param>
     /// <param name="item">The item that was removed from the collection.</param>

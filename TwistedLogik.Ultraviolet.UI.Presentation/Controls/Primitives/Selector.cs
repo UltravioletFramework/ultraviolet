@@ -193,6 +193,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public static readonly RoutedEvent UnselectedEvent = EventManager.RegisterRoutedEvent("Unselected", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Selector));
         
+        /// <inheritdoc/>
         protected override void OnItemsReset()
         {
             BeginChangeSelection();
