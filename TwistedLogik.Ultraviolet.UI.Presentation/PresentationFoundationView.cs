@@ -880,8 +880,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             viewIsOpen = true;
 
-            EnsureIsLoaded();
-
             layoutRoot.InvalidateStyle(true);
             layoutRoot.Style(combinedStyleSheet);
             UpdateLayout();
@@ -900,6 +898,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     BlurElement(elementWithFocus);
                 }
             }
+
+            EnsureIsLoaded();
 
             RaiseViewLifecycleEvent(layoutRoot, View.OpeningEvent);
         }
@@ -1110,10 +1110,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (!viewIsOpen)
                 return;
-
+            
             var dipsArea = Display.PixelsToDips(Area);
             layoutRoot.Measure(dipsArea.Size);
             layoutRoot.Arrange(dipsArea);
+
+            PresentationFoundation.Instance.PerformLayout();
         }
 
         /// <summary>
