@@ -33,11 +33,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (uv.IsRunningInServiceMode)
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
-            
+
             this.combinedStyleSheet = new UvssDocument(null, null);
 
-            this.namescope      = new Namescope();
-            this.resources      = new PresentationFoundationViewResources(this);
+            this.namescope = new Namescope();
+            this.resources = new PresentationFoundationViewResources(this);
             this.drawingContext = new DrawingContext();
 
             this.layoutRoot = new PresentationFoundationViewRoot(uv, null);
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.layoutRoot.View = this;
             this.layoutRoot.CacheLayoutParameters();
             this.layoutRoot.InvalidateMeasure();
-            
+
             HookKeyboardEvents();
             HookMouseEvents();
             HookTouchEvents();
@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var view = UvmlLoader.Load(uv, uiPanel, uiPanelDefinition);
 
-            var uvss    = String.Join(Environment.NewLine, uiPanelDefinition.StyleSheets);
+            var uvss = String.Join(Environment.NewLine, uiPanelDefinition.StyleSheets);
             var uvssdoc = UvssDocument.Parse(uvss);
 
             view.SetStyleSheet(uvssdoc);
@@ -87,11 +87,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 view.viewModelWrapperName = GetDataSourceWrapperNameForView(uiPanelDefinition.AssetFilePath);
             }
-            
+
 
             return view;
         }
-        
+
         /// <summary>
         /// Gets the name of the data source wrapper for a view which is defined in a file with the specified asset path.
         /// </summary>
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return String.Format("{0}_VM_Impl", String.Join("_", pathComponents));
         }
-        
+
         /// <summary>
         /// Gets the name of the data source wrapper for a component template which is associated with the specified control type.
         /// </summary>
@@ -134,16 +134,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions"; }
         }
-        
+
         /// <inheritdoc/>
         public override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
             Contract.Require(time, "time");
             Contract.Require(spriteBatch, "spriteBatch");
-            
+
             if (Ultraviolet.IsRunningInServiceMode)
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
-            
+
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.BeginDraw();
 
@@ -152,7 +152,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (Window == null)
                 return;
 
-            EnsureIsLoaded();            
+            EnsureIsLoaded();
 
             var previousSpriteBatchState = spriteBatch.GetCurrentState();
             spriteBatch.End();
@@ -161,7 +161,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             drawingContext.SpriteBatch = spriteBatch;
             drawingContext.Begin();
-            
+
             layoutRoot.Draw(time, drawingContext);
             popupQueue.Draw(time, drawingContext);
 
@@ -180,7 +180,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             upf.PerformanceStats.EndDraw();
         }
-        
+
         /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
@@ -197,7 +197,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             upf.PerformanceStats.EndUpdate();
         }
-        
+
         /// <inheritdoc/>
         public override void SetViewModel(Object viewModel)
         {
@@ -310,7 +310,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (data.Handled)
                     elementWithFocusAgreesToChange = false;
             }
-            
+
             var elementAgreesToChange = true;
             if (element != null)
             {
@@ -328,7 +328,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 BlurElement(elementWithFocus);
             }
-            
+
             elementWithFocus = element;
 
             if (elementWithFocus != null)
@@ -339,7 +339,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     FocusManager.SetFocusedElement(focusScope, elementWithFocus);
                 }
             }
-            
+
             SetIsKeyboardFocusWithin(elementWithFocus, true);
 
             var dobj = elementWithFocus as DependencyObject;
@@ -395,8 +395,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var elementHadMouseCapture = elementWithMouseCapture;
-            elementWithMouseCapture    = null;
-            mouseCaptureMode           = CaptureMode.None;
+            elementWithMouseCapture = null;
+            mouseCaptureMode = CaptureMode.None;
 
             var uiElement = elementHadMouseCapture as UIElement;
             if (uiElement != null)
@@ -427,7 +427,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (element == null || mode == CaptureMode.None)
             {
                 element = null;
-                mode    = CaptureMode.None;
+                mode = CaptureMode.None;
             }
 
             if (elementWithMouseCapture == element)
@@ -442,7 +442,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             elementWithMouseCapture = element;
-            mouseCaptureMode        = mode;
+            mouseCaptureMode = mode;
 
             var uiElement = elementWithMouseCapture as UIElement;
             if (uiElement != null)
@@ -752,7 +752,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return elementWithMouseCapture; }
         }
-        
+
         /// <summary>
         /// Gets the root element of the view's layout.
         /// </summary>
@@ -878,7 +878,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EnsureIsLoaded();
 
             ImmediatelyDigestVisualTree(layoutRoot);
-            
+
             var defaultButton = GetFirstDefaultButton();
             if (defaultButton != null)
             {
@@ -911,6 +911,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected override void OnClosed()
         {
             RaiseViewLifecycleEvent(layoutRoot, View.ClosedEvent);
+
+            Cleanup();
 
             layoutRoot.Cleanup();
         }
@@ -949,7 +951,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         /// <inheritdoc/>
         protected override void OnViewModelChanged()
-        {            
+        {
             layoutRoot.CacheLayoutParameters();
 
             if (ViewModel != null)
@@ -978,12 +980,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (Diagnostics.GetDrawVisualBounds(element))
             {
-                var display  = element.View.Display;
-                var bounds   = element.TransformedVisualBounds;
+                var display = element.View.Display;
+                var bounds = element.TransformedVisualBounds;
                 var position = (Vector2)(Point2)display.DipsToPixels(bounds.Location);
-                var width    = (Int32)display.DipsToPixels(bounds.Width);
-                var height   = (Int32)display.DipsToPixels(bounds.Height);
-                var color    = Diagnostics.GetDrawVisualBoundsColor(element);
+                var width = (Int32)display.DipsToPixels(bounds.Width);
+                var height = (Int32)display.DipsToPixels(bounds.Height);
+                var color = Diagnostics.GetDrawVisualBoundsColor(element);
                 drawingContext.DrawImage(Diagnostics.BoundingBoxImage, position, width, height, color);
             }
 
@@ -1130,10 +1132,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var input = Ultraviolet.GetInput();
             if (input.IsKeyboardSupported())
             {
-                var keyboard          = input.GetKeyboard();
-                keyboard.KeyPressed  += keyboard_KeyPressed;
+                var keyboard = input.GetKeyboard();
+                keyboard.KeyPressed += keyboard_KeyPressed;
                 keyboard.KeyReleased += keyboard_KeyReleased;
-                keyboard.TextInput   += keyboard_TextInput;
+                keyboard.TextInput += keyboard_TextInput;
                 keyboard.TextEditing += keyboard_TextEditing;
             }
         }
@@ -1146,13 +1148,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var input = Ultraviolet.GetInput();
             if (input.IsMouseSupported())
             {
-                var mouse             = input.GetMouse();
-                mouse.Moved          += mouse_Moved;
-                mouse.ButtonPressed  += mouse_ButtonPressed;
+                var mouse = input.GetMouse();
+                mouse.Moved += mouse_Moved;
+                mouse.ButtonPressed += mouse_ButtonPressed;
                 mouse.ButtonReleased += mouse_ButtonReleased;
-                mouse.Click          += mouse_Click;
-                mouse.DoubleClick    += mouse_DoubleClick;
-                mouse.WheelScrolled  += mouse_WheelScrolled;
+                mouse.Click += mouse_Click;
+                mouse.DoubleClick += mouse_DoubleClick;
+                mouse.WheelScrolled += mouse_WheelScrolled;
             }
         }
 
@@ -1164,10 +1166,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var input = Ultraviolet.GetInput();
             if (input.IsTouchSupported())
             {
-                var touch           = input.GetTouchDevice();
-                touch.Tap          += touch_Tap;
-                touch.FingerUp     += touch_FingerUp;
-                touch.FingerDown   += touch_FingerDown;
+                var touch = input.GetTouchDevice();
+                touch.Tap += touch_Tap;
+                touch.FingerUp += touch_FingerUp;
+                touch.FingerDown += touch_FingerDown;
                 touch.FingerMotion += touch_FingerMotion;
             }
         }
@@ -1226,10 +1228,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var input = Ultraviolet.GetInput();
             if (input.IsKeyboardSupported())
             {
-                var keyboard          = input.GetKeyboard();
-                keyboard.KeyPressed  -= keyboard_KeyPressed;
+                var keyboard = input.GetKeyboard();
+                keyboard.KeyPressed -= keyboard_KeyPressed;
                 keyboard.KeyReleased -= keyboard_KeyReleased;
-                keyboard.TextInput   -= keyboard_TextInput;
+                keyboard.TextInput -= keyboard_TextInput;
                 keyboard.TextEditing -= keyboard_TextEditing;
             }
         }
@@ -1242,13 +1244,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var input = Ultraviolet.GetInput();
             if (input.IsMouseSupported())
             {
-                var mouse             = input.GetMouse();
-                mouse.Moved          -= mouse_Moved;
-                mouse.ButtonPressed  -= mouse_ButtonPressed;
+                var mouse = input.GetMouse();
+                mouse.Moved -= mouse_Moved;
+                mouse.ButtonPressed -= mouse_ButtonPressed;
                 mouse.ButtonReleased -= mouse_ButtonReleased;
-                mouse.Click          -= mouse_Click;
-                mouse.DoubleClick    -= mouse_DoubleClick;
-                mouse.WheelScrolled  -= mouse_WheelScrolled;
+                mouse.Click -= mouse_Click;
+                mouse.DoubleClick -= mouse_DoubleClick;
+                mouse.WheelScrolled -= mouse_WheelScrolled;
             }
         }
 
@@ -1260,10 +1262,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var input = Ultraviolet.GetInput();
             if (input.IsTouchSupported())
             {
-                var touch           = input.GetTouchDevice();
-                touch.Tap          -= touch_Tap;
-                touch.FingerUp     -= touch_FingerUp;
-                touch.FingerDown   -= touch_FingerDown;
+                var touch = input.GetTouchDevice();
+                touch.Tap -= touch_Tap;
+                touch.FingerUp -= touch_FingerUp;
+                touch.FingerDown -= touch_FingerDown;
                 touch.FingerMotion -= touch_FingerMotion;
             }
         }
@@ -1388,7 +1390,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (uiElement != null)
                 {
                     var oldValue = uiElement.IsMouseOver;
-                    var newValue = isMouseOverSet.Contains(uiElement);
+                    var newValue = isMouseOverSet.Contains(uiElement) && !unset;
                     if (oldValue != newValue)
                     {
                         uiElement.IsMouseOver = newValue;
@@ -1449,16 +1451,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var mouse = Ultraviolet.GetInput().GetMouse();
 
             // Determine which element is currently under the mouse cursor.
-            var mousePos  = Display.PixelsToDips(mouse.Position);
+            var mousePos = Display.PixelsToDips(mouse.Position);
             var mouseView = mouse.Window == Window ? this : null;
 
             elementUnderMousePopupPrev = elementUnderMousePopup;
-            elementUnderMousePrev      = elementUnderMouse;
-            elementUnderMouse          = (mouseView == null) ? null : mouseView.HitTestInternal((Point2)mousePos, out elementUnderMousePopup) as UIElement;
-            elementUnderMouse          = RedirectMouseInput(elementUnderMouse);
+            elementUnderMousePrev = elementUnderMouse;
+            elementUnderMouse = (mouseView == null) ? null : mouseView.HitTestInternal((Point2)mousePos, out elementUnderMousePopup) as UIElement;
+            elementUnderMouse = RedirectMouseInput(elementUnderMouse);
 
             elementUnderMouseBeforeValidityCheckPrev = elementUnderMouseBeforeValidityCheck;
-            elementUnderMouseBeforeValidityCheck     = elementUnderMouse;
+            elementUnderMouseBeforeValidityCheck = elementUnderMouse;
 
             if (!IsElementValidForInput(elementUnderMouse))
                 elementUnderMouse = null;
@@ -1519,7 +1521,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!layoutRoot.ToolTipPopup.IsOpen)
                 timeSinceToolTipWasClosed += time.ElapsedTime.TotalMilliseconds;
         }
-        
+
         /// <summary>
         /// Updates the state of the view's tooltip while the tooltip popup is closed.
         /// </summary>
@@ -1619,7 +1621,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (cancelButtons[i].IsAlive)
                     continue;
-                
+
                 WeakReferencePool.Instance.Release(cancelButtons[i]);
                 cancelButtons.RemoveAt(i--);
             }
@@ -1639,7 +1641,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 button.UpdateIsDefaulted();
             }
         }
-        
+
         /// <summary>
         /// Activates the next default or cancel button from the specified list of buttons.
         /// </summary>
@@ -1672,6 +1674,55 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 ((PresentationFoundationView)state).ImmediatelyDigestVisualTree(child);
             });
+        }
+
+        /// <summary>
+        /// Performs view cleanup after the view is closed.
+        /// </summary>
+        private void Cleanup()
+        {
+            CleanupMouse();
+            CleanupToolTip();
+        }
+
+        /// <summary>
+        /// Cleans up mouse-related state.
+        /// </summary>
+        private void CleanupMouse()
+        {
+            var uiElementUnderMouse = elementUnderMouse as UIElement;
+            if (uiElementUnderMouse != null)
+                UpdateIsMouseOver(uiElementUnderMouse, true);
+
+            elementUnderMousePrev = null;
+            elementUnderMouse = null;
+            elementUnderMouseBeforeValidityCheckPrev = null;
+            elementUnderMouseBeforeValidityCheck = null;
+            elementWithMouseCapture = null;
+            elementWithFocus = null;
+            elementLastTouched = null;
+
+            mouseCaptureMode = CaptureMode.None;
+            wasInputPossibleLastFrame = false;
+            focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+        }
+
+        /// <summary>
+        /// Cleans up tool-tip-related state
+        /// </summary>
+        private void CleanupToolTip()
+        {
+            CloseToolTip();
+
+            toolTipElementDisplayed = null;
+            toolTipElementPrev = null;
+            toolTipElement = null;
+
+            timeUntilToolTipWillOpen = 0;
+            timeSinceToolTipWasOpened = 0;
+            timeSinceToolTipWasOpened = 0;
+
+            toolTipWasShownForCurrentElement = false;
         }
 
         /// <summary>
