@@ -37,7 +37,7 @@ Button, RepeatButton, ToggleButton!
 	{
 		play-sfx { #Global:SoundEffects:Rollover3 }
 	}
-	trigger event click (set-handled)
+	trigger event click-by-user (set-handled)
 	{
 		play-sfx { #Global:SoundEffects:Click1 }
 	}

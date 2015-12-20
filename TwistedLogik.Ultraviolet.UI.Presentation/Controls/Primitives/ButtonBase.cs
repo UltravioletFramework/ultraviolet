@@ -58,6 +58,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Occurs when the button is clicked as a result of user interaction.
+        /// </summary>
+        public event UpfRoutedEventHandler ClickByUser
+        {
+            add { AddHandler(ClickByUserEvent, value); }
+            remove { RemoveHandler(ClickByUserEvent, value); }
+        }
+
+        /// <summary>
         /// The private access key for the <see cref="IsPressed"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsPressedPropertyKey = DependencyProperty.RegisterReadOnly("IsPressed", typeof(Boolean), typeof(ButtonBase),
@@ -81,6 +90,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <remarks>The styling name of this routed event is 'click'.</remarks>
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent("Click", RoutingStrategy.Bubble, 
+            typeof(UpfRoutedEventHandler), typeof(ButtonBase));
+
+        /// <summary>
+        /// Identifies the <see cref="ClickByUser"/> routed event/
+        /// </summary>
+        /// <remarks>The styling name of this routed event is click-by-user.</remarks>
+        public static readonly RoutedEvent ClickByUserEvent = EventManager.RegisterRoutedEvent("ClickByUser", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(ButtonBase));
 
         /// <inheritdoc/>
@@ -159,6 +175,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (ClickMode == ClickMode.Hover)
             {
                 OnClick();
+                OnClickByUser();
             }
             base.OnMouseEnter(device, ref data);
         }
@@ -212,8 +229,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnClick()
         {
-            var evtData     = new RoutedEventData(this);
+            var evtData = new RoutedEventData(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(ClickEvent);
+            evtDelegate(this, ref evtData);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="ClickByUser"/> event.
+        /// </summary>
+        protected virtual void OnClickByUser()
+        {
+            var evtData = new RoutedEventData(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(ClickByUserEvent);
             evtDelegate(this, ref evtData);
         }
 
@@ -248,6 +275,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (ClickMode == ClickMode.Press)
             {
                 OnClick();
+                OnClickByUser();
             }
         }
 
@@ -271,11 +299,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     if (Bounds.Contains(position))
                     {
                         OnClick();
+                        OnClickByUser();
                     }
                 }
                 else
                 {
                     OnClick();
+                    OnClickByUser();
                 }
             }
         }

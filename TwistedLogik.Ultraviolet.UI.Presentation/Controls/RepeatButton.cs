@@ -119,6 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 {
                     repeatTimer %= interval;
                     OnClick();
+                    OnClickByUser();
                 }
             }
             else
@@ -129,6 +130,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     repeatTimer %= delay;
                     repeating = true;
                     OnClick();
+                    OnClickByUser();
                 }
             }
         }
