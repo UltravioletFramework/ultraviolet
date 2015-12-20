@@ -7,15 +7,15 @@ namespace TwistedLogik.Nucleus.Collections
     /// <summary>
     /// Represents a list which raises events when items are added or removed.
     /// </summary>
-    /// <typeparam name="T">The type of item contained by the list.</typeparam>
-    public class ObservableList<T> : IList<T>, INotifyCollectionChanged<T>
+    /// <typeparam name="TValue">The type of item contained by the list.</typeparam>
+    public class ObservableList<TValue> : IList<TValue>, INotifyCollectionChanged<Int32, TValue>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservableList{T}"/> class.
         /// </summary>
         public ObservableList()
         {
-            this.list = new List<T>();
+            this.list = new List<TValue>();
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="capacity">The initial capacity of the list.</param>
         public ObservableList(Int32 capacity)
         {
-            this.list = new List<T>(capacity);
+            this.list = new List<TValue>(capacity);
         }
 
         /// <summary>
@@ -32,9 +32,9 @@ namespace TwistedLogik.Nucleus.Collections
         /// contained by the specified collection.
         /// </summary>
         /// <param name="collection">The collection that contains the elements to copy to this collection.</param>
-        public ObservableList(IEnumerable<T> collection)
+        public ObservableList(IEnumerable<TValue> collection)
         {
-            this.list = new List<T>(collection);
+            this.list = new List<TValue>(collection);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="item">The item to search for within the list.</param>
         /// <returns>The index of the item within the list, or -1 if the list does not contain the item.</returns>
-        public Int32 IndexOf(T item)
+        public Int32 IndexOf(TValue item)
         {
             return list.IndexOf(item);
         }
@@ -80,7 +80,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Sorts the list using the specified comparison.
         /// </summary>
         /// <param name="comparison">The <see cref="Comparison{T}"/> to use to sort the list.</param>
-        public void Sort(Comparison<T> comparison)
+        public void Sort(Comparison<TValue> comparison)
         {
             list.Sort(comparison);
             OnCollectionReset();
@@ -90,7 +90,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Sorts the list using the specified comparer.
         /// </summary>
         /// <param name="comparer">The <see cref="IComparer{T}"/> to use to sort the list.</param>
-        public void Sort(IComparer<T> comparer)
+        public void Sort(IComparer<TValue> comparer)
         {
             list.Sort(comparer);
             OnCollectionReset();
@@ -101,20 +101,20 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="index">The index at which to insert the item.</param>
         /// <param name="item">The item to insert into the list.</param>
-        public void Insert(Int32 index, T item)
+        public void Insert(Int32 index, TValue item)
         {
             list.Insert(index, item);
-            OnCollectionItemAdded(item);
+            OnCollectionItemAdded(index, item);
         }
 
         /// <summary>
         /// Adds an item to the end of the list.
         /// </summary>
         /// <param name="item">The item to add to the end of the list.</param>
-        public void Add(T item)
+        public void Add(TValue item)
         {
             list.Add(item);
-            OnCollectionItemAdded(item);
+            OnCollectionItemAdded(list.Count - 1, item);
         }
 
         /// <summary>
@@ -122,11 +122,13 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="item">The item to remove from the list.</param>
         /// <returns><c>true</c> if the specified item was removed from the list; otherwise, <c>false</c>.</returns>
-        public Boolean Remove(T item)
+        public Boolean Remove(TValue item)
         {
-            if (list.Remove(item))
+            var index = list.IndexOf(item);
+            if (index >= 0)
             {
-                OnCollectionItemRemoved(item);
+                list.RemoveAt(index);
+                OnCollectionItemRemoved(index, item);
                 return true;
             }
             return false;
@@ -141,7 +143,7 @@ namespace TwistedLogik.Nucleus.Collections
             var item = list[index];
             list.RemoveAt(index);
 
-            OnCollectionItemRemoved(item);
+            OnCollectionItemRemoved(index, item);
         }
 
         /// <summary>
@@ -158,7 +160,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="item">The item to evaluate.</param>
         /// <returns><c>true</c> if the list contains the specified item; otherwise, <c>false</c>.</returns>
-        public Boolean Contains(T item)
+        public Boolean Contains(TValue item)
         {
             return list.Contains(item);
         }
@@ -167,7 +169,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Copies the entire list to the specified array.
         /// </summary>
         /// <param name="array">The array into which to copy the list's elements.</param>
-        public void CopyTo(T[] array)
+        public void CopyTo(TValue[] array)
         {
             list.CopyTo(array);
         }
@@ -177,7 +179,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="array">The array into which to copy the list's elements.</param>
         /// <param name="arrayIndex">The index within the array at which to begin copying elements.</param>
-        public void CopyTo(T[] array, Int32 arrayIndex)
+        public void CopyTo(TValue[] array, Int32 arrayIndex)
         {
             list.CopyTo(array, arrayIndex);
         }
@@ -189,7 +191,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="array">The array into which to copy the list's elements.</param>
         /// <param name="arrayIndex">The index within the array at which to begin copying elements.</param>
         /// <param name="count">The number of elements to copy.</param>
-        public void CopyTo(Int32 index, T[] array, Int32 arrayIndex, Int32 count)
+        public void CopyTo(Int32 index, TValue[] array, Int32 arrayIndex, Int32 count)
         {
             list.CopyTo(index, array, arrayIndex, count);
         }
@@ -198,7 +200,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets an enumerator for the collection.
         /// </summary>
         /// <returns>An enumerator for the collection.</returns>
-        public List<T>.Enumerator GetEnumerator()
+        public List<TValue>.Enumerator GetEnumerator()
         {
             return list.GetEnumerator();
         }
@@ -216,7 +218,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets an enumerator for the collection.
         /// </summary>
         /// <returns>An enumerator for the collection.</returns>
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
         {
             return GetEnumerator();
         }
@@ -226,17 +228,17 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="index">The index of the item to get or set.</param>
         /// <returns>The item at the specified index within the list.</returns>
-        public T this[Int32 index]
+        public TValue this[Int32 index]
         {
             get { return list[index]; }
             set 
             {
                 var existing = list[index];
-                OnCollectionItemRemoved(existing);
+                OnCollectionItemRemoved(index, existing);
 
                 list[index] = value;
 
-                OnCollectionItemAdded(value);
+                OnCollectionItemAdded(index, value);
             }
         }
 
@@ -299,13 +301,13 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <inheritdoc/>
-        public event CollectionResetEventHandler<T> CollectionReset;
+        public event CollectionResetEventHandler<Int32, TValue> CollectionReset;
 
         /// <inheritdoc/>
-        public event CollectionItemAddedEventHandler<T> CollectionItemAdded;
+        public event CollectionItemAddedEventHandler<Int32, TValue> CollectionItemAdded;
 
         /// <inheritdoc/>
-        public event CollectionItemRemovedEventHandler<T> CollectionItemRemoved;
+        public event CollectionItemRemovedEventHandler<Int32, TValue> CollectionItemRemoved;
 
         /// <summary>
         /// Raises the <see cref="CollectionReset"/> event.
@@ -331,13 +333,14 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Raises the <see cref="CollectionItemAdded"/> event.
         /// </summary>
-        /// <param name="item">The item that was added to the list.</param>
-        protected virtual void OnCollectionItemAdded(T item)
+        /// <param name="index">The index at which the item was added to the list.</param>
+        /// <param name="value">The item that was added to the list.</param>
+        protected virtual void OnCollectionItemAdded(Int32 index, TValue value)
         {
             var temp1 = CollectionItemAdded;
             if (temp1 != null)
             {
-                temp1(this, item);
+                temp1(this, index, value);
             }
 
             if (suppressUntypedNotifications)
@@ -346,20 +349,21 @@ namespace TwistedLogik.Nucleus.Collections
             var temp2 = untypedCollectionItemAdded;
             if (temp2 != null)
             {
-                temp2(this, item);
+                temp2(this, index, value);
             }
         }
 
         /// <summary>
         /// Raises the <see cref="CollectionItemRemoved"/> event.
         /// </summary>
-        /// <param name="item">The item that was added to the list.</param>
-        protected virtual void OnCollectionItemRemoved(T item)
+        /// <param name="index">The index at which the item was removed from the list.</param>
+        /// <param name="value">The item that was added to the list.</param>
+        protected virtual void OnCollectionItemRemoved(Int32 index, TValue value)
         {
             var temp1 = CollectionItemRemoved;
             if (temp1 != null)
             {
-                temp1(this, item);
+                temp1(this, index, value);
             }
 
             if (suppressUntypedNotifications)
@@ -368,12 +372,12 @@ namespace TwistedLogik.Nucleus.Collections
             var temp2 = untypedCollectionItemRemoved;
             if (temp2 != null)
             {
-                temp2(this, item);
+                temp2(this, index, value);
             }
         }
 
         // The wrapped list which contains our items.
-        private readonly List<T> list;
+        private readonly List<TValue> list;
 
         // Explicitly implemented events belonging to INotifyCollectionChanged.
         private readonly Object untypedEventSyncObject = new Object();

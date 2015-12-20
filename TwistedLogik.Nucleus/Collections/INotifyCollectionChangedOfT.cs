@@ -1,48 +1,51 @@
-﻿
+﻿using System;
+
 namespace TwistedLogik.Nucleus.Collections
 {
     /// <summary>
     /// Represents the method that is called when the <see cref="INotifyCollectionChanged{T}.CollectionReset"/> event is raised.
     /// </summary>
-    /// <typeparam name="T">The type of item contained by the collection.</typeparam>
+    /// <typeparam name="TValue">The type of item contained by the collection.</typeparam>
     /// <param name="collection">The collection that was changed.</param>
-    public delegate void CollectionResetEventHandler<in T>(INotifyCollectionChanged<T> collection);
+    public delegate void CollectionResetEventHandler<TKey, in TValue>(INotifyCollectionChanged<TKey, TValue> collection);
 
     /// <summary>
     /// Represents the method that is called when the <see cref="INotifyCollectionChanged{T}.CollectionItemAdded"/> event is raised.
     /// </summary>
-    /// <typeparam name="T">The type of item contained by the collection.</typeparam>
+    /// <typeparam name="TValue">The type of item contained by the collection.</typeparam>
     /// <param name="collection">The collection that was changed.</param>
     /// <param name="item">The item that was added to the collection.</param>
-    public delegate void CollectionItemAddedEventHandler<in T>(INotifyCollectionChanged<T> collection, T item);
+    /// <param name="key">The key or index of the item that was added to the collection.</param>
+    public delegate void CollectionItemAddedEventHandler<TKey, in TValue>(INotifyCollectionChanged<TKey, TValue> collection, TKey key, TValue item);
 
     /// <summary>
     /// Represents the method that is called when the <see cref="INotifyCollectionChanged{T}.CollectionItemRemoved"/> event is raised.
     /// </summary>
-    /// <typeparam name="T">The type of item contained by the collection.</typeparam>
+    /// <typeparam name="TValue">The type of item contained by the collection.</typeparam>
     /// <param name="collection">The collection that was changed.</param>
     /// <param name="item">The item that was removed from the collection.</param>
-    public delegate void CollectionItemRemovedEventHandler<in T>(INotifyCollectionChanged<T> collection, T item);
+    /// <param name="key">The key or index of the item that was removed from the collection.</param>
+    public delegate void CollectionItemRemovedEventHandler<TKey, in TValue>(INotifyCollectionChanged<TKey, TValue> collection, TKey key, TValue item);
 
     /// <summary>
     /// Represents a collection which raises events when its content changes.
     /// </summary>
-    /// <typeparam name="T">The type of item contained by the collection.</typeparam>
-    public interface INotifyCollectionChanged<out T> : INotifyCollectionChanged
+    /// <typeparam name="TValue">The type of item contained by the collection.</typeparam>
+    public interface INotifyCollectionChanged<TKey, out TValue> : INotifyCollectionChanged
     {
         /// <summary>
         /// Occurs when the contents of the collection are dramatically changed.
         /// </summary>
-        new event CollectionResetEventHandler<T> CollectionReset;
+        new event CollectionResetEventHandler<TKey, TValue> CollectionReset;
 
         /// <summary>
         /// Occurs when an item is added to the collection.
         /// </summary>
-        new event CollectionItemAddedEventHandler<T> CollectionItemAdded;
+        new event CollectionItemAddedEventHandler<TKey, TValue> CollectionItemAdded;
 
         /// <summary>
         /// Occurs when an item is removed from the collection.
         /// </summary>
-        new event CollectionItemRemovedEventHandler<T> CollectionItemRemoved;
+        new event CollectionItemRemovedEventHandler<TKey, TValue> CollectionItemRemoved;
     }
 }

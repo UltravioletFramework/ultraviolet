@@ -13,14 +13,16 @@ namespace TwistedLogik.Nucleus.Collections
     /// </summary>
     /// <param name="collection">The collection that was changed.</param>
     /// <param name="item">The item that was added to the collection.</param>
-    public delegate void CollectionItemAddedEventHandler(INotifyCollectionChanged collection, Object item);
+    /// <param name="index">The index at which the item was added to the collection, if this is an indexed collection; otherwise, <c>null</c>.</param>
+    public delegate void CollectionItemAddedEventHandler(INotifyCollectionChanged collection, Int32? index, Object item);
 
     /// <summary>
     /// Represents the method that is called when the <see cref="INotifyCollectionChanged{T}.CollectionItemRemoved"/> event is raised.
     /// </summary>
     /// <param name="collection">The collection that was changed.</param>
     /// <param name="item">The item that was removed from the collection.</param>
-    public delegate void CollectionItemRemovedEventHandler(INotifyCollectionChanged collection, Object item);
+    /// <param name="index">The index at which the item was added to the collection, if this is an indexed collection; otherwise, <c>null</c>.</param>
+    public delegate void CollectionItemRemovedEventHandler(INotifyCollectionChanged collection, Int32? index, Object item);
 
     /// <summary>
     /// Represents a collection which raises events when its content changes.

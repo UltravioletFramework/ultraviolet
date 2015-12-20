@@ -32,21 +32,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc />
-        protected override void OnCollectionItemAdded(SpriteFrame item)
+        protected override void OnCollectionItemAdded(Int32 index, SpriteFrame item)
         {
             Contract.Require(item, "item");
 
             Duration += item.Duration;
 
-            base.OnCollectionItemAdded(item);
+            base.OnCollectionItemAdded(index, item);
         }
 
         /// <inheritdoc />
-        protected override void OnCollectionItemRemoved(SpriteFrame item)
+        protected override void OnCollectionItemRemoved(Int32 index, SpriteFrame item)
         {
             Duration -= item.Duration;
 
-            base.OnCollectionItemRemoved(item);
+            base.OnCollectionItemRemoved(index, item);
         }
     }
 }

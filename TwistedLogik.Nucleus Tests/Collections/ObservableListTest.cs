@@ -14,7 +14,7 @@ namespace TwistedLogik.NucleusTests.Collections
             var list  = new ObservableList<Int32>();
             var added = false;
 
-            list.CollectionItemAdded += (source, value) =>
+            list.CollectionItemAdded += (source, index, value) =>
             {
                 added = (value == 1234);
             };
@@ -29,7 +29,7 @@ namespace TwistedLogik.NucleusTests.Collections
             var list    = new ObservableList<Int32>();
             var removed = false;
 
-            list.CollectionItemRemoved += (source, value) =>
+            list.CollectionItemRemoved += (source, index, value) =>
             {
                 removed = (value == 1234);
             };

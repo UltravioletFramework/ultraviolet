@@ -29,7 +29,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
-    public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INotifyCollectionChanged<KeyValuePair<TKey, TValue>>
+    public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INotifyCollectionChanged<TKey, TValue>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservableDictionary{TKey, TValue}"/> class.
@@ -97,11 +97,11 @@ namespace TwistedLogik.Nucleus.Collections
             TValue existing;
             if (dictionary.TryGetValue(key, out existing))
             {
-                OnCollectionItemRemoved(new KeyValuePair<TKey, TValue>(key, existing));
+                OnCollectionItemRemoved(key, existing);
             }
 
             dictionary.Add(key, value);
-            OnCollectionItemAdded(new KeyValuePair<TKey, TValue>(key, value));
+            OnCollectionItemAdded(key, value);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace TwistedLogik.Nucleus.Collections
             TValue existing;
             if (dictionary.TryGetValue(key, out existing) && dictionary.Remove(key))
             {
-                OnCollectionItemRemoved(new KeyValuePair<TKey, TValue>(key, existing));
+                OnCollectionItemRemoved(key, existing);
                 return true;
             }
             return false;
@@ -178,7 +178,7 @@ namespace TwistedLogik.Nucleus.Collections
         {
             ((ICollection<KeyValuePair<TKey, TValue>>)dictionary).Add(item);
 
-            OnCollectionItemAdded(item);
+            OnCollectionItemAdded(item.Key, item.Value);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace TwistedLogik.Nucleus.Collections
         {
             if (((ICollection<KeyValuePair<TKey, TValue>>)dictionary).Remove(item))
             {
-                OnCollectionItemRemoved(item);
+                OnCollectionItemRemoved(item.Key, item.Value);
                 return true;
             }
             return false;
@@ -246,11 +246,11 @@ namespace TwistedLogik.Nucleus.Collections
                 TValue existing;
                 if (dictionary.TryGetValue(key, out existing))
                 {
-                    OnCollectionItemRemoved(new KeyValuePair<TKey, TValue>(key, existing));
+                    OnCollectionItemRemoved(key, existing);
                 }
 
                 dictionary[key] = value;
-                OnCollectionItemAdded(new KeyValuePair<TKey, TValue>(key, value));
+                OnCollectionItemAdded(key, value);
             }
         }
 
@@ -320,13 +320,13 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <inheritdoc/>
-        public event CollectionResetEventHandler<KeyValuePair<TKey, TValue>> CollectionReset;
+        public event CollectionResetEventHandler<TKey, TValue> CollectionReset;
 
         /// <inheritdoc/>
-        public event CollectionItemAddedEventHandler<KeyValuePair<TKey, TValue>> CollectionItemAdded;
+        public event CollectionItemAddedEventHandler<TKey, TValue> CollectionItemAdded;
 
         /// <inheritdoc/>
-        public event CollectionItemRemovedEventHandler<KeyValuePair<TKey, TValue>> CollectionItemRemoved;
+        public event CollectionItemRemovedEventHandler<TKey, TValue> CollectionItemRemoved;
 
         /// <summary>
         /// Raises the <see cref="CollectionReset"/> event.
@@ -352,13 +352,14 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Raises the <see cref="CollectionItemAdded"/> event.
         /// </summary>
-        /// <param name="item">The item that was added to the list.</param>
-        protected virtual void OnCollectionItemAdded(KeyValuePair<TKey, TValue> item)
+        /// <param name="key">The key of the item that was added to the list.</param>
+        /// <param name="value">The item that was added to the list.</param>
+        protected virtual void OnCollectionItemAdded(TKey key, TValue value)
         {
             var temp1 = CollectionItemAdded;
             if (temp1 != null)
             {
-                temp1(this, item);
+                temp1(this, key, value);
             }
 
             if (suppressUntypedNotifications)
@@ -367,20 +368,21 @@ namespace TwistedLogik.Nucleus.Collections
             var temp2 = untypedCollectionItemAdded;
             if (temp2 != null)
             {
-                temp2(this, item);
+                temp2(this, null, value);
             }
         }
 
         /// <summary>
         /// Raises the <see cref="CollectionItemRemoved"/> event.
         /// </summary>
-        /// <param name="item">The item that was added to the list.</param>
-        protected virtual void OnCollectionItemRemoved(KeyValuePair<TKey, TValue> item)
+        /// <param name="key">The key of the item that was removed from the list.</param>
+        /// <param name="value">The item that was added to the list.</param>
+        protected virtual void OnCollectionItemRemoved(TKey key, TValue value)
         {
             var temp = CollectionItemRemoved;
             if (temp != null)
             {
-                temp(this, item);
+                temp(this, key, value);
             }
 
             if (suppressUntypedNotifications)
@@ -389,7 +391,7 @@ namespace TwistedLogik.Nucleus.Collections
             var temp2 = untypedCollectionItemRemoved;
             if (temp2 != null)
             {
-                temp2(this, item);
+                temp2(this, null, value);
             }
         }
 

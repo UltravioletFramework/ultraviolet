@@ -14,9 +14,9 @@ namespace TwistedLogik.NucleusTests.Collections
             var dict  = new ObservableDictionary<String, Int32>();
             var added = false;
 
-            dict.CollectionItemAdded += (dictionary, item) =>
+            dict.CollectionItemAdded += (dictionary, key, value) =>
             {
-                added = (item.Key == "Testing" && item.Value == 1234);
+                added = (key == "Testing" && value == 1234);
             };
             dict["Testing"] = 1234;
 
@@ -29,9 +29,9 @@ namespace TwistedLogik.NucleusTests.Collections
             var dict    = new ObservableDictionary<String, Int32>();
             var removed = false;
             
-            dict.CollectionItemRemoved += (dictionary, item) =>
+            dict.CollectionItemRemoved += (dictionary, key, value) =>
             {
-                removed = (item.Key == "Testing" && item.Value == 1234);
+                removed = (key == "Testing" && value == 1234);
             };
             dict["Testing"] = 1234;
             dict.Remove("Testing");
