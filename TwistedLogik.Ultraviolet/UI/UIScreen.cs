@@ -182,51 +182,47 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <inheritdoc/>
         internal override void HandleOpening()
         {
-            if (View != null)
-            {
-                UpdateViewPosition();
-                View.OnOpening();
-            }
             base.HandleOpening();
+
+            UpdateViewPosition();
+
+            if (View != null)
+                View.OnOpening();
         }
 
         /// <inheritdoc/>
         internal override void HandleOpened()
         {
-            if (View != null)
-            {
-                View.OnOpened();
-            }
             base.HandleOpened();
+
+            if (View != null)
+                View.OnOpened();
         }
 
         /// <inheritdoc/>
         protected override void OnClosing()
         {
-            if (View != null)
-            {
-                View.OnClosing();
-            }
             base.OnClosing();
+
+            if (View != null)
+                View.OnClosing();
         }
 
         /// <inheritdoc/>
         internal override void HandleClosed()
         {
-            if (View != null)
-            {
-                View.OnClosed();
-            }
             base.HandleClosed();
+
+            if (View != null)
+                View.OnClosed();
         }
 
         /// <inheritdoc/>
         internal override void HandleViewLoaded()
         {
             if (View != null)
-            {
                 View.SetContentManagers(GlobalContent, LocalContent);
-            }
+
             base.HandleViewLoaded();
         }
 
@@ -234,9 +230,8 @@ namespace TwistedLogik.Ultraviolet.UI
         protected override void Dispose(Boolean disposing)
         {
             if (View != null)
-            {
                 View.Dispose();
-            }
+
             base.Dispose(disposing);
         }
 
