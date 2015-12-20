@@ -328,8 +328,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var used        = available * percent;
 
             return (orientation == Orientation.Horizontal) ?
-                    new Size2D(Math.Floor(used), trackSize.Height) :
-                    new Size2D(trackSize.Width, Math.Floor(used));  
+                    new Size2D(Math.Max(0, Math.Floor(used)), trackSize.Height) :
+                    new Size2D(trackSize.Width, Math.Max(0, Math.Floor(used)));  
         }
 
         /// <summary>
