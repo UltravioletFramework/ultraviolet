@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -27,9 +26,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The item container for the specified item, or <c>null</c> if no such item exists.</returns>
         public DependencyObject ContainerFromItem(Object item)
         {
-            DependencyObject container;
-            itemToContainerMapping.TryGetValue(item, out container);
-            return container;
+            for (int i = 0; i < owner.ItemContainers.Count; i++)
+            {
+                var container = owner.ItemContainers[i];
+                if (container.GetValue<Object>(AssociatedItemProperty) == item)
+                {
+                    return container;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -82,12 +87,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (item == null)
             {
                 container.ClearLocalValue(AssociatedItemProperty);
-                itemToContainerMapping.Remove(item);
             }
             else
             {
-                container.SetLocalValue<Object>(AssociatedItemProperty, item);
-                itemToContainerMapping.Add(item, container);
+                container.SetLocalValue(AssociatedItemProperty, item);
             }
         }
 
@@ -99,9 +102,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         // State values.
         private readonly ItemsControl owner;
-
-        // Maps items to their respective containers.
-        private readonly Dictionary<Object, DependencyObject> itemToContainerMapping = 
-            new Dictionary<Object, DependencyObject>();
     }
 }

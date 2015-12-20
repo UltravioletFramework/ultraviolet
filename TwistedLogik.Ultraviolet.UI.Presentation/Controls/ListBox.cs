@@ -76,18 +76,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="container">The item container that was clicked.</param>
         internal void HandleItemClicked(ListBoxItem container)
         {
-            var item = ItemContainerGenerator.ItemFromContainer(container);
-            if (item == null)
-                return;
-
             switch (SelectionMode)
             {
                 case SelectionMode.Single:
-                    HandleItemClickedSingle(item);
+                    HandleItemClickedSingle(container);
                     break;
 
                 case SelectionMode.Multiple:
-                    HandleItemClickedMultiple(item);
+                    HandleItemClickedMultiple(container);
                     break;
             }
         }
@@ -111,15 +107,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override Boolean IsItemContainer(DependencyObject element)
+        protected override Boolean IsItemContainer(Object obj)
         {
-            return element is ListBoxItem;
+            return obj is ListBoxItem;
         }
 
         /// <inheritdoc/>
-        protected override Boolean IsItemContainerForItem(DependencyObject container, Object item)
+        protected override Boolean IsItemContainerForItem(Object obj, Object item)
         {
-            var lbi = container as ListBoxItem;
+            var lbi = obj as ListBoxItem;
             if (lbi == null)
                 return false;
 
@@ -127,32 +123,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnSelectedItemAdded(Object item)
+        protected override void OnSelectedItemAdded(DependencyObject container, Object item)
         {
             selectedItems.Add(item);
-            base.OnSelectedItemAdded(item);
+            base.OnSelectedItemAdded(container, item);
         }
 
         /// <inheritdoc/>
-        protected override void OnSelectedItemRemoved(Object item)
+        protected override void OnSelectedItemRemoved(DependencyObject container, Object item)
         {
             selectedItems.Remove(item);
-            base.OnSelectedItemRemoved(item);
+            base.OnSelectedItemRemoved(container, item);
         }
 
         /// <inheritdoc/>
         protected override void OnSelectedItemsChanged()
         {
             selectedItems.Clear();
-            foreach (var item in Items)
+            foreach (var container in ItemContainers)
             {
-                var container = ItemContainerGenerator.ContainerFromItem(item);
-                if (container != null && GetIsSelected(container))
+                if (GetIsSelected(container))
                 {
                     selectedItems.Add(container);
                 }
             }
-
             base.OnSelectedItemsChanged();
         }
 
@@ -350,25 +344,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Handles clicking on an item when the list box is in single selection mode.
         /// </summary>
         /// <param name="item">The item that was clicked.</param>
-        private void HandleItemClickedSingle(Object item)
+        private void HandleItemClickedSingle(ListBoxItem item)
         {
-            var dobj = item as DependencyObject;
-            if (dobj == null)
-                return;
-
             BeginChangeSelection();
-
-            if (GetIsSelected(dobj))
+            
+            if (GetIsSelected(item))
             {
                 if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                 {
-                    UnselectItem(item);
+                    UnselectContainer(item);
                 }
             }
             else
             {
                 UnselectAllItems();
-                SelectItem(item);
+                SelectContainer(item);
             }
 
             EndChangeSelection();
@@ -378,20 +368,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Handles clicking on an item when the list box is in multiple selection mode.
         /// </summary>
         /// <param name="item">The item that was clicked.</param>
-        private void HandleItemClickedMultiple(Object item)
+        private void HandleItemClickedMultiple(ListBoxItem item)
         {
-            var dobj = item as DependencyObject;
-            if (dobj == null)
-                return;
-
-            var selected = GetIsSelected(dobj);
+            var selected = GetIsSelected(item);
             if (selected)
             {
-                UnselectItem(item);
+                UnselectContainer(item);
             }
             else
             {
-                SelectItem(item);
+                SelectContainer(item);
             }
         }
 

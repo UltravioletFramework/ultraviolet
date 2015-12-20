@@ -150,17 +150,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="container">The item container that was clicked.</param>
         internal void HandleItemClicked(ComboBoxItem container)
         {
-            var item = ItemContainerGenerator.ItemFromContainer(container);
-            if (item == null)
-                return;
-
-            var dobj = item as DependencyObject;
-            if (dobj == null || !GetIsSelected(dobj))
+            if (container != null && !GetIsSelected(container))
             {
                 BeginChangeSelection();
 
                 UnselectAllItems();
-                SelectItem(item);
+                SelectContainer(container);
 
                 EndChangeSelection();
             }
@@ -196,15 +191,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override Boolean IsItemContainer(DependencyObject element)
+        protected override Boolean IsItemContainer(Object obj)
         {
-            return element is ComboBoxItem;
+            return obj is ComboBoxItem;
         }
 
         /// <inheritdoc/>
-        protected override Boolean IsItemContainerForItem(DependencyObject container, Object item)
+        protected override Boolean IsItemContainerForItem(Object obj, Object item)
         {
-            var cbi = container as ComboBoxItem;
+            var cbi = obj as ComboBoxItem;
             if (cbi == null)
                 return false;
 
@@ -735,7 +730,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 selectedVisualClone.HandleLayoutUpdated();
             }
         }
-        
+
         /// <summary>
         /// Updates the selection box.
         /// </summary>
@@ -743,13 +738,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             visualClone.ClonedElement = null;
 
-            var selectionBoxItem             = (Object)null;
+            var selectionBoxItem = (Object)null;
             var selectionBoxItemStringFormat = ItemStringFormat;
 
-            var contentControl = SelectedItem as ContentControl;
+            var selectedItem = SelectedItem;
+            var selectedContainer = (SelectedIndex < 0) ? null : ItemContainers[SelectedIndex];
+            
+            var contentControl = selectedContainer as ContentControl;
             if (contentControl != null)
             {
-                selectionBoxItem             = contentControl.Content;
+                selectionBoxItem = contentControl.Content;
                 selectionBoxItemStringFormat = contentControl.ContentStringFormat;
             }
 

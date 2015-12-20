@@ -30,9 +30,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             this.selection = new SelectionCollection(this);
 
-            this.selection.CollectionItemAdded   += selection_CollectionItemAdded;
+            this.selection.CollectionItemAdded += selection_CollectionItemAdded;
             this.selection.CollectionItemRemoved += selection_CollectionItemRemoved;
-            this.selection.CollectionReset       += selection_CollectionReset;
+            this.selection.CollectionReset += selection_CollectionReset;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Boolean>(IsSelectedProperty, isSelected);
+            element.SetValue(IsSelectedProperty, isSelected);
         }
 
         /// <summary>
@@ -192,6 +192,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <remarks>The styling name of this routed event is 'unselected'.</remarks>
         public static readonly RoutedEvent UnselectedEvent = EventManager.RegisterRoutedEvent("Unselected", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Selector));
+        
+        protected override void OnItemsReset()
+        {
+            BeginChangeSelection();
+
+            selection.Clear();
+
+            EndChangeSelection();
+
+            base.OnItemsReset();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnItemRemoved(DependencyObject container, Object item)
+        {
+            BeginChangeSelection();
+
+            selection.Remove(container);
+
+            EndChangeSelection();
+
+            base.OnItemRemoved(container, item);
+        }
 
         /// <summary>
         /// Raises the <see cref="SelectionChanged"/> event.
@@ -204,8 +227,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when an item is added to the list of selected items.
         /// </summary>
+        /// <param name="container">The container of the item that was selected.</param>
         /// <param name="item">The item that was selected.</param>
-        protected virtual void OnSelectedItemAdded(Object item)
+        protected virtual void OnSelectedItemAdded(DependencyObject container, Object item)
         {
 
         }
@@ -213,8 +237,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when an item is removed from the list of selected items.
         /// </summary>
+        /// <param name="container">The container of the item that was unselected.</param>
         /// <param name="item">The item that was unselected.</param>
-        protected virtual void OnSelectedItemRemoved(Object item)
+        protected virtual void OnSelectedItemRemoved(DependencyObject container, Object item)
         {
 
         }
@@ -238,6 +263,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
+        protected override void OnItemsChanged()
+        {
+            base.OnItemsChanged();
+        }
+
+        /// <inheritdoc/>
         protected override void OnIsKeyboardFocusWithinChanged()
         {
             SetValue<Boolean>(IsSelectionActivePropertyKey, IsKeyboardFocusWithin);
@@ -255,13 +286,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             BeginChangeSelection();
 
-            foreach (var item in Items)
+            foreach (var container in ItemContainers)
             {
-                var container = ItemContainerGenerator.ContainerFromItem(item);
-                if (container != null)
-                {
-                    SetIsSelected(container, false);
-                }
+                SetIsSelected(container, false);
             }
 
             EndChangeSelection();
@@ -283,6 +310,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Unselects a single one of the control's item containers.
+        /// </summary>
+        /// <param name="container">The item container to unselect.</param>
+        protected void UnselectContainer(DependencyObject container)
+        {
+            Contract.Require(container, "container");
+
+            SetIsSelected(container, false);
+        }
+
+        /// <summary>
         /// Selects all of the control's items.
         /// </summary>
         protected void SelectAllItems()
@@ -292,20 +330,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             BeginChangeSelection();
 
-            foreach (var item in Items)
+            foreach (var container in ItemContainers)
             {
-                var container = ItemContainerGenerator.ContainerFromItem(item);
-                if (container != null)
-                {
-                    SetIsSelected(container, true);
-                }
+                SetIsSelected(container, false);
             }
 
             EndChangeSelection();
         }
 
         /// <summary>
-        /// Selects the specified item and unselects any other items.
+        /// Selects the specified item.
         /// </summary>
         /// <param name="item">The item to select.</param>
         protected void SelectItem(Object item)
@@ -319,6 +353,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (selection.SelectedItem == item)
                 return;
 
+            SetIsSelected(container, true);
+        }
+
+        /// <summary>
+        /// Selects the specified item container.
+        /// </summary>
+        /// <param name="container">The item container to select.</param>
+        protected void SelectContainer(DependencyObject container)
+        {
+            Contract.Require(container, "container");
+            
             SetIsSelected(container, true);
         }
 
@@ -452,25 +497,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Calls the <see cref="OnSelectedItemAdded"/> method.
         /// </summary>
+        /// <param name="container">The item's container.</param>
         /// <param name="item">The item that was added to the selection.</param>
-        private void RaiseSelectedItemAdded(Object item)
+        private void RaiseSelectedItemAdded(DependencyObject container, Object item)
         {
             if (suspendSelectionChangedLevel > 0)
                 return;
 
-            OnSelectedItemAdded(item);
+            OnSelectedItemAdded(container, item);
         }
 
         /// <summary>
         /// Calls the <see cref="OnSelectedItemRemoved"/> method.
         /// </summary>
+        /// <param name="container">The item's container.</param>
         /// <param name="item">The item that was removed from the selection.</param>
-        private void RaiseSelectedItemRemoved(Object item)
+        private void RaiseSelectedItemRemoved(DependencyObject container, Object item)
         {
             if (suspendSelectionChangedLevel > 0)
                 return;
 
-            OnSelectedItemRemoved(item);
+            OnSelectedItemRemoved(container, item);
         }
 
         /// <summary>
@@ -508,19 +555,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the selection collection's <see cref="INotifyCollectionChanged.CollectionItemAdded"/> event.
         /// </summary>
-        private void selection_CollectionItemAdded(INotifyCollectionChanged collection, Object item)
+        private void selection_CollectionItemAdded(INotifyCollectionChanged collection, Int32? index, Object item)
         {
             UpdateSelectionPropertiesAndRaiseSelectionChanged();
-            RaiseSelectedItemAdded(item);
+
+            var container = ItemContainers[index.Value];
+            RaiseSelectedItemAdded(container, item);
         }
 
         /// <summary>
         /// Handles the selection collection's <see cref="INotifyCollectionChanged.CollectionItemRemoved"/> event.
         /// </summary>
-        private void selection_CollectionItemRemoved(INotifyCollectionChanged collection, Object item)
+        private void selection_CollectionItemRemoved(INotifyCollectionChanged collection, Int32? index, Object item)
         {
             UpdateSelectionPropertiesAndRaiseSelectionChanged();
-            RaiseSelectedItemRemoved(item);
+
+            var container = ItemContainers[index.Value];
+            RaiseSelectedItemRemoved(container, item);
         }
         
         /// <summary>

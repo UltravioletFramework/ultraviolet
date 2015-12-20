@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             EnsureNotBoundToItemsSource();
 
             itemsStorage.Add(item);
-            OnCollectionItemAdded(item);
+            OnCollectionItemAdded(itemsStorage.Count - 1, item);
         }
 
         /// <inheritdoc/>
@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             EnsureNotBoundToItemsSource();
 
             itemsStorage.Insert(index, item);
-            OnCollectionItemAdded(item);
+            OnCollectionItemAdded(index, item);
         }
 
         /// <inheritdoc/>
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var item = itemsStorage[index];
             itemsStorage.RemoveAt(index);
-            OnCollectionItemRemoved(item);
+            OnCollectionItemRemoved(index, item);
         }
 
         /// <inheritdoc/>
@@ -53,9 +53,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             EnsureNotBoundToItemsSource();
 
-            if (itemsStorage.Remove(item))
+            var index = itemsStorage.IndexOf(item);
+            if (index >= 0)
             {
-                OnCollectionItemRemoved(item);
+                itemsStorage.RemoveAt(index);
+                OnCollectionItemRemoved(index, item);
                 return true;
             }
             return false;
@@ -123,11 +125,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 EnsureNotBoundToItemsSource();
 
                 var existing = itemsStorage[index];
-                OnCollectionItemRemoved(existing);
+                OnCollectionItemRemoved(index, existing);
 
                 itemsStorage[index] = value;
 
-                OnCollectionItemAdded(value);
+                OnCollectionItemAdded(index, value);
             }
         }
 

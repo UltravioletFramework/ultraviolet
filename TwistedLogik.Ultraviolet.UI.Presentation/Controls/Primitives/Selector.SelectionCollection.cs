@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 var metadata = new SelectionMetadata(container, index);
                 selections.AddLast(metadata);
 
-                OnCollectionItemAdded(container);
+                OnCollectionItemAdded(selections.Count - 1, container);
             }
 
             /// <summary>
@@ -45,15 +45,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 Contract.Require(container, "container");
 
+                var index = 0;
                 for (var current = selections.First; current != null; current = current.Next)
                 {
                     if (current.Value.Container == container)
                     {
                         selections.Remove(current);
-                        OnCollectionItemRemoved(container);
+                        OnCollectionItemRemoved(index, container);
                         break;
                     }
+                    index++;
                 }
+            }
+
+            /// <summary>
+            /// Removes all items from the selection collection.
+            /// </summary>
+            public void Clear()
+            {
+                selections.Clear();
+                OnCollectionReset();
             }
 
             /// <summary>
@@ -141,26 +152,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             /// <summary>
             /// Raises the <see cref="CollectionItemAdded"/> event.
             /// </summary>
+            /// <param name="index">The index at which the item was added to the collection.</param>
             /// <param name="item">The item that was added.</param>
-            private void OnCollectionItemAdded(Object item)
+            private void OnCollectionItemAdded(Int32 index, Object item)
             {
                 var temp = CollectionItemAdded;
                 if (temp != null)
                 {
-                    temp(this, item);
+                    temp(this, index, item);
                 }
             }
 
             /// <summary>
             /// Raises the <see cref="CollectionItemRemoved"/> event.
             /// </summary>
+            /// <param name="index">The index at which the item was removed from the collection.</param>
             /// <param name="item">The item that was removed.</param>
-            private void OnCollectionItemRemoved(Object item)
+            private void OnCollectionItemRemoved(Int32 index, Object item)
             {
                 var temp = CollectionItemRemoved;
                 if (temp != null)
                 {
-                    temp(this, item);
+                    temp(this, index, item);
                 }
             }
 

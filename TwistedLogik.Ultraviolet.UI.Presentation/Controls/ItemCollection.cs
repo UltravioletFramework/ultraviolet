@@ -82,8 +82,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (observable == null)
                 return;
 
-            observable.CollectionReset       += ItemsSourceCollectionReset;
-            observable.CollectionItemAdded   += ItemsSourceCollectionItemAdded;
+            observable.CollectionReset += ItemsSourceCollectionReset;
+            observable.CollectionItemAdded += ItemsSourceCollectionItemAdded;
             observable.CollectionItemRemoved += ItemsSourceCollectionItemRemoved;
         }
 
@@ -97,8 +97,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (observable == null)
                 return;
 
-            observable.CollectionReset       -= ItemsSourceCollectionReset;
-            observable.CollectionItemAdded   -= ItemsSourceCollectionItemAdded;
+            observable.CollectionReset -= ItemsSourceCollectionReset;
+            observable.CollectionItemAdded -= ItemsSourceCollectionItemAdded;
             observable.CollectionItemRemoved -= ItemsSourceCollectionItemRemoved;
         }
 
@@ -115,20 +115,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Handles the <see cref="INotifyCollectionChanged.CollectionItemAdded"/> event for the bound items source.
         /// </summary>
         /// <param name="collection">The collection that raised the event.</param>
+        /// <param name="index">The index at which the item was added.</param>
         /// <param name="item">The item that was added to the collection.</param>
-        private void ItemsSourceCollectionItemAdded(INotifyCollectionChanged collection, Object item)
+        private void ItemsSourceCollectionItemAdded(INotifyCollectionChanged collection, Int32? index, Object item)
         {
-            OnCollectionItemAdded(item);
+            OnCollectionItemAdded(index, item);
         }
 
         /// <summary>
         /// Handles the <see cref="INotifyCollectionChanged.CollectionItemAdded"/> event for the bound items source.
         /// </summary>
         /// <param name="collection">The collection that raised the event.</param>
+        /// <param name="index">The index at which the item was removed.</param>
         /// <param name="item">The item that was removed from the collection.</param>
-        private void ItemsSourceCollectionItemRemoved(INotifyCollectionChanged collection, Object item)
+        private void ItemsSourceCollectionItemRemoved(INotifyCollectionChanged collection, Int32? index, Object item)
         {
-            OnCollectionItemRemoved(item);
+            OnCollectionItemRemoved(index, item);
         }
 
         /// <summary>
@@ -142,30 +144,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 temp(this);
             }
         }
-        
+
         /// <summary>
         /// Called when an item is added to the item collection.
         /// </summary>
+        /// <param name="index">The index at which the item was added.</param>
         /// <param name="item">The item that was added to the collection.</param>
-        private void OnCollectionItemAdded(Object item)
+        private void OnCollectionItemAdded(Int32? index, Object item)
         {
             var temp = CollectionItemAdded;
             if (temp != null)
             {
-                temp(this, item);
+                temp(this, index, item);
             }
         }
 
         /// <summary>
         /// Called when an item is removed from the item collection.
         /// </summary>
+        /// <param name="index">The index at which the item was removed.</param>
         /// <param name="item">The item that was removed from the collection.</param>
-        private void OnCollectionItemRemoved(Object item)
+        private void OnCollectionItemRemoved(Int32? index, Object item)
         {
             var temp = CollectionItemRemoved;
             if (temp != null)
             {
-                temp(this, item);
+                temp(this, index, item);
             }
         }
 

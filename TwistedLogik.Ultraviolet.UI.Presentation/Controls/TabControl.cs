@@ -54,18 +54,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="container">The item container that was clicked.</param>
         internal void HandleItemClicked(TabItem container)
         {
-            var item = ItemContainerGenerator.ItemFromContainer(container);
-            if (item == null)
-                return;
-
-            var dobj = item as DependencyObject;
-            if (dobj == null)
-                return;
-
             BeginChangeSelection();
 
             UnselectAllItems();
-            SelectItem(item);
+            SelectContainer(container);
 
             EndChangeSelection();
         }
@@ -73,13 +65,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Called to inform the tab control that one of its items changed its content.
         /// </summary>
-        /// <param name="item">The item that was changed.</param>
-        internal void HandleItemContentChanged(TabItem item)
+        /// <param name="container">The item that was changed.</param>
+        internal void HandleItemContentChanged(TabItem container)
         {
             if (SelectedIndex < 0 || SelectedIndex >= Items.Count)
                 return;
 
-            if (item != Items[SelectedIndex])
+            var current = ItemContainerGenerator.ContainerFromIndex(SelectedIndex);
+            if (current != container)
                 return;
 
             UpdateTabContent();
@@ -98,15 +91,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override Boolean IsItemContainer(DependencyObject element)
+        protected override Boolean IsItemContainer(Object obj)
         {
-            return element is TabItem;
+            return obj is TabItem;
         }
 
         /// <inheritdoc/>
-        protected override Boolean IsItemContainerForItem(DependencyObject container, Object item)
+        protected override Boolean IsItemContainerForItem(Object obj, Object item)
         {
-            var ti = container as TabItem;
+            var ti = obj as TabItem;
             if (ti == null)
                 return false;
 
