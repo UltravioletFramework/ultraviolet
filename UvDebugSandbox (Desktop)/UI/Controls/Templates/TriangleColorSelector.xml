@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <StackPanel Orientation="Horizontal">
+      <ContentPresenter/>
+      <ComboBox SelectedIndex="{{VertexColorIndex}}">
+        <ComboBoxItem Tag="#ffff0000">Red</ComboBoxItem>
+        <ComboBoxItem Tag="#ff00ff00">Green</ComboBoxItem>
+        <ComboBoxItem Tag="#ff0000ff">Blue</ComboBoxItem>
+      </ComboBox>
+    </StackPanel>
+  </View>
+</ComponentTemplate>

@@ -1,18 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.OpenGL;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
-using UvDebugSandbox.Assets;
 using UvDebugSandbox.Input;
 using UvDebugSandbox.UI;
 using UvDebugSandbox.UI.Screens;
@@ -95,6 +91,7 @@ namespace UvDebugSandbox
 
             if (Ultraviolet.IsRunningInServiceMode)
             {
+                LoadPresentation();
                 CompileContent();
                 CompileBindingExpressions();
                 Environment.Exit(0);
@@ -104,20 +101,12 @@ namespace UvDebugSandbox
                 LoadLocalizationDatabases();
                 LoadInputBindings();
                 LoadContentManifests();
-                LoadCursors();
                 LoadPresentation();
-
-                this.spriteBatch = SpriteBatch.Create();
-                this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
-
-                this.textRenderer = new TextRenderer();
-                this.textFormatter = new StringFormatter();
-                this.textBuffer = new StringBuilder();
-
+                
                 GC.Collect(2);
 
                 var screenService = new UIScreenService(content);
-                var screen = screenService.Get<DebugViewScreen>();
+                var screen = screenService.Get<GameMenuScreen>();
 
                 Ultraviolet.GetUI().GetScreens().Open(screen);
             }
@@ -168,18 +157,6 @@ namespace UvDebugSandbox
 
             var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
             uvContent.Manifests.Load(contentManifestFiles);
-
-            uvContent.Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
-            uvContent.Manifests["Global"]["Sprites"].PopulateAssetLibrary(typeof(GlobalSpriteID));
-        }
-
-        /// <summary>
-        /// Loads the game's cursors.
-        /// </summary>
-        protected void LoadCursors()
-        {
-            this.cursors = this.content.Load<CursorCollection>("Cursors/Cursors");
-            Ultraviolet.GetPlatform().Cursor = this.cursors["Normal"];
         }
 
         /// <summary>
@@ -188,14 +165,20 @@ namespace UvDebugSandbox
         protected void LoadPresentation()
         {
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.RegisterKnownTypes(GetType().Assembly);
 
-            var globalStyleSheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
-            upf.SetGlobalStyleSheet(globalStyleSheet);
+            if (!ShouldRunInServiceMode())
+            {
+                var globalStyleSheet = new UvssDocument();
+                globalStyleSheet.Append(content.Load<UvssDocument>("UI/DefaultUIStyles"));
+                globalStyleSheet.Append(content.Load<UvssDocument>("UI/GameStyles"));
+                upf.SetGlobalStyleSheet(globalStyleSheet);
 
-            CompileBindingExpressions();
-            upf.LoadCompiledExpressions();
+                CompileBindingExpressions();
+                upf.LoadCompiledExpressions();
 
-            Diagnostics.DrawDiagnosticsVisuals = true;
+                Diagnostics.DrawDiagnosticsVisuals = true;
+            }
         }
 
         /// <summary>
@@ -210,34 +193,6 @@ namespace UvDebugSandbox
                 Exit();
             }
             base.OnUpdating(time);
-        }
-
-        /// <summary>
-        /// Called when the scene is being rendered.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
-        protected override void OnDrawing(UltravioletTime time)
-        {
-            spriteBatch.Begin();
-
-            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-
-            textFormatter.Reset();
-            textFormatter.AddArgument(Ultraviolet.GetGraphics().FrameRate);
-            textFormatter.AddArgument(upf.PerformanceStats.StyleCountLastFrame);
-            textFormatter.AddArgument(upf.PerformanceStats.InvalidateStyleCountLastFrame);
-            textFormatter.AddArgument(upf.PerformanceStats.MeasureCountLastFrame);
-            textFormatter.AddArgument(upf.PerformanceStats.InvalidateMeasureCountLastFrame);
-            textFormatter.AddArgument(upf.PerformanceStats.ArrangeCountLastFrame);
-            textFormatter.AddArgument(upf.PerformanceStats.InvalidateArrangeCountLastFrame);
-            textFormatter.AddArgument(upf.PerformanceStats.PositionCountLastFrame);
-            textFormatter.Format("FPS: {0:decimals:2} FPS\nStyle: {1} / {2}\nMeasure: {3} / {4}\nArrange: {5} / {6}\nPosition: {7}", textBuffer);
-
-            textRenderer.Draw(spriteBatch, textBuffer, Vector2.Zero, Color.White, new TextLayoutSettings(spriteFont, null, null, TextFlags.Standard));
-
-            spriteBatch.End();
-
-            base.OnDrawing(time);
         }
 
         /// <summary>
@@ -338,14 +293,6 @@ namespace UvDebugSandbox
         
         // The global content manager.  Manages any content that should remain loaded for the duration of the game's execution.
         private ContentManager content;
-
-        // Game resources.
-        private CursorCollection cursors;
-        private SpriteFont spriteFont;
-        private SpriteBatch spriteBatch;
-        private TextRenderer textRenderer;
-        private StringFormatter textFormatter;
-        private StringBuilder textBuffer;
 
         // State values.
         private Boolean resolveContent;

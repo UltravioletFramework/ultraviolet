@@ -16,7 +16,8 @@ namespace UvDebugSandbox.UI
         /// </summary>
         public UIScreenService(ContentManager globalContent)
         {
-            Register(new DebugViewScreen(globalContent, this));
+            Register(new GameMenuScreen(globalContent, this));
+            Register(new GamePlayScreen(globalContent, this));
         }
 
         /// <summary>

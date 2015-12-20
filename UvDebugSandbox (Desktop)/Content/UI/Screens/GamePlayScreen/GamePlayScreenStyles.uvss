@@ -1,0 +1,55 @@
+﻿#container-background
+{
+	source-image: #Global:Textures:DefaultUIBackground 0 0 1161 685;
+}
+
+#controls-panel
+{
+	margin: 200 64 200 64;
+}
+
+#controls-panel > FrameworkElement
+{
+	margin: 0 0 0 8;
+}
+
+#display
+{
+	fill-color: #ffffff00;
+}
+
+#display-panel
+{
+	margin: 0 0 0 16;
+}
+
+#display-panel > Rectangle
+{
+	fill-color: #80000000;
+}
+
+#vertex-colors-panel
+{
+	halign: right;
+	valign: top;
+	margin: 16;
+}
+
+#vertex-colors-panel TriangleColorSelector
+{
+	margin: 0 0 0 8;
+}
+
+#spin
+{
+	halign: left;
+	valign: top;
+	margin: 16;
+}
+
+#msg-press-esc
+{
+	halign: left;
+	valign: bottom;
+	margin: 16;
+}

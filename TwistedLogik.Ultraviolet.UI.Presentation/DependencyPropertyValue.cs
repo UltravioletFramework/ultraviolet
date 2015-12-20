@@ -651,9 +651,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var newValue = GetValue();
                 var changed  = !comparer(oldValue, newValue);
 
-                if (changed && !requiresDigestNew)
+                if (property.Name == "ItemsSource")
+                    Console.WriteLine();
+
+                if (changed)
                 {
-                    metadata.HandleChanged<T>(Owner, property, oldValue, newValue);
+                    metadata.HandleChanged(Owner, property, oldValue, newValue);
                 }
             }
             

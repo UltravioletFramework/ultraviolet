@@ -165,11 +165,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     {
                         case MessageBoxResult.OK:
                         case MessageBoxResult.Yes:
-                            DialogResult = true;
+                            Close(true);
                             break;
 
                         case MessageBoxResult.No:
-                            DialogResult = false;
+                            Close(false);
                             break;
 
                         default:

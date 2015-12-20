@@ -7,6 +7,7 @@
   <ContentGroup Name="Textures" Directory="Textures" Type="TwistedLogik.Ultraviolet.Graphics.Texture2D">
     <Asset Name="DefaultUI">..\UI\DefaultUI</Asset>
     <Asset Name="DefaultUIBackground">..\UI\DefaultUIBackground</Asset>
+    <Asset Name="Logo">Logo</Asset>
   </ContentGroup>
   <ContentGroup Name="SoundEffects" Directory="SoundEffects" Type="TwistedLogik.Ultraviolet.Audio.SoundEffect">
     <Asset Name="Click1">Click1</Asset>

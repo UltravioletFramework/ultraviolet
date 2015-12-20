@@ -4,7 +4,7 @@ using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace UvDebugSandbox.UI.Dialogs
 {
-    partial class ConfirmationDialog
+    partial class EscMenuDialog
     {
         /// <summary>
         /// Represents the view model for <see cref="DialogScreen"/>.
@@ -15,7 +15,7 @@ namespace UvDebugSandbox.UI.Dialogs
             /// Initializes a new instance of the <see cref="DialogScreenVM"/> class.
             /// </summary>
             /// <param name="dialog">The dialog box that owns the screen.</param>
-            internal DialogScreenVM(ConfirmationDialog dialog)
+            internal DialogScreenVM(EscMenuDialog dialog)
             {
                 Contract.Require(dialog, "dialog");
 
@@ -23,41 +23,31 @@ namespace UvDebugSandbox.UI.Dialogs
             }
 
             /// <summary>
-            /// Closes the dialog box when the "OK" button is clicked.
+            /// Handles the "Resume" button being clicked.
             /// </summary>
-            public void HandleClickOK(DependencyObject dobj, ref RoutedEventData data)
+            public void HandleClickResume(DependencyObject dobj, ref RoutedEventData data)
             {
-                dialog.DialogResult = true;
+                dialog.Close(false);
             }
 
             /// <summary>
-            /// Closes the dialog box when the "Cancel" button is clicked.
+            /// Handles the "Exit" button being clicked.
             /// </summary>
-            public void HandleClickCancel(DependencyObject dobj, ref RoutedEventData data)
+            public void HandleClickExit(DependencyObject dobj, ref RoutedEventData data)
             {
-                dialog.DialogResult = false;
+                dialog.Close(true, TimeSpan.Zero);
             }
 
             /// <summary>
-            /// Gets or sets the dialog's header text.
+            /// Handles the "Exit to Desktop" button being clicked.
             /// </summary>
-            public String Header
+            public void HandleClickExitToDesktop(DependencyObject dobj, ref RoutedEventData data)
             {
-                get;
-                set;
-            }
-
-            /// <summary>
-            /// Gets or sets the dialog's content text.
-            /// </summary>
-            public String Text
-            {
-                get;
-                set;
+                dialog.Screen.Ultraviolet.Host.Exit();
             }
 
             // State values.
-            private readonly ConfirmationDialog dialog;
+            private readonly EscMenuDialog dialog;
         }
     }
 }

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <StyleSheet>GamePlayScreenStyles</StyleSheet>
+  <View ViewModelType="UvDebugSandbox.UI.Screens.GamePlayViewModel, UvDebugSandbox">
+    <Grid Name="container" Focusable="true" KeyDown="HandleKeyDown" View.Opened="HandleViewOpened">
+      <Image Name="container-background"/>
+
+      <CheckBox Name="spin" IsChecked="{{IsTriangleSpinning}}">Spin</CheckBox>
+
+      <StackPanel Name="vertex-colors-panel">
+        <TriangleColorSelector Name="v1Color" VertexColor="#ffff0000">V1:</TriangleColorSelector>
+        <TriangleColorSelector Name="v2Color" VertexColor="#ff00ff00">V2:</TriangleColorSelector>
+        <TriangleColorSelector Name="v3Color" VertexColor="#ff0000ff">V3:</TriangleColorSelector>
+      </StackPanel>
+
+      <DockPanel Name="controls-panel" LastChildFill="true">
+
+        <StackPanel DockPanel.Dock="Bottom">
+
+          <TextBlock>Rotation:</TextBlock>
+          <HSlider Name="slideRotation"
+                   Value="{{TriangleRotation}}"
+                   Minimum="0"
+                   Maximum="{{Math.PI * 2.0}}"
+                   DockPanel.Dock="Bottom"/>
+
+          <TextBlock>Zoom:</TextBlock>
+          <HSlider Name="slideZoom"
+                   Value="{{TriangleZoom}}"
+                   Minimum="0"
+                   Maximum="1"
+                   DockPanel.Dock="Bottom"/>
+
+        </StackPanel>
+
+        <Grid Name="display-panel">
+          <Rectangle/>
+          <Border>
+            <TriangleDisplay Name="display" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                             TriangleRotation="{{TriangleRotation}}"
+                             TriangleZoom="{{TriangleZoom}}"
+                             V1Color="{{v1Color->VertexColor}}"
+                             V2Color="{{v2Color->VertexColor}}"
+                             V3Color="{{v3Color->VertexColor}}"/>
+          </Border>
+        </Grid>
+
+      </DockPanel>
+
+      <TextBlock Name="msg-press-esc">Press |b||c:ffffff00|ESC|c||b| to exit.</TextBlock>
+
+    </Grid>        
+  </View>
+</UIPanelDefinition>

@@ -82,7 +82,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Closes the modal.
         /// </summary>
-        public void Close()
+        /// <param name="duration">The amount of time over which to transition the modal's state,
+        /// or <c>null</c> to use the default time.</param>
+        public void Close(TimeSpan? duration = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
@@ -90,7 +92,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (screen != null)
             {
                 var uv = screen.Ultraviolet;
-                uv.GetUI().GetScreens(screen.Window).Close(screen);
+                uv.GetUI().GetScreens(screen.Window).Close(screen, duration);
+            }
+        }
+
+        /// <summary>
+        /// Closes the modal with the specified result value.
+        /// </summary>
+        /// <param name="dialogResult">The dialog's result value.</param>
+        /// <param name="duration">The amount of time over which to transition the modal's state,
+        /// or <c>null</c> to use the default time.</param>
+        public void Close(Boolean? dialogResult, TimeSpan? duration = null)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            this.dialogResult = dialogResult;
+
+            var screen = Screen;
+            if (screen != null)
+            {
+                var uv = screen.Ultraviolet;
+                uv.GetUI().GetScreens(screen.Window).Close(screen, duration);
             }
         }
 
@@ -103,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets or sets the dialog's result value.
+        /// Gets the dialog's result value.
         /// </summary>
         public Boolean? DialogResult
         {
@@ -112,16 +134,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 return dialogResult;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (dialogResult != value)
-                {
-                    dialogResult = value;
-                    Close();
-                }
             }
         }
         
@@ -276,7 +288,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             OnClosing();
 
             if (this.taskCompletionSource != null)
+            {
+                var id = System.Threading.Thread.CurrentThread.ManagedThreadId;
+                
                 this.taskCompletionSource.SetResult(DialogResult);
+            }
 
             this.taskCompletionSource = null;
 

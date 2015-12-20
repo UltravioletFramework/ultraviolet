@@ -95,6 +95,12 @@
     <None Include="Content\Sprites\InterfaceIcons.sprite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\GameStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\UI\DefaultUIStyles-mdpi.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -114,6 +120,12 @@
     </None>
     <None Include="..\Dependencies\SDL2\x64\osx\libSDL2.dylib">
       <Link>x64\osx\libSDL2.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -193,15 +205,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\UI\Screens\DebugViewScreen\DebugViewScreenStyles.uvss">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\UI\Screens\DebugViewScreen\DebugViewScreen.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Content\UI\DefaultUI.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -246,7 +249,7 @@
   </Target>
   -->
   <ItemGroup>
-    <None Include="Content\UI\Dialogs\ConfirmationDialog\ConfirmationDialog.xml">
+    <None Include="Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -254,8 +257,32 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Controls\Templates\TriangleColorSelector.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Textures\Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
   <PropertyGroup>
     <PostBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">if not $(ConfigurationName)==Signed ( UvDebugSandbox.exe -resolve:content -compile:content -compile:expressions )</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>if not $(ConfigurationName)==Signed ( UvDebugSandbox.exe -resolve:content -compile:content -compile:expressions )</PostBuildEvent>
   </PropertyGroup>
 </Project>
