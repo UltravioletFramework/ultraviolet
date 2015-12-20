@@ -131,11 +131,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
         
         /// <inheritdoc/>
-        protected override void CleanupCore()
+        protected override void CleanupOverride()
         {
             SafeDispose.DisposeRef(ref securePassword);
 
-            base.CleanupCore();
+            base.CleanupOverride();
         }
 
         /// <inheritdoc/>

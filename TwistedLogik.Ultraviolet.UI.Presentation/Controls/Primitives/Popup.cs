@@ -328,18 +328,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
-        protected override void CacheLayoutParametersCore()
+        protected override void CacheLayoutParametersOverride()
         {
-            base.CacheLayoutParametersCore();
+            base.CacheLayoutParametersOverride();
             root.CacheLayoutParameters();
         }
 
         /// <inheritdoc/>
-        protected override void StyleCore(UvssDocument styleSheet)
+        protected override void StyleOverride(UvssDocument styleSheet)
         {
             UpdatePopupStyle(styleSheet);
 
-            base.StyleCore(styleSheet);
+            base.StyleOverride(styleSheet);
         }
 
         /// <inheritdoc/>

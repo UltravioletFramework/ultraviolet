@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
@@ -205,7 +206,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return GetValue<Boolean>(ForceCursorProperty); }
             set { SetValue(ForceCursorProperty, value); }
         }
-        
+
         /// <summary>
         /// Gets or sets an object that contains information about the element.
         /// </summary>
@@ -229,7 +230,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsLoaded
         {
             get { return isLoaded; }
-        }        
+        }
 
         /// <summary>
         /// Occurs when the element is initialized.
@@ -316,7 +317,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Identifies the <see cref="Cursor"/> dependency property.
         /// </summary>
-        internal static readonly DependencyProperty CursorProperty = DependencyProperty.Register("Cursor", 
+        internal static readonly DependencyProperty CursorProperty = DependencyProperty.Register("Cursor",
             typeof(SourcedCursor), typeof(FrameworkElement), new PropertyMetadata<SourcedCursor>(null, PropertyMetadataOptions.None, HandleCursorChanged));
 
         /// <summary>
@@ -401,7 +402,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var routedEvent = loaded ? LoadedEvent : UnloadedEvent;
 
-            var evt     = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(routedEvent);
+            var evt = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(routedEvent);
             var evtData = new RoutedEventData(this);
             evt(this, ref evtData);
 
@@ -481,21 +482,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (storyboard != null)
                 {
                     var group = default(String);
-                    var from  = default(String);
-                    var to    = default(String);
+                    var from = default(String);
+                    var to = default(String);
 
                     switch (style.Arguments.Count)
                     {
                         case 2:
                             group = style.Arguments[0];
-                            from  = null;
-                            to    = style.Arguments[1];
+                            from = null;
+                            to = style.Arguments[1];
                             break;
 
                         case 3:
                             group = style.Arguments[0];
-                            from  = style.Arguments[1];
-                            to    = style.Arguments[2];
+                            from = style.Arguments[1];
+                            to = style.Arguments[2];
                             break;
 
                         default:
@@ -548,13 +549,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected sealed override void ReloadContentCore(Boolean recursive)
-        {
-            ReloadCursor();
-            ReloadContentOverride(recursive);
-        }
-
-        /// <inheritdoc/>
         protected sealed override void DrawCore(UltravioletTime time, DrawingContext dc)
         {
             if (!LayoutUtil.IsDrawn(this))
@@ -570,11 +564,89 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected override void StyleCore(UvssDocument styleSheet)
+        protected sealed override void InitializeDependencyPropertiesCore(Boolean recursive)
+        {
+            base.InitializeDependencyPropertiesCore(recursive);
+        }
+
+        /// <inheritdoc/>
+        protected sealed override void ReloadContentCore(Boolean recursive)
+        {
+            ReloadCursor();
+            ReloadContentOverride(recursive);
+        }
+
+        /// <inheritdoc/>
+        protected sealed override void ClearBindingsCore(Boolean recursive)
+        {
+            base.ClearBindingsCore(recursive);
+        }
+
+        /// <inheritdoc/>
+        protected sealed override void ClearAnimationsCore(Boolean recursive)
+        {
+            base.ClearAnimationsCore(recursive);
+        }
+
+        /// <inheritdoc/>
+        protected sealed override void ClearLocalValuesCore(Boolean recursive)
+        {
+            base.ClearLocalValuesCore(recursive);
+        }
+
+        /// <inheritdoc/>
+        protected sealed override void ClearStyledValuesCore(Boolean recursive)
+        {
+            base.ClearStyledValuesCore(recursive);
+        }
+
+        /// <inheritdoc/>
+        protected sealed override void ClearTriggeredValuesCore(Boolean recursive)
+        {
+            base.ClearTriggeredValuesCore(recursive);
+        }
+        
+        /// <inheritdoc/>
+        protected sealed override void CleanupCore()
+        {
+            CleanupOverride();
+
+            base.CleanupCore();
+        }
+
+        /// <inheritdoc/>
+        protected sealed override void CacheLayoutParametersCore()
+        {
+            var templatedParentControl = TemplatedParent as Control;
+
+            var namescope = (templatedParentControl != null) ? templatedParentControl.ComponentTemplateNamescope :
+                (View != null) ? View.Namescope : null;
+
+            if (namescope != null)
+            {
+                namescope.UnregisterElement(this);
+                namescope.RegisterElement(this);
+            }
+
+            CacheLayoutParametersOverride();
+
+            base.CacheLayoutParametersCore();
+        }
+
+        /// <inheritdoc/>
+        protected sealed override void AnimateCore(StoryboardInstance storyboardInstance)
+        {
+            base.AnimateCore(storyboardInstance);
+        }
+
+        /// <inheritdoc/>
+        protected sealed override void StyleCore(UvssDocument styleSheet)
         {
             base.StyleCore(styleSheet);
 
             VisualStateGroups.ReapplyStates();
+
+            StyleOverride(styleSheet);
         }
 
         /// <inheritdoc/>
@@ -591,7 +663,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             double minHeight, maxHeight;
             LayoutUtil.GetBoundedMeasure(Height, MinHeight, MaxHeight, out minHeight, out maxHeight);
 
-            var availableWidthSansMargin  = Math.Max(0, availableSize.Width - xMargin);
+            var availableWidthSansMargin = Math.Max(0, availableSize.Width - xMargin);
             var availableHeightSansMargin = Math.Max(0, availableSize.Height - yMargin);
             var availableSizeSansMargin = new Size2D(availableWidthSansMargin, availableHeightSansMargin);
 
@@ -604,21 +676,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     availableWidthSansMargin, availableHeightSansMargin, LayoutTransform.Value);
             }
 
-            var tentativeWidth  = Math.Max(minWidth, Math.Min(maxWidth, availableSizeSansMargin.Width));
+            var tentativeWidth = Math.Max(minWidth, Math.Min(maxWidth, availableSizeSansMargin.Width));
             var tentativeHeight = Math.Max(minHeight, Math.Min(maxHeight, availableSizeSansMargin.Height));
-            var tentativeSize   = new Size2D(tentativeWidth, tentativeHeight);
+            var tentativeSize = new Size2D(tentativeWidth, tentativeHeight);
             tentativeSize = PerformLayoutRounding(tentativeSize);
 
             var measuredSize = MeasureOverride(tentativeSize);
             measuredSize = PerformLayoutRounding(measuredSize);
 
-            var measuredWidth  = measuredSize.Width;
+            var measuredWidth = measuredSize.Width;
             var measuredHeight = measuredSize.Height;
-            
-            measuredWidth  = Math.Max(minWidth, Math.Min(maxWidth, measuredWidth));
+
+            measuredWidth = Math.Max(minWidth, Math.Min(maxWidth, measuredWidth));
             measuredHeight = Math.Max(minHeight, Math.Min(maxHeight, measuredHeight));
             measuredSize = new Size2D(measuredWidth, measuredHeight);
-            
+
             layoutTransformSizeDesiredBeforeTransform = measuredSize;
 
             if (isLayoutTransformed)
@@ -626,7 +698,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var transform = LayoutTransform.Value;
                 RectangleD area = new RectangleD(0, 0, measuredWidth, measuredHeight);
                 RectangleD.TransformAxisAligned(ref area, ref transform, out area);
-                measuredSize = new Size2D(area.Width, area.Height);                
+                measuredSize = new Size2D(area.Width, area.Height);
             }
 
             var finalWidth = Math.Max(0, xMargin + measuredSize.Width);
@@ -644,7 +716,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var desiredWidth = DesiredSize.Width;
             var desiredHeight = DesiredSize.Height;
-            
+
             var hAlign = HorizontalAlignment;
             var vAlign = VerticalAlignment;
 
@@ -659,7 +731,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 desiredWidth = layoutTransformSizeDesiredBeforeTransform.Width;
                 desiredHeight = layoutTransformSizeDesiredBeforeTransform.Height;
 
-                var arrangedSizeAfterLayoutTransform = 
+                var arrangedSizeAfterLayoutTransform =
                     CalculateMaximumAvailableSizeBeforeLayoutTransform(desiredWidth, desiredHeight, layoutTransformUsedDuringLayout);
 
                 if (MathUtil.IsApproximatelyGreaterThanOrEqual(arrangedSizeAfterLayoutTransform.Width, layoutTransformSizeDesiredBeforeTransform.Width) &&
@@ -670,18 +742,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 desiredWidth = desiredWidth + margin.Left + margin.Right;
-                desiredHeight = desiredHeight + margin.Top + margin.Bottom;                
+                desiredHeight = desiredHeight + margin.Top + margin.Bottom;
             }
 
             var desiredSize = new Size2D(desiredWidth, desiredHeight);
 
             var candidateSize = desiredSize - margin;
             candidateSize = PerformLayoutRounding(candidateSize);
-            
+
             var usedSize = ArrangeOverride(candidateSize, options);
             usedSize = PerformLayoutRounding(usedSize);
 
-            var usedWidth  = Math.Min(usedSize.Width, candidateSize.Width);
+            var usedWidth = Math.Min(usedSize.Width, candidateSize.Width);
             var usedHeight = Math.Min(usedSize.Height, candidateSize.Height);
 
             usedSize = new Size2D(usedWidth, usedHeight);
@@ -723,22 +795,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected override void CacheLayoutParametersCore()
+        protected sealed override RectangleD? ClipCore()
         {
-            var templatedParentControl = TemplatedParent as Control;
-
-            var namescope = (templatedParentControl != null) ? templatedParentControl.ComponentTemplateNamescope :
-                (View != null) ? View.Namescope : null;
-
-            if (namescope != null)
-            {
-                namescope.UnregisterElement(this);
-                namescope.RegisterElement(this);
-            }
-
-            base.CacheLayoutParametersCore();
+            return ClipOverride();
         }
-        
+
         /// <inheritdoc/>
         protected override void OnLogicalParentChanged()
         {
@@ -788,22 +849,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// When overridden in a derived class, reloads this element's content 
-        /// and, optionally, the content of any children of this element.
-        /// </summary>
-        /// <param name="recursive">A value indicating whether to reload content recursively.</param>
-        protected virtual void ReloadContentOverride(Boolean recursive)
-        {
-            if (recursive)
-            {
-                VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
-                {
-                    child.ReloadContent((Boolean)state);
-                });
-            }
-        }
-
-        /// <summary>
         /// When overridden in a derived class, draws the element using the 
         /// specified <see cref="Graphics.Graphics2D.SpriteBatch"/> for a <see cref="FrameworkElement"/> derived class.
         /// </summary>
@@ -833,6 +878,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 child.Update((UltravioletTime)state);
             });
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, reloads this element's content 
+        /// and, optionally, the content of any children of this element.
+        /// </summary>
+        /// <param name="recursive">A value indicating whether to reload content recursively.</param>
+        protected virtual void ReloadContentOverride(Boolean recursive)
+        {
+            if (recursive)
+            {
+                VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(recursive), (child, state) =>
+                {
+                    child.ReloadContent((Boolean)state);
+                });
+            }
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, applies the specified style sheet
+        /// to this element and to any child elements.
+        /// </summary>
+        /// <param name="styleSheet">The style sheet to apply to this element and its children.</param>
+        protected virtual void StyleOverride(UvssDocument styleSheet)
+        {
+
         }
 
         /// <summary>
@@ -880,6 +951,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 child.Position(Size2D.Zero);
                 child.PositionChildren();
             });
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, performs cleanup operations and releases any 
+        /// internal framework resources for this element and any child elements.
+        /// </summary>
+        protected virtual void CleanupOverride()
+        {
+
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, caches layout parameters related to the
+        /// element's position within the element hierarchy for this element and for
+        /// any child elements.
+        /// </summary>
+        protected virtual void CacheLayoutParametersOverride()
+        {
+
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, calculates the clipping rectangle for this element.
+        /// </summary>
+        /// <returns>The clipping rectangle for this element in absolute screen coordinates, or <c>null</c> to disable clipping.</returns>
+        protected virtual RectangleD? ClipOverride()
+        {
+            return null;
         }
 
         /// <summary>

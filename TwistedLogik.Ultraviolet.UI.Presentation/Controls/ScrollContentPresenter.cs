@@ -69,17 +69,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get { return viewportHeight; }
         }
-
-        /// <inheritdoc/>
-        protected override RectangleD? ClipCore()
-        {
-            var scrollViewer = TemplatedParent as ScrollViewer;
-            if (scrollViewer != null && scrollViewer.ContentClipped)
-            {
-                return UntransformedAbsoluteBounds;
-            }
-            return base.ClipCore();
-        }
         
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
@@ -167,6 +156,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
                 child.PositionChildren();
             });
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleD? ClipOverride()
+        {
+            var scrollViewer = TemplatedParent as ScrollViewer;
+            if (scrollViewer != null && scrollViewer.ContentClipped)
+            {
+                return UntransformedAbsoluteBounds;
+            }
+            return base.ClipOverride();
         }
 
         // Property values.

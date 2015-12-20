@@ -171,13 +171,13 @@ namespace UvDebugSandbox.Content.UI.Controls
         }
 
         /// <inheritdoc/>
-        protected override void CleanupCore()
+        protected override void CleanupOverride()
         {
             SafeDispose.DisposeRef(ref geometryStream);
             SafeDispose.DisposeRef(ref vbuffer);
             SafeDispose.DisposeRef(ref effect);
 
-            base.CleanupCore();
+            base.CleanupOverride();
         }
 
         /// <summary>

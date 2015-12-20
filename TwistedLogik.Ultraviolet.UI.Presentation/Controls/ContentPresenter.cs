@@ -102,11 +102,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void CacheLayoutParametersCore()
+        protected override void CacheLayoutParametersOverride()
         {
             containingControl = FindContainingControl();
 
-            base.CacheLayoutParametersCore();
+            base.CacheLayoutParametersOverride();
         }
 
         /// <inheritdoc/>
@@ -205,7 +205,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override RectangleD? ClipCore()
+        protected override RectangleD? ClipOverride()
         {
             var contentElement = Content as UIElement;
             if (contentElement != null)
@@ -216,7 +216,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
             }
 
-            return base.ClipCore();
+            return base.ClipOverride();
         }
 
         /// <inheritdoc/>

@@ -245,12 +245,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void StyleCore(UvssDocument styleSheet)
+        protected override void StyleOverride(UvssDocument styleSheet)
         {
             if (componentRoot != null)
                 componentRoot.InvalidateStyle(true);
 
-            base.StyleCore(styleSheet);
+            base.StyleOverride(styleSheet);
         }
 
         /// <inheritdoc/>
