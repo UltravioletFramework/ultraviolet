@@ -51,6 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             RegisterInputClassHandlers();
 
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.QueryCursorEvent, new UpfQueryCursorEventHandler(OnQueryCursorProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Presentation.View.ViewModelChangedEvent, new UpfRoutedEventHandler(OnViewModelChangedProxy));
         }
 
         /// <summary>
@@ -1850,6 +1851,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when the element's view model has potentially changed.
+        /// </summary>
+        protected virtual void OnViewModelChanged()
+        {
+
+        }
+
+        /// <summary>
         /// Occurs when the element's logical parent is changed.
         /// </summary>
         protected virtual void OnLogicalParentChanged()
@@ -2600,6 +2609,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invokes the <see cref="OnViewModelChanged"/> method.
+        /// </summary>
+        private static void OnViewModelChangedProxy(DependencyObject element, ref RoutedEventData data)
+        {
+            ((UIElement)element).OnViewModelChanged();
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsVisible"/> dependency property changes.
         /// </summary>
         private static void HandleIsVisibleChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
@@ -2914,6 +2931,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private void HandleViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
         {
             OnViewChanged(oldView, newView);
+            OnViewModelChanged();
 
             if (oldView == null)
             {

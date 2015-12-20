@@ -29,5 +29,11 @@
         /// </summary>
         public static readonly RoutedEvent ClosedEvent = EventManager.RegisterRoutedEvent("Closed",
             RoutingStrategy.Direct, typeof(UpfRoutedEventHandler), typeof(View));
+
+        /// <summary>
+        /// Identifies the ViewModelChanged routed event.
+        /// </summary>
+        public static readonly RoutedEvent ViewModelChangedEvent = EventManager.RegisterRoutedEvent("ViewModelChanged",
+            RoutingStrategy.Direct, typeof(UpfRoutedEventHandler), typeof(View));
     }
 }

@@ -205,6 +205,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var wrapper = upf.CreateDataSourceWrapperByName(viewModelWrapperName, viewModel, Namescope);
 
             base.SetViewModel(wrapper);
+
+            RaiseViewModelChangedEvent(layoutRoot);
         }
 
         /// <summary>
@@ -1016,6 +1018,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             VisualTreeHelper.ForEachChild(dobj, evt, (child, state) =>
             {
                 RaiseViewLifecycleEvent(child, (RoutedEvent)state);
+            });
+        }
+
+        /// <summary>
+        /// Raises the <see cref="View.ViewModelChangedEvent"/> for an object and all of its descendants.
+        /// </summary>
+        /// <param name="dobj">The dependency object for which to raise the event.</param>
+        private static void RaiseViewModelChangedEvent(DependencyObject dobj)
+        {
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(View.ViewModelChangedEvent);
+            var evtData = new RoutedEventData(dobj);
+            evtDelegate(dobj, ref evtData);
+
+            VisualTreeHelper.ForEachChild(dobj, null, (child, state) =>
+            {
+                RaiseViewModelChangedEvent(child);
             });
         }
 
