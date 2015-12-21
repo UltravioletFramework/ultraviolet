@@ -154,8 +154,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         public void Save(String path)
         {
             Contract.RequireNotEmpty(path, "path");
-
-            using (var stream = File.OpenWrite(path))
+            
+            using (var stream = File.Open(path, FileMode.Create))
             using (var writer = new StreamWriter(stream))
             {
                 foreach (var hash in hashes)
