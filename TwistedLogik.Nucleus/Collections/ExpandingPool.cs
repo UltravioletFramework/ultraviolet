@@ -14,8 +14,9 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="capacity">The pool's initial capacity.</param>
         /// <param name="allocator">A function which allocates new instances of <typeparamref name="T"/>.</param>
-        public ExpandingPool(Int32 capacity, Func<T> allocator = null)
-            : this(capacity, Int32.MaxValue, allocator)
+        /// <param name="deallocator">An action which is performed on objects which are being returned to the pool.</param>
+        public ExpandingPool(Int32 capacity, Func<T> allocator = null, Action<T> deallocator = null)
+            : this(capacity, Int32.MaxValue, allocator, deallocator)
         {
 
         }
@@ -26,14 +27,16 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="capacity">The pool's initial capacity.</param>
         /// <param name="watermark">The pool's watermark value, which indicates the maximum size of the pool.</param>
         /// <param name="allocator">A function which allocates new instances of <typeparamref name="T"/>.</param>
-        public ExpandingPool(Int32 capacity, Int32 watermark, Func<T> allocator = null)
+        /// <param name="deallocator">An action which is performed on objects which are being returned to the pool.</param>
+        public ExpandingPool(Int32 capacity, Int32 watermark, Func<T> allocator = null, Action<T> deallocator = null)
         {
             Contract.EnsureRange(capacity >= 0, "capacity");
             Contract.EnsureRange(watermark >= 1, "watermark");
             Contract.EnsureRange(watermark >= capacity, "watermark");
 
-            this.watermark  = watermark;
-            this.allocator  = allocator ?? CreateDefaultAllocator();
+            this.watermark = watermark;
+            this.allocator = allocator ?? CreateDefaultAllocator();
+            this.deallocator = deallocator;
             this.disposable = typeof(T).GetInterfaces().Contains(typeof(IDisposable));
 
             ExpandStorage(capacity);
@@ -60,6 +63,9 @@ namespace TwistedLogik.Nucleus.Collections
             if (watermarkAllocations + count == 0)
                 throw new InvalidOperationException(NucleusStrings.PoolImbalance);
 
+            if (deallocator != null)
+                deallocator(instance);
+
             if (count == 0)
             {
                 watermarkAllocations--;
@@ -75,6 +81,9 @@ namespace TwistedLogik.Nucleus.Collections
         {
             if (watermarkAllocations + count == 0)
                 throw new InvalidOperationException(NucleusStrings.PoolImbalance);
+
+            if (deallocator != null)
+                deallocator(instance);
 
             if (count == 0)
             {
@@ -164,6 +173,7 @@ namespace TwistedLogik.Nucleus.Collections
 
         // The underlying storage for the object pool.
         private readonly Func<T> allocator;
+        private readonly Action<T> deallocator;
         private readonly Boolean disposable;
         private T[] storage;
         private Int32 count;
