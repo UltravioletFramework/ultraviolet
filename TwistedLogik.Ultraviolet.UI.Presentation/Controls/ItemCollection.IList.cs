@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -8,7 +9,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         public void CopyTo(Object[] array, Int32 arrayIndex)
         {
-            throw new NotImplementedException();
+            Contract.Require(array, "array");
+            Contract.EnsureRange(arrayIndex >= 0, "arrayIndex");
+
+            if (IsBoundToItemsSource)
+            {
+                var index = arrayIndex;
+                foreach (var item in itemsSource)
+                    array[arrayIndex++] = item;
+            }
+            else
+            {
+                if (arrayIndex + itemsStorage.Count > array.Length)
+                    throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
+
+                for (int i = 0; i < itemsStorage.Count; i++)
+                    array[arrayIndex + i] = itemsStorage[i];
+            }
         }
 
         /// <inheritdoc/>
