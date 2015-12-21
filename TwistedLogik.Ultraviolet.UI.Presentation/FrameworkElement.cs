@@ -52,23 +52,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public void BeginInit()
         {
-            Contract.EnsureNot(isInitializing, PresentationStrings.BeginInitAlreadyCalled);
+            Contract.Ensure(initializationState == FrameworkElementInitializationState.Uninitialized, PresentationStrings.BeginInitAlreadyCalled);
 
-            isInitializing = true;
+            initializationState = FrameworkElementInitializationState.Initializing;
         }
 
         /// <inheritdoc/>
         public void EndInit()
         {
-            Contract.Ensure(isInitializing, PresentationStrings.BeginInitNotCalled);
+            Contract.Ensure(initializationState == FrameworkElementInitializationState.Initializing, PresentationStrings.BeginInitNotCalled);
 
-            isInitializing = false;
+            initializationState = FrameworkElementInitializationState.InitializingRaisingEvents;
 
-            if (!isInitialized)
-            {
-                isInitialized = true;
-                OnInitialized();
-            }
+            RaisePendingChangeEvents();
+
+            OnInitialized();
         }
 
         /// <summary>
@@ -215,13 +213,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             get { return GetValue<Object>(TagProperty); }
             set { SetValue(TagProperty, value); }
         }
-
+        
         /// <summary>
         /// Gets a value indicating whether the element has been fully initialized.
         /// </summary>
         public Boolean IsInitialized
         {
-            get { return isInitialized; }
+            get { return initializationState == FrameworkElementInitializationState.Initialized; }
         }
 
         /// <summary>
@@ -230,6 +228,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsLoaded
         {
             get { return isLoaded; }
+        }
+
+        /// <inheritdoc/>
+        public override Boolean IsDeferringChangeEvents
+        {
+            get { return initializationState == FrameworkElementInitializationState.Initializing; }
         }
 
         /// <summary>
@@ -417,7 +421,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         internal void EnsureIsInitialized()
         {
-            if (IsInitialized || isInitializing)
+            if (initializationState != FrameworkElementInitializationState.Uninitialized)
                 return;
 
             BeginInit();
@@ -519,7 +523,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return isLayoutTransformed; }
         }
-
+        
         /// <summary>
         /// Gets the specified logical child of this element.
         /// </summary>
@@ -803,17 +807,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected override void OnLogicalParentChanged()
         {
-            EnsureIsInitialized();
-
             base.OnLogicalParentChanged();
+
+            EnsureIsInitialized();
         }
 
         /// <inheritdoc/>
         protected override void OnVisualParentChanged(Visual oldParent, Visual newParent)
         {
-            EnsureIsInitialized();
-
             base.OnVisualParentChanged(oldParent, newParent);
+
+            EnsureIsInitialized();
         }
 
         /// <inheritdoc/>
@@ -1237,13 +1241,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private DependencyObject templatedParent;
         private readonly String name;
         private readonly VisualStateGroupCollection visualStateGroups;
-        private Boolean isInitialized;
         private Boolean isLoaded;
 
         // State values.
+        private FrameworkElementInitializationState initializationState;
         private Matrix layoutTransformUsedDuringLayout;
         private Size2D layoutTransformSizeDesiredBeforeTransform;
         private Boolean isLayoutTransformed;
-        private Boolean isInitializing;
     }
 }

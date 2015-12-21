@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -22,7 +23,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             return wrapper.HasDefinedValue;
         }
-        
+
+        /// <summary>
+        /// Raises any pending change events for this object's dependency properties.
+        /// </summary>
+        public void RaisePendingChangeEvents()
+        {
+            using (var buffer = GetDependencyPropertyValuesBuffer())
+            {
+                foreach (var value in buffer.Object)
+                {
+                    value.RaisePendingChangeEvent();
+                }
+            }
+        }
+
         /// <summary>
         /// Immediately digests the specified dependency property, but only if it is currently data bound.
         /// </summary>
@@ -44,11 +59,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void DigestImmediately()
         {
-            for (int i = 0; i < digestedDependencyProperties.Count; i++)
+            using (var buffer = GetDigestedDependencyPropertiesBuffer())
             {
-                var wrapper = digestedDependencyProperties[i];
-                wrapper.DigestImmediately();
-                OnDigestingImmediately(wrapper.Property);
+                foreach (var value in buffer.Object)
+                {
+                    value.DigestImmediately();
+                    OnDigestingImmediately(value.Property);
+                }
             }
         }
 
@@ -77,27 +94,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             lastDigestedCycleID = PresentationFoundation.Instance.DigestCycleID;
 
-            foreach (var value in dependencyPropertyValuesOfTypeDependencyObject)
+            using (var buffer = GetDependencyPropertyValuesOfTypeDependencyObjectBuffer())
             {
-                var dobj = (DependencyObject)value.Value.GetUntypedValue();
-                if (dobj != null)
+                foreach (var value in buffer.Object)
                 {
-                    if (dobj.WasInvalidatedLastDigest)
+                    var dobj = (DependencyObject)value.GetUntypedValue();
+                    if (dobj != null)
                     {
-                        value.Value.HandleForcedInvalidation();
+                        if (dobj.WasInvalidatedLastDigest)
+                        {
+                            value.HandleForcedInvalidation();
+                        }
+                        dobj.Digest(time);
                     }
-                    dobj.Digest(time);
                 }
             }
 
-            for (int i = 0; i < digestedDependencyProperties.Count; i++)
+            using (var buffer = GetDigestedDependencyPropertiesBuffer())
             {
-                digestedDependencyProperties[i].Digest(time);
+                foreach (var value in buffer.Object)
+                {
+                    value.Digest(time);
+                }
             }
 
             OnDigesting(time);
         }
-        
+
         /// <summary>
         /// Initializes the object's dependency properties.
         /// </summary>
@@ -122,11 +145,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void ClearBindings()
         {
-            foreach (var kvp in dependencyPropertyValues)
+            using (var buffer = GetDependencyPropertyValuesBuffer())
             {
-                if (kvp.Value.IsDataBound)
+                foreach (var value in buffer.Object)
                 {
-                    kvp.Value.Unbind();
+                    if (value.IsDataBound)
+                        value.Unbind();
                 }
             }
         }
@@ -136,11 +160,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void ClearAnimations()
         {
-            foreach (var kvp in dependencyPropertyValues)
+            using (var buffer = GetDigestedDependencyPropertiesBuffer())
             {
-                if (!kvp.Value.Property.IsReadOnly)
+                foreach (var value in buffer.Object)
                 {
-                    kvp.Value.ClearAnimation();
+                    if (!value.Property.IsReadOnly)
+                        value.ClearAnimation();
                 }
             }
         }
@@ -150,11 +175,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void ClearLocalValues()
         {
-            foreach (var kvp in dependencyPropertyValues)
+            using (var buffer = GetDigestedDependencyPropertiesBuffer())
             {
-                if (!kvp.Value.Property.IsReadOnly)
+                foreach (var value in buffer.Object)
                 {
-                    kvp.Value.ClearLocalValue();
+                    if (!value.Property.IsReadOnly)
+                        value.ClearLocalValue();
                 }
             }
         }
@@ -164,14 +190,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void ClearStyledValues()
         {
-            foreach (var kvp in dependencyPropertyValues)
+            using (var buffer = GetDigestedDependencyPropertiesBuffer())
             {
-                if (!kvp.Value.Property.IsReadOnly)
+                foreach (var value in buffer.Object)
                 {
-                    kvp.Value.ClearStyledValue();
+                    if (!value.Property.IsReadOnly)
+                        value.ClearStyledValue();
                 }
             }
-
+            
             if (attachedTriggers != null)
             {
                 foreach (var trigger in attachedTriggers)
@@ -187,11 +214,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void ClearTriggeredValues()
         {
-            foreach (var kvp in dependencyPropertyValues)
+            using (var buffer = GetDigestedDependencyPropertiesBuffer())
             {
-                if (!kvp.Value.Property.IsReadOnly)
+                foreach (var value in buffer.Object)
                 {
-                    kvp.Value.ClearTriggeredValue();
+                    if (!value.Property.IsReadOnly)
+                        value.ClearTriggeredValue();
                 }
             }
         }
@@ -575,46 +603,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Attaches a trigger to this object.
+        /// Gets a value indicating whether change events are being deferred for this object.
         /// </summary>
-        /// <param name="trigger">The trigger to attach to this object.</param>
-        internal void AttachTrigger(Trigger trigger)
+        public virtual Boolean IsDeferringChangeEvents
         {
-            if (attachedTriggers == null)
-                attachedTriggers = new List<Trigger>();
-
-            attachedTriggers.Add(trigger);
-        }
-
-        /// <summary>
-        /// Detaches a trigger from this object.
-        /// </summary>
-        /// <param name="trigger">The trigger to detach from this object.</param>
-        internal void DetachTrigger(Trigger trigger)
-        {
-            if (attachedTriggers == null)
-                throw new InvalidOperationException();
-
-            attachedTriggers.Remove(trigger);
-        }
-        
-        /// <summary>
-        /// Enlists a dependency property on this object into the specified storyboard instance.
-        /// </summary>
-        /// <param name="dp">A <see cref="DependencyProperty"/> that identifies the dependency property to enlist.</param>
-        /// <param name="storyboardInstance">The <see cref="StoryboardInstance"/> into which to enlist the dependency property.</param>
-        /// <param name="animation">The animation to apply to the dependency property.</param>
-        internal void EnlistDependencyPropertyInStoryboard(DependencyProperty dp, StoryboardInstance storyboardInstance, AnimationBase animation)
-        {
-            Contract.Require(dp, "dp");
-            Contract.Require(storyboardInstance, "storyboardInstance");
-            Contract.Require(animation, "animation");
-
-            if (dp.IsReadOnly)
-                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
-            
-            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
-            storyboardInstance.Enlist(wrapper, animation);
+            get { return false; }
         }
 
         /// <summary>
@@ -642,6 +635,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Attaches a trigger to this object.
+        /// </summary>
+        /// <param name="trigger">The trigger to attach to this object.</param>
+        internal void AttachTrigger(Trigger trigger)
+        {
+            if (attachedTriggers == null)
+                attachedTriggers = new List<Trigger>();
+
+            attachedTriggers.Add(trigger);
+        }
+
+        /// <summary>
+        /// Detaches a trigger from this object.
+        /// </summary>
+        /// <param name="trigger">The trigger to detach from this object.</param>
+        internal void DetachTrigger(Trigger trigger)
+        {
+            if (attachedTriggers == null)
+                throw new InvalidOperationException();
+
+            attachedTriggers.Remove(trigger);
+        }
+
+        /// <summary>
+        /// Enlists a dependency property on this object into the specified storyboard instance.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> that identifies the dependency property to enlist.</param>
+        /// <param name="storyboardInstance">The <see cref="StoryboardInstance"/> into which to enlist the dependency property.</param>
+        /// <param name="animation">The animation to apply to the dependency property.</param>
+        internal void EnlistDependencyPropertyInStoryboard(DependencyProperty dp, StoryboardInstance storyboardInstance, AnimationBase animation)
+        {
+            Contract.Require(dp, "dp");
+            Contract.Require(storyboardInstance, "storyboardInstance");
+            Contract.Require(animation, "animation");
+
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
+
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
+            storyboardInstance.Enlist(wrapper, animation);
+        }
+
+        /// <summary>
         /// Gets or sets the object's data source according to the context in which it was declared. Usually this
         /// will either be a view or a control's templated parent.
         /// </summary>
@@ -663,7 +699,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     return view.ViewModel;
                 }
-                return DeclarativeDataSource; 
+                return DeclarativeDataSource;
             }
         }
 
@@ -672,7 +708,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         internal virtual Object DependencyDataSource
         {
-            get 
+            get
             {
                 return DeclarativeViewModelOrTemplate;
             }
@@ -685,7 +721,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return null; }
         }
-        
+
         /// <summary>
         /// Occurs when the value of one of the object's dependency properties changes.
         /// </summary>
@@ -770,10 +806,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected void OnDependencyDataSourceChanged()
         {
             var dataSource = DependencyDataSource;
-            
-            foreach (var kvp in dependencyPropertyValues)
+
+            using (var buffer = GetDependencyPropertyValuesBuffer())
             {
-                kvp.Value.HandleDataSourceChanged(dataSource);
+                foreach (var value in buffer.Object)
+                {
+                    value.HandleDataSourceChanged(dataSource);
+                }
             }
         }
 
@@ -856,6 +895,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
         
+        /// <summary>
+        /// Retrieves a pooled buffer which is populated with the object's dependency property values.
+        /// </summary>
+        private PooledObjectScope<List<IDependencyPropertyValue>> GetDependencyPropertyValuesBuffer()
+        {
+            var scope = dpValueBufferPool.RetrieveScoped();
+            
+            foreach (var kvp in dependencyPropertyValues)
+                scope.Object.Add(kvp.Value);
+
+            return scope;
+        }
+
+        /// <summary>
+        /// Retrieves a pooled buffer which is populated with the object's dependency property values of type <see cref="DependencyObject"/>.
+        /// </summary>
+        private PooledObjectScope<List<IDependencyPropertyValue>> GetDependencyPropertyValuesOfTypeDependencyObjectBuffer()
+        {
+            var scope = dpValueBufferPool.RetrieveScoped();
+            
+            foreach (var kvp in dependencyPropertyValuesOfTypeDependencyObject)
+                scope.Object.Add(kvp.Value);
+
+            return scope;
+        }
+
+        /// <summary>
+        /// Retrieves a pooled buffer which is populated with the object's digested dependency property values.
+        /// </summary>
+        private PooledObjectScope<List<IDependencyPropertyValue>> GetDigestedDependencyPropertiesBuffer()
+        {
+            var scope = dpValueBufferPool.RetrieveScoped();
+            
+            scope.Object.AddRange(digestedDependencyProperties);
+
+            return scope;
+        }
+
         // The list of attached triggers.
         private List<Trigger> attachedTriggers;
 
@@ -866,12 +943,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new Dictionary<Int64, IDependencyPropertyValue>();
 
         // The list of dependency properties which need to participate in the digest cycle.
-        private readonly List<IDependencyPropertyValue> digestedDependencyProperties = 
+        private readonly List<IDependencyPropertyValue> digestedDependencyProperties =
             new List<IDependencyPropertyValue>();
 
         // State values.
         private Int64 lastDigestedCycleID;
         private Int64 invalidatedDigestCount1;
         private Int64 invalidatedDigestCount2;
+
+        // The dependency system's pool of buffers for manipulating dependency property value lists.
+        private static readonly Pool<List<IDependencyPropertyValue>> dpValueBufferPool =
+            new ExpandingPool<List<IDependencyPropertyValue>>(4, () => new List<IDependencyPropertyValue>(128), buffer => buffer.Clear());
     }
 }

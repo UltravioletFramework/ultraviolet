@@ -12,11 +12,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="UvmlObject"/> class.
         /// </summary>
         /// <param name="xml">The XML element that corresponds to this node.</param>
-        /// <param name="instance">The object instance that corresponds to this node.</param>
-        public UvmlObject(XElement xml, UIElement instance)
+        /// <param name="instance">The <see cref="UIElement"/> instance that was created for this object.</param>
+        /// <param name="instanceFlags">The set of <see cref="UIElementInstanceFlags"/> to attach to this object's instance.</param>
+        public UvmlObject(XElement xml, UIElement instance, UIElementInstanceFlags instanceFlags)
         {
             this.xml = xml;
             this.instance  = instance;
+            this.instanceFlags = instanceFlags;
         }
 
         /// <summary>
@@ -26,13 +28,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return xml; }
         }
-
+        
         /// <summary>
-        /// Gets the <see cref="Instance"/> that corresponds to this node.
+        /// Gets the <see cref="UIElement"/> instance that was created for this object.
         /// </summary>
         public UIElement Instance
         {
             get { return instance; }
+        }
+
+        /// <summary>
+        /// Gets the set of <see cref="UIElementInstanceFlags"/> which are attached to this object's instance.
+        /// </summary>
+        public UIElementInstanceFlags InstanceFlags
+        {
+            get { return instanceFlags; }
         }
 
         /// <summary>
@@ -46,6 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Property values.
         private readonly XElement xml;
         private readonly UIElement instance;
+        private readonly UIElementInstanceFlags instanceFlags;
         private readonly List<UvmlObject> children = new List<UvmlObject>();
     }
 }

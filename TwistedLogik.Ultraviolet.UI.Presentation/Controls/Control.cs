@@ -135,15 +135,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             typeof(VerticalAlignment), typeof(Control), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
         
         /// <summary>
-        /// Populates any fields of this object which represent references
-        /// to components in the current component tree.
-        /// </summary>
-        internal void PopulateFieldsFromRegisteredElements()
-        {
-            componentTemplateNamescope.PopulateFieldsFromRegisteredElements(this);
-        }
-
-        /// <summary>
         /// Gets the data source wrapper which exposes the compiled binding expressions for the control.
         /// </summary>
         internal Object DataSourceWrapper

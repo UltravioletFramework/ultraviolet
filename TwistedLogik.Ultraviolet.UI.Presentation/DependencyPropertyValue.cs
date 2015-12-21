@@ -44,10 +44,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
+            public void RaisePendingChangeEvent()
+            {
+                if (!isPendingChangeEvent)
+                    return;
+
+                var oldValue = defaultValue;
+                var newValue = GetValue();
+                metadata.HandleChanged(owner, property, oldValue, newValue);
+
+                isPendingChangeEvent = false;
+            }
+
+            /// <inheritdoc/>
             public void HandleForcedInvalidation()
             {
                 var value = GetValue();
-                metadata.HandleChanged(Owner, property, value, value);
+                HandleChanged(value, value);
             }
 
             /// <inheritdoc/>
@@ -207,7 +220,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (!comparer(coercedValue, oldCoercedValue))
                 {
-                    metadata.HandleChanged<T>(owner, property, oldCoercedValue, coercedValue);
+                    HandleChanged(oldCoercedValue, coercedValue);
                     previousValue = coercedValue;
                 }
             }
@@ -523,6 +536,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
+            /// Gets a value indicating whether change handler events are currently being deferred.
+            /// </summary>
+            /// <returns><c>true</c> if change handler events are being deferred; otherwise, <c>false</c>.</returns>
+            private Boolean IsDeferringChangeEvents()
+            {
+                return owner.IsDeferringChangeEvents;
+            }
+
+            /// <summary>
+            /// Handles the value of the dependency property being changed.
+            /// </summary>
+            /// <param name="oldValue">The dependency property's old value.</param>
+            /// <param name="newValue">The dependency property's new value.</param>
+            private void HandleChanged(T oldValue, T newValue)
+            {
+                if (IsDeferringChangeEvents())
+                {
+                    isPendingChangeEvent = true;
+                }
+                else
+                {
+                    metadata.HandleChanged(owner, property, oldValue, newValue);
+                }
+            }
+
+            /// <summary>
             /// Sets the property's bound value.
             /// </summary>
             private void SetCachedBoundValue(T value)
@@ -541,7 +580,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     if (!comparer(oldValue, newValue))
                     {
-                        metadata.HandleChanged<T>(Owner, property, oldValue, newValue);
+                        HandleChanged(oldValue, newValue);
                     }
                 }
                 else
@@ -595,7 +634,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var definitelyChanged = potentiallyChanged;
                     if (definitelyChanged)
                     {
-                        metadata.HandleChanged(Owner, property, oldValue, newValue);
+                        HandleChanged(oldValue, newValue);
                     }
                 }
                 previousValue = value;
@@ -653,7 +692,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 
                 if (changed)
                 {
-                    metadata.HandleChanged(Owner, property, oldValue, newValue);
+                    HandleChanged(oldValue, newValue);
                 }
             }
             
@@ -884,6 +923,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private readonly PropertyMetadata metadata;
             private readonly Boolean isReferenceType;
             private readonly Boolean isValueType;
+            private Boolean isPendingChangeEvent;
             private Boolean hasLocalValue;
             private Boolean hasStyledValue;
             private T localValue;

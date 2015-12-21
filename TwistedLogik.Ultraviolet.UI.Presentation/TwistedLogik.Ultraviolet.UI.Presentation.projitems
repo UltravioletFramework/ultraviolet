@@ -173,6 +173,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DrawingContextState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FrameworkElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FrameworkElementInitializationState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FrameworkResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GridLength.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GridUnitType.cs" />
@@ -265,6 +266,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssSelectorPartQualifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SystemParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextWrapping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UIElementInstanceFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPool.IPooledObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPoolList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPool.PooledObject.cs" />

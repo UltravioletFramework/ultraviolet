@@ -351,15 +351,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             itemContainerGenerator.AssociateContainerWithItem(container, item);
+            itemContainers.Add(container);
 
             var containerElement = container as UIElement;
             if (containerElement != null)
             {
-                containerElement.ChangeLogicalAndVisualParents(this, null);
                 ItemsPanelElement.Children.Add(containerElement);
+                containerElement.ChangeLogicalParent(this);
             }
-
-            itemContainers.Add(container);
 
             SetValue(HasItemsPropertyKey, true);
 

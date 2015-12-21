@@ -10,6 +10,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     internal interface IDependencyPropertyValue
     {
         /// <summary>
+        /// Raises this dependency property's pending change event, if it has one.
+        /// </summary>
+        void RaisePendingChangeEvent();
+        
+        /// <summary>
         /// Called when the property's value is forcibly invalidated.
         /// </summary>
         void HandleForcedInvalidation();

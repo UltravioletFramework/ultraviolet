@@ -2,34 +2,59 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     partial class UvmlLoader
     {
         /// <summary>
-        /// Represents a context within which the view loader instantiates new controls. This context
-        /// is used primarily to influence how expressions are bound.
+        /// Represents a context within which the view loader instantiates new controls.
         /// </summary>
+        /// <remarks>The instantiation context tracks the current state of the UVML loader. It maintains a namescope,
+        /// determines how expressions are bound, and tracks scoped data like the current templated parent.</remarks>
         private class InstantiationContext
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="InstantiationContext"/> class.
             /// </summary>
             /// <param name="uv">The Ultraviolet context.</param>
-            /// <param name="view">The view which is being loaded.</param>
-            /// <param name="viewModelType">The type of view model to which the view is bound.</param>
-            /// <param name="templatedParent">The templated parent for the current instantiation context.</param>
-            public InstantiationContext(UltravioletContext uv, PresentationFoundationView view, Type viewModelType, DependencyObject templatedParent = null)
+            /// <param name="dataSource">The data source for the current scope.</param>
+            /// <param name="dataSourceType">The type of the data source for the current scope.</param>
+            private InstantiationContext(UltravioletContext uv, Object dataSource, Type dataSourceType)
             {
-                this.uv              = uv;
-                this.view            = view;
-                this.templatedParent = templatedParent;
-                this.viewModelType   = viewModelType;
+                this.Ultraviolet = uv;
+                this.Namescope = new Namescope();
+                this.DataSource = dataSource;
+                this.DataSourceType = dataSourceType;
 
                 FindCompiledBindingExpressions();
             }
 
+            /// <summary>
+            /// Creates an instantiation context for a view.
+            /// </summary>
+            /// <param name="uv">The Ultraviolet context.</param>
+            /// <param name="view">The view which is being loaded.</param>
+            /// <param name="viewModelType">The view model type for the view which is being loaded.</param>
+            /// <returns>The instantiation context for the specified view.</returns>
+            public static InstantiationContext FromView(UltravioletContext uv, PresentationFoundationView view, Type viewModelType)
+            {
+                return new InstantiationContext(uv, view, viewModelType);
+            }
+
+            /// <summary>
+            /// Creates an instantiation context for a control.
+            /// </summary>
+            /// <param name="uv">The Ultraviolet context.</param>
+            /// <param name="control">The control which is being loaded.</param>
+            /// <returns>The instantiation context for the specified control.</returns>
+            public static InstantiationContext FromControl(UltravioletContext uv, Control control)
+            {
+                var wrapper = PresentationFoundation.GetDataSourceWrapper(control);
+                return new InstantiationContext(uv, control, wrapper.GetType());
+            }            
+            
             /// <summary>
             /// Gets the property that implements the compiled version of the specified binding expression.
             /// </summary>
@@ -42,11 +67,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 PropertyInfo property;
 
                 var key = new CompiledBindingExpressionKey(type, expression);
-                
                 if (compiledBindingExpressions.TryGetValue(key, out property))
-                {
                     return property;
-                }
+
                 return null;
             }
 
@@ -55,51 +78,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// </summary>
             public UltravioletContext Ultraviolet
             {
-                get { return uv; }
+                get;
+                private set;
+            }
+
+            /// <summary>
+            /// Gets or sets the current namescope.
+            /// </summary>
+            public Namescope Namescope
+            {
+                get;
+                private set;
             }
 
             /// <summary>
             /// Gets or sets the templated parent which will be assigned to elements
             /// created within this instantiation context.
             /// </summary>
-            public DependencyObject TemplatedParent
+            public Object TemplatedParent
             {
-                get { return templatedParent; }
-                set { templatedParent = value; }
+                get { return DataSource is PresentationFoundationView ? null : DataSource; }
+            }
+
+            /// <summary>
+            /// Gets the declarative data source for the current instantiation context.
+            /// </summary>
+            public Object DataSource
+            {
+                get;
+                private set;
             }
             
             /// <summary>
             /// Gets the type of view model to which the view is bound.
             /// </summary>
-            public Type ViewModelType
+            public Type DataSourceType
             {
-                get { return viewModelType; }
-            }            
-
-            /// <summary>
-            /// Gets the declarative data source for the current instantiation context.
-            /// </summary>
-            public Object DeclarativeDataSource
-            {
-                get
-                {
-                    return view ?? (Object)templatedParent;
-                }
+                get;
+                private set;
             }
-            
+
             /// <summary>
             /// Finds all of the compiled binding expressions on the current view model and adds them to the context's registry.
             /// </summary>
             private void FindCompiledBindingExpressions()
             {
                 var wrapperName = default(String);
-                var wrapperType = viewModelType;
+                var wrapperType = DataSource is PresentationFoundationView ? DataSourceType : null;
                 if (wrapperType == null)
                 {
                     for (var templateType = TemplatedParent.GetType(); templateType != null; templateType = templateType.BaseType)
                     {
                         wrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templateType);
-                        wrapperType = uv.GetUI().GetPresentationFoundation().GetDataSourceWrapperTypeByName(wrapperName);
+                        wrapperType = Ultraviolet.GetUI().GetPresentationFoundation().GetDataSourceWrapperTypeByName(wrapperName);
 
                         if (wrapperType != null)
                             break;
@@ -130,11 +161,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private readonly Dictionary<CompiledBindingExpressionKey, PropertyInfo> compiledBindingExpressions =
                 new Dictionary<CompiledBindingExpressionKey, PropertyInfo>();
 
-            // Property values.
-            private readonly UltravioletContext uv;
-            private PresentationFoundationView view;
-            private DependencyObject templatedParent;
-            private Type viewModelType;
         }
     }
 }
