@@ -36,14 +36,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiPanel">The <see cref="UIPanel"/> that is creating the panel.</param>
         /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view.</param>
+        /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <c>null</c> to skip view model creation.</param>
         /// <returns>The <see cref="PresentationFoundationView"/> that was loaded from the specified XML element.</returns>
-        public static PresentationFoundationView Load(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition)
+        public static PresentationFoundationView Load(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory)
         {
             Contract.Require(uv, "uv");
             Contract.Require(uiPanelDefinition, "uiPanelDefinition");
 
             var xml = uiPanelDefinition.ViewElement;
-
+            
             var viewModelType = default(Type);
             var viewModelTypeAttr = xml.Attribute("ViewModelType");
             if (viewModelTypeAttr != null)
@@ -67,6 +68,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             var view = new PresentationFoundationView(uv, uiPanel, viewModelType);
+            var viewModel = (vmfactory == null) ? null : vmfactory(view);
+            if (viewModel != null)
+            {
+                view.SetViewModel(viewModel);
+            }
+
             var context = InstantiationContext.FromView(uv, view, viewModelType);
 
             var root = view.LayoutRoot;
@@ -81,10 +88,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             rootAdornerDecorator.Child = rootGrid;
 
             var objectTree = BuildObjectTree(uv, xml, rootGrid, rootGridFlags, context);
+
+            if (viewModel != null)
+                context.Namescope.PopulateFieldsFromRegisteredElements(viewModel);
+
             PopulateObjectTree(uv, objectTree, context);
 
             rootAdornerDecorator.EndInit();
             root.EndInit();
+            root.CacheLayoutParameters();
 
             return view;
         }

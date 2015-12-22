@@ -56,6 +56,8 @@ namespace TwistedLogik.Ultraviolet.UI
             Contract.RequireNotEmpty(rootDirectory, "rootDirectory");
             Contract.Require(globalContent, "globalContent");
 
+            this.vmfactory = new UIViewModelFactory(CreateViewModel);
+
             this.localContent  = ContentManager.Create(rootDirectory);
             this.globalContent = globalContent;
         }
@@ -394,6 +396,16 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
+        /// Creates a view model for the specified view.
+        /// </summary>
+        /// <param name="view">The view for which to create a view model.</param>
+        /// <returns>The view model for the specified view, or <c>null</c> if the view has no view model.</returns>
+        protected virtual Object CreateViewModel(UIView view)
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Raises the <see cref="Updating"/> event.
         /// </summary>
         /// <param name="time">The Ultraviolet time.</param>
@@ -502,7 +514,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="definition">The panel definition from which to load the view.</param>
         protected void LoadView(UIPanelDefinition definition)
         {
-            var view = UIView.Create(this, definition);
+            var view = UIView.Create(this, definition, vmfactory);
             if (view != null)
             {
                 if (window != null)
@@ -580,6 +592,21 @@ namespace TwistedLogik.Ultraviolet.UI
                 this.transitionDuration = 0;
                 this.state = UIPanelState.Open;
                 HandleOpened();
+            }
+        }
+
+        /// <summary>
+        /// Creates a new view model for the panel's view and sets it on the view.
+        /// </summary>
+        protected void ResetViewModel()
+        {
+            if (View == null)
+                return;
+
+            var vm = vmfactory(View);
+            if (vm != View.GetViewModel<Object>())
+            {
+                View.SetViewModel(vm);
             }
         }
 
@@ -835,5 +862,8 @@ namespace TwistedLogik.Ultraviolet.UI
         // Task completion sources which are triggered when the panel is opened or closed.
         private TaskCompletionSource<UIPanel> tcsOpened;
         private TaskCompletionSource<UIPanel> tcsClosed;
+
+        // View model factory for the panel's view.
+        private readonly UIViewModelFactory vmfactory;
     }
 }

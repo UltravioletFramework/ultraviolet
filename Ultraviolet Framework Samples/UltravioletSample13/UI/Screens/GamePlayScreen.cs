@@ -2,6 +2,7 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.UI;
 using UltravioletSample.UI.Dialogs;
 
 namespace UltravioletSample.UI.Screens
@@ -36,9 +37,15 @@ namespace UltravioletSample.UI.Screens
         }
 
         /// <inheritdoc/>
+        protected override Object CreateViewModel(UIView view)
+        {
+            return new GamePlayViewModel(this, escMenuDialog);
+        }
+
+        /// <inheritdoc/>
         protected override void OnOpening()
         {
-            View.SetViewModel(new GamePlayViewModel(this, escMenuDialog));
+            ResetViewModel();
             base.OnOpening();
         }
 

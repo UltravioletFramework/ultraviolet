@@ -34,6 +34,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (uv.IsRunningInServiceMode)
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
 
+            this.viewModelWrapperName = viewModelType.Name;
+
             this.combinedStyleSheet = new UvssDocument(null, null);
 
             this.namescope = new Namescope();
@@ -59,8 +61,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiPanel">The <see cref="UIPanel"/> that is creating the view.</param>
         /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view's containing panel.</param>
+        /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <c>null</c> to skip view model creation.</param>
         /// <returns>The <see cref="PresentationFoundationView"/> that was loaded from the specified XML document.</returns>
-        public static PresentationFoundationView Load(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition)
+        public static PresentationFoundationView Load(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory)
         {
             Contract.Require(uv, "uv");
             Contract.Require(uiPanel, "uiPanel");
@@ -69,25 +72,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (uiPanelDefinition.ViewElement == null)
                 return null;
 
-            var view = UvmlLoader.Load(uv, uiPanel, uiPanelDefinition);
+            var view = UvmlLoader.Load(uv, uiPanel, uiPanelDefinition, vmfactory);
 
             var uvss = String.Join(Environment.NewLine, uiPanelDefinition.StyleSheets);
             var uvssdoc = UvssDocument.Parse(uvss);
 
             view.SetStyleSheet(uvssdoc);
-
-            if (String.IsNullOrEmpty(uiPanelDefinition.AssetFilePath))
-            {
-                if (view.ViewModelType != null)
-                {
-                    view.viewModelWrapperName = view.ViewModelType.FullName;
-                }
-            }
-            else
-            {
-                view.viewModelWrapperName = GetDataSourceWrapperNameForView(uiPanelDefinition.AssetFilePath);
-            }
-
 
             return view;
         }
@@ -962,11 +952,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected override void OnViewModelChanged()
         {
-            layoutRoot.CacheLayoutParameters();
+            if (layoutRoot != null && layoutRoot.IsInitialized)
+            {
+                layoutRoot.CacheLayoutParameters();
 
-            if (ViewModel != null)
-                namescope.PopulateFieldsFromRegisteredElements(ViewModel);
-
+                if (ViewModel != null)
+                    namescope.PopulateFieldsFromRegisteredElements(ViewModel);
+            }
             base.OnViewModelChanged();
         }
 

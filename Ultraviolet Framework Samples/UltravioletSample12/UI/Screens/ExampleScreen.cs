@@ -1,4 +1,4 @@
-﻿using TwistedLogik.Nucleus;
+﻿using System;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.UI;
 
@@ -9,9 +9,12 @@ namespace UltravioletSample.UI.Screens
         public ExampleScreen(ContentManager globalContent, UIScreenService uiScreenService)
             : base("Content/UI/Screens/ExampleScreen", "ExampleScreen", globalContent)
         {
-            Contract.Require(uiScreenService, "uiScreenService");
 
-            View.SetViewModel(new ExampleViewModel(Ultraviolet));
+        }
+
+        protected override Object CreateViewModel(UIView view)
+        {
+            return new ExampleViewModel(Ultraviolet);
         }
     }
 }

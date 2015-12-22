@@ -7,13 +7,21 @@ using TwistedLogik.Ultraviolet.Platform;
 namespace TwistedLogik.Ultraviolet.UI
 {
     /// <summary>
+    /// Represents a method which constructs view model instances for the specified view.
+    /// </summary>
+    /// <param name="view">The view for which to create a view model.</param>
+    /// <returns>The view model that was created.</returns>
+    public delegate Object UIViewModelFactory(UIView view);
+
+    /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="UIView"/> class.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="uiPanel">The <see cref="UIPanel"/> that is creating the view.</param>
     /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view's containing panel.</param>
+    /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <c>null</c> to skip view model creation.</param>
     /// <returns>The instance of <see cref="UIView"/> that was created.</returns>
-    public delegate UIView UIViewFactory(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition);
+    public delegate UIView UIViewFactory(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory);
 
     /// <summary>
     /// Represents a 
@@ -40,8 +48,9 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="uiPanel">The <see cref="UIPanel"/> which is creating the view.</param>
         /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view's containing panel.</param>
+        /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <c>null</c> to skip view model creation.</param>
         /// <returns>The instance of <see cref="UIView"/> that was created.</returns>
-        public static UIView Create(UIPanel uiPanel, UIPanelDefinition uiPanelDefinition)
+        public static UIView Create(UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory)
         {
             Contract.Require(uiPanel, "uiPanel");
             Contract.Require(uiPanelDefinition, "uiPanelDefinition");
@@ -50,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.UI
             var factory  = uv.TryGetFactoryMethod<UIViewFactory>();
             if (factory != null)
             {
-                return factory(uv, uiPanel, uiPanelDefinition);
+                return factory(uv, uiPanel, uiPanelDefinition, vmfactory);
             }
 
             return null;

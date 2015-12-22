@@ -2,6 +2,7 @@
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.UI;
 using UvDebugSandbox.UI.Dialogs;
 
 namespace UvDebugSandbox.UI.Screens
@@ -34,11 +35,17 @@ namespace UvDebugSandbox.UI.Screens
             }
             base.Update(time);
         }
+        
+        /// <inheritdoc/>
+        protected override Object CreateViewModel(UIView view)
+        {
+            return new GamePlayViewModel(this, escMenuDialog);
+        }
 
         /// <inheritdoc/>
         protected override void OnOpening()
         {
-            View.SetViewModel(new GamePlayViewModel(this, escMenuDialog));
+            ResetViewModel();
             base.OnOpening();
         }
 

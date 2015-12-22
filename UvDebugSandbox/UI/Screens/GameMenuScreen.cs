@@ -1,4 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.Content;
+﻿using System;
+using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.UI;
 
 namespace UvDebugSandbox.UI.Screens
 {
@@ -19,9 +21,15 @@ namespace UvDebugSandbox.UI.Screens
         }
 
         /// <inheritdoc/>
+        protected override Object CreateViewModel(UIView view)
+        {
+            return new GameMenuViewModel(this);
+        }
+
+        /// <inheritdoc/>
         protected override void OnOpening()
         {
-            View.SetViewModel(new GameMenuViewModel(this));
+            ResetViewModel();
             base.OnOpening();
         }
     }
