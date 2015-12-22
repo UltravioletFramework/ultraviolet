@@ -159,6 +159,8 @@
     <Compile Include="UI\Presentation\Screens\UPF_DirNav_Contained_VM.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_DirNav_Once_VM.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_DirNav_None_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_ListBox_ArrangesItemsCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_ListBox_ArrangesItemsCorrectly_VM.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_TabControl_ArrangesChildrenCorrectly.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_TabControl_ArrangesChildrenCorrectly_VM.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_KeyNav_TabIndicesLocal.cs" />
@@ -516,6 +518,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_ListBox_ArrangesItemsCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\UI\Presentation\UPF_TabControl_ArrangesChildrenCorrectly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -628,6 +633,10 @@
     </Content>
     <None Include="Content\UI\Screens\UPF_TabControl_ArrangesChildrenCorrectly\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_ListBox_ArrangesItemsCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">
       <SubType>Designer</SubType>
