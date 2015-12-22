@@ -725,10 +725,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var vAlign = VerticalAlignment;
 
             if (Double.IsNaN(Width) && hAlign == HorizontalAlignment.Stretch)
-                desiredWidth = finalRect.Width;
+                desiredWidth = Math.Max(MinWidth, Math.Min(MaxWidth, finalRect.Width));
 
             if (Double.IsNaN(Height) && vAlign == VerticalAlignment.Stretch)
-                desiredHeight = finalRect.Height;
+                desiredHeight = Math.Max(MinHeight, Math.Min(MaxHeight, finalRect.Height));
 
             if (isLayoutTransformed)
             {
