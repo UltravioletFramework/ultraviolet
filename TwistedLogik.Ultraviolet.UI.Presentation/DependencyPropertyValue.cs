@@ -49,11 +49,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (!isPendingChangeEvent)
                     return;
 
+                isPendingChangeEvent = false;
+
                 var oldValue = defaultValue;
                 var newValue = GetValue();
                 metadata.HandleChanged(owner, property, oldValue, newValue);
-
-                isPendingChangeEvent = false;
             }
 
             /// <inheritdoc/>
@@ -73,6 +73,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public void DigestImmediately()
             {
+                if (isPendingChangeEvent && !IsDeferringChangeEvents())
+                {
+                    RaisePendingChangeEvent();
+                }
                 CheckForChanges();
             }
 
