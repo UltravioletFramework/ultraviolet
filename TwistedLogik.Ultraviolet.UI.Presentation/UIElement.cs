@@ -2385,11 +2385,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         /// <param name="image">The image to draw.</param>
         /// <param name="color">The color with which to draw the image.</param>
-        /// <param name="drawBlankImage">A value indicating whether a blank placeholder should be drawn if 
+        /// <param name="drawBlank">A value indicating whether a blank placeholder should be drawn if 
         /// the specified image does not exist or is not loaded.</param>
-        protected void DrawImage(DrawingContext dc, SourcedImage image, Color color, Boolean drawBlankImage = false)
+        protected void DrawImage(DrawingContext dc, SourcedImage image, Color color, Boolean drawBlank = false)
         {
-            DrawImage(dc, image, null, color, drawBlankImage);
+            DrawImage(dc, image, null, Point2D.Zero, color, drawBlank);
         }
 
         /// <summary>
@@ -2404,6 +2404,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// the specified image does not exist or is not loaded.</param>
         protected void DrawImage(DrawingContext dc, SourcedImage image, RectangleD? area, Color color, Boolean drawBlank = false)
         {
+            DrawImage(dc, image, area, Point2D.Zero, color, drawBlank);
+        }
+
+        /// <summary>
+        /// Draws the specified image.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the current rendering state.</param>
+        /// <param name="image">The image to draw.</param>
+        /// <param name="area">The area, relative to the element, in which to draw the image. A value of
+        /// <c>null</c> specifies that the image should fill the element's entire area on the screen.</param>
+        /// <param name="origin">The rotational origin of the image.</param>
+        /// <param name="color">The color with which to draw the image.</param>
+        /// <param name="drawBlank">A value indicating whether a blank placeholder should be drawn if 
+        /// the specified image does not exist or is not loaded.</param>
+        protected void DrawImage(DrawingContext dc, SourcedImage image, RectangleD? area, Point2D origin, Color color, Boolean drawBlank = false)
+        {
             Contract.Require(dc, "dc");
             
             var imageResource = image.Resource;
@@ -2411,77 +2427,79 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (drawBlank)
                 {
-                    DrawBlank(dc, area, color);
+                    DrawBlank(dc, area, origin, color);
                 }
             }
             else
             {
+                var originPix = (Vector2)Display.DipsToPixels(origin);
+
                 var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
                 var imageAreaAbs = imageAreaRel + UntransformedAbsolutePosition;
                 var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
-                
-                var origin = new Vector2(
-                    imageAreaPix.Width / 2f,
-                    imageAreaPix.Height / 2f);
-                
-                Vector2 position;
-                if (dc.IsTransformed)
-                {
-                    position = new Vector2(
-                        imageAreaPix.X + (imageAreaPix.Width / 2f),
-                        imageAreaPix.Y + (imageAreaPix.Height / 2f));
-                }
-                else
-                {
-                    position = new Vector2(
-                        (Single)Math.Floor(imageAreaPix.X) + (imageAreaPix.Width / 2f),
-                        (Single)Math.Floor(imageAreaPix.Y) + (imageAreaPix.Height / 2f));
-                }
+
+                var positionIsRounded = !dc.IsTransformed;
+                var position = new Vector2(
+                    (positionIsRounded ? (Single)Math.Round(imageAreaPix.X, MidpointRounding.AwayFromZero) : imageAreaPix.X) + originPix.X,
+                    (positionIsRounded ? (Single)Math.Round(imageAreaPix.Y, MidpointRounding.AwayFromZero) : imageAreaPix.Y) + originPix.Y);
 
                 dc.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
-                    color, 0f, origin, SpriteEffects.None, 0f);
+                    color, 0f, originPix, SpriteEffects.None, 0f);
             }
         }
 
         /// <summary>
         /// Draws a blank rectangle.
         /// </summary>
-        /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        /// <param name="area">The area, relative to the element, in which to draw the image. A value of
+        /// <param name="dc">The drawing context that describes the current rendering state.</param>
+        /// <param name="color">The color with which to draw the image.</param>
+        protected void DrawBlank(DrawingContext dc, Color color)
+        {
+            DrawBlank(dc, null, Point2D.Zero, color);
+
+        }
+
+        /// <summary>
+        /// Draws a blank rectangle.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the current rendering state.</param>
+        /// <param name="area">The area, relative to the element, in which to draw the rectangle. A value of
         /// <c>null</c> specifies that the image should fill the element's entire area on the screen.</param>
         /// <param name="color">The color with which to draw the image.</param>
         protected void DrawBlank(DrawingContext dc, RectangleD? area, Color color)
         {
+            DrawBlank(dc, area, Point2D.Zero, color);
+        }
+
+        /// <summary>
+        /// Draws a blank rectangle.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the current rendering state.</param>
+        /// <param name="area">The area, relative to the element, in which to draw the rectangle. A value of
+        /// <c>null</c> specifies that the image should fill the element's entire area on the screen.</param>
+        /// <param name="origin">The rotational origin of the rectangle.</param>
+        /// <param name="color">The color with which to draw the image.</param>
+        protected void DrawBlank(DrawingContext dc, RectangleD? area, Point2D origin, Color color)
+        {
             Contract.Require(dc, "dc");
-            
+
             var imageResource = View.Resources.BlankImage.Resource;
             if (imageResource == null || !imageResource.IsLoaded)
                 return;
+
+            var originPix = (Vector2)Display.DipsToPixels(origin);
 
             var imageAreaRel = area ?? new RectangleD(0, 0, RenderSize.Width, RenderSize.Height);
             var imageAreaAbs = imageAreaRel + UntransformedAbsolutePosition;
             var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
-            var origin = new Vector2(
-                imageAreaPix.Width / 2,
-                imageAreaPix.Height / 2);
-
-            Vector2 position;
-            if (dc.IsTransformed)
-            {
-                position = new Vector2(
-                    imageAreaPix.X + (imageAreaPix.Width / 2f),
-                    imageAreaPix.Y + (imageAreaPix.Height / 2f));
-            }
-            else
-            {
-                position = new Vector2(
-                    (Single)Math.Floor(imageAreaPix.X) + (imageAreaPix.Width / 2f),
-                    (Single)Math.Floor(imageAreaPix.Y) + (imageAreaPix.Height / 2f));
-            }
+            var positionIsRounded = !dc.IsTransformed;
+            var position = new Vector2(
+                (positionIsRounded ? (Single)Math.Round(imageAreaPix.X, MidpointRounding.AwayFromZero) : imageAreaPix.X) + originPix.X,
+                (positionIsRounded ? (Single)Math.Round(imageAreaPix.Y, MidpointRounding.AwayFromZero) : imageAreaPix.Y) + originPix.Y);
 
             dc.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
-                color, 0f, origin, SpriteEffects.None, 0f);
+                color, 0f, originPix, SpriteEffects.None, 0f);
         }
 
         /// <summary>
