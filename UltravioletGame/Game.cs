@@ -28,7 +28,7 @@ namespace SAFE_PROJECT_NAME
 #endif
     {
         /// <summary>
-        /// Initializes a new instance of the Game 
+        /// Initializes a new instance of the <see cref="Game"/> class.
         /// </summary>
         public Game() : base("YOUR_ORGANIZATION", "PROJECT_NAME") { }
 

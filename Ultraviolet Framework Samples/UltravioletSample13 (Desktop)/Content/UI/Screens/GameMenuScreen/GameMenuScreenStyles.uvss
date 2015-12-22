@@ -1,0 +1,60 @@
+﻿#logo
+{
+	max-width: 325;
+	max-height: 125;
+	halign: stretch;
+	valign: stretch;
+	margin: 8;
+	source-image: #Global:Textures:Logo 0 0 325 125;
+	
+	trigger event View.opening
+	{
+		play-storyboard { pulse-logo }	
+	}
+}
+
+#mainmenu-background
+{
+	source-image: #Global:Textures:DefaultUIBackground 0 0 1161 685;
+}
+
+#mainmenu-panel-background
+{
+	fill-color: #80000000;
+}
+
+#mainmenu-panel-options
+{
+	margin: 16;
+}
+
+#mainmenu-panel-options Button
+{
+	width: 200;
+}
+
+#btn-exit
+{
+	margin: 0 8 0 0;
+}
+
+@pulse-logo loop
+{
+	target image
+	{
+		animation scale-x | render-transform as ScaleTransform
+		{
+			keyframe 0    { 1.00 }
+			keyframe 1000 { 1.10 }
+			keyframe 2000 { 1.00 }
+		}
+		animation scale-y | render-transform as ScaleTransform
+		{
+			keyframe 0    { 1.05 }
+			keyframe  500 { 1.10 }
+			keyframe 1000 { 1.05 }
+			keyframe 1500 { 1.00 }
+			keyframe 2000 { 1.05 }
+		}
+	}
+}
