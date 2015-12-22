@@ -572,12 +572,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (Disposed)
                 return;
 
-            /* FIX:
-             * Without this line, Intel HD 4000 throws an AccessViolationException
-             * when we call GL_DeleteContext(). Weird, huh? */
-            if (OpenGLState.SupportsVertexArrayObjects)
+            if (gl.Initialized)
             {
-                gl.BindVertexArray(0);
+                /* FIX:
+                 * Without this line, Intel HD 4000 throws an AccessViolationException
+                 * when we call GL_DeleteContext(). Weird, huh? */
+                if (OpenGLState.SupportsVertexArrayObjects)
+                {
+                    gl.BindVertexArray(0);
+                }
                 gl.Uninitialize();
             }
 
