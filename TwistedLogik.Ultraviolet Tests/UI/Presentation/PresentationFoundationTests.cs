@@ -170,6 +170,16 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 
         [TestMethod]
         [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the ComboBox container correctly arranges its items.")]
+        public void UPF_ComboBox_ArrangesItemsCorrectly()
+        {
+            var result = RunPresentationTestFor(content => new UPF_ComboBox_ArrangesItemsCorrectly(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_ComboBox_ArrangesItemsCorrectly.png");
+        }
+
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
         [Description("Ensures that the Adorner control is drawn correctly when applied to an element.")]
         public void UPF_Adorner_DrawsCorrectly()
         {
