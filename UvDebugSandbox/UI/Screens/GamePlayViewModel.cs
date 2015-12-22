@@ -53,11 +53,21 @@ namespace UvDebugSandbox.UI.Screens
         /// <param name="data">The routed event metadata for this event invocation.</param>
         public void HandleKeyDown(DependencyObject dobj, KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
         {
-            if (key == Key.Escape)
+            switch (key)
             {
-                Modal.ShowDialogAsync(escMenuDialog).ContinueWith(HandleEscMenuDialogResult);
+                case Key.Escape:
+                    {
+                        Modal.ShowDialogAsync(escMenuDialog).ContinueWith(HandleEscMenuDialogResult);
+                        data.Handled = true;
+                    }
+                    break;
 
-                data.Handled = true;
+                case Key.AppControlBack:
+                    {
+                        ReturnToMainMenu();
+                        data.Handled = true;
+                    }
+                    break;
             }
         }
         
@@ -121,6 +131,14 @@ namespace UvDebugSandbox.UI.Screens
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets the help message which is displayed in the lower-left corner.
+        /// </summary>
+        public String HelpMessage
+        {
+            get { return owner.Ultraviolet.Platform == UltravioletPlatform.Android ? "Press |c:ffffff00|BACK|c| to exit." : "Press |c:ffffff00|ESC|c| to exit."; }
         }
 
         /// <summary>

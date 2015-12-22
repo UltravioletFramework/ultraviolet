@@ -143,6 +143,8 @@ namespace UvDebugSandbox.Content.UI.Controls
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
+            DrawBlank(dc, Color.Black * 0.5f);
+
             var viewport = AdjustViewportFor3D(dc);
 
             var triangleRotation = TriangleRotation;

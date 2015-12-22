@@ -5,53 +5,81 @@
     <Grid Name="container" Focusable="true" KeyDown="HandleKeyDown" View.Opened="HandleViewOpened">
       <Image Name="container-background"/>
 
-      <CheckBox Name="spin" IsChecked="{{IsTriangleSpinning}}"
-                ToolTipService.ToolTip="When checked, the displayed triangle will automatically rotate.">Spin</CheckBox>
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
-      <StackPanel Name="vertex-colors-panel">
-        <TriangleColorSelector Name="v1Color" VertexColor="{{V1Color}}" 
-                               ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|first|b| vertex.">V1:</TriangleColorSelector>
-        <TriangleColorSelector Name="v2Color" VertexColor="{{V2Color}}"
-                               ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|second|b| vertex.">V2:</TriangleColorSelector>
-        <TriangleColorSelector Name="v3Color" VertexColor="{{V3Color}}"
-                               ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|third|b| vertex.">V3:</TriangleColorSelector>
-      </StackPanel>
+        <Grid Name="triangle-panel">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
 
-      <DockPanel Name="controls-panel" LastChildFill="true">
+          <CheckBox Name="spin"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    IsChecked="{{IsTriangleSpinning}}"
+                    ToolTipService.ToolTip="When checked, the displayed triangle will automatically rotate.">Spin</CheckBox>
 
-        <StackPanel DockPanel.Dock="Bottom">
+          <Border Name="triangle-border"
+                  Grid.Row="1"
+                  Grid.Column="0">
 
-          <TextBlock>Rotation:</TextBlock>
-          <HSlider Name="slideRotation"
-                   Value="{{TriangleRotation}}"
-                   Minimum="0"
-                   Maximum="{{Math.PI * 2.0}}"
-                   DockPanel.Dock="Bottom"/>
-
-          <TextBlock>Zoom:</TextBlock>
-          <HSlider Name="slideZoom"
-                   Value="{{TriangleZoom}}"
-                   Minimum="0"
-                   Maximum="1"
-                   DockPanel.Dock="Bottom"/>
-
-        </StackPanel>
-
-        <Grid Name="display-panel">
-          <Rectangle/>
-          <Border>
-            <TriangleDisplay Name="display" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            <TriangleDisplay Name="triangle"
                              TriangleRotation="{{TriangleRotation}}"
                              TriangleZoom="{{TriangleZoom}}"
                              V1Color="{{V1Color}}"
                              V2Color="{{V2Color}}"
                              V3Color="{{V3Color}}"/>
+            
           </Border>
+
+          <StackPanel Name="controls-panel" Grid.Row="2">
+          
+            <TextBlock>Rotation:</TextBlock>
+            <HSlider Name="slideRotation"
+                     Value="{{TriangleRotation}}"
+                     Minimum="0"
+                     Maximum="{{Math.PI * 2.0}}"
+                     DockPanel.Dock="Bottom"/>
+
+            <TextBlock>Zoom:</TextBlock>
+            <HSlider Name="slideZoom"
+                     Value="{{TriangleZoom}}"
+                     Minimum="0"
+                     Maximum="1"
+                     DockPanel.Dock="Bottom"/>
+
+          </StackPanel>
+
         </Grid>
 
-      </DockPanel>
+        <StackPanel Name="vertex-colors-panel"                    
+                    Grid.Row="0"
+                    Grid.Column="1">
+          
+          <TriangleColorSelector Name="v1Color" 
+                                 VertexColor="{{V1Color}}"
+                                 ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|first|b| vertex.">V1:</TriangleColorSelector>
+          <TriangleColorSelector Name="v2Color" 
+                                 VertexColor="{{V2Color}}"
+                                 ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|second|b| vertex.">V2:</TriangleColorSelector>
+          <TriangleColorSelector Name="v3Color" 
+                                 VertexColor="{{V3Color}}"
+                                 ToolTipService.ToolTip="Controls the color of the displayed triangle's |b|third|b| vertex.">V3:</TriangleColorSelector>
 
-      <TextBlock Name="msg-press-esc">Press |b||c:ffffff00|ESC|c||b| to exit.</TextBlock>
+        </StackPanel>
+
+        <TextBlock Name="msg-press-esc" Grid.Column="0" Grid.Row="1">{{HelpMessage}}</TextBlock>
+
+      </Grid>
 
     </Grid>        
   </View>

@@ -1,9 +1,10 @@
 ﻿#logo
 {
-	width: 325;
-	height: 125;
-	halign: center;
-	valign: center;
+	max-width: 325;
+	max-height: 125;
+	halign: stretch;
+	valign: stretch;
+	margin: 8;
 	source-image: #Global:Textures:Logo 0 0 325 125;
 	
 	trigger event View.opening

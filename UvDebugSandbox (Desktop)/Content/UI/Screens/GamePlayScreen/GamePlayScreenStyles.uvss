@@ -3,24 +3,19 @@
 	source-image: #Global:Textures:DefaultUIBackground 0 0 1161 685;
 }
 
-#controls-panel
-{
-	margin: 200 64 200 64;
-}
-
 #controls-panel > FrameworkElement
 {
 	margin: 0 0 0 8;
 }
 
-#display
+#triangle-panel
 {
-	fill-color: #ffffff00;
+	margin: 16 16 0 0;
 }
 
-#display-panel
+#triangle-border
 {
-	margin: 0 0 0 16;
+	margin: 0 16 0 16;
 }
 
 #display-panel > Rectangle
@@ -40,16 +35,9 @@
 	margin: 0 0 0 8;
 }
 
-#spin
-{
-	halign: left;
-	valign: top;
-	margin: 16;
-}
-
 #msg-press-esc
 {
 	halign: left;
 	valign: bottom;
-	margin: 16;
+	margin: 16 0 0 16;
 }

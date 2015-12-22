@@ -2,33 +2,35 @@
 <UIPanelDefinition>
   <StyleSheet>GameMenuScreenStyles</StyleSheet>
   <View ViewModelType="UvDebugSandbox.UI.Screens.GameMenuViewModel, UvDebugSandbox">
+    <Grid Name="container" Focusable="true" KeyDown="HandleKeyDown" View.Opened="HandleViewOpened">
 
-    <Image Name="mainmenu-background"/>
-    
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
+      <Image Name="mainmenu-background"/>
 
-      <Image Name="logo" Grid.Row="0">
-        <Image.RenderTransform>
-          <ScaleTransform/>
-        </Image.RenderTransform>
-      </Image>
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-      <Border Name="mainmenu-panel" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
-        <Grid>
-          <Rectangle Name="mainmenu-panel-background"/>
-          <StackPanel Name="mainmenu-panel-options">
-            <Button Name="btn-start" Click="Click_Start">Start</Button>
-            <Button Name="btn-exit" Click="Click_Exit">Exit</Button>
-          </StackPanel>
-        </Grid>
-      </Border>
+        <Image Name="logo" Grid.Row="0">
+          <Image.RenderTransform>
+            <ScaleTransform/>
+          </Image.RenderTransform>
+        </Image>
 
-    </Grid>
-        
+        <Border Name="mainmenu-panel" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
+          <Grid>
+            <Rectangle Name="mainmenu-panel-background"/>
+            <StackPanel Name="mainmenu-panel-options">
+              <Button Name="btn-start" Click="Click_Start">Start</Button>
+              <Button Name="btn-exit" Click="Click_Exit">Exit</Button>
+            </StackPanel>
+          </Grid>
+        </Border>
+
+      </Grid>
+
+    </Grid>        
   </View>
 </UIPanelDefinition>

@@ -103,18 +103,13 @@ namespace UvDebugSandbox.Input
         /// </summary>
         protected override void OnResetting()
         {
-#if ANDROID
-            ExitApplication.Primary = CreateKeyboardBinding(Key.AppControlBack);
-#else
-            ExitApplication.Primary = CreateKeyboardBinding(Key.F4, alt: true);
-
+            ExitApplication.Primary         = CreateKeyboardBinding(Key.F4, alt: true);
             NavigateUp.Primary              = CreateKeyboardBinding(Key.Up);
             NavigateDown.Primary            = CreateKeyboardBinding(Key.Down);
             NavigateLeft.Primary            = CreateKeyboardBinding(Key.Left);
             NavigateRight.Primary           = CreateKeyboardBinding(Key.Right);
             NavigatePreviousTabStop.Primary = CreateKeyboardBinding(Key.Tab, shift: true);
             NavigateNextTabStop.Primary     = CreateKeyboardBinding(Key.Tab);
-#endif
 
             base.OnResetting();
         }

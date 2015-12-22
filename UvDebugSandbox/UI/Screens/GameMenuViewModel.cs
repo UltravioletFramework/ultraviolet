@@ -1,5 +1,8 @@
 ﻿using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace UvDebugSandbox.UI.Screens
 {
@@ -18,7 +21,39 @@ namespace UvDebugSandbox.UI.Screens
 
             this.owner = owner;
         }
-        
+
+        /// <summary>
+        /// Handles the <see cref="View.OpenedEvent"/> attached event.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        public void HandleViewOpened(DependencyObject dobj, ref RoutedEventData data)
+        {
+            if (container != null)
+                container.Focus();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Keyboard.KeyDownEvent"/> attached event for the view's topmost <see cref="Grid"/> instance.
+        /// </summary>
+        /// <param name="dobj">The object that raised the event.</param>
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+        /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        public void HandleKeyDown(DependencyObject dobj, KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        {
+            switch (key)
+            {
+                case Key.AppControlBack:
+                    {
+                        owner.Ultraviolet.Host.Exit();
+                        data.Handled = true;
+                    }
+                    break;
+            }
+        }
+
         /// <summary>
         /// Handles the Click event for the "Start" button.
         /// </summary>
@@ -46,5 +81,8 @@ namespace UvDebugSandbox.UI.Screens
 
         // Property values.
         private readonly GameMenuScreen owner;
+
+        // Component references.
+        private readonly Grid container = null;
     }
 }
