@@ -288,6 +288,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 byteCount++;
             }
 
+            if (byteCount == 0)
+                return false;
+
             // Convert the UTF-8 characters to C#'s expected UTF-16 characters.
             var bytesUsed = 0;
             var charsUsed = 0;
