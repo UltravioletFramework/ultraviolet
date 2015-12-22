@@ -241,7 +241,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             UpdateSelectionBox();
 
-            IsDropDownOpen = false;
+            if (!isDropDownOpenChanging)
+            {
+                IsDropDownOpen = false;
+            }
 
             base.OnSelectionChanged();
         }
@@ -624,9 +627,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static void HandleIsDropDownOpenChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             var comboBox = (ComboBox)dobj;
+            comboBox.isDropDownOpenChanging = true;
 
             if (newValue)
             {
+                var selectedIndex = comboBox.SelectedIndex;
+
+                comboBox.DigestImmediately(SelectedIndexProperty);
+                comboBox.DigestImmediately(ItemsSourceProperty);
+
                 var primary = comboBox.Ultraviolet.GetPlatform().Windows.GetPrimary();
 
                 var actualMaxDropDownHeight = Double.IsNaN(comboBox.MaxDropDownHeight) ? comboBox.Display.PixelsToDips(primary.ClientSize.Height) / 3.0 : comboBox.MaxDropDownHeight;
@@ -648,9 +657,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 comboBox.viewSize = comboBox.View.Area.Size;
 
-                var focused = (comboBox.SelectedIndex >= 0) ? comboBox.ItemContainers[comboBox.SelectedIndex] as UIElement : comboBox;
+                var focused = (comboBox.SelectedIndex >= 0) ? comboBox.ItemContainers[selectedIndex] as UIElement : comboBox;
                 if (focused != null)
-                    focused.Focus();
+                    focused.Focus();                
             }
             else
             {
@@ -670,8 +679,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (focused != null && ItemsControlFromItemContainer(focused) == comboBox)
                     comboBox.Focus();
             }
+
+            comboBox.isDropDownOpenChanging = false;
         }
-        
+
         /// <summary>
         /// Occurs when the control handles a <see cref="FrameworkElement.Loaded"/> routed event.
         /// </summary>
@@ -901,5 +912,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         // State values.
         private Size2 viewSize;
+        private Boolean isDropDownOpenChanging;
     }
 }
