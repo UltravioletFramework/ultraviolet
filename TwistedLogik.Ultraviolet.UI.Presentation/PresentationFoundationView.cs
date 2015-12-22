@@ -1825,6 +1825,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><c>true</c> if the element's tooltip was displayed; otherwise, <c>false</c>.</returns>
         private Boolean ShowToolTipForElement(UIElement uiToolTipElement)
         {
+            if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                return false;
+
             var content = ToolTipService.GetToolTip(uiToolTipElement);
             if (content == null)
                 return false;
