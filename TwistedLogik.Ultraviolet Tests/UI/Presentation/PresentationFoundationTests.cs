@@ -147,6 +147,16 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 
             TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_DockPanel_ArrangesChildrenCorrectly.png");
         }
+        
+        [TestMethod]
+        [TestCategory("UPF"), TestCategory("Rendering")]
+        [Description("Ensures that the TabPanel container correctly arranges its child elements.")]
+        public void UPF_TabControl_ArrangesChildrenCorrectly()
+        {
+            var result = RunPresentationTestFor(content => new UPF_TabControl_ArrangesChildrenCorrectly(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_TabControl_ArrangesChildrenCorrectly.png");
+        }
 
         [TestMethod]
         [TestCategory("UPF"), TestCategory("Rendering")]

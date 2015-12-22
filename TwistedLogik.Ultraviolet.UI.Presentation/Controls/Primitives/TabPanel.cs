@@ -10,6 +10,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     public class TabPanel : Panel
     {
         /// <summary>
+        /// Initializes the <see cref="TabPanel"/> class.
+        /// </summary>
+        static TabPanel()
+        {
+            KeyboardNavigation.TabNavigationProperty.OverrideMetadata(typeof(TabPanel), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Once));
+            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(TabPanel), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Cycle));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TabPanel"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -17,8 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public TabPanel(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            KeyboardNavigation.TabNavigationProperty.OverrideMetadata(typeof(TabPanel), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Once));
-            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(TabPanel), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Cycle));
+
         }
 
         /// <inheritdoc/>
