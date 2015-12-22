@@ -160,7 +160,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void ClearAnimations()
         {
-            using (var buffer = GetDigestedDependencyPropertiesBuffer())
+            using (var buffer = GetDependencyPropertyValuesBuffer())
             {
                 foreach (var value in buffer.Object)
                 {
@@ -175,7 +175,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void ClearLocalValues()
         {
-            using (var buffer = GetDigestedDependencyPropertiesBuffer())
+            using (var buffer = GetDependencyPropertyValuesBuffer())
             {
                 foreach (var value in buffer.Object)
                 {
@@ -190,7 +190,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void ClearStyledValues()
         {
-            using (var buffer = GetDigestedDependencyPropertiesBuffer())
+            using (var buffer = GetDependencyPropertyValuesBuffer())
             {
                 foreach (var value in buffer.Object)
                 {
@@ -214,7 +214,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void ClearTriggeredValues()
         {
-            using (var buffer = GetDigestedDependencyPropertiesBuffer())
+            using (var buffer = GetDependencyPropertyValuesBuffer())
             {
                 foreach (var value in buffer.Object)
                 {
