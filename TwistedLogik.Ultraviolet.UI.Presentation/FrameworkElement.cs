@@ -66,6 +66,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             RaisePendingChangeEvents();
 
+            initializationState = FrameworkElementInitializationState.Initialized;
+
             OnInitialized();
         }
 
