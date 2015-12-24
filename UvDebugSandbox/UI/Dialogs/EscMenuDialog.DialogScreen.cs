@@ -22,8 +22,25 @@ namespace UvDebugSandbox.UI.Dialogs
             {
                 Contract.Require(dialog, "dialog");
 
-                View.SetViewModel(new DialogScreenVM(dialog));
+                this.dialog = dialog;
             }
+
+            /// <summary>
+            /// Gets the screen's modal dialog.
+            /// </summary>
+            public EscMenuDialog Dialog
+            {
+                get { return dialog; }
+            }
+
+            /// <inheritdoc/>
+            protected override Object CreateViewModel(UIView view)
+            {
+                return new DialogScreenVM(this);
+            }
+
+            // State values.
+            private readonly EscMenuDialog dialog;
         }
     }
 }

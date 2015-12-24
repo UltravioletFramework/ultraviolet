@@ -14,12 +14,12 @@ namespace UltravioletSample.UI.Dialogs
             /// <summary>
             /// Initializes a new instance of the <see cref="DialogScreenVM"/> class.
             /// </summary>
-            /// <param name="dialog">The dialog box that owns the screen.</param>
-            internal DialogScreenVM(EscMenuDialog dialog)
+            /// <param name="screen">The dialog screen that owns the view model.</param>
+            internal DialogScreenVM(DialogScreen screen)
             {
-                Contract.Require(dialog, "dialog");
+                Contract.Require(screen, "screen");
 
-                this.dialog = dialog;
+                this.screen = screen;
             }
 
             /// <summary>
@@ -27,7 +27,7 @@ namespace UltravioletSample.UI.Dialogs
             /// </summary>
             public void HandleClickResume(DependencyObject dobj, ref RoutedEventData data)
             {
-                dialog.Close(false);
+                screen.Dialog.Close(false);
             }
 
             /// <summary>
@@ -35,7 +35,7 @@ namespace UltravioletSample.UI.Dialogs
             /// </summary>
             public void HandleClickExit(DependencyObject dobj, ref RoutedEventData data)
             {
-                dialog.Close(true, TimeSpan.Zero);
+                screen.Dialog.Close(true, TimeSpan.Zero);
             }
 
             /// <summary>
@@ -43,11 +43,11 @@ namespace UltravioletSample.UI.Dialogs
             /// </summary>
             public void HandleClickExitToDesktop(DependencyObject dobj, ref RoutedEventData data)
             {
-                dialog.Screen.Ultraviolet.Host.Exit();
+                screen.Dialog.Screen.Ultraviolet.Host.Exit();
             }
 
             // State values.
-            private readonly EscMenuDialog dialog;
+            private readonly DialogScreen screen;
         }
     }
 }
