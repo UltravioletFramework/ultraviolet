@@ -45,7 +45,7 @@ Known Issues
 
   _This issue has been fixed in Visual Studio 2015 Update 1._
 
-  As of version 1.2.1, Ultraviolet makes use of Shared Projects in order to share code between its Desktop and Android builds (and potentially a future iOS build). This error means that Visual Studio is not configured to understand this project type, and as a result, Ultraviolet will not load or compile correctly. If you encounter this error, please consult [this blog post](http://blogs.msdn.com/b/smondal/archive/2015/08/24/the-imported-project-quot-c-program-files-x86-msbuild-microsoft-windowsxaml-v14-0-8-1-microsoft-windows-ui-xaml-csharp-targets-quot-was-not-found.aspx) for potential workarounds.
+  As of version 1.3, Ultraviolet makes use of Shared Projects in order to share code between its Desktop and Android builds (and potentially a future iOS build). This error means that Visual Studio is not configured to understand this project type, and as a result, Ultraviolet will not load or compile correctly. If you encounter this error, please consult [this blog post](http://blogs.msdn.com/b/smondal/archive/2015/08/24/the-imported-project-quot-c-program-files-x86-msbuild-microsoft-windowsxaml-v14-0-8-1-microsoft-windows-ui-xaml-csharp-targets-quot-was-not-found.aspx) for potential workarounds.
 
   If you're using Visual Studio 2013, make sure you're using the latest update. If you continue to have issues, try installing the [Shared Project Reference Manager](https://visualstudiogallery.msdn.microsoft.com/315c13a7-2787-4f57-bdf7-adae6ed54450) extension.
 
@@ -111,13 +111,16 @@ Project Road Map
 
 What follows is a tentative road map for the next several major revisions of Ultraviolet. This list is subject to change at any time. Items which have been ~~struck through~~ are basically complete, though they may not yet be part of an official release.
 
-* __Ultraviolet 1.3__
+* __Ultraviolet 1.4__
   * _Graphics_
     * Improved 3D rendering support
     * Model class or equivalent
     * Support for model instancing
     * Support for skeletal animation
   * Signed distance field fonts
+* __Ultraviolet 1.3__
+  * _UI_
+    * ~~Continued work on UPF~~
 * __Ultraviolet 1.2__
   * _UI_
     * ~~Ultraviolet Presentation Foundation (UPF)~~
