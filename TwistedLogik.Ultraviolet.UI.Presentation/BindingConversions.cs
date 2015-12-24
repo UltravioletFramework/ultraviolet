@@ -83,8 +83,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (!String.IsNullOrEmpty(formatString))
             {
-                var dotNetFormatString = String.Format("{{0:{0}}}", formatString);
-                return String.Format(dotNetFormatString, value);
+                return String.Format(formatString, value);
             }
             return (value == null) ? null : value.ToString();
         }
