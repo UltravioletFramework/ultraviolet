@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
 
             adorners.Add(adorner);
             adornersStates.Add(state);
-            
+
             adorner.InvalidateMeasure();
             adorner.ChangeLogicalParent(this);
 
@@ -202,7 +202,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         {
             get { return adorners.Count; }
         }
-        
+
         /// <inheritdoc/>
         protected override void UpdateOverride(UltravioletTime time)
         {
@@ -243,6 +243,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
 
                 adorner.GetDesiredTransform(ref transformMatrix);
 
+                if (!IsUnderTransform(adornedElement))
+                {
+                    transformMatrix = new Matrix(
+                        transformMatrix.M11, transformMatrix.M12, transformMatrix.M13, (Int32)transformMatrix.M14,
+                        transformMatrix.M21, transformMatrix.M22, transformMatrix.M23, (Int32)transformMatrix.M24,
+                        transformMatrix.M31, transformMatrix.M32, transformMatrix.M33, (Int32)transformMatrix.M34,
+                        transformMatrix.M41, transformMatrix.M42, transformMatrix.M43, transformMatrix.M44);
+                }
+
                 var transformObject = adorner.RenderTransform as MatrixTransform ?? new MatrixTransform();
                 transformObject.Matrix = transformMatrix;
 
@@ -260,6 +269,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         {
             var result = base.HitTestCore(point);
             return (result == this) ? null : result;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether there is a transformation in effect for the 
+        /// specified element or any of its ancestors on the visual tree.
+        /// </summary>
+        private static Boolean IsUnderTransform(UIElement element)
+        {
+            var current = element;
+            while (current != null)
+            {
+                if (current.HasNonIdentityTransform)
+                    return true;
+
+                current = VisualTreeHelper.GetParent(current) as UIElement;
+            }
+            return false;
         }
 
         /// <summary>
