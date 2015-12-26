@@ -58,6 +58,10 @@
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -65,9 +69,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Dependencies\Newtonsoft.Json.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Version.cs">
@@ -132,6 +133,7 @@
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
     <Content Include="Resources\Content\Fonts\SegoeUITexture.png" />
+    <None Include="packages.config" />
     <None Include="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessageBoxScreen.cs</LastGenOutput>
