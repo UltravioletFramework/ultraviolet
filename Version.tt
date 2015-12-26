@@ -4,7 +4,7 @@
 var buildNumber = System.Environment.GetEnvironmentVariable("BAMBOO_buildNumber");
 var buildConfig = System.Environment.GetEnvironmentVariable("BAMBOO_buildType");
 var asmVersion = "1.3.0.0";
-var asmFileVersion = "1.3.1.0";
+var asmFileVersion = "1.3.2.0";
 var asmInfoVersion = String.IsNullOrEmpty(buildNumber) ? 
 	String.Format("{0} dev build", asmFileVersion) : 
 	String.Format("{0} {1} build {2}", asmFileVersion, buildConfig, buildNumber);
