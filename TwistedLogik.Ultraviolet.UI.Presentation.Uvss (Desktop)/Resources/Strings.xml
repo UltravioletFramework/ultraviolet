@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="LEXER_INVALID_TOKEN">
+    <en-US>
+      <Variant>Invalid token "{0}" in style sheet ({1}, {2})</Variant>
+    </en-US>
+  </String>
+  <String Key="LEXER_INVALID_SYMBOL">
+    <en-US>
+      <Variant>Invalid symbol "{0}" in style sheet ({1}, {2})</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

@@ -15,6 +15,7 @@ cp "../../Binaries/AnyCPU/Release/TwistedLogik.Ultraviolet.SDL2.dll" TwistedLogi
 cp "../../Binaries/AnyCPU/Release/TwistedLogik.Ultraviolet.BASS.dll" TwistedLogik.Ultraviolet.BASS.dll
 cp "../../Binaries/AnyCPU/Release/TwistedLogik.Ultraviolet.Desktop.dll" TwistedLogik.Ultraviolet.Desktop.dll
 cp "../../Binaries/AnyCPU/Release/TwistedLogik.Ultraviolet.UI.Presentation.dll" TwistedLogik.Ultraviolet.UI.Presentation.dll
+cp "../../Binaries/AnyCPU/Release/TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll
 cp "../../Binaries/AnyCPU/Release/TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll" TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll
 
 cp "../../Binaries/AnyCPU/Release/Newtonsoft.Json.dll" Android/Newtonsoft.Json.dll
@@ -29,4 +30,5 @@ cp "../../Binaries/Android/Release/TwistedLogik.Ultraviolet.SDL2.dll" Android/Tw
 cp "../../Binaries/Android/Release/TwistedLogik.Ultraviolet.BASS.dll" Android/TwistedLogik.Ultraviolet.BASS.dll
 cp "../../Binaries/Android/Release/TwistedLogik.Ultraviolet.Android.dll" Android/TwistedLogik.Ultraviolet.Android.dll
 cp "../../Binaries/Android/Release/TwistedLogik.Ultraviolet.UI.Presentation.dll" Android/TwistedLogik.Ultraviolet.UI.Presentation.dll
+cp "../../Binaries/Android/Release/TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" Android/TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll
 cp "../../Binaries/Android/Release/Org.Libsdl.App.dll" Android/Org.Libsdl.App.dll

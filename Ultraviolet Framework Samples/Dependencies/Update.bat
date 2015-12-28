@@ -23,6 +23,8 @@ if %2 EQU Android (
 	if %errorlevel% GTR 0 goto fail
 	copy "%DIR%\TwistedLogik.Ultraviolet.UI.Presentation.dll" %2\TwistedLogik.Ultraviolet.UI.Presentation.dll /Y
 	if %errorlevel% GTR 0 goto fail
+	copy "%DIR%\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" %2\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll /Y
+	if %errorlevel% GTR 0 goto fail
 
 	rem platform compatibility shim
 	copy "%DIR%\TwistedLogik.Ultraviolet.%2.dll" %2\TwistedLogik.Ultraviolet.%2.dll /Y
@@ -53,6 +55,8 @@ if %2 EQU Android (
 	copy "%DIR%\TwistedLogik.Ultraviolet.BASS.dll" TwistedLogik.Ultraviolet.BASS.dll /Y
 	if %errorlevel% GTR 0 goto fail
 	copy "%DIR%\TwistedLogik.Ultraviolet.UI.Presentation.dll" TwistedLogik.Ultraviolet.UI.Presentation.dll /Y
+	if %errorlevel% GTR 0 goto fail
+	copy "%DIR%\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll /Y
 	if %errorlevel% GTR 0 goto fail
 	copy "%DIR%\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll" TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll /Y
 	if %errorlevel% GTR 0 goto fail
