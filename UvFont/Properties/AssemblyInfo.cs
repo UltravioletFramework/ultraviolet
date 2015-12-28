@@ -5,10 +5,9 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ultraviolet Font Generation Utilty")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle(@"Ultraviolet Font Generation Utilty")]
+[assembly: AssemblyDescription(
+    @"A command line tool which generates Ultraviolet sprite fonts.")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

@@ -7,10 +7,9 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ultraviolet Windows Forms Host")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle(@"Ultraviolet Host (Windows Forms)")]
+[assembly: AssemblyDescription(
+    @"Allows an Ultraviolet context to be hosted within a Windows Forms application.")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

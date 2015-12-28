@@ -7,10 +7,9 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Gluon OpenGL Bindings Library")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle(@"Ultraviolet OpenGL Bindings Library (""Gluon"")")]
+[assembly: AssemblyDescription(
+    @"Contains the Ultraviolet Framework's C# bindings to the OpenGL API.")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

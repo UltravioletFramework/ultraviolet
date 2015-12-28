@@ -7,10 +7,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ultraviolet Presentation Foundation Expression Compiler (Roslyn)")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle(@"UPF Binding Expressions Compiler (Roslyn)")]
+[assembly: AssemblyDescription(
+    @"Contains an experimental, Roslyn-powered version of the binding expressions compiler used by the " +
+    @"Ultraviolet Presentation Foundation to process expressions in UVML views into executable assemblies.")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

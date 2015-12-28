@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\TwistedLogik.Ultraviolet.Profiler.dotTrace %28Desktop%29\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
       <AutoGen>True</AutoGen>
@@ -60,7 +63,6 @@
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="dotTraceProfiler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Nucleus %28Android%29\TwistedLogik.Nucleus %28Android%29.csproj">
