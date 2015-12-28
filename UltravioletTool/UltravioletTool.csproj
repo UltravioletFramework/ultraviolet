@@ -7,8 +7,8 @@
     <ProjectGuid>{CE278CD0-2D1A-460D-9567-6FD01FFB1198}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SafeProjectName</RootNamespace>
-    <AssemblyName>SafeProjectName</AssemblyName>
+    <RootNamespace>SAFE_PROJECT_NAME</RootNamespace>
+    <AssemblyName>SAFE_PROJECT_NAME</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
