@@ -226,6 +226,11 @@
         SelectorPart,
 
         /// <summary>
+        /// A selector sub-part.
+        /// </summary>
+        SelectorSubPart,
+
+        /// <summary>
         /// The name of a styled property.
         /// </summary>
         PropertyName,
@@ -239,6 +244,11 @@
         /// The value applied to a styled property, enclosed by curly braces.
         /// </summary>
         PropertyValueWithBraces,
+
+        /// <summary>
+        /// The name of a styled event.
+        /// </summary>
+        EventName,
 
         /// <summary>
         /// An event trigger.

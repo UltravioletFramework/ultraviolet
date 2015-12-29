@@ -10,10 +10,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssPlaySfxTriggerActionSyntax"/> class.
         /// </summary>
-        internal UvssPlaySfxTriggerActionSyntax()
+        internal UvssPlaySfxTriggerActionSyntax(
+            SyntaxToken playSfxKeyword,
+            UvssPropertyValueWithBracesSyntax value)
             : base(SyntaxKind.PlaySfxTriggerAction)
         {
+            this.PlaySfxKeyword = playSfxKeyword;
+            this.Value = value;
 
+            SlotCount = 2;
         }
 
         /// <inheritdoc/>
@@ -21,9 +26,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
+                case 0: return PlaySfxKeyword;
+                case 1: return Value;
                 default:
                     throw new InvalidOperationException();
             }
         }
+
+        /// <summary>
+        /// The action's "play-sfx" keyword.
+        /// </summary>
+        public SyntaxToken PlaySfxKeyword;
+
+        /// <summary>
+        /// The action's value.
+        /// </summary>
+        public UvssPropertyValueWithBracesSyntax Value;
     }
 }

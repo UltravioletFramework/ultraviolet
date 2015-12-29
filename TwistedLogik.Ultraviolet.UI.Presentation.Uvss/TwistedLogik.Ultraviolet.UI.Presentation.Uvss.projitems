@@ -24,6 +24,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssNavigationExpressionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssAnimationKeyframeSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssAnimationSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEventNameSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorSubPartSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssStoryboardTargetSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssStoryboardSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSetTriggerActionSyntax.cs" />

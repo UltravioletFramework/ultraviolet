@@ -183,12 +183,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
                 case nameof(UvssLexerTokenType.LogicalChildCombinator):
                     return UvssLexerTokenType.LogicalChildCombinator;
+                    
+                case nameof(UvssLexerTokenType.EqualsOperator):
+                    return UvssLexerTokenType.EqualsOperator;
 
-                case nameof(UvssLexerTokenType.VisualChildCombinator):
-                    return UvssLexerTokenType.VisualChildCombinator;
+                case nameof(UvssLexerTokenType.NotEqualsOperator):
+                    return UvssLexerTokenType.NotEqualsOperator;
 
-                case nameof(UvssLexerTokenType.AssignmentOperator):
-                    return UvssLexerTokenType.AssignmentOperator;
+                case nameof(UvssLexerTokenType.LessThanOperator):
+                    return UvssLexerTokenType.LessThanOperator;
+
+                case nameof(UvssLexerTokenType.LessThanEqualsOperator):
+                    return UvssLexerTokenType.LessThanEqualsOperator;
+
+                case nameof(UvssLexerTokenType.GreaterThanOperator):
+                    return UvssLexerTokenType.GreaterThanOperator;
+
+                case nameof(UvssLexerTokenType.GreaterThanEqualsOperator):
+                    return UvssLexerTokenType.GreaterThanEqualsOperator;
 
                 case nameof(UvssLexerTokenType.NavigationExpressionOperator):
                     return UvssLexerTokenType.NavigationExpressionOperator;
@@ -409,7 +421,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return;
             }
 
-            if (tokenType == UvssLexerTokenType.AssignmentOperator)
+            if (tokenType == UvssLexerTokenType.EqualsOperator)
             {
                 readValueAtNextCurlyBrace = true;
                 return;
@@ -665,9 +677,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 @"\G\>\>"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.LogicalChildCombinator,
                 @"\G\>\?"),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.VisualChildCombinator,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.NotEqualsOperator,
+                @"\G\<\>"),
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.LessThanEqualsOperator,
+                @"\G\<="),
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.GreaterThanEqualsOperator,
+                @"\G\>="),
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.LessThanOperator,
+                @"\G\<"),
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.GreaterThanOperator,
                 @"\G\>"),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.AssignmentOperator,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.EqualsOperator,
                 @"\G="),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.NavigationExpressionOperator,
                 @"\G\|"),

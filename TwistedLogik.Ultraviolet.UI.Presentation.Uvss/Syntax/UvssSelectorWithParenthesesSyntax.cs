@@ -10,10 +10,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelectorWithParenthesesSyntax"/> class.
         /// </summary>
-        internal UvssSelectorWithParenthesesSyntax()
+        internal UvssSelectorWithParenthesesSyntax(
+            SyntaxToken openParen,
+            UvssSelectorSyntax selector,
+            SyntaxToken closeParen)
             : base(SyntaxKind.SelectorWithParentheses)
         {
+            this.OpenParen = openParen;
+            this.Selector = selector;
+            this.CloseParen = closeParen;
 
+            SlotCount = 3;
         }
 
         /// <inheritdoc/>
@@ -21,9 +28,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
+                case 0: return OpenParen;
+                case 1: return Selector;
+                case 2: return CloseParen;
                 default:
                     throw new InvalidOperationException();
             }
         }
+
+        /// <summary>
+        /// The open parenthesis that introduces the selector.
+        /// </summary>
+        public SyntaxToken OpenParen;
+
+        /// <summary>
+        /// The enclosed selector.
+        /// </summary>
+        public UvssSelectorSyntax Selector;
+
+        /// <summary>
+        /// The close parenthesis that terminates the selector.
+        /// </summary>
+        public SyntaxToken CloseParen;
     }
 }

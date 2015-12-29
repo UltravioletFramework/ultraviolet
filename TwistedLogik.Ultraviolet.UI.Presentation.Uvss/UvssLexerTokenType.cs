@@ -109,16 +109,36 @@
         /// The token contains the logical child combinator (>?).
         /// </summary>
         LogicalChildCombinator,
+        
+        /// <summary>
+        /// The token contains the equals operator (=).
+        /// </summary>
+        EqualsOperator,
 
         /// <summary>
-        /// The token contains the visual child combinator (>).
+        /// The token contains the not equals operator (&lt;&gt;).
         /// </summary>
-        VisualChildCombinator,
+        NotEqualsOperator,
 
         /// <summary>
-        /// The token contains the assignment operator (=).
+        /// The token contains the less than operator (&lt;).
         /// </summary>
-        AssignmentOperator,
+        LessThanOperator,
+
+        /// <summary>
+        /// The token contains the less than or equal to operator (&lt;=).
+        /// </summary>
+        LessThanEqualsOperator,
+
+        /// <summary>
+        /// The token contains the greater than operator (>).
+        /// </summary>
+        GreaterThanOperator,
+
+        /// <summary>
+        /// The token contains the greater than or equal to operator (>=).
+        /// </summary>
+        GreaterThanEqualsOperator,
 
         /// <summary>
         /// The token contains the navigation expression operator (|).

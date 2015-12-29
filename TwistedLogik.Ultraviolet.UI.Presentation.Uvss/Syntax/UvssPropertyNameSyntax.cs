@@ -10,10 +10,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssPropertyNameSyntax"/> class.
         /// </summary>
-        internal UvssPropertyNameSyntax()
+        internal UvssPropertyNameSyntax(
+            SyntaxToken attachedPropertyOwnerName,
+            SyntaxToken period,
+            SyntaxToken propertyName)
             : base(SyntaxKind.PropertyName)
         {
+            this.AttachedPropertyOwnerName = attachedPropertyOwnerName;
+            this.Period = period;
+            this.PropertyName = propertyName;
 
+            SlotCount = 3;
         }
 
         /// <inheritdoc/>
@@ -21,9 +28,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
+                case 0: return AttachedPropertyOwnerName;
+                case 1: return Period;
+                case 2: return PropertyName;
                 default:
                     throw new InvalidOperationException();
             }
         }
+
+        /// <summary>
+        /// The name of the type which owns the attached property, if this name describes an attached property.
+        /// </summary>
+        public SyntaxToken AttachedPropertyOwnerName;
+
+        /// <summary>
+        /// The period that separates the owner type from the property name.
+        /// </summary>
+        public SyntaxToken Period;
+
+        /// <summary>
+        /// The name of the property.
+        /// </summary>
+        public SyntaxToken PropertyName;
     }
 }
