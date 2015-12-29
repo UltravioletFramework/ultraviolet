@@ -9,7 +9,16 @@
     <Import_RootNamespace>TwistedLogik.Ultraviolet.UI.Presentation.Uvss</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArrayElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxList`1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.WithLotsOfChildren.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.WithManyChildren.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.WithManyChildrenBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.WithThreeChildren.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.WithTwoChildren.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxListBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssNavigationExpressionSyntax.cs" />

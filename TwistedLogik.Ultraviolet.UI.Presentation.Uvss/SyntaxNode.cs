@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return this;
         }
-
+        
         /// <summary>
         /// Gets the node's parent node.
         /// </summary>
