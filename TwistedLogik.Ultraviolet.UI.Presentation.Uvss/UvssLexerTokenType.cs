@@ -1,7 +1,7 @@
 ﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
     /// <summary>
-    /// Represents the types of tokens which are produced by the UVML lexer.
+    /// Represents the types of tokens which are produced by the UVSS lexer.
     /// </summary>
     public enum UvssLexerTokenType
     {

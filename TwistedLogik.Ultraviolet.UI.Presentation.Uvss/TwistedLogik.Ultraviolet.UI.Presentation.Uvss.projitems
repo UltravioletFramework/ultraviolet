@@ -9,11 +9,43 @@
     <Import_RootNamespace>TwistedLogik.Ultraviolet.UI.Presentation.Uvss</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxList`1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxList`1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssNavigationExpressionSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssAnimationKeyframeSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssAnimationSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssStoryboardTargetSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssStoryboardSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSetTriggerActionSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPlaySfxTriggerActionSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPlayStoryboardTriggerActionSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTriggerActionBaseSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyTriggerEvaluationSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyTriggerSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEventTriggerSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTriggerBaseSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyValueBaseSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyValueWithBracesSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyValueWithSemiColonSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorPartSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyNameSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorBaseSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorWithParenthesesSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssRuleSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssRuleSetSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssNodeSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerToken.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerTokenType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UvssParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssStrings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxKind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxToken.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxTrivia.cs" />
   </ItemGroup>
 </Project>
