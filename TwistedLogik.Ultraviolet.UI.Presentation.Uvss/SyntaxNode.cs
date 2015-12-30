@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Text;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -70,14 +73,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The terminal that was found, or null if no terminal was found.</returns>
         public SyntaxNode GetFirstTerminal()
         {
-            for (int i = 0; i < SlotCount; i++)
-            {
-                var child = GetSlot(i);
-                if (child != null)
-                    return child.GetFirstTerminal();
-            }
+            var node = this;
 
-            return this;
+            do
+            {
+                var foundChild = false;
+                for (int i = 0; i < node.SlotCount; i++)
+                {
+                    var child = node.GetSlot(i);
+                    if (child != null)
+                    {
+                        node = child;
+                        foundChild = true;
+                        break;
+                    }
+                }
+
+                if (!foundChild)
+                    return null;
+            }
+            while (node.SlotCount != 0);
+
+            return node;
         }
 
         /// <summary>
@@ -86,14 +103,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The terminal that was found, or null if no terminal was found.</returns>
         public SyntaxNode GetLastTerminal()
         {
-            for (int i = SlotCount - 1; i >= 0; i--)
-            {
-                var child = GetSlot(i);
-                if (child != null)
-                    return child.GetLastTerminal();
-            }
+            var node = this;
 
-            return null;
+            do
+            {
+                for (int i = node.SlotCount - 1; i >= 0; i--)
+                {
+                    var child = node.GetSlot(i);
+                    if (child != null)
+                    {
+                        node = child;
+                        break;
+                    }
+                }
+            } while (node.SlotCount != 0);
+
+            return node;
         }
 
         /// <summary>
@@ -133,7 +158,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return this;
         }
-        
+
+        /// <summary>
+        /// Creates a string which contains the full text of this node and its children.
+        /// </summary>
+        /// <returns>The string that was created.</returns>
+        public virtual String ToFullString()
+        {
+            var builder = new StringBuilder();
+            var writer = new StringWriter(builder, CultureInfo.InvariantCulture);
+            WriteTo(writer);
+            return builder.ToString();
+        }
+
+        /// <summary>
+        /// Writes the full text of this node and its children to the specified <see cref="TextWriter"/> instance.
+        /// </summary>
+        /// <param name="writer">The <see cref="TextWriter"/> to which to write the node's text.</param>
+        public virtual void WriteTo(TextWriter writer)
+        {
+            var stack = new Stack<SyntaxNode>();
+            stack.Push(this);
+
+            while (stack.Count > 0)
+                stack.Pop().WriteToOrFlatten(writer, stack);
+        }
+
         /// <summary>
         /// Gets the node's parent node.
         /// </summary>
@@ -208,6 +258,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Gets a value indicating whether this node is a terminal token.
         /// </summary>
         public virtual Boolean IsToken { get { return false; } }
+
+        /// <summary>
+        /// Writes the full text of this node and its children to the specified <see cref="TextWriter"/> instance.
+        /// </summary>
+        internal virtual void WriteToOrFlatten(TextWriter writer, Stack<SyntaxNode> stack)
+        {
+            for (var i = SlotCount - 1; i >= 0; i--)
+            {
+                var node = GetSlot(i);
+                if (node != null)
+                {
+                    stack.Push(node);
+                }
+            }
+        }
 
         /// <summary>
         /// Expands the width of this node by the width of the specified node.

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -34,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
         /// <inheritdoc/>
         public override String ToString() => Text;
-
+        
         /// <inheritdoc/>
         public override SyntaxNode GetSlot(Int32 index)
         {
@@ -72,6 +74,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Gets the token's text.
         /// </summary>
         public String Text { get; }
+
+        /// <inheritdoc/>
+        internal override void WriteToOrFlatten(TextWriter writer, Stack<SyntaxNode> stack)
+        {
+            var leadingTrivia = GetLeadingTrivia();
+            if (leadingTrivia != null)
+            {
+                leadingTrivia.WriteTo(writer);
+            }
+
+            writer.Write(Text);
+
+            var trailingTrivia = GetTrailingTrivia();
+            if (trailingTrivia != null)
+            {
+                trailingTrivia.WriteTo(writer);
+            }
+        }
 
         // Token trivia.
         private SyntaxNode leadingTrivia;

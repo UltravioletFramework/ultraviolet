@@ -52,6 +52,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Creates a new syntax list builder.
+        /// </summary>
+        /// <returns>The <see cref="SeparatedSyntaxListBuilder{TNode}"/> instance that was created.</returns>
+        public static SeparatedSyntaxListBuilder<TNode> Create()
+        {
+            return new SeparatedSyntaxListBuilder<TNode>(8);
+        }
+
+        /// <summary>
         /// Gets a value indicating whether there are any nodes of the specified kind
         /// in the builder's list.
         /// </summary>

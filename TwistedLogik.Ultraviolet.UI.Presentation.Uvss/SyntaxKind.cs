@@ -196,9 +196,19 @@
         NavigationExpressionOperatorToken,
 
         /// <summary>
+        /// A property value token.
+        /// </summary>
+        PropertyValueToken,
+
+        /// <summary>
         /// A list of nodes.
         /// </summary>
         List,
+
+        /// <summary>
+        /// A block.
+        /// </summary>
+        Block,
 
         /// <summary>
         /// A styling rule set.
@@ -314,5 +324,10 @@
         /// A navigation expression.
         /// </summary>
         NavigationExpression,
+
+        /// <summary>
+        /// A document root node.
+        /// </summary>
+        UvssDocument,
     }
 }

@@ -10,11 +10,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssBlockSyntax"/> class.
         /// </summary>
-        public UvssBlockSyntax(SyntaxKind kind,
+        public UvssBlockSyntax(
             SyntaxToken openCurlyBraceToken,
             SyntaxList<SyntaxNode> content,
             SyntaxToken closeCurlyBraceToken)
-            : base(kind)
+            : base(SyntaxKind.Block)
         {
             this.OpenCurlyBraceToken = openCurlyBraceToken;
             this.Content = content;

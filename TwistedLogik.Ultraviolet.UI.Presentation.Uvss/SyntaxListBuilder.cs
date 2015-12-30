@@ -110,10 +110,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     return nodes[0];
 
                 case 2:
-                    throw new NotImplementedException();
+                    return SyntaxList.List(nodes[0], nodes[1]);
             }
 
-            throw new NotImplementedException();
+            return SyntaxList.List(ToArray());
         }
 
         /// <summary>

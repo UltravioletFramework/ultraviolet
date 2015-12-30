@@ -48,7 +48,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return builder.ToList();
         }
-        
+
+        /// <summary>
+        /// Creates a new syntax list builder.
+        /// </summary>
+        /// <returns>The <see cref="SyntaxListBuilder{TNode}"/> instance that was created.</returns>
+        public static SyntaxListBuilder<TNode> Create()
+        {
+            return new SyntaxListBuilder<TNode>(8);
+        }
+
         /// <summary>
         /// Gets a value indicating whether there are any nodes of the specified kind
         /// in the builder's list.

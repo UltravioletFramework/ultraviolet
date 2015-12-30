@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -22,6 +24,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public override String ToString() => Text;
 
         /// <inheritdoc/>
+        public override String ToFullString() => Text;
+
+        /// <inheritdoc/>
         public override SyntaxNode GetSlot(Int32 index)
         {
             throw new InvalidOperationException();
@@ -43,5 +48,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Gets the trivia's text.
         /// </summary>
         public String Text { get; }
+
+        /// <inheritdoc/>
+        internal override void WriteToOrFlatten(TextWriter writer, Stack<SyntaxNode> stack)
+        {
+            writer.Write(Text);
+        }
     }
 }

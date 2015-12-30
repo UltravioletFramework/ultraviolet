@@ -12,6 +12,8 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 using UvDebugSandbox.Input;
 using UvDebugSandbox.UI;
 using UvDebugSandbox.UI.Screens;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
 namespace UvDebugSandbox
 {
@@ -39,6 +41,38 @@ namespace UvDebugSandbox
         /// <param name="args">An array containing the application's command line arguments.</param>
         public static void Main(String[] args)
         {
+            var uvss = SyntaxFactory.Document(SyntaxFactory.List(new[] {
+                SyntaxFactory.RuleSet(
+                    SyntaxFactory.SeparatedList(new[] {
+                        SyntaxFactory.SelectorByName("test"),
+                        SyntaxFactory.SelectorByType("Button"),
+                        SyntaxFactory.Selector(SyntaxFactory.List(new SyntaxNode[] {
+                            SyntaxFactory.SelectorByClass("foo"),
+                            SyntaxFactory.VisualChildCombinator(),
+                            SyntaxFactory.SelectorByName("bar"),
+                            SyntaxFactory.VisualDescendantCombinator(),
+                            SyntaxFactory.SelectorByName("baz")
+                        }))
+                    }),
+                    SyntaxFactory.Block(SyntaxFactory.List(new[] {
+                        SyntaxFactory.Rule(
+                            SyntaxFactory.PropertyName("halign"),
+                            SyntaxFactory.PropertyValueWithSemiColon("left")    
+                        ),
+                        SyntaxFactory.Rule(
+                            SyntaxFactory.PropertyName("valign"),
+                            SyntaxFactory.PropertyValueWithSemiColon("middle")
+                        )
+                    }))
+                )
+            }));
+
+            var source = uvss.ToFullString();
+
+
+
+
+            
             using (var game = new Game())
             {
                 game.resolveContent = args.Contains("-resolve:content");
