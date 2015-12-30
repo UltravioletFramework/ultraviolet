@@ -161,29 +161,24 @@
         CloseCurlyBraceToken,
 
         /// <summary>
-        /// A universal selector ("*") token.
+        /// An asterisk ("*") token.
         /// </summary>
-        UniversalSelectorToken,
+        AsteriskToken,
 
         /// <summary>
-        /// A templated child combinator (">>") token.
+        /// A double greater than (">>") token.
         /// </summary>
-        TemplatedChildCombinatorToken,
+        GreaterThanGreaterThanToken,
 
         /// <summary>
-        /// A logical child combinator (">?") token.
+        /// A greater than followed by a question mark (">?") token.
         /// </summary>
-        LogicalChildCombinatorToken,
-
+        GreaterThanQuestionMarkToken,
+        
         /// <summary>
-        /// A visual child combinator (">") token.
+        /// A space (" ") token.
         /// </summary>
-        VisualChildCombinatorToken,
-
-        /// <summary>
-        /// A visual descendant combinator (" ") token.
-        /// </summary>
-        VisualDescendantCombinatorToken,
+        SpaceToken,
 
         /// <summary>
         /// An equals ("=") token.
@@ -216,9 +211,9 @@
         GreaterThanEqualsToken,
 
         /// <summary>
-        /// A navigation expression operator ("|") token.
+        /// A pipe ("|") token.
         /// </summary>
-        NavigationExpressionOperatorToken,
+        PipeToken,
 
         /// <summary>
         /// A property value token.
@@ -324,6 +319,16 @@
         /// A set trigger action.
         /// </summary>
         SetTriggerAction,
+
+        /// <summary>
+        /// A visual transition.
+        /// </summary>
+        Transition,
+
+        /// <summary>
+        /// A visual transition's argument list.
+        /// </summary>
+        TransitionArgumentList,
 
         /// <summary>
         /// A storyboard.

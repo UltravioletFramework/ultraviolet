@@ -21,6 +21,99 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Creates a new keyword token.
+        /// </summary>
+        /// <param name="kind">A <see cref="SyntaxKind"/> value that specifies the keyword's kind.</param>
+        /// <returns>The <see cref="UvssKeyword"/> instance that was created.</returns>
+        public static UvssKeyword Keyword(SyntaxKind kind)
+        {
+            return new UvssKeyword(kind);
+        }
+
+        /// <summary>
+        /// Creates a new keyword token.
+        /// </summary>
+        /// <param name="kind">A <see cref="SyntaxKind"/> value that specifies the keyword's kind.</param>
+        /// <param name="leadingTrivia">The keyword's leading trivia.</param>
+        /// <param name="trailingTrivia">The keyword's trailing trivia.</param>
+        /// <returns>The <see cref="UvssKeyword"/> instance that was created.</returns>
+        public static UvssKeyword Keyword(SyntaxKind kind,
+            SyntaxNode leadingTrivia, SyntaxNode trailingTrivia)
+        {
+            return new UvssKeyword(kind, leadingTrivia, trailingTrivia);
+        }
+
+        /// <summary>
+        /// Creates a new punctuation token.
+        /// </summary>
+        /// <param name="kind">A <see cref="SyntaxKind"/> value that specifies the punctuation's kind.</param>
+        /// <returns>The <see cref="UvssPunctuation"/> instance that was created.</returns>
+        public static UvssPunctuation Punctuation(SyntaxKind kind)
+        {
+            return new UvssPunctuation(kind);
+        }
+
+        /// <summary>
+        /// Creates a new punctuation token.
+        /// </summary>
+        /// <param name="kind">A <see cref="SyntaxKind"/> value that specifies the punctuation's kind.</param>
+        /// <param name="leadingTrivia">The keyword's leading trivia.</param>
+        /// <param name="trailingTrivia">The keyword's trailing trivia.</param>
+        /// <returns>The <see cref="UvssPunctuation"/> instance that was created.</returns>
+        public static UvssPunctuation Punctuation(SyntaxKind kind,
+            SyntaxNode leadingTrivia, SyntaxNode trailingTrivia)
+        {
+            return new UvssPunctuation(kind, leadingTrivia, trailingTrivia);
+        }
+
+        /// <summary>
+        /// Creates a new identifier token.
+        /// </summary>
+        /// <param name="text">The identifier text.</param>
+        /// <returns>The <see cref="SyntaxToken"/> instance that was created.</returns>
+        public static SyntaxToken Identifier(String text)
+        {
+            return Identifier(text, null, null);
+        }
+
+        /// <summary>
+        /// Creates a new identifier token.
+        /// </summary>
+        /// <param name="text">The identifier text.</param>
+        /// <param name="leadingTrivia">The syntax token's leading trivia, if it has any.</param>
+        /// <param name="trailingTrivia">The syntax token's trailing trivia, if it has any.</param>
+        /// <returns>The <see cref="SyntaxToken"/> instance that was created.</returns>
+        public static SyntaxToken Identifier(String text,
+            SyntaxNode leadingTrivia, SyntaxNode trailingTrivia)
+        {
+            return new SyntaxToken(SyntaxKind.IdentifierToken, text, leadingTrivia, trailingTrivia);
+        }
+
+        /// <summary>
+        /// Creates a new number token.
+        /// </summary>
+        /// <param name="value">The numeric value.</param>
+        /// <returns>The <see cref="SyntaxToken"/> instance that was created.</returns>
+        public static SyntaxToken Number(Int32 value)
+        {
+            return Number(value, null, null);
+        }
+
+        /// <summary>
+        /// Creates a new number token.
+        /// </summary>
+        /// <param name="value">The numeric value.</param>
+        /// <param name="leadingTrivia">The syntax token's leading trivia, if it has any.</param>
+        /// <param name="trailingTrivia">The syntax token's trailing trivia, if it has any.</param>
+        /// <returns>The <see cref="SyntaxToken"/> instance that was created.</returns>
+        public static SyntaxToken Number(Int32 value,
+            SyntaxNode leadingTrivia, SyntaxNode trailingTrivia)
+        {
+            return new SyntaxToken(SyntaxKind.NumberToken, 
+                value.ToString(CultureInfo.InvariantCulture), leadingTrivia, trailingTrivia);
+        }
+
+        /// <summary>
         /// Creates a new terminal token.
         /// </summary>
         /// <param name="kind">The token's kind.</param>
@@ -75,6 +168,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return builder.ToList();
             }
             return default(SyntaxList<TNode>);
+        }
+
+        /// <summary>
+        /// Creates an empty separated list.
+        /// </summary>
+        /// <typeparam name="TNode">The type of nodes in the list.</typeparam>
+        /// <returns>The <see cref="SeparatedSyntaxList{TNode}"/> that was created.</returns>
+        public static SeparatedSyntaxList<TNode> SeparatedList<TNode>() where TNode : SyntaxNode
+        {
+            return default(SeparatedSyntaxList<TNode>);
         }
 
         /// <summary>
@@ -189,9 +292,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssSelectorWithParenthesesSyntax SelectorWithParentheses(UvssSelectorSyntax selector)
         {
             return SelectorWithParentheses(
-                Token(SyntaxKind.OpenParenthesesToken, "("),
+                Punctuation(SyntaxKind.OpenParenthesesToken),
                 selector,
-                Token(SyntaxKind.CloseParenthesesToken, ")"));
+                Punctuation(SyntaxKind.CloseParenthesesToken));
         }
 
         /// <summary>
@@ -267,7 +370,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
         public static UvssSelectorPartSyntax SelectorPartByName(String name, String pseudoClass = null)
         {
-            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartByName(name) }),
+            return SelectorPart(
+                List(new[] { SelectorSubPartByName(name) }),
                 (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
@@ -279,7 +383,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
         public static UvssSelectorPartSyntax SelectorPartByClass(String @class, String pseudoClass = null)
         {
-            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartByClass(@class) }),
+            return SelectorPart(
+                List(new[] { SelectorSubPartByClass(@class) }),
                 (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
@@ -291,7 +396,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
         public static UvssSelectorPartSyntax SelectorPartByType(String type, String pseudoClass = null)
         {
-            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartByType(type) }),
+            return SelectorPart(
+                List(new[] { SelectorSubPartByType(type) }),
                 (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
@@ -303,7 +409,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
         public static UvssSelectorPartSyntax SelectorPartBySpecificType(String type, String pseudoClass = null)
         {
-            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartBySpecificType(type) }),
+            return SelectorPart(
+                List(new[] { SelectorSubPartBySpecificType(type) }),
                 (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
@@ -327,9 +434,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
         public static UvssSelectorSubPartSyntax SelectorSubPartByName(String name)
         {
-            return new UvssSelectorSubPartSyntax(
-                Token(SyntaxKind.HashToken, "#"),
-                Token(SyntaxKind.IdentifierToken, name), null);
+            return SelectorSubPart(
+                Punctuation(SyntaxKind.HashToken), 
+                Identifier(name), 
+                null);
         }
 
         /// <summary>
@@ -339,9 +447,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
         public static UvssSelectorSubPartSyntax SelectorSubPartByClass(String @class)
         {
-            return new UvssSelectorSubPartSyntax(
-                Token(SyntaxKind.PeriodToken, "."),
-                Token(SyntaxKind.IdentifierToken, @class), null);
+            return SelectorSubPart(
+                Punctuation(SyntaxKind.PeriodToken),
+                Identifier(@class),
+                null);
         }
 
         /// <summary>
@@ -351,7 +460,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
         public static UvssSelectorSubPartSyntax SelectorSubPartByType(String type)
         {
-            return new UvssSelectorSubPartSyntax(null, Token(SyntaxKind.IdentifierToken, type), null);
+            return SelectorSubPart(
+                null,
+                Identifier(type),
+                null);
         }
 
         /// <summary>
@@ -361,9 +473,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
         public static UvssSelectorSubPartSyntax SelectorSubPartBySpecificType(String type)
         {
-            return new UvssSelectorSubPartSyntax(null,
-                Token(SyntaxKind.IdentifierToken, type),
-                Token(SyntaxKind.ExclamationMarkToken, "!"));
+            return SelectorSubPart(
+                null,
+                Identifier(type),
+                Punctuation(SyntaxKind.ExclamationMarkToken));
         }
 
         /// <summary>
@@ -389,9 +502,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssPseudoClassSyntax"/> instance that was created.</returns>
         public static UvssPseudoClassSyntax PseudoClass(String className)
         {
-            return new UvssPseudoClassSyntax(
-                Token(SyntaxKind.ColonToken, ":"),
-                Token(SyntaxKind.IdentifierToken, className));
+            return PseudoClass(
+                Punctuation(SyntaxKind.ColonToken),
+                Identifier(className)
+            );
         }
 
         /// <summary>
@@ -411,36 +525,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Creates a new visual descendant combinator token.
         /// </summary>
         /// <returns>The <see cref="SyntaxToken"/> that was created.</returns>
-        public static SyntaxToken VisualDescendantCombinator()
+        public static UvssPunctuation VisualDescendantCombinator()
         {
-            return Token(SyntaxKind.VisualDescendantCombinatorToken, " ");
+            return Punctuation(SyntaxKind.SpaceToken);
         }
 
         /// <summary>
         /// Creates a new visual child combinator token.
         /// </summary>
         /// <returns>The <see cref="SyntaxToken"/> that was created.</returns>
-        public static SyntaxToken VisualChildCombinator()
+        public static UvssPunctuation VisualChildCombinator()
         {
-            return Token(SyntaxKind.VisualChildCombinatorToken, ">");
+            return Punctuation(SyntaxKind.GreaterThanToken);
         }
 
         /// <summary>
         /// Creates a new logical child combinator token.
         /// </summary>
         /// <returns>The <see cref="SyntaxToken"/> that was created.</returns>
-        public static SyntaxToken LogicalChildCombinator()
+        public static UvssPunctuation LogicalChildCombinator()
         {
-            return Token(SyntaxKind.LogicalChildCombinatorToken, ">?");
+            return Punctuation(SyntaxKind.GreaterThanQuestionMarkToken);
         }
 
         /// <summary>
         /// Creates a new templated child combinator token.
         /// </summary>
         /// <returns>The <see cref="SyntaxToken"/> that was created.</returns>
-        public static SyntaxToken TemplatedChildCombinator()
+        public static UvssPunctuation TemplatedChildCombinator()
         {
-            return Token(SyntaxKind.TemplatedChildCombinatorToken, ">>");
+            return Punctuation(SyntaxKind.GreaterThanGreaterThanToken);
         }
 
         /// <summary>
@@ -460,9 +574,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssBlockSyntax Block(SyntaxList<SyntaxNode> content)
         {
             return Block(
-                Token(SyntaxKind.OpenCurlyBraceToken, "{"),
+                Punctuation(SyntaxKind.OpenCurlyBraceToken),
                 content,
-                Token(SyntaxKind.CloseCurlyBraceToken, "}"));
+                Punctuation(SyntaxKind.CloseCurlyBraceToken));
         }
 
         /// <summary>
@@ -487,10 +601,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssPropertyNameSyntax"/> instance that was created.</returns>
         public static UvssPropertyNameSyntax PropertyName(String property)
         {
-            return new UvssPropertyNameSyntax(
+            return PropertyName(
                 null,
                 null,
-                Token(SyntaxKind.IdentifierToken, property));
+                Identifier(property));
         }
 
         /// <summary>
@@ -501,10 +615,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssPropertyNameSyntax"/> instance that was created.</returns>
         public static UvssPropertyNameSyntax PropertyName(String owner, String property)
         {
-            return new UvssPropertyNameSyntax(
-                Token(SyntaxKind.IdentifierToken, owner),
-                Token(SyntaxKind.PeriodToken, "."),
-                Token(SyntaxKind.IdentifierToken, property));
+            return PropertyName(
+                Identifier(owner),
+                Punctuation(SyntaxKind.PeriodToken),
+                Identifier(property));
         }
 
         /// <summary>
@@ -529,10 +643,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssEventNameSyntax"/> instance that was created.</returns>
         public static UvssEventNameSyntax EventName(String @event)
         {
-            return new UvssEventNameSyntax(
+            return EventName(
                 null,
                 null,
-                Token(SyntaxKind.IdentifierToken, @event));
+                Identifier(@event));
         }
 
         /// <summary>
@@ -543,10 +657,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssEventNameSyntax"/> instance that was created.</returns>
         public static UvssEventNameSyntax EventName(String owner, String @event)
         {
-            return new UvssEventNameSyntax(
-                Token(SyntaxKind.IdentifierToken, owner),
-                Token(SyntaxKind.PeriodToken, "."),
-                Token(SyntaxKind.IdentifierToken, @event));
+            return EventName(
+                Identifier(owner),
+                Punctuation(SyntaxKind.PeriodToken),
+                Identifier(@event));
         }
 
         /// <summary>
@@ -571,7 +685,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssPropertyValueSyntax"/> instance that was created.</returns>
         public static UvssPropertyValueSyntax PropertyValue(String value)
         {
-            return new UvssPropertyValueSyntax(
+            return PropertyValue(
                 Token(SyntaxKind.PropertyValueToken, value));
         }
 
@@ -592,10 +706,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssPropertyValueWithBracesSyntax"/> instance that was created.</returns>
         public static UvssPropertyValueWithBracesSyntax PropertyValueWithBraces(String value)
         {
-            return new UvssPropertyValueWithBracesSyntax(
-                Token(SyntaxKind.OpenCurlyBraceToken, "{"),
+            return PropertyValueWithBraces(
+                Punctuation(SyntaxKind.OpenCurlyBraceToken),
                 Token(SyntaxKind.PropertyValueToken, value),
-                Token(SyntaxKind.CloseCurlyBraceToken, "}"));
+                Punctuation(SyntaxKind.CloseCurlyBraceToken));
         }
 
         /// <summary>
@@ -605,10 +719,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="UvssPropertyValueWithBracesSyntax"/> instance that was created.</returns>
         public static UvssPropertyValueWithBracesSyntax PropertyValueWithBraces(SyntaxToken contentToken)
         {
-            return new UvssPropertyValueWithBracesSyntax(
-                Token(SyntaxKind.OpenCurlyBraceToken, "{"),
+            return PropertyValueWithBraces(
+                Punctuation(SyntaxKind.OpenCurlyBraceToken),
                 contentToken,
-                Token(SyntaxKind.CloseCurlyBraceToken, "}"));
+                Punctuation(SyntaxKind.CloseCurlyBraceToken));
         }
 
         /// <summary>
@@ -639,9 +753,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             Boolean important = false)
         {
             return new UvssRuleSyntax(propertyName,
-                Token(SyntaxKind.ColonToken, ":"), value,
-                important ? ImportantKeyword() : null,
-                Token(SyntaxKind.SemiColonToken, ";"));
+                Punctuation(SyntaxKind.ColonToken), value,
+                important ? Keyword(SyntaxKind.ImportantKeyword) : null,
+                Punctuation(SyntaxKind.SemiColonToken));
         }
 
         /// <summary>
@@ -662,16 +776,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return new UvssRuleSyntax(propertyName, colonToken, value, qualifierToken, semiColonToken);
         }
-
-        /// <summary>
-        /// Creates a new token representing the !important keyword.
-        /// </summary>
-        /// <returns>The <see cref="SyntaxToken"/> instance that was created.</returns>
-        public static SyntaxToken ImportantKeyword()
-        {
-            return new SyntaxToken(SyntaxKind.ImportantKeyword, "!important", Whitespace(" "), null);
-        }
-
+        
         /// <summary>
         /// Creates a new property trigger using automatically created "trigger" and "property" keyword tokens.
         /// </summary>
@@ -684,10 +789,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssBlockSyntax body,
             Boolean important = false)
         {
-            return new UvssPropertyTriggerSyntax(
-                Token(SyntaxKind.TriggerKeyword, "trigger", null, Whitespace(" ")),
-                Token(SyntaxKind.PropertyKeyword, "property", null, Whitespace(" ")),
-                evaluationList, important ? ImportantKeyword() : null, body);
+            return PropertyTrigger(
+                Punctuation(SyntaxKind.TriggerKeyword),
+                Punctuation(SyntaxKind.PropertyKeyword),
+                evaluationList, important ? Keyword(SyntaxKind.ImportantKeyword) : null, body);
         }
 
         /// <summary>
@@ -731,11 +836,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="leadingTrivia">The token's leading trivia.</param>
         /// <param name="trailingTrivia">The token's trailing trivia.</param>
         /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
-        public static SyntaxToken EqualsComparison(
+        public static UvssPunctuation EqualsComparison(
             SyntaxNode leadingTrivia = null,
             SyntaxNode trailingTrivia = null)
         {
-            return new SyntaxToken(SyntaxKind.EqualsToken, "=", leadingTrivia, trailingTrivia);
+            return Punctuation(SyntaxKind.EqualsToken, leadingTrivia, trailingTrivia);
         }
 
         /// <summary>
@@ -744,11 +849,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="leadingTrivia">The token's leading trivia.</param>
         /// <param name="trailingTrivia">The token's trailing trivia.</param>
         /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
-        public static SyntaxToken NotEqualsComparison(
+        public static UvssPunctuation NotEqualsComparison(
             SyntaxNode leadingTrivia = null,
             SyntaxNode trailingTrivia = null)
         {
-            return new SyntaxToken(SyntaxKind.NotEqualsToken, "<>", leadingTrivia, trailingTrivia);
+            return Punctuation(SyntaxKind.NotEqualsToken, leadingTrivia, trailingTrivia);
         }
 
         /// <summary>
@@ -757,11 +862,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="leadingTrivia">The token's leading trivia.</param>
         /// <param name="trailingTrivia">The token's trailing trivia.</param>
         /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
-        public static SyntaxToken LessThanComparison(
+        public static UvssPunctuation LessThanComparison(
             SyntaxNode leadingTrivia = null,
             SyntaxNode trailingTrivia = null)
         {
-            return new SyntaxToken(SyntaxKind.LessThanToken, "<", leadingTrivia, trailingTrivia);
+            return Punctuation(SyntaxKind.LessThanToken, leadingTrivia, trailingTrivia);
         }
 
         /// <summary>
@@ -770,11 +875,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="leadingTrivia">The token's leading trivia.</param>
         /// <param name="trailingTrivia">The token's trailing trivia.</param>
         /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
-        public static SyntaxToken GreaterThanComparison(
+        public static UvssPunctuation GreaterThanComparison(
             SyntaxNode leadingTrivia = null,
             SyntaxNode trailingTrivia = null)
         {
-            return new SyntaxToken(SyntaxKind.GreaterThanToken, ">", leadingTrivia, trailingTrivia);
+            return Punctuation(SyntaxKind.GreaterThanToken, leadingTrivia, trailingTrivia);
         }
 
         /// <summary>
@@ -783,11 +888,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="leadingTrivia">The token's leading trivia.</param>
         /// <param name="trailingTrivia">The token's trailing trivia.</param>
         /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
-        public static SyntaxToken LessThanEqualsComparison(
+        public static UvssPunctuation LessThanEqualsComparison(
             SyntaxNode leadingTrivia = null,
             SyntaxNode trailingTrivia = null)
         {
-            return new SyntaxToken(SyntaxKind.LessThanEqualsToken, "<=", leadingTrivia, trailingTrivia);
+            return Punctuation(SyntaxKind.LessThanEqualsToken, leadingTrivia, trailingTrivia);
         }
 
         /// <summary>
@@ -796,11 +901,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="leadingTrivia">The token's leading trivia.</param>
         /// <param name="trailingTrivia">The token's trailing trivia.</param>
         /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
-        public static SyntaxToken GreaterThanEqualsComparison(
+        public static UvssPunctuation GreaterThanEqualsComparison(
             SyntaxNode leadingTrivia = null,
             SyntaxNode trailingTrivia = null)
         {
-            return new SyntaxToken(SyntaxKind.GreaterThanEqualsToken, ">=", leadingTrivia, trailingTrivia);
+            return Punctuation(SyntaxKind.GreaterThanEqualsToken, leadingTrivia, trailingTrivia);
         }
 
         /// <summary>
@@ -811,8 +916,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssPlayStoryboardTriggerActionSyntax PlayStoryboardTriggerAction(
             UvssPropertyValueWithBracesSyntax value)
         {
-            return new UvssPlayStoryboardTriggerActionSyntax(
-                Token(SyntaxKind.PlayStoryboardKeyword, "play-storyboard"), null, value);
+            return PlayStoryboardTriggerAction(
+                Keyword(SyntaxKind.PlayStoryboardKeyword), 
+                null, 
+                value);
         }
 
         /// <summary>
@@ -825,8 +932,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssSelectorWithParenthesesSyntax selector,
             UvssPropertyValueWithBracesSyntax value)
         {
-            return new UvssPlayStoryboardTriggerActionSyntax(
-                Token(SyntaxKind.PlayStoryboardKeyword, "play-storyboard"), selector, value);
+            return PlayStoryboardTriggerAction(
+                Keyword(SyntaxKind.PlayStoryboardKeyword), 
+                selector, 
+                value);
         }
 
         /// <summary>
@@ -852,7 +961,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssPlaySfxTriggerActionSyntax PlaySfxTriggerAction(
             UvssPropertyValueWithBracesSyntax value)
         {
-            return new UvssPlaySfxTriggerActionSyntax(Token(SyntaxKind.PlaySfxKeyword, "play-sfx"), value);
+            return PlaySfxTriggerAction(
+                Keyword(SyntaxKind.PlaySfxKeyword),
+                value);
         }
 
         /// <summary>
@@ -878,8 +989,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssPropertyNameSyntax propertyName,
             UvssPropertyValueWithBracesSyntax value)
         {
-            return new UvssSetTriggerActionSyntax(
-                Token(SyntaxKind.SetKeyword, "set"), propertyName, null, value);
+            return SetTriggerAction(
+                Keyword(SyntaxKind.SetKeyword), 
+                propertyName, 
+                null, 
+                value);
         }
 
         /// <summary>
@@ -894,8 +1008,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssSelectorWithParenthesesSyntax selector,
             UvssPropertyValueWithBracesSyntax value)
         {
-            return new UvssSetTriggerActionSyntax(
-                Token(SyntaxKind.SetKeyword, "set"), propertyName, selector, value);
+            return SetTriggerAction(
+                Keyword(SyntaxKind.SetKeyword),
+                propertyName, 
+                selector, 
+                value);
         }
 
         /// <summary>
@@ -927,10 +1044,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssBlockSyntax body,
             Boolean important = false)
         {
-            return new UvssEventTriggerSyntax(
-                Token(SyntaxKind.TriggerKeyword, "trigger", null, Whitespace(" ")),
-                Token(SyntaxKind.EventKeyword, "event", null, Whitespace(" ")),
-                eventName, null, important ? ImportantKeyword() : null, body);
+            return EventTrigger(
+                Keyword(SyntaxKind.TriggerKeyword),
+                Keyword(SyntaxKind.EventKeyword),
+                eventName, 
+                null, 
+                important ? Keyword(SyntaxKind.ImportantKeyword) : null,
+                body);
         }
 
         /// <summary>
@@ -947,10 +1067,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssBlockSyntax body,
             Boolean important = false)
         {
-            return new UvssEventTriggerSyntax(
-                Token(SyntaxKind.TriggerKeyword, "trigger", null, Whitespace(" ")),
-                Token(SyntaxKind.EventKeyword, "event", null, Whitespace(" ")),
-                eventName, argumentList, important ? ImportantKeyword() : null, body);
+            return EventTrigger(
+                Keyword(SyntaxKind.TriggerKeyword),
+                Keyword(SyntaxKind.EventKeyword),
+                eventName,
+                argumentList,
+                important ? Keyword(SyntaxKind.ImportantKeyword) : null,
+                body);
         }
 
         /// <summary>
@@ -991,7 +1114,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 builder.Add(Token(SyntaxKind.HandledKeyword, "handled"));
 
             if (sethandled)
+            {
+                if (builder.Count > 0)
+                {
+                    builder.AddSeparator(Punctuation(SyntaxKind.CommaToken));
+                }
                 builder.Add(Token(SyntaxKind.SetHandledKeyword, "set-handled"));
+            }
 
             return EventTriggerArgumentList(builder.ToList());
         }
@@ -1005,9 +1134,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             SeparatedSyntaxList<SyntaxNode> arguments)
         {
             return new UvssEventTriggerArgumentList(
-                Token(SyntaxKind.OpenParenthesesToken, "("),
+                Punctuation(SyntaxKind.OpenParenthesesToken),
                 arguments,
-                Token(SyntaxKind.CloseParenthesesToken, ")"));
+                Punctuation(SyntaxKind.CloseParenthesesToken));
         }
 
         /// <summary>
@@ -1026,6 +1155,104 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Creates a new visual transition using automatically created tokens.
+        /// </summary>
+        /// <param name="argumentList">The transition's argument list.</param>
+        /// <param name="storyboardName">The name of the storyboard associated with the transition.</param>
+        /// <param name="important">A value indicating whether the transition has the !important qualifier.</param>
+        /// <returns>The <see cref="UvssTransitionSyntax"/> instance that was created.</returns>
+        public static UvssTransitionSyntax Transition(
+            UvssTransitionArgumentListSyntax argumentList,
+            String storyboardName,
+            Boolean important = false)
+        {
+            return Transition(
+                Keyword(SyntaxKind.TransitionKeyword),
+                argumentList,
+                Punctuation(SyntaxKind.ColonToken),
+                Identifier(storyboardName),
+                important ? Keyword(SyntaxKind.ImportantKeyword) : null,
+                Punctuation(SyntaxKind.SemiColonToken));
+        }
+
+        /// <summary>
+        /// Creates a new visual transition.
+        /// </summary>
+        /// <param name="transitionKeyword">The "transition" keyword that introduces the transition.</param>
+        /// <param name="argumentList">The transition's argument list.</param>
+        /// <param name="colonToken">The colon that separates the transition declaration from its value.</param>
+        /// <param name="storyboardNameToken">The name of the storyboard associated with the transition.</param>
+        /// <param name="qualifierToken">The transition's qualifier token.</param>
+        /// <param name="semiColonToken">The semi-colon that terminates the transition.</param>
+        /// <returns></returns>
+        public static UvssTransitionSyntax Transition(
+            SyntaxToken transitionKeyword,
+            UvssTransitionArgumentListSyntax argumentList,
+            SyntaxToken colonToken,
+            SyntaxToken storyboardNameToken,
+            SyntaxToken qualifierToken,
+            SyntaxToken semiColonToken)
+        {
+            return new UvssTransitionSyntax(transitionKeyword, argumentList, colonToken, 
+                storyboardNameToken, qualifierToken, semiColonToken);
+        }
+
+        /// <summary>
+        /// Creates a new transition argument list using automatically created tokens.
+        /// </summary>
+        /// <param name="visualStateGroup">The name of the visual state group.</param>
+        /// <param name="visualStateEnd">The name of the ending visual state.</param>
+        /// <returns>The <see cref="UvssTransitionArgumentListSyntax"/> instance that was created.</returns>
+        public static UvssTransitionArgumentListSyntax TransitionArgumentList(
+            String visualStateGroup, String visualStateEnd)
+        {
+            return TransitionArgumentList(visualStateGroup, null, visualStateEnd);
+        }
+
+        /// <summary>
+        /// Creates a new transition argument list using automatically created tokens.
+        /// </summary>
+        /// <param name="visualStateGroup">The name of the visual state group.</param>
+        /// <param name="visualStateStart">The name of the starting visual state.</param>
+        /// <param name="visualStateEnd">The name of the ending visual state.</param>
+        /// <returns>The <see cref="UvssTransitionArgumentListSyntax"/> instance that was created.</returns>
+        public static UvssTransitionArgumentListSyntax TransitionArgumentList(
+            String visualStateGroup, String visualStateStart, String visualStateEnd)
+        {
+            var builder = SeparatedSyntaxListBuilder<SyntaxNode>.Create();
+            builder.Add(Identifier(visualStateGroup));
+
+            if (visualStateStart != null)
+            {
+                builder.AddSeparator(Punctuation(SyntaxKind.CommaToken));
+                builder.Add(Identifier(visualStateStart));
+            }
+
+            builder.AddSeparator(Punctuation(SyntaxKind.CommaToken));
+            builder.Add(Identifier(visualStateEnd));
+
+            return TransitionArgumentList(
+                Punctuation(SyntaxKind.OpenParenthesesToken),
+                builder.ToList(),
+                Punctuation(SyntaxKind.CloseParenthesesToken));
+        }
+
+        /// <summary>
+        /// Creates a new transition argument list.
+        /// </summary>
+        /// <param name="openParenToken">The open parenthesis that introduces the argument list.</param>
+        /// <param name="argumentList">The list of arguments.</param>
+        /// <param name="closeParenToken">The close parenthesis that terminates the argument list.</param>
+        /// <returns>The <see cref="UvssTransitionArgumentListSyntax"/> instance that was created.</returns>
+        public static UvssTransitionArgumentListSyntax TransitionArgumentList(
+            SyntaxToken openParenToken,
+            SeparatedSyntaxList<SyntaxNode> argumentList,
+            SyntaxToken closeParenToken)
+        {
+            return new UvssTransitionArgumentListSyntax(openParenToken, argumentList, closeParenToken);
+        }
+
+        /// <summary>
         /// Creates a new storyboard declaration using an automatically created tokens.
         /// </summary>
         /// <param name="name">The storyboard's name.</param>
@@ -1034,9 +1261,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssStoryboardSyntax Storyboard(String name, UvssBlockSyntax body)
         {
             return new UvssStoryboardSyntax(
-                Token(SyntaxKind.AtSignToken, "@"),
-                Token(SyntaxKind.IdentifierToken, name, null, Whitespace(" ")),
-                null, body);
+                Punctuation(SyntaxKind.AtSignToken),
+                Identifier(name),
+                null, 
+                body);
         }
 
         /// <summary>
@@ -1049,9 +1277,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssStoryboardSyntax Storyboard(String name, String loop, UvssBlockSyntax body)
         {
             return new UvssStoryboardSyntax(
-                Token(SyntaxKind.AtSignToken, "@"),
-                Token(SyntaxKind.IdentifierToken, name, null, Whitespace(" ")),
-                Token(SyntaxKind.IdentifierToken, loop),
+                Punctuation(SyntaxKind.AtSignToken),
+                Identifier(name),
+                Identifier(loop),
                 body);
         }
 
@@ -1081,8 +1309,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssBlockSyntax body)
         {
             return new UvssStoryboardTargetSyntax(
-                Token(SyntaxKind.TargetKeyword, "target", null, Whitespace(" ")),
-                null, null, body);
+                Keyword(SyntaxKind.TargetKeyword),
+                null, 
+                null, 
+                body);
         }
 
         /// <summary>
@@ -1095,8 +1325,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssBlockSyntax body)
         {
             return new UvssStoryboardTargetSyntax(
-                Token(SyntaxKind.TargetKeyword, "target", null, Whitespace(" ")),
-                Token(SyntaxKind.IdentifierToken, typeName), null, body);
+                Keyword(SyntaxKind.TargetKeyword),
+                Identifier(typeName), 
+                null, 
+                body);
         }
 
         /// <summary>
@@ -1111,8 +1343,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssBlockSyntax body)
         {
             return new UvssStoryboardTargetSyntax(
-                Token(SyntaxKind.TargetKeyword, "target", null, Whitespace(" ")),
-                Token(SyntaxKind.IdentifierToken, typeName), selector, body);
+                Keyword(SyntaxKind.TargetKeyword),
+                Identifier(typeName), 
+                selector, 
+                body);
         }
 
         /// <summary>
@@ -1158,8 +1392,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssBlockSyntax body)
         {
             return Animation(
-                Token(SyntaxKind.AnimationKeyword, "animation", null, Whitespace(" ")),
-                propertyName, navigationExpression, body);
+                Keyword(SyntaxKind.AnimationKeyword),
+                propertyName, 
+                navigationExpression, 
+                body);
         }
 
         /// <summary>
@@ -1202,9 +1438,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             Int32 time, String easing, UvssPropertyValueWithBracesSyntax value)
         {
             return AnimationKeyframe(
-                Token(SyntaxKind.KeyframeKeyword, "keyframe", null, Whitespace(" ")),
-                Token(SyntaxKind.NumberToken, time.ToString(CultureInfo.InvariantCulture), null, Whitespace(" ")),
-                (easing == null) ? null : Token(SyntaxKind.IdentifierToken, easing, null, Whitespace(" ")), value);
+                Keyword(SyntaxKind.KeyframeKeyword),
+                Number(time),
+                (easing == null) ? null : Token(SyntaxKind.IdentifierToken, easing), 
+                value);
         }
 
         /// <summary>
@@ -1234,10 +1471,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssPropertyNameSyntax propertyName, String typeName)
         {
             return NavigationExpression(
-                Token(SyntaxKind.NavigationExpressionOperatorToken, "|", Whitespace(" "), Whitespace(" ")),
+                Punctuation(SyntaxKind.PipeToken),
                 propertyName,
-                Token(SyntaxKind.AsKeyword, "as", Whitespace(" "), Whitespace(" ")),
-                Token(SyntaxKind.IdentifierToken, typeName));
+                Keyword(SyntaxKind.AsKeyword),
+                Identifier(typeName));
         }
 
         /// <summary>

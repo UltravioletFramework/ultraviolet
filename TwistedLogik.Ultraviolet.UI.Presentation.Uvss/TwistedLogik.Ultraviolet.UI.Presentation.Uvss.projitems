@@ -22,9 +22,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionArgumentListSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssBlockSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssDocumentSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEventTriggerArgumentList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPunctuation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssKeyword.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPseudoClassSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssNavigationExpressionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssAnimationKeyframeSyntax.cs" />

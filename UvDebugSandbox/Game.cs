@@ -41,6 +41,11 @@ namespace UvDebugSandbox
         /// <param name="args">An array containing the application's command line arguments.</param>
         public static void Main(String[] args)
         {
+            var transition = SyntaxFactory.Transition(
+                SyntaxFactory.TransitionArgumentList("common", "normal", "pressed"), "some-storyboard", true);
+
+            var transitionText = transition.ToFullString();
+
             var uvss = SyntaxFactory.Storyboard("foobar", "loop", SyntaxFactory.Block(SyntaxFactory.List(new[] {
                 SyntaxFactory.StoryboardTarget("element",
                     SyntaxFactory.SelectorWithParentheses(
@@ -59,6 +64,9 @@ namespace UvDebugSandbox
                     }))
                 )
             })));
+
+            var storyboard = uvss;
+            var storyboardTarget = storyboard.Body;
 
             var source = uvss.ToFullString();
 
