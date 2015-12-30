@@ -45,5 +45,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The action's value.
         /// </summary>
         public UvssPropertyValueWithBracesSyntax Value { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitPlaySfxTriggerAction(this);
+        }
     }
 }

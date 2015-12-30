@@ -268,6 +268,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Gets a value indicating whether this node is a terminal token.
         /// </summary>
         public virtual Boolean IsToken { get { return false; } }
+        
+        /// <summary>
+        /// Accepts the specified syntax visitor.
+        /// </summary>
+        /// <param name="visitor">The syntax visitor to accept.</param>
+        /// <returns>A <see cref="SyntaxNode"/> which will replace this node, or a reference to the node itself
+        /// if no changes were made to the node.</returns>
+        internal abstract SyntaxNode Accept(SyntaxVisitor visitor);
 
         /// <summary>
         /// Writes the full text of this node and its children to the specified <see cref="TextWriter"/> instance.

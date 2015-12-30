@@ -34,5 +34,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The selector's list of parts and combinators.
         /// </summary>
         public SyntaxList<SyntaxNode> PartsAndCombinatorsList { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitSelector(this);
+        }
     }
 }

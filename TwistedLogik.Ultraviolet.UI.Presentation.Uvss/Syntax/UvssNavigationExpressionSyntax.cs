@@ -65,5 +65,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The navigation expression's conversion type name.
         /// </summary>
         public SyntaxToken TypeNameToken { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitNavigationExpression(this);
+        }
     }
 }

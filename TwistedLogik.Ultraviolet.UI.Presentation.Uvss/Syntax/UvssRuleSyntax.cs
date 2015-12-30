@@ -75,5 +75,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The rule's terminating semi-colon token.
         /// </summary>
         public SyntaxToken SemiColonToken { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitRule(this);
+        }
     }
 }

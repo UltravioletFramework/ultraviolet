@@ -85,5 +85,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The semi-colon that terminates the transition.
         /// </summary>
         public SyntaxToken SemiColonToken { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitTransition(this);
+        }
     }
 }

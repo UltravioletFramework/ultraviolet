@@ -45,5 +45,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The name of the pseudo-class.
         /// </summary>
         public SyntaxToken ClassNameToken { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitPseudoClass(this);
+        }
     }
 }

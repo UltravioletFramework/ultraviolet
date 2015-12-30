@@ -34,5 +34,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The value's content.
         /// </summary>
         public SyntaxToken ContentToken { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitPropertyValue(this);
+        }
     }
 }

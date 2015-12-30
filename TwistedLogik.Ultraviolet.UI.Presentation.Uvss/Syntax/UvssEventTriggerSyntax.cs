@@ -85,5 +85,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The trigger's body.
         /// </summary>
         public UvssBlockSyntax Body { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitEventTrigger(this);
+        }
     }
 }

@@ -6,7 +6,7 @@
     public abstract class UvssTriggerActionBaseSyntax : UvssNodeSyntax
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UvssPropertyTriggerEvaluationSyntax"/> class.
+        /// Initializes a new instance of the <see cref="UvssPropertyTriggerConditionSyntax"/> class.
         /// </summary>
         /// <param name="kind">The node's <see cref="SyntaxKind"/> value.</param>
         internal UvssTriggerActionBaseSyntax(SyntaxKind kind)

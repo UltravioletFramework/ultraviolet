@@ -136,6 +136,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         /// <param name="array">The array to which to copy the list.</param>
         /// <param name="offset">The offset at which to begin copying.</param>
-        internal abstract void CopyTo(ArrayElement<SyntaxNode>[] array, Int32 offset);        
+        internal abstract void CopyTo(ArrayElement<SyntaxNode>[] array, Int32 offset);
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitSyntaxNode(this);
+        }
     }
 }

@@ -65,5 +65,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The keyframe value.
         /// </summary>
         public UvssPropertyValueWithBracesSyntax Value { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitAnimationKeyframe(this);
+        }
     }
 }

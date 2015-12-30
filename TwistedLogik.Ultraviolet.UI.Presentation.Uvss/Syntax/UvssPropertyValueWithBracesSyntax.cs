@@ -55,5 +55,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The value's closing curly brace.
         /// </summary>
         public SyntaxToken CloseCurlyBrace { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitPropertyValueWithBraces(this);
+        }
     }
 }

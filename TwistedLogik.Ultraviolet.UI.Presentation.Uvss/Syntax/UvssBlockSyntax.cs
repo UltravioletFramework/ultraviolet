@@ -55,5 +55,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The close curly brace that terminates the block.
         /// </summary>
         public SyntaxToken CloseCurlyBraceToken { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitBlock(this);
+        }
     }
 }

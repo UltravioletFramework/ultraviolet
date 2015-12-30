@@ -34,5 +34,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The document's list of rule sets.
         /// </summary>
         public SyntaxList<UvssRuleSetSyntax> RuleSetList { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitDocument(this);
+        }
     }
 }

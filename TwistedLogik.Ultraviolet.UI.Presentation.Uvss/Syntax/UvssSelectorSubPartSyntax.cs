@@ -55,5 +55,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The sub-part's trailing qualifier.
         /// </summary>
         public SyntaxToken TrailingQualifierToken { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitSelectorSubPart(this);
+        }
     }
 }

@@ -55,5 +55,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The close parenthesis that terminates the argument list.
         /// </summary>
         public SyntaxToken CloseParenToken { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitTransitionArgumentList(this);
+        }
     }
 }

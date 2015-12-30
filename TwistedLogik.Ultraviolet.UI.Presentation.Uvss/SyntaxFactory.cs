@@ -785,7 +785,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="important">A value indicating whether this trigger has the !important qualifier.</param>
         /// <returns>The <see cref="UvssPropertyTriggerSyntax"/> instance that was created.</returns>
         public static UvssPropertyTriggerSyntax PropertyTrigger(
-            SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> evaluationList,
+            SeparatedSyntaxList<UvssPropertyTriggerConditionSyntax> evaluationList,
             UvssBlockSyntax body,
             Boolean important = false)
         {
@@ -807,7 +807,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssPropertyTriggerSyntax PropertyTrigger(
             SyntaxToken triggerKeyword,
             SyntaxToken propertyKeyword,
-            SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> evaluationList,
+            SeparatedSyntaxList<UvssPropertyTriggerConditionSyntax> evaluationList,
             SyntaxToken qualifierToken,
             UvssBlockSyntax body)
         {
@@ -821,13 +821,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="propertyName">The name of the property being evaluated.</param>
         /// <param name="comparisonOperatorToken">The comparison operator used to perform the evaluation.</param>
         /// <param name="value">The value which is being compared to the property value.</param>
-        /// <returns>The <see cref="UvssPropertyTriggerEvaluationSyntax"/> instance that was created.</returns>
-        public static UvssPropertyTriggerEvaluationSyntax PropertyTriggerEvaluation(
+        /// <returns>The <see cref="UvssPropertyTriggerConditionSyntax"/> instance that was created.</returns>
+        public static UvssPropertyTriggerConditionSyntax PropertyTriggerEvaluation(
             UvssPropertyNameSyntax propertyName,
             SyntaxToken comparisonOperatorToken,
             UvssPropertyValueWithBracesSyntax value)
         {
-            return new UvssPropertyTriggerEvaluationSyntax(propertyName, comparisonOperatorToken, value);
+            return new UvssPropertyTriggerConditionSyntax(propertyName, comparisonOperatorToken, value);
         }
 
         /// <summary>

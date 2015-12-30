@@ -76,6 +76,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public String Text { get; }
 
         /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitSyntaxToken(this);
+        }
+
+        /// <inheritdoc/>
         internal override void WriteToOrFlatten(TextWriter writer, Stack<SyntaxNode> stack)
         {
             var leadingTrivia = GetLeadingTrivia();

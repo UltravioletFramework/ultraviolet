@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionArgumentListSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssBlockSyntax.cs" />
@@ -41,7 +42,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPlaySfxTriggerActionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPlayStoryboardTriggerActionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTriggerActionBaseSyntax.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyTriggerEvaluationSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyTriggerConditionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyTriggerSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEventTriggerSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTriggerBaseSyntax.cs" />

@@ -301,9 +301,9 @@
         PropertyTrigger,
 
         /// <summary>
-        /// A property trigger evaluator.
+        /// A property trigger condition.
         /// </summary>
-        PropertyTriggerEvaluation,
+        PropertyTriggerCondition,
 
         /// <summary>
         /// A play-storyboard trigger action.

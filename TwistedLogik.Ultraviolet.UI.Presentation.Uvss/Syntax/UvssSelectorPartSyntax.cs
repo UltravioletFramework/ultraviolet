@@ -45,5 +45,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The selector's pseudo-class.
         /// </summary>
         public UvssPseudoClassSyntax PseudoClass { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitSelectorPart(this);
+        }
     }
 }

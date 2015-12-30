@@ -55,5 +55,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The name of the property.
         /// </summary>
         public SyntaxToken PropertyNameToken { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitPropertyName(this);
+        }
     }
 }

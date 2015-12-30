@@ -50,6 +50,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public String Text { get; }
 
         /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitSyntaxTrivia(this);
+        }
+
+        /// <inheritdoc/>
         internal override void WriteToOrFlatten(TextWriter writer, Stack<SyntaxNode> stack)
         {
             writer.Write(Text);

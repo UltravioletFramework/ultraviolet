@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         internal UvssPropertyTriggerSyntax(
             SyntaxToken triggerKeyword,
             SyntaxToken propertyKeyword,
-            SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> evaluationList,
+            SeparatedSyntaxList<UvssPropertyTriggerConditionSyntax> conditionList,
             SyntaxToken qualifierToken,
             UvssBlockSyntax body)
             : base(SyntaxKind.PropertyTrigger)
@@ -24,8 +24,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             this.PropertyKeyword = propertyKeyword;
             ChangeParent(propertyKeyword);
 
-            this.EvaluationList = evaluationList;
-            ChangeParent(evaluationList.Node);
+            this.ConditionList = conditionList;
+            ChangeParent(conditionList.Node);
 
             this.QualifierToken = qualifierToken;
             ChangeParent(qualifierToken);
@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             {
                 case 0: return TriggerKeyword;
                 case 1: return PropertyKeyword;
-                case 2: return EvaluationList.Node;
+                case 2: return ConditionList.Node;
                 case 3: return QualifierToken;
                 case 4: return Body;
                 default:
@@ -62,9 +62,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         public SyntaxToken PropertyKeyword { get; internal set; }
 
         /// <summary>
-        /// The trigger's evaluation list.
+        /// The trigger's condition list.
         /// </summary>
-        public SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> EvaluationList { get; internal set; }
+        public SeparatedSyntaxList<UvssPropertyTriggerConditionSyntax> ConditionList { get; internal set; }
 
         /// <summary>
         /// The trigger's qualifier token.
@@ -75,5 +75,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The trigger's body.
         /// </summary>
         public UvssBlockSyntax Body { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitPropertyTrigger(this);
+        }
     }
 }

@@ -3,18 +3,18 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
-    /// Represents a UVSS property trigger evaluation.
+    /// Represents a UVSS property trigger condition.
     /// </summary>
-    public sealed class UvssPropertyTriggerEvaluationSyntax : UvssNodeSyntax
+    public sealed class UvssPropertyTriggerConditionSyntax : UvssNodeSyntax
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UvssPropertyTriggerEvaluationSyntax"/> class.
+        /// Initializes a new instance of the <see cref="UvssPropertyTriggerConditionSyntax"/> class.
         /// </summary>
-        internal UvssPropertyTriggerEvaluationSyntax(
+        internal UvssPropertyTriggerConditionSyntax(
             UvssPropertyNameSyntax propertyName,
             SyntaxToken comparisonOperatorToken,
             UvssPropertyValueWithBracesSyntax value)
-            : base(SyntaxKind.PropertyTriggerEvaluation)
+            : base(SyntaxKind.PropertyTriggerCondition)
         {
             this.PropertyName = propertyName;
             ChangeParent(propertyName);
@@ -55,5 +55,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The value being compared against the property.
         /// </summary>
         public UvssPropertyValueWithBracesSyntax Value { get; internal set; }
+        
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitPropertyTriggerCondition(this);
+        }
     }
 }

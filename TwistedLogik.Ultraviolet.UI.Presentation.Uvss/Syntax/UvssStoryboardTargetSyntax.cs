@@ -65,5 +65,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The target's body.
         /// </summary>
         public UvssBlockSyntax Body { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitStoryboardTarget(this);
+        }
     }
 }
