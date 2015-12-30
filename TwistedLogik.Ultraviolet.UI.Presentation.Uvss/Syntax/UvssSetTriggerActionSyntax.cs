@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS set trigger action.
     /// </summary>
-    public class UvssSetTriggerActionSyntax : UvssTriggerActionBaseSyntax
+    public sealed class UvssSetTriggerActionSyntax : UvssTriggerActionBaseSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSetTriggerActionSyntax"/> class.

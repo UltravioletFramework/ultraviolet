@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS rule.
     /// </summary>
-    public class UvssRuleSyntax : UvssNodeSyntax
+    public sealed class UvssRuleSyntax : UvssNodeSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssRuleSyntax"/> class.

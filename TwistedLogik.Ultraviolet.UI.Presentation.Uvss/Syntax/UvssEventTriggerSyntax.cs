@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS event trigger.
     /// </summary>
-    public class UvssEventTriggerSyntax : UvssTriggerBaseSyntax
+    public sealed class UvssEventTriggerSyntax : UvssTriggerBaseSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssEventTriggerSyntax"/> class.
@@ -14,25 +14,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             SyntaxToken triggerKeyword,
             SyntaxToken eventKeyword,
             UvssEventNameSyntax eventName,
-            SyntaxToken openParen,
-            SyntaxNode arguments,
-            SyntaxToken closeParen,
-            SyntaxToken openCurlyBrace,
-            SyntaxNode actions,
-            SyntaxToken closeCurlyBrace)
+            UvssEventTriggerArgumentList argumentList,
+            UvssBlockSyntax body)
             : base(SyntaxKind.EventTrigger)
         {
             this.TriggerKeyword = triggerKeyword;
             this.EventKeyword = eventKeyword;
             this.EventName = eventName;
-            this.OpenParen = openParen;
-            this.Arguments = arguments;
-            this.CloseParen = closeParen;
-            this.OpenCurlyBrace = openCurlyBrace;
-            this.Actions = actions;
-            this.CloseCurlyBrace = closeCurlyBrace;
+            this.ArgumentList = argumentList;
+            this.Body = body;
 
-            SlotCount = 9;
+            SlotCount = 5;
         }
 
         /// <inheritdoc/>
@@ -43,12 +35,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
                 case 0: return TriggerKeyword;
                 case 1: return EventKeyword;
                 case 2: return EventName;
-                case 3: return OpenParen;
-                case 4: return Arguments;
-                case 5: return CloseParen;
-                case 6: return OpenCurlyBrace;
-                case 7: return Actions;
-                case 8: return CloseCurlyBrace;
+                case 3: return ArgumentList;
+                case 4: return Body;
                 default:
                     throw new InvalidOperationException();
             }
@@ -70,33 +58,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         public UvssEventNameSyntax EventName;
 
         /// <summary>
-        /// The opening parenthesis that introduces the trigger's argument list.
-        /// </summary>
-        public SyntaxToken OpenParen;
-
-        /// <summary>
         /// The trigger's argument list.
         /// </summary>
-        public SyntaxNode Arguments;
+        public UvssEventTriggerArgumentList ArgumentList;
 
         /// <summary>
-        /// The closing parenthesis that terminates the trigger's argument list.
+        /// The trigger's body.
         /// </summary>
-        public SyntaxToken CloseParen;
-
-        /// <summary>
-        /// The opening curly brace that introduces the trigger's action list.
-        /// </summary>
-        public SyntaxToken OpenCurlyBrace;
-
-        /// <summary>
-        /// The trigger's action list.
-        /// </summary>
-        public SyntaxNode Actions;
-
-        /// <summary>
-        /// The closing curly brace that terminates the trigger's action list.
-        /// </summary>
-        public SyntaxToken CloseCurlyBrace;
+        public UvssBlockSyntax Body;
     }
 }

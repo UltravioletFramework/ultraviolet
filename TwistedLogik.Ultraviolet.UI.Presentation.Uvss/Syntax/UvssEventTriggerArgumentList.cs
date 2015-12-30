@@ -3,21 +3,21 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
-    /// Represents a UVSS selector with enclosing parentheses.
+    /// Represents the argument list for an event trigger.
     /// </summary>
-    public sealed class UvssSelectorWithParenthesesSyntax : UvssSelectorBaseSyntax
+    public sealed class UvssEventTriggerArgumentList : UvssNodeSyntax
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UvssSelectorWithParenthesesSyntax"/> class.
+        /// Initializes a new instance of the <see cref="UvssEventTriggerArgumentList"/> class.
         /// </summary>
-        internal UvssSelectorWithParenthesesSyntax(
+        public UvssEventTriggerArgumentList(
             SyntaxToken openParenToken,
-            UvssSelectorSyntax selector,
+            SeparatedSyntaxList<SyntaxNode> arguments,
             SyntaxToken closeParenToken)
-            : base(SyntaxKind.SelectorWithParentheses)
+            : base(SyntaxKind.EventTriggerArgumentList)
         {
             this.OpenParenToken = openParenToken;
-            this.Selector = selector;
+            this.Arguments = arguments;
             this.CloseParenToken = closeParenToken;
 
             SlotCount = 3;
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return OpenParenToken;
-                case 1: return Selector;
+                case 1: return Arguments.Node;
                 case 2: return CloseParenToken;
                 default:
                     throw new InvalidOperationException();
@@ -37,17 +37,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The open parenthesis that introduces the selector.
+        /// The open parenthesis that introduces the argument list.
         /// </summary>
         public SyntaxToken OpenParenToken;
 
         /// <summary>
-        /// The enclosed selector.
+        /// The argument list's arguments.
         /// </summary>
-        public UvssSelectorSyntax Selector;
+        public SeparatedSyntaxList<SyntaxNode> Arguments;
 
         /// <summary>
-        /// The close parenthesis that terminates the selector.
+        /// The close parenthesis that terminates the argument list.
         /// </summary>
         public SyntaxToken CloseParenToken;
     }

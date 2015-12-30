@@ -5,20 +5,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS selector sub-part.
     /// </summary>
-    public class UvssSelectorSubPartSyntax : UvssNodeSyntax
+    public sealed class UvssSelectorSubPartSyntax : UvssNodeSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelectorPartSyntax"/> class.
         /// </summary>
         internal UvssSelectorSubPartSyntax(
-            SyntaxToken leadingQualifier,
-            SyntaxToken text,
-            SyntaxToken trailingQualifier)
+            SyntaxToken leadingQualifierToken,
+            SyntaxToken textToken,
+            SyntaxToken trailingQualifierToken)
             : base(SyntaxKind.SelectorSubPart)
         {
-            this.LeadingQualifier = leadingQualifier;
-            this.Text = text;
-            this.TrailingQualifier = trailingQualifier;
+            this.LeadingQualifierToken = leadingQualifierToken;
+            this.TextToken = textToken;
+            this.TrailingQualifierToken = trailingQualifierToken;
 
             SlotCount = 3;
         }
@@ -28,9 +28,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
-                case 0: return LeadingQualifier;
-                case 1: return Text;
-                case 2: return TrailingQualifier;
+                case 0: return LeadingQualifierToken;
+                case 1: return TextToken;
+                case 2: return TrailingQualifierToken;
                 default:
                     throw new InvalidOperationException();
             }
@@ -39,16 +39,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The sub-part's leading qualifier.
         /// </summary>
-        public SyntaxToken LeadingQualifier;
+        public SyntaxToken LeadingQualifierToken;
 
         /// <summary>
         /// The sub-part's text.
         /// </summary>
-        public SyntaxToken Text;
+        public SyntaxToken TextToken;
 
         /// <summary>
         /// The sub-part's trailing qualifier.
         /// </summary>
-        public SyntaxToken TrailingQualifier;
+        public SyntaxToken TrailingQualifierToken;
     }
 }

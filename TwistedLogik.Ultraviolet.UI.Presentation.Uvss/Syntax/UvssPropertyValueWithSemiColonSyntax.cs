@@ -5,18 +5,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS property value terminated by a semi-colon.
     /// </summary>
-    public class UvssPropertyValueWithSemiColonSyntax : UvssPropertyValueBaseSyntax
+    public sealed class UvssPropertyValueWithSemiColonSyntax : UvssPropertyValueBaseSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssPropertyValueWithSemiColonSyntax"/> class.
         /// </summary>
         internal UvssPropertyValueWithSemiColonSyntax(
-            SyntaxNode content,
-            SyntaxToken semiColon)
+            SyntaxToken contentToken,
+            SyntaxToken semiColonToken)
             : base(SyntaxKind.PropertyValueWithSemiColon)
         {
-            this.Content = content;
-            this.SemiColon = semiColon;
+            this.ContentToken = contentToken;
+            this.SemiColonToken = semiColonToken;
             
             SlotCount = 2;
         }
@@ -26,8 +26,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
-                case 0: return Content;
-                case 1: return SemiColon;
+                case 0: return ContentToken;
+                case 1: return SemiColonToken;
                 default:
                     throw new InvalidOperationException();
             }
@@ -36,11 +36,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The value's content.
         /// </summary>
-        public SyntaxNode Content;
+        public SyntaxToken ContentToken;
 
         /// <summary>
         /// The value's terminating semi-colon.
         /// </summary>
-        public SyntaxToken SemiColon;
+        public SyntaxToken SemiColonToken;
     }
 }

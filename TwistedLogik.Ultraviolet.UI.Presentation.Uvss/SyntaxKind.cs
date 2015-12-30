@@ -231,6 +231,11 @@
         SelectorSubPart,
 
         /// <summary>
+        /// A pseudo-class.
+        /// </summary>
+        PseudoClass,
+
+        /// <summary>
         /// The name of a styled property.
         /// </summary>
         PropertyName,
@@ -254,6 +259,11 @@
         /// An event trigger.
         /// </summary>
         EventTrigger,
+
+        /// <summary>
+        /// An event trigger's argument list.
+        /// </summary>
+        EventTriggerArgumentList,
 
         /// <summary>
         /// A property trigger.

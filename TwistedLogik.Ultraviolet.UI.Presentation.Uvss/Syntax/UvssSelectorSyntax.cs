@@ -5,16 +5,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS selector.
     /// </summary>
-    public class UvssSelectorSyntax : UvssSelectorBaseSyntax
+    public sealed class UvssSelectorSyntax : UvssSelectorBaseSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelectorSyntax"/> class.
         /// </summary>
-        internal UvssSelectorSyntax(
-            SyntaxNode partsAndCombinators)
+        internal UvssSelectorSyntax(SyntaxList<SyntaxNode> partsAndCombinatorsList)
             : base(SyntaxKind.Selector)
         {
-            this.PartsAndCombinators = partsAndCombinators;
+            this.PartsAndCombinatorsList = partsAndCombinatorsList;
 
             SlotCount = 1;
         }
@@ -24,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
-                case 0: return PartsAndCombinators;
+                case 0: return PartsAndCombinatorsList.Node;
                 default:
                     throw new InvalidOperationException();
             }
@@ -33,6 +32,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The selector's list of parts and combinators.
         /// </summary>
-        public SyntaxNode PartsAndCombinators;
+        public SyntaxList<SyntaxNode> PartsAndCombinatorsList;
     }
 }

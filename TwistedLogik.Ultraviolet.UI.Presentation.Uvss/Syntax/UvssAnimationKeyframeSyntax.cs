@@ -5,21 +5,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS animation keyframe.
     /// </summary>
-    public class UvssAnimationKeyframeSyntax : UvssNodeSyntax
+    public sealed class UvssAnimationKeyframeSyntax : UvssNodeSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssAnimationKeyframeSyntax"/> class.
         /// </summary>
         internal UvssAnimationKeyframeSyntax(
             SyntaxToken keyframeKeyword,
-            SyntaxToken time,
-            SyntaxToken easing,
+            SyntaxToken timeToken,
+            SyntaxToken easingToken,
             UvssPropertyValueWithBracesSyntax value)
             : base(SyntaxKind.AnimationKeyframe)
         {
             this.KeyframeKeyword = keyframeKeyword;
-            this.Time = time;
-            this.Easing = easing;
+            this.TimeToken = timeToken;
+            this.EasingToken = easingToken;
             this.Value = value;
 
             SlotCount = 4;
@@ -31,11 +31,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return KeyframeKeyword;
-                case 1: return Time;
-                case 2: return Easing;
+                case 1: return TimeToken;
+                case 2: return EasingToken;
                 case 3: return Value;
                 default:
-                    return null;
+                    throw new InvalidOperationException();
             }
         }
 
@@ -47,12 +47,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The keyframe time token.
         /// </summary>
-        public SyntaxToken Time;
+        public SyntaxToken TimeToken;
 
         /// <summary>
         /// The keyframe easing token.
         /// </summary>
-        public SyntaxToken Easing;
+        public SyntaxToken EasingToken;
 
         /// <summary>
         /// The keyframe value.

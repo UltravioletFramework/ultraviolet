@@ -5,26 +5,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS storyboard.
     /// </summary>
-    public class UvssStoryboardSyntax : SyntaxNode
+    public sealed class UvssStoryboardSyntax : SyntaxNode
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssStoryboardSyntax"/> class.
         /// </summary>
         internal UvssStoryboardSyntax(
             SyntaxToken storyboardKeyword,
-            SyntaxToken loop,
-            SyntaxToken openCurlyBrace,
-            SyntaxNode content,
-            SyntaxToken closeCurlyBrace)
+            SyntaxToken loopToken,
+            UvssBlockSyntax body)
             : base(SyntaxKind.Storyboard)
         {
             this.StoryboardKeyword = storyboardKeyword;
-            this.Loop = loop;
-            this.OpenCurlyBrace = openCurlyBrace;
-            this.Content = content;
-            this.CloseCurlyBrace = closeCurlyBrace;
+            this.Loop = loopToken;
+            this.Body = body;
 
-            SlotCount = 5;
+            SlotCount = 3;
         }
 
         /// <inheritdoc/>
@@ -34,9 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             {
                 case 0: return StoryboardKeyword;
                 case 1: return Loop;
-                case 2: return OpenCurlyBrace;
-                case 3: return Content;
-                case 4: return CloseCurlyBrace;
+                case 2: return Body;
                 default:
                     throw new InvalidOperationException();
             }
@@ -53,18 +47,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         public SyntaxToken Loop;
 
         /// <summary>
-        /// The open curly brace which introduces the storyboard's target list.
+        /// The storyboard's body.
         /// </summary>
-        public SyntaxToken OpenCurlyBrace;
-
-        /// <summary>
-        /// The storyboard's content.
-        /// </summary>
-        public SyntaxNode Content;
-
-        /// <summary>
-        /// The close curly brace which terminates the storyboard's target list.
-        /// </summary>
-        public SyntaxToken CloseCurlyBrace;
+        public UvssBlockSyntax Body;
     }
 }

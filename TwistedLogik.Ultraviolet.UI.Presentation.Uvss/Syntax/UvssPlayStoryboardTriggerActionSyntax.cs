@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS play-storyboard trigger action.
     /// </summary>
-    public class UvssPlayStoryboardTriggerActionSyntax : UvssTriggerActionBaseSyntax
+    public sealed class UvssPlayStoryboardTriggerActionSyntax : UvssTriggerActionBaseSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssPlayStoryboardTriggerActionSyntax"/> class.

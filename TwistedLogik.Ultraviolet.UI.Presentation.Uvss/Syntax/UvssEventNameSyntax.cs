@@ -5,20 +5,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS event name.
     /// </summary>
-    public class UvssEventNameSyntax : UvssNodeSyntax
+    public sealed class UvssEventNameSyntax : UvssNodeSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssEventNameSyntax"/> class.
         /// </summary>
         internal UvssEventNameSyntax(
-            SyntaxToken attachedEventOwnerName,
-            SyntaxToken period,
-            SyntaxToken eventName)
+            SyntaxToken attachedEventOwnerNameToken,
+            SyntaxToken periodToken,
+            SyntaxToken eventNameToken)
             : base(SyntaxKind.EventName)
         {
-            this.AttachedEventOwnerName = attachedEventOwnerName;
-            this.Period = period;
-            this.EventName = eventName;
+            this.AttachedEventOwnerNameToken = attachedEventOwnerNameToken;
+            this.PeriodToken = periodToken;
+            this.EventNameToken = eventNameToken;
 
             SlotCount = 3;
         }
@@ -28,9 +28,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
-                case 0: return AttachedEventOwnerName;
-                case 1: return Period;
-                case 2: return EventName;
+                case 0: return AttachedEventOwnerNameToken;
+                case 1: return PeriodToken;
+                case 2: return EventNameToken;
                 default:
                     throw new InvalidOperationException();
             }
@@ -39,16 +39,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The name of the type which owns the attached event, if this name describes an attached event.
         /// </summary>
-        public SyntaxToken AttachedEventOwnerName;
+        public SyntaxToken AttachedEventOwnerNameToken;
 
         /// <summary>
         /// The period that separates the owner type from the event name.
         /// </summary>
-        public SyntaxToken Period;
+        public SyntaxToken PeriodToken;
 
         /// <summary>
         /// The name of the event.
         /// </summary>
-        public SyntaxToken EventName;
+        public SyntaxToken EventNameToken;
     }
 }

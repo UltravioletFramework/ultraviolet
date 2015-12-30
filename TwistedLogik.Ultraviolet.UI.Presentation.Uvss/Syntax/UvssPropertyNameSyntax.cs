@@ -5,20 +5,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS property name.
     /// </summary>
-    public class UvssPropertyNameSyntax : UvssNodeSyntax
+    public sealed class UvssPropertyNameSyntax : UvssNodeSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssPropertyNameSyntax"/> class.
         /// </summary>
         internal UvssPropertyNameSyntax(
-            SyntaxToken attachedPropertyOwnerName,
-            SyntaxToken period,
-            SyntaxToken propertyName)
+            SyntaxToken attachedPropertyOwnerNameToken,
+            SyntaxToken periodToken,
+            SyntaxToken propertyNameToken)
             : base(SyntaxKind.PropertyName)
         {
-            this.AttachedPropertyOwnerName = attachedPropertyOwnerName;
-            this.Period = period;
-            this.PropertyName = propertyName;
+            this.AttachedPropertyOwnerNameToken = attachedPropertyOwnerNameToken;
+            this.PeriodToken = periodToken;
+            this.PropertyNameToken = propertyNameToken;
 
             SlotCount = 3;
         }
@@ -28,9 +28,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
-                case 0: return AttachedPropertyOwnerName;
-                case 1: return Period;
-                case 2: return PropertyName;
+                case 0: return AttachedPropertyOwnerNameToken;
+                case 1: return PeriodToken;
+                case 2: return PropertyNameToken;
                 default:
                     throw new InvalidOperationException();
             }
@@ -39,16 +39,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The name of the type which owns the attached property, if this name describes an attached property.
         /// </summary>
-        public SyntaxToken AttachedPropertyOwnerName;
+        public SyntaxToken AttachedPropertyOwnerNameToken;
 
         /// <summary>
         /// The period that separates the owner type from the property name.
         /// </summary>
-        public SyntaxToken Period;
+        public SyntaxToken PeriodToken;
 
         /// <summary>
         /// The name of the property.
         /// </summary>
-        public SyntaxToken PropertyName;
+        public SyntaxToken PropertyNameToken;
     }
 }

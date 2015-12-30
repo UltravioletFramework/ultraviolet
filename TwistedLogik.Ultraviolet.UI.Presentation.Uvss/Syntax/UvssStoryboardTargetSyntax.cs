@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS storyboard target.
     /// </summary>
-    public class UvssStoryboardTargetSyntax : UvssNodeSyntax
+    public sealed class UvssStoryboardTargetSyntax : UvssNodeSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssStoryboardTargetSyntax"/> class.
@@ -14,19 +14,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             SyntaxToken targetKeyword,
             SyntaxToken typeName,
             UvssSelectorWithParenthesesSyntax selector,
-            SyntaxToken openCurlyBrace,
-            SyntaxNode content,
-            SyntaxToken closeCurlyBrace)
+            UvssBlockSyntax body)
             : base(SyntaxKind.StoryboardTarget)
         {
             this.TargetKeyword = targetKeyword;
-            this.TypeName = typeName;
+            this.TypeNameToken = typeName;
             this.Selector = selector;
-            this.OpenCurlyBrace = openCurlyBrace;
-            this.Content = content;
-            this.CloseCurlyBrace = closeCurlyBrace;
+            this.Body = body;
 
-            SlotCount = 6;
+            SlotCount = 4;
         }
 
         /// <inheritdoc/>
@@ -35,11 +31,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return TargetKeyword;
-                case 1: return TypeName;
+                case 1: return TypeNameToken;
                 case 2: return Selector;
-                case 3: return OpenCurlyBrace;
-                case 4: return Content;
-                case 5: return CloseCurlyBrace;
+                case 3: return Body;
                 default:
                     throw new InvalidOperationException();
             }
@@ -53,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The target's optional type name.
         /// </summary>
-        public SyntaxToken TypeName;
+        public SyntaxToken TypeNameToken;
 
         /// <summary>
         /// The target's selector.
@@ -61,18 +55,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         public UvssSelectorWithParenthesesSyntax Selector;
 
         /// <summary>
-        /// The open curly brace that introduces the target's animation list.
+        /// The target's body.
         /// </summary>
-        public SyntaxToken OpenCurlyBrace;
-
-        /// <summary>
-        /// The target's content.
-        /// </summary>
-        public SyntaxNode Content;
-
-        /// <summary>
-        /// The close curly brace that terminates the target's animation list.
-        /// </summary>
-        public SyntaxToken CloseCurlyBrace;
+        public UvssBlockSyntax Body;
     }
 }

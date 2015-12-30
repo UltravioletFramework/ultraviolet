@@ -21,6 +21,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssBlockSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEventTriggerArgumentList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPseudoClassSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssNavigationExpressionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssAnimationKeyframeSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssAnimationSyntax.cs" />

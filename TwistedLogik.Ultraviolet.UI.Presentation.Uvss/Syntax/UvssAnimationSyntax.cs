@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS animation.
     /// </summary>
-    public class UvssAnimationSyntax : UvssNodeSyntax
+    public sealed class UvssAnimationSyntax : UvssNodeSyntax
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssAnimationSyntax"/> class.
@@ -14,19 +14,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             SyntaxToken animationKeyword, 
             UvssPropertyNameSyntax propertyName, 
             UvssNavigationExpressionSyntax navigationExpression, 
-            SyntaxToken openCurlyBrace,
-            SyntaxNode content,
-            SyntaxToken closeCurlyBrace)
+            UvssBlockSyntax body)
             : base(SyntaxKind.Animation)
         {
             this.AnimationKeyword = animationKeyword;
             this.PropertyName = propertyName;
             this.NavigationExpression = navigationExpression;
-            this.OpenCurlyBrace = openCurlyBrace;
-            this.Content = content;
-            this.CloseCurlyBrace = closeCurlyBrace;
+            this.Body = body;
 
-            SlotCount = 6;
+            SlotCount = 4;
         }
 
         /// <inheritdoc/>
@@ -37,9 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
                 case 0: return AnimationKeyword;
                 case 1: return PropertyName;
                 case 2: return NavigationExpression;
-                case 3: return OpenCurlyBrace;
-                case 4: return Content;
-                case 5: return CloseCurlyBrace;
+                case 3: return Body;
                 default:
                     throw new InvalidOperationException();
             }
@@ -59,20 +53,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The navigation expression for the animated property.
         /// </summary>
         public UvssNavigationExpressionSyntax NavigationExpression;
-
+        
         /// <summary>
-        /// The opening curly brace that introduces the keyframe list.
+        /// The animation's body block.
         /// </summary>
-        public SyntaxToken OpenCurlyBrace;
-
-        /// <summary>
-        /// The animation's content.
-        /// </summary>
-        public SyntaxNode Content;
-
-        /// <summary>
-        /// The closing curly brace that terminates the keyframe list.
-        /// </summary>
-        public SyntaxToken CloseCurlyBrace;
+        public UvssBlockSyntax Body;
     }
 }
