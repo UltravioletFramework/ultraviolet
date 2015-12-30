@@ -41,31 +41,24 @@ namespace UvDebugSandbox
         /// <param name="args">An array containing the application's command line arguments.</param>
         public static void Main(String[] args)
         {
-            var uvss = SyntaxFactory.Document(SyntaxFactory.List(new[] {
-                SyntaxFactory.RuleSet(
-                    SyntaxFactory.SeparatedList(new[] {
-                        SyntaxFactory.SelectorByName("test"),
-                        SyntaxFactory.SelectorByType("Button"),
-                        SyntaxFactory.Selector(SyntaxFactory.List(new SyntaxNode[] {
-                            SyntaxFactory.SelectorByClass("foo"),
-                            SyntaxFactory.VisualChildCombinator(),
-                            SyntaxFactory.SelectorByName("bar"),
-                            SyntaxFactory.VisualDescendantCombinator(),
-                            SyntaxFactory.SelectorByName("baz")
-                        }))
-                    }),
+            var uvss = SyntaxFactory.Storyboard("foobar", "loop", SyntaxFactory.Block(SyntaxFactory.List(new[] {
+                SyntaxFactory.StoryboardTarget("element",
+                    SyntaxFactory.SelectorWithParentheses(
+                        SyntaxFactory.SelectorByName("somename")
+                    ),
                     SyntaxFactory.Block(SyntaxFactory.List(new[] {
-                        SyntaxFactory.Rule(
-                            SyntaxFactory.PropertyName("halign"),
-                            SyntaxFactory.PropertyValueWithSemiColon("left")    
-                        ),
-                        SyntaxFactory.Rule(
-                            SyntaxFactory.PropertyName("valign"),
-                            SyntaxFactory.PropertyValueWithSemiColon("middle")
+                        SyntaxFactory.Animation(
+                            SyntaxFactory.PropertyName("myprop"),
+                            SyntaxFactory.NavigationExpression(
+                                SyntaxFactory.PropertyName("someotherprop"), "MyType"
+                            ),
+                            SyntaxFactory.Block(SyntaxFactory.List(new[] {
+                                SyntaxFactory.AnimationKeyframe(0, SyntaxFactory.PropertyValueWithBraces("blargh"))
+                            }))
                         )
                     }))
                 )
-            }));
+            })));
 
             var source = uvss.ToFullString();
 

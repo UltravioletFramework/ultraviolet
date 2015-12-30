@@ -43,7 +43,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTriggerBaseSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyValueBaseSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyValueWithBracesSyntax.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyValueWithSemiColonSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyValueSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorPartSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyNameSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorBaseSyntax.cs" />

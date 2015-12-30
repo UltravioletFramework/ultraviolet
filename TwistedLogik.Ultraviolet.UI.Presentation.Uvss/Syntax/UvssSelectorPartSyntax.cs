@@ -10,12 +10,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelectorPartSyntax"/> class.
         /// </summary>
-        internal UvssSelectorPartSyntax(SyntaxList<UvssSelectorSubPartSyntax> subPartsList)
+        internal UvssSelectorPartSyntax(
+            SyntaxList<UvssSelectorSubPartSyntax> subPartsList,
+            UvssPseudoClassSyntax pseudoClass)
             : base(SyntaxKind.SelectorPart)
         {
             this.SubPartsList = subPartsList;
+            this.PseudoClass = pseudoClass;
 
-            SlotCount = 1;
+            SlotCount = 2;
         }
 
         /// <inheritdoc/>
@@ -24,6 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return SubPartsList.Node;
+                case 1: return PseudoClass;
                 default:
                     throw new InvalidOperationException();
             }
@@ -33,5 +37,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The selector part's sub-parts.
         /// </summary>
         public SyntaxList<UvssSelectorSubPartSyntax> SubPartsList;
+
+        /// <summary>
+        /// The selector's pseudo-class.
+        /// </summary>
+        public UvssPseudoClassSyntax PseudoClass;
     }
 }

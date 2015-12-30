@@ -12,15 +12,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// </summary>
         internal UvssRuleSyntax(
             UvssPropertyNameSyntax propertyName,
-            SyntaxToken colon,
-            UvssPropertyValueWithSemiColonSyntax value)
+            SyntaxToken colonToken,
+            UvssPropertyValueSyntax value,
+            SyntaxToken qualifierToken,
+            SyntaxToken semiColonToken)
             : base(SyntaxKind.Rule)
         {
             this.PropertyName = propertyName;
-            this.Colon = colon;
+            this.ColonToken = colonToken;
             this.Value = value;
+            this.QualifierToken = qualifierToken;
+            this.SemiColonToken = semiColonToken;
 
-            SlotCount = 3;
+            SlotCount = 5;
         }
 
         /// <inheritdoc/>
@@ -29,8 +33,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return PropertyName;
-                case 1: return Colon;
+                case 1: return ColonToken;
                 case 2: return Value;
+                case 3: return QualifierToken;
+                case 4: return SemiColonToken;
                 default:
                     throw new InvalidOperationException();
             }
@@ -44,11 +50,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The colon that separates the property name from its value.
         /// </summary>
-        public SyntaxToken Colon;
+        public SyntaxToken ColonToken;
 
         /// <summary>
         /// The styled property value.
         /// </summary>
-        public UvssPropertyValueWithSemiColonSyntax Value;
+        public UvssPropertyValueSyntax Value;
+
+        /// <summary>
+        /// The rule's qualifier token.
+        /// </summary>
+        public SyntaxToken QualifierToken;
+
+        /// <summary>
+        /// The rule's terminating semi-colon token.
+        /// </summary>
+        public SyntaxToken SemiColonToken;
     }
 }

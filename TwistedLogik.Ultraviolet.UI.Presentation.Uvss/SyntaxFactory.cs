@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
@@ -9,6 +10,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
     /// </summary>
     public static class SyntaxFactory
     {
+        /// <summary>
+        /// Creates white space trivia with the specified text.
+        /// </summary>
+        /// <param name="text">The white space's text.</param>
+        /// <returns>The <see cref="SyntaxTrivia"/> instance that was created.</returns>
+        public static SyntaxTrivia Whitespace(String text)
+        {
+            return new SyntaxTrivia(SyntaxKind.WhitespaceTrivia, text);
+        }
+
         /// <summary>
         /// Creates a new terminal token.
         /// </summary>
@@ -55,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (nodes != null)
             {
                 var collection = nodes as ICollection<TNode>;
-                var builder = (collection != null) ? 
+                var builder = (collection != null) ?
                     new SyntaxListBuilder<TNode>(collection.Count) : SyntaxListBuilder<TNode>.Create();
 
                 foreach (var node in nodes)
@@ -171,6 +182,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Creates a new parentheses-enclosed selector with automatically created parenthesis tokens.
+        /// </summary>
+        /// <param name="selector">The enclosed selector.</param>
+        /// <returns>The <see cref="UvssSelectorWithParenthesesSyntax"/> instance that was created.</returns>
+        public static UvssSelectorWithParenthesesSyntax SelectorWithParentheses(UvssSelectorSyntax selector)
+        {
+            return SelectorWithParentheses(
+                Token(SyntaxKind.OpenParenthesesToken, "("),
+                selector,
+                Token(SyntaxKind.CloseParenthesesToken, ")"));
+        }
+
+        /// <summary>
+        /// Creates a new parentheses-enclosed selector.
+        /// </summary>
+        /// <param name="openParenToken">The open parenthesis that introduces the selector.</param>
+        /// <param name="selector">The enclosed selector.</param>
+        /// <param name="closeParenToken">The close parenthesis that terminates the selector.</param>
+        /// <returns>The <see cref="UvssSelectorWithParenthesesSyntax"/> instance that was created.</returns>
+        public static UvssSelectorWithParenthesesSyntax SelectorWithParentheses(
+            SyntaxToken openParenToken,
+            UvssSelectorSyntax selector,
+            SyntaxToken closeParenToken)
+        {
+            return new UvssSelectorWithParenthesesSyntax(openParenToken, selector, closeParenToken);
+        }
+
+        /// <summary>
         /// Creates a new selector consisting of a single selector part that selects for a named element.
         /// </summary>
         /// <param name="name">The name of the element being selected.</param>
@@ -224,50 +263,61 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Creates a new selector part consisting of a single sub-part that selects for a named element.
         /// </summary>
         /// <param name="name">The name of the element being selected.</param>
+        /// <param name="pseudoClass">The name of the selector part's pseudo-class.</param>
         /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorPartSyntax SelectorPartByName(String name)
+        public static UvssSelectorPartSyntax SelectorPartByName(String name, String pseudoClass = null)
         {
-            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartByName(name) }));
+            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartByName(name) }),
+                (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
         /// <summary>
         /// Creates a new selector part consisting of a single sub-part that selects for a class.
         /// </summary>
         /// <param name="class">The name of the class being selected.</param>
+        /// <param name="pseudoClass">The name of the selector part's pseudo-class.</param>
         /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorPartSyntax SelectorPartByClass(String @class)
+        public static UvssSelectorPartSyntax SelectorPartByClass(String @class, String pseudoClass = null)
         {
-            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartByClass(@class) }));
+            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartByClass(@class) }),
+                (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
         /// <summary>
         /// Creates a new selector part consisting of a single sub-part that selects for a type.
         /// </summary>
         /// <param name="type">The name of the type being selected.</param>
+        /// <param name="pseudoClass">The name of the selector part's pseudo-class.</param>
         /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorPartSyntax SelectorPartByType(String type)
+        public static UvssSelectorPartSyntax SelectorPartByType(String type, String pseudoClass = null)
         {
-            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartByType(type) }));
+            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartByType(type) }),
+                (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
         /// <summary>
         /// Creates a new selector part consisting of a single sub-part that selects for a specific type.
         /// </summary>
         /// <param name="type">The name of the type being selected.</param>
+        /// <param name="pseudoClass">The name of the selector part's pseudo-class.</param>
         /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorPartSyntax SelectorPartBySpecificType(String type)
+        public static UvssSelectorPartSyntax SelectorPartBySpecificType(String type, String pseudoClass = null)
         {
-            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartBySpecificType(type) }));
+            return new UvssSelectorPartSyntax(List(new[] { SelectorSubPartBySpecificType(type) }),
+                (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
         /// <summary>
         /// Creates a new selector part from the specified list of sub-parts.
         /// </summary>
         /// <param name="subPartsList">The list of sub-parts that make up the selector part.</param>
+        /// <param name="pseudoClass">The selector part's pseudo-class.</param>
         /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorPartSyntax SelectorPart(SyntaxList<UvssSelectorSubPartSyntax> subPartsList) 
+        public static UvssSelectorPartSyntax SelectorPart(
+            SyntaxList<UvssSelectorSubPartSyntax> subPartsList,
+            UvssPseudoClassSyntax pseudoClass)
         {
-            return new UvssSelectorPartSyntax(subPartsList);
+            return new UvssSelectorPartSyntax(subPartsList, pseudoClass);
         }
 
         /// <summary>
@@ -278,7 +328,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssSelectorSubPartSyntax SelectorSubPartByName(String name)
         {
             return new UvssSelectorSubPartSyntax(
-                Token(SyntaxKind.HashToken, "#"), 
+                Token(SyntaxKind.HashToken, "#"),
                 Token(SyntaxKind.IdentifierToken, name), null);
         }
 
@@ -332,6 +382,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Creates a new pseudo-class specifier using an automatically-generated colon token and an identifier
+        /// token with the specified class name value.
+        /// </summary>
+        /// <param name="className">The pseudo-class' name.</param>
+        /// <returns>The <see cref="UvssPseudoClassSyntax"/> instance that was created.</returns>
+        public static UvssPseudoClassSyntax PseudoClass(String className)
+        {
+            return new UvssPseudoClassSyntax(
+                Token(SyntaxKind.ColonToken, ":"),
+                Token(SyntaxKind.IdentifierToken, className));
+        }
+
+        /// <summary>
+        /// Creates a new pseudo-class specifier.
+        /// </summary>
+        /// <param name="colonToken">The colon token that precedes the class name.</param>
+        /// <param name="classNameToken">The identifier token that contains the class name.</param>
+        /// <returns></returns>
+        public static UvssPseudoClassSyntax PseudoClass(
+            SyntaxToken colonToken,
+            SyntaxToken classNameToken)
+        {
+            return new UvssPseudoClassSyntax(colonToken, classNameToken);
+        }
+
+        /// <summary>
         /// Creates a new visual descendant combinator token.
         /// </summary>
         /// <returns>The <see cref="SyntaxToken"/> that was created.</returns>
@@ -368,13 +444,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Creates an empty block.
+        /// </summary>
+        /// <returns>The <see cref="UvssBlockSyntax"/> instance that was created.</returns>
+        public static UvssBlockSyntax Block()
+        {
+            return Block(default(SyntaxList<SyntaxNode>));
+        }
+
+        /// <summary>
         /// Creates a new block with automatically generated curly brace tokens.
         /// </summary>
         /// <param name="content">The block's content.</param>
         /// <returns>The <see cref="UvssBlockSyntax"/> instance that was created.</returns>
         public static UvssBlockSyntax Block(SyntaxList<SyntaxNode> content)
         {
-            return new UvssBlockSyntax(
+            return Block(
                 Token(SyntaxKind.OpenCurlyBraceToken, "{"),
                 content,
                 Token(SyntaxKind.CloseCurlyBraceToken, "}"));
@@ -388,7 +473,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="closeCurlyBraceToken">The close curly brace that terminates the block.</param>
         /// <returns>The <see cref="UvssBlockSyntax"/> instance that was created.</returns>
         public static UvssBlockSyntax Block(
-            SyntaxToken openCurlyBraceToken, 
+            SyntaxToken openCurlyBraceToken,
             SyntaxList<SyntaxNode> content,
             SyntaxToken closeCurlyBraceToken)
         {
@@ -403,7 +488,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssPropertyNameSyntax PropertyName(String property)
         {
             return new UvssPropertyNameSyntax(
-                null, 
+                null,
                 null,
                 Token(SyntaxKind.IdentifierToken, property));
         }
@@ -438,28 +523,66 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
-        /// Creates a new semi-colon-terminated property value using new tokens created from the specified identifiers.
+        /// Creates a new event name using new tokens created from the specified identifiers.
         /// </summary>
-        /// <param name="value">The property value.</param>
-        /// <returns>The <see cref="UvssPropertyValueWithSemiColonSyntax"/> instance that was created.</returns>
-        public static UvssPropertyValueWithSemiColonSyntax PropertyValueWithSemiColon(String value)
+        /// <param name="event">The event name.</param>
+        /// <returns>The <see cref="UvssEventNameSyntax"/> instance that was created.</returns>
+        public static UvssEventNameSyntax EventName(String @event)
         {
-            return new UvssPropertyValueWithSemiColonSyntax(
-                Token(SyntaxKind.PropertyValueToken, value), 
-                Token(SyntaxKind.SemiColonToken, ";"));
+            return new UvssEventNameSyntax(
+                null,
+                null,
+                Token(SyntaxKind.IdentifierToken, @event));
         }
 
         /// <summary>
-        /// Creates a new semi-colon-terminated property value.
+        /// Creates a new event name using new tokens created from the specified identifiers.
+        /// </summary>
+        /// <param name="owner">The owner of the attached event.</param>
+        /// <param name="event">The event name.</param>
+        /// <returns>The <see cref="UvssEventNameSyntax"/> instance that was created.</returns>
+        public static UvssEventNameSyntax EventName(String owner, String @event)
+        {
+            return new UvssEventNameSyntax(
+                Token(SyntaxKind.IdentifierToken, owner),
+                Token(SyntaxKind.PeriodToken, "."),
+                Token(SyntaxKind.IdentifierToken, @event));
+        }
+
+        /// <summary>
+        /// Creates a new event name.
+        /// </summary>
+        /// <param name="attachedEventOwnerNameToken">The name of the attached event's owner.</param>
+        /// <param name="periodToken">The period that separates the owner name from the event name.</param>
+        /// <param name="eventNameToken">The event name.</param>
+        /// <returns>The <see cref="UvssEventNameSyntax"/> instance that was created.</returns>
+        public static UvssEventNameSyntax EventName(
+            SyntaxToken attachedEventOwnerNameToken,
+            SyntaxToken periodToken,
+            SyntaxToken eventNameToken)
+        {
+            return new UvssEventNameSyntax(attachedEventOwnerNameToken, periodToken, eventNameToken);
+        }
+
+        /// <summary>
+        /// Creates a new property value using new tokens created from the specified identifiers.
+        /// </summary>
+        /// <param name="value">The property value.</param>
+        /// <returns>The <see cref="UvssPropertyValueSyntax"/> instance that was created.</returns>
+        public static UvssPropertyValueSyntax PropertyValue(String value)
+        {
+            return new UvssPropertyValueSyntax(
+                Token(SyntaxKind.PropertyValueToken, value));
+        }
+
+        /// <summary>
+        /// Creates a new property value.
         /// </summary>
         /// <param name="contentToken">The value's content token.</param>
-        /// <param name="semiColonToken">The value's terminating semi-colon token.</param>
-        /// <returns>The <see cref="UvssPropertyValueWithSemiColonSyntax"/> instance that was created.</returns>
-        public static UvssPropertyValueWithSemiColonSyntax PropertyValueWithSemiColon(
-            SyntaxToken contentToken,
-            SyntaxToken semiColonToken)
+        /// <returns>The <see cref="UvssPropertyValueSyntax"/> instance that was created.</returns>
+        public static UvssPropertyValueSyntax PropertyValue(SyntaxToken contentToken)
         {
-            return new UvssPropertyValueWithSemiColonSyntax(contentToken, semiColonToken);
+            return new UvssPropertyValueSyntax(contentToken);
         }
 
         /// <summary>
@@ -508,12 +631,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         /// <param name="propertyName">The name of the styled property.</param>
         /// <param name="value">The styled property value.</param>
+        /// <param name="important">A value indicating whether this rule has the !important qualifier.</param>
         /// <returns>The <see cref="UvssRuleSyntax"/> instance that was created.</returns>
         public static UvssRuleSyntax Rule(
             UvssPropertyNameSyntax propertyName,
-            UvssPropertyValueWithSemiColonSyntax value)
+            UvssPropertyValueSyntax value,
+            Boolean important = false)
         {
-            return new UvssRuleSyntax(propertyName, Token(SyntaxKind.ColonToken, ":"), value);
+            return new UvssRuleSyntax(propertyName,
+                Token(SyntaxKind.ColonToken, ":"), value,
+                important ? ImportantKeyword() : null,
+                Token(SyntaxKind.SemiColonToken, ";"));
         }
 
         /// <summary>
@@ -522,13 +650,611 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="propertyName">The name of the styled property.</param>
         /// <param name="colonToken">The colon token that separates the property name from its value.</param>
         /// <param name="value">The styled property value.</param>
+        /// <param name="qualifierToken">The styling rule's qualifier token.</param>
+        /// <param name="semiColonToken">The styling rule's terminating semi-colon token.</param>
         /// <returns>The <see cref="UvssRuleSyntax"/> that was created.</returns>
         public static UvssRuleSyntax Rule(
-            UvssPropertyNameSyntax propertyName, 
-            SyntaxToken colonToken, 
-            UvssPropertyValueWithSemiColonSyntax value)
+            UvssPropertyNameSyntax propertyName,
+            SyntaxToken colonToken,
+            UvssPropertyValueSyntax value,
+            SyntaxToken qualifierToken,
+            SyntaxToken semiColonToken)
         {
-            return new UvssRuleSyntax(propertyName, colonToken, value);
+            return new UvssRuleSyntax(propertyName, colonToken, value, qualifierToken, semiColonToken);
+        }
+
+        /// <summary>
+        /// Creates a new token representing the !important keyword.
+        /// </summary>
+        /// <returns>The <see cref="SyntaxToken"/> instance that was created.</returns>
+        public static SyntaxToken ImportantKeyword()
+        {
+            return new SyntaxToken(SyntaxKind.ImportantKeyword, "!important", Whitespace(" "), null);
+        }
+
+        /// <summary>
+        /// Creates a new property trigger using automatically created "trigger" and "property" keyword tokens.
+        /// </summary>
+        /// <param name="evaluationList">The property trigger's evaluations list.</param>
+        /// <param name="body">The property trigger's body.</param>
+        /// <param name="important">A value indicating whether this trigger has the !important qualifier.</param>
+        /// <returns>The <see cref="UvssPropertyTriggerSyntax"/> instance that was created.</returns>
+        public static UvssPropertyTriggerSyntax PropertyTrigger(
+            SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> evaluationList,
+            UvssBlockSyntax body,
+            Boolean important = false)
+        {
+            return new UvssPropertyTriggerSyntax(
+                Token(SyntaxKind.TriggerKeyword, "trigger", null, Whitespace(" ")),
+                Token(SyntaxKind.PropertyKeyword, "property", null, Whitespace(" ")),
+                evaluationList, important ? ImportantKeyword() : null, body);
+        }
+
+        /// <summary>
+        /// Creates a new property trigger.
+        /// </summary>
+        /// <param name="triggerKeyword">The property trigger's "trigger" keyword.</param>
+        /// <param name="propertyKeyword">The property trigger's "property" keyword.</param>
+        /// <param name="evaluationList">The property trigger's evaluations list.</param>
+        /// <param name="qualifierToken">The property trigger's qualifier token.</param>
+        /// <param name="body">The property trigger's body.</param>
+        /// <returns>The <see cref="UvssPropertyTriggerSyntax"/> instance that was created.</returns>
+        public static UvssPropertyTriggerSyntax PropertyTrigger(
+            SyntaxToken triggerKeyword,
+            SyntaxToken propertyKeyword,
+            SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> evaluationList,
+            SyntaxToken qualifierToken,
+            UvssBlockSyntax body)
+        {
+            return new UvssPropertyTriggerSyntax(
+                triggerKeyword, propertyKeyword, evaluationList, qualifierToken, body);
+        }
+
+        /// <summary>
+        /// Creates a new property trigger evaluation.
+        /// </summary>
+        /// <param name="propertyName">The name of the property being evaluated.</param>
+        /// <param name="comparisonOperatorToken">The comparison operator used to perform the evaluation.</param>
+        /// <param name="value">The value which is being compared to the property value.</param>
+        /// <returns>The <see cref="UvssPropertyTriggerEvaluationSyntax"/> instance that was created.</returns>
+        public static UvssPropertyTriggerEvaluationSyntax PropertyTriggerEvaluation(
+            UvssPropertyNameSyntax propertyName,
+            SyntaxToken comparisonOperatorToken,
+            UvssPropertyValueWithBracesSyntax value)
+        {
+            return new UvssPropertyTriggerEvaluationSyntax(propertyName, comparisonOperatorToken, value);
+        }
+
+        /// <summary>
+        /// Creates a new equals comparison.
+        /// </summary>
+        /// <param name="leadingTrivia">The token's leading trivia.</param>
+        /// <param name="trailingTrivia">The token's trailing trivia.</param>
+        /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
+        public static SyntaxToken EqualsComparison(
+            SyntaxNode leadingTrivia = null,
+            SyntaxNode trailingTrivia = null)
+        {
+            return new SyntaxToken(SyntaxKind.EqualsToken, "=", leadingTrivia, trailingTrivia);
+        }
+
+        /// <summary>
+        /// Creates a new not equals comparison.
+        /// </summary>
+        /// <param name="leadingTrivia">The token's leading trivia.</param>
+        /// <param name="trailingTrivia">The token's trailing trivia.</param>
+        /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
+        public static SyntaxToken NotEqualsComparison(
+            SyntaxNode leadingTrivia = null,
+            SyntaxNode trailingTrivia = null)
+        {
+            return new SyntaxToken(SyntaxKind.NotEqualsToken, "<>", leadingTrivia, trailingTrivia);
+        }
+
+        /// <summary>
+        /// Creates a new less than comparison.
+        /// </summary>
+        /// <param name="leadingTrivia">The token's leading trivia.</param>
+        /// <param name="trailingTrivia">The token's trailing trivia.</param>
+        /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
+        public static SyntaxToken LessThanComparison(
+            SyntaxNode leadingTrivia = null,
+            SyntaxNode trailingTrivia = null)
+        {
+            return new SyntaxToken(SyntaxKind.LessThanToken, "<", leadingTrivia, trailingTrivia);
+        }
+
+        /// <summary>
+        /// Creates a new greater than comparison.
+        /// </summary>
+        /// <param name="leadingTrivia">The token's leading trivia.</param>
+        /// <param name="trailingTrivia">The token's trailing trivia.</param>
+        /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
+        public static SyntaxToken GreaterThanComparison(
+            SyntaxNode leadingTrivia = null,
+            SyntaxNode trailingTrivia = null)
+        {
+            return new SyntaxToken(SyntaxKind.GreaterThanToken, ">", leadingTrivia, trailingTrivia);
+        }
+
+        /// <summary>
+        /// Creates a new less than or equal to comparison.
+        /// </summary>
+        /// <param name="leadingTrivia">The token's leading trivia.</param>
+        /// <param name="trailingTrivia">The token's trailing trivia.</param>
+        /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
+        public static SyntaxToken LessThanEqualsComparison(
+            SyntaxNode leadingTrivia = null,
+            SyntaxNode trailingTrivia = null)
+        {
+            return new SyntaxToken(SyntaxKind.LessThanEqualsToken, "<=", leadingTrivia, trailingTrivia);
+        }
+
+        /// <summary>
+        /// Creates a new greater than or equal to comparison.
+        /// </summary>
+        /// <param name="leadingTrivia">The token's leading trivia.</param>
+        /// <param name="trailingTrivia">The token's trailing trivia.</param>
+        /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
+        public static SyntaxToken GreaterThanEqualsComparison(
+            SyntaxNode leadingTrivia = null,
+            SyntaxNode trailingTrivia = null)
+        {
+            return new SyntaxToken(SyntaxKind.GreaterThanEqualsToken, ">=", leadingTrivia, trailingTrivia);
+        }
+
+        /// <summary>
+        /// Creates a new play-storyboard trigger action using an automatically created play-storyboard keyword token.
+        /// </summary>
+        /// <param name="value">The trigger action's value.</param>
+        /// <returns>The <see cref="UvssPlayStoryboardTriggerActionSyntax"/> instance that was created.</returns>
+        public static UvssPlayStoryboardTriggerActionSyntax PlayStoryboardTriggerAction(
+            UvssPropertyValueWithBracesSyntax value)
+        {
+            return new UvssPlayStoryboardTriggerActionSyntax(
+                Token(SyntaxKind.PlayStoryboardKeyword, "play-storyboard"), null, value);
+        }
+
+        /// <summary>
+        /// Creates a new play-storyboard trigger action using an automatically created play-storyboard keyword token.
+        /// </summary>
+        /// <param name="selector">The trigger action's selector.</param>
+        /// <param name="value">The trigger action's value.</param>
+        /// <returns>The <see cref="UvssPlayStoryboardTriggerActionSyntax"/> instance that was created.</returns>
+        public static UvssPlayStoryboardTriggerActionSyntax PlayStoryboardTriggerAction(
+            UvssSelectorWithParenthesesSyntax selector,
+            UvssPropertyValueWithBracesSyntax value)
+        {
+            return new UvssPlayStoryboardTriggerActionSyntax(
+                Token(SyntaxKind.PlayStoryboardKeyword, "play-storyboard"), selector, value);
+        }
+
+        /// <summary>
+        /// Creates a new play-storyboard trigger action.
+        /// </summary>
+        /// <param name="playStoryboardKeyword">The trigger action's "play-storyboard" keyword.</param>
+        /// <param name="selector">The trigger action's selector.</param>
+        /// <param name="value">The trigger action's value.</param>
+        /// <returns>The <see cref="UvssPlayStoryboardTriggerActionSyntax"/> instance that was created.</returns>
+        public static UvssPlayStoryboardTriggerActionSyntax PlayStoryboardTriggerAction(
+            SyntaxToken playStoryboardKeyword,
+            UvssSelectorWithParenthesesSyntax selector,
+            UvssPropertyValueWithBracesSyntax value)
+        {
+            return new UvssPlayStoryboardTriggerActionSyntax(playStoryboardKeyword, selector, value);
+        }
+
+        /// <summary>
+        /// Creates a new play-sfx trigger action using an automatically created play-sfx keyword.
+        /// </summary>
+        /// <param name="value">The trigger action's value.</param>
+        /// <returns>The <see cref="UvssPlaySfxTriggerActionSyntax"/> instance that was created.</returns>
+        public static UvssPlaySfxTriggerActionSyntax PlaySfxTriggerAction(
+            UvssPropertyValueWithBracesSyntax value)
+        {
+            return new UvssPlaySfxTriggerActionSyntax(Token(SyntaxKind.PlaySfxKeyword, "play-sfx"), value);
+        }
+
+        /// <summary>
+        /// Creates a new play-sfx trigger action.
+        /// </summary>
+        /// <param name="playSfxKeyword">The trigger action's "play-sfx" keyword.</param>
+        /// <param name="value">The trigger action's value.</param>
+        /// <returns>The <see cref="UvssPlaySfxTriggerActionSyntax"/> instance that was created.</returns>
+        public static UvssPlaySfxTriggerActionSyntax PlaySfxTriggerAction(
+            SyntaxToken playSfxKeyword,
+            UvssPropertyValueWithBracesSyntax value)
+        {
+            return new UvssPlaySfxTriggerActionSyntax(playSfxKeyword, value);
+        }
+
+        /// <summary>
+        /// Creates a new set trigger action using an automatically created set keyword.
+        /// </summary>
+        /// <param name="propertyName">The name of the property which is set by the trigger.</param>
+        /// <param name="value">The trigger action's value.</param>
+        /// <returns>The <see cref="UvssSetTriggerActionSyntax"/> instance that was created.</returns>
+        public static UvssSetTriggerActionSyntax SetTriggerAction(
+            UvssPropertyNameSyntax propertyName,
+            UvssPropertyValueWithBracesSyntax value)
+        {
+            return new UvssSetTriggerActionSyntax(
+                Token(SyntaxKind.SetKeyword, "set"), propertyName, null, value);
+        }
+
+        /// <summary>
+        /// Creates a new set trigger action using an automatically created set keyword.
+        /// </summary>
+        /// <param name="propertyName">The name of the property which is set by the trigger.</param>
+        /// <param name="selector">The selector that specifies the trigger's target.</param>
+        /// <param name="value">The trigger action's value.</param>
+        /// <returns>The <see cref="UvssSetTriggerActionSyntax"/> instance that was created.</returns>
+        public static UvssSetTriggerActionSyntax SetTriggerAction(
+            UvssPropertyNameSyntax propertyName,
+            UvssSelectorWithParenthesesSyntax selector,
+            UvssPropertyValueWithBracesSyntax value)
+        {
+            return new UvssSetTriggerActionSyntax(
+                Token(SyntaxKind.SetKeyword, "set"), propertyName, selector, value);
+        }
+
+        /// <summary>
+        /// Creates a new set trigger action.
+        /// </summary>
+        /// <param name="setKeyword">The trigger action's "set" keyword.</param>
+        /// <param name="propertyName">The name of the property which is set by the trigger.</param>
+        /// <param name="selector">The selector that specifies the trigger's target.</param>
+        /// <param name="value">The trigger action's value.</param>
+        /// <returns>The <see cref="UvssSetTriggerActionSyntax"/> instance that was created.</returns>
+        public static UvssSetTriggerActionSyntax SetTriggerAction(
+            SyntaxToken setKeyword,
+            UvssPropertyNameSyntax propertyName,
+            UvssSelectorWithParenthesesSyntax selector,
+            UvssPropertyValueWithBracesSyntax value)
+        {
+            return new UvssSetTriggerActionSyntax(setKeyword, propertyName, selector, value);
+        }
+
+        /// <summary>
+        /// Creates a new event trigger using automatically created "trigger" and "event" keywords.
+        /// </summary>
+        /// <param name="eventName">The event trigger's event name.</param>
+        /// <param name="body">The event trigger's body.</param>
+        /// <param name="important">A value indicating whether this trigger has the !important qualifier.</param>
+        /// <returns>The <see cref="UvssEventTriggerSyntax"/> instance that was created.</returns>
+        public static UvssEventTriggerSyntax EventTrigger(
+            UvssEventNameSyntax eventName,
+            UvssBlockSyntax body,
+            Boolean important = false)
+        {
+            return new UvssEventTriggerSyntax(
+                Token(SyntaxKind.TriggerKeyword, "trigger", null, Whitespace(" ")),
+                Token(SyntaxKind.EventKeyword, "event", null, Whitespace(" ")),
+                eventName, null, important ? ImportantKeyword() : null, body);
+        }
+
+        /// <summary>
+        /// Creates a new event trigger using automatically created "trigger" and "event" keywords.
+        /// </summary>
+        /// <param name="eventName">The event trigger's event name.</param>
+        /// <param name="argumentList">The event trigger's argument list.</param>
+        /// <param name="body">The event trigger's body.</param>
+        /// <param name="important">A value indicating whether this trigger has the !important qualifier.</param>
+        /// <returns>The <see cref="UvssEventTriggerSyntax"/> instance that was created.</returns>
+        public static UvssEventTriggerSyntax EventTrigger(
+            UvssEventNameSyntax eventName,
+            UvssEventTriggerArgumentList argumentList,
+            UvssBlockSyntax body,
+            Boolean important = false)
+        {
+            return new UvssEventTriggerSyntax(
+                Token(SyntaxKind.TriggerKeyword, "trigger", null, Whitespace(" ")),
+                Token(SyntaxKind.EventKeyword, "event", null, Whitespace(" ")),
+                eventName, argumentList, important ? ImportantKeyword() : null, body);
+        }
+
+        /// <summary>
+        /// Creates a new event trigger.
+        /// </summary>
+        /// <param name="triggerKeyword">The event trigger's "trigger" keyword.</param>
+        /// <param name="eventKeyword">The event trigger's "event" keyword.</param>
+        /// <param name="eventName">The event trigger's event name.</param>
+        /// <param name="argumentList">The event trigger's argument list.</param>
+        /// <param name="qualifierToken">The event trigger's qualifier token.</param>
+        /// <param name="body">The event trigger's body.</param>
+        /// <returns>The <see cref="UvssEventTriggerSyntax"/> instance that was created.</returns>
+        public static UvssEventTriggerSyntax EventTrigger(
+            SyntaxToken triggerKeyword,
+            SyntaxToken eventKeyword,
+            UvssEventNameSyntax eventName,
+            UvssEventTriggerArgumentList argumentList,
+            SyntaxToken qualifierToken,
+            UvssBlockSyntax body)
+        {
+            return new UvssEventTriggerSyntax(
+                triggerKeyword, eventKeyword, eventName, argumentList, qualifierToken, body);
+        }
+
+        /// <summary>
+        /// Creates a new event trigger argument list using automatically created tokens.
+        /// </summary>
+        /// <param name="handled">A value indicating whether the handled argument is present.</param>
+        /// <param name="sethandled">A value indicating whether the set-handled argument is present.</param>
+        /// <returns>The <see cref="UvssEventTriggerArgumentList"/> instance that was created.</returns>
+        public static UvssEventTriggerArgumentList EventTriggerArgumentList(
+            Boolean handled = false,
+            Boolean sethandled = false)
+        {
+            var builder = SeparatedSyntaxListBuilder<SyntaxNode>.Create();
+
+            if (handled)
+                builder.Add(Token(SyntaxKind.HandledKeyword, "handled"));
+
+            if (sethandled)
+                builder.Add(Token(SyntaxKind.SetHandledKeyword, "set-handled"));
+
+            return EventTriggerArgumentList(builder.ToList());
+        }
+
+        /// <summary>
+        /// Creates a new event trigger argument list using automatically created parenthesis tokens.
+        /// </summary>
+        /// <param name="arguments">The argument list's list of arguments.</param>
+        /// <returns>The <see cref="UvssEventTriggerArgumentList"/> instance that was created.</returns>
+        public static UvssEventTriggerArgumentList EventTriggerArgumentList(
+            SeparatedSyntaxList<SyntaxNode> arguments)
+        {
+            return new UvssEventTriggerArgumentList(
+                Token(SyntaxKind.OpenParenthesesToken, "("),
+                arguments,
+                Token(SyntaxKind.CloseParenthesesToken, ")"));
+        }
+
+        /// <summary>
+        /// Creates a new event trigger argument list.
+        /// </summary>
+        /// <param name="openParenToken">The open parenthesis that introduces the argument list.</param>
+        /// <param name="arguments">The argument list's list of arguments.</param>
+        /// <param name="closeParenToken">The close parenthesis that terminates the argument list.</param>
+        /// <returns>The <see cref="UvssEventTriggerArgumentList"/> instance that was created.</returns>
+        public static UvssEventTriggerArgumentList EventTriggerArgumentList(
+            SyntaxToken openParenToken,
+            SeparatedSyntaxList<SyntaxNode> arguments,
+            SyntaxToken closeParenToken)
+        {
+            return new UvssEventTriggerArgumentList(openParenToken, arguments, closeParenToken);
+        }
+
+        /// <summary>
+        /// Creates a new storyboard declaration using an automatically created tokens.
+        /// </summary>
+        /// <param name="name">The storyboard's name.</param>
+        /// <param name="body">The storyboard's body.</param>
+        /// <returns>The <see cref="UvssStoryboardSyntax"/> instance that was created.</returns>
+        public static UvssStoryboardSyntax Storyboard(String name, UvssBlockSyntax body)
+        {
+            return new UvssStoryboardSyntax(
+                Token(SyntaxKind.AtSignToken, "@"),
+                Token(SyntaxKind.IdentifierToken, name, null, Whitespace(" ")),
+                null, body);
+        }
+
+        /// <summary>
+        /// Creates a new storyboard declaration using an automatically created tokens.
+        /// </summary>
+        /// <param name="name">The storyboard's name.</param>
+        /// <param name="loop">The storyboard's loop specifier.</param>
+        /// <param name="body">The storyboard's body.</param>
+        /// <returns>The <see cref="UvssStoryboardSyntax"/> instance that was created.</returns>
+        public static UvssStoryboardSyntax Storyboard(String name, String loop, UvssBlockSyntax body)
+        {
+            return new UvssStoryboardSyntax(
+                Token(SyntaxKind.AtSignToken, "@"),
+                Token(SyntaxKind.IdentifierToken, name, null, Whitespace(" ")),
+                Token(SyntaxKind.IdentifierToken, loop),
+                body);
+        }
+
+        /// <summary>
+        /// Creates a new storyboard declaration.
+        /// </summary>
+        /// <param name="atSignToken">The at sign token that marks the declaration as a storyboard.</param>
+        /// <param name="nameToken">The storyboard's name token.</param>
+        /// <param name="loopToken">The storyboard's loop token.</param>
+        /// <param name="body">The storyboard's body.</param>
+        /// <returns>The <see cref="UvssStoryboardSyntax"/> instance that was created.</returns>
+        public static UvssStoryboardSyntax Storyboard(
+            SyntaxToken atSignToken,
+            SyntaxToken nameToken,
+            SyntaxToken loopToken,
+            UvssBlockSyntax body)
+        {
+            return new UvssStoryboardSyntax(atSignToken, nameToken, loopToken, body);
+        }
+
+        /// <summary>
+        /// Creates a new storyboard target declaration using automatically created tokens.
+        /// </summary>
+        /// <param name="body">The storyboard target's body.</param>
+        /// <returns>The <see cref="UvssStoryboardTargetSyntax"/> instance that was created.</returns>
+        public static UvssStoryboardTargetSyntax StoryboardTarget(
+            UvssBlockSyntax body)
+        {
+            return new UvssStoryboardTargetSyntax(
+                Token(SyntaxKind.TargetKeyword, "target", null, Whitespace(" ")),
+                null, null, body);
+        }
+
+        /// <summary>
+        /// Creates a new storyboard target declaration using automatically created tokens.
+        /// </summary>
+        /// <param name="typeName">The storyboard target's targeted type.</param>
+        /// <param name="body">The storyboard target's body.</param>
+        /// <returns>The <see cref="UvssStoryboardTargetSyntax"/> instance that was created.</returns>
+        public static UvssStoryboardTargetSyntax StoryboardTarget(String typeName,
+            UvssBlockSyntax body)
+        {
+            return new UvssStoryboardTargetSyntax(
+                Token(SyntaxKind.TargetKeyword, "target", null, Whitespace(" ")),
+                Token(SyntaxKind.IdentifierToken, typeName), null, body);
+        }
+
+        /// <summary>
+        /// Creates a new storyboard target declaration using automatically created tokens.
+        /// </summary>
+        /// <param name="typeName">The storyboard target's targeted type.</param>
+        /// <param name="selector">The storyboard target's selector.</param>
+        /// <param name="body">The storyboard target's body.</param>
+        /// <returns>The <see cref="UvssStoryboardTargetSyntax"/> instance that was created.</returns>
+        public static UvssStoryboardTargetSyntax StoryboardTarget(String typeName,
+            UvssSelectorWithParenthesesSyntax selector,
+            UvssBlockSyntax body)
+        {
+            return new UvssStoryboardTargetSyntax(
+                Token(SyntaxKind.TargetKeyword, "target", null, Whitespace(" ")),
+                Token(SyntaxKind.IdentifierToken, typeName), selector, body);
+        }
+
+        /// <summary>
+        /// Creates a new storyboard target declaration.
+        /// </summary>
+        /// <param name="targetKeyword">The storyboard target's "target" keyword.</param>
+        /// <param name="typeNameToken">The storyboard target's targeted type name.</param>
+        /// <param name="selector">The storyboard target's selector.</param>
+        /// <param name="body">The storyboard target's body.</param>
+        /// <returns>The <see cref="UvssStoryboardTargetSyntax"/> instance that was created.</returns>
+        public static UvssStoryboardTargetSyntax StoryboardTarget(
+            SyntaxToken targetKeyword,
+            SyntaxToken typeNameToken,
+            UvssSelectorWithParenthesesSyntax selector,
+            UvssBlockSyntax body)
+        {
+            return new UvssStoryboardTargetSyntax(targetKeyword, typeNameToken, selector, body);
+        }
+
+        /// <summary>
+        /// Creates a new animation declaration using automatically created tokens.
+        /// </summary>
+        /// <param name="propertyName">The animation's property name.</param>
+        /// <param name="body">The animation's body.</param>
+        /// <returns>The <see cref="UvssAnimationSyntax"/> instance that was created.</returns>
+        public static UvssAnimationSyntax Animation(
+            UvssPropertyNameSyntax propertyName,
+            UvssBlockSyntax body)
+        {
+            return Animation(propertyName, null, body);
+        }
+
+        /// <summary>
+        /// Creates a new animation declaration using automatically created tokens.
+        /// </summary>
+        /// <param name="propertyName">The animation's property name.</param>
+        /// <param name="navigationExpression">The animation's navigation expression.</param>
+        /// <param name="body">The animation's body.</param>
+        /// <returns>The <see cref="UvssAnimationSyntax"/> instance that was created.</returns>
+        public static UvssAnimationSyntax Animation(
+            UvssPropertyNameSyntax propertyName,
+            UvssNavigationExpressionSyntax navigationExpression,
+            UvssBlockSyntax body)
+        {
+            return Animation(
+                Token(SyntaxKind.AnimationKeyword, "animation", null, Whitespace(" ")),
+                propertyName, navigationExpression, body);
+        }
+
+        /// <summary>
+        /// Creates a new animation declaration.
+        /// </summary>
+        /// <param name="animationKeyword">The animation's "animation" keyword.</param>
+        /// <param name="propertyName">The animation's property name.</param>
+        /// <param name="navigationExpression">The animation's navigation expression.</param>
+        /// <param name="body">The animation's body.</param>
+        /// <returns>The <see cref="UvssAnimationSyntax"/> instance that was created.</returns>
+        public static UvssAnimationSyntax Animation(
+            SyntaxToken animationKeyword,
+            UvssPropertyNameSyntax propertyName,
+            UvssNavigationExpressionSyntax navigationExpression,
+            UvssBlockSyntax body)
+        {
+            return new UvssAnimationSyntax(animationKeyword, propertyName, navigationExpression, body);
+        }
+
+        /// <summary>
+        /// Creates a new animation keyframe declaration with automatically generated tokens.
+        /// </summary>
+        /// <param name="time">The keyframe's time in milliseconds.</param>
+        /// <param name="value">The keyframe's property value.</param>
+        /// <returns>The <see cref="UvssAnimationKeyframeSyntax"/> instance that was created.</returns>
+        public static UvssAnimationKeyframeSyntax AnimationKeyframe(
+            Int32 time, UvssPropertyValueWithBracesSyntax value)
+        {
+            return AnimationKeyframe(time, null, value);
+        }
+
+        /// <summary>
+        /// Creates a new animation keyframe declaration with automatically generated tokens.
+        /// </summary>
+        /// <param name="time">The keyframe's time in milliseconds.</param>
+        /// <param name="easing">The keyframe's easing name.</param>
+        /// <param name="value">The keyframe's property value.</param>
+        /// <returns>The <see cref="UvssAnimationKeyframeSyntax"/> instance that was created.</returns>
+        public static UvssAnimationKeyframeSyntax AnimationKeyframe(
+            Int32 time, String easing, UvssPropertyValueWithBracesSyntax value)
+        {
+            return AnimationKeyframe(
+                Token(SyntaxKind.KeyframeKeyword, "keyframe", null, Whitespace(" ")),
+                Token(SyntaxKind.NumberToken, time.ToString(CultureInfo.InvariantCulture), null, Whitespace(" ")),
+                (easing == null) ? null : Token(SyntaxKind.IdentifierToken, easing, null, Whitespace(" ")), value);
+        }
+
+        /// <summary>
+        /// Creates a new animation keyframe declaration.
+        /// </summary>
+        /// <param name="keyframeKeyword">The keyframe's "keyframe" keyword.</param>
+        /// <param name="timeToken">The keyframe's time token.</param>
+        /// <param name="easingToken">The keyframe's easing token.</param>
+        /// <param name="value">The keyframe's property value.</param>
+        /// <returns>The <see cref="UvssAnimationKeyframeSyntax"/> instance that was created.</returns>
+        public static UvssAnimationKeyframeSyntax AnimationKeyframe(
+            SyntaxToken keyframeKeyword,
+            SyntaxToken timeToken,
+            SyntaxToken easingToken,
+            UvssPropertyValueWithBracesSyntax value)
+        {
+            return new UvssAnimationKeyframeSyntax(keyframeKeyword, timeToken, easingToken, value);
+        }
+
+        /// <summary>
+        /// Creates a new navigation expression using automatically created tokens.
+        /// </summary>
+        /// <param name="propertyName">The property name of the navigation target.</param>
+        /// <param name="typeName">The name of the type which is being converted to by the expression.</param>
+        /// <returns>The <see cref="UvssNavigationExpressionSyntax"/> instance that was created.</returns>
+        public static UvssNavigationExpressionSyntax NavigationExpression(
+            UvssPropertyNameSyntax propertyName, String typeName)
+        {
+            return NavigationExpression(
+                Token(SyntaxKind.NavigationExpressionOperatorToken, "|", Whitespace(" "), Whitespace(" ")),
+                propertyName,
+                Token(SyntaxKind.AsKeyword, "as", Whitespace(" "), Whitespace(" ")),
+                Token(SyntaxKind.IdentifierToken, typeName));
+        }
+
+        /// <summary>
+        /// Creates a new navigation expression.
+        /// </summary>
+        /// <param name="pipeToken">The pipe token that introduces the navigation expression.</param>
+        /// <param name="propertyName">The property name of the navigation target.</param>
+        /// <param name="asKeyword">The "as" keyword that introduces the type conversion.</param>
+        /// <param name="typeNameToken">The name of the type which is being converted to by the expression.</param>
+        /// <returns>The <see cref="UvssNavigationExpressionSyntax"/> instance that was created.</returns>
+        public static UvssNavigationExpressionSyntax NavigationExpression(
+            SyntaxToken pipeToken,
+            UvssPropertyNameSyntax propertyName,
+            SyntaxToken asKeyword,
+            SyntaxToken typeNameToken)
+        {
+            return new UvssNavigationExpressionSyntax(pipeToken, propertyName, asKeyword, typeNameToken);
         }
     }
 }

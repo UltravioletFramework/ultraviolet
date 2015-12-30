@@ -23,7 +23,7 @@
         /// <summary>
         /// Trivia representing syntactically meaningless white space.
         /// </summary>
-        MeaninglessWhiteSpaceTrivia,
+        WhitespaceTrivia,
 
         /// <summary>
         /// The "play-storyboard" keyword.
@@ -186,9 +186,34 @@
         VisualDescendantCombinatorToken,
 
         /// <summary>
-        /// An assignment operator ("=") token.
+        /// An equals ("=") token.
         /// </summary>
-        AssignmentOperatorToken,
+        EqualsToken,
+
+        /// <summary>
+        /// A not equals ("&lt;&gt;") token.
+        /// </summary>
+        NotEqualsToken,
+
+        /// <summary>
+        /// A less than ("&lt;") token.
+        /// </summary>
+        LessThanToken,
+
+        /// <summary>
+        /// A greater than (">") token.
+        /// </summary>
+        GreaterThanToken,
+
+        /// <summary>
+        /// A less than or equal to ("&lt;=") token.
+        /// </summary>
+        LessThanEqualsToken,
+
+        /// <summary>
+        /// A greater than or equal to (">=") token.
+        /// </summary>
+        GreaterThanEqualsToken,
 
         /// <summary>
         /// A navigation expression operator ("|") token.
@@ -251,9 +276,9 @@
         PropertyName,
 
         /// <summary>
-        /// The value applied to a styled property, terminated by a semi-colon.
+        /// The value applied to a styled property.
         /// </summary>
-        PropertyValueWithSemiColon,
+        PropertyValue,
 
         /// <summary>
         /// The value applied to a styled property, enclosed by curly braces.

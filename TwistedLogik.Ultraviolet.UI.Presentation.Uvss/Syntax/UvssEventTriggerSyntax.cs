@@ -15,6 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             SyntaxToken eventKeyword,
             UvssEventNameSyntax eventName,
             UvssEventTriggerArgumentList argumentList,
+            SyntaxToken qualifierToken,
             UvssBlockSyntax body)
             : base(SyntaxKind.EventTrigger)
         {
@@ -22,9 +23,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             this.EventKeyword = eventKeyword;
             this.EventName = eventName;
             this.ArgumentList = argumentList;
+            this.QualifierToken = qualifierToken;
             this.Body = body;
 
-            SlotCount = 5;
+            SlotCount = 6;
         }
 
         /// <inheritdoc/>
@@ -36,7 +38,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
                 case 1: return EventKeyword;
                 case 2: return EventName;
                 case 3: return ArgumentList;
-                case 4: return Body;
+                case 4: return QualifierToken;
+                case 5: return Body;
                 default:
                     throw new InvalidOperationException();
             }
@@ -61,6 +64,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The trigger's argument list.
         /// </summary>
         public UvssEventTriggerArgumentList ArgumentList;
+
+        /// <summary>
+        /// The trigger's qualifier token.
+        /// </summary>
+        public SyntaxToken QualifierToken;
 
         /// <summary>
         /// The trigger's body.

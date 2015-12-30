@@ -13,16 +13,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         internal UvssPropertyTriggerSyntax(
             SyntaxToken triggerKeyword,
             SyntaxToken propertyKeyword,
-            SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> evaluations,
+            SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> evaluationList,
+            SyntaxToken qualifierToken,
             UvssBlockSyntax body)
             : base(SyntaxKind.PropertyTrigger)
         {
             this.TriggerKeyword = triggerKeyword;
             this.PropertyKeyword = propertyKeyword;
-            this.Evaluations = evaluations;
+            this.EvaluationList = evaluationList;
+            this.QualifierToken = qualifierToken;
             this.Body = body;
 
-            SlotCount = 4;
+            SlotCount = 5;
         }
 
         /// <inheritdoc/>
@@ -32,8 +34,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             {
                 case 0: return TriggerKeyword;
                 case 1: return PropertyKeyword;
-                case 2: return Evaluations.Node;
-                case 3: return Body;
+                case 2: return EvaluationList.Node;
+                case 3: return QualifierToken;
+                case 4: return Body;
                 default:
                     throw new InvalidOperationException();
             }
@@ -50,9 +53,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         public SyntaxToken PropertyKeyword;
 
         /// <summary>
-        /// The trigger's evaluations list.
+        /// The trigger's evaluation list.
         /// </summary>
-        public SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> Evaluations;
+        public SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> EvaluationList;
+
+        /// <summary>
+        /// The trigger's qualifier token.
+        /// </summary>
+        public SyntaxToken QualifierToken;
 
         /// <summary>
         /// The trigger's body.

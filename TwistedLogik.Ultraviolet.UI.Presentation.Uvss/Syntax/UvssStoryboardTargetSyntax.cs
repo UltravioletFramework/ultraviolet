@@ -12,13 +12,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// </summary>
         internal UvssStoryboardTargetSyntax(
             SyntaxToken targetKeyword,
-            SyntaxToken typeName,
+            SyntaxToken typeNameToken,
             UvssSelectorWithParenthesesSyntax selector,
             UvssBlockSyntax body)
             : base(SyntaxKind.StoryboardTarget)
         {
             this.TargetKeyword = targetKeyword;
-            this.TypeNameToken = typeName;
+            this.TypeNameToken = typeNameToken;
             this.Selector = selector;
             this.Body = body;
 

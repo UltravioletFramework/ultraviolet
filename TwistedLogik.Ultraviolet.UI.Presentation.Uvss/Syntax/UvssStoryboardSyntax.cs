@@ -11,16 +11,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Initializes a new instance of the <see cref="UvssStoryboardSyntax"/> class.
         /// </summary>
         internal UvssStoryboardSyntax(
-            SyntaxToken storyboardKeyword,
+            SyntaxToken atSignToken,
+            SyntaxToken nameToken,
             SyntaxToken loopToken,
             UvssBlockSyntax body)
             : base(SyntaxKind.Storyboard)
         {
-            this.StoryboardKeyword = storyboardKeyword;
-            this.Loop = loopToken;
+            this.AtSignToken = atSignToken;
+            this.NameToken = nameToken;
+            this.LoopToken = loopToken;
             this.Body = body;
 
-            SlotCount = 3;
+            SlotCount = 4;
         }
 
         /// <inheritdoc/>
@@ -28,23 +30,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
-                case 0: return StoryboardKeyword;
-                case 1: return Loop;
-                case 2: return Body;
+                case 0: return AtSignToken;
+                case 1: return NameToken;
+                case 2: return LoopToken;
+                case 3: return Body;
                 default:
                     throw new InvalidOperationException();
             }
         }
 
         /// <summary>
-        /// The storyboard's "storyboard" keyword.
+        /// The at sign token that marks the declaration as a storyboard.
         /// </summary>
-        public SyntaxToken StoryboardKeyword;
+        public SyntaxToken AtSignToken;
+
+        /// <summary>
+        /// The storyboard's name.
+        /// </summary>
+        public SyntaxToken NameToken;
 
         /// <summary>
         /// The storyboard's loop value.
         /// </summary>
-        public SyntaxToken Loop;
+        public SyntaxToken LoopToken;
 
         /// <summary>
         /// The storyboard's body.
