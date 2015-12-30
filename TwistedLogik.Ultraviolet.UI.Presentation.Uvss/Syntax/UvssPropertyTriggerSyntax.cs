@@ -19,10 +19,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.PropertyTrigger)
         {
             this.TriggerKeyword = triggerKeyword;
+            ChangeParent(triggerKeyword);
+
             this.PropertyKeyword = propertyKeyword;
+            ChangeParent(propertyKeyword);
+
             this.EvaluationList = evaluationList;
+            ChangeParent(evaluationList.Node);
+
             this.QualifierToken = qualifierToken;
+            ChangeParent(qualifierToken);
+
             this.Body = body;
+            ChangeParent(body);
 
             SlotCount = 5;
         }
@@ -45,26 +54,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The trigger's "trigger" keyword.
         /// </summary>
-        public SyntaxToken TriggerKeyword;
+        public SyntaxToken TriggerKeyword { get; internal set; }
 
         /// <summary>
         /// The trigger's "property" keyword.
         /// </summary>
-        public SyntaxToken PropertyKeyword;
+        public SyntaxToken PropertyKeyword { get; internal set; }
 
         /// <summary>
         /// The trigger's evaluation list.
         /// </summary>
-        public SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> EvaluationList;
+        public SeparatedSyntaxList<UvssPropertyTriggerEvaluationSyntax> EvaluationList { get; internal set; }
 
         /// <summary>
         /// The trigger's qualifier token.
         /// </summary>
-        public SyntaxToken QualifierToken;
+        public SyntaxToken QualifierToken { get; internal set; }
 
         /// <summary>
         /// The trigger's body.
         /// </summary>
-        public UvssBlockSyntax Body;
+        public UvssBlockSyntax Body { get; internal set; }
     }
 }

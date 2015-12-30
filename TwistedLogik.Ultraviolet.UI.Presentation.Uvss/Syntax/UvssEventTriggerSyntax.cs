@@ -20,11 +20,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.EventTrigger)
         {
             this.TriggerKeyword = triggerKeyword;
+            ChangeParent(triggerKeyword);
+
             this.EventKeyword = eventKeyword;
+            ChangeParent(eventKeyword);
+
             this.EventName = eventName;
+            ChangeParent(eventName);
+
             this.ArgumentList = argumentList;
+            ChangeParent(argumentList);
+
             this.QualifierToken = qualifierToken;
+            ChangeParent(qualifierToken);
+
             this.Body = body;
+            ChangeParent(body);
 
             SlotCount = 6;
         }
@@ -48,31 +59,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The trigger's "trigger" keyword.
         /// </summary>
-        public SyntaxToken TriggerKeyword;
+        public SyntaxToken TriggerKeyword { get; internal set; }
 
         /// <summary>
         /// The trigger's "event" keyword.
         /// </summary>
-        public SyntaxToken EventKeyword;
+        public SyntaxToken EventKeyword { get; internal set; }
 
         /// <summary>
         /// The trigger's event name.
         /// </summary>
-        public UvssEventNameSyntax EventName;
+        public UvssEventNameSyntax EventName { get; internal set; }
 
         /// <summary>
         /// The trigger's argument list.
         /// </summary>
-        public UvssEventTriggerArgumentList ArgumentList;
+        public UvssEventTriggerArgumentList ArgumentList { get; internal set; }
 
         /// <summary>
         /// The trigger's qualifier token.
         /// </summary>
-        public SyntaxToken QualifierToken;
+        public SyntaxToken QualifierToken { get; internal set; }
 
         /// <summary>
         /// The trigger's body.
         /// </summary>
-        public UvssBlockSyntax Body;
+        public UvssBlockSyntax Body { get; internal set; }
     }
 }

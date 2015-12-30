@@ -17,8 +17,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.SelectorSubPart)
         {
             this.LeadingQualifierToken = leadingQualifierToken;
+            ChangeParent(leadingQualifierToken);
+
             this.TextToken = textToken;
+            ChangeParent(textToken);
+
             this.TrailingQualifierToken = trailingQualifierToken;
+            ChangeParent(trailingQualifierToken);
 
             SlotCount = 3;
         }
@@ -39,16 +44,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The sub-part's leading qualifier.
         /// </summary>
-        public SyntaxToken LeadingQualifierToken;
+        public SyntaxToken LeadingQualifierToken { get; internal set; }
 
         /// <summary>
         /// The sub-part's text.
         /// </summary>
-        public SyntaxToken TextToken;
+        public SyntaxToken TextToken { get; internal set; }
 
         /// <summary>
         /// The sub-part's trailing qualifier.
         /// </summary>
-        public SyntaxToken TrailingQualifierToken;
+        public SyntaxToken TrailingQualifierToken { get; internal set; }
     }
 }

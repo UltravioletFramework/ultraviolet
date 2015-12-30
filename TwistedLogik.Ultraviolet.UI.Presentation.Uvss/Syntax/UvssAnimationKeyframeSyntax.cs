@@ -18,9 +18,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.AnimationKeyframe)
         {
             this.KeyframeKeyword = keyframeKeyword;
+            ChangeParent(keyframeKeyword);
+
             this.TimeToken = timeToken;
+            ChangeParent(timeToken);
+
             this.EasingToken = easingToken;
+            ChangeParent(easingToken);
+
             this.Value = value;
+            ChangeParent(value);
 
             SlotCount = 4;
         }
@@ -42,21 +49,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The keyframe declaration token.
         /// </summary>
-        public SyntaxToken KeyframeKeyword;
+        public SyntaxToken KeyframeKeyword { get; internal set; }
 
         /// <summary>
         /// The keyframe time token.
         /// </summary>
-        public SyntaxToken TimeToken;
+        public SyntaxToken TimeToken { get; internal set; }
 
         /// <summary>
         /// The keyframe easing token.
         /// </summary>
-        public SyntaxToken EasingToken;
+        public SyntaxToken EasingToken { get; internal set; }
 
         /// <summary>
         /// The keyframe value.
         /// </summary>
-        public UvssPropertyValueWithBracesSyntax Value;
+        public UvssPropertyValueWithBracesSyntax Value { get; internal set; }
     }
 }

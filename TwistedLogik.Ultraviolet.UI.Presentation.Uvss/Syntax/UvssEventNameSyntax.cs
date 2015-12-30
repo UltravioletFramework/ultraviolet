@@ -17,8 +17,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.EventName)
         {
             this.AttachedEventOwnerNameToken = attachedEventOwnerNameToken;
+            ChangeParent(attachedEventOwnerNameToken);
+
             this.PeriodToken = periodToken;
+            ChangeParent(periodToken);
+
             this.EventNameToken = eventNameToken;
+            ChangeParent(eventNameToken);
 
             SlotCount = 3;
         }
@@ -39,16 +44,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The name of the type which owns the attached event, if this name describes an attached event.
         /// </summary>
-        public SyntaxToken AttachedEventOwnerNameToken;
+        public SyntaxToken AttachedEventOwnerNameToken { get; internal set; }
 
         /// <summary>
         /// The period that separates the owner type from the event name.
         /// </summary>
-        public SyntaxToken PeriodToken;
+        public SyntaxToken PeriodToken { get; internal set; }
 
         /// <summary>
         /// The name of the event.
         /// </summary>
-        public SyntaxToken EventNameToken;
+        public SyntaxToken EventNameToken { get; internal set; }
     }
 }

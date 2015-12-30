@@ -18,9 +18,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.StoryboardTarget)
         {
             this.TargetKeyword = targetKeyword;
+            ChangeParent(targetKeyword);
+
             this.TypeNameToken = typeNameToken;
+            ChangeParent(typeNameToken);
+
             this.Selector = selector;
+            ChangeParent(selector);
+
             this.Body = body;
+            ChangeParent(body);
 
             SlotCount = 4;
         }
@@ -42,21 +49,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The target's "target" keyword.
         /// </summary>
-        public SyntaxToken TargetKeyword;
+        public SyntaxToken TargetKeyword { get; internal set; }
 
         /// <summary>
         /// The target's optional type name.
         /// </summary>
-        public SyntaxToken TypeNameToken;
+        public SyntaxToken TypeNameToken { get; internal set; }
 
         /// <summary>
         /// The target's selector.
         /// </summary>
-        public UvssSelectorWithParenthesesSyntax Selector;
+        public UvssSelectorWithParenthesesSyntax Selector { get; internal set; }
 
         /// <summary>
         /// The target's body.
         /// </summary>
-        public UvssBlockSyntax Body;
+        public UvssBlockSyntax Body { get; internal set; }
     }
 }

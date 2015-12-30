@@ -17,8 +17,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.SelectorWithParentheses)
         {
             this.OpenParenToken = openParenToken;
+            ChangeParent(openParenToken);
+
             this.Selector = selector;
+            ChangeParent(selector);
+
             this.CloseParenToken = closeParenToken;
+            ChangeParent(closeParenToken);
 
             SlotCount = 3;
         }
@@ -39,16 +44,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The open parenthesis that introduces the selector.
         /// </summary>
-        public SyntaxToken OpenParenToken;
+        public SyntaxToken OpenParenToken { get; internal set; }
 
         /// <summary>
         /// The enclosed selector.
         /// </summary>
-        public UvssSelectorSyntax Selector;
+        public UvssSelectorSyntax Selector { get; internal set; }
 
         /// <summary>
         /// The close parenthesis that terminates the selector.
         /// </summary>
-        public SyntaxToken CloseParenToken;
+        public SyntaxToken CloseParenToken { get; internal set; }
     }
 }

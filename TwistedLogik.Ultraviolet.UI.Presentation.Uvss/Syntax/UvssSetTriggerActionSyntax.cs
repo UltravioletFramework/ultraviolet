@@ -18,9 +18,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.SetTriggerAction)
         {
             this.SetKeyword = setKeyword;
+            ChangeParent(setKeyword);
+
             this.PropertyName = propertyName;
+            ChangeParent(propertyName);
+
             this.Selector = selector;
+            ChangeParent(selector);
+
             this.Value = value;
+            ChangeParent(value);
 
             SlotCount = 4;
         }
@@ -42,21 +49,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The action's "set" keyword.
         /// </summary>
-        public SyntaxToken SetKeyword;
+        public SyntaxToken SetKeyword { get; internal set; }
 
         /// <summary>
         /// The action's property name.
         /// </summary>
-        public UvssPropertyNameSyntax PropertyName;
+        public UvssPropertyNameSyntax PropertyName { get; internal set; }
 
         /// <summary>
         /// The action's optional selector.
         /// </summary>
-        public UvssSelectorWithParenthesesSyntax Selector;
+        public UvssSelectorWithParenthesesSyntax Selector { get; internal set; }
 
         /// <summary>
         /// The action's value.
         /// </summary>
-        public UvssPropertyValueWithBracesSyntax Value;
+        public UvssPropertyValueWithBracesSyntax Value { get; internal set; }
     }
 }

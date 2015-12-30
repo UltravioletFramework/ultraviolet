@@ -17,8 +17,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.PropertyName)
         {
             this.AttachedPropertyOwnerNameToken = attachedPropertyOwnerNameToken;
+            ChangeParent(attachedPropertyOwnerNameToken);
+
             this.PeriodToken = periodToken;
+            ChangeParent(periodToken);
+
             this.PropertyNameToken = propertyNameToken;
+            ChangeParent(propertyNameToken);
 
             SlotCount = 3;
         }
@@ -39,16 +44,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The name of the type which owns the attached property, if this name describes an attached property.
         /// </summary>
-        public SyntaxToken AttachedPropertyOwnerNameToken;
+        public SyntaxToken AttachedPropertyOwnerNameToken { get; internal set; }
 
         /// <summary>
         /// The period that separates the owner type from the property name.
         /// </summary>
-        public SyntaxToken PeriodToken;
+        public SyntaxToken PeriodToken { get; internal set; }
 
         /// <summary>
         /// The name of the property.
         /// </summary>
-        public SyntaxToken PropertyNameToken;
+        public SyntaxToken PropertyNameToken { get; internal set; }
     }
 }

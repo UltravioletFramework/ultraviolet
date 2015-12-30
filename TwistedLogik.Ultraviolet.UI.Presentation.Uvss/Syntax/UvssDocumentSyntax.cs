@@ -14,6 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.UvssDocument)
         {
             this.RuleSetList = ruleSetList;
+            ChangeParent(ruleSetList.Node);
 
             SlotCount = 1;
         }
@@ -32,6 +33,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The document's list of rule sets.
         /// </summary>
-        public SyntaxList<UvssRuleSetSyntax> RuleSetList;
+        public SyntaxList<UvssRuleSetSyntax> RuleSetList { get; internal set; }
     }
 }

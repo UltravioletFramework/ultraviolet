@@ -16,7 +16,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.PseudoClass)
         {
             this.ColonToken = colonToken;
+            ChangeParent(colonToken);
+
             this.ClassNameToken = classNameToken;
+            ChangeParent(classNameToken);
 
             SlotCount = 2;
         }
@@ -36,11 +39,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The pseudo-class' leading colon.
         /// </summary>
-        public SyntaxToken ColonToken;
+        public SyntaxToken ColonToken { get; internal set; }
 
         /// <summary>
         /// The name of the pseudo-class.
         /// </summary>
-        public SyntaxToken ClassNameToken;
+        public SyntaxToken ClassNameToken { get; internal set; }
     }
 }

@@ -16,7 +16,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.PlaySfxTriggerAction)
         {
             this.PlaySfxKeyword = playSfxKeyword;
+            ChangeParent(playSfxKeyword);
+
             this.Value = value;
+            ChangeParent(value);
 
             SlotCount = 2;
         }
@@ -36,11 +39,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The action's "play-sfx" keyword.
         /// </summary>
-        public SyntaxToken PlaySfxKeyword;
+        public SyntaxToken PlaySfxKeyword { get; internal set; }
 
         /// <summary>
         /// The action's value.
         /// </summary>
-        public UvssPropertyValueWithBracesSyntax Value;
+        public UvssPropertyValueWithBracesSyntax Value { get; internal set; }
     }
 }

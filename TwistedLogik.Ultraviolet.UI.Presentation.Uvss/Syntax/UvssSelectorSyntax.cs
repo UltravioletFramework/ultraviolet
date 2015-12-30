@@ -14,6 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.Selector)
         {
             this.PartsAndCombinatorsList = partsAndCombinatorsList;
+            ChangeParent(partsAndCombinatorsList.Node);
 
             SlotCount = 1;
         }
@@ -32,6 +33,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The selector's list of parts and combinators.
         /// </summary>
-        public SyntaxList<SyntaxNode> PartsAndCombinatorsList;
+        public SyntaxList<SyntaxNode> PartsAndCombinatorsList { get; internal set; }
     }
 }

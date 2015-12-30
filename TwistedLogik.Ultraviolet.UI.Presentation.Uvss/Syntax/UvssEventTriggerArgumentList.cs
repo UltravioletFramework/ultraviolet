@@ -17,8 +17,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.EventTriggerArgumentList)
         {
             this.OpenParenToken = openParenToken;
+            ChangeParent(openParenToken);
+
             this.Arguments = arguments;
+            ChangeParent(arguments.Node);
+
             this.CloseParenToken = closeParenToken;
+            ChangeParent(closeParenToken);
 
             SlotCount = 3;
         }
@@ -39,16 +44,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The open parenthesis that introduces the argument list.
         /// </summary>
-        public SyntaxToken OpenParenToken;
+        public SyntaxToken OpenParenToken { get; internal set; }
 
         /// <summary>
         /// The argument list's arguments.
         /// </summary>
-        public SeparatedSyntaxList<SyntaxNode> Arguments;
+        public SeparatedSyntaxList<SyntaxNode> Arguments { get; internal set; }
 
         /// <summary>
         /// The close parenthesis that terminates the argument list.
         /// </summary>
-        public SyntaxToken CloseParenToken;
+        public SyntaxToken CloseParenToken { get; internal set; }
     }
 }

@@ -187,7 +187,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Gets the node's parent node.
         /// </summary>
-        public SyntaxNode Parent { get; }
+        public SyntaxNode Parent { get; internal set; }
 
         /// <summary>
         /// Gets a collection containing the node's child nodes.
@@ -272,6 +272,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     stack.Push(node);
                 }
             }
+        }
+
+        /// <summary>
+        /// Changes the specified node's parent to this node.
+        /// </summary>
+        /// <param name="node">The node to update.</param>
+        protected void ChangeParent(SyntaxNode node)
+        {
+            if (node == null)
+                return;
+
+            if (node.Parent != null)
+                throw new InvalidOperationException();
+
+            node.Parent = this;
         }
 
         /// <summary>

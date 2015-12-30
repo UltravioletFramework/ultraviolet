@@ -16,7 +16,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.RuleSet)
         {
             this.SelectorList = selectorList;
+            ChangeParent(selectorList.Node);
+
             this.Body = body;
+            ChangeParent(body);
 
             SlotCount = 2;
         }
@@ -36,11 +39,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The rule set's selector list.
         /// </summary>
-        public SeparatedSyntaxList<UvssSelectorSyntax> SelectorList;
+        public SeparatedSyntaxList<UvssSelectorSyntax> SelectorList { get; internal set; }
 
         /// <summary>
         /// The rule set's body.
         /// </summary>
-        public UvssBlockSyntax Body;      
+        public UvssBlockSyntax Body { get; internal set; }
     }
 }

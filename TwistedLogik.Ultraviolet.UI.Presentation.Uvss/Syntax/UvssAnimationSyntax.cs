@@ -18,9 +18,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.Animation)
         {
             this.AnimationKeyword = animationKeyword;
+            ChangeParent(animationKeyword);
+
             this.PropertyName = propertyName;
+            ChangeParent(propertyName);
+
             this.NavigationExpression = navigationExpression;
+            ChangeParent(navigationExpression);
+
             this.Body = body;
+            ChangeParent(body);
 
             SlotCount = 4;
         }
@@ -42,21 +49,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The "animation" keyword which begins the declaration.
         /// </summary>
-        public SyntaxToken AnimationKeyword;
+        public SyntaxToken AnimationKeyword { get; internal set; }
 
         /// <summary>
         /// The name of the animated property.
         /// </summary>
-        public UvssPropertyNameSyntax PropertyName;
+        public UvssPropertyNameSyntax PropertyName { get; internal set; }
 
         /// <summary>
         /// The navigation expression for the animated property.
         /// </summary>
-        public UvssNavigationExpressionSyntax NavigationExpression;
+        public UvssNavigationExpressionSyntax NavigationExpression { get; internal set; }
         
         /// <summary>
         /// The animation's body block.
         /// </summary>
-        public UvssBlockSyntax Body;
+        public UvssBlockSyntax Body { get; internal set; }
     }
 }

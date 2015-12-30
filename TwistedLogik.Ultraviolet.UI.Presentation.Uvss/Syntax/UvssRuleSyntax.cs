@@ -19,10 +19,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.Rule)
         {
             this.PropertyName = propertyName;
+            ChangeParent(PropertyName);
+
             this.ColonToken = colonToken;
+            ChangeParent(colonToken);
+
             this.Value = value;
+            ChangeParent(value);
+
             this.QualifierToken = qualifierToken;
+            ChangeParent(qualifierToken);
+
             this.SemiColonToken = semiColonToken;
+            ChangeParent(semiColonToken);
 
             SlotCount = 5;
         }
@@ -45,26 +54,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The name of the property being styled.
         /// </summary>
-        public UvssPropertyNameSyntax PropertyName;
+        public UvssPropertyNameSyntax PropertyName { get; internal set; }
 
         /// <summary>
         /// The colon that separates the property name from its value.
         /// </summary>
-        public SyntaxToken ColonToken;
+        public SyntaxToken ColonToken { get; internal set; }
 
         /// <summary>
         /// The styled property value.
         /// </summary>
-        public UvssPropertyValueSyntax Value;
+        public UvssPropertyValueSyntax Value { get; internal set; }
 
         /// <summary>
         /// The rule's qualifier token.
         /// </summary>
-        public SyntaxToken QualifierToken;
+        public SyntaxToken QualifierToken { get; internal set; }
 
         /// <summary>
         /// The rule's terminating semi-colon token.
         /// </summary>
-        public SyntaxToken SemiColonToken;
+        public SyntaxToken SemiColonToken { get; internal set; }
     }
 }

@@ -14,7 +14,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.PropertyValue)
         {
             this.ContentToken = contentToken;
-            
+            ChangeParent(contentToken);
+
             SlotCount = 1;
         }
 
@@ -32,6 +33,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The value's content.
         /// </summary>
-        public SyntaxToken ContentToken;
+        public SyntaxToken ContentToken { get; internal set; }
     }
 }

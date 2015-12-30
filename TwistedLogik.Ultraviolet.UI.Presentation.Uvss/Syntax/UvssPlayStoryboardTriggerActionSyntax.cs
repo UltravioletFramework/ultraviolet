@@ -17,8 +17,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.PlayStoryboardTriggerAction)
         {
             this.PlayStoryboardKeyword = playStoryboardKeyword;
+            ChangeParent(playStoryboardKeyword);
+
             this.Selector = selector;
+            ChangeParent(selector);
+
             this.Value = value;
+            ChangeParent(value);
 
             SlotCount = 3;
         }
@@ -39,16 +44,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The action's "play-storyboard" keyword.
         /// </summary>
-        public SyntaxToken PlayStoryboardKeyword;
+        public SyntaxToken PlayStoryboardKeyword { get; internal set; }
 
         /// <summary>
         /// The action's optional selector.
         /// </summary>
-        public UvssSelectorWithParenthesesSyntax Selector;
+        public UvssSelectorWithParenthesesSyntax Selector { get; internal set; }
 
         /// <summary>
         /// The action's value.
         /// </summary>
-        public UvssPropertyValueWithBracesSyntax Value;
+        public UvssPropertyValueWithBracesSyntax Value { get; internal set; }
     }
 }

@@ -17,8 +17,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.PropertyTriggerEvaluation)
         {
             this.PropertyName = propertyName;
+            ChangeParent(propertyName);
+
             this.ComparisonOperatorToken = comparisonOperatorToken;
+            ChangeParent(comparisonOperatorToken);
+
             this.Value = value;
+            ChangeParent(value);
 
             SlotCount = 3;
         }
@@ -39,16 +44,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The name of the property being evaluated.
         /// </summary>
-        public UvssPropertyNameSyntax PropertyName;
+        public UvssPropertyNameSyntax PropertyName { get; internal set; }
 
         /// <summary>
         /// The comparison operator being applied to the property.
         /// </summary>
-        public SyntaxToken ComparisonOperatorToken;
+        public SyntaxToken ComparisonOperatorToken { get; internal set; }
 
         /// <summary>
         /// The value being compared against the property.
         /// </summary>
-        public UvssPropertyValueWithBracesSyntax Value;
+        public UvssPropertyValueWithBracesSyntax Value { get; internal set; }
     }
 }

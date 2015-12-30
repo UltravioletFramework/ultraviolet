@@ -18,9 +18,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.Storyboard)
         {
             this.AtSignToken = atSignToken;
+            ChangeParent(atSignToken);
+
             this.NameToken = nameToken;
+            ChangeParent(nameToken);
+
             this.LoopToken = loopToken;
+            ChangeParent(loopToken);
+
             this.Body = body;
+            ChangeParent(body);
 
             SlotCount = 4;
         }
@@ -42,21 +49,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The at sign token that marks the declaration as a storyboard.
         /// </summary>
-        public SyntaxToken AtSignToken;
+        public SyntaxToken AtSignToken { get; internal set; }
 
         /// <summary>
         /// The storyboard's name.
         /// </summary>
-        public SyntaxToken NameToken;
+        public SyntaxToken NameToken { get; internal set; }
 
         /// <summary>
         /// The storyboard's loop value.
         /// </summary>
-        public SyntaxToken LoopToken;
+        public SyntaxToken LoopToken { get; internal set; }
 
         /// <summary>
         /// The storyboard's body.
         /// </summary>
-        public UvssBlockSyntax Body;
+        public UvssBlockSyntax Body { get; internal set; }
     }
 }

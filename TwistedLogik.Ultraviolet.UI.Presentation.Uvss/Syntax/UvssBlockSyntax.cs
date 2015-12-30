@@ -17,8 +17,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             : base(SyntaxKind.Block)
         {
             this.OpenCurlyBraceToken = openCurlyBraceToken;
+            ChangeParent(openCurlyBraceToken);
+
             this.Content = content;
+            ChangeParent(content.Node);
+
             this.CloseCurlyBraceToken = closeCurlyBraceToken;
+            ChangeParent(closeCurlyBraceToken);
 
             SlotCount = 3;
         }
@@ -39,16 +44,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The open curly brace that introduces the block.
         /// </summary>
-        public SyntaxToken OpenCurlyBraceToken;
+        public SyntaxToken OpenCurlyBraceToken { get; internal set; }
 
         /// <summary>
         /// The list of nodes that make up the block's content.
         /// </summary>
-        public SyntaxList<SyntaxNode> Content;
+        public SyntaxList<SyntaxNode> Content { get; internal set; }
 
         /// <summary>
         /// The close curly brace that terminates the block.
         /// </summary>
-        public SyntaxToken CloseCurlyBraceToken;
+        public SyntaxToken CloseCurlyBraceToken { get; internal set; }
     }
 }
