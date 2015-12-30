@@ -213,7 +213,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Gets the node's position within the source text.
         /// </summary>
-        public Int32 Position { get; internal set; }
+        public Int32 Position
+        {
+            get
+            {
+                if (position < 0)
+                    position = CalculatePosition();
+
+                return position;
+            }
+            internal set { position = value; }
+        }
 
         /// <summary>
         /// Gets or sets the full width of the node, including any leading or trailing trivia.
@@ -287,6 +297,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 throw new InvalidOperationException();
 
             node.Parent = this;
+            InvalidatePosition();
         }
 
         /// <summary>
@@ -299,6 +310,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return;
 
             fullWidth += node.FullWidth;
+        }
+
+        /// <summary>
+        /// Invalidates the position of this node and its children.
+        /// </summary>
+        private void InvalidatePosition()
+        {
+            if (position < 0)
+                return;
+
+            position = -1;
+
+            for (int i = 0; i < SlotCount; i++)
+            {
+                var child = GetSlot(i);
+                if (child != null)
+                {
+                    child.InvalidatePosition();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calculates the position of the node within the source text.
+        /// </summary>
+        /// <returns>The position of the node within the source text.</returns>
+        private Int32 CalculatePosition()
+        {
+            if (Parent == null)
+                return 0;
+
+            var position = Parent.Position;
+            for (int i = 0; i < Parent.SlotCount; i++)
+            {
+                var sibling = Parent.GetSlot(i);
+                if (sibling == this)
+                    break;
+
+                if (sibling != null)
+                    position += sibling.FullWidth;
+            }
+
+            return position;
         }
 
         /// <summary>
@@ -322,6 +376,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         // Property values.
+        private Int32 position = -1;
         private Int32 fullWidth;
     }
 }
