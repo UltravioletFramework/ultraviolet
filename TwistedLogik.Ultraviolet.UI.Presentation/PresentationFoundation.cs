@@ -85,8 +85,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 wrapperType = (vmWrapperAttr == null) ? null : vmWrapperAttr.WrapperType;
                 compiledDataSourceWrappers[name] = wrapperType;
             }
-            
-            return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new Object[] { viewModel, namescope });
+
+            try
+            {
+                return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new Object[] { viewModel, namescope });
+            }
+            catch (MissingMethodException e)
+            {
+                var dataSourceField = wrapperType.GetField("dataSource", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (dataSourceField != null)
+                {
+                    var typeExpected = dataSourceField.FieldType;
+                    var typeProvided = viewModel.GetType();
+                    throw new InvalidOperationException(PresentationStrings.ViewModelMismatch.Format(typeExpected, typeProvided), e);
+                }
+                throw;
+            }
         }
 
         /// <summary>

@@ -370,4 +370,9 @@
       <Variant>The operation is invalid because the string source contains stale data.</Variant>
     </en-US>
   </String>
+  <String Key="VIEW_MODEL_MISMATCH">
+    <en-US>
+      <Variant>Error initializing view model. The view definition specifies that the view model is of type '{0}' but the provided view model was of type '{1}'</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
