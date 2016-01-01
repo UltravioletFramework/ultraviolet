@@ -12,15 +12,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// </summary>
         public UvssEventTriggerArgumentList(
             SyntaxToken openParenToken,
-            SeparatedSyntaxList<SyntaxNode> arguments,
+            SeparatedSyntaxList<SyntaxNode> argumentList,
             SyntaxToken closeParenToken)
             : base(SyntaxKind.EventTriggerArgumentList)
         {
             this.OpenParenToken = openParenToken;
             ChangeParent(openParenToken);
 
-            this.Arguments = arguments;
-            ChangeParent(arguments.Node);
+            this.ArgumentList = argumentList;
+            ChangeParent(argumentList.Node);
 
             this.CloseParenToken = closeParenToken;
             ChangeParent(closeParenToken);
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return OpenParenToken;
-                case 1: return Arguments.Node;
+                case 1: return ArgumentList.Node;
                 case 2: return CloseParenToken;
                 default:
                     throw new InvalidOperationException();
@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// The argument list's arguments.
         /// </summary>
-        public SeparatedSyntaxList<SyntaxNode> Arguments { get; internal set; }
+        public SeparatedSyntaxList<SyntaxNode> ArgumentList { get; internal set; }
 
         /// <summary>
         /// The close parenthesis that terminates the argument list.

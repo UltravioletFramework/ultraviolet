@@ -8,7 +8,7 @@
         /// <summary>
         /// The syntax kind of the node, token, or trivia is unknown.
         /// </summary>
-        Unknown,
+        None,
 
         /// <summary>
         /// Trivia representing a single line comment.
