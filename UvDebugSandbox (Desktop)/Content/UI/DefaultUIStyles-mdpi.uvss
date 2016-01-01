@@ -485,7 +485,7 @@ ProgressBar
 ListBoxItem
 {
 	padding: 10 0 10 0;
-	height: 25;
+	min-height: 25;
 	content-valign: Center;
 
 	trigger event Generic.generic-interaction (handled)
