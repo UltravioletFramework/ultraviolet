@@ -188,8 +188,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newRuleSetList.Node != node.RuleSetAndStoryboardList.Node)
                 unchanged = false;
 
+            var newEndOfFileToken = (SyntaxToken)Visit(node.EndOfFileToken);
+            if (newEndOfFileToken != node.EndOfFileToken)
+                unchanged = false;
+
             return unchanged ? node : new UvssDocumentSyntax(
-                newRuleSetList);
+                newRuleSetList,
+                newEndOfFileToken);
         }
 
         /// <inheritdoc/>

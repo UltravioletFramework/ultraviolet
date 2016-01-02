@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="leadingTrivia">The syntax token's leading trivia, if it has any.</param>
         /// <param name="trailingTrivia">The syntax token's trailing trivia, if it has any.</param>
         public SyntaxToken(SyntaxKind kind, String text, SyntaxNode leadingTrivia, SyntaxNode trailingTrivia)
-            : base(kind, text.Length)
+            : base(kind, text?.Length ?? 0)
         {
             this.Text = text;
 

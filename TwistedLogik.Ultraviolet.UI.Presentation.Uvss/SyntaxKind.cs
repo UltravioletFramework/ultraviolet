@@ -221,6 +221,11 @@
         PropertyValueToken,
 
         /// <summary>
+        /// A token representing the end of a file.
+        /// </summary>
+        EndOfFileToken,
+
+        /// <summary>
         /// A list of nodes.
         /// </summary>
         List,

@@ -104,7 +104,7 @@ namespace UvDebugSandbox
                                 SyntaxFactory.PlayStoryboardTriggerAction(
                                     SyntaxFactory.SelectorWithParentheses(
                                         SyntaxFactory.Selector(SyntaxFactory.List(new[] {
-                                            SyntaxFactory.SelectorPartByType("Button", "trigger-root")
+                                            SyntaxFactory.UniversalSelectorPart("trigger-root")
                                         }))
                                     ),
                                     SyntaxFactory.PropertyValueWithBraces("some-storyboard")

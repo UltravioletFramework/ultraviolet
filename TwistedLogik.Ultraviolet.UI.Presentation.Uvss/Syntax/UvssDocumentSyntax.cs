@@ -10,13 +10,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssDocumentSyntax"/> class.
         /// </summary>
-        public UvssDocumentSyntax(SyntaxList<SyntaxNode> ruleSetAndStoryboardList)
+        public UvssDocumentSyntax(
+            SyntaxList<SyntaxNode> ruleSetAndStoryboardList,
+            SyntaxToken endOfFileToken)
             : base(SyntaxKind.UvssDocument)
         {
             this.RuleSetAndStoryboardList = ruleSetAndStoryboardList;
             ChangeParent(ruleSetAndStoryboardList.Node);
 
-            SlotCount = 1;
+            this.EndOfFileToken = endOfFileToken;
+            ChangeParent(endOfFileToken);
+
+            SlotCount = 2;
         }
 
         /// <inheritdoc/>
@@ -25,6 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return RuleSetAndStoryboardList.Node;
+                case 1: return EndOfFileToken;
                 default:
                     throw new InvalidOperationException();
             }
@@ -34,6 +40,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// The document's list of rule sets and storyboards.
         /// </summary>
         public SyntaxList<SyntaxNode> RuleSetAndStoryboardList { get; internal set; }
+
+        /// <summary>
+        /// The document's end-of-file token.
+        /// </summary>
+        public SyntaxToken EndOfFileToken { get; internal set; }
 
         /// <inheritdoc/>
         internal override SyntaxNode Accept(SyntaxVisitor visitor)

@@ -153,6 +153,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Creates a new end-of-file token.
+        /// </summary>
+        /// <returns>The <see cref="SyntaxToken"/> instance that was created.</returns>
+        public static SyntaxToken EndOfFile()
+        {
+            return new SyntaxToken(SyntaxKind.EndOfFileToken, null, null, null);
+        }
+
+        /// <summary>
         /// Creates an empty list.
         /// </summary>
         /// <typeparam name="TNode">The type of nodes in the list.</typeparam>
@@ -277,13 +286,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
-        /// Creates a new UVSS document root node.
+        /// Creates a new UVSS document root node using an automatically created end-of-file token.
         /// </summary>
         /// <param name="ruleSetAndStoryboardList">The document's list of rule sets and storyboards.</param>
         /// <returns>The <see cref="UvssDocumentSyntax"/> instance that was created.</returns>
-        public static UvssDocumentSyntax Document(SyntaxList<SyntaxNode> ruleSetAndStoryboardList)
+        public static UvssDocumentSyntax Document(
+            SyntaxList<SyntaxNode> ruleSetAndStoryboardList)
         {
-            return new UvssDocumentSyntax(ruleSetAndStoryboardList);
+            return Document(ruleSetAndStoryboardList, EndOfFile());
+        }
+
+        /// <summary>
+        /// Creates a new UVSS document root node.
+        /// </summary>
+        /// <param name="ruleSetAndStoryboardList">The document's list of rule sets and storyboards.</param>
+        /// <param name="endOfFileToken">The document's end-of-file token.</param>
+        /// <returns>The <see cref="UvssDocumentSyntax"/> instance that was created.</returns>
+        public static UvssDocumentSyntax Document(
+            SyntaxList<SyntaxNode> ruleSetAndStoryboardList,
+            SyntaxToken endOfFileToken)
+        {
+            return new UvssDocumentSyntax(ruleSetAndStoryboardList, endOfFileToken);
         }
 
         /// <summary>
@@ -324,6 +347,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             SyntaxToken closeParenToken)
         {
             return new UvssSelectorWithParenthesesSyntax(openParenToken, selector, closeParenToken);
+        }
+
+        /// <summary>
+        /// Creates a new universal selector.
+        /// </summary>
+        /// <returns>The <see cref="UvssSelectorSyntax"/> instance that was created.</returns>
+        public static UvssSelectorSyntax UniversalSelector()
+        {
+            return Selector(List(new[] { UniversalSelectorPart() }));
         }
 
         /// <summary>
@@ -374,6 +406,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssSelectorSyntax Selector(SyntaxList<SyntaxNode> partsAndCombinatorsList)
         {
             return new UvssSelectorSyntax(partsAndCombinatorsList);
+        }
+
+        /// <summary>
+        /// Creates a new universal selector part.
+        /// </summary>
+        /// <param name="pseudoClass">The name of the selector part's pseudo-class.</param>
+        /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
+        public static UvssSelectorPartSyntax UniversalSelectorPart(String pseudoClass = null)
+        {
+            return SelectorPart(
+                List(new[] { UniversalSelectorSubPart() }),
+                (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
         /// <summary>
@@ -439,6 +483,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssPseudoClassSyntax pseudoClass)
         {
             return new UvssSelectorPartSyntax(subPartsList, pseudoClass);
+        }
+
+        /// <summary>
+        /// Creates a new universal selector sub-part.
+        /// </summary>
+        /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
+        public static UvssSelectorSubPartSyntax UniversalSelectorSubPart()
+        {
+            return SelectorSubPart(
+                null,
+                Punctuation(SyntaxKind.AsteriskToken),
+                null);
         }
 
         /// <summary>
