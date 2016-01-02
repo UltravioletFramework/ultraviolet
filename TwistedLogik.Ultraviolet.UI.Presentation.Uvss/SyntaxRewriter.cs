@@ -72,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     visitedSeparator = (SyntaxToken)Visit(separator);
                 }
 
-                if (item != visitedItem && alternate.IsNull)
+                if ((item != visitedItem || separator != visitedSeparator) && alternate.IsNull)
                 {
                     alternate = new SeparatedSyntaxListBuilder<TNode>(itemCount);
                     alternate.AddRange(list, i);
@@ -99,25 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             return alternate.IsNull ? list : alternate.ToList();
         }
-
-        /// <inheritdoc/>
-        public override SyntaxNode VisitSyntaxNode(SyntaxNode node)
-        {
-            return Visit(node);
-        }
-
-        /// <inheritdoc/>
-        public override SyntaxToken VisitSyntaxToken(SyntaxToken token)
-        {
-            return (SyntaxToken)Visit(token);
-        }
-
-        /// <inheritdoc/>
-        public override SyntaxTrivia VisitSyntaxTrivia(SyntaxTrivia trivia)
-        {
-            return (SyntaxTrivia)Visit(trivia);
-        }
-
+        
         /// <inheritdoc/>
         public override SyntaxNode VisitAnimation(UvssAnimationSyntax node)
         {
@@ -202,8 +184,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var unchanged = true;
 
-            var newRuleSetList = VisitList(node.RuleSetList);
-            if (newRuleSetList.Node != node.RuleSetList.Node)
+            var newRuleSetList = VisitList(node.RuleSetAndStoryboardList);
+            if (newRuleSetList.Node != node.RuleSetAndStoryboardList.Node)
                 unchanged = false;
 
             return unchanged ? node : new UvssDocumentSyntax(

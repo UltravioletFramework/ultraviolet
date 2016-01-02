@@ -21,6 +21,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Creates a comment trivia with the specified text.
+        /// </summary>
+        /// <param name="text">The comment's text.</param>
+        /// <returns>The <see cref="SyntaxTrivia"/> instance that was created.</returns>
+        public static SyntaxTrivia Comment(String text)
+        {
+            var kind = (text?.StartsWith("/*") ?? false) ? 
+                SyntaxKind.MultiLineCommentTrivia : 
+                SyntaxKind.SingleLineCommentTrivia;
+
+            return new SyntaxTrivia(kind, text);
+        }
+
+        /// <summary>
         /// Creates a new keyword token.
         /// </summary>
         /// <param name="kind">A <see cref="SyntaxKind"/> value that specifies the keyword's kind.</param>
@@ -265,11 +279,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Creates a new UVSS document root node.
         /// </summary>
-        /// <param name="ruleSetList">The document's list of rule sets.</param>
+        /// <param name="ruleSetAndStoryboardList">The document's list of rule sets and storyboards.</param>
         /// <returns>The <see cref="UvssDocumentSyntax"/> instance that was created.</returns>
-        public static UvssDocumentSyntax Document(SyntaxList<UvssRuleSetSyntax> ruleSetList)
+        public static UvssDocumentSyntax Document(SyntaxList<SyntaxNode> ruleSetAndStoryboardList)
         {
-            return new UvssDocumentSyntax(ruleSetList);
+            return new UvssDocumentSyntax(ruleSetAndStoryboardList);
         }
 
         /// <summary>
@@ -283,7 +297,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return new UvssRuleSetSyntax(selectorList, body);
         }
-
+        
         /// <summary>
         /// Creates a new parentheses-enclosed selector with automatically created parenthesis tokens.
         /// </summary>
@@ -790,8 +804,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             Boolean important = false)
         {
             return PropertyTrigger(
-                Punctuation(SyntaxKind.TriggerKeyword),
-                Punctuation(SyntaxKind.PropertyKeyword),
+                Keyword(SyntaxKind.TriggerKeyword),
+                Keyword(SyntaxKind.PropertyKeyword),
                 evaluationList, important ? Keyword(SyntaxKind.ImportantKeyword) : null, body);
         }
 

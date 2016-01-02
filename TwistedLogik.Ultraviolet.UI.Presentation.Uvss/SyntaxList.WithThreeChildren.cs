@@ -18,11 +18,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             internal WithThreeChildren(SyntaxNode child0, SyntaxNode child1, SyntaxNode child2)
             {
                 SlotCount = 3;
+
                 this.child0 = child0;
+                ChangeParent(child0);
+
                 this.child1 = child1;
+                ChangeParent(child1);
+
                 this.child2 = child2;
+                ChangeParent(child2);
             }
-            
+
             /// <inheritdoc/>
             public override SyntaxNode GetSlot(Int32 index)
             {

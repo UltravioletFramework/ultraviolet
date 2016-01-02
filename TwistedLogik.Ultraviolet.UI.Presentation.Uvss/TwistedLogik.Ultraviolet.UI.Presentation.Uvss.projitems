@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxNodeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxNormalizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxVisitor.cs" />

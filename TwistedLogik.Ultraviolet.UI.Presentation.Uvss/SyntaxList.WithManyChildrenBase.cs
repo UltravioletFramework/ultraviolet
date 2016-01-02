@@ -16,7 +16,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             internal WithManyChildrenBase(ArrayElement<SyntaxNode>[] children)
             {
                 SlotCount = children.Length;
+
                 this.children = children;
+                for (int i = 0; i < children.Length; i++)
+                    ChangeParent(children[i]);
             }
             
             /// <inheritdoc/>

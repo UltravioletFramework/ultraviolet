@@ -29,6 +29,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 
         }
 
+        /// <inheritdoc/>
+        public override SyntaxNode WithLeadingTrivia(SyntaxNode trivia)
+        {
+            return new UvssPunctuation(Kind, trivia, GetTrailingTrivia());
+        }
+
+        /// <inheritdoc/>
+        public override SyntaxNode WithTrailingTrivia(SyntaxNode trivia)
+        {
+            return new UvssPunctuation(Kind, GetLeadingTrivia(), trivia);
+        }
+
         /// <summary>
         /// Gets the text associated with the specified punctuation kind.
         /// </summary>

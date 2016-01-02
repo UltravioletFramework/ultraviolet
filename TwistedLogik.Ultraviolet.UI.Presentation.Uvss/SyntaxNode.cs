@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             this.Kind = kind;
             this.FullWidth = fullWidth;
         }
-
+        
         /// <summary>
         /// Gets the child node at the specified slot index.
         /// </summary>
@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 }
 
                 if (!foundChild)
-                    return null;
+                    break;
             }
             while (node.SlotCount != 0);
 
@@ -136,7 +136,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The token that was found, or null if no token was found.</returns>
         public SyntaxToken GetLastToken()
         {
-            return GetLastToken() as SyntaxToken;
+            return GetLastTerminal() as SyntaxToken;
         }
 
         /// <summary>
@@ -260,6 +260,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public Boolean HasTrailingTrivia => GetTrailingTriviaWidth() > 0;
 
         /// <summary>
+        /// Gets a value indicating whether the node has been made stale by changes to the tree.
+        /// </summary>
+        public Boolean IsStale { get; internal set; }
+
+        /// <summary>
         /// Gets a value indicating whether this node is a list.
         /// </summary>
         public Boolean IsList { get { return Kind == SyntaxKind.List; } }
@@ -298,11 +303,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="node">The node to update.</param>
         protected void ChangeParent(SyntaxNode node)
         {
-            if (node == null)
+            if (node == null || node.Parent == this)
                 return;
 
             if (node.Parent != null)
-                throw new InvalidOperationException();
+                node.Parent.IsStale = true;
 
             node.Parent = this;
             InvalidatePosition();

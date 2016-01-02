@@ -41,10 +41,7 @@ namespace UvDebugSandbox
         /// <param name="args">An array containing the application's command line arguments.</param>
         public static void Main(String[] args)
         {
-            var transition = SyntaxFactory.Transition(
-                SyntaxFactory.TransitionArgumentList("common", "normal", "pressed"), "some-storyboard", true);
-
-            var transitionText = transition.ToFullString();
+            /*
 
             var uvss = SyntaxFactory.Storyboard("foobar", "loop", SyntaxFactory.Block(SyntaxFactory.List(new[] {
                 SyntaxFactory.StoryboardTarget("element",
@@ -58,19 +55,122 @@ namespace UvDebugSandbox
                                 SyntaxFactory.PropertyName("someotherprop"), "MyType"
                             ),
                             SyntaxFactory.Block(SyntaxFactory.List(new[] {
-                                SyntaxFactory.AnimationKeyframe(0, SyntaxFactory.PropertyValueWithBraces("blargh"))
+                                SyntaxFactory.AnimationKeyframe(0, SyntaxFactory.PropertyValueWithBraces("blargh")),
+                                SyntaxFactory.AnimationKeyframe(100, SyntaxFactory.PropertyValueWithBraces("blargh1")),
+                                SyntaxFactory.AnimationKeyframe(250, SyntaxFactory.PropertyValueWithBraces("blargh2"))
                             }))
                         )
                     }))
                 )
-            })));
-
-            var storyboard = uvss;
-            var storyboardTarget = storyboard.Body;
-
+            }))).NormalizeWhitespace();
+            
             var source = uvss.ToFullString();
+            */
 
+            var foo = SyntaxFactory.Document(SyntaxFactory.List(new SyntaxNode[]
+            {
+                SyntaxFactory.RuleSet(
+                    SyntaxFactory.SeparatedList(new[] {
+                        SyntaxFactory.Selector(SyntaxFactory.List(new SyntaxNode[] {
+                            SyntaxFactory.SelectorPartByClass("foo"),
+                            SyntaxFactory.VisualDescendantCombinator(),
+                            SyntaxFactory.SelectorPart(SyntaxFactory.List(new[] {
+                                SyntaxFactory.SelectorSubPartByClass("bar"),
+                                SyntaxFactory.SelectorSubPartByClass("baz")
+                            }), SyntaxFactory.PseudoClass("some-class")),
+                            SyntaxFactory.VisualChildCombinator(),
+                            SyntaxFactory.SelectorPartByClass("qux")
+                        }))
+                    }), 
+                    SyntaxFactory.Block(SyntaxFactory.List(new SyntaxNode[] {
+                        SyntaxFactory.Token(SyntaxKind.IdentifierToken, "foobarbaz!!!",
+                            SyntaxFactory.Comment("// Hello, world!!!!!!!"),
+                            null
+                        ),
+                        SyntaxFactory.PropertyTrigger(
+                            SyntaxFactory.SeparatedList(new[] {
+                                SyntaxFactory.PropertyTriggerEvaluation(
+                                    SyntaxFactory.PropertyName("foo"),
+                                    SyntaxFactory.EqualsComparison(),
+                                    SyntaxFactory.PropertyValueWithBraces("bar")
+                                ),
+                                SyntaxFactory.PropertyTriggerEvaluation(
+                                    SyntaxFactory.PropertyName("urgk"),
+                                    SyntaxFactory.NotEqualsComparison(),
+                                    SyntaxFactory.PropertyValueWithBraces("barf")
+                                )
+                            }),
+                            SyntaxFactory.Block(SyntaxFactory.List(new SyntaxNode[] {
+                                SyntaxFactory.PlayStoryboardTriggerAction(
+                                    SyntaxFactory.SelectorWithParentheses(
+                                        SyntaxFactory.Selector(SyntaxFactory.List(new[] {
+                                            SyntaxFactory.SelectorPartByType("Button", "trigger-root")
+                                        }))
+                                    ),
+                                    SyntaxFactory.PropertyValueWithBraces("some-storyboard")
+                                ),
+                                SyntaxFactory.PlaySfxTriggerAction(
+                                    SyntaxFactory.PropertyValueWithBraces("hello-world")
+                                ),
+                                SyntaxFactory.SetTriggerAction(
+                                    SyntaxFactory.PropertyName("foo", "bar"),
+                                    SyntaxFactory.SelectorWithParentheses(
+                                        SyntaxFactory.SelectorByClass("blargh")
+                                    ),
+                                    SyntaxFactory.PropertyValueWithBraces("bazinga")
+                                )
+                            }))
+                        ),
+                        SyntaxFactory.EventTrigger(
+                            SyntaxFactory.EventName("Mouse", "enter"),
+                            SyntaxFactory.EventTriggerArgumentList(true, true),
+                            SyntaxFactory.Block()
+                        )
+                    }))
+                ),
+                SyntaxFactory.RuleSet(
+                    SyntaxFactory.SeparatedList(new[] {
+                        SyntaxFactory.SelectorByName("bar"),
+                        SyntaxFactory.SelectorByName("test")
+                    }),
+                    SyntaxFactory.Block(SyntaxFactory.List(new SyntaxNode[] {
+                        SyntaxFactory.Rule(
+                            SyntaxFactory.PropertyName("max-width"),
+                            SyntaxFactory.PropertyValue("125"), important: true),
+                        SyntaxFactory.Rule(
+                            SyntaxFactory.PropertyName("max-height"),
+                            SyntaxFactory.PropertyValue("25"), important: false),
+                        SyntaxFactory.Transition(
+                            SyntaxFactory.TransitionArgumentList("common", "normal", "pressed"),
+                            "some-storyboard"
+                        ),
+                        SyntaxFactory.Transition(
+                            SyntaxFactory.TransitionArgumentList("common", "normal"),
+                            "some-storyboard", important: true
+                        )
+                    }))),
+                SyntaxFactory.Storyboard("foobarbaz",
+                    SyntaxFactory.Block(SyntaxFactory.List(new[] {
+                        SyntaxFactory.StoryboardTarget("FrameworkElement",
+                            SyntaxFactory.SelectorWithParentheses(
+                                SyntaxFactory.SelectorByName("omg")
+                            ),
+                            SyntaxFactory.Block(SyntaxFactory.List(new[] {
+                                SyntaxFactory.Animation(
+                                    SyntaxFactory.PropertyName("someprop"),
+                                    SyntaxFactory.Block(SyntaxFactory.List(new[] {
+                                        SyntaxFactory.AnimationKeyframe(0, 
+                                            SyntaxFactory.PropertyValueWithBraces("foobarbaz")),
+                                        SyntaxFactory.AnimationKeyframe(100,
+                                            SyntaxFactory.PropertyValueWithBraces("blargh"))
+                                    }))
+                                )
+                            }))
+                        )
+                    })))
+            })).NormalizeWhitespace();
 
+            var bar = foo.ToFullString();
 
 
             
