@@ -356,6 +356,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets the number of definitions in the specified collection with a unit
+        /// type of <see cref="GridUnitType.Star"/>.
+        /// </summary>
+        private Int32 CountStars(IDefinitionBaseCollection definitions)
+        {
+            var count = 0;
+
+            if (definitions != null)
+            {
+                for (int i = 0; i < definitions.Count; i++)
+                {
+                    var def = definitions[i];
+                    if (def.AssumedUnitType == GridUnitType.Star)
+                        count++;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
         /// Gets the index of the row at the specified column in element space.
         /// </summary>
         /// <param name="point">The point in element space to evaluate.</param>
@@ -857,8 +878,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void UpdateVirtualCellMetadata()
         {
-            starColumnCount = 0;
-            starRowCount    = 0;
+            starColumnCount = CountStars(ColumnDefinitions);
+            starRowCount    = CountStars(RowDefinitions);            
 
             for (int i = 0; i < hasCellsOfPriority.Length; i++)
                 hasCellsOfPriority[i] = false;
@@ -893,7 +914,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                         case GridUnitType.Star:
                             cell.ContainsStarColumns = true;
-                            starColumnCount++;
                             break;
                     }
                 }
@@ -909,7 +929,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                         case GridUnitType.Star:
                             cell.ContainsStarRows = true;
-                            starRowCount++;
                             break;
                     }
                 }
