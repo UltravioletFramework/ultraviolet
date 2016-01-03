@@ -54,8 +54,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The number of trailing line breaks required after the specified token.</returns>
         private Int32 GetTrailingLineBreakCount(SyntaxToken current, SyntaxToken next)
         {
-            // NEVER insert line breaks if we're the last token.
-            if (next == null)
+            // NEVER insert line breaks if we're the last token in a document.
+            if (next == null || next.Kind == SyntaxKind.EndOfFileToken)
                 return 0;
 
             // Insert line breaks after opening curly braces...
@@ -72,12 +72,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (current.Kind == SyntaxKind.CloseCurlyBraceToken)
             {
                 // ...UNLESS we're followed by a comma (as in a condition list).
-                if (next?.Kind == SyntaxKind.CommaToken)
+                if (next.Kind == SyntaxKind.CommaToken)
                     return 0;
 
-                // ...we need TWO line breaks after every rule set.
-                if (current.Parent.Parent is UvssRuleSetSyntax)
-                    return 2;
+                // ...we need TWO line breaks after every rule set and storyboard.
+                if (current.Parent.Parent is UvssRuleSetSyntax ||
+                    current.Parent.Parent is UvssStoryboardSyntax)
+                {
+                    var isEndOfBlock = 
+                        next.Kind == SyntaxKind.CloseCurlyBraceToken && 
+                        next.Parent is UvssBlockSyntax;
+                    return isEndOfBlock ? 1 : 2;
+                }
 
                 return 1;
             }
@@ -89,7 +95,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
 
             // Insert line breaks if the NEXT token is an opening curly brace...
-            if (next?.Kind == SyntaxKind.OpenCurlyBraceToken)
+            if (next.Kind == SyntaxKind.OpenCurlyBraceToken)
             {
                 // ...UNLESS we're in an animation keyframe or a property trigger condition.
                 if (current.Parent is UvssAnimationKeyframeSyntax ||
@@ -119,10 +125,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The number of trailing spaces required after the specified token.</returns>
         private Int32 GetTrailingSpaceCount(SyntaxToken current, SyntaxToken next)
         {
-            // NEVER insert a space if we're the last token.
-            if (next == null)
+            // NEVER insert a space if we're the last token in a document.
+            if (next == null || next.Kind == SyntaxKind.EndOfFileToken)
                 return 0;
 
+            // NEVER insert a space if we're the last token in a block.
+            if (next.Kind == SyntaxKind.CloseParenthesesToken && next.Parent is UvssBlockSyntax)
+                return 0;
+            
             // ALWAYS insert a space after certain symbols...
             if (current.Kind == SyntaxKind.CommaToken)
                 return 1;
@@ -136,21 +146,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
 
             // NEVER insert a space BEFORE certain symbols...
-            if (next != null)
+            if (next.Kind == SyntaxKind.CommaToken ||
+                next.Kind == SyntaxKind.SemiColonToken ||
+                next.Kind == SyntaxKind.CloseParenthesesToken)
             {
-                if (next.Kind == SyntaxKind.CommaToken ||
-                    next.Kind == SyntaxKind.SemiColonToken ||
-                    next.Kind == SyntaxKind.CloseParenthesesToken)
-                {
-                    return 0;
-                }
+                return 0;
             }
 
             // If we're inside of a property or event name...
             if (current.Parent is UvssPropertyNameSyntax || current.Parent is UvssEventNameSyntax)
             {
                 // ...DO NOT surround periods with spaces.
-                if (current.Kind == SyntaxKind.PeriodToken || next?.Kind == SyntaxKind.PeriodToken)
+                if (current.Kind == SyntaxKind.PeriodToken || next.Kind == SyntaxKind.PeriodToken)
                     return 0;
             }
 
@@ -177,24 +184,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     return 0;
 
                 // ...DO NOT insert spaces in front of visual descendant operators (it's already a space!)
-                if (next?.Kind == SyntaxKind.SpaceToken)
+                if (next.Kind == SyntaxKind.SpaceToken)
                     return 0;
 
                 // ...DO NOT insert spaces between selector sub-parts within the same selector part.
-                if (current.Parent is UvssSelectorSubPartSyntax && next?.Parent.Parent == current.Parent.Parent)
+                if (current.Parent is UvssSelectorSubPartSyntax && next.Parent.Parent == current.Parent.Parent)
                     return 0;
 
                 // ...DO NOT insert spaces before a pseudo-class.
-                if (next?.Kind == SyntaxKind.ColonToken && next.Parent is UvssPseudoClassSyntax)
+                if (next.Kind == SyntaxKind.ColonToken && next.Parent is UvssPseudoClassSyntax)
                     return 0;
             }
 
             // DO NOT insert spaces before the colons that follow property names in rules.
-            if (next?.Kind == SyntaxKind.ColonToken && next.Parent is UvssRuleSyntax)
+            if (next.Kind == SyntaxKind.ColonToken && next.Parent is UvssRuleSyntax)
                 return 0;
 
             // DO NOT insert spaces before the colons in transitions.
-            if (next?.Kind == SyntaxKind.ColonToken && next.Parent is UvssTransitionSyntax)
+            if (next.Kind == SyntaxKind.ColonToken && next.Parent is UvssTransitionSyntax)
                 return 0;
 
             return 1;

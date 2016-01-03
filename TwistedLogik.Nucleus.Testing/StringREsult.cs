@@ -35,7 +35,7 @@ namespace TwistedLogik.Nucleus.Testing
         /// <returns>The result object.</returns>
         public StringResult ShouldBe(String expected)
         {
-            Assert.AreEqual(expected, (String)str);
+            Assert.AreEqual(expected, str);
             return this;
         }
 

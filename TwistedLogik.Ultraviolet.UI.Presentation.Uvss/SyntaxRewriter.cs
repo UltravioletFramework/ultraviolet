@@ -543,8 +543,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newComponents.Node != node.Components.Node)
                 unchanged = false;
 
+            var newNavigationExpression = (UvssNavigationExpressionSyntax)Visit(node.NavigationExpression);
+            if (newNavigationExpression != node.NavigationExpression)
+                unchanged = false;
+
             return unchanged ? node : new UvssSelectorSyntax(
-                newComponents);
+                newComponents,
+                newNavigationExpression);
         }
 
         /// <inheritdoc/>
