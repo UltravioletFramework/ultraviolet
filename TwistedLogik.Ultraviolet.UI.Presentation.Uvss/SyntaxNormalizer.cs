@@ -54,6 +54,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The number of trailing line breaks required after the specified token.</returns>
         private Int32 GetTrailingLineBreakCount(SyntaxToken current, SyntaxToken next)
         {
+            // NEVER insert line breaks if we're the last token.
+            if (next == null)
+                return 0;
+
             // Insert line breaks after opening curly braces...
             if (current.Kind == SyntaxKind.OpenCurlyBraceToken)
             {
@@ -115,6 +119,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The number of trailing spaces required after the specified token.</returns>
         private Int32 GetTrailingSpaceCount(SyntaxToken current, SyntaxToken next)
         {
+            // NEVER insert a space if we're the last token.
+            if (next == null)
+                return 0;
+
             // ALWAYS insert a space after certain symbols...
             if (current.Kind == SyntaxKind.CommaToken)
                 return 1;
