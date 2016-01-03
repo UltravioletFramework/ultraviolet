@@ -47,22 +47,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The target's "target" keyword.
+        /// Gets the target's "target" keyword.
         /// </summary>
         public SyntaxToken TargetKeyword { get; internal set; }
 
         /// <summary>
-        /// The target's optional type name.
+        /// Gets the target's optional type name.
         /// </summary>
         public SyntaxToken TypeNameToken { get; internal set; }
 
         /// <summary>
-        /// The target's selector.
+        /// Gets the target's selector.
         /// </summary>
         public UvssSelectorWithParenthesesSyntax Selector { get; internal set; }
 
         /// <summary>
-        /// The target's body.
+        /// Gets the target's body.
         /// </summary>
         public UvssBlockSyntax Body { get; internal set; }
 

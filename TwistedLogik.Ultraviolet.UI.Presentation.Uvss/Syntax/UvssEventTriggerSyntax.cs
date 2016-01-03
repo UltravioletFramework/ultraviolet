@@ -57,32 +57,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The trigger's "trigger" keyword.
+        /// Gets the trigger's "trigger" keyword.
         /// </summary>
         public SyntaxToken TriggerKeyword { get; internal set; }
 
         /// <summary>
-        /// The trigger's "event" keyword.
+        /// Gets the trigger's "event" keyword.
         /// </summary>
         public SyntaxToken EventKeyword { get; internal set; }
 
         /// <summary>
-        /// The trigger's event name.
+        /// Gets the trigger's event name.
         /// </summary>
         public UvssEventNameSyntax EventName { get; internal set; }
 
         /// <summary>
-        /// The trigger's argument list.
+        /// Gets the trigger's argument list.
         /// </summary>
         public UvssEventTriggerArgumentList ArgumentList { get; internal set; }
 
         /// <summary>
-        /// The trigger's qualifier token.
+        /// Gets the trigger's qualifier token.
         /// </summary>
         public SyntaxToken QualifierToken { get; internal set; }
 
         /// <summary>
-        /// The trigger's body.
+        /// Gets the trigger's body.
         /// </summary>
         public UvssBlockSyntax Body { get; internal set; }
 

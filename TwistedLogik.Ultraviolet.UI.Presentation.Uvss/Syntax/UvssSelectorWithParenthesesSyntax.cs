@@ -42,17 +42,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The open parenthesis that introduces the selector.
+        /// Gets the open parenthesis that introduces the selector.
         /// </summary>
         public SyntaxToken OpenParenToken { get; internal set; }
 
         /// <summary>
-        /// The enclosed selector.
+        /// Gets the enclosed selector.
         /// </summary>
         public UvssSelectorSyntax Selector { get; internal set; }
 
         /// <summary>
-        /// The close parenthesis that terminates the selector.
+        /// Gets the close parenthesis that terminates the selector.
         /// </summary>
         public SyntaxToken CloseParenToken { get; internal set; }
 

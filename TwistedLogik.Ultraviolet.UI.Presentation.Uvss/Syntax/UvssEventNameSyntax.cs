@@ -42,17 +42,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The name of the type which owns the attached event, if this name describes an attached event.
+        /// Gets the name of the type which owns the attached event, if this name describes an attached event.
         /// </summary>
         public SyntaxToken AttachedEventOwnerNameToken { get; internal set; }
 
         /// <summary>
-        /// The period that separates the owner type from the event name.
+        /// Gets the period that separates the owner type from the event name.
         /// </summary>
         public SyntaxToken PeriodToken { get; internal set; }
 
         /// <summary>
-        /// The name of the event.
+        /// Gets the name of the event.
         /// </summary>
         public SyntaxToken EventNameToken { get; internal set; }
 

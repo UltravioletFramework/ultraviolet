@@ -12,15 +12,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// </summary>
         public UvssTransitionArgumentListSyntax(
             SyntaxToken openParenToken,
-            SeparatedSyntaxList<SyntaxNode> argumentList,
+            SeparatedSyntaxList<SyntaxNode> arguments,
             SyntaxToken closeParenToken)
             : base(SyntaxKind.TransitionArgumentList)
         {
             this.OpenParenToken = openParenToken;
             ChangeParent(openParenToken);
 
-            this.ArgumentList = argumentList;
-            ChangeParent(argumentList.Node);
+            this.Arguments = arguments;
+            ChangeParent(arguments.Node);
 
             this.CloseParenToken = closeParenToken;
             ChangeParent(closeParenToken);
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return OpenParenToken;
-                case 1: return ArgumentList.Node;
+                case 1: return Arguments.Node;
                 case 2: return CloseParenToken;
                 default:
                     throw new InvalidOperationException();
@@ -42,17 +42,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The open parenthesis that introduces the argument list.
+        /// Gets the open parenthesis that introduces the argument list.
         /// </summary>
         public SyntaxToken OpenParenToken { get; internal set; }
 
         /// <summary>
-        /// The argument list's arguments.
+        /// Gets the list's arguments.
         /// </summary>
-        public SeparatedSyntaxList<SyntaxNode> ArgumentList { get; internal set; }
+        public SeparatedSyntaxList<SyntaxNode> Arguments { get; internal set; }
 
         /// <summary>
-        /// The close parenthesis that terminates the argument list.
+        /// Gets the close parenthesis that terminates the argument list.
         /// </summary>
         public SyntaxToken CloseParenToken { get; internal set; }
 

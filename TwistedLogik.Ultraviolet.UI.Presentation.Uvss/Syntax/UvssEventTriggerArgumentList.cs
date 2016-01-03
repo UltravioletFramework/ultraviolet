@@ -42,17 +42,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The open parenthesis that introduces the argument list.
+        /// Gets the open parenthesis that introduces the argument list.
         /// </summary>
         public SyntaxToken OpenParenToken { get; internal set; }
 
         /// <summary>
-        /// The argument list's arguments.
+        /// Gets the list's arguments.
         /// </summary>
         public SeparatedSyntaxList<SyntaxNode> ArgumentList { get; internal set; }
 
         /// <summary>
-        /// The close parenthesis that terminates the argument list.
+        /// Gets the close parenthesis that terminates the argument list.
         /// </summary>
         public SyntaxToken CloseParenToken { get; internal set; }
         

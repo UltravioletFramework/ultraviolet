@@ -37,12 +37,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The action's "play-sfx" keyword.
+        /// Gets the action's "play-sfx" keyword.
         /// </summary>
         public SyntaxToken PlaySfxKeyword { get; internal set; }
 
         /// <summary>
-        /// The action's value.
+        /// Gets the action's value.
         /// </summary>
         public UvssPropertyValueWithBracesSyntax Value { get; internal set; }
 

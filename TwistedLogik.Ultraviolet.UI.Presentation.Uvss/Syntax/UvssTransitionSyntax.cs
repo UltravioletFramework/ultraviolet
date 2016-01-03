@@ -57,32 +57,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The transition's "transition" keyword.
+        /// Gets the transition's "transition" keyword.
         /// </summary>
         public SyntaxToken TransitionKeyword { get; internal set; }
 
         /// <summary>
-        /// The transition's argument list.
+        /// Gets the transition's argument list.
         /// </summary>
         public UvssTransitionArgumentListSyntax ArgumentList { get; internal set; }
 
         /// <summary>
-        /// The colon that separates the transition declaration from its value.
+        /// Gets the colon that separates the transition declaration from its value.
         /// </summary>
         public SyntaxToken ColonToken { get; internal set; }
 
         /// <summary>
-        /// The storyboard name that is associated with the transition.
+        /// Gets the storyboard name that is associated with the transition.
         /// </summary>
         public SyntaxToken StoryboardNameToken { get; internal set; }
 
         /// <summary>
-        /// The transition's qualifier token.
+        /// Gets the transition's qualifier token.
         /// </summary>
         public SyntaxToken QualifierToken { get; internal set; }
 
         /// <summary>
-        /// The semi-colon that terminates the transition.
+        /// Gets the semi-colon that terminates the transition.
         /// </summary>
         public SyntaxToken SemiColonToken { get; internal set; }
 

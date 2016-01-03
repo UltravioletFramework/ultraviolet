@@ -42,17 +42,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The action's "play-storyboard" keyword.
+        /// Gets the action's "play-storyboard" keyword.
         /// </summary>
         public SyntaxToken PlayStoryboardKeyword { get; internal set; }
 
         /// <summary>
-        /// The action's optional selector.
+        /// Gets the action's optional selector.
         /// </summary>
         public UvssSelectorWithParenthesesSyntax Selector { get; internal set; }
 
         /// <summary>
-        /// The action's value.
+        /// Gets the action's value.
         /// </summary>
         public UvssPropertyValueWithBracesSyntax Value { get; internal set; }
 

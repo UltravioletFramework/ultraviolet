@@ -52,27 +52,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The name of the property being styled.
+        /// Gets the name of the property being styled.
         /// </summary>
         public UvssPropertyNameSyntax PropertyName { get; internal set; }
 
         /// <summary>
-        /// The colon that separates the property name from its value.
+        /// Gets the colon that separates the property name from its value.
         /// </summary>
         public SyntaxToken ColonToken { get; internal set; }
 
         /// <summary>
-        /// The styled property value.
+        /// Gets the styled property value.
         /// </summary>
         public UvssPropertyValueSyntax Value { get; internal set; }
 
         /// <summary>
-        /// The rule's qualifier token.
+        /// Gets the rule's qualifier token.
         /// </summary>
         public SyntaxToken QualifierToken { get; internal set; }
 
         /// <summary>
-        /// The rule's terminating semi-colon token.
+        /// Gets the rule's terminating semi-colon token.
         /// </summary>
         public SyntaxToken SemiColonToken { get; internal set; }
 

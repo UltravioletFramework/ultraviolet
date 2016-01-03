@@ -37,12 +37,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The pseudo-class' leading colon.
+        /// Gets the pseudo-class' leading colon.
         /// </summary>
         public SyntaxToken ColonToken { get; internal set; }
 
         /// <summary>
-        /// The name of the pseudo-class.
+        /// Gets the pseudo-class' name identifier.
         /// </summary>
         public SyntaxToken ClassNameToken { get; internal set; }
 

@@ -185,6 +185,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (next?.Kind == SyntaxKind.ColonToken && next.Parent is UvssRuleSyntax)
                 return 0;
 
+            // DO NOT insert spaces before the colons in transitions.
+            if (next?.Kind == SyntaxKind.ColonToken && next.Parent is UvssTransitionSyntax)
+                return 0;
+
             return 1;
         }
 

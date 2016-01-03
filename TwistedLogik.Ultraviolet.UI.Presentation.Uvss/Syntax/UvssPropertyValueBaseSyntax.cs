@@ -1,4 +1,6 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
+﻿using System;
+
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents the base class for property values.
@@ -13,6 +15,14 @@
             : base(kind)
         {
 
+        }
+
+        /// <summary>
+        /// Gets the property value.
+        /// </summary>
+        public abstract String Value
+        {
+            get;
         }
     }
 }

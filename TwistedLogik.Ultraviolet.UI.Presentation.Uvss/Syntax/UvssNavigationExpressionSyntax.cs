@@ -47,22 +47,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The navigation expression's pipe token.
+        /// Gets the navigation expression's pipe token.
         /// </summary>
         public SyntaxToken PipeToken { get; internal set; }
 
         /// <summary>
-        /// The navigation expression's property name.
+        /// Gets the navigation expression's property name.
         /// </summary>
         public UvssPropertyNameSyntax PropertyName { get; internal set; }
 
         /// <summary>
-        /// The navigation expression's "as" keyword.
+        /// Gets the navigation expression's "as" keyword.
         /// </summary>
         public SyntaxToken AsKeyword { get; internal set; }
 
         /// <summary>
-        /// The navigation expression's conversion type name.
+        /// Gets the navigation expression's conversion type name.
         /// </summary>
         public SyntaxToken TypeNameToken { get; internal set; }
 

@@ -14,6 +14,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         /// <param name="kind">The syntax token's kind.</param>
         /// <param name="text">The syntax token's text.</param>
+        public SyntaxToken(SyntaxKind kind, String text)
+            : this(kind, text, null, null)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SyntaxToken"/> class.
+        /// </summary>
+        /// <param name="kind">The syntax token's kind.</param>
+        /// <param name="text">The syntax token's text.</param>
         /// <param name="leadingTrivia">The syntax token's leading trivia, if it has any.</param>
         /// <param name="trailingTrivia">The syntax token's trailing trivia, if it has any.</param>
         public SyntaxToken(SyntaxKind kind, String text, SyntaxNode leadingTrivia, SyntaxNode trailingTrivia)
@@ -63,7 +74,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 leadingTrivia = leadingTriviaBuilder.ToList().Node;
             }
 
-            return (TToken)token.WithLeadingTrivia(leadingTrivia);
+            token.ChangeLeadingTrivia(leadingTrivia);
+            return token;
         }
 
         /// <summary>
@@ -95,7 +107,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 trailingTrivia = trailingTriviaBuilder.ToList().Node;
             }
 
-            return (TToken)token.WithTrailingTrivia(trailingTrivia);
+            token.ChangeTrailingTrivia(trailingTrivia);
+            return token;
         }
 
         /// <inheritdoc/>
@@ -132,18 +145,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <inheritdoc/>
-        public override SyntaxNode WithLeadingTrivia(SyntaxNode trivia)
-        {
-            return new SyntaxToken(Kind, Text, trivia, GetTrailingTrivia());
-        }
-
-        /// <inheritdoc/>
-        public override SyntaxNode WithTrailingTrivia(SyntaxNode trivia)
-        {
-            return new SyntaxToken(Kind, Text, GetLeadingTrivia(), trivia);
-        }
-
-        /// <inheritdoc/>
         public override Boolean IsToken => true;
 
         /// <summary>
@@ -173,6 +174,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             {
                 trailingTrivia.WriteTo(writer);
             }
+        }
+        
+        /// <inheritdoc/>
+        internal override void ChangeTrivia(SyntaxNode leading, SyntaxNode trailing)
+        {
+            this.leadingTrivia = leading;
+            this.trailingTrivia = trailing;
+        }
+
+        /// <inheritdoc/>
+        internal override void ChangeLeadingTrivia(SyntaxNode trivia)
+        {
+            this.leadingTrivia = trivia;
+        }
+
+        /// <inheritdoc/>
+        internal override void ChangeTrailingTrivia(SyntaxNode trivia)
+        {
+            this.trailingTrivia = trivia;
         }
 
         // Token trivia.

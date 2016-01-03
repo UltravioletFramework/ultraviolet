@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             this.Kind = kind;
             this.FullWidth = fullWidth;
         }
-        
+
         /// <summary>
         /// Gets the child node at the specified slot index.
         /// </summary>
@@ -137,26 +137,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public SyntaxToken GetLastToken()
         {
             return GetLastTerminal() as SyntaxToken;
-        }
-
-        /// <summary>
-        /// Creates a copy of this node with the specified leading trivia.
-        /// </summary>
-        /// <param name="trivia">The leading trivia to set on the copy of this node that is created.</param>
-        /// <returns>The copy of this node that was created.</returns>
-        public virtual SyntaxNode WithLeadingTrivia(SyntaxNode trivia)
-        {
-            return this;
-        }
-
-        /// <summary>
-        /// Creates a copy opf this node with the specified trailing trivia.
-        /// </summary>
-        /// <param name="trivia">The trailing trivia to set on the copy of this node that is created.</param>
-        /// <returns>The copy of this node that was created.</returns>
-        public virtual SyntaxNode WithTrailingTrivia(SyntaxNode trivia)
-        {
-            return this;
         }
 
         /// <summary>
@@ -294,6 +274,52 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 {
                     stack.Push(node);
                 }
+            }
+        }
+        
+        /// <summary>
+        /// Changes the node's leading and trailing trivia.
+        /// </summary>
+        /// <param name="leading">The node's leading trivia.</param>
+        /// <param name="trailing">The node's trailing trivia.</param>
+        internal virtual void ChangeTrivia(SyntaxNode leading, SyntaxNode trailing)
+        {
+            var firstToken = GetFirstToken();
+            if (firstToken != null)
+            {
+                firstToken.ChangeLeadingTrivia(leading);
+            }
+
+            var lastToken = GetLastToken();
+            if (lastToken != null)
+            {
+                lastToken.ChangeTrailingTrivia(trailing);
+            }
+        }
+        
+        /// <summary>
+        /// Changes the node's leading trivia.
+        /// </summary>
+        /// <param name="trivia">The node's leading trivia.</param>
+        internal virtual void ChangeLeadingTrivia(SyntaxNode trivia)
+        {
+            var firstToken = GetFirstToken();
+            if (firstToken != null)
+            {
+                firstToken.ChangeLeadingTrivia(trivia);
+            }
+        }
+        
+        /// <summary>
+        /// Changes the node's trailing trivia.
+        /// </summary>
+        /// <param name="trivia">The node's trailing trivia.</param>
+        internal virtual void ChangeTrailingTrivia(SyntaxNode trivia)
+        {
+            var lastToken = GetLastToken();
+            if (lastToken != null)
+            {
+                lastToken.ChangeTrailingTrivia(trivia);
             }
         }
 

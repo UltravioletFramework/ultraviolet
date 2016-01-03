@@ -26,6 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxNormalizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIdentifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionArgumentListSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssBlockSyntax.cs" />

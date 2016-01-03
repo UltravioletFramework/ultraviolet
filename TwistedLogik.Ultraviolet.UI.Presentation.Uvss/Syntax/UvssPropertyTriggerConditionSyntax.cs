@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         internal UvssPropertyTriggerConditionSyntax(
             UvssPropertyNameSyntax propertyName,
             SyntaxToken comparisonOperatorToken,
-            UvssPropertyValueWithBracesSyntax value)
+            UvssPropertyValueWithBracesSyntax propertyValue)
             : base(SyntaxKind.PropertyTriggerCondition)
         {
             this.PropertyName = propertyName;
@@ -22,8 +22,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             this.ComparisonOperatorToken = comparisonOperatorToken;
             ChangeParent(comparisonOperatorToken);
 
-            this.Value = value;
-            ChangeParent(value);
+            this.PropertyValue = propertyValue;
+            ChangeParent(propertyValue);
 
             SlotCount = 3;
         }
@@ -35,26 +35,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             {
                 case 0: return PropertyName;
                 case 1: return ComparisonOperatorToken;
-                case 2: return Value;
+                case 2: return PropertyValue;
                 default:
                     throw new InvalidOperationException();
             }
         }
 
         /// <summary>
-        /// The name of the property being evaluated.
+        /// Gets the name of the property being evaluated.
         /// </summary>
         public UvssPropertyNameSyntax PropertyName { get; internal set; }
 
         /// <summary>
-        /// The comparison operator being applied to the property.
+        /// Gets the comparison operator being applied to the property.
         /// </summary>
         public SyntaxToken ComparisonOperatorToken { get; internal set; }
 
         /// <summary>
-        /// The value being compared against the property.
+        /// Gets the value being compared against the property.
         /// </summary>
-        public UvssPropertyValueWithBracesSyntax Value { get; internal set; }
+        public UvssPropertyValueWithBracesSyntax PropertyValue { get; internal set; }
         
         /// <inheritdoc/>
         internal override SyntaxNode Accept(SyntaxVisitor visitor)

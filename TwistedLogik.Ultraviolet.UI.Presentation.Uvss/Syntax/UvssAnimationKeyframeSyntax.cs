@@ -47,17 +47,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The keyframe declaration token.
+        /// Gets the keyframe declaration token.
         /// </summary>
         public SyntaxToken KeyframeKeyword { get; internal set; }
 
         /// <summary>
-        /// The keyframe time token.
+        /// Gets the keyframe time token.
         /// </summary>
         public SyntaxToken TimeToken { get; internal set; }
 
         /// <summary>
-        /// The keyframe easing token.
+        /// Gets the keyframe easing token.
         /// </summary>
         public SyntaxToken EasingToken { get; internal set; }
 

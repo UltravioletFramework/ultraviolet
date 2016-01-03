@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using TwistedLogik.Nucleus;
+using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -91,6 +93,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             for (int i = offset; i < offset + length; i++)
                 AddUnsafe(list.ItemUntyped(i));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified collection of items to the end of the list.
+        /// </summary>
+        /// <typeparam name="TNode">The type of node contained by the collection being added.</typeparam>
+        /// <param name="list">A collection containing the items to add to this list.</param>
+        /// <returns>A reference to this instance.</returns>
+        public SyntaxListBuilder AddRange<TNode>(IEnumerable<TNode> list)
+            where TNode : SyntaxNode
+        {
+            EnsureAdditionalCapacity(list.Count());
+
+            foreach (var item in list)
+                AddUnsafe(item);
 
             return this;
         }

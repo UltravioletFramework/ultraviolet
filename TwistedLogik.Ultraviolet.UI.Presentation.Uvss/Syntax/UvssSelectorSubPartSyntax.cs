@@ -42,17 +42,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The sub-part's leading qualifier.
+        /// Gets the sub-part's leading qualifier.
         /// </summary>
         public SyntaxToken LeadingQualifierToken { get; internal set; }
 
         /// <summary>
-        /// The sub-part's text.
+        /// Gets the sub-part's text.
         /// </summary>
         public SyntaxToken TextToken { get; internal set; }
 
         /// <summary>
-        /// The sub-part's trailing qualifier.
+        /// Gets the sub-part's trailing qualifier.
         /// </summary>
         public SyntaxToken TrailingQualifierToken { get; internal set; }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
@@ -10,13 +11,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssDocumentSyntax"/> class.
         /// </summary>
-        public UvssDocumentSyntax(
-            SyntaxList<SyntaxNode> ruleSetAndStoryboardList,
+        internal UvssDocumentSyntax(
+            SyntaxList<SyntaxNode> content,
             SyntaxToken endOfFileToken)
             : base(SyntaxKind.UvssDocument)
         {
-            this.RuleSetAndStoryboardList = ruleSetAndStoryboardList;
-            ChangeParent(ruleSetAndStoryboardList.Node);
+            this.Content = content;
+            ChangeParent(content.Node);
 
             this.EndOfFileToken = endOfFileToken;
             ChangeParent(endOfFileToken);
@@ -29,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
-                case 0: return RuleSetAndStoryboardList.Node;
+                case 0: return Content.Node;
                 case 1: return EndOfFileToken;
                 default:
                     throw new InvalidOperationException();
@@ -37,12 +38,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The document's list of rule sets and storyboards.
+        /// Gets the document's content.
         /// </summary>
-        public SyntaxList<SyntaxNode> RuleSetAndStoryboardList { get; internal set; }
+        public SyntaxList<SyntaxNode> Content { get; internal set; }
 
         /// <summary>
-        /// The document's end-of-file token.
+        /// Gets a collection of the document's rule sets.
+        /// </summary>
+        public IEnumerable<UvssRuleSetSyntax> RuleSets
+        {
+            get
+            {
+                for (int i = 0; i < Content.Count; i++)
+                {
+                    var ruleSet = Content[i] as UvssRuleSetSyntax;
+                    if (ruleSet != null)
+                        yield return ruleSet;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a collection of the document's storyboards.
+        /// </summary>
+        public IEnumerable<UvssStoryboardSyntax> Storyboards
+        {
+            get
+            {
+                for (int i = 0; i < Content.Count; i++)
+                {
+                    var storyboard = Content[i] as UvssStoryboardSyntax;
+                    if (storyboard != null)
+                        yield return storyboard;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the document's end-of-file token.
         /// </summary>
         public SyntaxToken EndOfFileToken { get; internal set; }
 

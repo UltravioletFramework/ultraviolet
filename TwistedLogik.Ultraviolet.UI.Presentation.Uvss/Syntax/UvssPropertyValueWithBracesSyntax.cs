@@ -42,19 +42,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The value's opening curly brace.
+        /// Gets the value's opening curly brace.
         /// </summary>
         public SyntaxToken OpenCurlyBrace { get; internal set; }
 
         /// <summary>
-        /// The value's content.
+        /// Gets the value's content token.
         /// </summary>
         public SyntaxToken ContentToken { get; internal set; }
 
         /// <summary>
-        /// The value's closing curly brace.
+        /// Gets the value's closing curly brace.
         /// </summary>
         public SyntaxToken CloseCurlyBrace { get; internal set; }
+
+        /// <inheritdoc/>
+        public override String Value
+        {
+            get { return ContentToken?.Text; }
+        }
 
         /// <inheritdoc/>
         internal override SyntaxNode Accept(SyntaxVisitor visitor)

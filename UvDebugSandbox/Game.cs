@@ -83,18 +83,14 @@ namespace UvDebugSandbox
                         }))
                     }), 
                     SyntaxFactory.Block(SyntaxFactory.List(new SyntaxNode[] {
-                        SyntaxFactory.Token(SyntaxKind.IdentifierToken, "foobarbaz!!!",
-                            SyntaxFactory.Comment("// Hello, world!!!!!!!"),
-                            null
-                        ),
                         SyntaxFactory.PropertyTrigger(
                             SyntaxFactory.SeparatedList(new[] {
-                                SyntaxFactory.PropertyTriggerEvaluation(
+                                SyntaxFactory.PropertyTriggerCondition(
                                     SyntaxFactory.PropertyName("foo"),
                                     SyntaxFactory.EqualsComparison(),
                                     SyntaxFactory.PropertyValueWithBraces("bar")
                                 ),
-                                SyntaxFactory.PropertyTriggerEvaluation(
+                                SyntaxFactory.PropertyTriggerCondition(
                                     SyntaxFactory.PropertyName("urgk"),
                                     SyntaxFactory.NotEqualsComparison(),
                                     SyntaxFactory.PropertyValueWithBraces("barf")
@@ -111,7 +107,7 @@ namespace UvDebugSandbox
                                 ),
                                 SyntaxFactory.PlaySfxTriggerAction(
                                     SyntaxFactory.PropertyValueWithBraces("hello-world")
-                                ),
+                                ).WithLeadingTrivia(SyntaxFactory.Comment("// this is a comment!!")),
                                 SyntaxFactory.SetTriggerAction(
                                     SyntaxFactory.PropertyName("foo", "bar"),
                                     SyntaxFactory.SelectorWithParentheses(

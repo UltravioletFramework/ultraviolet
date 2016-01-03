@@ -47,22 +47,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The at sign token that marks the declaration as a storyboard.
+        /// Gets the at sign token that marks the declaration as a storyboard.
         /// </summary>
         public SyntaxToken AtSignToken { get; internal set; }
 
         /// <summary>
-        /// The storyboard's name.
+        /// Gets the storyboard's name.
         /// </summary>
         public SyntaxToken NameToken { get; internal set; }
 
         /// <summary>
-        /// The storyboard's loop value.
+        /// Gets the storyboard's loop value.
         /// </summary>
         public SyntaxToken LoopToken { get; internal set; }
 
         /// <summary>
-        /// The storyboard's body.
+        /// Gets the storyboard's body.
         /// </summary>
         public UvssBlockSyntax Body { get; internal set; }
 

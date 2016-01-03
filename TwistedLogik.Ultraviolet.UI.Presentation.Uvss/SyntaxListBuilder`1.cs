@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -99,6 +100,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="length">The number of items to add to the list.</param>
         public void AddRange(SyntaxList<TNode> list, Int32 offset, Int32 length) =>
             builder.AddRange(list, offset, length);
+
+        /// <summary>
+        /// Adds the specified collection of items to the end of the list.
+        /// </summary>
+        /// <param name="list">A collection containing the items to add to this list.</param>
+        /// <returns>A reference to this instance.</returns>
+        public void AddRange(IEnumerable<TNode> list) =>
+            builder.AddRange(list);
 
         /// <summary>
         /// Creates a <see cref="SyntaxNode"/> which represents the builder's list.

@@ -42,17 +42,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The open curly brace that introduces the block.
+        /// Gets the open curly brace that introduces the block.
         /// </summary>
         public SyntaxToken OpenCurlyBraceToken { get; internal set; }
 
         /// <summary>
-        /// The list of nodes that make up the block's content.
+        /// Gets the list of nodes that make up the block's content.
         /// </summary>
         public SyntaxList<SyntaxNode> Content { get; internal set; }
 
         /// <summary>
-        /// The close curly brace that terminates the block.
+        /// Gets the close curly brace that terminates the block.
         /// </summary>
         public SyntaxToken CloseCurlyBraceToken { get; internal set; }
 

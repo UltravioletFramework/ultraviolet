@@ -184,8 +184,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var unchanged = true;
 
-            var newRuleSetList = VisitList(node.RuleSetAndStoryboardList);
-            if (newRuleSetList.Node != node.RuleSetAndStoryboardList.Node)
+            var newContent = VisitList(node.Content);
+            if (newContent.Node != node.Content.Node)
                 unchanged = false;
 
             var newEndOfFileToken = (SyntaxToken)Visit(node.EndOfFileToken);
@@ -193,7 +193,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 unchanged = false;
 
             return unchanged ? node : new UvssDocumentSyntax(
-                newRuleSetList,
+                newContent,
                 newEndOfFileToken);
         }
 
@@ -386,8 +386,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newPropertyKeyword != node.PropertyKeyword)
                 unchanged = false;
 
-            var newConditionList = VisitSeparatedList(node.ConditionList);
-            if (newConditionList.Node != node.ConditionList.Node)
+            var newConditionList = VisitSeparatedList(node.Conditions);
+            if (newConditionList.Node != node.Conditions.Node)
                 unchanged = false;
 
             var newQualifierToken = (SyntaxToken)Visit(node.QualifierToken);
@@ -419,8 +419,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newComparisonOperatorToken != node.ComparisonOperatorToken)
                 unchanged = false;
 
-            var newValue = (UvssPropertyValueWithBracesSyntax)Visit(node.Value);
-            if (newValue != node.Value)
+            var newValue = (UvssPropertyValueWithBracesSyntax)Visit(node.PropertyValue);
+            if (newValue != node.PropertyValue)
                 unchanged = false;
 
             return unchanged ? node : new UvssPropertyTriggerConditionSyntax(
@@ -521,8 +521,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var unchanged = true;
 
-            var newSelectorList = VisitSeparatedList(node.SelectorList);
-            if (newSelectorList.Node != node.SelectorList.Node)
+            var newSelectorList = VisitSeparatedList(node.Selectors);
+            if (newSelectorList.Node != node.Selectors.Node)
                 unchanged = false;
 
             var newBody = (UvssBlockSyntax)Visit(node.Body);
@@ -539,12 +539,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var unchanged = true;
 
-            var newPartsAndCombinatorsList = VisitList(node.PartsAndCombinatorsList);
-            if (newPartsAndCombinatorsList.Node != node.PartsAndCombinatorsList.Node)
+            var newComponents = VisitList(node.Components);
+            if (newComponents.Node != node.Components.Node)
                 unchanged = false;
 
             return unchanged ? node : new UvssSelectorSyntax(
-                newPartsAndCombinatorsList);
+                newComponents);
         }
 
         /// <inheritdoc/>
@@ -552,8 +552,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var unchanged = true;
 
-            var newSubPartsList = VisitList(node.SubPartsList);
-            if (newSubPartsList.Node != node.SubPartsList.Node)
+            var newSubPartsList = VisitList(node.SubParts);
+            if (newSubPartsList.Node != node.SubParts.Node)
                 unchanged = false;
 
             var newPseudoClass = (UvssPseudoClassSyntax)Visit(node.PseudoClass);
@@ -742,8 +742,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newOpenParenToken != node.OpenParenToken)
                 unchanged = false;
 
-            var newArgumentList = VisitSeparatedList(node.ArgumentList);
-            if (newArgumentList.Node != node.ArgumentList.Node)
+            var newArguments = VisitSeparatedList(node.Arguments);
+            if (newArguments.Node != node.Arguments.Node)
                 unchanged = false;
 
             var newCloseParenToken = (SyntaxToken)Visit(node.CloseParenToken);
@@ -752,7 +752,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             return unchanged ? node : new UvssTransitionArgumentListSyntax(
                 newOpenParenToken,
-                newArgumentList,
+                newArguments,
                 newCloseParenToken);
         }
     }

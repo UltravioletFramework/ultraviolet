@@ -42,17 +42,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The name of the type which owns the attached property, if this name describes an attached property.
+        /// Gets the name of the type which owns the attached property, if this name describes an attached property.
         /// </summary>
         public SyntaxToken AttachedPropertyOwnerNameToken { get; internal set; }
 
         /// <summary>
-        /// The period that separates the owner type from the property name.
+        /// Gets the period that separates the owner type from the property name.
         /// </summary>
         public SyntaxToken PeriodToken { get; internal set; }
 
         /// <summary>
-        /// The name of the property.
+        /// Gets the name of the property.
         /// </summary>
         public SyntaxToken PropertyNameToken { get; internal set; }
 

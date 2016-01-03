@@ -47,22 +47,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
-        /// The "animation" keyword which begins the declaration.
+        /// Gets the "animation" keyword which begins the declaration.
         /// </summary>
         public SyntaxToken AnimationKeyword { get; internal set; }
 
         /// <summary>
-        /// The name of the animated property.
+        /// Gets the name of the animated property.
         /// </summary>
         public UvssPropertyNameSyntax PropertyName { get; internal set; }
 
         /// <summary>
-        /// The navigation expression for the animated property.
+        /// Gets the navigation expression for the animated property.
         /// </summary>
         public UvssNavigationExpressionSyntax NavigationExpression { get; internal set; }
         
         /// <summary>
-        /// The animation's body block.
+        /// Gets the animation's body block.
         /// </summary>
         public UvssBlockSyntax Body { get; internal set; }
 
