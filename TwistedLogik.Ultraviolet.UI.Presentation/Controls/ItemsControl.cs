@@ -290,9 +290,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             itemContainers.Clear();
 
-            foreach (var item in Items)
+            for (int i = 0; i < Items.Count; i++)
             {
-                AddItemContainer(item);
+                AddItemContainer(i, Items[i]);
             }
 
             OnItemsChanged();
@@ -307,7 +307,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="item">The item that was added to the collection.</param>
         private void ItemsCollectionItemAdded(INotifyCollectionChanged collection, Int32? index, Object item)
         {
-            var container = AddItemContainer(item);
+            var container = AddItemContainer(index.GetValueOrDefault(), item);
             OnItemsChanged();
             OnItemAdded(container, item);
         }
@@ -332,9 +332,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Adds an item container to this control for the specified item.
         /// </summary>
+        /// <param name="index">The index of the item being added.</param>
         /// <param name="item">The item for which to add an item container.</param>
         /// <returns>The item container that was added.</returns>
-        private DependencyObject AddItemContainer(Object item)
+        private DependencyObject AddItemContainer(Int32 index, Object item)
         {
             if (ItemsPanelElement == null)
                 return null;
@@ -351,12 +352,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             itemContainerGenerator.AssociateContainerWithItem(container, item);
-            itemContainers.Add(container);
+            itemContainers.Insert(index, container);
 
             var containerElement = container as UIElement;
             if (containerElement != null)
             {
-                ItemsPanelElement.Children.Add(containerElement);
+                ItemsPanelElement.Children.Insert(index, containerElement);
                 containerElement.ChangeLogicalParent(this);
             }
 
