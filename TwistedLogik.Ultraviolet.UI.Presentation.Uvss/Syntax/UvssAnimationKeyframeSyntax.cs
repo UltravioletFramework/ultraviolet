@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         internal UvssAnimationKeyframeSyntax(
             SyntaxToken keyframeKeyword,
             SyntaxToken timeToken,
-            SyntaxToken easingToken,
+            UvssIdentifierBaseSyntax easingIdentifier,
             UvssPropertyValueWithBracesSyntax value)
             : base(SyntaxKind.AnimationKeyframe)
         {
@@ -23,8 +23,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             this.TimeToken = timeToken;
             ChangeParent(timeToken);
 
-            this.EasingToken = easingToken;
-            ChangeParent(easingToken);
+            this.EasingIdentifier = easingIdentifier;
+            ChangeParent(easingIdentifier);
 
             this.Value = value;
             ChangeParent(value);
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             {
                 case 0: return KeyframeKeyword;
                 case 1: return TimeToken;
-                case 2: return EasingToken;
+                case 2: return EasingIdentifier;
                 case 3: return Value;
                 default:
                     throw new InvalidOperationException();
@@ -57,9 +57,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         public SyntaxToken TimeToken { get; internal set; }
 
         /// <summary>
-        /// Gets the keyframe easing token.
+        /// Gets the keyframe easing identifier.
         /// </summary>
-        public SyntaxToken EasingToken { get; internal set; }
+        public UvssIdentifierBaseSyntax EasingIdentifier { get; internal set; }
 
         /// <summary>
         /// The keyframe value.

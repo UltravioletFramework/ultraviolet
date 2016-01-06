@@ -12,14 +12,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// </summary>
         internal UvssPseudoClassSyntax(
             SyntaxToken colonToken,
-            SyntaxToken classNameToken)
+            UvssIdentifierBaseSyntax classNameIdentifier)
             : base(SyntaxKind.PseudoClass)
         {
             this.ColonToken = colonToken;
             ChangeParent(colonToken);
 
-            this.ClassNameToken = classNameToken;
-            ChangeParent(classNameToken);
+            this.ClassNameIdentifier = classNameIdentifier;
+            ChangeParent(classNameIdentifier);
 
             SlotCount = 2;
         }
@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return ColonToken;
-                case 1: return ClassNameToken;
+                case 1: return ClassNameIdentifier;
                 default:
                     return null;
             }
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the pseudo-class' name identifier.
         /// </summary>
-        public SyntaxToken ClassNameToken { get; internal set; }
+        public UvssIdentifierBaseSyntax ClassNameIdentifier { get; internal set; }
 
         /// <inheritdoc/>
         internal override SyntaxNode Accept(SyntaxVisitor visitor)

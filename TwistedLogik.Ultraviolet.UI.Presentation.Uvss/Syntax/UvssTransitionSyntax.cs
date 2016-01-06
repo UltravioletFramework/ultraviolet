@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             SyntaxToken transitionKeyword,
             UvssTransitionArgumentListSyntax argumentList,
             SyntaxToken colonToken,
-            SyntaxToken storyboardNameToken,
+            UvssIdentifierBaseSyntax storyboardNameIdentifier,
             SyntaxToken qualifierToken,
             SyntaxToken semiColonToken)
             : base(SyntaxKind.Transition)
@@ -28,8 +28,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             this.ColonToken = colonToken;
             ChangeParent(colonToken);
 
-            this.StoryboardNameToken = storyboardNameToken;
-            ChangeParent(storyboardNameToken);
+            this.StoryboardNameIdentifier = storyboardNameIdentifier;
+            ChangeParent(storyboardNameIdentifier);
 
             this.QualifierToken = qualifierToken;
             ChangeParent(qualifierToken);
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
                 case 0: return TransitionKeyword;
                 case 1: return ArgumentList;
                 case 2: return ColonToken;
-                case 3: return StoryboardNameToken;
+                case 3: return StoryboardNameIdentifier;
                 case 4: return QualifierToken;
                 case 5: return SemiColonToken;
                 default:
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the storyboard name that is associated with the transition.
         /// </summary>
-        public SyntaxToken StoryboardNameToken { get; internal set; }
+        public UvssIdentifierBaseSyntax StoryboardNameIdentifier { get; internal set; }
 
         /// <summary>
         /// Gets the transition's qualifier token.

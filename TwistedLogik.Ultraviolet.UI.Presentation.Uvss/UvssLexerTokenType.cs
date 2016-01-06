@@ -96,6 +96,16 @@
         CloseCurlyBrace,
 
         /// <summary>
+        /// The token contains an open bracket.
+        /// </summary>
+        OpenBracket,
+
+        /// <summary>
+        /// The token contains a close bracket.
+        /// </summary>
+        CloseBracket,
+
+        /// <summary>
         /// The token contains a universal selector (*).
         /// </summary>
         UniversalSelector,

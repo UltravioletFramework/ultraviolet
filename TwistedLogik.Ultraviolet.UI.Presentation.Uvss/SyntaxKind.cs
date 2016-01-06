@@ -161,6 +161,16 @@
         CloseCurlyBraceToken,
 
         /// <summary>
+        /// An open bracket ("[") token.
+        /// </summary>
+        OpenBracketToken,
+
+        /// <summary>
+        /// A close bracket ("]") token.
+        /// </summary>
+        CloseBracketToken,
+
+        /// <summary>
         /// An asterisk ("*") token.
         /// </summary>
         AsteriskToken,
@@ -363,6 +373,16 @@
         /// <summary>
         /// A document root node.
         /// </summary>
-        UvssDocument,
+        Document,
+
+        /// <summary>
+        /// An identifier node.
+        /// </summary>
+        Identifier,
+
+        /// <summary>
+        /// An escaped identifier node.
+        /// </summary>
+        EscapedIdentifier,
     }
 }

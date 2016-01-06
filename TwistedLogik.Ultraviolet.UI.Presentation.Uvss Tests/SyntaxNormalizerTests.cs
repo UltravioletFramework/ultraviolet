@@ -415,13 +415,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         public void SyntaxNormalizer_EventTrigger_IsCorrectlyNormalized()
         {
             var node = EventTrigger(
-                EventName("some", "event"),
+                EventName("some", "evt"),
                 EventTriggerArgumentList(true, true),
                 Block()
             );
 
             TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(
-                "trigger event some.event (handled, set-handled)\r\n" +
+                "trigger event some.evt (handled, set-handled)\r\n" +
                 "{\r\n" +
                 "}");
         }
@@ -431,7 +431,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         {
             var node = Block(
                 EventTrigger(
-                    EventName("some", "event"),
+                    EventName("some", "evt"),
                     EventTriggerArgumentList(true, true),
                     Block()
                 ),
@@ -440,7 +440,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 
             TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(
                 "{\r\n" +
-                    "\ttrigger event some.event (handled, set-handled)\r\n" +
+                    "\ttrigger event some.evt (handled, set-handled)\r\n" +
                     "\t{\r\n" +
                     "\t}\r\n" +
                     "\tprop: value;\r\n" +
@@ -707,6 +707,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                     "\tkeyframe 0 { somevalue }\r\n" + 
                     "\tkeyframe 100 { somevalue }\r\n" +
                 "}");
+        }
+
+        [TestMethod]
+        public void SyntaxNormalizer_EscapedKeyword_IsCorrectlyNormalized()
+        {
+            var node = Rule(
+                PropertyName("target", "animation"),
+                PropertyValue("hello world")
+            );
+
+            TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(
+                "[target].[animation]: hello world;");
         }
     }
 }

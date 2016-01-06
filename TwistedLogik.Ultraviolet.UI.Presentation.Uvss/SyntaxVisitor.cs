@@ -346,6 +346,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public virtual SyntaxNode VisitTransition(UvssTransitionSyntax node)
         {
             return VisitSyntaxNode(node);
-        }        
+        }
+
+        /// <summary>
+        /// Visits the specified identifier node.
+        /// </summary>
+        /// <param name="node">The node to visit.</param>
+        /// <returns>A node which should replace the visited node, or a reference to the visited node
+        /// itself if no changes were made.</returns>
+        public virtual SyntaxNode VisitIdentifier(UvssIdentifierSyntax node)
+        {
+            return VisitSyntaxNode(node);
+        }
+
+        /// <summary>
+        /// Visits the specified escaped identifier node.
+        /// </summary>
+        /// <param name="node">The node to visit.</param>
+        /// <returns>A node which should replace the visited node, or a reference to the visited node
+        /// itself if no changes were made.</returns>
+        public virtual SyntaxNode VisitEscapedIdentifier(UvssEscapedIdentifierSyntax node)
+        {
+            return VisitSyntaxNode(node);
+        }
     }
 }

@@ -12,15 +12,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// </summary>
         internal UvssSelectorSubPartSyntax(
             SyntaxToken leadingQualifierToken,
-            SyntaxToken textToken,
+            UvssIdentifierBaseSyntax subPartIdentifier,
             SyntaxToken trailingQualifierToken)
             : base(SyntaxKind.SelectorSubPart)
         {
             this.LeadingQualifierToken = leadingQualifierToken;
             ChangeParent(leadingQualifierToken);
 
-            this.TextToken = textToken;
-            ChangeParent(textToken);
+            this.SubPartIdentifier = subPartIdentifier;
+            ChangeParent(subPartIdentifier);
 
             this.TrailingQualifierToken = trailingQualifierToken;
             ChangeParent(trailingQualifierToken);
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return LeadingQualifierToken;
-                case 1: return TextToken;
+                case 1: return SubPartIdentifier;
                 case 2: return TrailingQualifierToken;
                 default:
                     throw new InvalidOperationException();
@@ -47,9 +47,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         public SyntaxToken LeadingQualifierToken { get; internal set; }
 
         /// <summary>
-        /// Gets the sub-part's text.
+        /// Gets the sub-part's identifier.
         /// </summary>
-        public SyntaxToken TextToken { get; internal set; }
+        public UvssIdentifierBaseSyntax SubPartIdentifier { get; internal set; }
 
         /// <summary>
         /// Gets the sub-part's trailing qualifier.

@@ -12,19 +12,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// </summary>
         internal UvssStoryboardSyntax(
             SyntaxToken atSignToken,
-            SyntaxToken nameToken,
-            SyntaxToken loopToken,
+            UvssIdentifierBaseSyntax nameIdentifier,
+            UvssIdentifierBaseSyntax loopIdentifier,
             UvssBlockSyntax body)
             : base(SyntaxKind.Storyboard)
         {
             this.AtSignToken = atSignToken;
             ChangeParent(atSignToken);
 
-            this.NameToken = nameToken;
-            ChangeParent(nameToken);
+            this.NameIdentifier = nameIdentifier;
+            ChangeParent(nameIdentifier);
 
-            this.LoopToken = loopToken;
-            ChangeParent(loopToken);
+            this.LoopIdentifier = loopIdentifier;
+            ChangeParent(loopIdentifier);
 
             this.Body = body;
             ChangeParent(body);
@@ -38,8 +38,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return AtSignToken;
-                case 1: return NameToken;
-                case 2: return LoopToken;
+                case 1: return NameIdentifier;
+                case 2: return LoopIdentifier;
                 case 3: return Body;
                 default:
                     throw new InvalidOperationException();
@@ -54,12 +54,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the storyboard's name.
         /// </summary>
-        public SyntaxToken NameToken { get; internal set; }
+        public UvssIdentifierBaseSyntax NameIdentifier { get; internal set; }
 
         /// <summary>
         /// Gets the storyboard's loop value.
         /// </summary>
-        public SyntaxToken LoopToken { get; internal set; }
+        public UvssIdentifierBaseSyntax LoopIdentifier { get; internal set; }
 
         /// <summary>
         /// Gets the storyboard's body.

@@ -141,8 +141,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newTimeToken != node.TimeToken)
                 unchanged = false;
 
-            var newEasingToken = (SyntaxToken)Visit(node.EasingToken);
-            if (newEasingToken != node.EasingToken)
+            var newEasingIdentifier = (UvssIdentifierBaseSyntax)Visit(node.EasingIdentifier);
+            if (newEasingIdentifier != node.EasingIdentifier)
                 unchanged = false;
 
             var newValue = (UvssPropertyValueWithBracesSyntax)Visit(node.Value);
@@ -152,7 +152,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return unchanged ? node : new UvssAnimationKeyframeSyntax(
                 newKeyframeKeyword,
                 newTimeToken,
-                newEasingToken,
+                newEasingIdentifier,
                 newValue);
         }
 
@@ -202,22 +202,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var unchanged = true;
 
-            var newAttachedEventOwnerNameToken = ((SyntaxToken)Visit(node.AttachedEventOwnerNameToken));
-            if (newAttachedEventOwnerNameToken != node.AttachedEventOwnerNameToken)
+            var newAttachedEventOwnerNameIdentifier = ((UvssIdentifierBaseSyntax)Visit(node.AttachedEventOwnerNameIdentifier));
+            if (newAttachedEventOwnerNameIdentifier != node.AttachedEventOwnerNameIdentifier)
                 unchanged = false;
 
             var newPeriodToken = (SyntaxToken)Visit(node.PeriodToken);
             if (newPeriodToken != node.PeriodToken)
                 unchanged = false;
 
-            var newEventNameToken = (SyntaxToken)Visit(node.EventNameToken);
-            if (newEventNameToken != node.EventNameToken)
+            var newEventNameIdentifier = (UvssIdentifierBaseSyntax)Visit(node.EventNameIdentifier);
+            if (newEventNameIdentifier != node.EventNameIdentifier)
                 unchanged = false;
 
             return unchanged ? node : new UvssEventNameSyntax(
-                newAttachedEventOwnerNameToken,
+                newAttachedEventOwnerNameIdentifier,
                 newPeriodToken,
-                newEventNameToken);
+                newEventNameIdentifier);
         }
 
         /// <inheritdoc/>
@@ -298,15 +298,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newAsKeyword != node.AsKeyword)
                 unchanged = false;
 
-            var newTypeNameToken = (SyntaxToken)Visit(node.TypeNameToken);
-            if (newTypeNameToken != node.TypeNameToken)
+            var newTypeNameIdentifier = (UvssIdentifierBaseSyntax)Visit(node.TypeNameIdentifier);
+            if (newTypeNameIdentifier != node.TypeNameIdentifier)
                 unchanged = false;
 
             return unchanged ? node : new UvssNavigationExpressionSyntax(
                 newPipeToken,
                 newPropertyName,
                 newAsKeyword,
-                newTypeNameToken);
+                newTypeNameIdentifier);
         }
 
         /// <inheritdoc/>
@@ -355,22 +355,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var unchanged = true;
 
-            var newAttachedPropertyOwnerNameToken = (SyntaxToken)Visit(node.AttachedPropertyOwnerNameToken);
-            if (newAttachedPropertyOwnerNameToken != node.AttachedPropertyOwnerNameToken)
+            var newAttachedPropertyOwnerNameIdentifier = (UvssIdentifierBaseSyntax)Visit(node.AttachedPropertyOwnerNameIdentifier);
+            if (newAttachedPropertyOwnerNameIdentifier != node.AttachedPropertyOwnerNameIdentifier)
                 unchanged = false;
 
             var newPeriodToken = (SyntaxToken)Visit(node.PeriodToken);
             if (newPeriodToken != node.PeriodToken)
                 unchanged = false;
 
-            var newPropertyNameToken = (SyntaxToken)Visit(node.PropertyNameToken);
-            if (newPropertyNameToken != node.PropertyNameToken)
+            var newPropertyNameIdentifier = (UvssIdentifierBaseSyntax)Visit(node.PropertyNameIdentifier);
+            if (newPropertyNameIdentifier != node.PropertyNameIdentifier)
                 unchanged = false;
 
             return unchanged ? node : new UvssPropertyNameSyntax(
-                newAttachedPropertyOwnerNameToken,
+                newAttachedPropertyOwnerNameIdentifier,
                 newPeriodToken,
-                newPropertyNameToken);
+                newPropertyNameIdentifier);
         }
 
         /// <inheritdoc/>
@@ -474,13 +474,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newColonToken != node.ColonToken)
                 unchanged = false;
 
-            var newClassNameToken = (SyntaxToken)Visit(node.ClassNameToken);
-            if (newClassNameToken != node.ClassNameToken)
+            var newClassNameIdentifier = (UvssIdentifierBaseSyntax)Visit(node.ClassNameIdentifier);
+            if (newClassNameIdentifier != node.ClassNameIdentifier)
                 unchanged = false;
 
             return unchanged ? node : new UvssPseudoClassSyntax(
                 newColonToken,
-                newClassNameToken);
+                newClassNameIdentifier);
         }
 
         /// <inheritdoc/>
@@ -579,8 +579,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newLeadingQualifierToken != node.LeadingQualifierToken)
                 unchanged = false;
 
-            var newTextToken = (SyntaxToken)Visit(node.TextToken);
-            if (newTextToken != node.TextToken)
+            var newIdentifier = (UvssIdentifierBaseSyntax)Visit(node.SubPartIdentifier);
+            if (newIdentifier != node.SubPartIdentifier)
                 unchanged = false;
 
             var newTrailingQualifierToken = (SyntaxToken)Visit(node.TrailingQualifierToken);
@@ -589,7 +589,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             return unchanged ? node : new UvssSelectorSubPartSyntax(
                 newLeadingQualifierToken,
-                newTextToken,
+                newIdentifier,
                 newTrailingQualifierToken);
         }
 
@@ -653,12 +653,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newAtSignToken != node.AtSignToken)
                 unchanged = false;
 
-            var newNameToken = (SyntaxToken)Visit(node.NameToken);
-            if (newNameToken != node.NameToken)
+            var newNameIdentifier = (UvssIdentifierBaseSyntax)Visit(node.NameIdentifier);
+            if (newNameIdentifier != node.NameIdentifier)
                 unchanged = false;
 
-            var newLoopToken = (SyntaxToken)Visit(node.LoopToken);
-            if (newLoopToken != node.LoopToken)
+            var newLoopIdentifier = (UvssIdentifierBaseSyntax)Visit(node.LoopIdentifier);
+            if (newLoopIdentifier != node.LoopIdentifier)
                 unchanged = false;
 
             var newBody = (UvssBlockSyntax)Visit(node.Body);
@@ -667,8 +667,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             return unchanged ? node : new UvssStoryboardSyntax(
                 newAtSignToken,
-                newNameToken,
-                newLoopToken,
+                newNameIdentifier,
+                newLoopIdentifier,
                 newBody);
         }
 
@@ -681,8 +681,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newTargetKeyword != node.TargetKeyword)
                 unchanged = false;
 
-            var newTypeNameToken = (SyntaxToken)Visit(node.TypeNameToken);
-            if (newTypeNameToken != node.TypeNameToken)
+            var newTypeNameIdentifier = (UvssIdentifierBaseSyntax)Visit(node.TypeNameIdentifier);
+            if (newTypeNameIdentifier != node.TypeNameIdentifier)
                 unchanged = false;
 
             var newSelector = (UvssSelectorWithParenthesesSyntax)Visit(node.Selector);
@@ -695,7 +695,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             return unchanged ? node : new UvssStoryboardTargetSyntax(
                 newTargetKeyword,
-                newTypeNameToken,
+                newTypeNameIdentifier,
                 newSelector,
                 newBody);
         }
@@ -717,8 +717,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newColonToken != node.ColonToken)
                 unchanged = false;
 
-            var newStoryboardNameToken = (SyntaxToken)Visit(node.StoryboardNameToken);
-            if (newStoryboardNameToken != node.StoryboardNameToken)
+            var newStoryboardNameIdentifier = (UvssIdentifierBaseSyntax)Visit(node.StoryboardNameIdentifier);
+            if (newStoryboardNameIdentifier != node.StoryboardNameIdentifier)
                 unchanged = false;
 
             var newQualifierToken = (SyntaxToken)Visit(node.QualifierToken);
@@ -733,7 +733,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 newTransitionKeyword,
                 newArgumentList,
                 newColonToken,
-                newStoryboardNameToken,
+                newStoryboardNameIdentifier,
                 newQualifierToken,
                 newSemiColonToken);
         }
@@ -759,6 +759,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 newOpenParenToken,
                 newArguments,
                 newCloseParenToken);
+        }
+
+        /// <inheritdoc/>
+        public override SyntaxNode VisitIdentifier(UvssIdentifierSyntax node)
+        {
+            var unchanged = true;
+
+            var newIdentifierToken = (SyntaxToken)Visit(node.IdentifierToken);
+            if (newIdentifierToken != node.IdentifierToken)
+                unchanged = false;
+
+            return unchanged ? node : new UvssIdentifierSyntax(
+                newIdentifierToken);
+        }
+
+        /// <inheritdoc/>
+        public override SyntaxNode VisitEscapedIdentifier(UvssEscapedIdentifierSyntax node)
+        {
+            var unchanged = true;
+
+            var newOpenBracketToken = (SyntaxToken)Visit(node.OpenBracketToken);
+            if (newOpenBracketToken != node.OpenBracketToken)
+                unchanged = false;
+
+            var newIdentifierToken = (SyntaxToken)Visit(node.IdentifierToken);
+            if (newIdentifierToken != node.IdentifierToken)
+                unchanged = false;
+
+            var newCloseBracketToken = (SyntaxToken)Visit(node.CloseBracketToken);
+            if (newCloseBracketToken != node.CloseBracketToken)
+                unchanged = false;
+
+            return unchanged ? node : new UvssEscapedIdentifierSyntax(
+                newOpenBracketToken,
+                newIdentifierToken,
+                newCloseBracketToken);
         }
     }
 }

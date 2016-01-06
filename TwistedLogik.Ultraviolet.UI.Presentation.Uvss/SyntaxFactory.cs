@@ -35,16 +35,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
-        /// Creates a new identifier token.
-        /// </summary>
-        /// <param name="text">The identifier text.</param>
-        /// <returns>The <see cref="SyntaxToken"/> instance that was created.</returns>
-        public static SyntaxToken Identifier(String text)
-        {
-            return new UvssIdentifier(text, null, null);
-        }
-
-        /// <summary>
         /// Creates a new number token.
         /// </summary>
         /// <param name="value">The numeric value of the token.</param>
@@ -776,7 +766,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return SelectorSubPart(
                 null,
-                new UvssPunctuation(SyntaxKind.AsteriskToken),
+                Identifier("*"),
                 null);
         }
 
@@ -790,7 +780,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return SelectorSubPart(
                 new UvssPunctuation(SyntaxKind.HashToken),
-                new UvssIdentifier(selectedName),
+                Identifier(selectedName),
                 null);
         }
 
@@ -804,7 +794,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return SelectorSubPart(
                 new UvssPunctuation(SyntaxKind.PeriodToken),
-                new UvssIdentifier(selectedClass),
+                Identifier(selectedClass),
                 null);
         }
 
@@ -818,7 +808,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return SelectorSubPart(
                 null,
-                new UvssIdentifier(selectedType),
+                Identifier(selectedType),
                 null);
         }
 
@@ -832,7 +822,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return SelectorSubPart(
                 null,
-                new UvssIdentifier(selectedType),
+                Identifier(selectedType),
                 new UvssPunctuation(SyntaxKind.ExclamationMarkToken));
         }
 
@@ -840,17 +830,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Creates a new selector sub-part.
         /// </summary>
         /// <param name="leadingQualifierToken">The sub-part's leading qualifier token.</param>
-        /// <param name="textToken">The sub-part's text token.</param>
+        /// <param name="subPartIdentifier">The sub-part's identifier.</param>
         /// <param name="trailingQualifierToken">The sub-part's trailing qualifier token.</param>
         /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
         public static UvssSelectorSubPartSyntax SelectorSubPart(
             SyntaxToken leadingQualifierToken,
-            SyntaxToken textToken,
+            UvssIdentifierBaseSyntax subPartIdentifier,
             SyntaxToken trailingQualifierToken)
         {
             return new UvssSelectorSubPartSyntax(
                 leadingQualifierToken,
-                textToken,
+                subPartIdentifier,
                 trailingQualifierToken);
         }
 
@@ -862,9 +852,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssPseudoClassSyntax PseudoClass(
             String className)
         {
-            return PseudoClass(
+            return new UvssPseudoClassSyntax(
                 new UvssPunctuation(SyntaxKind.ColonToken),
-                new UvssIdentifier(className)
+                Identifier(className)
             );
         }
 
@@ -872,15 +862,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Creates a new pseudo-class specifier.
         /// </summary>
         /// <param name="colonToken">The colon token that precedes the class name.</param>
-        /// <param name="classNameToken">The identifier token that contains the class name.</param>
+        /// <param name="classNameIdentifier">The identifier that contains the class name.</param>
         /// <returns></returns>
         public static UvssPseudoClassSyntax PseudoClass(
             SyntaxToken colonToken,
-            SyntaxToken classNameToken)
+            UvssIdentifierBaseSyntax classNameIdentifier)
         {
             return new UvssPseudoClassSyntax(
                 colonToken,
-                classNameToken);
+                classNameIdentifier);
         }
 
         /// <summary>
@@ -960,10 +950,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssPropertyNameSyntax PropertyName(
             String propertyName)
         {
-            return PropertyName(
+            return new UvssPropertyNameSyntax(
                 null,
                 null,
-                new UvssIdentifier(propertyName));
+                Identifier(propertyName));
         }
 
         /// <summary>
@@ -976,28 +966,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String attachedPropertyOwnerName,
             String propertyName)
         {
-            return PropertyName(
-                new UvssIdentifier(attachedPropertyOwnerName),
+            return new UvssPropertyNameSyntax(
+                Identifier(attachedPropertyOwnerName),
                 new UvssPunctuation(SyntaxKind.PeriodToken),
-                new UvssIdentifier(propertyName));
+                Identifier(propertyName));
         }
 
         /// <summary>
         /// Creates a new property name.
         /// </summary>
-        /// <param name="attachedPropertyOwnerNameToken">The name of the attached property's owner type.</param>
+        /// <param name="attachedPropertyOwnerNameIdentifier">The name of the attached property's owner type.</param>
         /// <param name="periodToken">The period token that separates the owner name from the property name.</param>
-        /// <param name="propertyNameToken">The name of the property.</param>
+        /// <param name="propertyNameIdentifier">The name of the property.</param>
         /// <returns>The <see cref="UvssPropertyNameSyntax"/> instance that was created.</returns>
         public static UvssPropertyNameSyntax PropertyName(
-            SyntaxToken attachedPropertyOwnerNameToken,
+            UvssIdentifierBaseSyntax attachedPropertyOwnerNameIdentifier,
             SyntaxToken periodToken,
-            SyntaxToken propertyNameToken)
+            UvssIdentifierBaseSyntax propertyNameIdentifier)
         {
             return new UvssPropertyNameSyntax(
-                attachedPropertyOwnerNameToken,
+                attachedPropertyOwnerNameIdentifier,
                 periodToken,
-                propertyNameToken);
+                propertyNameIdentifier);
         }
 
         /// <summary>
@@ -1008,10 +998,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssEventNameSyntax EventName(
             String eventName)
         {
-            return EventName(
+            return new UvssEventNameSyntax(
                 null,
                 null,
-                new UvssIdentifier(eventName));
+                Identifier(eventName));
         }
 
         /// <summary>
@@ -1024,25 +1014,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String attachedEventOwnerName,
             String eventName)
         {
-            return EventName(
-                new UvssIdentifier(attachedEventOwnerName),
+            return new UvssEventNameSyntax(
+                Identifier(attachedEventOwnerName),
                 new UvssPunctuation(SyntaxKind.PeriodToken),
-                new UvssIdentifier(eventName));
+                Identifier(eventName));
         }
 
         /// <summary>
         /// Creates a new event name.
         /// </summary>
-        /// <param name="attachedEventOwnerNameToken">The name of the attached event's owner.</param>
+        /// <param name="attachedEventOwnerNameIdentifier">The name of the attached event's owner.</param>
         /// <param name="periodToken">The period that separates the owner name from the event name.</param>
-        /// <param name="eventNameToken">The event name.</param>
+        /// <param name="eventNameIdentifier">The event name.</param>
         /// <returns>The <see cref="UvssEventNameSyntax"/> instance that was created.</returns>
         public static UvssEventNameSyntax EventName(
-            SyntaxToken attachedEventOwnerNameToken,
+            UvssIdentifierBaseSyntax attachedEventOwnerNameIdentifier,
             SyntaxToken periodToken,
-            SyntaxToken eventNameToken)
+            UvssIdentifierBaseSyntax eventNameIdentifier)
         {
-            return new UvssEventNameSyntax(attachedEventOwnerNameToken, periodToken, eventNameToken);
+            return new UvssEventNameSyntax(
+                attachedEventOwnerNameIdentifier, 
+                periodToken, 
+                eventNameIdentifier);
         }
 
         /// <summary>
@@ -1608,11 +1601,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String storyboardName,
             Boolean important = false)
         {
-            return Transition(
+            return new UvssTransitionSyntax(
                 new UvssKeyword(SyntaxKind.TransitionKeyword),
                 TransitionArgumentList(visualStateGroup, visualStateEnd),
                 new UvssPunctuation(SyntaxKind.ColonToken),
-                new UvssIdentifier(storyboardName),
+                Identifier(storyboardName),
                 important ? new UvssKeyword(SyntaxKind.ImportantKeyword) : null,
                 new UvssPunctuation(SyntaxKind.SemiColonToken));
         }
@@ -1633,11 +1626,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String storyboardName,
             Boolean important = false)
         {
-            return Transition(
+            return new UvssTransitionSyntax(
                 new UvssKeyword(SyntaxKind.TransitionKeyword),
                 TransitionArgumentList(visualStateGroup, visualStateStart, visualStateEnd),
                 new UvssPunctuation(SyntaxKind.ColonToken),
-                new UvssIdentifier(storyboardName),
+                Identifier(storyboardName),
                 important ? new UvssKeyword(SyntaxKind.ImportantKeyword) : null,
                 new UvssPunctuation(SyntaxKind.SemiColonToken));
         }
@@ -1654,11 +1647,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String storyboardName,
             Boolean important = false)
         {
-            return Transition(
+            return new UvssTransitionSyntax(
                 new UvssKeyword(SyntaxKind.TransitionKeyword),
                 argumentList,
                 new UvssPunctuation(SyntaxKind.ColonToken),
-                new UvssIdentifier(storyboardName),
+                Identifier(storyboardName),
                 important ? new UvssKeyword(SyntaxKind.ImportantKeyword) : null,
                 new UvssPunctuation(SyntaxKind.SemiColonToken));
         }
@@ -1669,7 +1662,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="transitionKeyword">The "transition" keyword that introduces the transition.</param>
         /// <param name="argumentList">The transition's argument list.</param>
         /// <param name="colonToken">The colon that separates the transition declaration from its value.</param>
-        /// <param name="storyboardNameToken">The name of the storyboard that is played when the transition is triggered.</param>
+        /// <param name="storyboardNameIdentifier">The name of the storyboard that is played when the transition is triggered.</param>
         /// <param name="qualifierToken">The transition's qualifier token.</param>
         /// <param name="semiColonToken">The semi-colon that terminates the transition.</param>
         /// <returns></returns>
@@ -1677,7 +1670,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             SyntaxToken transitionKeyword,
             UvssTransitionArgumentListSyntax argumentList,
             SyntaxToken colonToken,
-            SyntaxToken storyboardNameToken,
+            UvssIdentifierBaseSyntax storyboardNameIdentifier,
             SyntaxToken qualifierToken,
             SyntaxToken semiColonToken)
         {
@@ -1685,7 +1678,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 transitionKeyword, 
                 argumentList, 
                 colonToken, 
-                storyboardNameToken, 
+                storyboardNameIdentifier, 
                 qualifierToken, 
                 semiColonToken);
         }
@@ -1724,11 +1717,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (visualStateStart != null)
             {
                 builder.AddSeparator(new UvssPunctuation(SyntaxKind.CommaToken));
-                builder.Add(new UvssIdentifier(visualStateStart));
+                builder.Add(Identifier(visualStateStart));
             }
 
             builder.AddSeparator(new UvssPunctuation(SyntaxKind.CommaToken));
-            builder.Add(new UvssIdentifier(visualStateEnd));
+            builder.Add(Identifier(visualStateEnd));
 
             return TransitionArgumentList(
                 new UvssPunctuation(SyntaxKind.OpenParenthesesToken),
@@ -1764,7 +1757,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return new UvssStoryboardSyntax(
                 new UvssPunctuation(SyntaxKind.AtSignToken),
-                new UvssIdentifier(name),
+                Identifier(name),
                 null, 
                 body);
         }
@@ -1776,12 +1769,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="loop">The storyboard's loop specifier.</param>
         /// <param name="body">The storyboard's body.</param>
         /// <returns>The <see cref="UvssStoryboardSyntax"/> instance that was created.</returns>
-        public static UvssStoryboardSyntax Storyboard(String name, String loop, UvssBlockSyntax body)
+        public static UvssStoryboardSyntax Storyboard(
+            String name, 
+            String loop, 
+            UvssBlockSyntax body)
         {
             return new UvssStoryboardSyntax(
                 new UvssPunctuation(SyntaxKind.AtSignToken),
-                new UvssIdentifier(name),
-                new UvssIdentifier(loop),
+                Identifier(name),
+                Identifier(loop),
                 body);
         }
 
@@ -1789,20 +1785,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Creates a new storyboard declaration.
         /// </summary>
         /// <param name="atSignToken">The at sign token that marks the declaration as a storyboard.</param>
-        /// <param name="nameToken">The storyboard's name token.</param>
-        /// <param name="loopToken">The storyboard's loop token.</param>
+        /// <param name="nameIdentifier">The storyboard's name identifier.</param>
+        /// <param name="loopIdentifier">The storyboard's loop identifier.</param>
         /// <param name="body">The storyboard's body.</param>
         /// <returns>The <see cref="UvssStoryboardSyntax"/> instance that was created.</returns>
         public static UvssStoryboardSyntax Storyboard(
             SyntaxToken atSignToken,
-            SyntaxToken nameToken,
-            SyntaxToken loopToken,
+            UvssIdentifierBaseSyntax nameIdentifier,
+            UvssIdentifierBaseSyntax loopIdentifier,
             UvssBlockSyntax body)
         {
             return new UvssStoryboardSyntax(
                 atSignToken, 
-                nameToken, 
-                loopToken, 
+                nameIdentifier, 
+                loopIdentifier, 
                 body);
         }
         
@@ -1833,7 +1829,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return new UvssStoryboardTargetSyntax(
                 new UvssKeyword(SyntaxKind.TargetKeyword),
-                new UvssIdentifier(typeName), 
+                Identifier(typeName), 
                 null, 
                 body);
         }
@@ -1852,7 +1848,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return new UvssStoryboardTargetSyntax(
                 new UvssKeyword(SyntaxKind.TargetKeyword),
-                new UvssIdentifier(typeName), 
+                Identifier(typeName), 
                 selector, 
                 body);
         }
@@ -1861,19 +1857,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Creates a new storyboard target declaration.
         /// </summary>
         /// <param name="targetKeyword">The storyboard target's "target" keyword.</param>
-        /// <param name="typeNameToken">The storyboard target's targeted type name.</param>
+        /// <param name="typeNameIdentifier">The storyboard target's targeted type name.</param>
         /// <param name="selector">The storyboard target's selector.</param>
         /// <param name="body">The storyboard target's body.</param>
         /// <returns>The <see cref="UvssStoryboardTargetSyntax"/> instance that was created.</returns>
         public static UvssStoryboardTargetSyntax StoryboardTarget(
             SyntaxToken targetKeyword,
-            SyntaxToken typeNameToken,
+            UvssIdentifierBaseSyntax typeNameIdentifier,
             UvssSelectorWithParenthesesSyntax selector,
             UvssBlockSyntax body)
         {
             return new UvssStoryboardTargetSyntax(
                 targetKeyword, 
-                typeNameToken, 
+                typeNameIdentifier, 
                 selector, 
                 body);
         }
@@ -1982,7 +1978,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return new UvssAnimationKeyframeSyntax(
                 new UvssKeyword(SyntaxKind.KeyframeKeyword),
                 Number(time),
-                (easing == null) ? null : new UvssIdentifier(easing), 
+                (easing == null) ? null : Identifier(easing), 
                 value);
         }
 
@@ -1991,19 +1987,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         /// <param name="keyframeKeyword">The keyframe's "keyframe" keyword.</param>
         /// <param name="timeToken">The keyframe's time token.</param>
-        /// <param name="easingToken">The keyframe's easing token.</param>
+        /// <param name="easingIdentifier">The keyframe's easing identifier.</param>
         /// <param name="value">The keyframe's property value.</param>
         /// <returns>The <see cref="UvssAnimationKeyframeSyntax"/> instance that was created.</returns>
         public static UvssAnimationKeyframeSyntax AnimationKeyframe(
             SyntaxToken keyframeKeyword,
             SyntaxToken timeToken,
-            SyntaxToken easingToken,
+            UvssIdentifierBaseSyntax easingIdentifier,
             UvssPropertyValueWithBracesSyntax value)
         {
             return new UvssAnimationKeyframeSyntax(
                 keyframeKeyword, 
                 timeToken, 
-                easingToken, 
+                easingIdentifier, 
                 value);
         }
         
@@ -2030,19 +2026,89 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="pipeToken">The pipe token that introduces the navigation expression.</param>
         /// <param name="propertyName">The property name of the navigation target.</param>
         /// <param name="asKeyword">The "as" keyword that introduces the type conversion.</param>
-        /// <param name="typeNameToken">The name of the type which is being converted to by the expression.</param>
+        /// <param name="typeNameIdentifier">The name of the type which is being converted to by the expression.</param>
         /// <returns>The <see cref="UvssNavigationExpressionSyntax"/> instance that was created.</returns>
         public static UvssNavigationExpressionSyntax NavigationExpression(
             SyntaxToken pipeToken,
             UvssPropertyNameSyntax propertyName,
             SyntaxToken asKeyword,
-            SyntaxToken typeNameToken)
+            UvssIdentifierBaseSyntax typeNameIdentifier)
         {
             return new UvssNavigationExpressionSyntax(
                 pipeToken,
                 propertyName, 
                 asKeyword, 
-                typeNameToken);
+                typeNameIdentifier);
+        }
+
+        /// <summary>
+        /// Creates a new identifier.
+        /// </summary>
+        /// <param name="text">The identifier text.</param>
+        /// <returns>The <see cref="UvssIdentifierBaseSyntax"/> instance that was created.</returns>
+        public static UvssIdentifierBaseSyntax Identifier(
+            String text)
+        {
+            if (UvssKeyword.IsKeyword(text))
+            {
+                return EscapedIdentifier(text);
+            }
+            return UnescapedIdentifier(text);
+        }
+
+        /// <summary>
+        /// Creates a new unescaped identifier.
+        /// </summary>
+        /// <param name="text">The identifier text.</param>
+        /// <returns>The <see cref="UvssIdentifierSyntax"/> instance that was created.</returns>
+        public static UvssIdentifierSyntax UnescapedIdentifier(
+            String text)
+        {
+            return new UvssIdentifierSyntax(
+                new SyntaxToken(SyntaxKind.IdentifierToken, text));
+        }
+
+        /// <summary>
+        /// Creates a new unescaped identifier.
+        /// </summary>
+        /// <param name="identifierToken">The identifier token.</param>
+        /// <returns>The <see cref="UvssIdentifierSyntax"/> instance that was created.</returns>
+        public static UvssIdentifierSyntax UnescapedIdentifier(
+            SyntaxToken identifierToken)
+        {
+            return new UvssIdentifierSyntax(identifierToken);
+        }
+
+        /// <summary>
+        /// Creates a new escaped identifier.
+        /// </summary>
+        /// <param name="identifier">The escaped identifier text.</param>
+        /// <returns>The <see cref="UvssEscapedIdentifierSyntax"/> instance that was created.</returns>
+        public static UvssEscapedIdentifierSyntax EscapedIdentifier(
+            String identifier)
+        {
+            return new UvssEscapedIdentifierSyntax(
+                new UvssPunctuation(SyntaxKind.OpenBracketToken),
+                new SyntaxToken(SyntaxKind.IdentifierToken, identifier),
+                new UvssPunctuation(SyntaxKind.CloseBracketToken));
+        }
+
+        /// <summary>
+        /// Creates a new escaped identifier.
+        /// </summary>
+        /// <param name="openBracketToken">The open bracket token that introduces the escaped identifier.</param>
+        /// <param name="identifierToken">The escaped identifier token.</param>
+        /// <param name="closeBracketToken">The close bracket token that terminates the escaped identifier.</param>
+        /// <returns>The <see cref="UvssEscapedIdentifierSyntax"/> instance that was created.</returns>
+        public static UvssEscapedIdentifierSyntax EscapedIdentifier(
+            SyntaxToken openBracketToken,
+            SyntaxToken identifierToken,
+            SyntaxToken closeBracketToken)
+        {
+            return new UvssEscapedIdentifierSyntax(
+                openBracketToken,
+                identifierToken,
+                closeBracketToken);
         }
     }
 }

@@ -11,19 +11,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Initializes a new instance of the <see cref="UvssEventNameSyntax"/> class.
         /// </summary>
         internal UvssEventNameSyntax(
-            SyntaxToken attachedEventOwnerNameToken,
+            UvssIdentifierBaseSyntax attachedEventOwnerNameIdentifier,
             SyntaxToken periodToken,
-            SyntaxToken eventNameToken)
+            UvssIdentifierBaseSyntax eventNameIdentifier)
             : base(SyntaxKind.EventName)
         {
-            this.AttachedEventOwnerNameToken = attachedEventOwnerNameToken;
-            ChangeParent(attachedEventOwnerNameToken);
+            this.AttachedEventOwnerNameIdentifier = attachedEventOwnerNameIdentifier;
+            ChangeParent(attachedEventOwnerNameIdentifier);
 
             this.PeriodToken = periodToken;
             ChangeParent(periodToken);
 
-            this.EventNameToken = eventNameToken;
-            ChangeParent(eventNameToken);
+            this.EventNameIdentifier = eventNameIdentifier;
+            ChangeParent(eventNameIdentifier);
 
             SlotCount = 3;
         }
@@ -33,9 +33,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
-                case 0: return AttachedEventOwnerNameToken;
+                case 0: return AttachedEventOwnerNameIdentifier;
                 case 1: return PeriodToken;
-                case 2: return EventNameToken;
+                case 2: return EventNameIdentifier;
                 default:
                     throw new InvalidOperationException();
             }
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the name of the type which owns the attached event, if this name describes an attached event.
         /// </summary>
-        public SyntaxToken AttachedEventOwnerNameToken { get; internal set; }
+        public UvssIdentifierBaseSyntax AttachedEventOwnerNameIdentifier { get; internal set; }
 
         /// <summary>
         /// Gets the period that separates the owner type from the event name.
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the name of the event.
         /// </summary>
-        public SyntaxToken EventNameToken { get; internal set; }
+        public UvssIdentifierBaseSyntax EventNameIdentifier { get; internal set; }
 
         /// <inheritdoc/>
         internal override SyntaxNode Accept(SyntaxVisitor visitor)

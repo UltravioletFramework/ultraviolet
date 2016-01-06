@@ -175,6 +175,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 case nameof(UvssLexerTokenType.CloseCurlyBrace):
                     return UvssLexerTokenType.CloseCurlyBrace;
 
+                case nameof(UvssLexerTokenType.OpenBracket):
+                    return UvssLexerTokenType.OpenBracket;
+
+                case nameof(UvssLexerTokenType.CloseBracket):
+                    return UvssLexerTokenType.CloseBracket;
+
                 case nameof(UvssLexerTokenType.UniversalSelector):
                     return UvssLexerTokenType.UniversalSelector;
 
@@ -671,6 +677,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 @"\G\{"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.CloseCurlyBrace,
                 @"\G\}"),
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.OpenCurlyBrace,
+                @"\G\["),
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.CloseCurlyBrace,
+                @"\G\]"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.UniversalSelector,
                 @"\G\*"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.TemplatedChildCombinator,

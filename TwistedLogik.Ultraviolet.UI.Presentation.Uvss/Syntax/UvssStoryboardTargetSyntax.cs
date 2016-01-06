@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// </summary>
         internal UvssStoryboardTargetSyntax(
             SyntaxToken targetKeyword,
-            SyntaxToken typeNameToken,
+            UvssIdentifierBaseSyntax typeNameIdentifier,
             UvssSelectorWithParenthesesSyntax selector,
             UvssBlockSyntax body)
             : base(SyntaxKind.StoryboardTarget)
@@ -20,8 +20,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             this.TargetKeyword = targetKeyword;
             ChangeParent(targetKeyword);
 
-            this.TypeNameToken = typeNameToken;
-            ChangeParent(typeNameToken);
+            this.TypeNameIdentifier = typeNameIdentifier;
+            ChangeParent(typeNameIdentifier);
 
             this.Selector = selector;
             ChangeParent(selector);
@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return TargetKeyword;
-                case 1: return TypeNameToken;
+                case 1: return TypeNameIdentifier;
                 case 2: return Selector;
                 case 3: return Body;
                 default:
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the target's optional type name.
         /// </summary>
-        public SyntaxToken TypeNameToken { get; internal set; }
+        public UvssIdentifierBaseSyntax TypeNameIdentifier { get; internal set; }
 
         /// <summary>
         /// Gets the target's selector.

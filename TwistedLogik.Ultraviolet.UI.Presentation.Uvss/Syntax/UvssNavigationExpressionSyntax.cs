@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             SyntaxToken pipeToken,
             UvssPropertyNameSyntax propertyName,
             SyntaxToken asKeyword,
-            SyntaxToken typeNameToken)
+            UvssIdentifierBaseSyntax typeNameIdentifier)
             : base(SyntaxKind.NavigationExpression)
         {
             this.PipeToken = pipeToken;
@@ -26,8 +26,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             this.AsKeyword = asKeyword;
             ChangeParent(asKeyword);
 
-            this.TypeNameToken = typeNameToken;
-            ChangeParent(typeNameToken);
+            this.TypeNameIdentifier = typeNameIdentifier;
+            ChangeParent(typeNameIdentifier);
 
             SlotCount = 4;
         }
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
                 case 0: return PipeToken;
                 case 1: return PropertyName;
                 case 2: return AsKeyword;
-                case 3: return TypeNameToken;
+                case 3: return TypeNameIdentifier;
                 default:
                     throw new InvalidOperationException();
             }
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the navigation expression's conversion type name.
         /// </summary>
-        public SyntaxToken TypeNameToken { get; internal set; }
+        public UvssIdentifierBaseSyntax TypeNameIdentifier { get; internal set; }
 
         /// <inheritdoc/>
         internal override SyntaxNode Accept(SyntaxVisitor visitor)

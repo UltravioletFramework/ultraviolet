@@ -30,6 +30,55 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified string is a UVSS keyword.
+        /// </summary>
+        /// <param name="text">The string to evaluate.</param>
+        /// <returns>true if the specified string is a UVSS keyword; otherwise, false.</returns>
+        public static Boolean IsKeyword(String text)
+        {
+            if (String.Equals(text, "play-storyboard", StringComparison.Ordinal))
+                return true;
+            
+            if (String.Equals(text, "set-handled", StringComparison.Ordinal))
+                return true;
+
+            if (String.Equals(text, "transition", StringComparison.Ordinal))
+                return true;
+
+            if (String.Equals(text, "!important", StringComparison.Ordinal))
+                return true;
+
+            if (String.Equals(text, "animation", StringComparison.Ordinal))
+                return true;
+
+            if (String.Equals(text, "play-sfx", StringComparison.Ordinal))
+                return true;
+
+            if (String.Equals(text, "keyframe", StringComparison.Ordinal))
+                return true;
+
+            if (String.Equals(text, "trigger", StringComparison.Ordinal))
+                return true;
+
+            if (String.Equals(text, "handled", StringComparison.Ordinal))
+                return true;
+
+            if (String.Equals(text, "target", StringComparison.Ordinal))
+                return true;
+
+            if (String.Equals(text, "event", StringComparison.Ordinal))
+                return true;
+
+            if (String.Equals(text, "set", StringComparison.Ordinal))
+                return true;
+
+            if (String.Equals(text, "as", StringComparison.Ordinal))
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
         /// Gets the text associated with the specified keyword kind.
         /// </summary>
         /// <param name="kind">The kind of keyword for which to retrieve text.</param>

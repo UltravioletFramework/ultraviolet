@@ -11,19 +11,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Initializes a new instance of the <see cref="UvssPropertyNameSyntax"/> class.
         /// </summary>
         internal UvssPropertyNameSyntax(
-            SyntaxToken attachedPropertyOwnerNameToken,
+            UvssIdentifierBaseSyntax attachedPropertyOwnerNameIdentifier,
             SyntaxToken periodToken,
-            SyntaxToken propertyNameToken)
+            UvssIdentifierBaseSyntax propertyNameIdentifier)
             : base(SyntaxKind.PropertyName)
         {
-            this.AttachedPropertyOwnerNameToken = attachedPropertyOwnerNameToken;
-            ChangeParent(attachedPropertyOwnerNameToken);
+            this.AttachedPropertyOwnerNameIdentifier = attachedPropertyOwnerNameIdentifier;
+            ChangeParent(attachedPropertyOwnerNameIdentifier);
 
             this.PeriodToken = periodToken;
             ChangeParent(periodToken);
 
-            this.PropertyNameToken = propertyNameToken;
-            ChangeParent(propertyNameToken);
+            this.PropertyNameIdentifier = propertyNameIdentifier;
+            ChangeParent(propertyNameIdentifier);
 
             SlotCount = 3;
         }
@@ -33,9 +33,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
-                case 0: return AttachedPropertyOwnerNameToken;
+                case 0: return AttachedPropertyOwnerNameIdentifier;
                 case 1: return PeriodToken;
-                case 2: return PropertyNameToken;
+                case 2: return PropertyNameIdentifier;
                 default:
                     throw new InvalidOperationException();
             }
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the name of the type which owns the attached property, if this name describes an attached property.
         /// </summary>
-        public SyntaxToken AttachedPropertyOwnerNameToken { get; internal set; }
+        public UvssIdentifierBaseSyntax AttachedPropertyOwnerNameIdentifier { get; internal set; }
 
         /// <summary>
         /// Gets the period that separates the owner type from the property name.
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the name of the property.
         /// </summary>
-        public SyntaxToken PropertyNameToken { get; internal set; }
+        public UvssIdentifierBaseSyntax PropertyNameIdentifier { get; internal set; }
 
         /// <inheritdoc/>
         internal override SyntaxNode Accept(SyntaxVisitor visitor)

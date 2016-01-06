@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         internal UvssDocumentSyntax(
             SyntaxList<SyntaxNode> content,
             SyntaxToken endOfFileToken)
-            : base(SyntaxKind.UvssDocument)
+            : base(SyntaxKind.Document)
         {
             this.Content = content;
             ChangeParent(content.Node);

@@ -26,7 +26,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxNormalizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxVisitor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIdentifier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIdentifierSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEscapedIdentifierSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionArgumentListSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssBlockSyntax.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyTriggerConditionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyTriggerSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEventTriggerSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIdentifierBaseSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTriggerBaseSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyValueBaseSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssPropertyValueWithBracesSyntax.cs" />

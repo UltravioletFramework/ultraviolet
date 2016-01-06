@@ -60,6 +60,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
                     return "{";
                 case SyntaxKind.CloseCurlyBraceToken:
                     return "}";
+                case SyntaxKind.OpenBracketToken:
+                    return "[";
+                case SyntaxKind.CloseBracketToken:
+                    return "]";
                 case SyntaxKind.AsteriskToken:
                     return "*";
                 case SyntaxKind.GreaterThanGreaterThanToken:
