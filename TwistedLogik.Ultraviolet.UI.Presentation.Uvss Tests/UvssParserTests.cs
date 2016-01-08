@@ -6,6 +6,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
     [TestClass]
     public class UvssParserTests : NucleusTestFramework
     {
+        [TestMethod]
+        public void MyTestMethod()
+        {
 
+        }
     }
 }

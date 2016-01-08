@@ -68,6 +68,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Gets a collection containing the node's child nodes.
+        /// </summary>
+        public IEnumerable<SyntaxNode> ChildNodes()
+        {
+            for (int i = 0; i < SlotCount; i++)
+            {
+                var child = GetSlot(i);
+                if (child != null)
+                    yield return child;
+            }
+        }
+
+        /// <summary>
+        /// Gets a collection containing the node's descendant nodes.
+        /// </summary>
+        /// <param name="descendIntoChildren">A predicate which determines whether this method
+        /// should descend into the node's children.</param>
+        /// <param name="descendIntoTrivia">A value indicating whether this method
+        /// should descend into the node's trivia.</param>
+        /// <returns>A collection containing the specified descendant nodes.</returns>
+        public IEnumerable<SyntaxNode> DescendantNodes(
+            Func<SyntaxNode, Boolean> descendIntoChildren = null, Boolean descendIntoTrivia = false)
+        {
+            var descendants = DescendInternal(descendIntoChildren, descendIntoTrivia, false);
+            foreach (var descendant in descendants)
+                yield return descendant;
+        }
+
+        /// <summary>
+        /// Gets a collection containing the node's descendant nodes, plus this node.
+        /// </summary>
+        /// <param name="descendIntoChildren">A predicate which determines whether this method
+        /// should descend into the node's children.</param>
+        /// <param name="descendIntoTrivia">A value indicating whether this method
+        /// should descend into the node's trivia.</param>
+        /// <returns>A collection containing the specified descendant nodes.</returns>
+        public IEnumerable<SyntaxNode> DescendantNodesAndSelf(
+            Func<SyntaxNode, Boolean> descendIntoChildren = null, Boolean descendIntoTrivia = false)
+        {
+            var descendants = DescendInternal(descendIntoChildren, descendIntoTrivia, true);
+            foreach (var descendant in descendants)
+                yield return descendant;
+        }
+
+        /// <summary>
         /// Gets the first terminal within the subtree with this node as its root.
         /// </summary>
         /// <returns>The terminal that was found, or null if no terminal was found.</returns>
@@ -171,22 +216,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Gets the node's parent node.
         /// </summary>
         public SyntaxNode Parent { get; internal set; }
-
-        /// <summary>
-        /// Gets a collection containing the node's child nodes.
-        /// </summary>
-        public IEnumerable<SyntaxNode> ChildNodes
-        {
-            get
-            {
-                for (int i = 0; i < SlotCount; i++)
-                {
-                    var child = GetSlot(i);
-                    if (child != null)
-                        yield return child;
-                }
-            }
-        }
 
         /// <summary>
         /// Gets the node's <see cref="SyntaxKind"/> value.
@@ -444,6 +473,60 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
 
             return width;
+        }
+
+        /// <summary>
+        /// Gets a collection containing the node's descendants.
+        /// </summary>
+        private IEnumerable<SyntaxNode> DescendInternal(
+            Func<SyntaxNode, Boolean> descendIntoChildren, Boolean descendIntoTrivia, Boolean descendIntoSelf)
+        {
+            if (descendIntoSelf)
+                yield return this;
+
+            if (descendIntoTrivia)
+            {
+                var trivia = GetLeadingTrivia();
+                if (trivia != null)
+                    DescendIntoTrivia(trivia);
+            }
+
+            for (int i = 0; i < SlotCount; i++)
+            {
+                var child = GetSlot(i);
+                if (child != null && (descendIntoChildren == null || descendIntoChildren(child)))
+                {
+                    foreach (var descendant in child.DescendantNodes(descendIntoChildren, descendIntoTrivia))
+                        yield return descendant;
+                }
+            }
+
+            if (descendIntoTrivia)
+            {
+                var trivia = GetTrailingTrivia();
+                if (trivia != null)
+                    DescendIntoTrivia(trivia);
+            }
+        }
+
+        /// <summary>
+        /// Gets a collection containing the specified trivia.
+        /// </summary>
+        private IEnumerable<SyntaxNode> DescendIntoTrivia(SyntaxNode trivia)
+        {
+            if (trivia.IsList)
+            {
+                for (int i = 0; i < trivia.SlotCount; i++)
+                {
+                    var trivium = trivia.GetSlot(i);
+                    if (trivium != null)
+                        yield return trivium;
+                }
+            }
+            else
+            {
+                yield return trivia;
+            }
         }
 
         // Property values.

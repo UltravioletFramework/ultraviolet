@@ -12,20 +12,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Initializes a new instance of the <see cref="UvssIncompleteTriggerSyntax"/> class.
         /// </summary>
         internal UvssIncompleteTriggerSyntax()
-            : this(null)
+            : this(null, null, null)
         { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssIncompleteTriggerSyntax"/> class.
         /// </summary>
         internal UvssIncompleteTriggerSyntax(
-            SyntaxToken triggerKeyword)
+            SyntaxToken triggerKeyword,
+            SyntaxToken qualifierToken,
+            UvssBlockSyntax body)
             : base(SyntaxKind.IncompleteTrigger)
         {
             this.TriggerKeyword = triggerKeyword;
             ChangeParent(triggerKeyword);
 
-            SlotCount = 1;
+            this.QualifierToken = qualifierToken;
+            ChangeParent(qualifierToken);
+
+            this.Body = body;
+            ChangeParent(body);
+
+            SlotCount = 3;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>
@@ -34,6 +43,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return TriggerKeyword;
+                case 1: return QualifierToken;
+                case 2: return Body;
                 default:
                     throw new InvalidOperationException();
             }
@@ -43,6 +54,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Gets the trigger's "trigger" keyword.
         /// </summary>
         public SyntaxToken TriggerKeyword { get; internal set; }
+
+        /// <summary>
+        /// Gets the trigger's qualifier token.
+        /// </summary>
+        public SyntaxToken QualifierToken { get; internal set; }
+
+        /// <summary>
+        /// Gets the trigger's body.
+        /// </summary>
+        public UvssBlockSyntax Body { get; internal set; }
 
         /// <inheritdoc/>
         internal override SyntaxNode Accept(SyntaxVisitor visitor)

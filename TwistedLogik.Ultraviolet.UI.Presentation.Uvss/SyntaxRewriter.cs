@@ -229,8 +229,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newTriggerKeyword != node.TriggerKeyword)
                 unchanged = false;
 
+            var newQualifierToken = (SyntaxToken)Visit(node.QualifierToken);
+            if (newQualifierToken != node.QualifierToken)
+                unchanged = false;
+
+            var newBody = (UvssBlockSyntax)Visit(node.Body);
+            if (newBody != node.Body)
+                unchanged = false;
+
             return unchanged ? node : new UvssIncompleteTriggerSyntax(
-                newTriggerKeyword);
+                newTriggerKeyword,
+                newQualifierToken,
+                newBody);
         }
 
         /// <inheritdoc/>
