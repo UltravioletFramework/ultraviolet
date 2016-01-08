@@ -10,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssRuleSyntax"/> class.
         /// </summary>
+        internal UvssRuleSyntax()
+            : this(null, null, null, null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssRuleSyntax"/> class.
+        /// </summary>
         internal UvssRuleSyntax(
             UvssPropertyNameSyntax propertyName,
             SyntaxToken colonToken,
@@ -34,6 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(semiColonToken);
 
             SlotCount = 5;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

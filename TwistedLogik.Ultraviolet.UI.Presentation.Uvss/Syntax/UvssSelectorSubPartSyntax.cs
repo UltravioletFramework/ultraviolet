@@ -10,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelectorPartSyntax"/> class.
         /// </summary>
+        internal UvssSelectorSubPartSyntax()
+            : this(null, null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssSelectorPartSyntax"/> class.
+        /// </summary>
         internal UvssSelectorSubPartSyntax(
             SyntaxToken leadingQualifierToken,
             UvssIdentifierBaseSyntax subPartIdentifier,
@@ -26,6 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(trailingQualifierToken);
 
             SlotCount = 3;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

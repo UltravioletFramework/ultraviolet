@@ -11,9 +11,19 @@
         Unknown,
 
         /// <summary>
-        /// The token contains a comment.
+        /// The token contains a line break.
         /// </summary>
-        Comment,
+        EndOfLine,
+
+        /// <summary>
+        /// The token contains a single line comment.
+        /// </summary>
+        SingleLineComment,
+
+        /// <summary>
+        /// The token contains a multiple line comment.
+        /// </summary>
+        MultiLineComment,
 
         /// <summary>
         /// The token contains white space.

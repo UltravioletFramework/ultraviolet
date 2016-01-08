@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
@@ -12,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssEscapedIdentifierSyntax"/> class.
         /// </summary>
+        internal UvssIdentifierSyntax()
+            : this(null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssEscapedIdentifierSyntax"/> class.
+        /// </summary>
         internal UvssIdentifierSyntax(
             SyntaxToken identifierToken)
             : base(SyntaxKind.Identifier)
@@ -20,6 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(identifierToken);
             
             SlotCount = 1;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

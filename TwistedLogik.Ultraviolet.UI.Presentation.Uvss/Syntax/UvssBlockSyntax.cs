@@ -10,7 +10,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssBlockSyntax"/> class.
         /// </summary>
-        public UvssBlockSyntax(
+        internal UvssBlockSyntax()
+            : this(null, default(SyntaxList<SyntaxNode>), null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssBlockSyntax"/> class.
+        /// </summary>
+        internal UvssBlockSyntax(
             SyntaxToken openCurlyBraceToken,
             SyntaxList<SyntaxNode> content,
             SyntaxToken closeCurlyBraceToken)
@@ -26,6 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(closeCurlyBraceToken);
 
             SlotCount = 3;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

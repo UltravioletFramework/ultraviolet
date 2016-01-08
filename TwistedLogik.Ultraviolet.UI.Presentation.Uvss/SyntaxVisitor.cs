@@ -107,6 +107,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Visits the specified incomplete trigger node.
+        /// </summary>
+        /// <param name="node">The node to visit.</param>
+        /// <returns>A node which should replace the visited node, or a reference to the visited node
+        /// itself if no changes were made.</returns>
+        public virtual SyntaxNode VisitIncompleteTrigger(UvssIncompleteTriggerSyntax node)
+        {
+            return VisitSyntaxNode(node);
+        }
+
+        /// <summary>
         /// Visits the specified event trigger argument list node.
         /// </summary>
         /// <param name="node">The node to visit.</param>
@@ -256,6 +267,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>A node which should replace the visited node, or a reference to the visited node
         /// itself if no changes were made.</returns>
         public virtual SyntaxNode VisitSelectorPart(UvssSelectorPartSyntax node)
+        {
+            return VisitSyntaxNode(node);
+        }
+
+        /// <summary>
+        /// Visits the specified selector part node.
+        /// </summary>
+        /// <param name="node">The node to visit.</param>
+        /// <returns>A node which should replace the visited node, or a reference to the visited node
+        /// itself if no changes were made.</returns>
+        public virtual SyntaxNode VisitUniversalSelectorPart(UvssUniversalSelectorPartSyntax node)
         {
             return VisitSyntaxNode(node);
         }

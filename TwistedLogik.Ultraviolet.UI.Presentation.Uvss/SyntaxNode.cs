@@ -145,6 +145,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The string that was created.</returns>
         public virtual String ToFullString()
         {
+            if (IsMissing)
+                return null;
+
             var builder = new StringBuilder();
             var writer = new StringWriter(builder, CultureInfo.InvariantCulture);
             WriteTo(writer);
@@ -250,6 +253,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public Boolean IsList { get { return Kind == SyntaxKind.List; } }
 
         /// <summary>
+        /// Gets a value indicating whether this node represents syntax 
+        /// which was not present in the source text.
+        /// </summary>
+        public Boolean IsMissing { get; internal set; }
+
+        /// <summary>
         /// Gets a value indicating whether this node is a terminal token.
         /// </summary>
         public virtual Boolean IsToken { get { return false; } }
@@ -321,6 +330,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             {
                 lastToken.ChangeTrailingTrivia(trivia);
             }
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="IsMissing"/> property.
+        /// </summary>
+        protected virtual void UpdateIsMissing()
+        {
+            var children = 0;
+            var childrenMissing = 0;
+
+            for (int i = 0; i < SlotCount; i++)
+            {
+                var child = GetSlot(i);
+                if (child != null)
+                {
+                    children++;
+
+                    if (child.IsMissing)
+                        childrenMissing++;
+                }
+            }
+
+            IsMissing = children > 0 && childrenMissing == children;
         }
 
         /// <summary>

@@ -10,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssPseudoClassSyntax"/> class.
         /// </summary>
+        internal UvssPseudoClassSyntax()
+            : this(null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssPseudoClassSyntax"/> class.
+        /// </summary>
         internal UvssPseudoClassSyntax(
             SyntaxToken colonToken,
             UvssIdentifierBaseSyntax classNameIdentifier)
@@ -22,6 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(classNameIdentifier);
 
             SlotCount = 2;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

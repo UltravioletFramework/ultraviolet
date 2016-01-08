@@ -221,6 +221,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <inheritdoc/>
+        public override SyntaxNode VisitIncompleteTrigger(UvssIncompleteTriggerSyntax node)
+        {
+            var unchanged = true;
+
+            var newTriggerKeyword = (SyntaxToken)Visit(node.TriggerKeyword);
+            if (newTriggerKeyword != node.TriggerKeyword)
+                unchanged = false;
+
+            return unchanged ? node : new UvssIncompleteTriggerSyntax(
+                newTriggerKeyword);
+        }
+
+        /// <inheritdoc/>
         public override SyntaxNode VisitEventTrigger(UvssEventTriggerSyntax node)
         {
             var unchanged = true;
@@ -553,6 +566,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <inheritdoc/>
+        public override SyntaxNode VisitUniversalSelectorPart(UvssUniversalSelectorPartSyntax node)
+        {
+            var unchanged = true;
+
+            var newAsteriskToken = (SyntaxToken)Visit(node.AsteriskToken);
+            if (newAsteriskToken != node.AsteriskToken)
+                unchanged = false;
+
+            var newPseudoClass = (UvssPseudoClassSyntax)Visit(node.PseudoClass);
+            if (newPseudoClass != node.PseudoClass)
+                unchanged = false;
+
+            return unchanged ? node : new UvssUniversalSelectorPartSyntax(
+                newAsteriskToken,
+                newPseudoClass);
+        }
+
+        /// <inheritdoc/>
         public override SyntaxNode VisitSelectorPart(UvssSelectorPartSyntax node)
         {
             var unchanged = true;
@@ -717,8 +748,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newColonToken != node.ColonToken)
                 unchanged = false;
 
-            var newStoryboardNameIdentifier = (UvssIdentifierBaseSyntax)Visit(node.StoryboardNameIdentifier);
-            if (newStoryboardNameIdentifier != node.StoryboardNameIdentifier)
+            var value = (UvssPropertyValueSyntax)Visit(node.Value);
+            if (value != node.Value)
                 unchanged = false;
 
             var newQualifierToken = (SyntaxToken)Visit(node.QualifierToken);
@@ -733,7 +764,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 newTransitionKeyword,
                 newArgumentList,
                 newColonToken,
-                newStoryboardNameIdentifier,
+                value,
                 newQualifierToken,
                 newSemiColonToken);
         }

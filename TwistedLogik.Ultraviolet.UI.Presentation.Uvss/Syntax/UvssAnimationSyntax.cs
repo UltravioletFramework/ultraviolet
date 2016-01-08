@@ -10,6 +10,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssAnimationSyntax"/> class.
         /// </summary>
+        internal UvssAnimationSyntax()
+            : this(null, null, null, null)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssAnimationSyntax"/> class.
+        /// </summary>
         internal UvssAnimationSyntax(
             SyntaxToken animationKeyword, 
             UvssPropertyNameSyntax propertyName, 
@@ -30,6 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(body);
 
             SlotCount = 4;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

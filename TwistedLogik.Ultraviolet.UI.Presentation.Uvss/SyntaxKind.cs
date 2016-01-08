@@ -11,6 +11,11 @@
         None,
 
         /// <summary>
+        /// Trivia representing the end of a line.
+        /// </summary>
+        EndOfLineTrivia,
+
+        /// <summary>
         /// Trivia representing a single line comment.
         /// </summary>
         SingleLineCommentTrivia,
@@ -299,6 +304,11 @@
         /// The name of a styled event.
         /// </summary>
         EventName,
+
+        /// <summary>
+        /// An incomplete trigger.
+        /// </summary>
+        IncompleteTrigger,
 
         /// <summary>
         /// An event trigger.

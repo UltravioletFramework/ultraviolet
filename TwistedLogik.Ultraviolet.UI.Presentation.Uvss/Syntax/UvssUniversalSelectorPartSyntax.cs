@@ -3,27 +3,27 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
-    /// Represents a UVSS selector part.
+    /// Represents a UVSS universal selector part.
     /// </summary>
-    public sealed class UvssSelectorPartSyntax : UvssSelectorPartBaseSyntax
+    public sealed class UvssUniversalSelectorPartSyntax : UvssSelectorPartBaseSyntax
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UvssSelectorPartSyntax"/> class.
+        /// Initializes a new instance of the <see cref="UvssUniversalSelectorPartSyntax"/> class.
         /// </summary>
-        internal UvssSelectorPartSyntax()
-            : this(default(SyntaxList<UvssSelectorSubPartSyntax>), null)
+        internal UvssUniversalSelectorPartSyntax()
+            : this(null, null)
         { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UvssSelectorPartSyntax"/> class.
+        /// Initializes a new instance of the <see cref="UvssUniversalSelectorPartSyntax"/> class.
         /// </summary>
-        internal UvssSelectorPartSyntax(
-            SyntaxList<UvssSelectorSubPartSyntax> subParts,
+        internal UvssUniversalSelectorPartSyntax(
+            SyntaxToken asteriskToken,
             UvssPseudoClassSyntax pseudoClass)
             : base(SyntaxKind.SelectorPart)
         {
-            this.SubParts = subParts;
-            ChangeParent(subParts.Node);
+            this.AsteriskToken = asteriskToken;
+            ChangeParent(asteriskToken);
 
             this.PseudoClass = pseudoClass;
             ChangeParent(pseudoClass);
@@ -37,27 +37,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
-                case 0: return SubParts.Node;
+                case 0: return AsteriskToken;
                 case 1: return PseudoClass;
                 default:
                     throw new InvalidOperationException();
             }
         }
-
+        
         /// <summary>
-        /// Gets the selector part's sub-parts.
+        /// Gets the selector part's askterisk token.
         /// </summary>
-        public SyntaxList<UvssSelectorSubPartSyntax> SubParts { get; internal set; }
+        public SyntaxToken AsteriskToken { get; internal set; }
 
         /// <summary>
-        /// Gets the selector's pseudo-class.
+        /// Gets the selector part's pseudo-class.
         /// </summary>
         public UvssPseudoClassSyntax PseudoClass { get; internal set; }
 
         /// <inheritdoc/>
         internal override SyntaxNode Accept(SyntaxVisitor visitor)
         {
-            return visitor.VisitSelectorPart(this);
+            return visitor.VisitUniversalSelectorPart(this);
         }
     }
 }

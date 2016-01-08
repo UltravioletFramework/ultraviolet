@@ -10,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelectorWithParenthesesSyntax"/> class.
         /// </summary>
+        internal UvssSelectorWithParenthesesSyntax()
+            : this(null, null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssSelectorWithParenthesesSyntax"/> class.
+        /// </summary>
         internal UvssSelectorWithParenthesesSyntax(
             SyntaxToken openParenToken,
             UvssSelectorSyntax selector,
@@ -26,6 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(closeParenToken);
 
             SlotCount = 3;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

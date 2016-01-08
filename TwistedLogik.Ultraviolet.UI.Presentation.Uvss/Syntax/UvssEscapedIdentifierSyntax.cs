@@ -12,6 +12,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssEscapedIdentifierSyntax"/> class.
         /// </summary>
+        internal UvssEscapedIdentifierSyntax()
+            : this(null, null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssEscapedIdentifierSyntax"/> class.
+        /// </summary>
         internal UvssEscapedIdentifierSyntax(
             SyntaxToken openBracketToken,
             SyntaxToken identifierToken,
@@ -28,6 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(closeBracketToken);
 
             SlotCount = 3;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

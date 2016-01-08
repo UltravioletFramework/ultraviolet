@@ -10,7 +10,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssTransitionArgumentListSyntax"/> class.
         /// </summary>
-        public UvssTransitionArgumentListSyntax(
+        internal UvssTransitionArgumentListSyntax()
+            : this(null, default(SeparatedSyntaxList<SyntaxNode>), null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssTransitionArgumentListSyntax"/> class.
+        /// </summary>
+        internal UvssTransitionArgumentListSyntax(
             SyntaxToken openParenToken,
             SeparatedSyntaxList<SyntaxNode> arguments,
             SyntaxToken closeParenToken)
@@ -26,6 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(closeParenToken);
 
             SlotCount = 3;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

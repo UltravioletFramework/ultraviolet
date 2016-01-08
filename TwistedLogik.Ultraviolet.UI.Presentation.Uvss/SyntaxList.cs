@@ -17,6 +17,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Creates a missing list.
+        /// </summary>
+        /// <returns>The list that was created.</returns>
+        internal static SyntaxNode Missing()
+        {
+            return new MissingList();
+        }
+
+        /// <summary>
         /// Creates a list with a single child.
         /// </summary>
         /// <param name="child">The list's child.</param>

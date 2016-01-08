@@ -10,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssNavigationExpressionSyntax"/> class.
         /// </summary>
+        internal UvssNavigationExpressionSyntax()
+            : this(null, null, null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssNavigationExpressionSyntax"/> class.
+        /// </summary>
         internal UvssNavigationExpressionSyntax(
             SyntaxToken pipeToken,
             UvssPropertyNameSyntax propertyName,
@@ -30,6 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(typeNameIdentifier);
 
             SlotCount = 4;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

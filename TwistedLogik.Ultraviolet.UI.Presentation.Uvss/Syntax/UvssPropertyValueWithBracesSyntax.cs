@@ -10,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssPropertyValueWithBracesSyntax"/> class.
         /// </summary>
+        internal UvssPropertyValueWithBracesSyntax()
+            : this(null, null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssPropertyValueWithBracesSyntax"/> class.
+        /// </summary>
         internal UvssPropertyValueWithBracesSyntax(
             SyntaxToken openCurlyBraceToken,
             SyntaxToken contentToken,
@@ -26,6 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(closeCurlyBraceToken);
 
             SlotCount = 3;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

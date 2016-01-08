@@ -10,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssEventNameSyntax"/> class.
         /// </summary>
+        internal UvssEventNameSyntax()
+            : this(null, null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssEventNameSyntax"/> class.
+        /// </summary>
         internal UvssEventNameSyntax(
             UvssIdentifierBaseSyntax attachedEventOwnerNameIdentifier,
             SyntaxToken periodToken,
@@ -26,6 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(eventNameIdentifier);
 
             SlotCount = 3;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

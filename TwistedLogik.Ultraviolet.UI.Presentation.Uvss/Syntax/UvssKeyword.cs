@@ -36,46 +36,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <returns>true if the specified string is a UVSS keyword; otherwise, false.</returns>
         public static Boolean IsKeyword(String text)
         {
-            if (String.Equals(text, "play-storyboard", StringComparison.Ordinal))
-                return true;
-            
-            if (String.Equals(text, "set-handled", StringComparison.Ordinal))
-                return true;
+            return GetKeywordKindFromText(text) != SyntaxKind.None;
+        }
 
-            if (String.Equals(text, "transition", StringComparison.Ordinal))
-                return true;
+        /// <summary>
+        /// Gets the <see cref="SyntaxKind"/> value that corresponds to the specified keyword text.
+        /// </summary>
+        /// <param name="text">The keyword text to evaluate.</param>
+        /// <returns>The <see cref="SyntaxKind"/> value that represents the specified keyword, 
+        /// or <see cref="SyntaxKind.None"/> if the text is not a keyword.</returns>
+        public static SyntaxKind GetKeywordKindFromText(String text)
+        {
+            switch (text)
+            {
+                case "play-storyboard":
+                    return SyntaxKind.PlayStoryboardKeyword;
 
-            if (String.Equals(text, "!important", StringComparison.Ordinal))
-                return true;
+                case "set-handled":
+                    return SyntaxKind.SetHandledKeyword;
 
-            if (String.Equals(text, "animation", StringComparison.Ordinal))
-                return true;
+                case "transition":
+                    return SyntaxKind.TransitionKeyword;
 
-            if (String.Equals(text, "play-sfx", StringComparison.Ordinal))
-                return true;
+                case "!important":
+                    return SyntaxKind.ImportantKeyword;
 
-            if (String.Equals(text, "keyframe", StringComparison.Ordinal))
-                return true;
+                case "animation":
+                    return SyntaxKind.AnimationKeyword;
 
-            if (String.Equals(text, "trigger", StringComparison.Ordinal))
-                return true;
+                case "play-sfx":
+                    return SyntaxKind.PlaySfxKeyword;
 
-            if (String.Equals(text, "handled", StringComparison.Ordinal))
-                return true;
+                case "property":
+                    return SyntaxKind.PropertyKeyword;
 
-            if (String.Equals(text, "target", StringComparison.Ordinal))
-                return true;
+                case "keyframe":
+                    return SyntaxKind.KeyframeKeyword;
 
-            if (String.Equals(text, "event", StringComparison.Ordinal))
-                return true;
+                case "trigger":
+                    return SyntaxKind.TriggerKeyword;
 
-            if (String.Equals(text, "set", StringComparison.Ordinal))
-                return true;
+                case "handled":
+                    return SyntaxKind.HandledKeyword;
 
-            if (String.Equals(text, "as", StringComparison.Ordinal))
-                return true;
+                case "target":
+                    return SyntaxKind.TargetKeyword;
 
-            return false;
+                case "event":
+                    return SyntaxKind.EventKeyword;
+
+                case "set":
+                    return SyntaxKind.SetKeyword;
+
+                case "as":
+                    return SyntaxKind.AsKeyword;
+
+                default:
+                    return SyntaxKind.None;
+            }
         }
 
         /// <summary>

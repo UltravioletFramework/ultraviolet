@@ -11,6 +11,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssRuleSetSyntax"/> class.
         /// </summary>
+        internal UvssRuleSetSyntax()
+            : this(default(SeparatedSyntaxList<UvssSelectorSyntax>), null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssRuleSetSyntax"/> class.
+        /// </summary>
         internal UvssRuleSetSyntax(
             SeparatedSyntaxList<UvssSelectorSyntax> selectors,
             UvssBlockSyntax body)
@@ -23,6 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(body);
 
             SlotCount = 2;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

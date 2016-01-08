@@ -195,6 +195,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             this.trailingTrivia = trivia;
         }
 
+        /// <inheritdoc/>
+        protected override void UpdateIsMissing()
+        {
+
+        }
+
         // Token trivia.
         private SyntaxNode leadingTrivia;
         private SyntaxNode trailingTrivia;

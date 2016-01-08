@@ -10,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssPlayStoryboardTriggerActionSyntax"/> class.
         /// </summary>
+        internal UvssPlayStoryboardTriggerActionSyntax()
+            : this(null, null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssPlayStoryboardTriggerActionSyntax"/> class.
+        /// </summary>
         internal UvssPlayStoryboardTriggerActionSyntax(
             SyntaxToken playStoryboardKeyword,
             UvssSelectorWithParenthesesSyntax selector,
@@ -26,6 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(value);
 
             SlotCount = 3;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

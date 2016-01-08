@@ -35,6 +35,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Creates a new missing token.
+        /// </summary>
+        /// <param name="kind">The <see cref="SyntaxKind"/> of the missing token.</param>
+        /// <returns>The <see cref="SyntaxToken"/> instance that was created.</returns>
+        public static SyntaxToken MissingToken(SyntaxKind kind)
+        {
+            var token = new SyntaxToken(kind, null);
+            token.IsMissing = true;
+            return token;
+        }
+
+        /// <summary>
         /// Creates a new number token.
         /// </summary>
         /// <param name="value">The numeric value of the token.</param>
@@ -1605,7 +1617,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 new UvssKeyword(SyntaxKind.TransitionKeyword),
                 TransitionArgumentList(visualStateGroup, visualStateEnd),
                 new UvssPunctuation(SyntaxKind.ColonToken),
-                Identifier(storyboardName),
+                PropertyValue(storyboardName),
                 important ? new UvssKeyword(SyntaxKind.ImportantKeyword) : null,
                 new UvssPunctuation(SyntaxKind.SemiColonToken));
         }
@@ -1630,7 +1642,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 new UvssKeyword(SyntaxKind.TransitionKeyword),
                 TransitionArgumentList(visualStateGroup, visualStateStart, visualStateEnd),
                 new UvssPunctuation(SyntaxKind.ColonToken),
-                Identifier(storyboardName),
+                PropertyValue(storyboardName),
                 important ? new UvssKeyword(SyntaxKind.ImportantKeyword) : null,
                 new UvssPunctuation(SyntaxKind.SemiColonToken));
         }
@@ -1651,7 +1663,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 new UvssKeyword(SyntaxKind.TransitionKeyword),
                 argumentList,
                 new UvssPunctuation(SyntaxKind.ColonToken),
-                Identifier(storyboardName),
+                PropertyValue(storyboardName),
                 important ? new UvssKeyword(SyntaxKind.ImportantKeyword) : null,
                 new UvssPunctuation(SyntaxKind.SemiColonToken));
         }
@@ -1662,7 +1674,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="transitionKeyword">The "transition" keyword that introduces the transition.</param>
         /// <param name="argumentList">The transition's argument list.</param>
         /// <param name="colonToken">The colon that separates the transition declaration from its value.</param>
-        /// <param name="storyboardNameIdentifier">The name of the storyboard that is played when the transition is triggered.</param>
+        /// <param name="value">The name of the storyboard that is played when the transition is triggered.</param>
         /// <param name="qualifierToken">The transition's qualifier token.</param>
         /// <param name="semiColonToken">The semi-colon that terminates the transition.</param>
         /// <returns></returns>
@@ -1670,7 +1682,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             SyntaxToken transitionKeyword,
             UvssTransitionArgumentListSyntax argumentList,
             SyntaxToken colonToken,
-            UvssIdentifierBaseSyntax storyboardNameIdentifier,
+            UvssPropertyValueSyntax value,
             SyntaxToken qualifierToken,
             SyntaxToken semiColonToken)
         {
@@ -1678,7 +1690,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 transitionKeyword, 
                 argumentList, 
                 colonToken, 
-                storyboardNameIdentifier, 
+                value, 
                 qualifierToken, 
                 semiColonToken);
         }

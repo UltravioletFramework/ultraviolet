@@ -124,8 +124,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 case nameof(UvssLexerTokenType.Unknown):
                     return UvssLexerTokenType.Unknown;
 
-                case nameof(UvssLexerTokenType.Comment):
-                    return UvssLexerTokenType.Comment;
+                case nameof(UvssLexerTokenType.EndOfLine):
+                    return UvssLexerTokenType.EndOfLine;
+
+                case nameof(UvssLexerTokenType.SingleLineComment):
+                    return UvssLexerTokenType.SingleLineComment;
+
+                case nameof(UvssLexerTokenType.MultiLineComment):
+                    return UvssLexerTokenType.MultiLineComment;
 
                 case nameof(UvssLexerTokenType.WhiteSpace):
                     return UvssLexerTokenType.WhiteSpace;
@@ -339,17 +345,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             switch (tokenType)
             {
-                case UvssLexerTokenType.Comment:
-                    switch (tokenText)
-                    {
-                        case "//":
-                            ReadSingleLineComment(source, position, ref tokenType, ref tokenText);
-                            break;
+                case UvssLexerTokenType.SingleLineComment:
+                    ReadSingleLineComment(source, position, ref tokenType, ref tokenText);
+                    break;
 
-                        case "/*":
-                            ReadMultiLineComment(source, position, ref tokenType, ref tokenText);
-                            break;
-                    }
+                case UvssLexerTokenType.MultiLineComment:
+                    ReadMultiLineComment(source, position, ref tokenType, ref tokenText);
                     break;
             }
         }
@@ -369,6 +370,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             for (int i = position + tokenText.Length; i < source.Length; i++)
             {
+                if (source.Length == i + 1)
+                {
+                    length = source.Length - offset;
+                    break;
+                }
+
                 if (source[i] == '\r' || source[i + 1] == '\n')
                 {
                     length = i - offset;
@@ -632,8 +639,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         // The production rules for each of the lexer's token types, in order from highest priority to lowest.
         private static readonly KeyValuePair<UvssLexerTokenType, String>[] ProductionRules = new[]
         {
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Comment,
-                @"\G(//|/\*)"),
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.EndOfLine,
+                @"\G\r\n|\n"),
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.MultiLineComment,
+                @"\G/\*"),
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.SingleLineComment,
+                @"\G//"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.WhiteSpace,
                 @"\G\s+"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Keyword,
@@ -677,9 +688,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 @"\G\{"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.CloseCurlyBrace,
                 @"\G\}"),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.OpenCurlyBrace,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.OpenBracket,
                 @"\G\["),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.CloseCurlyBrace,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.CloseBracket,
                 @"\G\]"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.UniversalSelector,
                 @"\G\*"),

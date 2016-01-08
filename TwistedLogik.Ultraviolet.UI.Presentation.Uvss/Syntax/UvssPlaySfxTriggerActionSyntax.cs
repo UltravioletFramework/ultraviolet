@@ -10,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssPlaySfxTriggerActionSyntax"/> class.
         /// </summary>
+        internal UvssPlaySfxTriggerActionSyntax()
+            : this(null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssPlaySfxTriggerActionSyntax"/> class.
+        /// </summary>
         internal UvssPlaySfxTriggerActionSyntax(
             SyntaxToken playSfxKeyword,
             UvssPropertyValueWithBracesSyntax value)
@@ -22,6 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(value);
 
             SlotCount = 2;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

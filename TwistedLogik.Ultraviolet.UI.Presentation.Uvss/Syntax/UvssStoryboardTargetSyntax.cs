@@ -10,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssStoryboardTargetSyntax"/> class.
         /// </summary>
+        internal UvssStoryboardTargetSyntax()
+            : this(null, null, null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssStoryboardTargetSyntax"/> class.
+        /// </summary>
         internal UvssStoryboardTargetSyntax(
             SyntaxToken targetKeyword,
             UvssIdentifierBaseSyntax typeNameIdentifier,
@@ -30,6 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(body);
 
             SlotCount = 4;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

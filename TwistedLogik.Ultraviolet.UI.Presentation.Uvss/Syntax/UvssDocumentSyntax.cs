@@ -11,6 +11,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssDocumentSyntax"/> class.
         /// </summary>
+        internal UvssDocumentSyntax()
+            : this(default(SyntaxList<SyntaxNode>), null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssDocumentSyntax"/> class.
+        /// </summary>
         internal UvssDocumentSyntax(
             SyntaxList<SyntaxNode> content,
             SyntaxToken endOfFileToken)
@@ -23,6 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(endOfFileToken);
 
             SlotCount = 2;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

@@ -11,6 +11,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelectorSyntax"/> class.
         /// </summary>
+        internal UvssSelectorSyntax()
+            : this(default(SyntaxList<SyntaxNode>), null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssSelectorSyntax"/> class.
+        /// </summary>
         internal UvssSelectorSyntax(
             SyntaxList<SyntaxNode> components,
             UvssNavigationExpressionSyntax navigationExpression)
@@ -23,6 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(navigationExpression);
 
             SlotCount = 2;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>
@@ -45,13 +53,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets a collection containing the selector's parts.
         /// </summary>
-        public IEnumerable<UvssSelectorPartSyntax> Parts
+        public IEnumerable<UvssSelectorPartBaseSyntax> Parts
         {
             get
             {
                 for (int i = 0; i < Components.Count; i++)
                 {
-                    var child = Components[i] as UvssSelectorPartSyntax;
+                    var child = Components[i] as UvssSelectorPartBaseSyntax;
                     if (child != null)
                         yield return child;
                 }
@@ -61,13 +69,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets a collection containing the selector's combinators.
         /// </summary>
-        public IEnumerable<UvssPunctuation> Combinators
+        public IEnumerable<SyntaxToken> Combinators
         {
             get
             {
                 for (int i = 0; i < Components.Count; i++)
                 {
-                    var child = Components[i] as UvssPunctuation;
+                    var child = Components[i] as SyntaxToken;
                     if (child != null)
                     {
                         if (child.Kind == SyntaxKind.SpaceToken ||

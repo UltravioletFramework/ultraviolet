@@ -9,10 +9,10 @@
     <Import_RootNamespace>TwistedLogik.Ultraviolet.UI.Presentation.Uvss</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ArrayElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxList`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.MissingList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.WithLotsOfChildren.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.WithManyChildren.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.WithManyChildrenBase.cs" />
@@ -26,8 +26,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxNormalizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\ArrayElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIdentifierSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEscapedIdentifierSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIncompleteTriggerSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorPartBaseSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssUniversalSelectorPartSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionArgumentListSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssBlockSyntax.cs" />

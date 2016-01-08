@@ -10,6 +10,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSetTriggerActionSyntax"/> class.
         /// </summary>
+        internal UvssSetTriggerActionSyntax()
+            : this(null, null, null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssSetTriggerActionSyntax"/> class.
+        /// </summary>
         internal UvssSetTriggerActionSyntax(
             SyntaxToken setKeyword,
             UvssPropertyNameSyntax propertyName,
@@ -30,6 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             ChangeParent(value);
 
             SlotCount = 4;
+            UpdateIsMissing();
         }
 
         /// <inheritdoc/>

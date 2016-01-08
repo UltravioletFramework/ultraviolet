@@ -60,5 +60,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             writer.Write(Text);
         }
+
+        /// <inheritdoc/>
+        protected override void UpdateIsMissing()
+        {
+
+        }
     }
 }
