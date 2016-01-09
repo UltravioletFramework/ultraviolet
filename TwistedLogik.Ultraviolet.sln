@@ -111,6 +111,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests\TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests.csproj", "{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing.csproj", "{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{b5502009-935a-40ba-b415-abbf55427cad}*SharedItemsImports = 4
@@ -385,6 +387,12 @@ Global
 		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|Any CPU.ActiveCfg = Release|Any CPU
 		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

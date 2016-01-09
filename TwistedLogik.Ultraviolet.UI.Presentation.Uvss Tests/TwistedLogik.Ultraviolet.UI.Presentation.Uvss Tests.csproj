@@ -74,6 +74,10 @@
       <Project>{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}</Project>
       <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing.csproj">
+      <Project>{40a4a236-bfc4-4b7f-ab0d-5f91c0db6107}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

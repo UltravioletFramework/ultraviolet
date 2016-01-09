@@ -25,7 +25,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
 #pragma warning disable 1591
         public static readonly StringResource LexerInvalidToken  = new StringResource(StringDatabase, "LEXER_INVALID_TOKEN");
-        public static readonly StringResource LexerInvalidSymbol = new StringResource(StringDatabase, "LEXER_INVALID_SYMBOL");
 #pragma warning restore 1591
     }
 }

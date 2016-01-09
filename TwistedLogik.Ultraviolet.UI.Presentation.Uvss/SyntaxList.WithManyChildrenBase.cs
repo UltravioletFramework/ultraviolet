@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             /// <inheritdoc/>
             public override SyntaxNode GetSlot(Int32 index)
             {
-                return children[index];
+                return children[index].Value;
             }
 
             /// <inheritdoc/>

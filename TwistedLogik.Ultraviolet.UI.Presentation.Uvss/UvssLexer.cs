@@ -31,10 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             options = options ?? UvssLexerOptions.Default;
 
             var output = new List<UvssLexerToken>();
-
-            var parenLevel = 0;
-            var curlyLevel = 0;
-
+            
             var lineIndex = 1;
             var columnIndex = 1;
 
@@ -43,67 +40,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var tokenText = default(String);
             var token = default(UvssLexerToken);
 
-            var readValueImmediately = false;
-            var readValueAtNextCurlyBrace = false;
-
             while (position < source.Length)
             {
-                if ((readValueImmediately) ||
-                    (readValueAtNextCurlyBrace && tokenType == UvssLexerTokenType.OpenCurlyBrace))
+                var match = regexLexer.Match(source, position);
+                if (match.Success)
                 {
-                    token = readValueImmediately ?
-                        ReadValueUntilSemiColon(source, position, lineIndex, columnIndex) :
-                        ReadValueUntilCloseCurlyBrace(source, position, lineIndex, columnIndex);
+                    if (!GetTokenInfoFromRegexMatch(match, out tokenType, out tokenText))
+                    {
+                        var errorMessage = String.Format(UvssStrings.LexerInvalidToken,
+                            match.Value, lineIndex, columnIndex);
+                        throw new UvssLexerException(errorMessage, ErrorCodeInvalidToken, lineIndex, columnIndex);
+                    }
 
-                    tokenType = token.Type;
-                    tokenText = token.Text;
+                    ReadExtendedToken(source, position, ref tokenType, ref tokenText);
+                    
+                    var sourceOffset = position;
+                    var sourceLength = tokenText.Length;
+                    var sourceLine = lineIndex;
+                    var sourceColumn = columnIndex;
 
-                    readValueImmediately = false;
-                    readValueAtNextCurlyBrace = false;
+                    token = new UvssLexerToken(tokenType,
+                        sourceOffset, sourceLength, sourceLine, sourceColumn, tokenText);
                 }
                 else
                 {
-                    var match = regexLexer.Match(source, position);
-                    if (match.Success)
-                    {
-                        if (!GetTokenInfoFromRegexMatch(match, out tokenType, out tokenText))
-                        {
-                            var errorMessage = String.Format(UvssStrings.LexerInvalidToken, 
-                                match.Value, lineIndex, columnIndex);
-                            throw new UvssLexerException(errorMessage, ErrorCodeInvalidToken, lineIndex, columnIndex);
-                        }
+                    var sourceOffset = position;
+                    var sourceLength = tokenText.Length;
+                    var sourceLine = lineIndex;
+                    var sourceColumn = columnIndex;
 
-                        ReadExtendedToken(source, position, ref tokenType, ref tokenText);
-
-                        if (tokenType == UvssLexerTokenType.OpenParenthesis)
-                            parenLevel++;
-
-                        if (tokenType == UvssLexerTokenType.CloseParenthesis)
-                            parenLevel--;
-
-                        if (tokenType == UvssLexerTokenType.OpenCurlyBrace)
-                            curlyLevel++;
-
-                        if (tokenType == UvssLexerTokenType.CloseCurlyBrace)
-                            curlyLevel--;
-
-                        HandlePendingValueTokens(parenLevel, curlyLevel, tokenType, tokenText,
-                            ref readValueImmediately, ref readValueAtNextCurlyBrace);
-
-                        var sourceOffset = position;
-                        var sourceLength = tokenText.Length;
-                        var sourceLine = lineIndex;
-                        var sourceColumn = columnIndex;
-
-                        token = new UvssLexerToken(tokenType,
-                            sourceOffset, sourceLength, sourceLine, sourceColumn, tokenText);
-                    }
-                    else
-                    {
-                        var errorMessage = String.Format(UvssStrings.LexerInvalidSymbol,
-                            source[position], lineIndex, columnIndex);
-                        throw new UvssLexerException(errorMessage, ErrorCodeInvalidSymbol, lineIndex, columnIndex);
-                    }
+                    token = new UvssLexerToken(UvssLexerTokenType.Unknown,
+                        sourceOffset, sourceLength, sourceLine, sourceColumn, source[position].ToString());
                 }
 
                 position += EmitToken(output, token, ref lineIndex, ref columnIndex, options);
@@ -144,9 +111,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
                 case nameof(UvssLexerTokenType.Number):
                     return UvssLexerTokenType.Number;
-
-                case nameof(UvssLexerTokenType.Value):
-                    return UvssLexerTokenType.Value;
 
                 case nameof(UvssLexerTokenType.Comma):
                     return UvssLexerTokenType.Comma;
@@ -270,70 +234,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
-        /// Reads a <see cref="UvssLexerTokenType.Value"/> token starting at the specified position and
-        /// ending at the end of the source string or at the next instance of the specified character, whichever
-        /// comes first.
-        /// </summary>
-        /// <param name="source">The source string.</param>
-        /// <param name="position">The position at which the token begins.</param>
-        /// <param name="lineIndex">The index of the current line.</param>
-        /// <param name="columnIndex">The index of the current column.</param>
-        /// <param name="symbol">The symbol that terminates the value.</param>
-        /// <param name="terminateOnQualifiers">If true, the value token will be terminated
-        /// upon reaching an !important qualifier.</param>
-        /// <returns>A <see cref="UvssLexerToken"/> that represents the specified value.</returns>
-        private static UvssLexerToken ReadValueUntilSymbol(String source, Int32 position,
-            Int32 lineIndex, Int32 columnIndex, Char symbol, Boolean terminateOnQualifiers)
-        {
-            var offset = position;
-            var length = 0;
-
-            for (int i = position; i < source.Length; i++)
-            {
-                if (terminateOnQualifiers && GetImportantQualifierAtPosition(source, i))
-                    break;
-
-                if (source[i] == symbol)
-                    break;
-
-                length++;
-            }
-
-            var text = source.Substring(offset, length);
-            return new UvssLexerToken(UvssLexerTokenType.Value, offset, length, lineIndex, columnIndex, text);
-        }
-
-        /// <summary>
-        /// Reads a <see cref="UvssLexerTokenType.Value"/> token starting at the specified position and
-        /// ending at the end of the source string or at the next semi-colon, whichever comes first.
-        /// </summary>
-        /// <param name="source">The source string.</param>
-        /// <param name="position">The position at which the token begins.</param>
-        /// <param name="lineIndex">The index of the current line.</param>
-        /// <param name="columnIndex">The index of the current column.</param>
-        /// <returns>A <see cref="UvssLexerToken"/> that represents the specified value.</returns>
-        private static UvssLexerToken ReadValueUntilSemiColon(String source, Int32 position,
-            Int32 lineIndex, Int32 columnIndex)
-        {
-            return ReadValueUntilSymbol(source, position, lineIndex, columnIndex, ';', true);
-        }
-
-        /// <summary>
-        /// Reads a <see cref="UvssLexerTokenType.Value"/> token starting at the specified position and
-        /// ending at the end of the source string or at the next close curly brace, whichever comes first.
-        /// </summary>
-        /// <param name="source">The source string.</param>
-        /// <param name="position">The position at which the token begins.</param>
-        /// <param name="lineIndex">The index of the current line.</param>
-        /// <param name="columnIndex">The index of the current column.</param>
-        /// <returns>A <see cref="UvssLexerToken"/> that represents the specified value.</returns>
-        private static UvssLexerToken ReadValueUntilCloseCurlyBrace(String source, Int32 position,
-            Int32 lineIndex, Int32 columnIndex)
-        {
-            return ReadValueUntilSymbol(source, position, lineIndex, columnIndex, '}', false);
-        }
-
-        /// <summary>
         /// Reads an extended token, such as a comment, which continues until reaching some termination condition.
         /// </summary>
         /// <param name="source">The source string.</param>
@@ -410,47 +310,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             tokenText = source.Substring(offset, length);
         }
-
-        /// <summary>
-        /// Determines whether there is an upcoming <see cref="UvssLexerTokenType.Value"/> token.
-        /// </summary>
-        /// <param name="parenLevel">The current level of nesting of parentheses.</param>
-        /// <param name="curlyLevel">The current level of nesting of curly braces.</param>
-        /// <param name="tokenType">The current token's type.</param>
-        /// <param name="tokenText">The current token's text.</param>
-        /// <param name="readValueImmediately">A value indicating whether a value should be read
-        /// immediately after processing the current token.</param>
-        /// <param name="readValueAtNextCurlyBrace">A value indicating whether a value should be read
-        /// after processing the next opening curly brace.</param>
-        private static void HandlePendingValueTokens(Int32 parenLevel, Int32 curlyLevel, UvssLexerTokenType tokenType,
-            String tokenText, ref Boolean readValueImmediately, ref Boolean readValueAtNextCurlyBrace)
-        {
-            if (tokenType == UvssLexerTokenType.Colon)
-            {
-                if (curlyLevel == 1 && parenLevel == 0)
-                {
-                    readValueImmediately = true;
-                }
-                return;
-            }
-
-            if (tokenType == UvssLexerTokenType.EqualsOperator)
-            {
-                readValueAtNextCurlyBrace = true;
-                return;
-            }
-
-            if (tokenType == UvssLexerTokenType.Keyword && (
-                String.Equals(tokenText, "keyframe", StringComparison.Ordinal) ||
-                String.Equals(tokenText, "set", StringComparison.Ordinal) ||
-                String.Equals(tokenText, "play-sfx", StringComparison.Ordinal) ||
-                String.Equals(tokenText, "play-storyboard", StringComparison.Ordinal)))
-            {
-                readValueAtNextCurlyBrace = true;
-                return;
-            }
-        }
-
+        
         /// <summary>
         /// Determines whether the lexer has advanced to a new line and updates the line index accordingly.
         /// In addition, this method moves the column index forward by the length of the current token, 
@@ -552,75 +412,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static Int32 EmitToken(IList<UvssLexerToken> output, UvssLexerToken token,
             ref Int32 lineIndex, ref Int32 columnIndex, UvssLexerOptions options)
         {
-            if (token.Type == UvssLexerTokenType.Value)
-            {
-                return EmitValueToken(output, token, ref lineIndex, ref columnIndex, options);
-            }
-            else
-            {
-                HandleLineAndColumnTracking(token.Text, ref lineIndex, ref columnIndex, options);
-                output.Add(token);
-
-                return token.Text.Length;
-            }
-        }
-
-        /// <summary>
-        /// Emits a value token (and potentially leading and trailing white space tokens) into the output stream.
-        /// </summary>
-        /// <param name="output">The output stream into which to emit the token.</param>
-        /// <param name="token">The token to emit into the output stream.</param>
-        /// <param name="lineIndex">The current line index.</param>
-        /// <param name="columnIndex">The current column index.</param>
-        /// <param name="options">The lexer's configurable options.</param>
-        /// <returns>The number of characters by which to advance the lexer's position 
-        /// within the source string.</returns>
-        private static Int32 EmitValueToken(IList<UvssLexerToken> output, UvssLexerToken token,
-            ref Int32 lineIndex, ref Int32 columnIndex, UvssLexerOptions options)
-        {
-            var wsCountLeading = CountLeadingWhiteSpace(token.Text);
-            var wsCountTrailing = CountTrailingWhiteSpace(token.Text);
-            var wsCountTotal = wsCountLeading + wsCountTrailing;
-
-            // Emit the leading white space token, if there is one.
-            if (wsCountLeading > 0)
-            {
-                var wsTokenLeading = new UvssLexerToken(UvssLexerTokenType.WhiteSpace,
-                    token.SourceOffset, wsCountLeading,
-                    lineIndex, columnIndex, token.Text.Substring(0, wsCountLeading));
-
-                HandleLineAndColumnTracking(wsTokenLeading.Text, ref lineIndex, ref columnIndex, options);
-                output.Add(wsTokenLeading);
-            }
-
-            // Emit the value token.
-            if (wsCountTotal > 0)
-            {
-                var trimmedValueToken = new UvssLexerToken(UvssLexerTokenType.Value,
-                    token.SourceOffset + wsCountLeading,
-                    token.SourceLength - wsCountTotal,
-                    lineIndex, columnIndex,
-                    token.Text.Substring(wsCountLeading, token.Text.Length - wsCountTotal));
-
-                HandleLineAndColumnTracking(trimmedValueToken.Text, ref lineIndex, ref columnIndex, options);
-                output.Add(trimmedValueToken);
-            }
-            else
-            {
-                output.Add(token);
-            }
-
-            // Emit the trailing white space token, if there is one.
-            if (wsCountTrailing > 0)
-            {
-                var wsTokenTrailing = new UvssLexerToken(UvssLexerTokenType.WhiteSpace,
-                    token.SourceOffset + token.SourceLength - wsCountTrailing, wsCountTrailing,
-                    lineIndex, columnIndex,
-                    token.Text.Substring(token.Text.Length - wsCountTrailing, wsCountTrailing));
-
-                HandleLineAndColumnTracking(wsTokenTrailing.Text, ref lineIndex, ref columnIndex, options);
-                output.Add(wsTokenTrailing);
-            }
+            HandleLineAndColumnTracking(token.Text, ref lineIndex, ref columnIndex, options);
+            output.Add(token);
 
             return token.Text.Length;
         }

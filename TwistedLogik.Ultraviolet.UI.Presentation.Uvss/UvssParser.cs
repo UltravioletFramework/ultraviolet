@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
@@ -28,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         /// <param name="source">The source text to parse.</param>
         /// <returns>The <see cref="SyntaxNode"/> at the root of the parsed syntax tree.</returns>
-        public static SyntaxNode Parse(String source)
+        public static UvssDocumentSyntax Parse(String source)
         {
             Contract.Require(source, "source");
 
@@ -59,6 +60,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Counts the number of trivia tokens starting at the specified position in the lexer stream.
+        /// </summary>
+        private static Int32 CountTrivia(
+            IList<UvssLexerToken> input, Int32 position)
+        {
+            var count = 0;
+
+            while (position < input.Count)
+            {
+                if (!IsTrivia(input[position++]))
+                    break;
+
+                count++;
+            }
+
+            return count;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified lexer token contains trivia.
         /// </summary>
         /// <param name="token">The token to evaluate.</param>
@@ -78,20 +98,66 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified token kind is trivia.
+        /// </summary>
+        private static Boolean IsTrivia(SyntaxKind kind)
+        {
+            return
+                kind == SyntaxKind.EndOfLineTrivia ||
+                kind == SyntaxKind.MultiLineCommentTrivia ||
+                kind == SyntaxKind.SingleLineCommentTrivia ||
+                kind == SyntaxKind.WhitespaceTrivia;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified token kind is a leading qualifier for a selector.
+        /// </summary>
+        private static Boolean IsSelectorQualifier(SyntaxKind kind)
+        {
+            return
+                kind == SyntaxKind.HashToken ||
+                kind == SyntaxKind.PeriodToken;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified token kind is a selector combinator.
+        /// </summary>
+        private static Boolean IsSelectorCombinator(SyntaxKind kind)
+        {
+            return
+                kind == SyntaxKind.GreaterThanToken ||
+                kind == SyntaxKind.GreaterThanGreaterThanToken ||
+                kind == SyntaxKind.GreaterThanQuestionMarkToken ||
+                kind == SyntaxKind.SpaceToken;
+        }
+        
+        /// <summary>
+        /// Gets a value indicating whether the specified token kind terminates a selector.
+        /// </summary>
+        private static Boolean IsSelectorTerminator(SyntaxKind kind)
+        {
+            return
+                kind == SyntaxKind.AtSignToken ||
+                kind == SyntaxKind.CommaToken ||
+                kind == SyntaxKind.PipeToken ||
+                kind == SyntaxKind.OpenParenthesesToken ||
+                kind == SyntaxKind.CloseParenthesesToken ||
+                kind == SyntaxKind.OpenCurlyBraceToken ||
+                kind == SyntaxKind.CloseCurlyBraceToken ||
+                kind == SyntaxKind.EndOfFileToken;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified token kind is potentially the 
         /// beginning of a new selector part.
         /// </summary>
-        /// <param name="kind">The <see cref="SyntaxKind"/> value to evaluate.</param>
-        /// <returns>true if the token kind is potentially the beginning of a new selector
-        /// part; otherwise, false.</returns>
-        private static Boolean IsPotentialSelectorPart(SyntaxKind kind)
+        private static Boolean IsPotentiallyStartOfSelectorPart(SyntaxKind kind)
         {
-            return
-                kind == SyntaxKind.IdentifierToken ||
-                kind == SyntaxKind.HashToken ||
-                kind == SyntaxKind.PeriodToken ||
-                kind == SyntaxKind.OpenBracketToken ||
-                kind == SyntaxKind.AsteriskToken;
+            return 
+                kind != SyntaxKind.AtSignToken &&
+                !IsSelectorCombinator(kind) && 
+                !IsSelectorTerminator(kind) && 
+                !IsTrivia(kind);
         }
 
         /// <summary>
@@ -161,10 +227,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
                 case UvssLexerTokenType.Number:
                     return SyntaxKind.NumberToken;
-
-                case UvssLexerTokenType.Value:
-                    return SyntaxKind.PropertyValueToken;
-
+                    
                 case UvssLexerTokenType.Comma:
                     return SyntaxKind.CommaToken;
 
@@ -377,7 +440,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (nextTokenKind == SyntaxKind.None || nextTokenKind == SyntaxKind.EndOfFileToken)
                 return null;
 
-            if (IsPotentialSelectorPart(nextTokenKind))
+            if (IsPotentiallyStartOfSelectorPart(nextTokenKind))
             {
                 return ExpectRuleSet(input, ref position);
             }
@@ -388,85 +451,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     /* Storyboard */
                     case SyntaxKind.AtSignToken:
                         return ExpectStoryboard(input, ref position);
-
-                    /* Storyboard target */
-                    case SyntaxKind.TargetKeyword:
-                        {
-                            return
-                                MissingStoryboard(
-                                    ExpectStoryboardTarget(input, ref position)
-                                );
-                        }
-
-                    /* Animation */
-                    case SyntaxKind.AnimationKeyword:
-                        {
-                            return
-                                MissingStoryboard(
-                                    MissingStoryboardTarget(
-                                        ExpectAnimation(input, ref position)
-                                    )
-                                );
-                        }
-
-                    /* Animation keyframe */
-                    case SyntaxKind.KeyframeKeyword:
-                        {
-                            return
-                                MissingStoryboard(
-                                    MissingStoryboardTarget(
-                                        MissingAnimation(
-                                            ExpectAnimationKeyframe(input, ref position)
-                                        )
-                                    )
-                                );
-                        }
-
-                    /* Trigger (any) */
-                    case SyntaxKind.TriggerKeyword:
-                        {
-                            return MissingRuleSet(
-                                ExpectTrigger(input, ref position)
-                            );
-                        }
-
-                    /* Trigger (event) */
-                    case SyntaxKind.EventKeyword:
-                    case SyntaxKind.HandledKeyword:
-                    case SyntaxKind.SetHandledKeyword:
-                        {
-                            return MissingRuleSet(
-                                ExpectEventTrigger(input, ref position)
-                            );
-                        }
-
-                    /* Trigger (property) */
-                    case SyntaxKind.PropertyKeyword:
-                        {
-                            return MissingRuleSet(
-                                ExpectPropertyTrigger(input, ref position)
-                            );
-                        }
-
-                    /* Trigger actions */
-                    case SyntaxKind.PlayStoryboardKeyword:
-                    case SyntaxKind.PlaySfxKeyword:
-                    case SyntaxKind.SetKeyword:
-                        {
-                            return MissingRuleSet(
-                                MissingTrigger(
-                                    AcceptTriggerAction(input, ref position)
-                                )
-                            );
-                        }
-
-                    /* Visual transitions */
-                    case SyntaxKind.TransitionKeyword:
-                        {
-                            return MissingRuleSet(
-                                ExpectTransition(input, ref position)
-                            );
-                        }
 
                     default:
                         // TODO: Spit out structured trivia containing incomprehensible nodes
@@ -493,7 +477,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var builder = default(SyntaxListBuilder<TItem>);
 
-            while (true)
+            while (position < input.Count)
             {
                 var item = itemParser(input, ref position, builder.Count);
                 if (item == null)
@@ -539,7 +523,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var builder = default(SeparatedSyntaxListBuilder<TItem>);
 
-            while (true)
+            while (position < input.Count)
             {
                 var item = itemParser(input, ref position, builder.Count);
                 if (item == null)
@@ -959,7 +943,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return ExpectVisualDescendantCombinator(input, ref position);
 
             var nextTokenKind = SyntaxKindFromNextToken(input, position);
-            if (IsPotentialSelectorPart(nextTokenKind))
+            if (IsPotentiallyStartOfSelectorPart(nextTokenKind))
             {
                 return ExpectSelectorPart(input, ref position);
             }
@@ -1096,7 +1080,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return new UvssSelectorSubPartSyntax() { IsMissing = true };
         }
+        
+        /// <summary>
+        /// Parses the primary identifier for a selector sub-part.
+        /// </summary>
+        private static UvssIdentifierBaseSyntax ParseSelectorSubPartIdentifier(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+        {
+            var start = position + CountTrivia(input, position);
+            var end = start;
+            var length = 0;
 
+            while (end < input.Count)
+            {
+                var current = input[end];
+                var currentKind = SyntaxKindFromLexerTokenType(current);
+
+                if (IsSelectorCombinator(currentKind) ||
+                    IsSelectorTerminator(currentKind) ||
+                    IsSelectorQualifier(currentKind) ||
+                    IsTrivia(currentKind))
+                {
+                    break;
+                }
+
+                length += current.SourceLength;
+                end++;
+            }
+
+            if (start == end)
+                return accept ? null : MissingIdentifier();
+
+            var builder = new StringBuilder(length);
+            for (int i = start; i < end; i++)
+                builder.Append(input[i].Text);
+
+            var identifierTokenLeadingTrivia = AccumulateTrivia(input, ref position);
+            position += (end - start);
+            var identifierTokenTrailingTrivia = AccumulateTrivia(input, ref position);
+
+            var identifierToken = new SyntaxToken(SyntaxKind.IdentifierToken, builder.ToString());
+            var identifier = new UvssIdentifierSyntax(identifierToken)
+                .WithLeadingTrivia(identifierTokenLeadingTrivia)
+                .WithTrailingTrivia(identifierTokenTrailingTrivia);
+
+            return identifier;
+        }
+
+        /// <summary>
+        /// Parses a selector sub-part.
+        /// </summary>
         private static UvssSelectorSubPartSyntax ParseSelectorSubPart(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
@@ -1107,7 +1140,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 AcceptToken(input, ref position, SyntaxKind.HashToken, SyntaxKind.PeriodToken);
 
             var subPartIdentifier =
-                ExpectIdentifier(input, ref position);
+                ParseSelectorSubPartIdentifier(input, ref position, 0, false);
 
             if (accept && leadingQualifierToken == null && subPartIdentifier.IsMissing)
                 return null;
@@ -1121,7 +1154,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             /* to see if we have trailing white space that isn't followed by another combinator. If we do,
             /* we need to yank it out of the trivia and change our position so that the next pass through 
             /* the AcceptSelectorPartOrCombinator() method will see that it's sitting on a white space. */
-            if (IsPotentialSelectorPart(SyntaxKindFromNextToken(input, position)))
+            var nextKind = SyntaxKindFromNextToken(input, position);
+            if (!IsSelectorCombinator(nextKind) && !IsSelectorTerminator(nextKind))
             {
                 var trailingToken = trailingQualifierToken ?? (SyntaxNode)subPartIdentifier ?? leadingQualifierToken;
                 var trailingWhiteSpaceIndex = 0;
@@ -1207,6 +1241,93 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Parses a property value token from the lexer stream.
+        /// </summary>
+        private static SyntaxToken ParsePropertyValueToken(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept, SyntaxKind terminator)
+        {
+            var start = position + CountTrivia(input, position);
+            var end = start;
+            var length = 0;
+            var lastNonWhitespace = start;
+
+            while (end < input.Count)
+            {
+                var current = input[end];
+                var currentKind = SyntaxKindFromLexerTokenType(current);
+
+                if (currentKind == terminator || currentKind == SyntaxKind.ImportantKeyword)
+                {
+                    break;
+                }
+
+                if (currentKind != SyntaxKind.WhitespaceTrivia &&
+                    currentKind != SyntaxKind.SpaceToken)
+                {
+                    lastNonWhitespace = end;
+                }
+
+                length += current.SourceLength;
+                end++;
+            }
+
+            end = Math.Min(end, lastNonWhitespace + 1);
+
+            if (start == end)
+                return accept ? null : MissingToken(SyntaxKind.PropertyValueToken);
+
+            var builder = new StringBuilder(length);
+            for (int i = start; i < end; i++)
+                builder.Append(input[i].Text);
+
+            var valueTokenLeadingTrivia = AccumulateTrivia(input, ref position);
+            position += (end - start);
+            var valueTokenTrailingTrivia = AccumulateTrivia(input, ref position);
+
+            var valueToken = new SyntaxToken(SyntaxKind.PropertyValueToken, builder.ToString())
+                .WithLeadingTrivia(valueTokenLeadingTrivia)
+                .WithTrailingTrivia(valueTokenTrailingTrivia);
+
+            return valueToken;
+        }
+
+        /// <summary>
+        /// Accepts a property value token.
+        /// </summary>
+        private static SyntaxToken AcceptPropertyValueToken(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            return ParsePropertyValueToken(input, ref position, 0, true, SyntaxKind.SemiColonToken);
+        }
+
+        /// <summary>
+        /// Expects a property value token and produces a missing node if one is not found.
+        /// </summary>
+        private static SyntaxToken ExpectPropertyValueToken(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            return ParsePropertyValueToken(input, ref position, 0, false, SyntaxKind.SemiColonToken);
+        }
+
+        /// <summary>
+        /// Accepts a brace-enclosed property value token.
+        /// </summary>
+        private static SyntaxToken AcceptPropertyValueTokenWithBraces(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            return ParsePropertyValueToken(input, ref position, 0, true, SyntaxKind.CloseCurlyBraceToken);
+        }
+
+        /// <summary>
+        /// Expects a brace-enclosed property value token and produces a missing node if one is not found.
+        /// </summary>
+        private static SyntaxToken ExpectPropertyValueTokenWithBraces(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            return ParsePropertyValueToken(input, ref position, 0, false, SyntaxKind.CloseCurlyBraceToken);
+        }
+
+        /// <summary>
         /// Produces a missing property value.
         /// </summary>
         private static UvssPropertyValueSyntax MissingPropertyValue()
@@ -1224,7 +1345,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return null;
 
             var contentToken =
-                ExpectToken(input, ref position, SyntaxKind.PropertyValueToken);
+                ExpectPropertyValueToken(input, ref position);
 
             return new UvssPropertyValueSyntax(
                 contentToken);
@@ -1269,7 +1390,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 ExpectToken(input, ref position, SyntaxKind.OpenCurlyBraceToken);
 
             var contentToken =
-                ExpectToken(input, ref position, SyntaxKind.PropertyValueToken);
+                ExpectPropertyValueTokenWithBraces(input, ref position);
 
             var closeCurlyBraceToken =
                 ExpectToken(input, ref position, SyntaxKind.CloseCurlyBraceToken);
@@ -1855,7 +1976,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 ExpectEventName(input, ref position);
 
             var argumentList =
-                ExpectEventTriggerArgumentList(input, ref position);
+                AcceptEventTriggerArgumentList(input, ref position);
 
             var qualifierToken =
                 AcceptToken(input, ref position, SyntaxKind.ImportantKeyword);
@@ -2328,7 +2449,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (trailingTrivia != null)
                 trailingTriviaCount = (trailingTrivia.IsList) ? trailingTrivia.SlotCount : 1;
 
-            position -= 1 + (leadingTriviaCount + trailingTriviaCount);
+            var tokenCount = (token.Kind == SyntaxKind.EndOfFileToken) ? 0 : 1;
+            position -= tokenCount + (leadingTriviaCount + trailingTriviaCount);
         }
 
         /// <summary>

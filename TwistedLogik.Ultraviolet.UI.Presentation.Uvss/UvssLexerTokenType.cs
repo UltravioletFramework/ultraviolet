@@ -44,12 +44,7 @@
         /// The token contains a numeric literal.
         /// </summary>
         Number,
-
-        /// <summary>
-        /// The token contains a property value.
-        /// </summary>
-        Value,
-
+        
         /// <summary>
         /// The token contains a comma.
         /// </summary>

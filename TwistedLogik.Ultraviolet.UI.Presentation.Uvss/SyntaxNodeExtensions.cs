@@ -55,10 +55,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static TSyntax WithLeadingTrivia<TSyntax>(this TSyntax @this, IEnumerable<SyntaxTrivia> trivia)
             where TSyntax : SyntaxNode
         {
-            var triviaListBuilder = SyntaxListBuilder<SyntaxTrivia>.Create();
-            triviaListBuilder.AddRange(trivia);
-
-            @this.ChangeLeadingTrivia(triviaListBuilder.ToListNode());
+            if (trivia != null)
+            {
+                var triviaListBuilder = SyntaxListBuilder<SyntaxTrivia>.Create();
+                triviaListBuilder.AddRange(trivia);
+                @this.ChangeLeadingTrivia(triviaListBuilder.ToListNode());
+            }
+            else
+            {
+                @this.ChangeLeadingTrivia(null);
+            }
             return @this;
         }
 
@@ -99,10 +105,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static TSyntax WithTrailingTrivia<TSyntax>(this TSyntax @this, IEnumerable<SyntaxTrivia> trivia)
             where TSyntax : SyntaxNode
         {
-            var triviaListBuilder = SyntaxListBuilder<SyntaxTrivia>.Create();
-            triviaListBuilder.AddRange(trivia);
-
-            @this.ChangeTrailingTrivia(triviaListBuilder.ToListNode());
+            if (trivia != null)
+            {
+                var triviaListBuilder = SyntaxListBuilder<SyntaxTrivia>.Create();
+                triviaListBuilder.AddRange(trivia);
+                @this.ChangeTrailingTrivia(triviaListBuilder.ToListNode());
+            }
+            else
+            {
+                @this.ChangeTrailingTrivia(null);
+            }
             return @this;
         }
 
