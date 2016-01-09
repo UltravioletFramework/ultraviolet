@@ -9,6 +9,66 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
     public class UvssParserTests : UvssTestFramework
     {
         [TestMethod]
+        public void UvssParser_CorrectlyParsesCompleteGarbage()
+        {
+            var document = UvssParser.Parse(
+                "${}$% 4u95 47698406t26% ^UY(%U^ %(^257 629576%${%$[5p45 }${% 1%($%)!$(%90");
+
+            TheResultingNode(document)
+                .ShouldHaveFullString("${}$% 4u95 47698406t26% ^UY(%U^ %(^257 629576%${%$[5p45 }${% 1%($%)!$(%90", includeTrivia: true);
+        }
+
+        [TestMethod]
+        public void UvssParser_CreatesSkippedTokensTrivia_WhenSymbolCannotBeParsed()
+        {
+            var document = UvssParser.Parse(
+                "#foo { &&& }");
+
+            var ruleSet = document.Content[0] as UvssRuleSetSyntax;
+            TheResultingNode(ruleSet)
+                .ShouldBePresent();
+
+            var body = ruleSet.Body;
+            TheResultingNode(body)
+                .ShouldBePresent()
+                .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
+
+            var openCurlyBrace = body.OpenCurlyBraceToken;
+            TheResultingNode(openCurlyBrace)
+                .ShouldBePresent();
+
+            var openCurlyBraceTrivia = openCurlyBrace.GetTrailingTrivia();
+            TheResultingNode(openCurlyBraceTrivia)
+                .ShouldSatisfyTheCondition(x => x.IsList)
+                .ShouldSatisfyTheCondition(x => x.SlotCount == 5)
+                .ShouldHaveFullString(" &&& ");
+
+            var closeCurlyBrace = body.CloseCurlyBraceToken;
+            TheResultingNode(closeCurlyBrace)
+                .ShouldBePresent();
+        }
+
+        [TestMethod]
+        public void UvssParser_CreatesSkippedTokensTrivia_WhenSymbolIsUnexpected()
+        {
+            var document = UvssParser.Parse(
+                "} #foo {}");
+
+            var emptyStatement = document.Content[0] as UvssEmptyStatementSyntax;
+
+            var trivia = emptyStatement.GetLeadingTrivia();
+
+            TheResultingNode(emptyStatement)
+                .ShouldBePresent()
+                .ShouldHaveFullString("} ", includeTrivia: true);
+
+            var ruleSet = document.Content[1] as UvssRuleSetSyntax;
+            TheResultingNode(ruleSet)
+                .ShouldBePresent()
+                .ShouldHaveFullString("#foo {}");
+        }
+
+        [TestMethod]
         public void UvssParser_CorrectlyParsesEmptyDocument()
         {
             var document = UvssParser.Parse(
@@ -189,7 +249,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent()
                 .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
         }
-        
+
+        [TestMethod]
         public void UvssParser_CorrectlyParsesRuleSet_WhenEmpty_WithOneComplexSelector()
         {
             var document = UvssParser.Parse(

@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 else
                 {
                     var sourceOffset = position;
-                    var sourceLength = tokenText.Length;
+                    var sourceLength = 1;
                     var sourceLine = lineIndex;
                     var sourceColumn = columnIndex;
 

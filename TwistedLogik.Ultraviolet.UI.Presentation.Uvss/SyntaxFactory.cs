@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="SyntaxTrivia"/> instance that was created.</returns>
         public static SyntaxTrivia Whitespace(String text)
         {
-            return new SyntaxTrivia(SyntaxKind.WhitespaceTrivia, text);
+            return new StructurelessSyntaxTrivia(SyntaxKind.WhitespaceTrivia, text);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 SyntaxKind.MultiLineCommentTrivia :
                 SyntaxKind.SingleLineCommentTrivia;
 
-            return new SyntaxTrivia(kind, text);
+            return new StructurelessSyntaxTrivia(kind, text);
         }
 
         /// <summary>

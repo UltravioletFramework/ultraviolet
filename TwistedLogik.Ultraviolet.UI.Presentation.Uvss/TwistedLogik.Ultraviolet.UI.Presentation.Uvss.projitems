@@ -11,6 +11,9 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxList`1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SkippedTokensTriviaSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StructurelessSyntaxTrivia.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StructuredSyntaxTrivia.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.MissingList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.WithLotsOfChildren.cs" />
@@ -27,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\ArrayElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEmptyStatementSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIdentifierSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEscapedIdentifierSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIncompleteTriggerSyntax.cs" />

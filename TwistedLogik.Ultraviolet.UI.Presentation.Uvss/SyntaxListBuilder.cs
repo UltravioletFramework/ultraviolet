@@ -69,6 +69,58 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Adds the specified collection of items to the end of the list.
         /// </summary>
+        /// <param name="list">A syntax list containing the items to add to this list.</param>
+        /// <returns>A reference to this instance.</returns>
+        public SyntaxListBuilder AddRange(SyntaxNode list)
+        {
+            if (list.IsList)
+            {
+                EnsureAdditionalCapacity(list.SlotCount);
+
+                for (int i = 0; i < list.SlotCount; i++)
+                    AddUnsafe(list.GetSlot(i));
+
+                return this;
+            }
+            else
+            {
+                return Add(list);
+            }
+        }
+
+        /// <summary>
+        /// Adds the specified collection of items to the end of the list.
+        /// </summary>
+        /// <param name="list">A syntax list containing the items to add to this list.</param>
+        /// <param name="offset">The offset within <paramref name="list"/> at which to begin adding items</param>
+        /// <param name="length">The number of items to add to the list.</param>
+        /// <returns>A reference to this instance.</returns>
+        public SyntaxListBuilder AddRange(SyntaxNode list, Int32 offset, Int32 length)
+        {
+            if (list.IsList)
+            {
+                EnsureAdditionalCapacity(length - offset);
+
+                for (int i = offset; i < offset + length; i++)
+                    AddUnsafe(list.GetSlot(i));
+
+                return this;
+            }
+            else
+            {
+                if (offset > 0)
+                    throw new ArgumentOutOfRangeException(nameof(offset));
+
+                if (length != 1)
+                    throw new ArgumentOutOfRangeException(nameof(length));
+
+                return Add(list);
+            }
+        }
+
+        /// <summary>
+        /// Adds the specified collection of items to the end of the list.
+        /// </summary>
         /// <typeparam name="TNode">The type of node contained by the syntax list being added.</typeparam>
         /// <param name="list">A syntax list containing the items to add to this list.</param>
         /// <returns>A reference to this instance.</returns>

@@ -247,7 +247,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (trivia == null)
                 return false;
 
-            return trivia.Text.EndsWith(Environment.NewLine);
+            return trivia.ToFullString().EndsWith(Environment.NewLine);
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (trivia == null)
                 return false;
 
-            return trivia.Text.EndsWith(" ");
+            return trivia.ToFullString().EndsWith(" ");
         }
 
         /// <summary>
@@ -398,10 +398,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxTrivia GetLineBreakTrivia(Int32 count, Int32 indentation)
         {
             if (count == 1 && indentation == 0)
-                return new SyntaxTrivia(SyntaxKind.WhitespaceTrivia, Environment.NewLine);
+                return new StructurelessSyntaxTrivia(SyntaxKind.WhitespaceTrivia, Environment.NewLine);
 
             if (count == 0 && indentation == 1)
-                return new SyntaxTrivia(SyntaxKind.WhitespaceTrivia, "\t");
+                return new StructurelessSyntaxTrivia(SyntaxKind.WhitespaceTrivia, "\t");
 
             var builder = new StringBuilder();
             for (int i = 0; i < count; i++)
@@ -413,7 +413,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 builder.Append("\t");
             }
 
-            return new SyntaxTrivia(SyntaxKind.WhitespaceTrivia, builder.ToString());
+            return new StructurelessSyntaxTrivia(SyntaxKind.WhitespaceTrivia, builder.ToString());
         }
 
         /// <summary>
@@ -421,7 +421,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         private static SyntaxTrivia GetSpaceTrivia(Int32 count)
         {
-            return new SyntaxTrivia(SyntaxKind.WhitespaceTrivia, new String(' ', count));
+            return new StructurelessSyntaxTrivia(SyntaxKind.WhitespaceTrivia, new String(' ', count));
         }
 
         /// <summary>

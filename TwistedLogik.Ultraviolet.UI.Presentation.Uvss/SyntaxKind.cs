@@ -31,6 +31,11 @@
         WhitespaceTrivia,
 
         /// <summary>
+        /// Trivia representing unparsable tokens.
+        /// </summary>
+        SkippedTokensTrivia,
+
+        /// <summary>
         /// The "play-storyboard" keyword.
         /// </summary>
         PlayStoryboardKeyword,
@@ -241,6 +246,11 @@
         EndOfFileToken,
 
         /// <summary>
+        /// An empty token.
+        /// </summary>
+        EmptyToken,
+
+        /// <summary>
         /// A list of nodes.
         /// </summary>
         List,
@@ -394,5 +404,10 @@
         /// An escaped identifier node.
         /// </summary>
         EscapedIdentifier,
+
+        /// <summary>
+        /// An empty statement.
+        /// </summary>
+        EmptyStatement,
     }
 }

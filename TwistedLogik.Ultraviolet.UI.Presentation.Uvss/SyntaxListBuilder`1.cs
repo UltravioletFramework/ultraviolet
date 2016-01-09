@@ -89,6 +89,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Adds the specified collection of items to the end of the list.
         /// </summary>
         /// <param name="list">A syntax list containing the items to add to this list.</param>
+        public void AddRange(SyntaxNode list) =>
+            builder.AddRange(list);
+
+        /// <summary>
+        /// Adds the specified collection of items to the end of the list.
+        /// </summary>
+        /// <param name="list">A syntax list containing the items to add to this list.</param>
+        /// <param name="offset">The offset within <paramref name="list"/> at which to begin adding items</param>
+        /// <param name="length">The number of items to add to the list.</param>
+        public void AddRange(SyntaxNode list, Int32 offset, Int32 length) =>
+            builder.AddRange(list, offset, length);
+
+        /// <summary>
+        /// Adds the specified collection of items to the end of the list.
+        /// </summary>
+        /// <param name="list">A syntax list containing the items to add to this list.</param>
         public void AddRange(SyntaxList<TNode> list) => 
             builder.AddRange(list);
 

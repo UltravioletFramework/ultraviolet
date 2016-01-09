@@ -94,7 +94,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 token.Type == UvssLexerTokenType.EndOfLine ||
                 token.Type == UvssLexerTokenType.SingleLineComment ||
                 token.Type == UvssLexerTokenType.MultiLineComment ||
-                token.Type == UvssLexerTokenType.WhiteSpace;
+                token.Type == UvssLexerTokenType.WhiteSpace ||
+                token.Type == UvssLexerTokenType.Unknown;
         }
 
         /// <summary>
@@ -106,7 +107,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 kind == SyntaxKind.EndOfLineTrivia ||
                 kind == SyntaxKind.MultiLineCommentTrivia ||
                 kind == SyntaxKind.SingleLineCommentTrivia ||
-                kind == SyntaxKind.WhitespaceTrivia;
+                kind == SyntaxKind.WhitespaceTrivia ||
+                kind == SyntaxKind.SkippedTokensTrivia;
         }
 
         /// <summary>
@@ -341,7 +343,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxToken GetNextToken(
             IList<UvssLexerToken> input, ref Int32 position, Boolean treatWhiteSpaceAsMeaningful = false)
         {
-            var leadingTrivia = AccumulateTrivia(input, ref position, treatWhiteSpaceAsMeaningful, isLeading: true);
+            var leadingTrivia = AccumulateTrivia(input, ref position,
+                treatWhiteSpaceAsCombinator: treatWhiteSpaceAsMeaningful, 
+                treatCurrentTokenAsTrivia: false,
+                isLeading: true);
             var leadingTriviaNode = ConvertTriviaList(leadingTrivia);
 
             if (position >= input.Count)
@@ -401,13 +406,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Converts a lexer token to the corresponding syntax trivia.
         /// </summary>
         /// <param name="token">The token to convert.</param>
+        /// <param name="isSkippedToken">A value indicating whether this is a skipped token.</param>
         /// <returns>The converted syntax trivia.</returns>
-        private static SyntaxNode ConvertTrivia(UvssLexerToken token)
+        private static SyntaxNode ConvertTrivia(UvssLexerToken token, Boolean isSkippedToken = false)
         {
-            var tokenKind = SyntaxKindFromLexerTokenType(token);
-            var tokenText = token.Text;
+            if (token.Type == UvssLexerTokenType.Unknown || isSkippedToken)
+            {
+                return new SkippedTokensTriviaSyntax(
+                    new SyntaxToken(SyntaxKind.None, token.Text));
+            }
+            else
+            {
+                var tokenKind = SyntaxKindFromLexerTokenType(token);
+                var tokenText = token.Text;
 
-            return new SyntaxTrivia(tokenKind, tokenText);
+                return new StructurelessSyntaxTrivia(
+                    tokenKind, tokenText);
+            }
         }
 
         /// <summary>
@@ -437,7 +452,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
             var nextTokenKind = SyntaxKindFromNextToken(input, position);
-            if (nextTokenKind == SyntaxKind.None || nextTokenKind == SyntaxKind.EndOfFileToken)
+            if (nextTokenKind == SyntaxKind.EndOfFileToken)
                 return null;
 
             if (IsPotentiallyStartOfSelectorPart(nextTokenKind))
@@ -452,9 +467,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     case SyntaxKind.AtSignToken:
                         return ExpectStoryboard(input, ref position);
 
+                    /* ??? */
                     default:
-                        // TODO: Spit out structured trivia containing incomprehensible nodes
-                        throw new InvalidOperationException();
+                        return ExpectEmptyStatement(input, ref position);
                 }
             }
         }
@@ -1115,7 +1130,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             for (int i = start; i < end; i++)
                 builder.Append(input[i].Text);
 
-            var identifierTokenLeadingTrivia = AccumulateTrivia(input, ref position);
+            var identifierTokenLeadingTrivia = AccumulateTrivia(input, ref position, isLeading: true);
             position += (end - start);
             var identifierTokenTrailingTrivia = AccumulateTrivia(input, ref position);
 
@@ -2355,6 +2370,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Parses an empty statement.
+        /// </summary>
+        private static UvssEmptyStatementSyntax ParseEmptyStatement(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+        {
+            var trivia = AccumulateTrivia(input, ref position, 
+                treatWhiteSpaceAsCombinator: false,
+                treatCurrentTokenAsTrivia: true,
+                isLeading: true);
+
+            var emptyToken = new SyntaxToken(SyntaxKind.EmptyToken, null);
+            return new UvssEmptyStatementSyntax(emptyToken)
+                .WithLeadingTrivia(trivia);
+        }
+
+        /// <summary>
+        /// Accepts an empty statement.
+        /// </summary>
+        private static UvssEmptyStatementSyntax AcceptEmptyStatement(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Expects an empty statement.
+        /// </summary>
+        private static UvssEmptyStatementSyntax ExpectEmptyStatement(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listPosition = 0)
+        {
+            return ParseEmptyStatement(input, ref position, listPosition, false);
+        }
+
+        /// <summary>
         /// Accepts a comma token.
         /// </summary>
         private static SyntaxToken AcceptComma(
@@ -2480,9 +2529,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     return;
                 }
 
-                var builder = new SyntaxListBuilder<SyntaxTrivia>();
-                builder.AddRange((SyntaxList<SyntaxTrivia>)trivia, 0, index);
-
+                var builder = SyntaxListBuilder<SyntaxTrivia>.Create();
+                builder.AddRange(trivia, 0, index);
+                                
                 position -= (trivia.SlotCount - index);
                 node.ChangeTrailingTrivia(builder.ToListNode());
             }
@@ -2503,22 +2552,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="position">The current position in the lexer token stream.</param>
         /// <param name="treatWhiteSpaceAsCombinator">A value indicating whether white space
         /// should be treated as a selector combinator, rather than trivia.</param>
+        /// <param name="treatCurrentTokenAsTrivia">A value indicating whether to treat
+        /// the current token as trivia, even if it otherwise wouldn't be considered trivia.</param>
         /// <param name="isLeading">A value indicating whether this is leading trivia.</param>
         /// <returns>The list of accumulated trivia, or null if no trivia was accumulated.</returns>
         private static IList<SyntaxTrivia> AccumulateTrivia(
-            IList<UvssLexerToken> input, ref Int32 position, Boolean treatWhiteSpaceAsCombinator = false, Boolean isLeading = false)
+            IList<UvssLexerToken> input, ref Int32 position, 
+            Boolean treatWhiteSpaceAsCombinator = false, 
+            Boolean treatCurrentTokenAsTrivia = false,
+            Boolean isLeading = false)
         {
             var triviaList = default(List<SyntaxTrivia>);
 
             while (position < input.Count)
             {
-                if (!IsTrivia(input[position], treatWhiteSpaceAsCombinator))
-                    break;
+                if (!treatCurrentTokenAsTrivia || triviaList != null)
+                {
+                    if (!IsTrivia(input[position], treatWhiteSpaceAsCombinator))
+                        break;
+                }
 
                 if (triviaList == null)
                     triviaList = new List<SyntaxTrivia>();
 
-                var trivia = (SyntaxTrivia)ConvertTrivia(input[position]);
+                var trivia = (SyntaxTrivia)ConvertTrivia(input[position], 
+                    treatCurrentTokenAsTrivia && triviaList.Count == 0);
 
                 triviaList.Add(trivia);
                 position++;
