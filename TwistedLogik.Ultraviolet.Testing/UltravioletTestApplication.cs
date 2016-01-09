@@ -109,8 +109,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <inheritdoc/>
         public void RunFor(TimeSpan time)
         {
-            var target = DateTime.UtcNow + time;
-            RunUntil(() => DateTime.UtcNow >= target);
+            RunUntil(() => DateTime.UtcNow >= startTime + time);
         }
 
         /// <inheritdoc/>
@@ -295,6 +294,9 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <param name="uv">The Ultraviolet context.</param>
         private void OnFrameStart(UltravioletContext uv)
         {
+            if (frameCount == 0)
+                startTime = DateTime.UtcNow;
+
             if (frameActions != null)
             {
                 var actions = frameActions.Where(x => x.Frame == frameCount);
@@ -341,6 +343,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         private Bitmap bmp;
         private Int32 frameCount;
         private Int32 framesToSkip;
+        private DateTime startTime;
         private List<FrameAction> frameActions;
 
         // The render target to which the test scene will be rendered.
