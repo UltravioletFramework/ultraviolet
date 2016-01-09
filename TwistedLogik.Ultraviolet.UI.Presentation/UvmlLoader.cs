@@ -1207,7 +1207,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The specified delegate.</returns>
         private static Delegate CreateEventDelegate(UIElement uiElement, Type handlerType, String handlerName, InstantiationContext context)
         {
-            var dataSource = (Object)uiElement.View;
+            var dataSource = context.DataSource;
             var dataSourceType = context.DataSourceType;
 
             var templatedParent = context.TemplatedParent as UIElement;

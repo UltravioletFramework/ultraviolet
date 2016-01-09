@@ -2145,7 +2145,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     if (!Generic.IsTouchDeviceAvailable && button == MouseButton.Left)
                     {
-                        var genericInteractionData = new RoutedEventData(dobj);
+                        var genericInteractionData = new RoutedEventData(dobj) { Handled = handled };
                         Generic.RaisePreviewGenericInteraction(dobj, device, ref genericInteractionData);
                         Generic.RaiseGenericInteraction(dobj, device, ref genericInteractionData);
 
@@ -2294,7 +2294,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (fingerID == 0)
                 {
-                    var genericInteractionData = new RoutedEventData(recipient);
+                    var genericInteractionData = new RoutedEventData(recipient) { Handled = handled };
                     Generic.RaisePreviewGenericInteraction(recipient, device, ref genericInteractionData);
                     Generic.RaiseGenericInteraction(recipient, device, ref genericInteractionData);
 

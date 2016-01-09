@@ -97,6 +97,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource InvalidCompilerOptions               = new StringResource(StringDatabase, "INVALID_COMPILER_OPTIONS");
         public static readonly StringResource CannotFindViewModelWrapper           = new StringResource(StringDatabase, "CANNOT_FIND_VIEW_MODEL_WRAPPER");
         public static readonly StringResource VersionedStringSourceIsStale         = new StringResource(StringDatabase, "VERSIONED_STRING_SOURCE_IS_STALE");
+        public static readonly StringResource ViewModelMismatch                    = new StringResource(StringDatabase, "VIEW_MODEL_MISMATCH");
 #pragma warning restore 1591
     }
 }
