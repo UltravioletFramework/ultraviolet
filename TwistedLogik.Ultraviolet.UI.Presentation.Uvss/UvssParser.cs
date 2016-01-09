@@ -267,34 +267,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 case UvssLexerTokenType.CloseBracket:
                     return SyntaxKind.CloseBracketToken;
 
-                case UvssLexerTokenType.UniversalSelector:
+                case UvssLexerTokenType.Asterisk:
                     return SyntaxKind.AsteriskToken;
 
-                case UvssLexerTokenType.TemplatedChildCombinator:
+                case UvssLexerTokenType.GreaterThanGreaterThan:
                     return SyntaxKind.GreaterThanGreaterThanToken;
 
-                case UvssLexerTokenType.LogicalChildCombinator:
+                case UvssLexerTokenType.GreaterThanQuestionMark:
                     return SyntaxKind.GreaterThanQuestionMarkToken;
 
-                case UvssLexerTokenType.EqualsOperator:
+                case UvssLexerTokenType.Equals:
                     return SyntaxKind.EqualsToken;
 
-                case UvssLexerTokenType.NotEqualsOperator:
+                case UvssLexerTokenType.NotEquals:
                     return SyntaxKind.NotEqualsToken;
 
-                case UvssLexerTokenType.LessThanOperator:
+                case UvssLexerTokenType.LessThan:
                     return SyntaxKind.LessThanToken;
 
-                case UvssLexerTokenType.LessThanEqualsOperator:
+                case UvssLexerTokenType.LessThanEquals:
                     return SyntaxKind.LessThanEqualsToken;
 
-                case UvssLexerTokenType.GreaterThanOperator:
+                case UvssLexerTokenType.GreaterThan:
                     return SyntaxKind.GreaterThanToken;
 
-                case UvssLexerTokenType.GreaterThanEqualsOperator:
+                case UvssLexerTokenType.GreaterThanEquals:
                     return SyntaxKind.GreaterThanEqualsToken;
 
-                case UvssLexerTokenType.NavigationExpressionOperator:
+                case UvssLexerTokenType.Pipe:
                     return SyntaxKind.PipeToken;
 
                 default:

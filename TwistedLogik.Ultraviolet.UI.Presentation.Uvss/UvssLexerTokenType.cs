@@ -46,37 +46,37 @@
         Number,
         
         /// <summary>
-        /// The token contains a comma.
+        /// The token contains a comma (,).
         /// </summary>
         Comma,
 
         /// <summary>
-        /// The token contains a colon.
+        /// The token contains a colon (:).
         /// </summary>
         Colon,
 
         /// <summary>
-        /// The token contains a semi-colon.
+        /// The token contains a semi-colon (;).
         /// </summary>
         SemiColon,
 
         /// <summary>
-        /// The token contains the storyboard prefix (@).
+        /// The token contains an at sign (@).
         /// </summary>
         AtSign,
 
         /// <summary>
-        /// The token contains the select by name prefix (#).
+        /// The token contains a hash symbol (#).
         /// </summary>
         Hash,
 
         /// <summary>
-        /// The token contains the select by class prefix (.).
+        /// The token contains a period (.).
         /// </summary>
         Period,
 
         /// <summary>
-        /// The token contains the select by specific type suffix (!).
+        /// The token contains an exclamation mark (!).
         /// </summary>
         ExclamationMark,
 
@@ -111,53 +111,53 @@
         CloseBracket,
 
         /// <summary>
-        /// The token contains a universal selector (*).
+        /// The token contains an asterisk (*).
         /// </summary>
-        UniversalSelector,
+        Asterisk,
 
         /// <summary>
-        /// The token contains the templated child combinator (>>).
+        /// The token contains a double greater than symbol (>>).
         /// </summary>
-        TemplatedChildCombinator,
+        GreaterThanGreaterThan,
 
         /// <summary>
-        /// The token contains the logical child combinator (>?).
+        /// The token contains a greater than symbol followed by a question mark (>?).
         /// </summary>
-        LogicalChildCombinator,
+        GreaterThanQuestionMark,
         
         /// <summary>
-        /// The token contains the equals operator (=).
+        /// The token contains the equals symbol (=).
         /// </summary>
-        EqualsOperator,
+        Equals,
 
         /// <summary>
-        /// The token contains the not equals operator (&lt;&gt;).
+        /// The token contains the not equals symbol (&lt;&gt;).
         /// </summary>
-        NotEqualsOperator,
+        NotEquals,
 
         /// <summary>
-        /// The token contains the less than operator (&lt;).
+        /// The token contains the less than symbol (&lt;).
         /// </summary>
-        LessThanOperator,
+        LessThan,
 
         /// <summary>
-        /// The token contains the less than or equal to operator (&lt;=).
+        /// The token contains the less than or equal to symbol (&lt;=).
         /// </summary>
-        LessThanEqualsOperator,
+        LessThanEquals,
 
         /// <summary>
-        /// The token contains the greater than operator (>).
+        /// The token contains the greater than symbol (>).
         /// </summary>
-        GreaterThanOperator,
+        GreaterThan,
 
         /// <summary>
-        /// The token contains the greater than or equal to operator (>=).
+        /// The token contains the greater than or equal to symbol (>=).
         /// </summary>
-        GreaterThanEqualsOperator,
+        GreaterThanEquals,
 
         /// <summary>
-        /// The token contains the navigation expression operator (|).
+        /// The token contains a pipe (|).
         /// </summary>
-        NavigationExpressionOperator,
+        Pipe,
     }
 }

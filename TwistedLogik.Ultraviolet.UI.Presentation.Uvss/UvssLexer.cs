@@ -151,35 +151,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 case nameof(UvssLexerTokenType.CloseBracket):
                     return UvssLexerTokenType.CloseBracket;
 
-                case nameof(UvssLexerTokenType.UniversalSelector):
-                    return UvssLexerTokenType.UniversalSelector;
+                case nameof(UvssLexerTokenType.Asterisk):
+                    return UvssLexerTokenType.Asterisk;
 
-                case nameof(UvssLexerTokenType.TemplatedChildCombinator):
-                    return UvssLexerTokenType.TemplatedChildCombinator;
+                case nameof(UvssLexerTokenType.GreaterThanGreaterThan):
+                    return UvssLexerTokenType.GreaterThanGreaterThan;
 
-                case nameof(UvssLexerTokenType.LogicalChildCombinator):
-                    return UvssLexerTokenType.LogicalChildCombinator;
+                case nameof(UvssLexerTokenType.GreaterThanQuestionMark):
+                    return UvssLexerTokenType.GreaterThanQuestionMark;
                     
-                case nameof(UvssLexerTokenType.EqualsOperator):
-                    return UvssLexerTokenType.EqualsOperator;
+                case nameof(UvssLexerTokenType.Equals):
+                    return UvssLexerTokenType.Equals;
 
-                case nameof(UvssLexerTokenType.NotEqualsOperator):
-                    return UvssLexerTokenType.NotEqualsOperator;
+                case nameof(UvssLexerTokenType.NotEquals):
+                    return UvssLexerTokenType.NotEquals;
 
-                case nameof(UvssLexerTokenType.LessThanOperator):
-                    return UvssLexerTokenType.LessThanOperator;
+                case nameof(UvssLexerTokenType.LessThan):
+                    return UvssLexerTokenType.LessThan;
 
-                case nameof(UvssLexerTokenType.LessThanEqualsOperator):
-                    return UvssLexerTokenType.LessThanEqualsOperator;
+                case nameof(UvssLexerTokenType.LessThanEquals):
+                    return UvssLexerTokenType.LessThanEquals;
 
-                case nameof(UvssLexerTokenType.GreaterThanOperator):
-                    return UvssLexerTokenType.GreaterThanOperator;
+                case nameof(UvssLexerTokenType.GreaterThan):
+                    return UvssLexerTokenType.GreaterThan;
 
-                case nameof(UvssLexerTokenType.GreaterThanEqualsOperator):
-                    return UvssLexerTokenType.GreaterThanEqualsOperator;
+                case nameof(UvssLexerTokenType.GreaterThanEquals):
+                    return UvssLexerTokenType.GreaterThanEquals;
 
-                case nameof(UvssLexerTokenType.NavigationExpressionOperator):
-                    return UvssLexerTokenType.NavigationExpressionOperator;
+                case nameof(UvssLexerTokenType.Pipe):
+                    return UvssLexerTokenType.Pipe;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(name));
@@ -485,25 +485,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 @"\G\["),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.CloseBracket,
                 @"\G\]"),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.UniversalSelector,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Asterisk,
                 @"\G\*"),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.TemplatedChildCombinator,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.GreaterThanGreaterThan,
                 @"\G\>\>"),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.LogicalChildCombinator,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.GreaterThanQuestionMark,
                 @"\G\>\?"),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.NotEqualsOperator,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.NotEquals,
                 @"\G\<\>"),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.LessThanEqualsOperator,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.LessThanEquals,
                 @"\G\<="),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.GreaterThanEqualsOperator,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.GreaterThanEquals,
                 @"\G\>="),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.LessThanOperator,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.LessThan,
                 @"\G\<"),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.GreaterThanOperator,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.GreaterThan,
                 @"\G\>"),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.EqualsOperator,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Equals,
                 @"\G="),
-            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.NavigationExpressionOperator,
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Pipe,
                 @"\G\|"),
         };
 
