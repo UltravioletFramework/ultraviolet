@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="leadingTrivia">The syntax token's leading trivia, if it has any.</param>
         /// <param name="trailingTrivia">The syntax token's trailing trivia, if it has any.</param>
         public SyntaxToken(SyntaxKind kind, String text, SyntaxNode leadingTrivia, SyntaxNode trailingTrivia)
-            : base(kind, text?.Length ?? 0)
+            : base(kind)
         {
             this.Text = text;
 
@@ -193,6 +193,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         internal override void ChangeTrailingTrivia(SyntaxNode trivia)
         {
             this.trailingTrivia = trivia;
+        }
+
+        /// <inheritdoc/>
+        protected override Int32 ComputeFullWidth()
+        {
+            return
+                GetLeadingTriviaWidth() +
+                (Text?.Length ?? 0) +
+                GetTrailingTriviaWidth();
         }
 
         /// <inheritdoc/>

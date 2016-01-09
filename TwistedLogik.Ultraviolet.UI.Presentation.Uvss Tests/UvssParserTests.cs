@@ -9,6 +9,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
     public class UvssParserTests : UvssTestFramework
     {
         [TestMethod]
+        public void UvssParser_CorrectlyCalculatesNodeSpan()
+        {
+            var document = UvssParser.Parse(
+                "\r\n" +
+                "#foo {}");
+
+            var ruleSet = document.Content[0] as UvssRuleSetSyntax;
+            TheResultingNode(ruleSet)
+                .ShouldBePresent();
+
+            var selector = ruleSet.Selectors[0];
+            TheResultingNode(selector)
+                .ShouldBePresent()
+                .ShouldHaveSpan(0, 7); // "\r\n#foo "
+
+            var selectorPart = selector.Components[0] as UvssSelectorPartSyntax;
+            TheResultingNode(selectorPart)
+                .ShouldBePresent();
+
+            var selectorSubPart = selectorPart.SubParts[0];
+            TheResultingNode(selectorSubPart)
+                .ShouldBePresent();
+
+            var selectorHashToken = selectorSubPart.LeadingQualifierToken;
+            TheResultingNode(selectorHashToken)
+                .ShouldBePresent()
+                .ShouldHaveSpan(0, 3); // "\r\n#"
+
+            var selectorIdentifier = selectorSubPart.SubPartIdentifier;
+            TheResultingNode(selectorIdentifier)
+                .ShouldBePresent()
+                .ShouldHaveSpan(3, 4); // "foo ";
+        }
+
+        [TestMethod]
         public void UvssParser_CorrectlyParsesCompleteGarbage()
         {
             var document = UvssParser.Parse(

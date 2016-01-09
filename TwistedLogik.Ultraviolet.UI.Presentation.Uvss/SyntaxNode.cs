@@ -15,12 +15,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Initializes a new instance of the <see cref="SyntaxNode"/> class.
         /// </summary>
         /// <param name="kind">The node's <see cref="SyntaxKind"/> value.</param>
-        /// <param name="fullWidth">The full width of the node, including any leading or trailing trivia,
-        /// or -1 if the full width of the node is not yet known.</param>
-        public SyntaxNode(SyntaxKind kind, Int32 fullWidth = -1)
+        public SyntaxNode(SyntaxKind kind)
         {
             this.Kind = kind;
-            this.FullWidth = fullWidth;
+            this.FullWidth = -1;
         }
 
         /// <summary>
@@ -360,6 +358,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 lastToken.ChangeTrailingTrivia(trivia);
             }
         }
+        
+        /// <summary>
+        /// Calculates the position of the node within the source text.
+        /// </summary>
+        /// <returns>The position of the node within the source text.</returns>
+        protected virtual Int32 CalculatePosition()
+        {
+            if (Parent == null)
+                return 0;
+
+            var position = Parent.Position;
+            for (int i = 0; i < Parent.SlotCount; i++)
+            {
+                var sibling = Parent.GetSlot(i);
+                if (sibling == this)
+                    break;
+
+                if (sibling != null)
+                    position += sibling.FullWidth;
+            }
+
+            return position;
+        }
+
+        /// <summary>
+        /// Compuates the full width of the node, including any leading or trailing trivia.
+        /// </summary>
+        /// <returns>The full width of the node.</returns>
+        protected virtual Int32 ComputeFullWidth()
+        {
+            var width = 0;
+
+            for (int i = 0; i < SlotCount; i++)
+            {
+                var slot = GetSlot(i);
+                if (slot != null)
+                {
+                    width += slot.FullWidth;
+                }
+            }
+
+            return width;
+        }
 
         /// <summary>
         /// Updates the value of the <see cref="IsMissing"/> property.
@@ -430,49 +471,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     child.InvalidatePosition();
                 }
             }
-        }
-
-        /// <summary>
-        /// Calculates the position of the node within the source text.
-        /// </summary>
-        /// <returns>The position of the node within the source text.</returns>
-        private Int32 CalculatePosition()
-        {
-            if (Parent == null)
-                return 0;
-
-            var position = Parent.Position;
-            for (int i = 0; i < Parent.SlotCount; i++)
-            {
-                var sibling = Parent.GetSlot(i);
-                if (sibling == this)
-                    break;
-
-                if (sibling != null)
-                    position += sibling.FullWidth;
-            }
-
-            return position;
-        }
-
-        /// <summary>
-        /// Compuates the full width of the node, including any leading or trailing trivia.
-        /// </summary>
-        /// <returns>The full width of the node.</returns>
-        private Int32 ComputeFullWidth()
-        {
-            var width = 0;
-
-            for (int i = 0; i < SlotCount; i++)
-            {
-                var slot = GetSlot(i);
-                if (slot != null)
-                {
-                    width += slot.FullWidth;
-                }
-            }
-
-            return width;
         }
 
         /// <summary>

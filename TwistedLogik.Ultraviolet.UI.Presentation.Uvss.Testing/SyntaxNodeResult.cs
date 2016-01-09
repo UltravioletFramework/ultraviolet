@@ -120,6 +120,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing
         }
 
         /// <summary>
+        /// Asserts that this node occupies the specified span of the source text.
+        /// </summary>
+        /// <param name="position">The node's position within the source text.</param>
+        /// <param name="fullWidth">The node's full width within the source text.</param>
+        /// <returns>The result object.</returns>
+        public SyntaxNodeResult<TNode> ShouldHaveSpan(Int32 position, Int32 fullWidth)
+        {
+            Assert.AreEqual(position, node.Position);
+            Assert.AreEqual(fullWidth, node.FullWidth);
+            return this;
+        }
+
+        /// <summary>
         /// Gets the underlying node.
         /// </summary>
         public TNode Node

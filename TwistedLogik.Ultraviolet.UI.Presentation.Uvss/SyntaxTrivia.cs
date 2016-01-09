@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="fullWidth">The full width of the node, including any leading or trailing trivia,
         /// or -1 if the full width of the node is not yet known.</param>
         public SyntaxTrivia(SyntaxKind kind, Int32 fullWidth = -1)
-            : base(kind, fullWidth)
+            : base(kind)
         {
 
         }

@@ -45,5 +45,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             writer.Write(Text);
         }
+        
+        /// <inheritdoc/>
+        protected override Int32 ComputeFullWidth()
+        {
+            return
+                GetLeadingTriviaWidth() +
+                (Text?.Length ?? 0) +
+                GetTrailingTriviaWidth();
+        }
     }
 }
