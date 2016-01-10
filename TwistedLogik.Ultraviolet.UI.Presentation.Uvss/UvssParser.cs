@@ -1559,7 +1559,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
             var nextTokenKind = SyntaxKindFromNextToken(input, position);
-            if (nextTokenKind == SyntaxKind.None || nextTokenKind == SyntaxKind.EndOfFileToken)
+            if (nextTokenKind == SyntaxKind.CloseCurlyBraceToken || nextTokenKind == SyntaxKind.EndOfFileToken)
                 return null;
 
             switch (nextTokenKind)
@@ -1575,7 +1575,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     return ExpectTrigger(input, ref position);
             }
 
-            return null;
+            return ExpectEmptyStatement(input, ref position, listIndex);
         }
 
         /// <summary>
@@ -2275,6 +2275,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Accepts nodes which are valid inside of the body of a storyboard.
+        /// </summary>
+        private static SyntaxNode AcceptStoryboardBodyNode(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            var nextKind = SyntaxKindFromNextToken(input, position);
+            if (nextKind == SyntaxKind.CloseCurlyBraceToken || nextKind == SyntaxKind.EndOfFileToken)
+                return null;
+
+            var storyboardTarget = AcceptStoryboardTarget(input, ref position, listIndex);
+            if (storyboardTarget != null)
+                return storyboardTarget;
+
+            return ExpectEmptyStatement(input, ref position, listIndex);
+        }
+
+        /// <summary>
         /// Parses a storyboard declaration.
         /// </summary>
         private static UvssStoryboardSyntax ParseStoryboard(
@@ -2293,7 +2310,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 AcceptIdentifier(input, ref position);
 
             var body =
-                ExpectBlock(input, ref position, AcceptStoryboardTarget);
+                ExpectBlock(input, ref position, AcceptStoryboardBodyNode);
 
             return WithPosition(new UvssStoryboardSyntax(
                 atSignToken,
@@ -2326,7 +2343,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxNode AcceptStoryboardTargetBodyNode(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return AcceptAnimation(input, ref position);
+            var nextKind = SyntaxKindFromNextToken(input, position);
+            if (nextKind == SyntaxKind.CloseCurlyBraceToken || nextKind == SyntaxKind.EndOfFileToken)
+                return null;
+
+            var animation = AcceptAnimation(input, ref position);
+            if (animation != null)
+                return animation;
+            
+            return ExpectEmptyStatement(input, ref position, listIndex);
         }
 
         /// <summary>
@@ -2394,7 +2419,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxNode AcceptAnimationBodyNode(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return AcceptAnimationKeyframe(input, ref position);
+            var nextKind = SyntaxKindFromNextToken(input, position);
+            if (nextKind == SyntaxKind.CloseCurlyBraceToken || nextKind == SyntaxKind.EndOfFileToken)
+                return null;
+
+            var animationKeyframe = AcceptAnimationKeyframe(input, ref position);
+            if (animationKeyframe != null)
+                return animationKeyframe;
+
+            return ExpectEmptyStatement(input, ref position, listIndex);
         }
 
         /// <summary>
