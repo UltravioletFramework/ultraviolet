@@ -18,7 +18,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public SyntaxNode(SyntaxKind kind)
         {
             this.Kind = kind;
-            this.FullWidth = -1;
         }
 
         /// <summary>
@@ -150,16 +149,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             do
             {
+                var foundChild = false;
                 for (int i = node.SlotCount - 1; i >= 0; i--)
                 {
                     var child = node.GetSlot(i);
                     if (child != null)
                     {
                         node = child;
+                        foundChild = true;
                         break;
                     }
                 }
-            } while (node.SlotCount != 0);
+
+                if (!foundChild)
+                    break;
+            }
+            while (node.SlotCount != 0);
 
             return node;
         }
@@ -320,19 +325,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="trailing">The node's trailing trivia.</param>
         internal virtual void ChangeTrivia(SyntaxNode leading, SyntaxNode trailing)
         {
+            var changed = false;
+
             var firstToken = GetFirstToken();
             if (firstToken != null)
             {
                 firstToken.ChangeLeadingTrivia(leading);
+                changed = true;
             }
 
             var lastToken = GetLastToken();
             if (lastToken != null)
             {
                 lastToken.ChangeTrailingTrivia(trailing);
+                changed = true;
             }
+
+            if (changed)
+                InvalidateTreePositions();
         }
-        
+
         /// <summary>
         /// Changes the node's leading trivia.
         /// </summary>
@@ -343,6 +355,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (firstToken != null)
             {
                 firstToken.ChangeLeadingTrivia(trivia);
+                InvalidateTreePositions();
             }
         }
         
@@ -356,6 +369,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (lastToken != null)
             {
                 lastToken.ChangeTrailingTrivia(trivia);
+                InvalidateTreePositions();
             }
         }
         
@@ -369,6 +383,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return 0;
 
             var position = Parent.Position;
+
+            if (this == Parent.GetLeadingTrivia())
+                return position;
+
+            position += Parent.GetLeadingTriviaWidth();
+            
             for (int i = 0; i < Parent.SlotCount; i++)
             {
                 var sibling = Parent.GetSlot(i);
@@ -440,17 +460,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             node.Parent = this;
             InvalidatePosition();
         }
-
+        
         /// <summary>
-        /// Expands the width of this node by the width of the specified node.
+        /// Invalidates the position of every node in the same syntax tree.
         /// </summary>
-        /// <param name="node">The node that is expanding this node.</param>
-        protected void ExpandWidth(SyntaxNode node)
+        private void InvalidateTreePositions()
         {
-            if (fullWidth < 0)
-                return;
+            var root = this;
+            while (root.Parent != null)
+                root = root.Parent;
 
-            fullWidth += node.FullWidth;
+            root.InvalidatePosition();
+
+            if (position >= 0)
+                InvalidatePosition();
         }
 
         /// <summary>
@@ -462,6 +485,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return;
 
             position = -1;
+            fullWidth = -1;
 
             for (int i = 0; i < SlotCount; i++)
             {
@@ -529,6 +553,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
         // Property values.
         private Int32 position = -1;
-        private Int32 fullWidth;
+        private Int32 fullWidth = -1;
     }
 }

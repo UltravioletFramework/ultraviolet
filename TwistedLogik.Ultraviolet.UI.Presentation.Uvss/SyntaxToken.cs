@@ -34,14 +34,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             if (leadingTrivia != null)
             {
-                ExpandWidth(leadingTrivia);
                 this.leadingTrivia = leadingTrivia;
+                ChangeParent(leadingTrivia);
             }
 
             if (trailingTrivia != null)
             {
-                ExpandWidth(trailingTrivia);
                 this.trailingTrivia = trailingTrivia;
+                ChangeParent(trailingTrivia);
             }
         }
 
@@ -180,19 +180,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         internal override void ChangeTrivia(SyntaxNode leading, SyntaxNode trailing)
         {
             this.leadingTrivia = leading;
+            ChangeParent(leading);
+
             this.trailingTrivia = trailing;
+            ChangeParent(trailing);
         }
 
         /// <inheritdoc/>
         internal override void ChangeLeadingTrivia(SyntaxNode trivia)
         {
             this.leadingTrivia = trivia;
+            ChangeParent(trivia);
         }
 
         /// <inheritdoc/>
         internal override void ChangeTrailingTrivia(SyntaxNode trivia)
         {
             this.trailingTrivia = trivia;
+            ChangeParent(trivia);
         }
 
         /// <inheritdoc/>

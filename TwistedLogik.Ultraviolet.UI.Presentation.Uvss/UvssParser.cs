@@ -60,6 +60,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Updates the position of the specified node to the match the position of its first token.
+        /// </summary>
+        private static TNode WithPosition<TNode>(TNode node, Int32 defaultpos = 0)
+            where TNode : SyntaxNode
+        {
+            node.Position = node.GetFirstToken()?.Position ?? defaultpos;
+            return node;
+        }
+
+        /// <summary>
+        /// Gets the node position that corresponds to the specified position in the lexer token stream.
+        /// </summary>
+        private static Int32 GetNodePositionFromLexerPosition(IList<UvssLexerToken> input, Int32 position)
+        {
+            if (position >= input.Count)
+            {
+                if (input.Count == 0)
+                    return 0;
+
+                var token = input[input.Count - 1];
+                return token.SourceOffset + token.SourceLength;
+            }
+            return input[position].SourceOffset;
+        }
+
+        /// <summary>
         /// Counts the number of trivia tokens starting at the specified position in the lexer stream.
         /// </summary>
         private static Int32 CountTrivia(
@@ -351,7 +377,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             if (position >= input.Count)
             {
-                return new SyntaxToken(SyntaxKind.EndOfFileToken, null, leadingTriviaNode, null);
+                return new SyntaxToken(SyntaxKind.EndOfFileToken, null, leadingTriviaNode, null)
+                {
+                    Position = GetNodePositionFromLexerPosition(input, position)
+                };
             }
             else
             {
@@ -399,7 +428,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (tokenKind == SyntaxKind.WhitespaceTrivia && treatWhiteSpaceAsMeaningful)
                 tokenKind = SyntaxKind.SpaceToken;
 
-            return new SyntaxToken(tokenKind, tokenText, leadingTrivia, trailingTrivia);
+            return new SyntaxToken(tokenKind, tokenText, leadingTrivia, trailingTrivia)
+            {
+                Position = token.SourceOffset - (leadingTrivia?.FullWidth ?? 0)
+            };
         }
 
         /// <summary>
@@ -413,7 +445,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (token.Type == UvssLexerTokenType.Unknown || isSkippedToken)
             {
                 return new SkippedTokensTriviaSyntax(
-                    new SyntaxToken(SyntaxKind.None, token.Text));
+                    new SyntaxToken(SyntaxKind.None, token.Text))
+                {
+                    Position = token.SourceOffset
+                };
             }
             else
             {
@@ -421,7 +456,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var tokenText = token.Text;
 
                 return new StructurelessSyntaxTrivia(
-                    tokenKind, tokenText);
+                    tokenKind, tokenText)
+                {
+                    Position = token.SourceOffset
+                };
             }
         }
 
@@ -442,7 +480,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var builder = SyntaxListBuilder<SyntaxNode>.Create();
             builder.AddRange(trivia);
 
-            return builder.ToListNode();
+            var list = builder.ToList();
+            if (list.Node != null)
+            {
+                list.Node.Position = list[0].Position;
+            }
+            return list.Node;
         }
 
         /// <summary>
@@ -477,10 +520,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing list.
         /// </summary>
-        private static SyntaxList<TSyntax> MissingList<TSyntax>()
+        private static SyntaxList<TSyntax> MissingList<TSyntax>(
+            IList<UvssLexerToken> input, Int32 position)
             where TSyntax : SyntaxNode
         {
-            return default(SyntaxList<TSyntax>);
+            var node = new SyntaxList.MissingList()
+            {
+                Position = GetNodePositionFromLexerPosition(input, position)
+            };
+            return new SyntaxList<TSyntax>(node);
         }
 
         /// <summary>
@@ -491,7 +539,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssParserDelegate<TItem> itemParser) where TItem : SyntaxNode
         {
             var builder = default(SyntaxListBuilder<TItem>);
-
+            var nodepos = GetNodePositionFromLexerPosition(input, position);
+            
             while (position < input.Count)
             {
                 var item = itemParser(input, ref position, builder.Count);
@@ -504,16 +553,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 builder.Add(item);
             }
 
-            return builder.IsNull ? default(SyntaxList<TItem>) : builder.ToList();
+            var list = builder.IsNull ? default(SyntaxList<TItem>) : builder.ToList();
+            if (list.Node != null)
+            {
+                list.Node.Position = nodepos;
+            }
+            return list;
         }
 
         /// <summary>
         /// Produces a missing separated list.
         /// </summary>
-        private static SeparatedSyntaxList<TSyntax> MissingSeparatedList<TSyntax>()
+        private static SeparatedSyntaxList<TSyntax> MissingSeparatedList<TSyntax>(
+            IList<UvssLexerToken> input, Int32 position)
             where TSyntax : SyntaxNode
         {
-            return default(SeparatedSyntaxList<TSyntax>);
+            var node = new SyntaxList.MissingList()
+            {
+                Position = GetNodePositionFromLexerPosition(input, position)
+            };
+            return new SeparatedSyntaxList<TSyntax>(node);
         }
 
         /// <summary>
@@ -537,6 +596,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssParserDelegate<SyntaxToken> separatorParser) where TItem : SyntaxNode
         {
             var builder = default(SeparatedSyntaxListBuilder<TItem>);
+            var nodepos = GetNodePositionFromLexerPosition(input, position);
 
             while (position < input.Count)
             {
@@ -556,16 +616,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 builder.AddSeparator(separator);
             }
 
-            return builder.IsNull ? default(SeparatedSyntaxList<TItem>) : builder.ToList();
+            var list = builder.IsNull ? default(SeparatedSyntaxList<TItem>) : builder.ToList();
+            if (list.Node != null)
+            {
+                list.Node.Position = nodepos;
+            }
+            return list;
         }
 
         /// <summary>
         /// Produces a missing block of nodes.
         /// </summary>
         private static UvssBlockSyntax MissingBlock(
-            params SyntaxNode[] children)
+            IList<UvssLexerToken> input, Int32 position, params SyntaxNode[] children)
         {
             var block = SyntaxFactory.Block(children);
+            block.Position = GetNodePositionFromLexerPosition(input, position);
             block.IsMissing = true;
             return block;
         }
@@ -595,10 +661,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var closeCurlyBraceToken =
                 ExpectToken(input, ref position, SyntaxKind.CloseCurlyBraceToken);
 
-            return new UvssBlockSyntax(
+            return WithPosition(new UvssBlockSyntax(
                 openCurlyBraceToken,
                 contentList.ToList(),
-                closeCurlyBraceToken);
+                closeCurlyBraceToken));
         }
 
         /// <summary>
@@ -622,10 +688,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing identifier.
         /// </summary>
-        private static UvssIdentifierSyntax MissingIdentifier()
+        private static UvssIdentifierSyntax MissingIdentifier(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssIdentifierSyntax(
-                MissingToken(SyntaxKind.IdentifierToken));
+            return WithPosition(new UvssIdentifierSyntax(
+                MissingToken(SyntaxKind.IdentifierToken, input, position)));
         }
 
         /// <summary>
@@ -640,16 +707,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var openBracketToken =
                     ExpectToken(input, ref position, SyntaxKind.OpenBracketToken);
 
+                var start = position;
+                var text = new StringBuilder();
+
+                while (position < input.Count && input[position].Type != UvssLexerTokenType.CloseBracket)
+                {
+                    text.Append(input[position].Text);
+                    position++;
+                }
+
                 var identifierToken =
-                    ExpectToken(input, ref position, SyntaxKind.IdentifierToken);
+                    new SyntaxToken(SyntaxKind.IdentifierToken, text.ToString())
+                    {
+                        Position = GetNodePositionFromLexerPosition(input, start)
+                    };
 
                 var closeBracketToken =
                     ExpectToken(input, ref position, SyntaxKind.CloseBracketToken);
 
-                return new UvssEscapedIdentifierSyntax(
+                return WithPosition(new UvssEscapedIdentifierSyntax(
                     openBracketToken,
                     identifierToken,
-                    closeBracketToken);
+                    closeBracketToken));
             }
             else
             {
@@ -659,8 +738,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var identifierToken =
                     ExpectToken(input, ref position, SyntaxKind.IdentifierToken);
 
-                return new UvssIdentifierSyntax(
-                    identifierToken);
+                return WithPosition(new UvssIdentifierSyntax(
+                    identifierToken));
             }
         }
 
@@ -685,12 +764,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing property name.
         /// </summary>
-        private static UvssPropertyNameSyntax MissingPropertyName()
+        private static UvssPropertyNameSyntax MissingPropertyName(
+            IList<UvssLexerToken> input, Int32 position)
         {
             return new UvssPropertyNameSyntax(
                 null,
                 null,
-                MissingIdentifier());
+                MissingIdentifier(input, position));
         }
 
         /// <summary>
@@ -716,19 +796,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var propertyNameIdentifier =
                     ExpectIdentifier(input, ref position);
 
-                return new UvssPropertyNameSyntax(
+                return WithPosition(new UvssPropertyNameSyntax(
                     attachedPropertyOwnerNameIdentifier,
                     periodToken,
-                    propertyNameIdentifier);
+                    propertyNameIdentifier));
             }
             else
             {
                 var propertyNameIdentifier = firstPart;
 
-                return new UvssPropertyNameSyntax(
+                return WithPosition(new UvssPropertyNameSyntax(
                     null,
                     null,
-                    propertyNameIdentifier);
+                    propertyNameIdentifier));
             }
         }
 
@@ -753,12 +833,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing event name.
         /// </summary>
-        private static UvssEventNameSyntax MissingEventName()
+        private static UvssEventNameSyntax MissingEventName(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssEventNameSyntax(
+            return WithPosition(new UvssEventNameSyntax(
                 null,
                 null,
-                MissingIdentifier());
+                MissingIdentifier(input, position)));
         }
 
         /// <summary>
@@ -784,19 +865,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var EventNameIdentifier =
                     ExpectIdentifier(input, ref position);
 
-                return new UvssEventNameSyntax(
+                return WithPosition(new UvssEventNameSyntax(
                     attachedEventOwnerNameIdentifier,
                     periodToken,
-                    EventNameIdentifier);
+                    EventNameIdentifier));
             }
             else
             {
                 var EventNameIdentifier = firstPart;
 
-                return new UvssEventNameSyntax(
+                return WithPosition(new UvssEventNameSyntax(
                     null,
                     null,
-                    EventNameIdentifier);
+                    EventNameIdentifier));
             }
         }
 
@@ -821,9 +902,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing navigation expression.
         /// </summary>
-        private static UvssNavigationExpressionSyntax MissingNavigationExpression()
+        private static UvssNavigationExpressionSyntax MissingNavigationExpression(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssNavigationExpressionSyntax() { IsMissing = true };
+            return new UvssNavigationExpressionSyntax(
+                MissingToken(SyntaxKind.PipeToken, input, position),
+                MissingPropertyName(input, position),
+                MissingToken(SyntaxKind.AsKeyword, input, position),
+                MissingIdentifier(input, position));
         }
 
         /// <summary>
@@ -847,11 +933,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var typeNameIdentifier =
                 ExpectIdentifier(input, ref position);
 
-            return new UvssNavigationExpressionSyntax(
+            return WithPosition(new UvssNavigationExpressionSyntax(
                 pipeToken,
                 propertyName,
                 asKeyword,
-                typeNameIdentifier);
+                typeNameIdentifier));
         }
 
         /// <summary>
@@ -875,9 +961,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing selector.
         /// </summary>
-        private static UvssSelectorSyntax MissingSelector()
+        private static UvssSelectorSyntax MissingSelector(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssSelectorSyntax() { IsMissing = true };
+            return WithPosition(new UvssSelectorSyntax(
+                MissingList<SyntaxNode>(input, position),
+                null));
         }
 
         /// <summary>
@@ -895,9 +984,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var navigationExpression =
                 AcceptNavigationExpression(input, ref position);
 
-            return new UvssSelectorSyntax(
+            return WithPosition(new UvssSelectorSyntax(
                 components,
-                navigationExpression);
+                navigationExpression));
         }
 
         /// <summary>
@@ -984,9 +1073,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing selector part.
         /// </summary>
-        private static UvssSelectorPartBaseSyntax MissingSelectorPart()
+        private static UvssSelectorPartBaseSyntax MissingSelectorPart(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssSelectorPartSyntax() { IsMissing = true };
+            return WithPosition(new UvssSelectorPartSyntax(
+                MissingList<UvssSelectorSubPartSyntax>(input, position),
+                null));
         }
 
         /// <summary>
@@ -1004,9 +1096,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var pseudoClass =
                     AcceptPseudoClass(input, ref position);
 
-                return new UvssUniversalSelectorPartSyntax(
+                return WithPosition(new UvssUniversalSelectorPartSyntax(
                     asteriskToken,
-                    pseudoClass);
+                    pseudoClass));
             }
             else
             {
@@ -1018,9 +1110,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var pseudoClass =
                     AcceptPseudoClass(input, ref position);
 
-                return new UvssSelectorPartSyntax(
+                return WithPosition(new UvssSelectorPartSyntax(
                     subParts,
-                    pseudoClass);
+                    pseudoClass));
             }
         }
 
@@ -1045,9 +1137,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing pseudo-class.
         /// </summary>
-        private static UvssPseudoClassSyntax MissingPseudoClass()
+        private static UvssPseudoClassSyntax MissingPseudoClass(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssPseudoClassSyntax() { IsMissing = true };
+            return WithPosition(new UvssPseudoClassSyntax(
+                MissingToken(SyntaxKind.ColonToken, input, position),
+                MissingIdentifier(input, position)));
         }
 
         /// <summary>
@@ -1065,9 +1160,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var classNameIdentifier =
                 ExpectIdentifier(input, ref position);
 
-            return new UvssPseudoClassSyntax(
+            return WithPosition(new UvssPseudoClassSyntax(
                 colonToken,
-                classNameIdentifier);
+                classNameIdentifier));
         }
 
         /// <summary>
@@ -1091,9 +1186,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing selector sub-part.
         /// </summary>
-        private static UvssSelectorSubPartSyntax MissingSelectorSubPart()
+        private static UvssSelectorSubPartSyntax MissingSelectorSubPart(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssSelectorSubPartSyntax() { IsMissing = true };
+            return WithPosition(new UvssSelectorSubPartSyntax(
+                null,
+                MissingIdentifier(input, position),
+                null));
         }
         
         /// <summary>
@@ -1102,6 +1201,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static UvssIdentifierBaseSyntax ParseSelectorSubPartIdentifier(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
+            var startpos = GetNodePositionFromLexerPosition(input, position);
             var start = position + CountTrivia(input, position);
             var end = start;
             var length = 0;
@@ -1124,7 +1224,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
 
             if (start == end)
-                return accept ? null : MissingIdentifier();
+                return accept ? null : MissingIdentifier(input, position);
 
             var builder = new StringBuilder(length);
             for (int i = start; i < end; i++)
@@ -1135,11 +1235,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var identifierTokenTrailingTrivia = AccumulateTrivia(input, ref position);
 
             var identifierToken = new SyntaxToken(SyntaxKind.IdentifierToken, builder.ToString());
+
             var identifier = new UvssIdentifierSyntax(identifierToken)
                 .WithLeadingTrivia(identifierTokenLeadingTrivia)
                 .WithTrailingTrivia(identifierTokenTrailingTrivia);
 
-            return identifier;
+            identifierToken.Position = startpos;
+
+            return WithPosition(identifier);
         }
 
         /// <summary>
@@ -1149,7 +1252,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
             if (listIndex > 0 && input[position].Type == UvssLexerTokenType.WhiteSpace)
-                return accept ? null : MissingSelectorSubPart();
+                return accept ? null : MissingSelectorSubPart(input, position);
 
             var leadingQualifierToken =
                 AcceptToken(input, ref position, SyntaxKind.HashToken, SyntaxKind.PeriodToken);
@@ -1177,14 +1280,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
                 if (HasTrailingWhiteSpace(trailingToken, out trailingWhiteSpaceIndex))
                 {
+                    var pos = trailingToken.Position;
                     SliceTrailingTrivia(trailingToken, trailingWhiteSpaceIndex, ref position);
+                    trailingToken.Position = pos;
                 }
             }
 
-            return new UvssSelectorSubPartSyntax(
+            return WithPosition(new UvssSelectorSubPartSyntax(
                 leadingQualifierToken,
                 subPartIdentifier,
-                trailingQualifierToken);
+                trailingQualifierToken));
         }
 
         /// <summary>
@@ -1208,9 +1313,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing parentheses-enclosed selector.
         /// </summary>
-        private static UvssSelectorWithParenthesesSyntax MissingSelectorWithParentheses()
+        private static UvssSelectorWithParenthesesSyntax MissingSelectorWithParentheses(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssSelectorWithParenthesesSyntax() { IsMissing = true };
+            return WithPosition(new UvssSelectorWithParenthesesSyntax(
+                MissingToken(SyntaxKind.OpenCurlyBraceToken, input, position),
+                MissingSelector(input, position),
+                MissingToken(SyntaxKind.CloseParenthesesToken, input, position)));
         }
 
         /// <summary>
@@ -1231,10 +1340,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var closeParenToken =
                 ExpectToken(input, ref position, SyntaxKind.CloseParenthesesToken);
 
-            return new UvssSelectorWithParenthesesSyntax(
+            return WithPosition(new UvssSelectorWithParenthesesSyntax(
                 openParenToken,
                 selector,
-                closeParenToken);
+                closeParenToken));
         }
 
         /// <summary>
@@ -1261,6 +1370,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxToken ParsePropertyValueToken(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept, SyntaxKind terminator)
         {
+            var startpos = GetNodePositionFromLexerPosition(input, position);
             var start = position + CountTrivia(input, position);
             var end = start;
             var length = 0;
@@ -1289,7 +1399,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             end = Math.Min(end, lastNonWhitespace + 1);
 
             if (start == end)
-                return accept ? null : MissingToken(SyntaxKind.PropertyValueToken);
+                return accept ? null : MissingToken(SyntaxKind.PropertyValueToken, input, position);
 
             var builder = new StringBuilder(length);
             for (int i = start; i < end; i++)
@@ -1302,6 +1412,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var valueToken = new SyntaxToken(SyntaxKind.PropertyValueToken, builder.ToString())
                 .WithLeadingTrivia(valueTokenLeadingTrivia)
                 .WithTrailingTrivia(valueTokenTrailingTrivia);
+
+            valueToken.Position = startpos;
 
             return valueToken;
         }
@@ -1345,9 +1457,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing property value.
         /// </summary>
-        private static UvssPropertyValueSyntax MissingPropertyValue()
+        private static UvssPropertyValueSyntax MissingPropertyValue(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssPropertyValueSyntax() { IsMissing = true };
+            return WithPosition(new UvssPropertyValueSyntax(
+                MissingToken(SyntaxKind.PropertyValue, input, position)));
         }
 
         /// <summary>
@@ -1362,8 +1476,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var contentToken =
                 ExpectPropertyValueToken(input, ref position);
 
-            return new UvssPropertyValueSyntax(
-                contentToken);
+            return WithPosition(new UvssPropertyValueSyntax(
+                contentToken));
         }
 
         /// <summary>
@@ -1387,9 +1501,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing brace-enclosed property value.
         /// </summary>
-        private static UvssPropertyValueWithBracesSyntax MissingPropertyValueWithBraces()
+        private static UvssPropertyValueWithBracesSyntax MissingPropertyValueWithBraces(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssPropertyValueWithBracesSyntax() { IsMissing = true };
+            return WithPosition(new UvssPropertyValueWithBracesSyntax(
+                MissingToken(SyntaxKind.OpenCurlyBraceToken, input, position),
+                MissingToken(SyntaxKind.PropertyValueToken, input, position),
+                MissingToken(SyntaxKind.CloseCurlyBraceToken, input, position)));
         }
 
         /// <summary>
@@ -1410,10 +1528,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var closeCurlyBraceToken =
                 ExpectToken(input, ref position, SyntaxKind.CloseCurlyBraceToken);
 
-            return new UvssPropertyValueWithBracesSyntax(
+            return WithPosition(new UvssPropertyValueWithBracesSyntax(
                 openCurlyBraceToken,
                 contentToken,
-                closeCurlyBraceToken);
+                closeCurlyBraceToken));
         }
 
         /// <summary>
@@ -1464,11 +1582,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Produces a missing rule set.
         /// </summary>
         private static UvssRuleSetSyntax MissingRuleSet(
-            params SyntaxNode[] children)
+            IList<UvssLexerToken> input, Int32 position, params SyntaxNode[] children)
         {
-            return new UvssRuleSetSyntax(
-                MissingSeparatedList<UvssSelectorSyntax>(),
-                MissingBlock(children));
+            return WithPosition(new UvssRuleSetSyntax(
+                MissingSeparatedList<UvssSelectorSyntax>(input, position),
+                MissingBlock(input, position, children)));
         }
 
         /// <summary>
@@ -1486,9 +1604,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var body =
                 ExpectBlock(input, ref position, AcceptRuleSetBodyNode);
 
-            return new UvssRuleSetSyntax(
+            return WithPosition(new UvssRuleSetSyntax(
                 selectors,
-                body);
+                body));
         }
 
         /// <summary>
@@ -1534,12 +1652,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var semiColonToken =
                 ExpectToken(input, ref position, SyntaxKind.SemiColonToken);
 
-            return new UvssRuleSyntax(
+            return WithPosition(new UvssRuleSyntax(
                 propertyName,
                 colonToken,
                 value,
                 qualifierToken,
-                semiColonToken);
+                semiColonToken));
         }
 
         /// <summary>
@@ -1563,9 +1681,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing transition.
         /// </summary>
-        private static UvssTransitionSyntax MissingTransition()
+        private static UvssTransitionSyntax MissingTransition(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssTransitionSyntax() { IsMissing = true };
+            return WithPosition(new UvssTransitionSyntax(
+                MissingToken(SyntaxKind.TransitionKeyword, input, position),
+                MissingTransitionArgumentList(input, position),
+                MissingToken(SyntaxKind.ColonToken, input, position),
+                MissingPropertyValue(input, position),
+                null,
+                MissingToken(SyntaxKind.SemiColonToken, input, position)));
         }
 
         /// <summary>
@@ -1595,13 +1720,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var semiColonToken =
                 ExpectToken(input, ref position, SyntaxKind.SemiColonToken);
 
-            return new UvssTransitionSyntax(
+            return WithPosition(new UvssTransitionSyntax(
                 transitionKeyword,
                 argumentList,
                 colonToken,
                 value,
                 qualifierToken,
-                semiColonToken);
+                semiColonToken));
         }
 
         /// <summary>
@@ -1625,9 +1750,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing transition argument list.
         /// </summary>
-        private static UvssTransitionArgumentListSyntax MissingTransitionArgumentList()
+        private static UvssTransitionArgumentListSyntax MissingTransitionArgumentList(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssTransitionArgumentListSyntax() { IsMissing = true };
+            return WithPosition(new UvssTransitionArgumentListSyntax(
+                MissingToken(SyntaxKind.OpenParenthesesToken, input, position),
+                MissingSeparatedList<SyntaxNode>(input, position),
+                MissingToken(SyntaxKind.CloseParenthesesToken, input, position)));
         }
 
         /// <summary>
@@ -1648,10 +1777,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var closeParenToken =
                 ExpectToken(input, ref position, SyntaxKind.CloseParenthesesToken);
 
-            return new UvssTransitionArgumentListSyntax(
+            return WithPosition(new UvssTransitionArgumentListSyntax(
                 openParenToken,
                 arguments,
-                closeParenToken);
+                closeParenToken));
         }
 
         /// <summary>
@@ -1686,9 +1815,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing event trigger argument list.
         /// </summary>
-        private static UvssEventTriggerArgumentList MissingEventTriggerArgumentList()
+        private static UvssEventTriggerArgumentList MissingEventTriggerArgumentList(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssEventTriggerArgumentList() { IsMissing = true };
+            return WithPosition(new UvssEventTriggerArgumentList(
+                MissingToken(SyntaxKind.OpenParenthesesToken, input, position),
+                MissingSeparatedList<SyntaxNode>(input, position),
+                MissingToken(SyntaxKind.CloseParenthesesToken, input, position)));
         }
 
         /// <summary>
@@ -1709,10 +1842,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var closeParenToken =
                 ExpectToken(input, ref position, SyntaxKind.CloseParenthesesToken);
 
-            return new UvssEventTriggerArgumentList(
+            return WithPosition(new UvssEventTriggerArgumentList(
                 openParenToken,
                 argumentList,
-                closeParenToken);
+                closeParenToken));
         }
 
         /// <summary>
@@ -1736,11 +1869,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing comparison operator.
         /// </summary>
-        private static SyntaxToken MissingComparisonOperator()
+        private static SyntaxToken MissingComparisonOperator(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return MissingToken(SyntaxKind.None);
+            return MissingToken(SyntaxKind.None, input, position);
         }
 
+        /// <summary>
+        /// Parses a comparison operator.
+        /// </summary>
         private static SyntaxToken ParseComparisonOperator(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
@@ -1767,7 +1904,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     return ExpectToken(input, ref position, SyntaxKind.LessThanEqualsToken);
             }
 
-            return accept ? null : MissingComparisonOperator();
+            return accept ? null : MissingComparisonOperator(input, position);
         }
 
         /// <summary>
@@ -1791,9 +1928,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing property trigger condition.
         /// </summary>
-        private static UvssPropertyTriggerConditionSyntax MissingPropertyTriggerCondition()
+        private static UvssPropertyTriggerConditionSyntax MissingPropertyTriggerCondition(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssPropertyTriggerConditionSyntax() { IsMissing = true };
+            return WithPosition(new UvssPropertyTriggerConditionSyntax(
+                MissingPropertyName(input, position),
+                MissingComparisonOperator(input, position),
+                MissingPropertyValueWithBraces(input, position)));
         }
 
         /// <summary>
@@ -1815,10 +1956,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var propertyValue =
                 ExpectPropertyValueWithBraces(input, ref position);
 
-            return new UvssPropertyTriggerConditionSyntax(
+            return WithPosition(new UvssPropertyTriggerConditionSyntax(
                 propertyName,
                 comparisonOperatorToken,
-                propertyValue);
+                propertyValue));
         }
 
         /// <summary>
@@ -1939,12 +2080,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var body =
                 ExpectBlock(input, ref position, AcceptTriggerAction);
 
-            return new UvssPropertyTriggerSyntax(
+            return WithPosition(new UvssPropertyTriggerSyntax(
                 triggerKeyword,
                 propertyKeyword,
                 conditions,
                 qualifierToken,
-                body);
+                body));
         }
 
         /// <summary>
@@ -1999,13 +2140,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var body =
                 ExpectBlock(input, ref position, AcceptTriggerAction);
 
-            return new UvssEventTriggerSyntax(
+            return WithPosition(new UvssEventTriggerSyntax(
                 triggerKeyword,
                 eventKeyword,
                 eventName,
                 argumentList,
                 qualifierToken,
-                body);
+                body));
         }
 
         /// <summary>
@@ -2045,10 +2186,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var body =
                 ExpectBlock(input, ref position, AcceptTriggerAction);
 
-            return new UvssIncompleteTriggerSyntax(
+            return WithPosition(new UvssIncompleteTriggerSyntax(
                 triggerKeyword,
                 qualifierToken,
-                body);
+                body));
         }
 
         /// <summary>
@@ -2073,12 +2214,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Produces a missing trigger.
         /// </summary>
         private static UvssTriggerBaseSyntax MissingTrigger(
-            params SyntaxNode[] children)
+            IList<UvssLexerToken> input, Int32 position, params SyntaxNode[] children)
         {
-            return new UvssIncompleteTriggerSyntax(
-                MissingToken(SyntaxKind.TriggerKeyword),
+            return WithPosition(new UvssIncompleteTriggerSyntax(
+                MissingToken(SyntaxKind.TriggerKeyword, input, position),
                 null,
-                MissingBlock(children));
+                MissingBlock(input, position, children)));
         }
 
         /// <summary>
@@ -2124,13 +2265,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Produces a missing storyboard declaration.
         /// </summary>
         private static UvssStoryboardSyntax MissingStoryboard(
-            params SyntaxNode[] children)
+            IList<UvssLexerToken> input, Int32 position, params SyntaxNode[] children)
         {
-            return new UvssStoryboardSyntax(
-                MissingToken(SyntaxKind.AtSignToken),
-                MissingIdentifier(),
-                MissingIdentifier(),
-                MissingBlock(children));
+            return WithPosition(new UvssStoryboardSyntax(
+                MissingToken(SyntaxKind.AtSignToken, input, position),
+                MissingIdentifier(input, position),
+                MissingIdentifier(input, position),
+                MissingBlock(input, position, children)));
         }
 
         /// <summary>
@@ -2154,11 +2295,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var body =
                 ExpectBlock(input, ref position, AcceptStoryboardTarget);
 
-            return new UvssStoryboardSyntax(
+            return WithPosition(new UvssStoryboardSyntax(
                 atSignToken,
                 nameIdentifier,
                 loopIdentifier,
-                body);
+                body));
         }
 
         /// <summary>
@@ -2192,13 +2333,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Produces a missing storyboard target declaration.
         /// </summary>
         private static UvssStoryboardTargetSyntax MissingStoryboardTarget(
-            params SyntaxNode[] children)
+            IList<UvssLexerToken> input, Int32 position, params SyntaxNode[] children)
         {
-            return new UvssStoryboardTargetSyntax(
-                MissingToken(SyntaxKind.TargetKeyword),
+            return WithPosition(new UvssStoryboardTargetSyntax(
+                MissingToken(SyntaxKind.TargetKeyword, input, position),
                 null,
                 null,
-                MissingBlock(children));
+                MissingBlock(input, position, children)));
         }
 
         /// <summary>
@@ -2222,11 +2363,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var body =
                 ExpectBlock(input, ref position, AcceptStoryboardTargetBodyNode);
 
-            return new UvssStoryboardTargetSyntax(
+            return WithPosition(new UvssStoryboardTargetSyntax(
                 targetKeyword,
                 typeNameIdentifier,
                 selector,
-                body);
+                body));
         }
 
         /// <summary>
@@ -2260,13 +2401,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Produces a missing animation declaration.
         /// </summary>
         private static UvssAnimationSyntax MissingAnimation(
-            params SyntaxNode[] children)
+            IList<UvssLexerToken> input, Int32 position, params SyntaxNode[] children)
         {
-            return new UvssAnimationSyntax(
-                MissingToken(SyntaxKind.Animation),
-                MissingPropertyName(),
+            return WithPosition(new UvssAnimationSyntax(
+                MissingToken(SyntaxKind.Animation, input, position),
+                MissingPropertyName(input, position),
                 null,
-                MissingBlock(children));
+                MissingBlock(input, position, children)));
         }
 
         /// <summary>
@@ -2290,11 +2431,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var body =
                 ExpectBlock(input, ref position, AcceptAnimationBodyNode);
 
-            return new UvssAnimationSyntax(
+            return WithPosition(new UvssAnimationSyntax(
                 animationKeyword,
                 propertyName,
                 navigationExpression,
-                body);
+                body));
         }
 
         /// <summary>
@@ -2318,9 +2459,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing animation keyframe.
         /// </summary>
-        private static UvssAnimationKeyframeSyntax MissingAnimationKeyframe()
+        private static UvssAnimationKeyframeSyntax MissingAnimationKeyframe(
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new UvssAnimationKeyframeSyntax() { IsMissing = true };
+            return WithPosition(new UvssAnimationKeyframeSyntax(
+                MissingToken(SyntaxKind.KeyframeKeyword, input, position),
+                MissingToken(SyntaxKind.NumberToken, input, position),
+                null,
+                MissingPropertyValueWithBraces(input, position)));
         }
 
         /// <summary>
@@ -2344,11 +2490,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var value =
                 ExpectPropertyValueWithBraces(input, ref position);
 
-            return new UvssAnimationKeyframeSyntax(
+            return WithPosition(new UvssAnimationKeyframeSyntax(
                 keyframeKeyword,
                 timeToken,
                 easingIdentifier,
-                value);
+                value));
         }
 
         /// <summary>
@@ -2380,9 +2526,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 treatCurrentTokenAsTrivia: true,
                 isLeading: true);
 
-            var emptyToken = new SyntaxToken(SyntaxKind.EmptyToken, null);
-            return new UvssEmptyStatementSyntax(emptyToken)
+            var emptyToken = new SyntaxToken(SyntaxKind.EmptyToken, null)
+            { Position = GetNodePositionFromLexerPosition(input, position) };
+
+            var emptyStatement = new UvssEmptyStatementSyntax(emptyToken)
                 .WithLeadingTrivia(trivia);
+
+            return WithPosition(emptyStatement);
         }
 
         /// <summary>
@@ -2424,9 +2574,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Produces a missing token of the specified kind.
         /// </summary>
-        private static SyntaxToken MissingToken(SyntaxKind kind)
+        private static SyntaxToken MissingToken(SyntaxKind kind,
+            IList<UvssLexerToken> input, Int32 position)
         {
-            return new SyntaxToken(kind, null) { IsMissing = true };
+            return new SyntaxToken(kind, null)
+            {
+                IsMissing = true,
+                Position = GetNodePositionFromLexerPosition(input, position)
+            };
         }
 
         /// <summary>

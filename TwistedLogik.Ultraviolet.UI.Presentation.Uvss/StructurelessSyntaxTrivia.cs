@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="kind">The trivia's <see cref="SyntaxKind"/> value.</param>
         /// <param name="text">The trivia's text.</param>
         public StructurelessSyntaxTrivia(SyntaxKind kind, String text)
-            : base(kind, text?.Length ?? 0)
+            : base(kind)
         {
             this.Text = text;
         }

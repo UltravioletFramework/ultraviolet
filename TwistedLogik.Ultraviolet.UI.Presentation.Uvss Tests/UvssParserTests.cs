@@ -44,6 +44,74 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         }
 
         [TestMethod]
+        public void UvssParser_CorrectlyCalculatesNodePosition_ForSelectorComponents()
+        {
+            var document = UvssParser.Parse(
+                "foo bar baz {}");
+
+            var ruleSet = document.Content[0] as UvssRuleSetSyntax;
+            TheResultingNode(ruleSet)
+                .ShouldBePresent();
+
+            var selector = ruleSet.Selectors[0];
+            TheResultingNode(selector)
+                .ShouldBePresent();
+
+            var component0 = selector.Components[0];
+            TheResultingNode(component0)
+                .ShouldBePresent()
+                .ShouldHaveSpan(0, 3);
+
+            var component1 = selector.Components[1];
+            TheResultingNode(component1)
+                .ShouldBePresent()
+                .ShouldHaveSpan(3, 1);
+
+            var component2 = selector.Components[2];
+            TheResultingNode(component2)
+                .ShouldBePresent()
+                .ShouldHaveSpan(4, 3);
+
+            var component3 = selector.Components[3];
+            TheResultingNode(component3)
+                .ShouldBePresent()
+                .ShouldHaveSpan(7, 1);
+
+            var component4 = selector.Components[4];
+            TheResultingNode(component4)
+                .ShouldBePresent()
+                .ShouldHaveSpan(8, 4);
+        }
+
+        [TestMethod]
+        public void UvssParser_CorrectlyCalculatesNodePosition_ForComments_OnOneLine()
+        {
+            var document = UvssParser.Parse(
+                "foo// this is a comment");
+
+            var ruleSet = document.Content[0] as UvssRuleSetSyntax;
+            TheResultingNode(ruleSet)
+                .ShouldBePresent();
+
+            var trivia = ruleSet.Selectors[0].GetTrailingTrivia() as StructurelessSyntaxTrivia;
+            TheResultingNode(trivia)
+                .ShouldBeOfKind(SyntaxKind.SingleLineCommentTrivia)
+                .ShouldHaveSpan(3, 20);
+        }
+
+        [TestMethod]
+        public void UvssParser_CorrectlyCalculatesNodePosition_ForComments_OnMultipleLines()
+        {
+            var document = UvssParser.Parse(
+                "foo\r\n// this is a comment");
+            
+            var trivia = document.EndOfFileToken.GetLeadingTrivia() as StructurelessSyntaxTrivia;
+            TheResultingNode(trivia)
+                .ShouldBeOfKind(SyntaxKind.SingleLineCommentTrivia)
+                .ShouldHaveSpan(5, 20);
+        }
+
+        [TestMethod]
         public void UvssParser_CorrectlyParsesCompleteGarbage()
         {
             var document = UvssParser.Parse(
