@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
             return buffer.Properties.GetOrCreateSingletonProperty(creator: () => 
-                new UvssClassifier(this.classificationRegistry, this.parserService));
+                new UvssClassifier(this.classificationRegistry, this.parserService, buffer));
         }
 
         #endregion

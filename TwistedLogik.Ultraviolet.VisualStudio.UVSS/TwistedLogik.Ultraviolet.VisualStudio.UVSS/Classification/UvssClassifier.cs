@@ -18,12 +18,15 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         /// </summary>
         /// <param name="registry">The classification registry.</param>
         /// <param name="parserService">The UVSS language parser service.</param>
-        internal UvssClassifier(IClassificationTypeRegistryService registry, IUvssParserService parserService)
+        /// <param name="buffer">The text buffer that contains the text being classified.</param>
+        internal UvssClassifier(IClassificationTypeRegistryService registry, IUvssParserService parserService, ITextBuffer buffer)
         {
             this.registry = registry;
             this.parserService = parserService;
+            this.multiLineCommentTracker = new MultiLineCommentTracker(buffer);
+            this.multiLineCommentTracker.SpanInvalidated += MultiLineCommentTracker_SpanInvalidated;
         }
-        
+
 #pragma warning disable 67
 
         /// <summary>
@@ -78,45 +81,16 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         {
             if (document == null)
                 return null;
-
-            var snapshotChanged = (span.Snapshot != oldSnapshot);
-            if (snapshotChanged)
-                oldSnapshot = span.Snapshot;
-
-            var newMultiLineCommentSpans = new List<SnapshotSpan>();
-
+            
             var results = new List<ClassificationSpan>();
             var visitor = new UvssClassifierVisitor(registry, (start, width, type, kind) =>
             {
-                if (kind == SyntaxKind.MultiLineCommentTrivia)
-                    newMultiLineCommentSpans.Add(new SnapshotSpan(span.Snapshot, start, width));
-
                 var nodeSpan = new SnapshotSpan(span.Snapshot, start, width);
                 if (nodeSpan.IntersectsWith(span))
                     results.Add(new ClassificationSpan(nodeSpan, type));
             });
             visitor.Visit(document);
-
-            if (snapshotChanged)
-            {
-                if (oldMultiLineCommentSpans != null)
-                {
-                    foreach (var oldSpan in oldMultiLineCommentSpans)
-                    {
-                        var invalidatedSpan = oldSpan.TranslateTo(span.Snapshot, SpanTrackingMode.EdgeExclusive);
-                        RaiseClassificationChanged(span.Snapshot, invalidatedSpan.Start, invalidatedSpan.Length);
-                    }
-                }
-
-                foreach (var newSpan in newMultiLineCommentSpans)
-                {
-                    var invalidatedSpan = newSpan;
-                    RaiseClassificationChanged(span.Snapshot, invalidatedSpan.Start, invalidatedSpan.Length);
-                }
-
-                oldMultiLineCommentSpans = newMultiLineCommentSpans;
-            }
-
+            
             return results;
         }
 
@@ -132,16 +106,21 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
                     new SnapshotSpan(snapshot, start, length)));
             }
         }
-        
+
+        /// <summary>
+        /// Called when the multi-line comment tracker invalidates a span of text.
+        /// </summary>
+        private void MultiLineCommentTracker_SpanInvalidated(Object obj, SnapshotSpan span)
+        {
+            RaiseClassificationChanged(span.Snapshot, span.Start, span.Length);
+        }
+
         // A cached empty list of classification spans.
         private static readonly IList<ClassificationSpan> emptySpanList = new ClassificationSpan[0];
 
         // Classification services.
         private readonly IClassificationTypeRegistryService registry;
         private readonly IUvssParserService parserService;
-
-        // Tracks the state of the parsed document.
-        private ITextSnapshot oldSnapshot;
-        private IList<SnapshotSpan> oldMultiLineCommentSpans;
+        private readonly MultiLineCommentTracker multiLineCommentTracker;        
     }
 }

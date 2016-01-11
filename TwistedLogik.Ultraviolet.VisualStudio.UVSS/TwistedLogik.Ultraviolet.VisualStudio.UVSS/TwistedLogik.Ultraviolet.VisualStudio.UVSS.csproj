@@ -44,7 +44,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classification\ISymbolTracker.cs" />
     <Compile Include="Classification\IUvssParserService.cs" />
+    <Compile Include="Classification\MultiLineCommentTracker.CommentSymbolType.cs" />
+    <Compile Include="Classification\MultiLineCommentTracker.CommentSymbol.cs" />
+    <Compile Include="Classification\MultiLineCommentTracker.cs" />
     <Compile Include="Classification\UvssParserService.cs" />
     <Compile Include="Classification\UvssClassifier.cs" />
     <Compile Include="Classification\UvssClassifierClassificationDefinition.cs" />
