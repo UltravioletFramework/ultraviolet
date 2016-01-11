@@ -12,7 +12,8 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
     /// <param name="start">The index of the first character in the span.</param>
     /// <param name="width">The number of characters in the span.</param>
     /// <param name="type">The classification type assigned to the span.</param>
-    public delegate void ClassifierAction(Int32 start, Int32 width, IClassificationType type);
+    /// <param name="kind">The kind of node which is being classified.</param>
+    public delegate void ClassifierAction(Int32 start, Int32 width, IClassificationType type, SyntaxKind kind);
 
     /// <summary>
     /// Represents a syntax tree visitor which provides classification spans.
@@ -47,7 +48,8 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
             if (node == null)
                 return;
 
-            Visit(node.GetLeadingTrivia());
+            if (node is SyntaxToken)
+                Visit(node.GetLeadingTrivia());
 
             switch (node.Kind)
             {
@@ -79,6 +81,14 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
 
                 case SyntaxKind.Selector:
                     VisitSelector((UvssSelectorSyntax)node);
+                    break;
+
+                case SyntaxKind.SelectorSubPart:
+                    VisitSelectorSubPart((UvssSelectorSubPartSyntax)node);
+                    break;
+
+                case SyntaxKind.PseudoClass:
+                    VisitPseudoClass((UvssPseudoClassSyntax)node);
                     break;
 
                 case SyntaxKind.Rule:
@@ -123,7 +133,8 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
                 }
             }
 
-            Visit(node.GetTrailingTrivia());
+            if (node is SyntaxToken)
+                Visit(node.GetTrailingTrivia());
         }
 
         /// <summary>
@@ -159,11 +170,18 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         /// <param name="selector">The selector node to visit.</param>
         private void VisitSelector(UvssSelectorSyntax selector)
         {
-            for (int i = 0; i < selector.Components.Count; i++)
-            {
-                var component = selector.Components[i];
-                Style(component, typeUvssSelector);
-            }
+            foreach (var combinator in selector.Combinators)
+                Style(combinator, typeUvssSelector);
+        }
+
+        private void VisitSelectorSubPart(UvssSelectorSubPartSyntax selector)
+        {
+            Style(selector, typeUvssSelector);
+        }
+
+        private void VisitPseudoClass(UvssPseudoClassSyntax pseudoClass)
+        {
+            Style(pseudoClass, typeUvssSelector);
         }
 
         /// <summary>
@@ -261,7 +279,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
                 (withLeadingTrivia ? 0 : node.GetLeadingTriviaWidth()) +
                 (withTrailingTrivia ? 0 : node.GetTrailingTriviaWidth()));
 
-            classifier(start, width, type);
+            classifier(start, width, type, node.Kind);
         }
 
         // State values.

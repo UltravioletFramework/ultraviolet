@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.Text.Classification;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
 {
@@ -35,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
 
 #pragma warning restore 67
-
+        
         /// <summary>
         /// Gets all the <see cref="ClassificationSpan"/> objects that intersect with the given range of text.
         /// </summary>
@@ -49,44 +51,97 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         {
             if (span.Snapshot.Length > 5000000)
                 return emptySpanList;
-
+            
             var task = parserService.GetDocument(span.Snapshot);
-
             task.Wait(100);
 
             if (task.Status == TaskStatus.RanToCompletion)
-            {
-                var results = new List<ClassificationSpan>();
-                var document = task.Result;
-                var visitor = new UvssClassifierVisitor(registry, (start, width, type) =>
-                {
-                    results.Add(new ClassificationSpan(
-                        new SnapshotSpan(span.Snapshot, start, width), type));
-                });
-                visitor.Visit(document);
-
-                return results;
-            }
+                return VisitDocument(task.Result, span);
 
             task.ContinueWith(t =>
             {
-                var handler = ClassificationChanged;
-                if (handler != null)
-                {
-                    handler(this, new ClassificationChangedEventArgs(
-                        new SnapshotSpan(span.Snapshot, 0, span.Snapshot.Length)));
-                }
+                RaiseClassificationChanged(span.Snapshot, 0, span.Snapshot.Length);
             }, 
             TaskContinuationOptions.OnlyOnRanToCompletion);
 
             return emptySpanList;
         }
 
+        /// <summary>
+        /// Visits the specified UVSS document and returns a list of classification spans that
+        /// intersect with the specified span.
+        /// </summary>
+        /// <param name="document">The document to visit.</param>
+        /// <param name="span">The span for which to retrieve classification spans.</param>
+        /// <returns>The classification spans that intersect with the specified span.</returns>
+        public IList<ClassificationSpan> VisitDocument(UvssDocumentSyntax document, SnapshotSpan span)
+        {
+            if (document == null)
+                return null;
+
+            var snapshotChanged = (span.Snapshot != oldSnapshot);
+            if (snapshotChanged)
+                oldSnapshot = span.Snapshot;
+
+            var newMultiLineCommentSpans = new List<SnapshotSpan>();
+
+            var results = new List<ClassificationSpan>();
+            var visitor = new UvssClassifierVisitor(registry, (start, width, type, kind) =>
+            {
+                if (kind == SyntaxKind.MultiLineCommentTrivia)
+                    newMultiLineCommentSpans.Add(new SnapshotSpan(span.Snapshot, start, width));
+
+                var nodeSpan = new SnapshotSpan(span.Snapshot, start, width);
+                if (nodeSpan.IntersectsWith(span))
+                    results.Add(new ClassificationSpan(nodeSpan, type));
+            });
+            visitor.Visit(document);
+
+            if (snapshotChanged)
+            {
+                if (oldMultiLineCommentSpans != null)
+                {
+                    foreach (var oldSpan in oldMultiLineCommentSpans)
+                    {
+                        var invalidatedSpan = oldSpan.TranslateTo(span.Snapshot, SpanTrackingMode.EdgeExclusive);
+                        RaiseClassificationChanged(span.Snapshot, invalidatedSpan.Start, invalidatedSpan.Length);
+                    }
+                }
+
+                foreach (var newSpan in newMultiLineCommentSpans)
+                {
+                    var invalidatedSpan = newSpan;
+                    RaiseClassificationChanged(span.Snapshot, invalidatedSpan.Start, invalidatedSpan.Length);
+                }
+
+                oldMultiLineCommentSpans = newMultiLineCommentSpans;
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="ClassificationChanged"/> event.
+        /// </summary>
+        private void RaiseClassificationChanged(ITextSnapshot snapshot, Int32 start, Int32 length)
+        {
+            var handler = ClassificationChanged;
+            if (handler != null)
+            {
+                handler(this, new ClassificationChangedEventArgs(
+                    new SnapshotSpan(snapshot, start, length)));
+            }
+        }
+        
         // A cached empty list of classification spans.
         private static readonly IList<ClassificationSpan> emptySpanList = new ClassificationSpan[0];
 
         // Classification services.
         private readonly IClassificationTypeRegistryService registry;
-        private readonly IUvssParserService parserService;        
+        private readonly IUvssParserService parserService;
+
+        // Tracks the state of the parsed document.
+        private ITextSnapshot oldSnapshot;
+        private IList<SnapshotSpan> oldMultiLineCommentSpans;
     }
 }

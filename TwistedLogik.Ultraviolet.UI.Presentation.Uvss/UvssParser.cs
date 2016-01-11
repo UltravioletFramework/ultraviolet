@@ -2752,19 +2752,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var triviaList = default(List<SyntaxTrivia>);
 
+            var treatNextTokenAsSkipped = false;
+            var treatNextNonTriviaTokenAsTrivia = treatCurrentTokenAsTrivia;
+
             while (position < input.Count)
             {
-                if (!treatCurrentTokenAsTrivia || triviaList != null)
+                if (!IsTrivia(input[position], treatWhiteSpaceAsCombinator))
                 {
-                    if (!IsTrivia(input[position], treatWhiteSpaceAsCombinator))
+                    if (!treatNextNonTriviaTokenAsTrivia)
                         break;
+
+                    treatNextNonTriviaTokenAsTrivia = false;
+                    treatNextTokenAsSkipped = true;
                 }
 
                 if (triviaList == null)
                     triviaList = new List<SyntaxTrivia>();
 
-                var trivia = (SyntaxTrivia)ConvertTrivia(input[position], 
-                    treatCurrentTokenAsTrivia && triviaList.Count == 0);
+                var trivia = (SyntaxTrivia)ConvertTrivia(input[position], treatNextTokenAsSkipped);
+                treatNextTokenAsSkipped = false;
 
                 triviaList.Add(trivia);
                 position++;

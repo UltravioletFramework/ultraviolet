@@ -270,36 +270,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         }
 
         [TestMethod]
-        public void UvssParser_CorrectlyParsesIncompleteRuleSet_FollowedByCompleteRuleSet()
+        public void UvssParser_CorrectlyParsesIncompleteRuleSet_FollowedBySelector()
         {
             var document = UvssParser.Parse(
-                "#foo { #bar {}");
+                "#foo { #bar");
 
-            var ruleSet0 = document.Content[0] as UvssRuleSetSyntax;
-            TheResultingNode(ruleSet0)
+            var ruleSet = document.Content[0] as UvssRuleSetSyntax;
+            TheResultingNode(ruleSet)
                 .ShouldBePresent();
 
-            var ruleSet0Selector = ruleSet0.Selectors[0] as UvssSelectorBaseSyntax;
-            TheResultingNode(ruleSet0Selector)
+            var ruleSetSelector = ruleSet.Selectors[0] as UvssSelectorBaseSyntax;
+            TheResultingNode(ruleSetSelector)
                 .ShouldBePresent()
                 .ShouldHaveFullString("#foo");
 
-            var ruleSet0CloseCurlyBrace = ruleSet0.Body.CloseCurlyBraceToken;
-            TheResultingNode(ruleSet0CloseCurlyBrace)
+            var ruleSetCloseCurlyBrace = ruleSet.Body.CloseCurlyBraceToken;
+            TheResultingNode(ruleSetCloseCurlyBrace)
                 .ShouldBeMissing();
 
-            var ruleSet1 = document.Content[1] as UvssRuleSetSyntax;
-            TheResultingNode(ruleSet1)
-                .ShouldBePresent();
-
-            var ruleSet1Selector = ruleSet1.Selectors[0] as UvssSelectorBaseSyntax;
-            TheResultingNode(ruleSet1Selector)
+            var emptyStatement = ruleSet.Body.Content[0] as UvssEmptyStatementSyntax;
+            TheResultingNode(emptyStatement)
                 .ShouldBePresent()
-                .ShouldHaveFullString("#bar");
-
-            var ruleSet1CloseCurlyBrace = ruleSet1.Body.CloseCurlyBraceToken;
-            TheResultingNode(ruleSet1CloseCurlyBrace)
-                .ShouldBePresent();
+                .ShouldHaveFullString("#", includeTrivia: true);
+            
+            var rule = ruleSet.Body.Content[1] as UvssRuleSyntax;
+            TheResultingNode(rule)
+                .ShouldBePresent()
+                .ShouldHaveFullString("bar");
         }
 
         [TestMethod]
