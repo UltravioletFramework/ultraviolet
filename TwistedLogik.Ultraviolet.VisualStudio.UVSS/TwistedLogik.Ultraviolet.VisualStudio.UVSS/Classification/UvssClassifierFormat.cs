@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
-using System.Windows.Media;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
 {
@@ -15,7 +14,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         public UvssCommentFormat()
         {
             this.DisplayName = "UVSS Comment";
-            this.ForegroundColor = Colors.Green;
         }
     }
 
@@ -29,7 +27,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         public UvssNumberFormat()
         {
             this.DisplayName = "UVSS Numeric Literal";
-            this.ForegroundColor = Colors.Black;
         }
     }
 
@@ -43,7 +40,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         public UvssKeywordFormat()
         {
             this.DisplayName = "UVSS Keyword";
-            this.ForegroundColor = Colors.Blue;
         }
     }
 
@@ -57,7 +53,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         public UvssSelectorFormat()
         {
             this.DisplayName = "UVSS Selector";
-            this.ForegroundColor = Colors.Maroon;
         }
     }
     
@@ -71,7 +66,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         public UvssPropertyNameFormat()
         {
             this.DisplayName = "UVSS Property Name";
-            this.ForegroundColor = Colors.MediumPurple;
         }
     }
 
@@ -85,7 +79,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         public UvssPropertyValueFormat()
         {
             this.DisplayName = "UVSS Property Value";
-            this.IsItalic = true;
         }
     }
 
@@ -99,7 +92,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         public UvssStoryboardFormat()
         {
             this.DisplayName = "UVSS Storyboard";
-            this.ForegroundColor = Colors.Olive;
         }
     }
 
@@ -113,7 +105,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         public UvssTypeNameFormat()
         {
             this.DisplayName = "UVSS Type Name";
-            this.ForegroundColor = Colors.Teal;
         }
     }
 }
