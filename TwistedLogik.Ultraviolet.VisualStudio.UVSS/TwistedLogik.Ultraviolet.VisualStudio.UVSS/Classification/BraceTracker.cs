@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
+namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 {
     /// <summary>
     /// Tracks the positions of braces in a UVSS document.

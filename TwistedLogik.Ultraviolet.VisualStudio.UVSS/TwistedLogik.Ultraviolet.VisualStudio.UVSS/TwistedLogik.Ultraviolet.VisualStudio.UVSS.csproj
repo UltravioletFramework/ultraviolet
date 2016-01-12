@@ -48,19 +48,19 @@
     <Compile Include="Classification\BraceTracker.BraceSymbolType.cs" />
     <Compile Include="Classification\BraceTracker.cs" />
     <Compile Include="Classification\ISymbolTracker.cs" />
-    <Compile Include="Classification\IUvssParserService.cs" />
+    <Compile Include="Parsing\IUvssParserService.cs" />
     <Compile Include="Classification\MultiLineCommentTracker.CommentSymbolType.cs" />
     <Compile Include="Classification\MultiLineCommentTracker.CommentSymbol.cs" />
     <Compile Include="Classification\MultiLineCommentTracker.cs" />
     <Compile Include="Classification\SymbolTrackerBase.cs" />
     <Compile Include="Classification\TrackedSymbol.cs" />
-    <Compile Include="Classification\UvssParserService.cs" />
+    <Compile Include="Parsing\UvssParserService.cs" />
     <Compile Include="Classification\UvssClassifier.cs" />
     <Compile Include="Classification\UvssClassifierClassificationDefinition.cs" />
     <Compile Include="Classification\UvssClassifierFormat.cs" />
     <Compile Include="Classification\UvssClassifierProvider.cs" />
     <Compile Include="Classification\UvssClassifierVisitor.cs" />
-    <Compile Include="Classification\UvssParserService.DocumentCache.cs" />
+    <Compile Include="Parsing\UvssParserService.DocumentCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +118,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tagging\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />

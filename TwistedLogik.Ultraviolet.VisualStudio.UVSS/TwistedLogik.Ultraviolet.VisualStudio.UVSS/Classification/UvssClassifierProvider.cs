@@ -1,9 +1,10 @@
-﻿using Microsoft.VisualStudio.Text;
+﻿using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
-using System.ComponentModel.Composition;
+using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
+namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 {
     [Export(typeof(IClassifierProvider))]
     [ContentType("uvss")]

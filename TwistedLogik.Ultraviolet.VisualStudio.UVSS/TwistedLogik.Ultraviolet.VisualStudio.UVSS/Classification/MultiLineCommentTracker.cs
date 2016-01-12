@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualStudio.Text;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Nucleus;
 using System.Linq;
+using Microsoft.VisualStudio.Text;
+using TwistedLogik.Nucleus;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
+namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 {
     /// <summary>
     /// Tracks the positions of multi-line comments in a UVSS document.

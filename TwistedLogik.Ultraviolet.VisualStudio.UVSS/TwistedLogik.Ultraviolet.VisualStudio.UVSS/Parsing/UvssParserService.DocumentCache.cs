@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
+namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
 {
     partial class UvssParserService
     {

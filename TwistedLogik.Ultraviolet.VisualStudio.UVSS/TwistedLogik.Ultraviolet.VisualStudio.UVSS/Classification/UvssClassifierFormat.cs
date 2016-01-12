@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
+namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 {
     [Export(typeof(EditorFormatDefinition))]
     [ClassificationType(ClassificationTypeNames = "UvssComment")]

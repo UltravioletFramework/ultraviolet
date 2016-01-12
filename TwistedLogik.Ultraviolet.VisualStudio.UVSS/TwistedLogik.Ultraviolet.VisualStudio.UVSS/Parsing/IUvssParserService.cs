@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
+namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
 {
     /// <summary>
     /// Represents a service which parses text snapshots into UVSS documents.

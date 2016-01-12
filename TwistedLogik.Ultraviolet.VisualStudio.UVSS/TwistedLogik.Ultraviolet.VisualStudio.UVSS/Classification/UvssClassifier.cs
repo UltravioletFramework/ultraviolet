@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Classification;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
+using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Classification;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
+namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 {
     /// <summary>
     /// Classifies UVSS source text.

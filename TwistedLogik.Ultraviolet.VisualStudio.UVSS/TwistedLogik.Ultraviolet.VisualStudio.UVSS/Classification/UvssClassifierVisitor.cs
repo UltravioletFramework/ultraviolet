@@ -3,7 +3,7 @@ using System;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
+namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 {
     /// <summary>
     /// Represents a method which is invoked when <see cref="UvssClassifierVisitor"/> marks

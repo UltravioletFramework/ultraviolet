@@ -2,7 +2,7 @@
 using System;
 using TwistedLogik.Nucleus;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
+namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 {
     /// <summary>
     /// Represents the base class for implementations of the <see cref="ISymbolTracker"/> interface.
