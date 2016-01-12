@@ -23,15 +23,11 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         {
             this.registry = registry;
             this.parserService = parserService;
-
-            buffer.Changed += Buffer_Changed;
-
-            this.multiLineCommentTracker = new MultiLineCommentTracker(buffer);
-            this.multiLineCommentTracker.SpanInvalidated += MultiLineCommentTracker_SpanInvalidated;
-
-            this.braceTracker = new BraceTracker(buffer, multiLineCommentTracker);
+            this.buffer = UvssTextBuffer.ForBuffer(buffer);
+            this.buffer.CommentSpanInvalidated += (obj, span) =>
+                RaiseClassificationChanged(new SnapshotSpan(this.buffer.Buffer.CurrentSnapshot, span));
         }
-
+        
 #pragma warning disable 67
 
         /// <summary>
@@ -60,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
             if (span.Snapshot.Length > 5000000)
                 return emptySpanList;
 
-            var blockSpan = braceTracker.GetOutermostBlockSpan(span);
+            var blockSpan = buffer.GetOutermostBlockSpan(span);
 
             var task = parserService.GetDocument(blockSpan);
             task.Wait(100);
@@ -70,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 
             task.ContinueWith(t =>
             {
-                RaiseClassificationChanged(blockSpan.Snapshot, blockSpan.Start, blockSpan.Length);
+                RaiseClassificationChanged(blockSpan);
             }, 
             TaskContinuationOptions.OnlyOnRanToCompletion);
 
@@ -105,34 +101,13 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         /// <summary>
         /// Raises the <see cref="ClassificationChanged"/> event.
         /// </summary>
-        private void RaiseClassificationChanged(ITextSnapshot snapshot, Int32 start, Int32 length)
+        private void RaiseClassificationChanged(SnapshotSpan span)
         {
             var handler = ClassificationChanged;
             if (handler != null)
             {
-                handler(this, new ClassificationChangedEventArgs(
-                    new SnapshotSpan(snapshot, start, length)));
+                handler(this, new ClassificationChangedEventArgs(span));
             }
-        }
-
-        /// <summary>
-        /// Called when the contents of the text buffer are changed.
-        /// </summary>
-        private void Buffer_Changed(Object sender, TextContentChangedEventArgs e)
-        {
-            if (multiLineCommentTracker != null)
-                multiLineCommentTracker.OnBufferChanged(sender, e);
-
-            if (braceTracker != null)
-                braceTracker.OnBufferChanged(sender, e);
-        }
-
-        /// <summary>
-        /// Called when the multi-line comment tracker invalidates a span of text.
-        /// </summary>
-        private void MultiLineCommentTracker_SpanInvalidated(Object obj, SnapshotSpan span)
-        {
-            RaiseClassificationChanged(span.Snapshot, span.Start, span.Length);
         }
 
         // A cached empty list of classification spans.
@@ -141,7 +116,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         // Classification services.
         private readonly IClassificationTypeRegistryService registry;
         private readonly IUvssParserService parserService;
-        private readonly MultiLineCommentTracker multiLineCommentTracker;
-        private readonly BraceTracker braceTracker;
+        private readonly UvssTextBuffer buffer;
     }
 }

@@ -174,11 +174,19 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
                 Style(combinator, typeUvssSelector);
         }
 
+        /// <summary>
+        /// Visits a selector part node.
+        /// </summary>
+        /// <param name="selector">The selector part node to visit.</param>
         private void VisitSelectorSubPart(UvssSelectorSubPartSyntax selector)
         {
             Style(selector, typeUvssSelector);
         }
 
+        /// <summary>
+        /// Visits a pseudo class node.
+        /// </summary>
+        /// <param name="pseudoClass">The pseudo class node to visit.</param>
         private void VisitPseudoClass(UvssPseudoClassSyntax pseudoClass)
         {
             Style(pseudoClass, typeUvssSelector);

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System;
 using Microsoft.VisualStudio.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
@@ -35,8 +36,12 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
                     documentCacheMap.Add(span.Snapshot, documentCache);
                 }
 
-                return documentCache.GetParsingTaskForSpan(span.Span);
+                return documentCache.GetParsingTaskForSpan(span.Span, 
+                    (document) => DocumentGenerated?.Invoke(span, document));
             }
         }
+
+        /// <inheritdoc/>
+        public event UvssDocumentGeneratedDelegate DocumentGenerated;
     }
 }

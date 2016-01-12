@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.VisualStudio.UVSS", "TwistedLogik.Ultraviolet.VisualStudio.UVSS\TwistedLogik.Ultraviolet.VisualStudio.UVSS.csproj", "{978693FB-F175-455D-8957-8CB73E76D780}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.VisualStudio.Uvss", "TwistedLogik.Ultraviolet.VisualStudio.UVSS\TwistedLogik.Ultraviolet.VisualStudio.Uvss.csproj", "{978693FB-F175-455D-8957-8CB73E76D780}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Nucleus", "..\TwistedLogik.Nucleus\TwistedLogik.Nucleus.shproj", "{803B586B-CBAC-4E46-A787-BDF837E1EF46}"
 EndProject

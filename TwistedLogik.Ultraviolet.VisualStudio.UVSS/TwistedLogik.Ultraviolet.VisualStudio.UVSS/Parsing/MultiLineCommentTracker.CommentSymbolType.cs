@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
+﻿namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
 {
     partial class MultiLineCommentTracker
     {

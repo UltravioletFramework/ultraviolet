@@ -2659,7 +2659,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (token.Kind != expectedKind)
             {
                 RestoreToken(input, ref position, token);
-                return new SyntaxToken(expectedKind, null) { IsMissing = true };
+                return new SyntaxToken(expectedKind, null)
+                {
+                    IsMissing = true,
+                    Position = GetNodePositionFromLexerPosition(input, position)
+                };
             }
             return token;
         }

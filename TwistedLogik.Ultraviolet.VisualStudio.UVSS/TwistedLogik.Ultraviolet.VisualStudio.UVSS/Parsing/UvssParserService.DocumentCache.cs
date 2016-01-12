@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+using System;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
 {
@@ -27,8 +28,9 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
             /// Gets a task which parses the specified span of text.
             /// </summary>
             /// <param name="span">The span of text which is being parsed.</param>
+            /// <param name="completed">An action to invoke when parsing is completed.</param>
             /// <returns>A task which parses the specified span of text.</returns>
-            public Task<UvssDocumentSyntax> GetParsingTaskForSpan(Span span)
+            public Task<UvssDocumentSyntax> GetParsingTaskForSpan(Span span, Action<UvssDocumentSyntax> completed = null)
             {
                 lock (parsingTasks)
                 {
@@ -36,11 +38,17 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
                     if (parsingTasks.TryGetValue(span, out task))
                         return task;
 
-                    var source = new SnapshotSpan(snapshot, span).GetText();
+                    var sourceSpan = new SnapshotSpan(snapshot, span);
+                    var source = sourceSpan.GetText();
 
                     task = Task.Run(() =>
                     {
-                        return UvssParser.Parse(source);
+                        var document = UvssParser.Parse(source);
+                        if (completed != null)
+                        {
+                            completed(document);
+                        }
+                        return document;
                     });
 
                     parsingTasks.Add(span, task);

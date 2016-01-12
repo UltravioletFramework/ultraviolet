@@ -1,22 +1,22 @@
-﻿using Microsoft.VisualStudio.Text;
-using System;
+﻿using System;
+using Microsoft.VisualStudio.Text;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
+namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
 {
-    partial class BraceTracker
-    {        
+    partial class MultiLineCommentTracker
+    {
         /// <summary>
-        /// Represents a stored brace symbol (either "{" or "}").
+        /// Represents a stored comment symbol (either "/*" or "*/").
         /// </summary>
-        private class BraceSymbol
+        private class CommentSymbol
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="BraceSymbol"/> class.
+            /// Initializes a new instance of the <see cref="CommentSymbol"/> class.
             /// </summary>
             /// <param name="snapshot">The text snapshot from which the symbol was retrieved.</param>
             /// <param name="type">The symbol's type.</param>
             /// <param name="position">The symbol's position in the source text.</param>
-            public BraceSymbol(ITextSnapshot snapshot, BraceSymbolType type, Int32 position)
+            public CommentSymbol(ITextSnapshot snapshot, CommentSymbolType type, Int32 position)
             {
                 this.Snapshot = snapshot;
                 this.Type = type;
@@ -25,13 +25,13 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="BraceSymbol"/> class.
+            /// Initializes a new instance of the <see cref="CommentSymbol"/> class.
             /// </summary>
             /// <param name="snapshot">The text snapshot from which the symbol was retrieved.</param>
             /// <param name="type">The symbol's type.</param>
             /// <param name="position">The symbol's position in the source text.</param>
             /// <param name="nesting">The symbol's nesting level.</param>
-            public BraceSymbol(ITextSnapshot snapshot, BraceSymbolType type, Int32 position, Int32 nesting)
+            public CommentSymbol(ITextSnapshot snapshot, CommentSymbolType type, Int32 position, Int32 nesting)
             {
                 this.Snapshot = snapshot;
                 this.Type = type;
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
             /// <param name="snapshot">The snapshot to which to translate the symbol.</param>
             public void TranslateTo(ITextSnapshot snapshot)
             {
-                var oldSpan = new SnapshotSpan(Snapshot, Position, 1);
+                var oldSpan = new SnapshotSpan(Snapshot, Position, 2);
                 var newSpan = oldSpan.TranslateTo(snapshot, SpanTrackingMode.EdgeExclusive);
 
                 this.Snapshot = snapshot;
@@ -56,9 +56,9 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
             /// Creates a clone of this object.
             /// </summary>
             /// <returns>The clone that was created.</returns>
-            public BraceSymbol Clone()
+            public CommentSymbol Clone()
             {
-                return new BraceSymbol(Snapshot, Type, Position, Nesting);
+                return new CommentSymbol(Snapshot, Type, Position, Nesting);
             }
 
             /// <summary>
@@ -67,13 +67,13 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
             /// </summary>
             /// <param name="snapshot">The snapshot to which to translate the symbol.</param>
             /// <returns>The clone that was created.</returns>
-            public BraceSymbol TranslatedClone(ITextSnapshot snapshot)
+            public CommentSymbol TranslatedClone(ITextSnapshot snapshot)
             {
                 var clone = Clone();
                 clone.TranslateTo(snapshot);
                 return clone;
             }
-
+            
             /// <summary>
             /// Gets the text snapshot from which the symbol was retrieved.
             /// </summary>
@@ -82,7 +82,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
             /// <summary>
             /// Gets the symbol's type.
             /// </summary>
-            public BraceSymbolType Type { get; }
+            public CommentSymbolType Type { get; }
 
             /// <summary>
             /// Gets the symbol's position in the source text.
