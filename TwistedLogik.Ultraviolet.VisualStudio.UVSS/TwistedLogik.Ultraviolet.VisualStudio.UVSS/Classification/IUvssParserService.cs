@@ -12,8 +12,8 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         /// <summary>
         /// Parses the specified text snapshot into a UVSS document.
         /// </summary>
-        /// <param name="textSnapshot">The text snapshot to parse.</param>
+        /// <param name="span">The snapshot span to parse.</param>
         /// <returns>A task that parses the specified text snapshot into a UVSS document.</returns>
-        Task<UvssDocumentSyntax> GetDocument(ITextSnapshot textSnapshot);
+        Task<UvssDocumentSyntax> GetDocument(SnapshotSpan span);
     }
 }

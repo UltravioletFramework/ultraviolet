@@ -59,16 +59,18 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         {
             if (span.Snapshot.Length > 5000000)
                 return emptySpanList;
-            
-            var task = parserService.GetDocument(span.Snapshot);
+
+            var blockSpan = braceTracker.GetOutermostBlockSpan(span);
+
+            var task = parserService.GetDocument(blockSpan);
             task.Wait(100);
 
             if (task.Status == TaskStatus.RanToCompletion)
-                return VisitDocument(task.Result, span);
+                return VisitDocument(task.Result, blockSpan, blockSpan.Start);
 
             task.ContinueWith(t =>
             {
-                RaiseClassificationChanged(span.Snapshot, 0, span.Snapshot.Length);
+                RaiseClassificationChanged(blockSpan.Snapshot, blockSpan.Start, blockSpan.Length);
             }, 
             TaskContinuationOptions.OnlyOnRanToCompletion);
 
@@ -81,19 +83,17 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         /// </summary>
         /// <param name="document">The document to visit.</param>
         /// <param name="span">The span for which to retrieve classification spans.</param>
+        /// <param name="offset">The offset to apply to the returned classification spans.</param>
         /// <returns>The classification spans that intersect with the specified span.</returns>
-        public IList<ClassificationSpan> VisitDocument(UvssDocumentSyntax document, SnapshotSpan span)
+        public IList<ClassificationSpan> VisitDocument(UvssDocumentSyntax document, SnapshotSpan span, Int32 offset)
         {
             if (document == null)
                 return null;
-
-            var block = braceTracker.GetOutermostBlockSpan(span.Span);
-            System.Diagnostics.Debug.WriteLine(block.GetText());
             
             var results = new List<ClassificationSpan>();
             var visitor = new UvssClassifierVisitor(registry, (start, width, type, kind) =>
             {
-                var nodeSpan = new SnapshotSpan(span.Snapshot, start, width);
+                var nodeSpan = new SnapshotSpan(span.Snapshot, start + offset, width);
                 if (nodeSpan.IntersectsWith(span))
                     results.Add(new ClassificationSpan(nodeSpan, type));
             });

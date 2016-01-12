@@ -1,8 +1,7 @@
-﻿using Microsoft.VisualStudio.Text;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
+using Microsoft.VisualStudio.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
@@ -11,38 +10,32 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
     /// Represents a service which parses text snapshots into UVSS documents.
     /// </summary>
     [Export]
-    public class UvssParserService : IUvssParserService
+    public partial class UvssParserService : IUvssParserService
     {
         /// <inheritdoc/>
-        public Task<UvssDocumentSyntax> GetDocument(ITextSnapshot textSnapshot)
+        public Task<UvssDocumentSyntax> GetDocument(SnapshotSpan span)
         {
-            var textBuffer = textSnapshot.TextBuffer;
+            var snapshot = span.Snapshot;
+            var textBuffer = snapshot.TextBuffer;
 
             lock (textBuffer)
             {
-                var syntaxRootMap = default(ConditionalWeakTable<ITextSnapshot, Task<UvssDocumentSyntax>>);
-                var syntaxRootTask = default(Task<UvssDocumentSyntax>);
+                var documentCacheMap = default(ConditionalWeakTable<ITextSnapshot, DocumentCache>);
+                var documentCache = default(DocumentCache);
 
-                if (!textBuffer.Properties.TryGetProperty(typeof(UvssParserService), out syntaxRootMap))
+                if (!textBuffer.Properties.TryGetProperty(typeof(UvssParserService), out documentCacheMap))
                 {
-                    syntaxRootMap = new ConditionalWeakTable<ITextSnapshot, Task<UvssDocumentSyntax>>();
-                    textBuffer.Properties.AddProperty(typeof(UvssParserService), syntaxRootMap);
-                }
-                else
-                {
-                    if (syntaxRootMap.TryGetValue(textSnapshot, out syntaxRootTask))
-                    {
-                        return syntaxRootTask;
-                    }
+                    documentCacheMap = new ConditionalWeakTable<ITextSnapshot, DocumentCache>();
+                    textBuffer.Properties.AddProperty(typeof(UvssParserService), documentCacheMap);
                 }
 
-                syntaxRootTask = Task.Run(() =>
+                if (!documentCacheMap.TryGetValue(span.Snapshot, out documentCache))
                 {
-                    return UvssParser.Parse(textSnapshot.GetText());
-                });
-                syntaxRootMap.Add(textSnapshot, syntaxRootTask);
+                    documentCache = new DocumentCache(span.Snapshot);
+                    documentCacheMap.Add(span.Snapshot, documentCache);
+                }
 
-                return syntaxRootTask;
+                return documentCache.GetParsingTaskForSpan(span.Span);
             }
         }
     }

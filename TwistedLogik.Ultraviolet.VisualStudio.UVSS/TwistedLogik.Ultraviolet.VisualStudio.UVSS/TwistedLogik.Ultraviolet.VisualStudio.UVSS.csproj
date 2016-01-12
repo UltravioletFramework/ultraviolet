@@ -60,6 +60,7 @@
     <Compile Include="Classification\UvssClassifierFormat.cs" />
     <Compile Include="Classification\UvssClassifierProvider.cs" />
     <Compile Include="Classification\UvssClassifierVisitor.cs" />
+    <Compile Include="Classification\UvssParserService.DocumentCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

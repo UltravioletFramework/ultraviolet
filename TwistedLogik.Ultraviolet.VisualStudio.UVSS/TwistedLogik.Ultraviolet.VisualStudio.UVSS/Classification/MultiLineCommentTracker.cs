@@ -220,6 +220,8 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
                     }
                 }
             }
+
+            UpdateNesting();
         }
 
         /// <summary>
