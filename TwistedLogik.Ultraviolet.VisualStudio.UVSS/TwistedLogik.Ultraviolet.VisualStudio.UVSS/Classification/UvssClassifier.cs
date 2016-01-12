@@ -23,8 +23,13 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         {
             this.registry = registry;
             this.parserService = parserService;
+
+            buffer.Changed += Buffer_Changed;
+
             this.multiLineCommentTracker = new MultiLineCommentTracker(buffer);
             this.multiLineCommentTracker.SpanInvalidated += MultiLineCommentTracker_SpanInvalidated;
+
+            this.braceTracker = new BraceTracker(buffer, multiLineCommentTracker);
         }
 
 #pragma warning disable 67
@@ -81,6 +86,9 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         {
             if (document == null)
                 return null;
+
+            var block = braceTracker.GetOutermostBlockSpan(span.Span);
+            System.Diagnostics.Debug.WriteLine(block.GetText());
             
             var results = new List<ClassificationSpan>();
             var visitor = new UvssClassifierVisitor(registry, (start, width, type, kind) =>
@@ -108,6 +116,18 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         }
 
         /// <summary>
+        /// Called when the contents of the text buffer are changed.
+        /// </summary>
+        private void Buffer_Changed(Object sender, TextContentChangedEventArgs e)
+        {
+            if (multiLineCommentTracker != null)
+                multiLineCommentTracker.OnBufferChanged(sender, e);
+
+            if (braceTracker != null)
+                braceTracker.OnBufferChanged(sender, e);
+        }
+
+        /// <summary>
         /// Called when the multi-line comment tracker invalidates a span of text.
         /// </summary>
         private void MultiLineCommentTracker_SpanInvalidated(Object obj, SnapshotSpan span)
@@ -121,6 +141,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         // Classification services.
         private readonly IClassificationTypeRegistryService registry;
         private readonly IUvssParserService parserService;
-        private readonly MultiLineCommentTracker multiLineCommentTracker;        
+        private readonly MultiLineCommentTracker multiLineCommentTracker;
+        private readonly BraceTracker braceTracker;
     }
 }

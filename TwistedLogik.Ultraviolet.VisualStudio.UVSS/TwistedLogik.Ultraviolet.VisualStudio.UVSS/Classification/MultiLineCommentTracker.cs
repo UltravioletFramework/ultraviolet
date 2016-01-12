@@ -9,23 +9,141 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
     /// <summary>
     /// Tracks the positions of multi-line comments in a UVSS document.
     /// </summary>
-    public sealed partial class MultiLineCommentTracker : ISymbolTracker
+    public sealed partial class MultiLineCommentTracker : SymbolTrackerBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiLineCommentTracker"/> class.
         /// </summary>
         /// <param name="buffer">The text buffer which is being tracked.</param>
         public MultiLineCommentTracker(ITextBuffer buffer)
+            : base(buffer)
         {
-            Contract.Require(buffer, nameof(buffer));
+            InitializeFromBuffer();
+        }
 
-            lock (buffer)
+        /// <inheritdoc/>
+        public override void OnBufferChanged(Object sender, TextContentChangedEventArgs e)
+        {
+            var invalidatedCommentSpans = new List<Span>();
+
+            // Determine which comment spans from the old snapshot were potentially invalidated.
+            var oldSpans = GetCommentSpans(e.Before);
+            foreach (var oldSpan in oldSpans)
             {
-                this.Buffer = buffer;
-                this.Buffer.Changed += Buffer_Changed;
-
-                InitializeFromBuffer();
+                var intersections = e.Changes.Any(x => x.OldSpan.IntersectsWith(oldSpan.Span));
+                if (intersections)
+                {
+                    var translated = oldSpan.TranslateTo(e.After, SpanTrackingMode.EdgeExclusive);
+                    invalidatedCommentSpans.Add(translated.Span);
+                }
             }
+
+            // Remove symbols from lines which were touched.
+            foreach (var change in e.Changes)
+            {
+                var oldLineStart = e.Before.GetLineFromPosition(change.OldPosition).LineNumber;
+                var oldLineEnd = e.Before.GetLineFromPosition(change.OldEnd).LineNumber;
+                for (int i = oldLineStart; i <= oldLineEnd; i++)
+                {
+                    var line = e.Before.GetLineFromLineNumber(i);
+                    var lineText = DiscardSingleLineComments(line.GetText());
+                    RemoveSymbolsOnLine(e.Before, line.Extent.Span, lineText);
+                }
+            }
+
+            // Translate all of our symbols forward in time.
+            foreach (var symbol in symbols)
+            {
+                symbol.Value.TranslateTo(e.After);
+                symbolsTemp.Add(symbol.Value.Position, symbol.Value);
+            }
+
+            var temp = symbols;
+            symbols = symbolsTemp;
+            symbolsTemp = temp;
+            symbolsTemp.Clear();
+
+            // Add symbols from lines which were touched.
+            foreach (var change in e.Changes)
+            {
+                var newLineStart = e.After.GetLineFromPosition(change.NewPosition).LineNumber;
+                var newLineEnd = e.After.GetLineFromPosition(change.NewEnd).LineNumber;
+                for (int i = newLineStart; i <= newLineEnd; i++)
+                {
+                    var line = e.After.GetLineFromLineNumber(i);
+                    var lineText = DiscardSingleLineComments(line.GetText());
+                    AddSymbolsOnLine(e.After, line.Extent.Span, lineText);
+                }
+            }
+            UpdateNesting();
+
+            // Determine which comment spans in the new snapshot are potentially invalid.
+            var newSpans = GetCommentSpans(e.After);
+            foreach (var newSpan in newSpans)
+            {
+                var intersections = e.Changes.Any(x => x.NewSpan.IntersectsWith(newSpan.Span));
+                if (intersections)
+                {
+                    invalidatedCommentSpans.Add(newSpan.Span);
+                }
+            }
+
+            // Invalidate spans.
+            foreach (var span in invalidatedCommentSpans)
+                OnSpanInvalidated(new SnapshotSpan(e.After, span));
+        }
+        
+        /// <summary>
+        /// Gets the span of the comment at the specified position in the source text.
+        /// </summary>
+        /// <param name="position">The position in the source text to evaluate.</param>
+        /// <returns>The span of the comment at the specified position in the source text,
+        /// or null if there is no comment at the specified position.</returns>
+        public SnapshotSpan? GetCommentSpanAtPosition(Int32 position)
+        {
+            var snapshot = Buffer.CurrentSnapshot;
+
+            var open = GetNextSymbol(position, x => x.Type == CommentSymbolType.Open && x.Nesting == 0);
+            if (open == null)
+                return null;
+
+            var close = GetCloseSymbol(open);
+            if (close == null)
+                return new SnapshotSpan(snapshot, open.Position, snapshot.Length - open.Position);
+
+            return new SnapshotSpan(snapshot, open.Position, (close.Position + 2) - open.Position);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether there is an open comment symbol at the
+        /// specified position within the source text.
+        /// </summary>
+        /// <param name="position">The position in the source text to evaluate.</param>
+        /// <returns>true if there is a open comment symbol at the 
+        /// specified position; otherwise, false.</returns>
+        public Boolean IsOpenCommentSymbolAtPosition(Int32 position)
+        {
+            CommentSymbol symbol;
+            if (!symbols.TryGetValue(position, out symbol))
+                return false;
+
+            return symbol.Type == CommentSymbolType.Open && symbol.Nesting == 0;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether there is a close comment symbol at the
+        /// specified position within the source text.
+        /// </summary>
+        /// <param name="position">The position in the source text to evaluate.</param>
+        /// <returns>true if there is a close comment symbol at the 
+        /// specified position; otherwise, false.</returns>
+        public Boolean IsCloseCommentSymbolAtPosition(Int32 position)
+        {
+            CommentSymbol symbol;
+            if (!symbols.TryGetValue(position, out symbol))
+                return false;
+
+            return symbol.Type == CommentSymbolType.Close && symbol.Nesting == 0;
         }
 
         /// <summary>
@@ -71,29 +189,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
 
             return openSymbolPos > closeSymbolPos;
         }
-
-        /// <summary>
-        /// Gets the text buffer which is being tracked.
-        /// </summary>
-        public ITextBuffer Buffer { get; }
-
-        /// <inheritdoc/>
-        public event SpanInvalidatedDelegate SpanInvalidated;
-
-        /// <summary>
-        /// Removes any single-line comments from the end of the specified line of text.
-        /// </summary>
-        /// <param name="line">The line of text from which to remove comments.</param>
-        /// <returns>A string which contains the specified line of text with single-line comments removed.</returns>
-        private static String DiscardSingleLineComments(String line)
-        {
-            var ix = line.IndexOf("//");
-            if (ix < 0)
-                return line;
-
-            return line.Substring(0, ix);
-        }
-
+        
         /// <summary>
         /// Initializes the tracker from the current state of its buffer.
         /// </summary>
@@ -129,8 +225,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         /// <summary>
         /// Adds any symbols which occur on the specified line of text.
         /// </summary>
-        private void AddSymbolsOnLine(
-            ITextSnapshot snapshot, Span span, String line)
+        private void AddSymbolsOnLine(ITextSnapshot snapshot, Span span, String line)
         {
             if (String.IsNullOrEmpty(line))
                 return;
@@ -158,8 +253,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         /// <summary>
         /// Removes any symbols which occur on the specified line of text.
         /// </summary>
-        private void RemoveSymbolsOnLine(
-            ITextSnapshot snapshot, Span span, String line)
+        private void RemoveSymbolsOnLine(ITextSnapshot snapshot, Span span, String line)
         {
             if (String.IsNullOrEmpty(line))
                 return;
@@ -267,10 +361,10 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         /// </summary>
         private CommentSymbol GetCloseSymbol(CommentSymbol open)
         {
-            Contract.Require(open, "open");
+            Contract.Require(open, nameof(open));
 
             if (open.Type != CommentSymbolType.Open)
-                throw new ArgumentException("open");
+                throw new ArgumentException(nameof(open));
 
             if (open.Nesting > 0)
                 return null;
@@ -290,91 +384,22 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.UVSS.Classification
         }
 
         /// <summary>
-        /// Raises the <see cref="SpanInvalidated"/> event.
+        /// Gets the next symbol that occurs after the specified position in the source text.
         /// </summary>
-        private void RaiseSpanInvalidated(SnapshotSpan span)
+        private CommentSymbol GetNextSymbol(Int32 position, Predicate<CommentSymbol> predicate)
         {
-            var temp = SpanInvalidated;
-            if (temp != null)
+            for (int i = 0; i < symbols.Count; i++)
             {
-                temp(this, span);
+                var symbol = symbols.Values[i];
+                if (symbol.Position < position)
+                    continue;
+
+                if (predicate(symbol))
+                    return symbol;
             }
+            return null;
         }
-
-        /// <summary>
-        /// Called when the tracked buffer is changed.
-        /// </summary>
-        private void Buffer_Changed(Object sender, TextContentChangedEventArgs e)
-        {
-            var invalidatedCommentSpans = new List<Span>();
-
-            // Determine which comment spans from the old snapshot were potentially invalidated.
-            var oldSpans = GetCommentSpans(e.Before);
-            foreach (var oldSpan in oldSpans)
-            {
-                var intersections = e.Changes.Any(x => x.OldSpan.IntersectsWith(oldSpan.Span));
-                if (intersections)
-                {
-                    var translated = oldSpan.TranslateTo(e.After, SpanTrackingMode.EdgeExclusive);
-                    invalidatedCommentSpans.Add(translated.Span);
-                }
-            }
-
-            // Remove symbols from lines which were touched.
-            foreach (var change in e.Changes)
-            {
-                var oldLineStart = e.Before.GetLineFromPosition(change.OldPosition).LineNumber;
-                var oldLineEnd = e.Before.GetLineFromPosition(change.OldEnd).LineNumber;
-                for (int i = oldLineStart; i <= oldLineEnd; i++)
-                {
-                    var line = e.Before.GetLineFromLineNumber(i);
-                    var lineText = DiscardSingleLineComments(line.GetText());
-                    RemoveSymbolsOnLine(e.Before, line.Extent.Span, lineText);
-                }
-            }
-
-            // Translate all of our symbols forward in time.
-            foreach (var symbol in symbols)
-            {
-                symbol.Value.TranslateTo(e.After);
-                symbolsTemp.Add(symbol.Value.Position, symbol.Value);
-            }
-
-            var temp = symbols;
-            symbols = symbolsTemp;
-            symbolsTemp = temp;
-            symbolsTemp.Clear();
-
-            // Add symbols from lines which were touched.
-            foreach (var change in e.Changes)
-            {
-                var newLineStart = e.After.GetLineFromPosition(change.NewPosition).LineNumber;
-                var newLineEnd = e.After.GetLineFromPosition(change.NewEnd).LineNumber;
-                for (int i = newLineStart; i <= newLineEnd; i++)
-                {
-                    var line = e.After.GetLineFromLineNumber(i);
-                    var lineText = DiscardSingleLineComments(line.GetText());
-                    AddSymbolsOnLine(e.After, line.Extent.Span, lineText);
-                }
-            }            
-            UpdateNesting();
-
-            // Determine which comment spans in the new snapshot are potentially invalid.
-            var newSpans = GetCommentSpans(e.After);
-            foreach (var newSpan in newSpans)
-            {
-                var intersections = e.Changes.Any(x => x.NewSpan.IntersectsWith(newSpan.Span));
-                if (intersections)
-                {
-                    invalidatedCommentSpans.Add(newSpan.Span);
-                }
-            }
-
-            // Invalidate spans.
-            foreach (var span in invalidatedCommentSpans)
-                RaiseSpanInvalidated(new SnapshotSpan(e.After, span));
-        }        
-
+     
         // Known comment symbols.
         private SortedList<Int32, CommentSymbol> symbols = new SortedList<Int32, CommentSymbol>();
         private SortedList<Int32, CommentSymbol> symbolsTemp = new SortedList<Int32, CommentSymbol>();

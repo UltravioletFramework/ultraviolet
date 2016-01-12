@@ -44,11 +44,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classification\BraceTracker.BraceSymbol.cs" />
+    <Compile Include="Classification\BraceTracker.BraceSymbolType.cs" />
+    <Compile Include="Classification\BraceTracker.cs" />
     <Compile Include="Classification\ISymbolTracker.cs" />
     <Compile Include="Classification\IUvssParserService.cs" />
     <Compile Include="Classification\MultiLineCommentTracker.CommentSymbolType.cs" />
     <Compile Include="Classification\MultiLineCommentTracker.CommentSymbol.cs" />
     <Compile Include="Classification\MultiLineCommentTracker.cs" />
+    <Compile Include="Classification\SymbolTrackerBase.cs" />
+    <Compile Include="Classification\TrackedSymbol.cs" />
     <Compile Include="Classification\UvssParserService.cs" />
     <Compile Include="Classification\UvssClassifier.cs" />
     <Compile Include="Classification\UvssClassifierClassificationDefinition.cs" />
