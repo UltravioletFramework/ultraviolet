@@ -83,6 +83,10 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
                     VisitSelector((UvssSelectorSyntax)node);
                     break;
 
+                case SyntaxKind.SelectorPart:
+                    VisitSelectorPart((UvssSelectorPartBaseSyntax)node);
+                    break;
+
                 case SyntaxKind.SelectorSubPart:
                     VisitSelectorSubPart((UvssSelectorSubPartSyntax)node);
                     break;
@@ -172,6 +176,18 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         {
             foreach (var combinator in selector.Combinators)
                 Style(combinator, typeUvssSelector);
+        }
+
+        /// <summary>
+        /// Visits a selector part node.
+        /// </summary>
+        /// <param name="selectorPart">The selector part node to visit.</param>
+        private void VisitSelectorPart(UvssSelectorPartBaseSyntax selectorPart)
+        {
+            if (selectorPart is UvssUniversalSelectorPartSyntax)
+            {
+                Style(((UvssUniversalSelectorPartSyntax)selectorPart).AsteriskToken, typeUvssSelector);
+            }
         }
 
         /// <summary>
