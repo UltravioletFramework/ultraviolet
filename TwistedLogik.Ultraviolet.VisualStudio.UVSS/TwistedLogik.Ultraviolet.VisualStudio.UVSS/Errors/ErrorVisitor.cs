@@ -2,27 +2,27 @@
 using Microsoft.VisualStudio.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
+namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
 {
     /// <summary>
-    /// Represents a method which is invoked when <see cref="SyntaxErrorVisitor"/> marks
+    /// Represents a method which is invoked when <see cref="ErrorVisitor"/> marks
     /// a span of text as a syntax error.
     /// </summary>
     /// <param name="start">The index of the first character in the span.</param>
     /// <param name="width">The number of characters in the span.</param>
     /// <param name="message">The error message for the tag.</param>
-    public delegate void SytnaxErrorTaggerAction(Int32 start, Int32 width, String message);
+    public delegate void ErrorVisitorAction(Int32 start, Int32 width, String message);
 
     /// <summary>
     /// Represents a syntax tree visitor which provides syntax error tag spans.
     /// </summary>
-    public class SyntaxErrorVisitor
+    public class ErrorVisitor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SyntaxErrorVisitor"/> class.
+        /// Initializes a new instance of the <see cref="ErrorVisitor"/> class.
         /// </summary>
         /// <param name="tagger">The action which is called when a span is tagged.</param>
-        public SyntaxErrorVisitor(SytnaxErrorTaggerAction tagger)
+        public ErrorVisitor(ErrorVisitorAction tagger)
         {
             this.tagger = tagger;
         }
@@ -206,6 +206,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
         }
 
         // State values.
-        private readonly SytnaxErrorTaggerAction tagger;
+        private readonly ErrorVisitorAction tagger;
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors;
 using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
@@ -22,8 +24,12 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
         {
             this.parserService = parserService;
             this.parserService.DocumentGenerated += (span, document) =>
-                RaiseTagsChanged(span);
-
+            {
+                if (span.Snapshot.TextBuffer == buffer)
+                {
+                    RaiseTagsChanged(span);
+                }
+            };
             this.buffer = UvssTextBuffer.ForBuffer(buffer);
         }
         
@@ -35,6 +41,10 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
         public IEnumerable<ITagSpan<IErrorTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
             var result = new List<ITagSpan<IErrorTag>>();
+
+            var errorList = this.buffer.Buffer.GetErrorList();
+            if (errorList != null)
+                errorList.Update();
 
             foreach (var span in spans)
             {
@@ -71,24 +81,18 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
         {
             var result = new List<ITagSpan<IErrorTag>>();
 
-            var visitor = new SyntaxErrorVisitor((start, width, message) =>
+            var errorList = span.Snapshot.TextBuffer.GetErrorList();
+            if (errorList == null)
+                return Enumerable.Empty<ITagSpan<IErrorTag>>();
+
+            var errors = errorList.GetErrorsInSpan(span);
+
+            return errors.Select(x =>
             {
-                var absoluteStart = start + span.Start;
-
-                if (width == 0)
-                    width = 1;
-
-                if (absoluteStart + width > span.Snapshot.Length)
-                    absoluteStart = span.Snapshot.Length - width;
-
-                var tagSpan = new SnapshotSpan(span.Snapshot, absoluteStart, width);
-                var tag = new ErrorTag(message, message);
-                result.Add(new TagSpan<IErrorTag>(tagSpan, tag));
+                var tagSpan = x.Span;
+                var tag = new ErrorTag(x.Message, x.Message);
+                return new TagSpan<IErrorTag>(tagSpan, tag);
             });
-
-            visitor.Visit(document);
-
-            return result;
         }
 
         /// <inheritdoc/>
