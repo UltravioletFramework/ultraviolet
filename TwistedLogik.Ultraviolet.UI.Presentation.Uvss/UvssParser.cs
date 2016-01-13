@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
@@ -482,11 +483,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             if (token.Type == UvssLexerTokenType.Unknown || isSkippedToken)
             {
-                return new SkippedTokensTriviaSyntax(
-                    new SyntaxToken(SyntaxKind.None, token.Text))
+                var skippedTokensKind = SyntaxKindFromLexerTokenType(token);
+                var skippedTokensTrivia = new SkippedTokensTriviaSyntax(
+                    new SyntaxToken(skippedTokensKind, token.Text))
                 {
                     Position = token.SourceOffset
                 };
+                return skippedTokensTrivia;
             }
             else
             {
@@ -686,31 +689,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var openCurlyBraceToken =
                 ExpectToken(input, ref position, SyntaxKind.OpenCurlyBraceToken);
 
-            if (openCurlyBraceToken.IsMissing)
-            {
-                return WithPosition(new UvssBlockSyntax(
-                    openCurlyBraceToken,
-                    MissingList<SyntaxNode>(input, position),
-                    MissingToken(SyntaxKind.CloseCurlyBraceToken, input, position)));
-            }
-
             var contentList = SyntaxListBuilder<SyntaxNode>.Create();
-            while (SyntaxKindFromNextToken(input, position) != SyntaxKind.CloseCurlyBraceToken)
+            if (!openCurlyBraceToken.IsMissing)
             {
-                var contentNode = contentParser(input, ref position, contentList.Count);
-                if (contentNode == null)
-                    break;
+                while (SyntaxKindFromNextToken(input, position) != SyntaxKind.CloseCurlyBraceToken)
+                {
+                    var contentNode = contentParser(input, ref position, contentList.Count);
+                    if (contentNode == null)
+                        break;
 
-                contentList.Add(contentNode);
+                    contentList.Add(contentNode);
+                }
             }
 
             var closeCurlyBraceToken =
                 ExpectToken(input, ref position, SyntaxKind.CloseCurlyBraceToken);
 
-            return WithPosition(new UvssBlockSyntax(
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (openCurlyBraceToken.IsMissing)
+                DiagnosticInfo.ReportMissingToken(ref diagnostics, openCurlyBraceToken);
+
+            if (closeCurlyBraceToken.IsMissing)
+                DiagnosticInfo.ReportMissingToken(ref diagnostics, closeCurlyBraceToken);
+
+            var block = WithPosition(new UvssBlockSyntax(
                 openCurlyBraceToken,
                 contentList.ToList(),
                 closeCurlyBraceToken));
+
+            block.SetDiagnostics(diagnostics);
+
+            return block;
         }
 
         /// <summary>
@@ -2510,7 +2520,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             var animationKeyword =
                 ExpectToken(input, ref position, SyntaxKind.AnimationKeyword);
-
+            
             var propertyName =
                 ExpectPropertyName(input, ref position);
 
@@ -2520,11 +2530,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var body =
                 ExpectBlock(input, ref position, AcceptAnimationBodyNode);
 
-            return WithPosition(new UvssAnimationSyntax(
+            var animation = WithPosition(new UvssAnimationSyntax(
                 animationKeyword,
                 propertyName,
                 navigationExpression,
                 body));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+            if (!animationKeyword.IsMissing)
+            {
+                if (propertyName.IsMissing)
+                    DiagnosticInfo.ReportAnimationMissingPropertyName(ref diagnostics, animation);
+            }
+            animation.SetDiagnostics(diagnostics);
+
+            return animation;
         }
 
         /// <summary>
@@ -2666,11 +2686,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxToken MissingToken(SyntaxKind kind,
             IList<UvssLexerToken> input, Int32 position)
         {
-            return new SyntaxToken(kind, null)
+            var token = new SyntaxToken(kind, null)
             {
                 IsMissing = true,
                 Position = GetNodePositionFromLexerPosition(input, position)
             };
+            return token;
         }
 
         /// <summary>
@@ -2715,11 +2736,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (token.Kind != expectedKind)
             {
                 RestoreToken(input, ref position, token);
-                return new SyntaxToken(expectedKind, null)
+                var missingToken = new SyntaxToken(expectedKind, null)
                 {
                     IsMissing = true,
                     Position = GetNodePositionFromLexerPosition(input, position)
                 };
+                return missingToken;
             }
             return token;
         }

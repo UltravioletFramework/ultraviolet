@@ -9,6 +9,9 @@
     <Import_RootNamespace>TwistedLogik.Ultraviolet.UI.Presentation.Uvss</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\DiagnosticInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\DiagnosticID.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\DiagnosticSeverity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxList`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SkippedTokensTriviaSyntax.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssRuleSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssRuleSetSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssNodeSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextSpan.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerOptions.cs" />

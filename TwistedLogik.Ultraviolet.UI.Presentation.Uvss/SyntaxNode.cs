@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
+using System.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -188,6 +190,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Gets the collection of diagnostics reported by this node and its descendants.
+        /// </summary>
+        /// <returns>A collection containing the diagnostics reported by this node and its descendants.</returns>
+        public IEnumerable<DiagnosticInfo> GetDiagnostics()
+        {
+            if (diagnostics != null)
+            {
+                foreach (var diagnostic in diagnostics)
+                    yield return diagnostic;
+            }
+
+            var leadingDiagnostics = GetLeadingTrivia()?.GetDiagnostics();
+            if (leadingDiagnostics != null)
+            {
+                foreach (var diagnostic in leadingDiagnostics)
+                    yield return diagnostic;
+            }
+
+            for (int i = 0; i < SlotCount; i++)
+            {
+                var child = GetSlot(i);
+                if (child != null)
+                {
+                    var childDiagnostics = child.GetDiagnostics();
+                    foreach (var childDiagnostic in childDiagnostics)
+                        yield return childDiagnostic;
+                }
+            }
+
+            var trailingDiagnostics = GetTrailingTrivia()?.GetDiagnostics();
+            if (trailingDiagnostics != null)
+            {
+                foreach (var diagnostic in trailingDiagnostics)
+                    yield return diagnostic;
+            }
+        }
+        
+        /// <summary>
         /// Creates a string which contains the full text of this node and its children.
         /// </summary>
         /// <returns>The string that was created.</returns>
@@ -241,6 +281,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Gets the width of the node, excluding any leading or trailing trivia.
+        /// </summary>
+        public Int32 Width => FullWidth - (GetLeadingTriviaWidth() + GetTrailingTriviaWidth());
+
+        /// <summary>
         /// Gets or sets the full width of the node, including any leading or trailing trivia.
         /// </summary>
         public Int32 FullWidth
@@ -264,6 +309,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         public Int32 SlotCount { get; protected set; }
 
+        /// <summary>
+        /// Gets a value indicating whether this node or any of its children have diagnostics.
+        /// </summary>
+        public Boolean ContainsDiagnostics => GetDiagnostics().Any();
+        
         /// <summary>
         /// Gets a value indicating whether this node has any leading trivia.
         /// </summary>
@@ -317,7 +367,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 }
             }
         }
-        
+
+        /// <summary>
+        /// Sets the node's diagnostics.
+        /// </summary>
+        /// <param name="diagnostics">The diagnostics to set on the node.</param>
+        internal virtual void SetDiagnostics(IEnumerable<DiagnosticInfo> diagnostics)
+        {
+            this.diagnostics = (diagnostics == null) ? null : diagnostics.ToArray();
+        }
+
         /// <summary>
         /// Changes the node's leading and trailing trivia.
         /// </summary>
@@ -550,9 +609,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 yield return trivia;
             }
         }
-
+        
         // Property values.
         private Int32 position = -1;
         private Int32 fullWidth = -1;
+
+        // Node diagnostics.
+        private DiagnosticInfo[] diagnostics;
     }
 }

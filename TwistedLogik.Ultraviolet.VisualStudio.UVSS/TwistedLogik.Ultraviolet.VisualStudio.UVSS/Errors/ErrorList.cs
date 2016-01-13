@@ -6,9 +6,9 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.TextManager.Interop;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
-using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
 {
@@ -180,22 +180,14 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
                     errors.Clear();
                     errors.AddRange(errorsInNewSnapshot);
 
-                    var visitor = new ErrorVisitor((start, width, message) =>
+                    var diagnostics = document.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error).ToList();
+                    errors.AddRange(diagnostics.Select(x =>
                     {
-                        var absoluteStart = start + span.Start;
-
-                        if (width == 0)
-                            width = 1;
-
-                        if (absoluteStart + width > span.Snapshot.Length)
-                            absoluteStart = span.Snapshot.Length - width;
-
-                        var errorSpan = new SnapshotSpan(span.Snapshot, absoluteStart, width);
-                        var error = new Error(errorSpan, message, textDocument.FilePath);
-                        errors.Add(error);
-                    });
-                    visitor.Visit(document);
-
+                        var errorSpan = new SnapshotSpan(
+                            span.Snapshot, span.Start + x.Location.Start, x.Location.Length);
+                        return new Error(errorSpan, x.Message, textDocument.FilePath);
+                    }));
+                    
                     errorsDirty = true;
                 }
             }

@@ -89,7 +89,15 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
 
             return errors.Select(x =>
             {
-                var tagSpan = x.Span;
+                var tagWidth = x.Span.Length;
+                if (tagWidth == 0)
+                    tagWidth = 1;
+
+                var tagStart = x.Span.Span.Start;
+                if (tagStart + tagWidth > span.Snapshot.Length)
+                    tagStart = span.Snapshot.Length - tagWidth;
+
+                var tagSpan = new SnapshotSpan(span.Snapshot, tagStart, tagWidth);
                 var tag = new ErrorTag(x.Message, x.Message);
                 return new TagSpan<IErrorTag>(tagSpan, tag);
             });
