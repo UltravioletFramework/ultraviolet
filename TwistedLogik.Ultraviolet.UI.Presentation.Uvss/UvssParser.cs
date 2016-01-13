@@ -89,19 +89,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Counts the number of trivia tokens starting at the specified position in the lexer stream.
         /// </summary>
         private static Int32 CountTrivia(
-            IList<UvssLexerToken> input, Int32 position)
+            IList<UvssLexerToken> input, Int32 position, Boolean acceptEndOfLine = true)
         {
             var count = 0;
 
             while (position < input.Count)
             {
-                if (!IsTrivia(input[position++]))
+                var token = input[position];
+
+                if (!acceptEndOfLine && token.Type == UvssLexerTokenType.EndOfLine)
+                    break;
+
+                position++;
+
+                if (!IsTrivia(token))
                     break;
 
                 count++;
             }
 
             return count;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified node occurs at the end of its line.
+        /// </summary>
+        /// <param name="node">The node to evaluate.</param>
+        /// <returns>true if the node occurs at the end of its line; otherwise, false.</returns>
+        private static Boolean IsEndOfLine(SyntaxNode node)
+        {
+            if (node == null)
+                return false;
+
+            var trivia = node.GetTrailingTrivia();
+            if (trivia == null)
+                return false;
+
+            if (trivia.IsList)
+            {
+                for (int i = 0; i < trivia.SlotCount; i++)
+                {
+                    var child = trivia.GetSlot(i);
+                    if (child != null && child.Kind == SyntaxKind.EndOfLineTrivia)
+                        return true;
+                }
+                return false;
+            }
+            else
+            {
+                return trivia.Kind == SyntaxKind.EndOfLineTrivia;
+            }
         }
 
         /// <summary>
@@ -172,6 +209,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 kind == SyntaxKind.CloseParenthesesToken ||
                 kind == SyntaxKind.OpenCurlyBraceToken ||
                 kind == SyntaxKind.CloseCurlyBraceToken ||
+                kind == SyntaxKind.OpenBracketToken ||
+                kind == SyntaxKind.CloseBracketToken ||
                 kind == SyntaxKind.EndOfFileToken;
         }
 
@@ -181,8 +220,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         private static Boolean IsPotentiallyStartOfSelectorPart(SyntaxKind kind)
         {
-            return 
-                kind != SyntaxKind.AtSignToken &&
+            return
                 !IsSelectorCombinator(kind) && 
                 !IsSelectorTerminator(kind) && 
                 !IsTrivia(kind);
@@ -647,6 +685,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             var openCurlyBraceToken =
                 ExpectToken(input, ref position, SyntaxKind.OpenCurlyBraceToken);
+
+            if (openCurlyBraceToken.IsMissing)
+            {
+                return WithPosition(new UvssBlockSyntax(
+                    openCurlyBraceToken,
+                    MissingList<SyntaxNode>(input, position),
+                    MissingToken(SyntaxKind.CloseCurlyBraceToken, input, position)));
+            }
 
             var contentList = SyntaxListBuilder<SyntaxNode>.Create();
             while (SyntaxKindFromNextToken(input, position) != SyntaxKind.CloseCurlyBraceToken)
@@ -1371,7 +1417,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept, SyntaxKind terminator)
         {
             var startpos = GetNodePositionFromLexerPosition(input, position);
-            var start = position + CountTrivia(input, position);
+            var start = position + CountTrivia(input, position, acceptEndOfLine: false);
             var end = start;
             var length = 0;
             var lastNonWhitespace = start;
@@ -1381,7 +1427,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var current = input[end];
                 var currentKind = SyntaxKindFromLexerTokenType(current);
 
-                if (currentKind == terminator || currentKind == SyntaxKind.ImportantKeyword)
+                if (currentKind == terminator || 
+                    currentKind == SyntaxKind.ImportantKeyword ||
+                    currentKind == SyntaxKind.EndOfLineTrivia)
                 {
                     break;
                 }
@@ -1461,7 +1509,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             IList<UvssLexerToken> input, Int32 position)
         {
             return WithPosition(new UvssPropertyValueSyntax(
-                MissingToken(SyntaxKind.PropertyValue, input, position)));
+                MissingToken(SyntaxKind.PropertyValueToken, input, position)));
         }
 
         /// <summary>
@@ -1640,16 +1688,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (accept && propertyName == null)
                 return null;
 
-            var colonToken =
+            var hasLineEnded = IsEndOfLine(propertyName);
+
+            var colonToken = hasLineEnded ? MissingToken(SyntaxKind.ColonToken, input, position) :
                 ExpectToken(input, ref position, SyntaxKind.ColonToken);
 
-            var value =
+            hasLineEnded = hasLineEnded | IsEndOfLine(colonToken);
+
+            var value = hasLineEnded ? MissingPropertyValue(input, position) :
                 ExpectPropertyValue(input, ref position);
 
-            var qualifierToken =
+            hasLineEnded = hasLineEnded | IsEndOfLine(value);
+
+            var qualifierToken = hasLineEnded ? null :
                 AcceptToken(input, ref position, SyntaxKind.ImportantKeyword);
 
-            var semiColonToken =
+            hasLineEnded = hasLineEnded | IsEndOfLine(qualifierToken);
+
+            var semiColonToken = hasLineEnded ? MissingToken(SyntaxKind.SemiColonToken, input, position) :
                 ExpectToken(input, ref position, SyntaxKind.SemiColonToken);
 
             return WithPosition(new UvssRuleSyntax(

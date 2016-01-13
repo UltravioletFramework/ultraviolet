@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The width of the node's leading trivia.</returns>
         public virtual Int32 GetLeadingTriviaWidth()
         {
-            return GetFirstTerminal().GetLeadingTriviaWidth();
+            return GetFirstTerminal()?.GetLeadingTriviaWidth() ?? 0;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The width of the node's trailing trivia.</returns>
         public virtual Int32 GetTrailingTriviaWidth()
         {
-            return GetLastTerminal().GetTrailingTriviaWidth();
+            return GetLastTerminal()?.GetTrailingTriviaWidth() ?? 0;
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
             while (node.SlotCount != 0);
 
-            return node;
+            return node as SyntaxToken;
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
             while (node.SlotCount != 0);
 
-            return node;
+            return node as SyntaxToken;
         }
 
         /// <summary>

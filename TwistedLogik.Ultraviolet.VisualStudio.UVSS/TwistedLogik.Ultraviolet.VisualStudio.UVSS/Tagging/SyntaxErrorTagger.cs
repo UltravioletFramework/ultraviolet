@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
 
                 if (task.Status == TaskStatus.RanToCompletion)
                 {
-                    var tags = GetTags(span, task.Result);
+                    var tags = GetTags(blockSpan, task.Result);
                     result.AddRange(tags);
                 }
                 else
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
                     width = 1;
 
                 if (absoluteStart + width > span.Snapshot.Length)
-                    start = span.Snapshot.Length - width;
+                    absoluteStart = span.Snapshot.Length - width;
 
                 var tagSpan = new SnapshotSpan(span.Snapshot, absoluteStart, width);
                 var tag = new ErrorTag(message, message);

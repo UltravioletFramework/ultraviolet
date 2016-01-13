@@ -258,15 +258,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 
             var body = ruleSet.Body as UvssBlockSyntax;
             TheResultingNode(body)
-                .ShouldBePresent();
-
-            var openCurlyBrace = body.OpenCurlyBraceToken;
-            TheResultingNode(openCurlyBrace)
                 .ShouldBeMissing();
-
-            var closeCurlyBrace = body.CloseCurlyBraceToken;
-            TheResultingNode(closeCurlyBrace)
-                .ShouldBePresent();
         }
 
         [TestMethod]
@@ -1248,15 +1240,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 
             var body = storyboard.Body;
             TheResultingNode(body)
-                .ShouldBePresent();
-
-            var openCurlyBrace = body.OpenCurlyBraceToken;
-            TheResultingNode(openCurlyBrace)
                 .ShouldBeMissing();
-
-            var closeCurlyBrace = body.CloseCurlyBraceToken;
-            TheResultingNode(closeCurlyBrace)
-                .ShouldBePresent();
         }
 
         [TestMethod]

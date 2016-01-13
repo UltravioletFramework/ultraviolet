@@ -1,6 +1,6 @@
 ﻿using System;
+using Microsoft.VisualStudio.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
 {
@@ -38,12 +38,56 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
 
             if (node is SyntaxToken)
                 Visit(node.GetLeadingTrivia());
+            
+            if (node is SkippedTokensTriviaSyntax)
+            {
+                Tag(new Span(node.Position, node.FullWidth),
+                    $"Invalid token '{node.ToFullString()}'");
+            }
+            else
+            {
+                var foundMissing = false;
 
-            // TODO
+                var errorPosition = node.Position + node.GetLeadingTriviaWidth();
+
+                for (int i = 0; i < node.SlotCount; i++)
+                {
+                    var child = node.GetSlot(i);
+                    if (child != null)
+                    {
+                        if (child.IsMissing && !foundMissing)
+                        {
+                            foundMissing = true;
+
+                            var terminal = child.GetFirstTerminal();
+                            Tag(new Span(errorPosition, 1),
+                                $"{GetMissingNodeString(terminal)} expected");
+
+                        }
+                        else
+                        {
+                            Visit(child);
+                        }
+
+                        errorPosition = child.Position +
+                            (child.FullWidth - child.GetTrailingTriviaWidth());
+                    }
+                }
+            }
 
             if (node is SyntaxToken)
                 Visit(node.GetTrailingTrivia());
-        }        
+        }
+
+        /// <summary>
+        /// Tags the specified span of text.
+        /// </summary>
+        /// <param name="span">The span of text to tag.</param>
+        /// <param name="message">The error message for the tag.</param>
+        private void Tag(Span span, String message)
+        {
+            tagger(span.Start, span.Length, message);
+        }
 
         /// <summary>
         /// Tags the specified node.
@@ -65,6 +109,100 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
                 (withTrailingTrivia ? 0 : node.GetTrailingTriviaWidth()));
             
             tagger(start, width, message);
+        }
+
+        private static String GetMissingNodeString(SyntaxNode node)
+        {
+            switch (node.Kind)
+            {
+                case SyntaxKind.PlayStoryboardKeyword:
+                    return "storyboard";
+                case SyntaxKind.SetHandledKeyword:
+                    return "set-handled";
+                case SyntaxKind.TransitionKeyword:
+                    return "transition";
+                case SyntaxKind.ImportantKeyword:
+                    return "!important";
+                case SyntaxKind.AnimationKeyword:
+                    return "animation";
+                case SyntaxKind.PlaySfxKeyword:
+                    return "play-sfx";
+                case SyntaxKind.PropertyKeyword:
+                    return "property";
+                case SyntaxKind.KeyframeKeyword:
+                    return "keyframe";
+                case SyntaxKind.TriggerKeyword:
+                    return "trigger";
+                case SyntaxKind.HandledKeyword:
+                    return "handled";
+                case SyntaxKind.TargetKeyword:
+                    return "target";
+                case SyntaxKind.EventKeyword:
+                    return "event";
+                case SyntaxKind.SetKeyword:
+                    return "set";
+                case SyntaxKind.AsKeyword:
+                    return "as";
+                case SyntaxKind.CommaToken:
+                    return ",";
+                case SyntaxKind.ColonToken:
+                    return ":";
+                case SyntaxKind.SemiColonToken:
+                    return ";";
+                case SyntaxKind.AtSignToken:
+                    return "@";
+                case SyntaxKind.HashToken:
+                    return "#";
+                case SyntaxKind.PeriodToken:
+                    return ".";
+                case SyntaxKind.ExclamationMarkToken:
+                    return "!";
+                case SyntaxKind.OpenParenthesesToken:
+                    return "(";
+                case SyntaxKind.CloseParenthesesToken:
+                    return ")";
+                case SyntaxKind.OpenCurlyBraceToken:
+                    return "{";
+                case SyntaxKind.CloseCurlyBraceToken:
+                    return "}";
+                case SyntaxKind.OpenBracketToken:
+                    return "[";
+                case SyntaxKind.CloseBracketToken:
+                    return "]";
+                case SyntaxKind.AsteriskToken:
+                    return "*";
+                case SyntaxKind.GreaterThanGreaterThanToken:
+                    return ">>";
+                case SyntaxKind.GreaterThanQuestionMarkToken:
+                    return ">?";
+                case SyntaxKind.SpaceToken:
+                    return " ";
+                case SyntaxKind.EqualsToken:
+                    return "=";
+                case SyntaxKind.NotEqualsToken:
+                    return "<>";
+                case SyntaxKind.LessThanToken:
+                    return "<";
+                case SyntaxKind.GreaterThanToken:
+                    return ">";
+                case SyntaxKind.LessThanEqualsToken:
+                    return "<=";
+                case SyntaxKind.GreaterThanEqualsToken:
+                    return ">=";
+                case SyntaxKind.PipeToken:
+                    return "|";
+
+                case SyntaxKind.IdentifierToken:
+                    return "Identifier";
+
+                case SyntaxKind.NumberToken:
+                    return "Number";
+
+                case SyntaxKind.PropertyValueToken:
+                    return "Property value";
+            }
+
+            return node.Kind.ToString();
         }
 
         // State values.
