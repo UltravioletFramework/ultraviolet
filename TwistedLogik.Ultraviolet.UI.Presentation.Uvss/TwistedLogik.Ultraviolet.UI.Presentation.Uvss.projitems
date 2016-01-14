@@ -12,6 +12,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\DiagnosticInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\DiagnosticID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\DiagnosticSeverity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KnownEasingFunctions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KnownLoopTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxList`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SkippedTokensTriviaSyntax.cs" />

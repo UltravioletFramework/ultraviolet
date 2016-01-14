@@ -2787,12 +2787,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             if (loopIdentifier != null)
             {
-                if (loopIdentifier.Text != "none" &&
-                    loopIdentifier.Text != "loop" &&
-                    loopIdentifier.Text != "reverse")
-                {
+                if (!KnownLoopTypes.IsKknownLoopType(loopIdentifier.Text))
                     DiagnosticInfo.ReportUnrecognizedLoopType(ref diagnostics, loopIdentifier);
-                }
             }
 
             storyboard.SetDiagnostics(diagnostics);
@@ -3026,40 +3022,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             if (easingIdentifier != null)
             {
-                if (easingIdentifier.Text != "ease-in-linear" &&
-                    easingIdentifier.Text != "ease-out-linear" &&
-                    easingIdentifier.Text != "ease-in-cubic" &&
-                    easingIdentifier.Text != "ease-out-cubic" &&
-                    easingIdentifier.Text != "ease-in-quadratic" &&
-                    easingIdentifier.Text != "ease-out-quadratic" &&
-                    easingIdentifier.Text != "ease-in-out-quadratic" &&
-                    easingIdentifier.Text != "ease-in-quartic" &&
-                    easingIdentifier.Text != "ease-out-quartic" &&
-                    easingIdentifier.Text != "ease-in-out-quartic" &&
-                    easingIdentifier.Text != "ease-in-quintic" &&
-                    easingIdentifier.Text != "ease-out-quintic" &&
-                    easingIdentifier.Text != "ease-in-out-quintic" &&
-                    easingIdentifier.Text != "ease-in-sin" &&
-                    easingIdentifier.Text != "ease-out-sin" &&
-                    easingIdentifier.Text != "ease-in-out-sin" &&
-                    easingIdentifier.Text != "ease-in-exponential" &&
-                    easingIdentifier.Text != "ease-out-exponential" &&
-                    easingIdentifier.Text != "ease-in-out-exponential" &&
-                    easingIdentifier.Text != "ease-in-circular" &&
-                    easingIdentifier.Text != "ease-out-circular" &&
-                    easingIdentifier.Text != "ease-in-out-circular" &&
-                    easingIdentifier.Text != "ease-in-back" &&
-                    easingIdentifier.Text != "ease-out-back" &&
-                    easingIdentifier.Text != "ease-in-out-back" &&
-                    easingIdentifier.Text != "ease-in-elastic" &&
-                    easingIdentifier.Text != "ease-out-elastic" &&
-                    easingIdentifier.Text != "ease-in-out-elastic" &&
-                    easingIdentifier.Text != "ease-in-bounce" &&
-                    easingIdentifier.Text != "ease-out-bounce" &&
-                    easingIdentifier.Text != "ease-in-out-bounce")
-                {
+                if (!KnownEasingFunctions.IsKnownEasingFunction(easingIdentifier.Text))
                     DiagnosticInfo.ReportUnrecognizedEasingFunction(ref diagnostics, easingIdentifier);
-                }
             }
             
             keyframe.SetDiagnostics(diagnostics);
