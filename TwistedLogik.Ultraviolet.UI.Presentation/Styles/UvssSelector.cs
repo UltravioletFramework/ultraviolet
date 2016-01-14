@@ -15,37 +15,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Initializes a new instance of the <see cref="UvssSelector"/> class.
         /// </summary>
         /// <param name="parts">A collection containing the selector's parts.</param>
-        internal UvssSelector(IEnumerable<UvssSelectorPart> parts)
+        /// <param name="navexp">The selector's navigation expression, if it has one.</param>
+        internal UvssSelector(IEnumerable<UvssSelectorPart> parts, UvssNavigationExpression navexp = null)
         {
-            this.parts       = parts.ToList();
-            this.priority    = parts.Sum(x => x.Priority);
-            this.text        = String.Join(" ", parts.Select(x => x.ToString()));
+            this.parts = parts.ToList();
+            this.priority = parts.Sum(x => x.Priority);
+            this.text = String.Join(" ", parts.Select(x => x.ToString()));
             this.pseudoClass = parts.Where(x => !String.IsNullOrEmpty(x.PseudoClass)).Select(x => x.PseudoClass).SingleOrDefault();
+            this.navexp = navexp;
         }
-
-        /// <summary>
-        /// Parses a selector from the specified string.
-        /// </summary>
-        /// <param name="str">The string from which to parse a selector.</param>
-        /// <returns>The selector that was parsed from the specified string.</returns>
-        public static UvssSelector Parse(String str)
-        {
-            Contract.Require(str, "str");
-
-            if (str == String.Empty)
-                return new UvssSelector(Enumerable.Empty<UvssSelectorPart>());
-    
-            var tokens   = UvssDocument.Lexer.Lex(str);
-            var selector = UvssDocument.Parser.ParseSelector(str, tokens);
-
-            return selector;
-        }
-
+        
         /// <inheritdoc/>
-        public override String ToString()
-        {
-            return Text;
-        }
+        public override String ToString() =>
+            (navexp == null) ? Text : String.Format("{0} | {1}", Text, navexp);
 
         /// <summary>
         /// Gets a value indicating whether this selector has a higher (or equal) priority than the specified selector.
@@ -87,6 +69,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         public String PseudoClass
         {
             get { return pseudoClass; }
+        }
+
+        /// <summary>
+        /// Gets the selector's optional navigation expression, if it has one.
+        /// </summary>
+        public UvssNavigationExpression NavigationExpression
+        {
+            get { return navexp; }
         }
 
         /// <summary>
@@ -268,5 +258,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private readonly Int32 priority;
         private readonly String text;
         private readonly String pseudoClass;
+        private readonly UvssNavigationExpression navexp;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
@@ -58,6 +59,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Gets the enclosed selector.
         /// </summary>
         public UvssSelectorSyntax Selector { get; internal set; }
+
+        /// <inheritdoc/>
+        public override SyntaxList<SyntaxNode> Components => 
+            Selector?.Components ?? default(SyntaxList<SyntaxNode>);
+
+        /// <inheritdoc/>
+        public override IEnumerable<UvssSelectorPartBaseSyntax> Parts => Selector?.Parts;
+
+        /// <inheritdoc/>
+        public override IEnumerable<SyntaxToken> Combinators => Selector?.Combinators;
 
         /// <summary>
         /// Gets the close parenthesis that terminates the selector.

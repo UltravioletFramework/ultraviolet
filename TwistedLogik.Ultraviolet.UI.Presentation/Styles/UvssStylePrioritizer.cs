@@ -14,34 +14,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         public void Reset()
         {
-            this.styles.Clear();
+            this.rules.Clear();
             this.triggers.Clear();
         }
 
         /// <summary>
-        /// Adds a style to the prioritizer.
+        /// Adds a styling rule to the prioritizer.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="selector">The selector which caused this style to be considered.</param>
         /// <param name="navigationExpression">The navigation expression associated with the style.</param>
-        /// <param name="style">The style to add to the prioritizer.</param>
-        public void Add(UltravioletContext uv, UvssSelector selector, NavigationExpression? navigationExpression, UvssStyle style)
+        /// <param name="rule">The styling rule to add to the prioritizer.</param>
+        public void Add(UltravioletContext uv, UvssSelector selector, NavigationExpression? navigationExpression, UvssRule rule)
         {
             Contract.Require(uv, "uv");
 
-            var key = new StyleKey(style.CanonicalName, navigationExpression);
-            var priority = CalculatePriorityFromSelector(selector, style.IsImportant);
+            var key = new StyleKey(rule.CanonicalName, navigationExpression);
+            var priority = CalculatePriorityFromSelector(selector, rule.IsImportant);
 
             PrioritizedStyle existing;
-            if (!styles.TryGetValue(key, out existing))
+            if (!rules.TryGetValue(key, out existing))
             {
-                styles[key] = new PrioritizedStyle(style, selector, priority);
+                rules[key] = new PrioritizedStyle(rule, selector, priority);
             }
             else
             {
-                if (selector.IsHigherPriorityThan(existing.Selector) && (style.IsImportant || !existing.Style.IsImportant))
+                if (selector.IsHigherPriorityThan(existing.Selector) && (rule.IsImportant || !existing.Style.IsImportant))
                 {
-                    styles[key] = new PrioritizedStyle(style, selector, priority);
+                    rules[key] = new PrioritizedStyle(rule, selector, priority);
                 }
             }
         }
@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="selector">The selector which caused this style to be considered.</param>
         /// <param name="navigationExpression">The navigation expression associated with the style.</param>
         /// <param name="trigger">The trigger to add to the prioritizer.</param>
-        public void Add(UltravioletContext uv, UvssSelector selector, NavigationExpression? navigationExpression, Trigger trigger)
+        public void Add(UltravioletContext uv, UvssSelector selector, NavigationExpression? navigationExpression, UvssTrigger trigger)
         {
             Contract.Require(uv, "uv");
 
@@ -61,9 +61,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var priority = CalculatePriorityFromSelector(selector, false);
 
             PrioritizedTrigger existing;
-            if (!triggers.TryGetValue(key, out existing) || selector.IsHigherPriorityThan(existing.Selector))
+            if (!triggers.TryGetValue(key, out existing))
             {
                 triggers[key] = new PrioritizedTrigger(trigger, selector, priority);
+            }
+            else
+            {
+                if (selector.IsHigherPriorityThan(existing.Selector) && (trigger.IsImportant || !existing.Trigger.IsImportant))
+                {
+                    triggers[key] = new PrioritizedTrigger(trigger, selector, priority);
+                }
             }
         }
 
@@ -73,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="element">The element to which to apply the prioritizer's styles.</param>
         public void Apply(UIElement element)
         {
-            foreach (var kvp in styles)
+            foreach (var kvp in rules)
             {
                 var style    = kvp.Value.Style;
                 var selector = kvp.Value.Selector;
@@ -113,7 +120,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         // State values.
-        private readonly Dictionary<StyleKey, PrioritizedStyle> styles = new Dictionary<StyleKey, PrioritizedStyle>();
+        private readonly Dictionary<StyleKey, PrioritizedStyle> rules = new Dictionary<StyleKey, PrioritizedStyle>();
         private readonly Dictionary<StyleKey, PrioritizedTrigger> triggers = new Dictionary<StyleKey, PrioritizedTrigger>();
     }
 }

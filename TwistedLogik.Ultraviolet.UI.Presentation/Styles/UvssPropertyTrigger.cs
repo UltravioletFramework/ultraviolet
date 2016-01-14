@@ -5,8 +5,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     /// <summary>
     /// Represents a trigger which fires when a collection of dependency properties are set to certain values.
     /// </summary>
-    public sealed partial class PropertyTrigger : Trigger, IDependencyPropertyChangeNotificationSubscriber
+    public sealed partial class UvssPropertyTrigger : UvssTrigger, IDependencyPropertyChangeNotificationSubscriber
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssPropertyTrigger"/> class.
+        /// </summary>
+        /// <param name="isImportant">A value indicating whether the trigger is considered important.</param>
+        public UvssPropertyTrigger(Boolean isImportant)
+            : base(isImportant)
+        {
+
+        }
+
         /// <inheritdoc/>
         public void ReceiveDependencyPropertyChangeNotification(DependencyObject dobj, DependencyProperty dprop)
         {
@@ -22,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets the trigger's collection of conditions.
         /// </summary>
-        public PropertyTriggerConditionCollection Conditions
+        public UvssPropertyTriggerConditionCollection Conditions
         {
             get { return conditions; }
         }
@@ -92,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         // Property values.
-        private readonly PropertyTriggerConditionCollection conditions = 
-            new PropertyTriggerConditionCollection();
+        private readonly UvssPropertyTriggerConditionCollection conditions = 
+            new UvssPropertyTriggerConditionCollection();
     }
 }

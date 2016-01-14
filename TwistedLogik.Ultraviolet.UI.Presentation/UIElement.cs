@@ -1271,7 +1271,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Applies a visual state transition to the element.
         /// </summary>
         /// <param name="style">The style which defines the state transition.</param>
-        internal virtual void ApplyStyledVisualStateTransition(UvssStyle style)
+        internal virtual void ApplyStyledVisualStateTransition(UvssRule style)
         {
 
         }
@@ -1707,7 +1707,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dprop)
+        protected internal sealed override void ApplyStyle(UvssRule style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dprop)
         {
             Contract.Require(style, "style");
             Contract.Require(selector, "selector");

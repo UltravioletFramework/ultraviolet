@@ -6,15 +6,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     /// <summary>
     /// Represents a trigger which fires when a routed event is raised.
     /// </summary>
-    public sealed class EventTrigger : Trigger, IRoutedEventRaisedNotificationSubscriber
+    public sealed class UvssEventTrigger : UvssTrigger, IRoutedEventRaisedNotificationSubscriber
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventTrigger"/> class.
+        /// Initializes a new instance of the <see cref="UvssEventTrigger"/> class.
         /// </summary>
         /// <param name="eventName">The name of the event that causes this trigger to be applied.</param>
         /// <param name="handled">A value indicating whether this trigger should respond to handled events.</param>
         /// <param name="setHandled">A value indicating whether this trigger should mark the event as handled.</param>
-        internal EventTrigger(String eventName, Boolean handled, Boolean setHandled)
+        /// <param name="isImportant">A value indicating whether this trigger is considered important.</param>
+        internal UvssEventTrigger(String eventName, Boolean handled, Boolean setHandled, Boolean isImportant)
+            : base(isImportant)
         {
             Contract.RequireNotEmpty(eventName, "eventName");
 

@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             /// <param name="style">The style being applied.</param>
             /// <param name="selector">The selector which caused the style to be applied.</param>
             /// <param name="priority">The style's priority.</param>
-            public PrioritizedStyle(UvssStyle style, UvssSelector selector, Int32 priority)
+            public PrioritizedStyle(UvssRule style, UvssSelector selector, Int32 priority)
             {
                 this.Style    = style;
                 this.Selector = selector;
@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             /// <summary>
             /// The style being applied.
             /// </summary>
-            public readonly UvssStyle Style;
+            public readonly UvssRule Style;
 
             /// <summary>
             /// The selector which caused this style to be applied.

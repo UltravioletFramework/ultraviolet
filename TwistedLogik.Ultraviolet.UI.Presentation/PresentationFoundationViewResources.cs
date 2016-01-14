@@ -116,13 +116,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var rule = document.Rules.Where(x => x.IsViewResourceRule()).LastOrDefault();
             if (rule != null)
             {
-                foreach (var style in rule.Styles)
+                foreach (var style in rule.Rules)
                 {
                     var dp = DependencyProperty.FindByStylingName(style.Name, GetType());
                     if (dp != null)
                     {
-                        var navexp = NavigationExpression.FromUvssNavigationExpression(view.Ultraviolet, rule.NavigationExpression);
-                        base.ApplyStyle(style, rule.Selectors[0], navexp, dp);
+                        var selector = rule.Selectors[0];
+                        var navexp = NavigationExpression.FromUvssNavigationExpression(
+                            view.Ultraviolet, selector.NavigationExpression);
+                        base.ApplyStyle(style, selector, navexp, dp);
                     }
                 }
             }
@@ -130,7 +132,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected internal sealed override void ApplyStyle(UvssStyle style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dp)
+        protected internal sealed override void ApplyStyle(UvssRule style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dp)
         {
             base.ApplyStyle(style, selector, navigationExpression, dp);
         }

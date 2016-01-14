@@ -7,13 +7,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     /// Represents a trigger specified by an Ultraviolet style sheet. Triggers can be used
     /// to modify the property values of a dependency object when certain conditions are met.
     /// </summary>
-    public abstract class Trigger
+    public abstract class UvssTrigger
     {
+        /// <summary>
+        /// Initializes a new instance of thhe <see cref="UvssTrigger"/> class.
+        /// </summary>
+        /// <param name="isImportant">A value indicating whether this trigger is considered important.</param>
+        protected UvssTrigger(Boolean isImportant)
+        {
+            this.IsImportant = isImportant;
+        }
+
         /// <summary>
         /// Attaches the trigger to the specified dependency object.
         /// </summary>
         /// <param name="dobj">The dependency object to which to attach the trigger.</param>
-        /// <param name="invokeOnObject">A value indicating whether to invoke <see cref="DependencyObject.AttachTrigger(Trigger)"/> on the dependency object.</param>
+        /// <param name="invokeOnObject">A value indicating whether to invoke <see cref="DependencyObject.AttachTrigger(UvssTrigger)"/> on the dependency object.</param>
         internal void AttachInternal(DependencyObject dobj, Boolean invokeOnObject)
         {
             Attach(dobj);
@@ -26,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Attaches the trigger to the specified dependency object.
         /// </summary>
         /// <param name="dobj">The dependency object to which to attach the trigger.</param>
-        /// <param name="invokeOnObject">A value indicating whether to invoke <see cref="DependencyObject.DetachTrigger(Trigger)"/> on the dependency object.</param>
+        /// <param name="invokeOnObject">A value indicating whether to invoke <see cref="DependencyObject.DetachTrigger(UvssTrigger)"/> on the dependency object.</param>
         internal void DetachInternal(DependencyObject dobj, Boolean invokeOnObject)
         {
             Detach(dobj);
@@ -68,6 +77,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         {
             get { return actions; }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the style has the !important qualifier.
+        /// </summary>
+        public Boolean IsImportant { get; }
 
         /// <summary>
         /// Activates the trigger's associated actions.

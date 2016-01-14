@@ -638,10 +638,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Attaches a trigger to this object.
         /// </summary>
         /// <param name="trigger">The trigger to attach to this object.</param>
-        internal void AttachTrigger(Trigger trigger)
+        internal void AttachTrigger(UvssTrigger trigger)
         {
             if (attachedTriggers == null)
-                attachedTriggers = new List<Trigger>();
+                attachedTriggers = new List<UvssTrigger>();
 
             attachedTriggers.Add(trigger);
         }
@@ -650,7 +650,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Detaches a trigger from this object.
         /// </summary>
         /// <param name="trigger">The trigger to detach from this object.</param>
-        internal void DetachTrigger(Trigger trigger)
+        internal void DetachTrigger(UvssTrigger trigger)
         {
             if (attachedTriggers == null)
                 throw new InvalidOperationException();
@@ -774,7 +774,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="selector">The selector which caused the style to be applied.</param>
         /// <param name="navigationExpression">The navigation expression associated with the style.</param>
         /// <param name="dprop">A <see cref="DependencyProperty"/> that identifies the dependency property which is being styled.</param>
-        protected internal virtual void ApplyStyle(UvssStyle style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dprop)
+        protected internal virtual void ApplyStyle(UvssRule style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dprop)
         {
             if (dprop != null)
             {
@@ -823,7 +823,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="type">The type of object to create.</param>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
         /// <returns>The object that was created.</returns>
-        private static Object ResolveStyledValue(UvssStyle style, Type type, IFormatProvider provider)
+        private static Object ResolveStyledValue(UvssRule style, Type type, IFormatProvider provider)
         {
             if (style.CachedResolvedValue != null && style.CachedResolvedValue.GetType() == type)
                 return style.CachedResolvedValue;
@@ -934,7 +934,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // The list of attached triggers.
-        private List<Trigger> attachedTriggers;
+        private List<UvssTrigger> attachedTriggers;
 
         // The list of values for this object's dependency properties.
         private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValues =

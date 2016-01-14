@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
@@ -26,9 +28,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="rules">A collection containing the document's rules.</param>
         /// <param name="storyboards">A collection containing the document's storyboards.</param>
-        internal UvssDocument(IEnumerable<UvssRule> rules, IEnumerable<UvssStoryboard> storyboards)
+        internal UvssDocument(IEnumerable<UvssRuleSet> rules, IEnumerable<UvssStoryboard> storyboards)
         {
-            this.rules                    = (rules ?? Enumerable.Empty<UvssRule>()).ToList();
+            this.rules                    = (rules ?? Enumerable.Empty<UvssRuleSet>()).ToList();
             this.storyboards              = (storyboards ?? Enumerable.Empty<UvssStoryboard>()).ToList();
             this.storyboardsByName        = new Dictionary<String, UvssStoryboard>(StringComparer.OrdinalIgnoreCase);
             this.reifiedStoryboardsByName = new Dictionary<String, Storyboard>(StringComparer.OrdinalIgnoreCase);
@@ -43,37 +45,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
-        /// Loads an Ultraviolet Style Sheet (UVSS) document from the specified source text.
+        /// Compiles an Ultraviolet Style Sheet (UVSS) document from the specified source text.
         /// </summary>
-        /// <param name="source">The source text from which to load the document.</param>
-        /// <returns>A new instance of <see cref="UvssDocument"/> that represents the loaded data.</returns>
-        public static UvssDocument Parse(String source)
+        /// <param name="source">The source text from which to compile the document.</param>
+        /// <returns>A new instance of <see cref="UvssDocument"/> that represents the compiled data.</returns>
+        public static UvssDocument Compile(String source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
-            var tokens   = lexer.Lex(source);
-            var document = parser.Parse(source, tokens);
+            var document = UvssParser.Parse(source);
 
-            return document;
+            return Compile(document);
         }
 
         /// <summary>
-        /// Loads an Ultraviolet Style Sheet (UVSS) document from the specified stream.
+        /// Compiles an Ultraviolet Style Sheet (UVSS) document from the specified stream.
         /// </summary>
-        /// <param name="stream">The <see cref="Stream"/> that contains the document to load.</param>
-        /// <returns>A new instance of <see cref="UvssDocument"/> that represents the loaded data.</returns>
-        public static UvssDocument Load(Stream stream)
+        /// <param name="stream">The <see cref="Stream"/> that contains the document to compile.</param>
+        /// <returns>A new instance of <see cref="UvssDocument"/> that represents the compiled data.</returns>
+        public static UvssDocument Compile(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
 
             using (var reader = new StreamReader(stream))
             {
-                var source   = reader.ReadToEnd();
-                var tokens   = lexer.Lex(source);
-                var document = parser.Parse(source, tokens);
+                var source = reader.ReadToEnd();
+                var document = UvssParser.Parse(source);
 
-                return document;
+                return Compile(document);
             }
+        }
+
+        /// <summary>
+        /// Compiles an Ultraviolet Style Sheet (UVSS) document from the specified abstract syntax tree.
+        /// </summary>
+        /// <param name="tree">A <see cref="UvssDocumentSyntax"/> that represents the
+        /// abstract syntax tree to compile.</param>
+        /// <returns>A new instance of <see cref="UvssDocument"/> that represents the compiled data.</returns>
+        public static UvssDocument Compile(UvssDocumentSyntax tree)
+        {
+            Contract.Require(tree, nameof(tree));
+
+            return UvssCompiler.Compile(tree);
         }
 
         /// <summary>
@@ -130,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets the document's rules.
         /// </summary>
-        public IEnumerable<UvssRule> Rules
+        public IEnumerable<UvssRuleSet> Rules
         {
             get { return rules; }
         }
@@ -153,23 +166,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             ApplyStylesInternal(element);
         }
-
-        /// <summary>
-        /// Gets the lexer instance used to lex Ultraviolet Style Sheet source code.
-        /// </summary>
-        internal static UvssLexer Lexer
-        {
-            get { return lexer; }
-        }
-
-        /// <summary>
-        /// Gets the parser instance used to parse Ultraviolet Style Sheet source code.
-        /// </summary>
-        internal static UvssParser Parser
-        {
-            get { return parser; }
-        }
-
+        
         /// <summary>
         /// Creates new <see cref="Storyboard"/> instances based on the current set of <see cref="UvssStoryboard"/> definitions.
         /// </summary>
@@ -206,9 +203,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     continue;
 
                 var uv = element.Ultraviolet;
-                var navexp = NavigationExpression.FromUvssNavigationExpression(uv, rule.NavigationExpression);
+                var navexp = NavigationExpression.FromUvssNavigationExpression(uv, selector.NavigationExpression);
 
-                foreach (var style in rule.Styles)
+                foreach (var style in rule.Rules)
                 {
                     prioritizer.Add(uv, selector, navexp, style);
                 }
@@ -224,12 +221,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         // State values.
-        private static readonly UvssLexer lexer   = new UvssLexer();
-        private static readonly UvssParser parser = new UvssParser();
         private readonly UvssStylePrioritizer prioritizer = new UvssStylePrioritizer();
 
         // Property values.
-        private readonly List<UvssRule> rules;
+        private readonly List<UvssRuleSet> rules;
         private readonly List<UvssStoryboard> storyboards;
         private readonly Dictionary<String, UvssStoryboard> storyboardsByName;
         private readonly Dictionary<String, Storyboard> reifiedStoryboardsByName;

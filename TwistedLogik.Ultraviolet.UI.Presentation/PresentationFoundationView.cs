@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var view = UvmlLoader.Load(uv, uiPanel, uiPanelDefinition, vmfactory);
 
             var uvss = String.Join(Environment.NewLine, uiPanelDefinition.StyleSheets);
-            var uvssdoc = UvssDocument.Parse(uvss);
+            var uvssdoc = UvssDocument.Compile(uvss);
 
             view.SetStyleSheet(uvssdoc);
 

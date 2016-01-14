@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
@@ -64,6 +66,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Gets the trigger's body.
         /// </summary>
         public UvssBlockSyntax Body { get; internal set; }
+
+        /// <inheritdoc/>
+        public override IEnumerable<UvssTriggerActionBaseSyntax> Actions =>
+            Enumerable.Empty<UvssTriggerActionBaseSyntax>();
 
         /// <inheritdoc/>
         internal override SyntaxNode Accept(SyntaxVisitor visitor)

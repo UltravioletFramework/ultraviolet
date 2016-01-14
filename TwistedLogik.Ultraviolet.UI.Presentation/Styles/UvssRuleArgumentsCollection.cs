@@ -5,15 +5,15 @@ using System.Linq;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents a collection of arguments belonging to a style.
+    /// Represents a collection of arguments belonging to a styling rule.
     /// </summary>
-    public sealed partial class UvssStyleArgumentsCollection : IEnumerable<String>
+    public sealed partial class UvssRuleArgumentsCollection : IEnumerable<String>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UvssStyleArgumentsCollection"/> class.
+        /// Initializes a new instance of the <see cref="UvssRuleArgumentsCollection"/> class.
         /// </summary>
-        /// <param name="args">The style's collection of arguments.</param>
-        internal UvssStyleArgumentsCollection(IEnumerable<String> args)
+        /// <param name="args">The styling rule's collection of arguments.</param>
+        internal UvssRuleArgumentsCollection(IEnumerable<String> args)
         {
             if (args != null)
             {
@@ -22,10 +22,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <inheritdoc/>
-        public override String ToString()
-        {
-            return String.Join(", ", arguments.Select(x => String.Format("\"{0}\"", x)));
-        }
+        public override String ToString() =>
+            String.Join(", ", arguments.Select(x => String.Format("\"{0}\"", x)));
 
         /// <summary>
         /// Gets the argument at the specified index within the collection.

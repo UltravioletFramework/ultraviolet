@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-    partial class UvssStyleArgumentsCollection
+    partial class UvssRuleCollection
     {
         /// <inheritdoc/>
-        public List<String>.Enumerator GetEnumerator()
+        public List<UvssRule>.Enumerator GetEnumerator()
         {
-            return arguments.GetEnumerator();
+            return rules.GetEnumerator();
         }
 
         /// <inheritdoc/>
-        IEnumerator<String> IEnumerable<String>.GetEnumerator()
+        IEnumerator<UvssRule> IEnumerable<UvssRule>.GetEnumerator()
         {
             return GetEnumerator();
         }

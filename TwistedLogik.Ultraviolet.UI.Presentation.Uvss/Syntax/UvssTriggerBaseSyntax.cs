@@ -1,4 +1,6 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
+﻿using System.Collections.Generic;
+
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents the base class for UVSS triggers.
@@ -14,5 +16,10 @@
         {
 
         }
+        
+        /// <summary>
+        /// Gets the trigger's collection of actions.
+        /// </summary>
+        public abstract IEnumerable<UvssTriggerActionBaseSyntax> Actions { get; }
     }
 }

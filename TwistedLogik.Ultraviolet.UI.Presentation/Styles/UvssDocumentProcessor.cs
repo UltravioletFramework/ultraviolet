@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <inheritdoc/>
         public override UvssDocument Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
         {
-            return UvssDocument.Parse(input);
+            return UvssDocument.Compile(input);
         }
     }
 }

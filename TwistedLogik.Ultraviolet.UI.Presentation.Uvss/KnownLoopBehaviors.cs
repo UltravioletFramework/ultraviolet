@@ -7,14 +7,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
     /// <summary>
     /// Represents the types of storyboard loop specifiers which are understood by the UVSS parser.
     /// </summary>
-    public static class KnownLoopTypes
+    public static class KnownLoopBehaviors
     {
         /// <summary>
-        /// Initializes the <see cref="KnownLoopTypes"/> class.
+        /// Initializes the <see cref="KnownLoopBehaviors"/> class.
         /// </summary>
-        static KnownLoopTypes()
+        static KnownLoopBehaviors()
         {
-            knownTypes = typeof(KnownLoopTypes).GetFields(BindingFlags.Public | BindingFlags.Static)
+            knownBehaviors = typeof(KnownLoopBehaviors).GetFields(BindingFlags.Public | BindingFlags.Static)
                 .Where(x => x.FieldType == typeof(String)).Select(x => (String)x.GetValue(null)).ToArray();
         }
 
@@ -25,9 +25,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="value">The string to evaluate.</param>
         /// <returns>true if the specified string matches one of the 
         /// known loop types; otherwise, false.</returns>
-        public static Boolean IsKknownLoopType(String value)
+        public static Boolean IsKnownLoopBehavior(String value)
         {
-            return knownTypes.Contains(value);
+            return knownBehaviors.Contains(value);
         }
 
         /// <summary>
@@ -46,6 +46,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public const String Reverse = "reverse";
 
         // Array of all known easing functions.
-        private static readonly String[] knownTypes;
+        private static readonly String[] knownBehaviors;
     }
 }

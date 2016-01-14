@@ -11,6 +11,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     public sealed partial class UvssStoryboardAnimationCollection : IEnumerable<UvssStoryboardAnimation>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="UvssStoryboardAnimationCollection"/> class.
+        /// </summary>
+        internal UvssStoryboardAnimationCollection()
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssStoryboardAnimationCollection"/> class
+        /// by populating it with the animations in the specified collection.
+        /// </summary>
+        /// <param name="animations">A collection containing the animations with which to
+        /// populate this collection instance.</param>
+        internal UvssStoryboardAnimationCollection(IEnumerable<UvssStoryboardAnimation> animations)
+        {
+            this.animations.AddRange(animations);
+        }
+
+        /// <summary>
         /// Adds a storyboard animation to the collection.
         /// </summary>
         /// <param name="animation">The storyboard animation to add to the collection.</param>

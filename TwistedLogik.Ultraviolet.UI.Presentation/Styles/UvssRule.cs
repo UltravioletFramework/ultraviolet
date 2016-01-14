@@ -1,104 +1,116 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     /// <summary>
-    /// Represents a rule in an Ultraviolet Style Sheet (UVSS) document.
+    /// Represents a styling rule defined by an Ultraviolet Style Sheet (UVSS) document.
     /// </summary>
     public sealed class UvssRule
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssRule"/> class.
         /// </summary>
-        /// <param name="selectors">The rule's selectors.</param>
-        /// <param name="navigationExpression">The rule's associated navigation expression.</param>
-        /// <param name="styles">The rule's styles.</param>
-        /// <param name="triggers">The rule's triggers.</param>
-        internal UvssRule(UvssSelectorCollection selectors, UvssNavigationExpression navigationExpression, UvssStyleCollection styles, UvssTriggerCollection triggers)
+        /// <param name="arguments">The styling rule's argument list.</param>
+        /// <param name="owner">The name of the owner of type of the attached property that this 
+        /// styling rule modifies, if it modifies an attached property.</param>
+        /// <param name="name">The name of the dependency property that this styling rule modifies.</param>
+        /// <param name="value">The styling rule's value.</param>
+        /// <param name="isImportant">A value indicating whether the styling rule has the !important qualifier.</param>
+        internal UvssRule(UvssRuleArgumentsCollection arguments, String owner, String name, String value, Boolean isImportant)
         {
-            this.selectors            = selectors;
-            this.navigationExpression = navigationExpression;
-            this.styles               = styles;
-            this.triggers             = triggers;
+            Contract.Require(arguments, nameof(arguments));
+
+            this.arguments = arguments;
+            this.canonicalName = GetCanonicalName(arguments, owner, name);
+            this.container = owner;
+            this.name = name;
+            this.value = value;
+            this.isImportant = isImportant;
         }
 
         /// <inheritdoc/>
         public override String ToString()
         {
-            var fmt = (navigationExpression != null) ? "{0} {{ {1} }} | {2}" : "{0} {{ {1} }}";
-            return String.Format(fmt, Selectors, Styles, NavigationExpression);
+            return arguments.Count > 0 ?
+                String.Format("{0} ({1}): {2}{3}", canonicalName, arguments, value, isImportant ? " !important" : "") :                
+                String.Format("{0}: {1}{2}", canonicalName, value, isImportant ? " !important" : "");
         }
 
         /// <summary>
-        /// Gets a value indicating whether this rule is applied to the view's resource manager.
+        /// Gets the style's collection of arguments.
         /// </summary>
-        /// <returns><c>true</c> if this rule is applied to the view's resource manager; otherwise, <c>false</c>.</returns>
-        public Boolean IsViewResourceRule()
+        public UvssRuleArgumentsCollection Arguments
         {
-            if (selectors.Count != 1)
-                return false;
-            
-            return selectors[0].IsViewResourceSelector;
+            get { return arguments; }
         }
 
         /// <summary>
-        /// Gets a value indicating whether the rule matches the specified UI element.
+        /// Gets the canonical name that uniquely identifies this style.
         /// </summary>
-        /// <param name="element">The UI element to evaluate.</param>
-        /// <param name="selector">The selector that matches the element, if any.</param>
-        /// <returns><c>true</c> if the rule matches the specified UI element; otherwise, <c>false</c>.</returns>
-        public Boolean MatchesElement(UIElement element, out UvssSelector selector)
+        public String CanonicalName
         {
-            selector = null;
-            foreach (var potentialMatch in selectors)
-            {
-                if (potentialMatch.MatchesElement(element))
-                {
-                    if (selector == null || potentialMatch.IsHigherPriorityThan(selector))
-                    {
-                        selector = potentialMatch;
-                    }
-                }
-            }
-            return selector != null;
+            get { return canonicalName; }
         }
 
         /// <summary>
-        /// Gets the rule's selectors.
+        /// Gets the name of the owner type of the attached property that this style modifies, if
+        /// it modifies an attached property.
         /// </summary>
-        public UvssSelectorCollection Selectors
+        public String Owner
         {
-            get { return selectors; }
+            get { return container; }
         }
 
         /// <summary>
-        /// Gets the rule's navigation expression.
+        /// Gets the name of the dependency property that this style modifies.
         /// </summary>
-        public UvssNavigationExpression NavigationExpression
+        public String Name
         {
-            get { return navigationExpression; }
+            get { return name; }
         }
 
         /// <summary>
-        /// Gets the rule's styles.
+        /// Gets the style's value.
         /// </summary>
-        public UvssStyleCollection Styles
+        public String Value
         {
-            get { return styles; }
+            get { return value; }
         }
 
         /// <summary>
-        /// Gets the rule's triggers.
+        /// Gets a value indicating whether the style has the !important qualifier.
         /// </summary>
-        public UvssTriggerCollection Triggers
+        public Boolean IsImportant
         {
-            get { return triggers; }
+            get { return isImportant; }
         }
 
-        // State values.
-        private readonly UvssSelectorCollection selectors;
-        private readonly UvssNavigationExpression navigationExpression;
-        private readonly UvssStyleCollection styles;
-        private readonly UvssTriggerCollection triggers;
+        /// <summary>
+        /// Gets or sets the last value that was resolved for this style.
+        /// </summary>
+        internal Object CachedResolvedValue
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the canonical name of a style with the specified parameters.
+        /// </summary>
+        private static String GetCanonicalName(UvssRuleArgumentsCollection arguments, String owner, String name)
+        {
+            var part1 = (owner == null) ? name : String.Format("{0}.{1}", owner, name);
+            var part2 = (arguments.Count > 0) ? String.Format(" ({0})", arguments) : null;
+            return part1 + part2;
+        }
+
+        // Property values.
+        private readonly UvssRuleArgumentsCollection arguments;
+        private readonly String canonicalName;
+        private readonly String container;
+        private readonly String name;
+        private readonly String value;
+        private readonly Boolean isImportant;
     }
 }

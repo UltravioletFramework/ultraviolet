@@ -1433,13 +1433,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
             if (listIndex > 0 && (position >= input.Count || input[position].Type == UvssLexerTokenType.WhiteSpace))
-                return accept ? null : MissingSelectorSubPart(input, position);
+                return accept ? null : MissingSelectorSubPart(input, position);        
 
             var leadingQualifierToken =
                 AcceptToken(input, ref position, SyntaxKind.HashToken, SyntaxKind.PeriodToken);
 
             var subPartIdentifier =
                 ParseSelectorSubPartIdentifier(input, ref position, 0, false);
+
+            if (accept && leadingQualifierToken == null && subPartIdentifier.IsMissing)
+                return null;
 
             var trailingQualifierToken =
                 AcceptToken(input, ref position, SyntaxKind.ExclamationMarkToken);
@@ -2787,7 +2790,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             if (loopIdentifier != null)
             {
-                if (!KnownLoopTypes.IsKknownLoopType(loopIdentifier.Text))
+                if (!KnownLoopBehaviors.IsKnownLoopBehavior(loopIdentifier.Text))
                     DiagnosticInfo.ReportUnrecognizedLoopType(ref diagnostics, loopIdentifier);
             }
 

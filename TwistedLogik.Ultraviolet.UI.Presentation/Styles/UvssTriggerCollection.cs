@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Initializes a new instance of the <see cref="UvssTriggerCollection"/> class.
         /// </summary>
         /// <param name="triggers">A collection containing the triggers to add to the list.</param>
-        internal UvssTriggerCollection(IEnumerable<Trigger> triggers)
+        internal UvssTriggerCollection(IEnumerable<UvssTrigger> triggers)
         {
             if (triggers != null)
             {
@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Adds an item to the collection.
         /// </summary>
         /// <param name="trigger">The trigger to add to the collection.</param>
-        internal void Add(Trigger trigger)
+        internal void Add(UvssTrigger trigger)
         {
             triggers.Add(trigger);
         }
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="trigger">The trigger to remove from the collection.</param>
         /// <returns><c>true</c> if the item was removed from the collection; otherwise, <c>false</c>.</returns>
-        internal Boolean Remove(Trigger trigger)
+        internal Boolean Remove(UvssTrigger trigger)
         {
             return triggers.Remove(trigger);
         }
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="trigger">The trigger to evaluate.</param>
         /// <returns><c>true</c> if the collection contains the specified item; otherwise, <c>false</c>.</returns>
-        internal Boolean Contains(Trigger trigger)
+        internal Boolean Contains(UvssTrigger trigger)
         {
             return triggers.Contains(trigger);
         }
@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         // State values.
-        private readonly List<Trigger> triggers = 
-            new List<Trigger>();
+        private readonly List<UvssTrigger> triggers = 
+            new List<UvssTrigger>();
     }
 }

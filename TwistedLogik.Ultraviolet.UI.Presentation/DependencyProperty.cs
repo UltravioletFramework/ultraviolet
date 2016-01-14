@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <param name="dobj">The dependency object on which to set the style.</param>
     /// <param name="style">The style to set on this dependency property.</param>
     /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-    public delegate void DependencyPropertyStyleSetter(DependencyObject dobj, UvssStyle style, IFormatProvider provider);
+    public delegate void DependencyPropertyStyleSetter(DependencyObject dobj, UvssRule style, IFormatProvider provider);
 
     /// <summary>
     /// Represents a dependency property.
@@ -363,7 +363,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dobj">The dependency object on which to set the style.</param>
         /// <param name="style">The style to set on this dependency property.</param>
-        internal void ApplyStyle(DependencyObject dobj, UvssStyle style)
+        internal void ApplyStyle(DependencyObject dobj, UvssRule style)
         {
             if (styleSetter == null)
                 throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(Name));
@@ -377,7 +377,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dobj">The dependency object on which to set the style.</param>
         /// <param name="style">The style to set on this dependency property.</param>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        internal void ApplyStyle(DependencyObject dobj, UvssStyle style, IFormatProvider provider)
+        internal void ApplyStyle(DependencyObject dobj, UvssRule style, IFormatProvider provider)
         {
             if (styleSetter == null)
                 throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(Name));
@@ -505,7 +505,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var setStyledValue      = miSetStyledValue.MakeGenericMethod(dpType);
 
             var expParameterDObj    = Expression.Parameter(typeof(DependencyObject), "dobj");
-            var expParameterStyle   = Expression.Parameter(typeof(UvssStyle), "style");
+            var expParameterStyle   = Expression.Parameter(typeof(UvssRule), "style");
             var expParameterFmtProv = Expression.Parameter(typeof(IFormatProvider), "provider");
             var expResolveValue     = Expression.Convert(Expression.Call(miResolveStyledValue, expParameterStyle, Expression.Constant(dpType), expParameterFmtProv), dpType);
             var expCallMethod       = Expression.Call(expParameterDObj, setStyledValue, Expression.Constant(this), expResolveValue);

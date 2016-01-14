@@ -10,6 +10,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     public sealed partial class UvssStoryboardTargetCollection : IEnumerable<UvssStoryboardTarget>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="UvssStoryboardTargetCollection"/> class.
+        /// </summary>
+        internal UvssStoryboardTargetCollection()
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssStoryboardTargetCollection"/> class
+        /// by populating it with the targets in the specified collection.
+        /// </summary>
+        /// <param name="targets">A collection containing the targets with which to
+        /// populate this collection instance.</param>
+        internal UvssStoryboardTargetCollection(IEnumerable<UvssStoryboardTarget> targets)
+        {
+            this.targets.AddRange(targets);
+        }
+
+        /// <summary>
         /// Adds a storyboard target to the collection.
         /// </summary>
         /// <param name="target">The storyboard target to add to the collection.</param>

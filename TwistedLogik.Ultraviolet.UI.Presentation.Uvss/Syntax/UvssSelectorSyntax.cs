@@ -45,15 +45,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             }
         }
 
-        /// <summary>
-        /// Gets the selector's list of components.
-        /// </summary>
-        public SyntaxList<SyntaxNode> Components { get; internal set; }
+        /// <inheritdoc/>
+        public override SyntaxList<SyntaxNode> Components { get; }
 
-        /// <summary>
-        /// Gets a collection containing the selector's parts.
-        /// </summary>
-        public IEnumerable<UvssSelectorPartBaseSyntax> Parts
+        /// <inheritdoc/>
+        public override IEnumerable<UvssSelectorPartBaseSyntax> Parts
         {
             get
             {
@@ -66,10 +62,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             }
         }
 
-        /// <summary>
-        /// Gets a collection containing the selector's combinators.
-        /// </summary>
-        public IEnumerable<SyntaxToken> Combinators
+        /// <inheritdoc/>
+        public override IEnumerable<SyntaxToken> Combinators
         {
             get
             {

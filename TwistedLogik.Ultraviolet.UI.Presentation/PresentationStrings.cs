@@ -23,17 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static readonly LocalizationDatabase StringDatabase = new LocalizationDatabase();
 
 #pragma warning disable 1591
-        public static readonly StringResource StyleSheetSyntaxError                = new StringResource(StringDatabase, "STYLE_SHEET_SYNTAX_ERROR");
-        public static readonly StringResource StyleSheetSyntaxUnterminatedString   = new StringResource(StringDatabase, "STYLE_SHEET_SYNTAX_UNTERMINATED_STRING");
-        public static readonly StringResource StyleSheetSyntaxUnterminatedSequence = new StringResource(StringDatabase, "STYLE_SHEET_SYNTAX_UNTERMINATED_SEQUENCE");
-        public static readonly StringResource StyleSheetSyntaxInvalidStyleArgs     = new StringResource(StringDatabase, "STYLE_SHEET_SYNTAX_INVALID_STYLE_ARGS");
-        public static readonly StringResource StyleSheetSyntaxExpectedToken        = new StringResource(StringDatabase, "STYLE_SHEET_SYNTAX_EXPECTED_TOKEN");
-        public static readonly StringResource StyleSheetSyntaxUnexpectedToken      = new StringResource(StringDatabase, "STYLE_SHEET_SYNTAX_UNEXPECTED_TOKEN");
-        public static readonly StringResource StyleSheetSyntaxExpectedValue        = new StringResource(StringDatabase, "STYLE_SHEET_SYNTAX_EXPECTED_VALUE");
-        public static readonly StringResource StyleSheetSyntaxUnexpectedValue      = new StringResource(StringDatabase, "STYLE_SHEET_SYNTAX_UNEXPECTED_VALUE");
-        public static readonly StringResource StyleSheetSyntaxUnexpectedEOF        = new StringResource(StringDatabase, "STYLE_SHEET_SYNTAX_UNEXPECTED_EOF");
-        public static readonly StringResource StyleSheetInvalidCharacter           = new StringResource(StringDatabase, "STYLE_SHEET_SYNTAX_INVALID_CHARACTER");
-        public static readonly StringResource StyleSheetInvalidTriggerType         = new StringResource(StringDatabase, "STYLE_SHEET_INVALID_TRIGGER_TYPE");
+        public static readonly StringResource StyleSheetParserError                = new StringResource(StringDatabase, "STYLE_SHEET_PARSER_ERROR");
         public static readonly StringResource IsNotDependencyObject                = new StringResource(StringDatabase, "IS_NOT_DEPENDENCY_OBJECT");
         public static readonly StringResource PropertyHasNoGetter                  = new StringResource(StringDatabase, "PROPERTY_HAS_NO_GETTER");
         public static readonly StringResource PropertyHasNoSetter                  = new StringResource(StringDatabase, "PROPERTY_HAS_NO_SETTER");

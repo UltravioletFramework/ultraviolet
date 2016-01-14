@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     /// <summary>
     /// Represents a property trigger's collection of conditions.
     /// </summary>
-    public sealed partial class PropertyTriggerConditionCollection
+    public sealed partial class UvssPropertyTriggerConditionCollection
     {
         /// <summary>
         /// Gets a value indicating whether the specified dependency object satisfies all of the conditions in the collection.
@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Adds the specified item to the collection.
         /// </summary>
         /// <param name="condition">The item to add to the collection.</param>
-        internal void Add(PropertyTriggerCondition condition)
+        internal void Add(UvssPropertyTriggerCondition condition)
         {
             Contract.Require(condition, "condition");
 
@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Adds a set of conditions to this collection.
         /// </summary>
         /// <param name="conditions">The set of conditions to add to this collection.</param>
-        internal void AddRange(IEnumerable<PropertyTriggerCondition> conditions)
+        internal void AddRange(IEnumerable<UvssPropertyTriggerCondition> conditions)
         {
             Contract.Require(conditions, "conditions");
 
@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Removes the specified item from the collection.
         /// </summary>
         /// <param name="condition">The item to remove from the collection.</param>
-        internal Boolean Remove(PropertyTriggerCondition condition)
+        internal Boolean Remove(UvssPropertyTriggerCondition condition)
         {
             Contract.Require(condition, "condition");
 
@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="condition">The item to evaluate.</param>
         /// <returns><c>true</c> if the collection contains the specified item; otherwise, <c>false</c>.</returns>
-        internal Boolean Contains(PropertyTriggerCondition condition)
+        internal Boolean Contains(UvssPropertyTriggerCondition condition)
         {
             Contract.Require(condition, "condition");
 
@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
         // The collection's underlying list of conditions.
         private String canonicalName;
-        private readonly List<PropertyTriggerCondition> conditions = 
-            new List<PropertyTriggerCondition>();
+        private readonly List<UvssPropertyTriggerCondition> conditions = 
+            new List<UvssPropertyTriggerCondition>();
     }
 }

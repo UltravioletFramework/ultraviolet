@@ -473,7 +473,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        internal override void ApplyStyledVisualStateTransition(UvssStyle style)
+        internal override void ApplyStyledVisualStateTransition(UvssRule style)
         {
             Contract.Require(style, "style");
 

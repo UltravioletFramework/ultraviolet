@@ -10,6 +10,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     public sealed partial class UvssStoryboardKeyframeCollection : IEnumerable<UvssStoryboardKeyframe>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="UvssStoryboardKeyframeCollection"/> class
+        /// </summary>
+        internal UvssStoryboardKeyframeCollection()
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssStoryboardKeyframeCollection"/> class
+        /// by populating it with the keyframes in the specified collection.
+        /// </summary>
+        /// <param name="keyframes">A collection containing the keyframes with which to
+        /// populate this collection instance.</param>
+        internal UvssStoryboardKeyframeCollection(IEnumerable<UvssStoryboardKeyframe> keyframes)
+        {
+            this.keyframes.AddRange(keyframes);
+        }
+
+        /// <summary>
         /// Adds an animation keyframe to the collection.
         /// </summary>
         /// <param name="keyframe">The animation keyframe to add to the collection.</param>
