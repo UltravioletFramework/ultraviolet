@@ -100,6 +100,10 @@
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
       <Name>TwistedLogik.Ultraviolet (Desktop)</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29.csproj">
+      <Project>{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

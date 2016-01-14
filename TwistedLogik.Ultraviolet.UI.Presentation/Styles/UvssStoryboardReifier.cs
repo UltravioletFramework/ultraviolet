@@ -4,6 +4,7 @@ using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
@@ -17,37 +18,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         static UvssStoryboardReifier()
         {
-            standardEasingFunctions["ease-in-linear"]          = Easings.EaseInLinear;
-            standardEasingFunctions["ease-out-linear"]         = Easings.EaseOutLinear;
-            standardEasingFunctions["ease-in-cubic"]           = Easings.EaseInCubic;
-            standardEasingFunctions["ease-out-cubic"]          = Easings.EaseOutCubic;
-            standardEasingFunctions["ease-in-quadratic"]       = Easings.EaseInQuadratic;
-            standardEasingFunctions["ease-out-quadratic"]      = Easings.EaseOutQuadratic;
-            standardEasingFunctions["ease-in-out-quadratic"]   = Easings.EaseInOutQuadratic;
-            standardEasingFunctions["ease-in-quartic"]         = Easings.EaseInQuartic;
-            standardEasingFunctions["ease-out-quartic"]        = Easings.EaseOutQuartic;
-            standardEasingFunctions["ease-in-out-quartic"]     = Easings.EaseInOutQuartic;
-            standardEasingFunctions["ease-in-quintic"]         = Easings.EaseInQuintic;
-            standardEasingFunctions["ease-out-quintic"]        = Easings.EaseInQuintic;
-            standardEasingFunctions["ease-in-out-quintic"]     = Easings.EaseInOutQuintic;
-            standardEasingFunctions["ease-in-sin"]             = Easings.EaseInSin;
-            standardEasingFunctions["ease-out-sin"]            = Easings.EaseOutSin;
-            standardEasingFunctions["ease-in-out-sin"]         = Easings.EaseInOutSin;
-            standardEasingFunctions["ease-in-exponential"]     = Easings.EaseInExponential;
-            standardEasingFunctions["ease-out-exponential"]    = Easings.EaseOutExponential;
-            standardEasingFunctions["ease-in-out-exponential"] = Easings.EaseInOutExponential;
-            standardEasingFunctions["ease-in-circular"]        = Easings.EaseInCircular;
-            standardEasingFunctions["ease-out-circular"]       = Easings.EaseOutCircular;
-            standardEasingFunctions["ease-in-out-circular"]    = Easings.EaseInOutCircular;
-            standardEasingFunctions["ease-in-back"]            = Easings.EaseInBack;
-            standardEasingFunctions["ease-out-back"]           = Easings.EaseOutBack;
-            standardEasingFunctions["ease-in-out-back"]        = Easings.EaseInOutBack;
-            standardEasingFunctions["ease-in-elastic"]         = Easings.EaseInElastic;
-            standardEasingFunctions["ease-out-elastic"]        = Easings.EaseOutElastic;
-            standardEasingFunctions["ease-in-out-elastic"]     = Easings.EaseInOutElastic;
-            standardEasingFunctions["ease-in-bounce"]          = Easings.EaseInBounce;
-            standardEasingFunctions["ease-out-bounce"]         = Easings.EaseOutBounce;
-            standardEasingFunctions["ease-in-out-bounce"]      = Easings.EaseInOutBounce;
+            standardEasingFunctions[KnownEasingFunctions.EaseInLinear] = Easings.EaseInLinear;
+            standardEasingFunctions[KnownEasingFunctions.EaseOutLinear] = Easings.EaseOutLinear;
+            standardEasingFunctions[KnownEasingFunctions.EaseInCubic] = Easings.EaseInCubic;
+            standardEasingFunctions[KnownEasingFunctions.EaseOutCubic] = Easings.EaseOutCubic;
+            standardEasingFunctions[KnownEasingFunctions.EaseInQuadratic] = Easings.EaseInQuadratic;
+            standardEasingFunctions[KnownEasingFunctions.EaseOutQuadratic] = Easings.EaseOutQuadratic;
+            standardEasingFunctions[KnownEasingFunctions.EaseInOutQuadratic] = Easings.EaseInOutQuadratic;
+            standardEasingFunctions[KnownEasingFunctions.EaseInQuartic] = Easings.EaseInQuartic;
+            standardEasingFunctions[KnownEasingFunctions.EaseOutQuartic] = Easings.EaseOutQuartic;
+            standardEasingFunctions[KnownEasingFunctions.EaseInOutQuartic] = Easings.EaseInOutQuartic;
+            standardEasingFunctions[KnownEasingFunctions.EaseInQuintic] = Easings.EaseInQuintic;
+            standardEasingFunctions[KnownEasingFunctions.EaseOutQuintic] = Easings.EaseInQuintic;
+            standardEasingFunctions[KnownEasingFunctions.EaseInOutQuintic] = Easings.EaseInOutQuintic;
+            standardEasingFunctions[KnownEasingFunctions.EaseInSin] = Easings.EaseInSin;
+            standardEasingFunctions[KnownEasingFunctions.EaseOutSin] = Easings.EaseOutSin;
+            standardEasingFunctions[KnownEasingFunctions.EaseInOutSin] = Easings.EaseInOutSin;
+            standardEasingFunctions[KnownEasingFunctions.EaseInExponential] = Easings.EaseInExponential;
+            standardEasingFunctions[KnownEasingFunctions.EaseOutExponential] = Easings.EaseOutExponential;
+            standardEasingFunctions[KnownEasingFunctions.EaseInOutExponential] = Easings.EaseInOutExponential;
+            standardEasingFunctions[KnownEasingFunctions.EaseInCircular] = Easings.EaseInCircular;
+            standardEasingFunctions[KnownEasingFunctions.EaseOutCircular] = Easings.EaseOutCircular;
+            standardEasingFunctions[KnownEasingFunctions.EaseInOutCircular] = Easings.EaseInOutCircular;
+            standardEasingFunctions[KnownEasingFunctions.EaseInBack] = Easings.EaseInBack;
+            standardEasingFunctions[KnownEasingFunctions.EaseOutBack] = Easings.EaseOutBack;
+            standardEasingFunctions[KnownEasingFunctions.EaseInOutBack] = Easings.EaseInOutBack;
+            standardEasingFunctions[KnownEasingFunctions.EaseInElastic] = Easings.EaseInElastic;
+            standardEasingFunctions[KnownEasingFunctions.EaseOutElastic] = Easings.EaseOutElastic;
+            standardEasingFunctions[KnownEasingFunctions.EaseInOutElastic] = Easings.EaseInOutElastic;
+            standardEasingFunctions[KnownEasingFunctions.EaseInBounce] = Easings.EaseInBounce;
+            standardEasingFunctions[KnownEasingFunctions.EaseOutBounce] = Easings.EaseOutBounce;
+            standardEasingFunctions[KnownEasingFunctions.EaseInOutBounce] = Easings.EaseInOutBounce;
         }
 
         /// <summary>

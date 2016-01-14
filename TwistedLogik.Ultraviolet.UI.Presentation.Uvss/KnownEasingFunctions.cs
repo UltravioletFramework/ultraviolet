@@ -81,6 +81,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public const String EaseInOutQuartic = "ease-in-out-quartic";
 
         /// <summary>
+        /// Eases in quintically.
+        /// </summary>
+        public const String EaseInQuintic = "ease-in-quintic";
+
+        /// <summary>
+        /// Eases out quintically.
+        /// </summary>
+        public const String EaseOutQuintic = "ease-out-quintic";
+
+        /// <summary>
+        /// Eases in and out quintically.
+        /// </summary>
+        public const String EaseInOutQuintic = "ease-in-out-quintic";
+
+        /// <summary>
         /// Eases in sinusoidally.
         /// </summary>
         public const String EaseInSin = "ease-in-sin";
