@@ -80,6 +80,7 @@
       <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation"/>
       <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation_XML"/>
       <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation.Compiler"/>
+      <ComponentRef Id="TwistedLogik.Ultraviolet.UI.Presentation.Uvss"/>
       <ComponentRef Id="Newtonsoft.Json" />
       <ComponentRef Id="Tools_PATH"/>
       <ComponentRef Id="Tools_UvFont"/>
@@ -115,6 +116,9 @@
       <ComponentRef Id="Android_TwistedLogik.Ultraviolet.BASS" />
       <ComponentRef Id="Android_TwistedLogik.Ultraviolet.SDL2" />
       <ComponentRef Id="Android_TwistedLogik.Ultraviolet.Android" />
+      <ComponentRef Id="Android_TwistedLogik.Ultraviolet.UI.Presentation"/>
+      <ComponentRef Id="Android_TwistedLogik.Ultraviolet.UI.Presentation_XML"/>
+      <ComponentRef Id="Android_TwistedLogik.Ultraviolet.UI.Presentation.Uvss"/>
       <ComponentRef Id="Android_Newtonsoft.Json" />
       <!-- Dependencies (Android/armeabi) -->
       <ComponentRef Id="Android_SDL2_armeabi" />
@@ -233,8 +237,11 @@
               <Component Id="TwistedLogik.Ultraviolet.UI.Presentation.Compiler">
                 <File Id="TwistedLogik.Ultraviolet.UI.Presentation.Compiler" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll" />
               </Component>
+              <Component Id="TwistedLogik.Ultraviolet.UI.Presentation.Uvss">
+                <File Id="TwistedLogik.Ultraviolet.UI.Presentation.Uvss" Source="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" />
+              </Component>
               <Component Id="Newtonsoft.Json">
-                <File Id="Newtonsoft.Json" Source="..\Dependencies\Newtonsoft.Json.dll" />
+                <File Id="Newtonsoft.Json" Source="..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll" />
               </Component>
               <Directory Id="Android" Name="Android">
                 <!-- Android reference DLLs -->
@@ -268,8 +275,17 @@
                 <Component Id="Android_TwistedLogik.Ultraviolet.Android">
                   <File Id="Android_TwistedLogik.Ultraviolet.Android" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.Android.dll" />
                 </Component>
+                <Component Id="Android_TwistedLogik.Ultraviolet.UI.Presentation">
+                  <File Id="Android_TwistedLogik.Ultraviolet.UI.Presentation" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.UI.Presentation.dll" />
+                </Component>
+                <Component Id="Android_TwistedLogik.Ultraviolet.UI.Presentation_XML">
+                  <File Id="Android_TwistedLogik.Ultraviolet.UI.Presentation_XML" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.UI.Presentation.xml" />
+                </Component>
+                <Component Id="Android_TwistedLogik.Ultraviolet.UI.Presentation.Uvss">
+                  <File Id="Android_TwistedLogik.Ultraviolet.UI.Presentation.Uvss" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" />
+                </Component>
                 <Component Id="Android_Newtonsoft.Json">
-                  <File Id="Android_Newtonsoft.Json" Source="..\Dependencies\Newtonsoft.Json.dll" />
+                  <File Id="Android_Newtonsoft.Json" Source="..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll" />
                 </Component>
               </Directory>
             </Directory>
