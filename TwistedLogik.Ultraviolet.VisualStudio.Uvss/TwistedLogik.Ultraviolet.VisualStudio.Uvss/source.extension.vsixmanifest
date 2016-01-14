@@ -3,8 +3,10 @@
   <Metadata>
     <Identity Id="TwistedLogik.Ultraviolet.VisualStudio.UVSS.Cole Campbell.04e75d39-a11c-4dc3-8a9f-ebba5e0f2deb" Version="1.0" Language="en-US" Publisher="Cole Campbell" />
     <DisplayName>Ultraviolet StyleSheets Language Support</DisplayName>
-    <Description xml:space="preserve">Provides Visual Studio support for the Ultraviolet StyleSheets (UVSS) language used by the Ultraviolet Framework to style its UI views.</Description>
+    <Description xml:space="preserve">Provides Visual Studio support for the Ultraviolet StyleSheets (UVSS) language used by the Ultraviolet Presentation Foundation for styling its views.</Description>
+    <MoreInfo>https://github.com/tlgkccampbell/ultraviolet</MoreInfo>
     <Icon>uv.ico</Icon>
+    <Tags>ultraviolet uvss upf game gamedev</Tags>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
