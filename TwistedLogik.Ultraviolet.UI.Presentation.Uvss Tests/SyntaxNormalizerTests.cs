@@ -274,7 +274,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             );
 
             TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(
-                "some.property = { somevalue }");
+                "some.[property] = { somevalue }");
         }
 
         [TestMethod]
@@ -287,7 +287,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             );
 
             TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(
-                "some.property <> { somevalue }");
+                "some.[property] <> { somevalue }");
         }
 
         [TestMethod]
@@ -300,7 +300,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             );
 
             TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(
-                "some.property < { somevalue }");
+                "some.[property] < { somevalue }");
         }
 
         [TestMethod]
@@ -313,7 +313,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             );
 
             TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(
-                "some.property > { somevalue }");
+                "some.[property] > { somevalue }");
         }
 
         [TestMethod]
@@ -326,7 +326,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             );
 
             TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(
-                "some.property <= { somevalue }");
+                "some.[property] <= { somevalue }");
         }
 
         [TestMethod]
@@ -339,7 +339,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             );
 
             TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(
-                "some.property >= { somevalue }");
+                "some.[property] >= { somevalue }");
         }
 
         [TestMethod]
@@ -490,7 +490,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             );
 
             TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(
-                "set some.property { hello world }");
+                "set some.[property] { hello world }");
         }
 
         [TestMethod]
@@ -503,7 +503,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             );
 
             TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(
-                "set some.property (#foo) { hello world }");
+                "set some.[property] (#foo) { hello world }");
         }
 
         [TestMethod]

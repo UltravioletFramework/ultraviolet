@@ -125,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         public void UvssParser_CreatesSkippedTokensTrivia_WhenSymbolCannotBeParsed()
         {
             var document = UvssParser.Parse(
-                "#foo { &&& }");
+                "#foo {&&&}");
 
             var ruleSet = document.Content[0] as UvssRuleSetSyntax;
             TheResultingNode(ruleSet)
@@ -134,17 +134,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             var body = ruleSet.Body;
             TheResultingNode(body)
                 .ShouldBePresent()
-                .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
+                .ShouldSatisfyTheCondition(x => x.Content.Count == 3);
 
             var openCurlyBrace = body.OpenCurlyBraceToken;
             TheResultingNode(openCurlyBrace)
                 .ShouldBePresent();
 
-            var openCurlyBraceTrivia = openCurlyBrace.GetTrailingTrivia();
-            TheResultingNode(openCurlyBraceTrivia)
-                .ShouldSatisfyTheCondition(x => x.IsList)
-                .ShouldSatisfyTheCondition(x => x.SlotCount == 5)
-                .ShouldHaveFullString(" &&& ");
+            var empty0 = ruleSet.Body.Content[0] as UvssEmptyStatementSyntax;
+            TheResultingNode(empty0)
+                .ShouldBePresent()
+                .ShouldHaveFullString("&", includeTrivia: true);
+
+            var empty1 = ruleSet.Body.Content[1] as UvssEmptyStatementSyntax;
+            TheResultingNode(empty1)
+                .ShouldBePresent()
+                .ShouldHaveFullString("&", includeTrivia: true);
+
+            var empty2 = ruleSet.Body.Content[2] as UvssEmptyStatementSyntax;
+            TheResultingNode(empty2)
+                .ShouldBePresent()
+                .ShouldHaveFullString("&", includeTrivia: true);
 
             var closeCurlyBrace = body.CloseCurlyBraceToken;
             TheResultingNode(closeCurlyBrace)
@@ -258,7 +267,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 
             var body = ruleSet.Body as UvssBlockSyntax;
             TheResultingNode(body)
-                .ShouldBeMissing();
+                .ShouldBePresent();
         }
 
         [TestMethod]
@@ -1032,12 +1041,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             TheResultingNode(argumentList)
                 .ShouldBePresent();
             
-            var arg0 = argumentList.ArgumentList[0] as SyntaxToken;
+            var arg0 = argumentList.Arguments[0] as SyntaxToken;
             TheResultingNode(arg0)
                 .ShouldBePresent()
                 .ShouldBeOfKind(SyntaxKind.HandledKeyword);
 
-            var arg1 = argumentList.ArgumentList[1] as SyntaxToken;
+            var arg1 = argumentList.Arguments[1] as SyntaxToken;
             TheResultingNode(arg1)
                 .ShouldBePresent()
                 .ShouldBeOfKind(SyntaxKind.SetHandledKeyword);
@@ -1086,12 +1095,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             TheResultingNode(argumentList)
                 .ShouldBePresent();
 
-            var arg0 = argumentList.ArgumentList[0] as SyntaxToken;
+            var arg0 = argumentList.Arguments[0] as SyntaxToken;
             TheResultingNode(arg0)
                 .ShouldBePresent()
                 .ShouldBeOfKind(SyntaxKind.HandledKeyword);
 
-            var arg1 = argumentList.ArgumentList[1] as SyntaxToken;
+            var arg1 = argumentList.Arguments[1] as SyntaxToken;
             TheResultingNode(arg1)
                 .ShouldBePresent()
                 .ShouldBeOfKind(SyntaxKind.SetHandledKeyword);
@@ -1240,7 +1249,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 
             var body = storyboard.Body;
             TheResultingNode(body)
-                .ShouldBeMissing();
+                .ShouldBePresent();
         }
 
         [TestMethod]

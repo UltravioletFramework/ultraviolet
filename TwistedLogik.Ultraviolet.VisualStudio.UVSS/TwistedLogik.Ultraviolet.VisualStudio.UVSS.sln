@@ -13,6 +13,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)", "..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop).csproj", "{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing", "..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing.csproj", "{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests", "..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests\TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests.csproj", "{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
@@ -86,6 +90,42 @@ Global
 		{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}.Signed|x64.Build.0 = Signed|Any CPU
 		{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}.Signed|x86.ActiveCfg = Signed|Any CPU
 		{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}.Signed|x86.Build.0 = Signed|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Debug|x64.Build.0 = Debug|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Debug|x86.Build.0 = Debug|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Release|x64.ActiveCfg = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Release|x64.Build.0 = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Release|x86.ActiveCfg = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Release|x86.Build.0 = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|x64.ActiveCfg = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|x64.Build.0 = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|x86.ActiveCfg = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|x86.Build.0 = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Debug|x64.Build.0 = Debug|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Debug|x86.Build.0 = Debug|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Release|x64.ActiveCfg = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Release|x64.Build.0 = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Release|x86.ActiveCfg = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Release|x86.Build.0 = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|x64.ActiveCfg = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|x64.Build.0 = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|x86.ActiveCfg = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
