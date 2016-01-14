@@ -104,6 +104,9 @@
     <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions">
       <HintPath>Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll</HintPath>
     </Reference>
+    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.Uvss">
+      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />

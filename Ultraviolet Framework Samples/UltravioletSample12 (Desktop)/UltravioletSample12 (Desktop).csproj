@@ -81,6 +81,9 @@
     <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.Compiler">
       <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll</HintPath>
     </Reference>
+    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.Uvss">
+      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Version.cs">
