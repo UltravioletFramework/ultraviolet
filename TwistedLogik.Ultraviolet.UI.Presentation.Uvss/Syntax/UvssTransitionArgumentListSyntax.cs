@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
@@ -58,6 +59,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Gets the list's arguments.
         /// </summary>
         public SeparatedSyntaxList<SyntaxNode> Arguments { get; internal set; }
+
+        /// <summary>
+        /// Gets the collection of tokens that represent the list's arguments.
+        /// </summary>
+        public IEnumerable<SyntaxToken> ArgumentTokens
+        {
+            get
+            {
+                for (int i = 0; i < Arguments.Count; i++)
+                {
+                    var child = Arguments[i] as SyntaxToken;
+                    if (child != null)
+                        yield return child;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the close parenthesis that terminates the argument list.

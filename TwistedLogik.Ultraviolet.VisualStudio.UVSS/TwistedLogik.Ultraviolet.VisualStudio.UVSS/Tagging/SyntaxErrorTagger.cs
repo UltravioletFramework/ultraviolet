@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors;
 using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
@@ -89,16 +90,8 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
 
             return errors.Select(x =>
             {
-                var tagWidth = x.Span.Length;
-                if (tagWidth == 0)
-                    tagWidth = 1;
-
-                var tagStart = x.Span.Span.Start;
-                if (tagStart + tagWidth > span.Snapshot.Length)
-                    tagStart = span.Snapshot.Length - tagWidth;
-
-                var tagSpan = new SnapshotSpan(span.Snapshot, tagStart, tagWidth);
-                var tag = new ErrorTag(x.Message, x.Message);
+                var tagSpan = x.TagSafeSpan;
+                var tag = new ErrorTag(x.DiagnosticInfo.Message, x.DiagnosticInfo.Message);
                 return new TagSpan<IErrorTag>(tagSpan, tag);
             });
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
@@ -26,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             this.OpenParenToken = openParenToken;
             ChangeParent(openParenToken);
 
-            this.ArgumentList = argumentList;
+            this.Arguments = argumentList;
             ChangeParent(argumentList.Node);
 
             this.CloseParenToken = closeParenToken;
@@ -42,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return OpenParenToken;
-                case 1: return ArgumentList.Node;
+                case 1: return Arguments.Node;
                 case 2: return CloseParenToken;
                 default:
                     throw new InvalidOperationException();
@@ -57,7 +58,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the list's arguments.
         /// </summary>
-        public SeparatedSyntaxList<SyntaxNode> ArgumentList { get; internal set; }
+        public SeparatedSyntaxList<SyntaxNode> Arguments { get; internal set; }
+
+        /// <summary>
+        /// Gets the collection of tokens that represent the list's arguments.
+        /// </summary>
+        public IEnumerable<SyntaxToken> ArgumentTokens
+        {
+            get
+            {
+                for (int i = 0; i < Arguments.Count; i++)
+                {
+                    var child = Arguments[i] as SyntaxToken;
+                    if (child != null)
+                        yield return child;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the close parenthesis that terminates the argument list.

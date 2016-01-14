@@ -26,6 +26,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
     public static class UvssParser
     {
         /// <summary>
+        /// Represents a method which assigns diagnostics to skipped tokens.
+        /// </summary>
+        private delegate void SkippedTokensDiagnosticsReporter(
+            ref ICollection<DiagnosticInfo> diagnostics, SkippedTokensTriviaSyntax trivia);
+
+        /// <summary>
         /// Parses the specified source text and produces an abstract syntax tree.
         /// </summary>
         /// <param name="source">The source text to parse.</param>
@@ -54,6 +60,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var endOfFileToken = GetNextToken(input, ref position);
             if (endOfFileToken.Kind != SyntaxKind.EndOfFileToken)
                 throw new InvalidOperationException();
+
+            AddDiagnosticsToSkippedSyntaxTrivia(endOfFileToken, DiagnosticInfo.ReportUnexpectedTokenInDocumentContent);
 
             return new UvssDocumentSyntax(
                 contentBuilder.ToList(),
@@ -158,8 +166,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 token.Type == UvssLexerTokenType.EndOfLine ||
                 token.Type == UvssLexerTokenType.SingleLineComment ||
                 token.Type == UvssLexerTokenType.MultiLineComment ||
-                token.Type == UvssLexerTokenType.WhiteSpace ||
-                token.Type == UvssLexerTokenType.Unknown;
+                token.Type == UvssLexerTokenType.WhiteSpace;
         }
 
         /// <summary>
@@ -196,14 +203,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 kind == SyntaxKind.GreaterThanQuestionMarkToken ||
                 kind == SyntaxKind.SpaceToken;
         }
-        
+
         /// <summary>
         /// Gets a value indicating whether the specified token kind terminates a selector.
         /// </summary>
         private static Boolean IsSelectorTerminator(SyntaxKind kind)
         {
             return
+                kind == SyntaxKind.ExclamationMarkToken ||
                 kind == SyntaxKind.AtSignToken ||
+                kind == SyntaxKind.ColonToken ||
                 kind == SyntaxKind.CommaToken ||
                 kind == SyntaxKind.PipeToken ||
                 kind == SyntaxKind.OpenParenthesesToken ||
@@ -222,8 +231,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static Boolean IsPotentiallyStartOfSelectorPart(SyntaxKind kind)
         {
             return
-                !IsSelectorCombinator(kind) && 
-                !IsSelectorTerminator(kind) && 
+                !IsSelectorCombinator(kind) &&
+                !IsSelectorTerminator(kind) &&
                 !IsTrivia(kind);
         }
 
@@ -294,7 +303,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
                 case UvssLexerTokenType.Number:
                     return SyntaxKind.NumberToken;
-                    
+
                 case UvssLexerTokenType.Comma:
                     return SyntaxKind.CommaToken;
 
@@ -409,7 +418,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             IList<UvssLexerToken> input, ref Int32 position, Boolean treatWhiteSpaceAsMeaningful = false)
         {
             var leadingTrivia = AccumulateTrivia(input, ref position,
-                treatWhiteSpaceAsCombinator: treatWhiteSpaceAsMeaningful, 
+                treatWhiteSpaceAsCombinator: treatWhiteSpaceAsMeaningful,
                 treatCurrentTokenAsTrivia: false,
                 isLeading: true);
             var leadingTriviaNode = ConvertTriviaList(leadingTrivia);
@@ -553,7 +562,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
                     /* ??? */
                     default:
-                        return ExpectEmptyStatement(input, ref position);
+                        {
+                            var empty = ExpectEmptyStatement(input, ref position);
+                            AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInDocumentContent);
+                            return empty;
+                        }
                 }
             }
         }
@@ -581,8 +594,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var builder = default(SyntaxListBuilder<TItem>);
             var nodepos = GetNodePositionFromLexerPosition(input, position);
-            
-            while (position < input.Count)
+
+            while (true)
             {
                 var item = itemParser(input, ref position, builder.Count);
                 if (item == null)
@@ -592,6 +605,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     builder = SyntaxListBuilder<TItem>.Create();
 
                 builder.Add(item);
+
+                if (item.IsMissing)
+                    break;
             }
 
             var list = builder.IsNull ? default(SyntaxList<TItem>) : builder.ToList();
@@ -639,7 +655,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var builder = default(SeparatedSyntaxListBuilder<TItem>);
             var nodepos = GetNodePositionFromLexerPosition(input, position);
 
-            while (position < input.Count)
+            while (true)
             {
                 var item = itemParser(input, ref position, builder.Count);
                 if (item == null)
@@ -649,6 +665,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     builder = SeparatedSyntaxListBuilder<TItem>.Create();
 
                 builder.Add(item);
+
+                if (item.IsMissing)
+                    break;
 
                 var separator = separatorParser(input, ref position, builder.Count);
                 if (separator == null)
@@ -661,6 +680,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (list.Node != null)
             {
                 list.Node.Position = nodepos;
+
+                var diagnosticsArray = list.Node.GetDiagnosticsArray();
+                var diagnostics = (ICollection<DiagnosticInfo>)diagnosticsArray?.ToList();
+
+                if (list.Count > 0 && list[list.Count - 1].IsMissing)
+                    DiagnosticInfo.ReportMissingNode(ref diagnostics, list[list.Count - 1]);
+
+                list.Node.SetDiagnostics(diagnostics);
             }
             return list;
         }
@@ -692,13 +719,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var contentList = SyntaxListBuilder<SyntaxNode>.Create();
             if (!openCurlyBraceToken.IsMissing)
             {
-                while (SyntaxKindFromNextToken(input, position) != SyntaxKind.CloseCurlyBraceToken)
+                while (true)
                 {
                     var contentNode = contentParser(input, ref position, contentList.Count);
                     if (contentNode == null)
                         break;
 
                     contentList.Add(contentNode);
+
+                    if (contentNode.IsMissing)
+                        break;
                 }
             }
 
@@ -708,10 +738,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var diagnostics = default(ICollection<DiagnosticInfo>);
 
             if (openCurlyBraceToken.IsMissing)
-                DiagnosticInfo.ReportMissingToken(ref diagnostics, openCurlyBraceToken);
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, openCurlyBraceToken);
 
             if (closeCurlyBraceToken.IsMissing)
-                DiagnosticInfo.ReportMissingToken(ref diagnostics, closeCurlyBraceToken);
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, closeCurlyBraceToken);
 
             var block = WithPosition(new UvssBlockSyntax(
                 openCurlyBraceToken,
@@ -763,33 +793,73 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var openBracketToken =
                     ExpectToken(input, ref position, SyntaxKind.OpenBracketToken);
 
+                var eol = openBracketToken.HasTrailingLineBreaks;
+
                 var start = position;
+                var count = 0;
                 var text = new StringBuilder();
 
-                while (position < input.Count && input[position].Type != UvssLexerTokenType.CloseBracket)
+                if (!eol && !openBracketToken.HasTrailingLineBreaks)
                 {
-                    text.Append(input[position].Text);
-                    position++;
+                    while (position < input.Count)
+                    {
+                        var type = input[position].Type;
+                        if (type == UvssLexerTokenType.CloseBracket ||
+                            type == UvssLexerTokenType.EndOfLine)
+                        {
+                            break;
+                        }
+
+                        text.Append(input[position].Text);
+                        position++;
+                        count++;
+                    }
                 }
 
-                var identifierToken =
-                    new SyntaxToken(SyntaxKind.IdentifierToken, text.ToString())
-                    {
-                        Position = GetNodePositionFromLexerPosition(input, start)
-                    };
+                var identifierToken = default(SyntaxToken);
+                if (count > 0)
+                {
+                    var identifierTokenTrivia = ConvertTriviaList(AccumulateTrivia(input, ref position));
+                    identifierToken = openBracketToken.IsMissing ? MissingToken(SyntaxKind.IdentifierToken, input, position) :
+                        new SyntaxToken(SyntaxKind.IdentifierToken, text.ToString(), null, identifierTokenTrivia)
+                        {
+                            Position = GetNodePositionFromLexerPosition(input, start)
+                        };
 
-                var closeBracketToken =
-                    ExpectToken(input, ref position, SyntaxKind.CloseBracketToken);
+                    eol = identifierToken.HasTrailingLineBreaks;
+                }
+                else
+                {
+                    identifierToken = MissingToken(SyntaxKind.IdentifierToken, input, position);
+                }
 
-                return WithPosition(new UvssEscapedIdentifierSyntax(
+                var closeBracketToken = openBracketToken.IsMissing ? MissingToken(SyntaxKind.CloseBracketToken, input, position) :
+                    ExpectTokenOnSameLine(input, ref position, SyntaxKind.CloseBracketToken, ref eol);
+
+                var identifier = WithPosition(new UvssEscapedIdentifierSyntax(
                     openBracketToken,
                     identifierToken,
                     closeBracketToken));
+
+                var diagnostics = default(ICollection<DiagnosticInfo>);
+
+                if (openBracketToken.IsMissing)
+                    DiagnosticInfo.ReportMissingNode(ref diagnostics, openBracketToken);
+
+                if (identifierToken.IsMissing)
+                    DiagnosticInfo.ReportMissingNode(ref diagnostics, identifierToken);
+
+                if (closeBracketToken.IsMissing)
+                    DiagnosticInfo.ReportMissingNode(ref diagnostics, closeBracketToken);
+
+                identifier.SetDiagnostics(diagnostics);
+
+                return identifier;
             }
             else
             {
-                if (accept && nextKind != SyntaxKind.IdentifierToken)
-                    return null;
+                if (nextKind != SyntaxKind.IdentifierToken)
+                    return accept ? null : MissingIdentifier(input, position);
 
                 var identifierToken =
                     ExpectToken(input, ref position, SyntaxKind.IdentifierToken);
@@ -835,8 +905,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static UvssPropertyNameSyntax ParsePropertyName(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
+            var propertyName = default(UvssPropertyNameSyntax);
+
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.IdentifierToken)
-                return null;
+                return propertyName;
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
 
             var firstPart =
                 ExpectIdentifier(input, ref position);
@@ -852,7 +926,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var propertyNameIdentifier =
                     ExpectIdentifier(input, ref position);
 
-                return WithPosition(new UvssPropertyNameSyntax(
+                propertyName = WithPosition(new UvssPropertyNameSyntax(
                     attachedPropertyOwnerNameIdentifier,
                     periodToken,
                     propertyNameIdentifier));
@@ -861,11 +935,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             {
                 var propertyNameIdentifier = firstPart;
 
-                return WithPosition(new UvssPropertyNameSyntax(
+                propertyName = WithPosition(new UvssPropertyNameSyntax(
                     null,
                     null,
                     propertyNameIdentifier));
             }
+            
+            if (propertyName.PropertyNameIdentifier.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, propertyName.PropertyNameIdentifier);
+
+            propertyName.SetDiagnostics(diagnostics);
+
+            return propertyName;
         }
 
         /// <summary>
@@ -904,8 +985,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static UvssEventNameSyntax ParseEventName(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
+            var eventName = default(UvssEventNameSyntax);
+
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.IdentifierToken)
-                return null;
+                return eventName;
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
 
             var firstPart =
                 ExpectIdentifier(input, ref position);
@@ -918,23 +1003,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var attachedEventOwnerNameIdentifier =
                     firstPart;
 
-                var EventNameIdentifier =
+                var eventNameIdentifier =
                     ExpectIdentifier(input, ref position);
 
-                return WithPosition(new UvssEventNameSyntax(
+                eventName = WithPosition(new UvssEventNameSyntax(
                     attachedEventOwnerNameIdentifier,
                     periodToken,
-                    EventNameIdentifier));
+                    eventNameIdentifier));
             }
             else
             {
-                var EventNameIdentifier = firstPart;
+                var eventNameIdentifier = firstPart;
 
-                return WithPosition(new UvssEventNameSyntax(
+                eventName = WithPosition(new UvssEventNameSyntax(
                     null,
                     null,
-                    EventNameIdentifier));
+                    eventNameIdentifier));                
             }
+
+            if (eventName.EventNameIdentifier.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, eventName.EventNameIdentifier);
+
+            eventName.SetDiagnostics(diagnostics);
+
+            return eventName;
         }
 
         /// <summary>
@@ -989,11 +1081,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var typeNameIdentifier =
                 ExpectIdentifier(input, ref position);
 
-            return WithPosition(new UvssNavigationExpressionSyntax(
+            var expression = WithPosition(new UvssNavigationExpressionSyntax(
                 pipeToken,
                 propertyName,
                 asKeyword,
                 typeNameIdentifier));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (pipeToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, pipeToken);
+
+            if (asKeyword.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, asKeyword);
+
+            if (typeNameIdentifier.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, typeNameIdentifier);
+
+            expression.SetDiagnostics(diagnostics);
+
+            return expression;
         }
 
         /// <summary>
@@ -1034,15 +1141,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var components = AcceptList(
                 input, ref position, AcceptSelectorPartOrCombinator);
 
-            if (accept && components.Node == null)
-                return null;
+            if (components.Node == null)
+            {
+                return accept ? null :
+                    new UvssSelectorSyntax(components, null) { IsMissing = true };
+            }
 
             var navigationExpression =
                 AcceptNavigationExpression(input, ref position);
 
-            return WithPosition(new UvssSelectorSyntax(
+            var selector = WithPosition(new UvssSelectorSyntax(
                 components,
                 navigationExpression));
+
+            return selector;
         }
 
         /// <summary>
@@ -1092,14 +1204,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return ParseVisualDescendantCombinator(input, ref position, listIndex, false);
         }
-        
+
         /// <summary>
         /// Accepts a selector part or combinator.
         /// </summary>
         private static SyntaxNode AcceptSelectorPartOrCombinator(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            if (listIndex > 0 && input[position].Type == UvssLexerTokenType.WhiteSpace)
+            if (listIndex > 0 && (position >= input.Count || input[position].Type == UvssLexerTokenType.WhiteSpace))
                 return ExpectVisualDescendantCombinator(input, ref position);
 
             var nextTokenKind = SyntaxKindFromNextToken(input, position);
@@ -1143,6 +1255,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static UvssSelectorPartBaseSyntax ParseSelectorPart(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
+            var selectorPart = default(UvssSelectorPartBaseSyntax);
+
             var nextKind = SyntaxKindFromNextToken(input, position);
             if (nextKind == SyntaxKind.AsteriskToken)
             {
@@ -1152,7 +1266,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var pseudoClass =
                     AcceptPseudoClass(input, ref position);
 
-                return WithPosition(new UvssUniversalSelectorPartSyntax(
+                selectorPart = WithPosition(new UvssUniversalSelectorPartSyntax(
                     asteriskToken,
                     pseudoClass));
             }
@@ -1166,10 +1280,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var pseudoClass =
                     AcceptPseudoClass(input, ref position);
 
-                return WithPosition(new UvssSelectorPartSyntax(
+                selectorPart = WithPosition(new UvssSelectorPartSyntax(
                     subParts,
                     pseudoClass));
             }
+
+            return selectorPart;
         }
 
         /// <summary>
@@ -1212,13 +1328,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             var colonToken =
                 ExpectToken(input, ref position, SyntaxKind.ColonToken);
-            
+
             var classNameIdentifier =
                 ExpectIdentifier(input, ref position);
 
-            return WithPosition(new UvssPseudoClassSyntax(
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            var pseudoClass = WithPosition(new UvssPseudoClassSyntax(
                 colonToken,
                 classNameIdentifier));
+
+            if (classNameIdentifier.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, classNameIdentifier);
+
+            pseudoClass.SetDiagnostics(diagnostics);
+
+            return pseudoClass;
         }
 
         /// <summary>
@@ -1250,7 +1375,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 MissingIdentifier(input, position),
                 null));
         }
-        
+
         /// <summary>
         /// Parses the primary identifier for a selector sub-part.
         /// </summary>
@@ -1307,7 +1432,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static UvssSelectorSubPartSyntax ParseSelectorSubPart(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
-            if (listIndex > 0 && input[position].Type == UvssLexerTokenType.WhiteSpace)
+            if (listIndex > 0 && (position >= input.Count || input[position].Type == UvssLexerTokenType.WhiteSpace))
                 return accept ? null : MissingSelectorSubPart(input, position);
 
             var leadingQualifierToken =
@@ -1315,9 +1440,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             var subPartIdentifier =
                 ParseSelectorSubPartIdentifier(input, ref position, 0, false);
-
-            if (accept && leadingQualifierToken == null && subPartIdentifier.IsMissing)
-                return null;
 
             var trailingQualifierToken =
                 AcceptToken(input, ref position, SyntaxKind.ExclamationMarkToken);
@@ -1342,10 +1464,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 }
             }
 
-            return WithPosition(new UvssSelectorSubPartSyntax(
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if ((leadingQualifierToken != null && subPartIdentifier.IsMissing) ||
+                (trailingQualifierToken != null && subPartIdentifier.IsMissing))
+            {
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, subPartIdentifier);
+            }
+
+            var selectorPart = WithPosition(new UvssSelectorSubPartSyntax(
                 leadingQualifierToken,
                 subPartIdentifier,
                 trailingQualifierToken));
+
+            selectorPart.SetDiagnostics(diagnostics);
+
+            return selectorPart;
         }
 
         /// <summary>
@@ -1390,16 +1524,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var openParenToken =
                 ExpectToken(input, ref position, SyntaxKind.OpenParenthesesToken);
 
-            var selector =
+            var selectorContent =
                 ExpectSelector(input, ref position);
 
             var closeParenToken =
                 ExpectToken(input, ref position, SyntaxKind.CloseParenthesesToken);
 
-            return WithPosition(new UvssSelectorWithParenthesesSyntax(
+            var selector = WithPosition(new UvssSelectorWithParenthesesSyntax(
                 openParenToken,
-                selector,
+                selectorContent,
                 closeParenToken));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (openParenToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, openParenToken);
+
+            if (selectorContent.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, selectorContent);
+
+            if (closeParenToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, closeParenToken);
+
+            selector.SetDiagnostics(diagnostics);
+
+            return selector;
         }
 
         /// <summary>
@@ -1424,7 +1573,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a property value token from the lexer stream.
         /// </summary>
         private static SyntaxToken ParsePropertyValueToken(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept, SyntaxKind terminator)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept, SyntaxKind terminator, ref Boolean eol)
         {
             var startpos = GetNodePositionFromLexerPosition(input, position);
             var start = position + CountTrivia(input, position, acceptEndOfLine: false);
@@ -1437,7 +1586,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var current = input[end];
                 var currentKind = SyntaxKindFromLexerTokenType(current);
 
-                if (currentKind == terminator || 
+                if (currentKind == terminator ||
                     currentKind == SyntaxKind.ImportantKeyword ||
                     currentKind == SyntaxKind.EndOfLineTrivia)
                 {
@@ -1482,7 +1631,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxToken AcceptPropertyValueToken(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParsePropertyValueToken(input, ref position, 0, true, SyntaxKind.SemiColonToken);
+            var eol = false;
+            return ParsePropertyValueToken(input, ref position, 0, true, SyntaxKind.SemiColonToken, ref eol);
         }
 
         /// <summary>
@@ -1491,7 +1641,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxToken ExpectPropertyValueToken(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParsePropertyValueToken(input, ref position, 0, false, SyntaxKind.SemiColonToken);
+            var eol = false;
+            return ParsePropertyValueToken(input, ref position, 0, false, SyntaxKind.SemiColonToken, ref eol);
         }
 
         /// <summary>
@@ -1500,7 +1651,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxToken AcceptPropertyValueTokenWithBraces(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParsePropertyValueToken(input, ref position, 0, true, SyntaxKind.CloseCurlyBraceToken);
+            var eol = false;
+            return ParsePropertyValueToken(input, ref position, 0, true, SyntaxKind.CloseCurlyBraceToken, ref eol);
+        }
+        
+        /// <summary>
+        /// Expects a property value token on the same line as previous nodes and
+        /// produces a missing node if one is not found.
+        /// </summary>
+        private static SyntaxToken ExpectPropertyValueTokenOnSameLine(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, ref Boolean eol)
+        {
+            return ParsePropertyValueToken(input, ref position, listIndex, false, SyntaxKind.SemiColonToken, ref eol);
         }
 
         /// <summary>
@@ -1509,7 +1671,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxToken ExpectPropertyValueTokenWithBraces(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParsePropertyValueToken(input, ref position, 0, false, SyntaxKind.CloseCurlyBraceToken);
+            var eol = false;
+            return ParsePropertyValueToken(input, ref position, 0, false, SyntaxKind.CloseCurlyBraceToken, ref eol);
         }
 
         /// <summary>
@@ -1526,13 +1689,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a property value.
         /// </summary>
         private static UvssPropertyValueSyntax ParsePropertyValue(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept, ref Boolean eol)
         {
-            if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.PropertyValueToken)
-                return null;
-
             var contentToken =
-                ExpectPropertyValueToken(input, ref position);
+                ExpectPropertyValueTokenOnSameLine(input, ref position, 0, ref eol);
+
+            if (accept && contentToken.IsMissing)
+                return null;
 
             return WithPosition(new UvssPropertyValueSyntax(
                 contentToken));
@@ -1544,7 +1707,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static UvssPropertyValueSyntax AcceptPropertyValue(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParsePropertyValue(input, ref position, listIndex, true);
+            var eol = false;
+            return ParsePropertyValue(input, ref position, listIndex, true, ref eol);
         }
 
         /// <summary>
@@ -1553,7 +1717,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static UvssPropertyValueSyntax ExpectPropertyValue(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParsePropertyValue(input, ref position, listIndex, false);
+            var eol = false;
+            return ParsePropertyValue(input, ref position, listIndex, false, ref eol);
+        }
+
+        /// <summary>
+        /// Expects a property value on the same line as previous nodes and produces a missing node if one is not found.
+        /// </summary>
+        private static UvssPropertyValueSyntax ExpectPropertyValueOnSameLine(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, ref Boolean eol)
+        {
+            if (eol)
+                return MissingPropertyValue(input, position);
+
+            return ParsePropertyValue(input, ref position, listIndex, false, ref eol);
         }
 
         /// <summary>
@@ -1580,16 +1757,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var openCurlyBraceToken =
                 ExpectToken(input, ref position, SyntaxKind.OpenCurlyBraceToken);
 
-            var contentToken =
-                ExpectPropertyValueTokenWithBraces(input, ref position);
+            var contentToken = openCurlyBraceToken.IsMissing ? null :
+                AcceptPropertyValueTokenWithBraces(input, ref position);
 
-            var closeCurlyBraceToken =
+            var closeCurlyBraceToken = openCurlyBraceToken.IsMissing ? MissingToken(SyntaxKind.CloseCurlyBraceToken, input, position) :
                 ExpectToken(input, ref position, SyntaxKind.CloseCurlyBraceToken);
 
-            return WithPosition(new UvssPropertyValueWithBracesSyntax(
+            var value = WithPosition(new UvssPropertyValueWithBracesSyntax(
                 openCurlyBraceToken,
                 contentToken,
                 closeCurlyBraceToken));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (openCurlyBraceToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, openCurlyBraceToken);
+
+            if (closeCurlyBraceToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, closeCurlyBraceToken);
+
+            value.SetDiagnostics(diagnostics);
+
+            return value;
         }
 
         /// <summary>
@@ -1609,7 +1798,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return ParsePropertyValueWithBraces(input, ref position, listIndex, false);
         }
-        
+
         /// <summary>
         /// Accepts any node which is valid inside of a rule set body.
         /// </summary>
@@ -1633,7 +1822,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     return ExpectTrigger(input, ref position);
             }
 
-            return ExpectEmptyStatement(input, ref position, listIndex);
+            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInRuleSetBody);
+            return empty;
         }
 
         /// <summary>
@@ -1653,8 +1844,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static UvssRuleSetSyntax ParseRuleSet(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
             var selectors =
-                AcceptSeparatedList(input, ref position, AcceptSelector, AcceptComma);
+                AcceptSeparatedList(input, ref position, ExpectSelector, AcceptComma);
 
             if (accept && selectors.Node == null)
                 return null;
@@ -1662,9 +1855,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var body =
                 ExpectBlock(input, ref position, AcceptRuleSetBodyNode);
 
-            return WithPosition(new UvssRuleSetSyntax(
+            var ruleSet = WithPosition(new UvssRuleSetSyntax(
                 selectors,
                 body));
+
+            ruleSet.SetDiagnostics(diagnostics);
+
+            return ruleSet;
         }
 
         /// <summary>
@@ -1694,36 +1891,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var propertyName = accept ?
                 AcceptPropertyName(input, ref position) :
                 ExpectPropertyName(input, ref position);
-            
+
             if (accept && propertyName == null)
                 return null;
 
-            var hasLineEnded = IsEndOfLine(propertyName);
+            var eol = IsEndOfLine(propertyName);
 
-            var colonToken = hasLineEnded ? MissingToken(SyntaxKind.ColonToken, input, position) :
-                ExpectToken(input, ref position, SyntaxKind.ColonToken);
+            var colonToken =
+                ExpectTokenOnSameLine(input, ref position, SyntaxKind.ColonToken, ref eol);
 
-            hasLineEnded = hasLineEnded | IsEndOfLine(colonToken);
+            var value =
+                ExpectPropertyValueOnSameLine(input, ref position, listIndex, ref eol);
 
-            var value = hasLineEnded ? MissingPropertyValue(input, position) :
-                ExpectPropertyValue(input, ref position);
+            var qualifierToken = 
+                AcceptTokenOnSameLine(input, ref position, SyntaxKind.ImportantKeyword, ref eol);
 
-            hasLineEnded = hasLineEnded | IsEndOfLine(value);
+            var semiColonToken =
+                ExpectTokenOnSameLine(input, ref position, SyntaxKind.SemiColonToken, ref eol);
 
-            var qualifierToken = hasLineEnded ? null :
-                AcceptToken(input, ref position, SyntaxKind.ImportantKeyword);
-
-            hasLineEnded = hasLineEnded | IsEndOfLine(qualifierToken);
-
-            var semiColonToken = hasLineEnded ? MissingToken(SyntaxKind.SemiColonToken, input, position) :
-                ExpectToken(input, ref position, SyntaxKind.SemiColonToken);
-
-            return WithPosition(new UvssRuleSyntax(
+            var rule = WithPosition(new UvssRuleSyntax(
                 propertyName,
                 colonToken,
                 value,
                 qualifierToken,
                 semiColonToken));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (colonToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, colonToken);
+
+            if (value.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, value);
+
+            if (semiColonToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, semiColonToken);
+
+            rule.SetDiagnostics(diagnostics);
+
+            return rule;
         }
 
         /// <summary>
@@ -1768,31 +1974,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.TransitionKeyword)
                 return null;
 
+            var eol = false;
+
             var transitionKeyword =
                 ExpectToken(input, ref position, SyntaxKind.TransitionKeyword);
             
             var argumentList =
-                ExpectTransitionArgumentList(input, ref position);
+                ExpectTransitionArgumentList(input, ref position, 0);
 
             var colonToken =
-                ExpectToken(input, ref position, SyntaxKind.ColonToken);
+                ExpectTokenOnSameLine(input, ref position, SyntaxKind.ColonToken, ref eol);
 
-            var value =
-                ExpectPropertyValue(input, ref position);
+            var value = 
+                ExpectPropertyValueOnSameLine(input, ref position, 0, ref eol);
 
-            var qualifierToken =
-                AcceptToken(input, ref position, SyntaxKind.ImportantKeyword);
+            var qualifierToken = 
+                AcceptTokenOnSameLine(input, ref position, SyntaxKind.ImportantKeyword, ref eol);
 
-            var semiColonToken =
-                ExpectToken(input, ref position, SyntaxKind.SemiColonToken);
+            var semiColonToken = 
+                ExpectTokenOnSameLine(input, ref position, SyntaxKind.SemiColonToken, ref eol);
 
-            return WithPosition(new UvssTransitionSyntax(
+            var transition = WithPosition(new UvssTransitionSyntax(
                 transitionKeyword,
                 argumentList,
                 colonToken,
                 value,
                 qualifierToken,
                 semiColonToken));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (transitionKeyword.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, transitionKeyword);
+
+            if (!argumentList.IsMissing)
+            {
+                if (argumentList.Arguments.Count < 2)
+                    DiagnosticInfo.ReportTransitionHasTooFewArguments(ref diagnostics, argumentList.Arguments.Node ?? argumentList);
+                else if (argumentList.Arguments.Count > 3)
+                    DiagnosticInfo.ReportTransitionHasTooManyArguments(ref diagnostics, argumentList.Arguments.Node ?? argumentList);
+            }
+
+            if (colonToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, colonToken);
+
+            if (value.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, value);
+
+            if (semiColonToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, semiColonToken);
+
+            transition.SetDiagnostics(diagnostics);
+
+            return transition;
         }
 
         /// <summary>
@@ -1837,16 +2071,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var openParenToken =
                 ExpectToken(input, ref position, SyntaxKind.OpenParenthesesToken);
 
-            var arguments =
-                AcceptSeparatedList<SyntaxNode>(input, ref position, AcceptIdentifier, AcceptComma);
+            var arguments = openParenToken.IsMissing ? MissingSeparatedList<SyntaxNode>(input, position) :
+                AcceptSeparatedList<SyntaxNode>(input, ref position, ExpectIdentifier, AcceptComma);
 
-            var closeParenToken =
+            var closeParenToken = openParenToken.IsMissing ? MissingToken(SyntaxKind.CloseParenthesesToken, input, position) :
                 ExpectToken(input, ref position, SyntaxKind.CloseParenthesesToken);
 
-            return WithPosition(new UvssTransitionArgumentListSyntax(
+            var argumentList = WithPosition(new UvssTransitionArgumentListSyntax(
                 openParenToken,
                 arguments,
                 closeParenToken));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (openParenToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, openParenToken);
+
+            if (closeParenToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, closeParenToken);
+
+            argumentList.SetDiagnostics(diagnostics);
+
+            return argumentList;
         }
 
         /// <summary>
@@ -1866,16 +2112,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return ParseTransitionArgumentList(input, ref position, listIndex, false);
         }
-        
+
         /// <summary>
         /// Accepts an event trigger argument.
         /// </summary>
         private static SyntaxNode AcceptEventTriggerArgument(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return AcceptToken(input, ref position,
+            var nextTokenKind = SyntaxKindFromNextToken(input, position);
+            if (nextTokenKind == SyntaxKind.CloseCurlyBraceToken || nextTokenKind == SyntaxKind.EndOfFileToken)
+                return null;
+
+            var token = AcceptToken(input, ref position,
                 SyntaxKind.HandledKeyword,
                 SyntaxKind.SetHandledKeyword);
+
+            if (token != null)
+                return token;
+
+            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInEventTriggerArgumentList);
+            return empty;
         }
 
         /// <summary>
@@ -1902,16 +2159,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var openParenToken =
                 ExpectToken(input, ref position, SyntaxKind.OpenParenthesesToken);
 
-            var argumentList =
+            var argumentListContent =
                 AcceptSeparatedList(input, ref position, AcceptEventTriggerArgument, AcceptComma);
 
             var closeParenToken =
                 ExpectToken(input, ref position, SyntaxKind.CloseParenthesesToken);
 
-            return WithPosition(new UvssEventTriggerArgumentList(
+            var argumentList = WithPosition(new UvssEventTriggerArgumentList(
                 openParenToken,
-                argumentList,
+                argumentListContent,
                 closeParenToken));
+            
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (openParenToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, openParenToken);
+
+            if (closeParenToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, closeParenToken);
+
+            argumentList.SetDiagnostics(diagnostics);
+
+            return argumentList;
         }
 
         /// <summary>
@@ -2013,7 +2282,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 AcceptPropertyName(input, ref position) :
                 ExpectPropertyName(input, ref position);
 
-            if (propertyName == null)
+            if (accept && propertyName == null)
                 return null;
 
             var comparisonOperatorToken =
@@ -2022,10 +2291,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var propertyValue =
                 ExpectPropertyValueWithBraces(input, ref position);
 
-            return WithPosition(new UvssPropertyTriggerConditionSyntax(
+            var condition = WithPosition(new UvssPropertyTriggerConditionSyntax(
                 propertyName,
                 comparisonOperatorToken,
                 propertyValue));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (comparisonOperatorToken.IsMissing)
+                DiagnosticInfo.ReportPropertyTriggerMissingComparisonOperator(ref diagnostics, comparisonOperatorToken);
+            
+            condition.SetDiagnostics(diagnostics);
+
+            return condition;
         }
 
         /// <summary>
@@ -2045,71 +2323,121 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return ParsePropertyTriggerCondition(input, ref position, listIndex, false);
         }
-        
+
+        /// <summary>
+        /// Accepts a "play-storyboard" trigger action.
+        /// </summary>
+        private static UvssPlayStoryboardTriggerActionSyntax AcceptPlayStoryboardTriggerAction(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            var playStoryboardKeyword =
+                ExpectToken(input, ref position, SyntaxKind.PlayStoryboardKeyword);
+
+            var selector =
+                AcceptSelectorWithParentheses(input, ref position);
+
+            var value =
+                ExpectPropertyValueWithBraces(input, ref position);
+
+            var action = new UvssPlayStoryboardTriggerActionSyntax(
+                playStoryboardKeyword,
+                selector,
+                value);
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (playStoryboardKeyword.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, playStoryboardKeyword);
+                        
+            action.SetDiagnostics(diagnostics);
+
+            return action;
+        }
+
+        /// <summary>
+        /// Accepts a "play-sfx" trigger action.
+        /// </summary>
+        private static UvssPlaySfxTriggerActionSyntax AcceptPlaySfxTriggerAction(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            var playSfxKeyword =
+                ExpectToken(input, ref position, SyntaxKind.PlaySfxKeyword);
+
+            var value =
+                ExpectPropertyValueWithBraces(input, ref position);
+
+            var action = new UvssPlaySfxTriggerActionSyntax(
+                playSfxKeyword,
+                value);
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (playSfxKeyword.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, playSfxKeyword);
+            
+            action.SetDiagnostics(diagnostics);
+
+            return action;
+        }
+
+        /// <summary>
+        /// Accepts a "set" trigger action.
+        /// </summary>
+        private static UvssSetTriggerActionSyntax AcceptSetTriggerAction(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            var setKeyword =
+                ExpectToken(input, ref position, SyntaxKind.SetKeyword);
+
+            var propertyName =
+                ExpectPropertyName(input, ref position);
+
+            var selector =
+                AcceptSelectorWithParentheses(input, ref position);
+
+            var value =
+                ExpectPropertyValueWithBraces(input, ref position);
+
+            var action = new UvssSetTriggerActionSyntax(
+                setKeyword,
+                propertyName,
+                selector,
+                value);
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (setKeyword.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, setKeyword);
+            
+            action.SetDiagnostics(diagnostics);
+
+            return action;
+        }
+
         /// <summary>
         /// Accepts a trigger action.
         /// </summary>
         private static UvssTriggerActionBaseSyntax AcceptTriggerAction(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            var actionKeyword =
-                AcceptToken(input, ref position, SyntaxKind.PlayStoryboardKeyword, SyntaxKind.PlaySfxKeyword, SyntaxKind.SetKeyword);
-
-            if (actionKeyword == null)
+            var nextKind = SyntaxKindFromNextToken(input, position);
+            if (nextKind != SyntaxKind.PlayStoryboardKeyword &&
+                nextKind != SyntaxKind.PlaySfxKeyword &&
+                nextKind != SyntaxKind.SetKeyword)
+            {
                 return null;
+            }
 
-            switch (actionKeyword.Kind)
+            switch (nextKind)
             {
                 case SyntaxKind.PlayStoryboardKeyword:
-                    {
-                        var playStoryboardKeyword = 
-                            actionKeyword;
-
-                        var selector =
-                            AcceptSelectorWithParentheses(input, ref position);
-
-                        var value =
-                            ExpectPropertyValueWithBraces(input, ref position);
-
-                        return new UvssPlayStoryboardTriggerActionSyntax(
-                            playStoryboardKeyword,
-                            selector,
-                            value);
-                    }
+                    return AcceptPlayStoryboardTriggerAction(input, ref position, listIndex);
 
                 case SyntaxKind.PlaySfxKeyword:
-                    {
-                        var playSfxKeyword = 
-                            actionKeyword;
-
-                        var value =
-                            ExpectPropertyValueWithBraces(input, ref position);
-
-                        return new UvssPlaySfxTriggerActionSyntax(
-                            playSfxKeyword,
-                            value);
-                    }
+                    return AcceptPlaySfxTriggerAction(input, ref position, listIndex);
 
                 case SyntaxKind.SetKeyword:
-                    {
-                        var setKeyword = 
-                            actionKeyword;
-
-                        var propertyName =
-                            ExpectPropertyName(input, ref position);
-
-                        var selector =
-                            AcceptSelectorWithParentheses(input, ref position);
-
-                        var value =
-                            ExpectPropertyValueWithBraces(input, ref position);
-
-                        return new UvssSetTriggerActionSyntax(
-                            setKeyword,
-                            propertyName,
-                            selector,
-                            value);
-                    }
+                    return AcceptSetTriggerAction(input, ref position, listIndex);
 
                 default:
                     throw new InvalidOperationException();
@@ -2117,10 +2445,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Accepts nodes which are valid inside of the body of a trigger.
+        /// </summary>
+        private static SyntaxNode AcceptTriggerBodyNode(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            var nextKind = SyntaxKindFromNextToken(input, position);
+            if (nextKind == SyntaxKind.CloseCurlyBraceToken || nextKind == SyntaxKind.EndOfFileToken)
+                return null;
+
+            var action = AcceptTriggerAction(input, ref position, listIndex);
+            if (action != null)
+                return action;
+
+            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInTriggerBody);
+            return empty;
+        }
+
+        /// <summary>
         /// Parses a proeprty trigger.
         /// </summary>
         private static UvssPropertyTriggerSyntax ParsePropertyTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listPosition, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.TriggerKeyword)
                 return null;
@@ -2138,38 +2485,52 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 ExpectToken(input, ref position, SyntaxKind.PropertyKeyword);
 
             var conditions =
-                AcceptSeparatedList(input, ref position, AcceptPropertyTriggerCondition);
+                AcceptSeparatedList(input, ref position, ExpectPropertyTriggerCondition);
 
             var qualifierToken =
                 AcceptToken(input, ref position, SyntaxKind.ImportantKeyword);
 
             var body =
-                ExpectBlock(input, ref position, AcceptTriggerAction);
+                ExpectBlock(input, ref position, AcceptTriggerBodyNode);
 
-            return WithPosition(new UvssPropertyTriggerSyntax(
+            var trigger = WithPosition(new UvssPropertyTriggerSyntax(
                 triggerKeyword,
                 propertyKeyword,
                 conditions,
                 qualifierToken,
                 body));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            trigger.SetDiagnostics(diagnostics);
+
+            if (triggerKeyword.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, triggerKeyword);
+
+            if (propertyKeyword.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, propertyKeyword);
+
+            trigger.SetDiagnostics(diagnostics);
+
+            return trigger;
         }
 
         /// <summary>
         /// Accepts a property trigger.
         /// </summary>
         private static UvssPropertyTriggerSyntax AcceptPropertyTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listPosition = 0)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParsePropertyTrigger(input, ref position, listPosition, true);
+            return ParsePropertyTrigger(input, ref position, listIndex, true);
         }
 
         /// <summary>
         /// Expects a property trigger and produces a missing node if one does not exist.
         /// </summary>
         private static UvssPropertyTriggerSyntax ExpectPropertyTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listPosition = 0)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParsePropertyTrigger(input, ref position, listPosition, false) ??
+            return ParsePropertyTrigger(input, ref position, listIndex, false) ??
                 new UvssPropertyTriggerSyntax() { IsMissing = true };
         }
 
@@ -2177,7 +2538,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses an event trigger.
         /// </summary>
         private static UvssEventTriggerSyntax ParseEventTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listPosition, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.TriggerKeyword)
                 return null;
@@ -2204,41 +2565,70 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 AcceptToken(input, ref position, SyntaxKind.ImportantKeyword);
 
             var body =
-                ExpectBlock(input, ref position, AcceptTriggerAction);
+                ExpectBlock(input, ref position, AcceptTriggerBodyNode);
 
-            return WithPosition(new UvssEventTriggerSyntax(
+            var trigger = WithPosition(new UvssEventTriggerSyntax(
                 triggerKeyword,
                 eventKeyword,
                 eventName,
                 argumentList,
                 qualifierToken,
                 body));
+            
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (triggerKeyword.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, triggerKeyword);
+
+            if (eventKeyword.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, eventKeyword);
+
+            if (argumentList != null && !argumentList.IsMissing)
+            {
+                if (argumentList.Arguments.Count == 0)
+                    DiagnosticInfo.ReportEventTriggerHasTooFewArguments(ref diagnostics, argumentList.Arguments.Node ?? argumentList);
+                
+                var duplicateArguments = argumentList.ArgumentTokens.GroupBy(x => x.Text)
+                    .Select(x => new { Token = x.Key, Count = x.Count() }).Where(x => x.Count > 1);
+                if (duplicateArguments.Any())
+                {
+                    foreach (var duplicateArgument in duplicateArguments)
+                    {
+                        DiagnosticInfo.ReportEventTriggerHasDuplicateArguments(ref diagnostics, 
+                            argumentList.Arguments.Node ?? argumentList, duplicateArgument.Token);
+                    }
+                }
+            }
+
+            trigger.SetDiagnostics(diagnostics);
+
+            return trigger;
         }
 
         /// <summary>
         /// Accepts an event trigger.
         /// </summary>
         private static UvssEventTriggerSyntax AcceptEventTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listPosition = 0)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParseEventTrigger(input, ref position, listPosition, true);
+            return ParseEventTrigger(input, ref position, listIndex, true);
         }
 
         /// <summary>
         /// Expects an event trigger and produces a missing node if one does not exist.
         /// </summary>
         private static UvssEventTriggerSyntax ExpectEventTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listPosition = 0)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParseEventTrigger(input, ref position, listPosition, false) ??
+            return ParseEventTrigger(input, ref position, listIndex, false) ??
                 new UvssEventTriggerSyntax() { IsMissing = true };
         }
-        
+
         /// <summary>
         /// Parses an incomplete trigger.
         /// </summary>
         private static UvssIncompleteTriggerSyntax ParseIncompleteTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listPosition, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.TriggerKeyword)
                 return null;
@@ -2250,30 +2640,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 AcceptToken(input, ref position, SyntaxKind.ImportantKeyword);
 
             var body =
-                ExpectBlock(input, ref position, AcceptTriggerAction);
+                ExpectBlock(input, ref position, AcceptTriggerBodyNode);
 
-            return WithPosition(new UvssIncompleteTriggerSyntax(
+            var trigger = WithPosition(new UvssIncompleteTriggerSyntax(
                 triggerKeyword,
                 qualifierToken,
                 body));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+            DiagnosticInfo.ReportIncompleteTrigger(ref diagnostics, trigger);
+
+            trigger.SetDiagnostics(diagnostics);
+
+            return trigger;
         }
 
         /// <summary>
         /// Accepts an incomplete trigger.
         /// </summary>
         private static UvssIncompleteTriggerSyntax AcceptIncompleteTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listPosition = 0)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParseIncompleteTrigger(input, ref position, listPosition, true);
+            return ParseIncompleteTrigger(input, ref position, listIndex, true);
         }
 
         /// <summary>
         /// Expects an incomplete trigger and produces a missing node if one does not exist.
         /// </summary>
         private static UvssIncompleteTriggerSyntax ExpectIncompleteTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listPosition = 0)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParseIncompleteTrigger(input, ref position, listPosition, false);
+            return ParseIncompleteTrigger(input, ref position, listIndex, false);
         }
 
         /// <summary>
@@ -2294,7 +2691,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static UvssTriggerBaseSyntax ParseTrigger(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
-            var propertyTrigger = 
+            var propertyTrigger =
                 AcceptPropertyTrigger(input, ref position, listIndex);
 
             if (propertyTrigger != null)
@@ -2354,7 +2751,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (storyboardTarget != null)
                 return storyboardTarget;
 
-            return ExpectEmptyStatement(input, ref position, listIndex);
+            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInStoryboardBody);
+            return empty;
         }
 
         /// <summary>
@@ -2378,11 +2777,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var body =
                 ExpectBlock(input, ref position, AcceptStoryboardBodyNode);
 
-            return WithPosition(new UvssStoryboardSyntax(
+            var storyboard = WithPosition(new UvssStoryboardSyntax(
                 atSignToken,
                 nameIdentifier,
                 loopIdentifier,
                 body));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (loopIdentifier != null)
+            {
+                if (loopIdentifier.Text != "none" &&
+                    loopIdentifier.Text != "loop" &&
+                    loopIdentifier.Text != "reverse")
+                {
+                    DiagnosticInfo.ReportUnrecognizedLoopType(ref diagnostics, loopIdentifier);
+                }
+            }
+
+            storyboard.SetDiagnostics(diagnostics);
+
+            return storyboard;
         }
 
         /// <summary>
@@ -2416,8 +2831,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var animation = AcceptAnimation(input, ref position);
             if (animation != null)
                 return animation;
-            
-            return ExpectEmptyStatement(input, ref position, listIndex);
+
+            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInStoryboardTargetBody);
+            return empty;
         }
 
         /// <summary>
@@ -2493,7 +2910,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (animationKeyframe != null)
                 return animationKeyframe;
 
-            return ExpectEmptyStatement(input, ref position, listIndex);
+            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInAnimationBody);
+            return empty;
         }
 
         /// <summary>
@@ -2520,7 +2939,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             var animationKeyword =
                 ExpectToken(input, ref position, SyntaxKind.AnimationKeyword);
-            
+
             var propertyName =
                 ExpectPropertyName(input, ref position);
 
@@ -2535,15 +2954,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 propertyName,
                 navigationExpression,
                 body));
-
-            var diagnostics = default(ICollection<DiagnosticInfo>);
-            if (!animationKeyword.IsMissing)
-            {
-                if (propertyName.IsMissing)
-                    DiagnosticInfo.ReportAnimationMissingPropertyName(ref diagnostics, animation);
-            }
-            animation.SetDiagnostics(diagnostics);
-
+            
             return animation;
         }
 
@@ -2599,11 +3010,61 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var value =
                 ExpectPropertyValueWithBraces(input, ref position);
 
-            return WithPosition(new UvssAnimationKeyframeSyntax(
+            var keyframe = WithPosition(new UvssAnimationKeyframeSyntax(
                 keyframeKeyword,
                 timeToken,
                 easingIdentifier,
                 value));
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (keyframeKeyword.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, keyframeKeyword);
+
+            if (timeToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, timeToken);
+
+            if (easingIdentifier != null)
+            {
+                if (easingIdentifier.Text != "ease-in-linear" &&
+                    easingIdentifier.Text != "ease-out-linear" &&
+                    easingIdentifier.Text != "ease-in-cubic" &&
+                    easingIdentifier.Text != "ease-out-cubic" &&
+                    easingIdentifier.Text != "ease-in-quadratic" &&
+                    easingIdentifier.Text != "ease-out-quadratic" &&
+                    easingIdentifier.Text != "ease-in-out-quadratic" &&
+                    easingIdentifier.Text != "ease-in-quartic" &&
+                    easingIdentifier.Text != "ease-out-quartic" &&
+                    easingIdentifier.Text != "ease-in-out-quartic" &&
+                    easingIdentifier.Text != "ease-in-quintic" &&
+                    easingIdentifier.Text != "ease-out-quintic" &&
+                    easingIdentifier.Text != "ease-in-out-quintic" &&
+                    easingIdentifier.Text != "ease-in-sin" &&
+                    easingIdentifier.Text != "ease-out-sin" &&
+                    easingIdentifier.Text != "ease-in-out-sin" &&
+                    easingIdentifier.Text != "ease-in-exponential" &&
+                    easingIdentifier.Text != "ease-out-exponential" &&
+                    easingIdentifier.Text != "ease-in-out-exponential" &&
+                    easingIdentifier.Text != "ease-in-circular" &&
+                    easingIdentifier.Text != "ease-out-circular" &&
+                    easingIdentifier.Text != "ease-in-out-circular" &&
+                    easingIdentifier.Text != "ease-in-back" &&
+                    easingIdentifier.Text != "ease-out-back" &&
+                    easingIdentifier.Text != "ease-in-out-back" &&
+                    easingIdentifier.Text != "ease-in-elastic" &&
+                    easingIdentifier.Text != "ease-out-elastic" &&
+                    easingIdentifier.Text != "ease-in-out-elastic" &&
+                    easingIdentifier.Text != "ease-in-bounce" &&
+                    easingIdentifier.Text != "ease-out-bounce" &&
+                    easingIdentifier.Text != "ease-in-out-bounce")
+                {
+                    DiagnosticInfo.ReportUnrecognizedEasingFunction(ref diagnostics, easingIdentifier);
+                }
+            }
+            
+            keyframe.SetDiagnostics(diagnostics);
+
+            return keyframe;
         }
 
         /// <summary>
@@ -2630,7 +3091,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static UvssEmptyStatementSyntax ParseEmptyStatement(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
-            var trivia = AccumulateTrivia(input, ref position, 
+            var trivia = AccumulateTrivia(input, ref position,
                 treatWhiteSpaceAsCombinator: false,
                 treatCurrentTokenAsTrivia: true,
                 isLeading: true);
@@ -2657,9 +3118,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Expects an empty statement.
         /// </summary>
         private static UvssEmptyStatementSyntax ExpectEmptyStatement(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listPosition = 0)
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            return ParseEmptyStatement(input, ref position, listPosition, false);
+            return ParseEmptyStatement(input, ref position, listIndex, false);
         }
 
         /// <summary>
@@ -2745,6 +3206,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
             return token;
         }
+
+        /// <summary>
+        /// Accepts a syntax token of the specified kind on the same line as previous nodes.
+        /// </summary>
+        private static SyntaxToken AcceptTokenOnSameLine(
+            IList<UvssLexerToken> input, ref Int32 position, SyntaxKind acceptedKind, ref Boolean eol)
+        {
+            if (eol)
+            {
+                return null;
+            }
+            else
+            {
+                var token = AcceptToken(input, ref position, acceptedKind);
+                if (token != null && token.HasTrailingLineBreaks)
+                    eol = true;
+
+                return token;
+            }
+        }
+
+        /// <summary>
+        /// Expects a syntax token of the specified kind on the same line as previous nodes
+        /// and produces a missing node if one is not found.
+        /// </summary>
+        private static SyntaxToken ExpectTokenOnSameLine(
+            IList<UvssLexerToken> input, ref Int32 position, SyntaxKind expectedKind, ref Boolean eol)
+        {
+            if (eol)
+            {
+                return MissingToken(expectedKind, input, position);
+            }
+            else
+            {
+                var token = ExpectToken(input, ref position, expectedKind);
+                if (token.HasTrailingLineBreaks)
+                    eol = true;
+
+                return token;
+            }            
+        }
         
         /// <summary>
         /// Restores the specified token to the input stream and modifies the current stream
@@ -2770,6 +3272,58 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             var tokenCount = (token.Kind == SyntaxKind.EndOfFileToken) ? 0 : 1;
             position -= tokenCount + (leadingTriviaCount + trailingTriviaCount);
+        }
+
+        /// <summary>
+        /// Adds diagnostics to skipped tokens trivia which are contained by the specified node's descendants.
+        /// </summary>
+        private static void AddDiagnosticsToSkippedSyntaxTrivia(SyntaxNode node, SkippedTokensDiagnosticsReporter reporter)
+        {
+            if (node == null)
+                return;
+
+            var trivia = node as SkippedTokensTriviaSyntax;
+            if (trivia != null)
+            {
+                var diagnostics = default(ICollection<DiagnosticInfo>);
+                if (reporter != null)
+                {
+                    reporter(ref diagnostics, trivia);
+                }
+                trivia.SetDiagnostics(diagnostics);
+            }
+            else
+            {
+                var leading = node.GetLeadingTrivia();
+                if (leading != null)
+                {
+                    if (leading.IsList)
+                    {
+                        for (int i = 0; i < leading.SlotCount; i++)
+                        {
+                            var child = leading.GetSlot(i);
+                            if (child != null)
+                                AddDiagnosticsToSkippedSyntaxTrivia(child, reporter);
+                        }
+                    }
+                    else { AddDiagnosticsToSkippedSyntaxTrivia(leading, reporter); }
+                }
+
+                var trailing = node.GetTrailingTrivia();
+                if (trailing != null)
+                {
+                    if (trailing != null)
+                    {
+                        for (int i = 0; i < trailing.SlotCount; i++)
+                        {
+                            var child = trailing.GetSlot(i);
+                            if (child != null)
+                                AddDiagnosticsToSkippedSyntaxTrivia(child, reporter);
+                        }
+                    }
+                    else { AddDiagnosticsToSkippedSyntaxTrivia(trailing, reporter); }
+                }
+            }
         }
 
         /// <summary>

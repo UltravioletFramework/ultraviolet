@@ -104,15 +104,33 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
         /// <returns>The <see cref="Task"/> that represents the specified <see cref="Error"/>.</returns>
         private Task TaskFromError(Error error)
         {
-            var line = error.Span.Snapshot.GetLineFromPosition(error.Span.Start);
+            var taskSeverity = default(TaskErrorCategory);
+            switch (error.DiagnosticInfo.Severity)
+            {
+                case DiagnosticSeverity.Hidden:
+                case DiagnosticSeverity.Info:
+                    return null;
+
+                case DiagnosticSeverity.Warning:
+                    taskSeverity = TaskErrorCategory.Warning;
+                    break;
+
+                case DiagnosticSeverity.Error:
+                    taskSeverity = TaskErrorCategory.Error;
+                    break;
+            }
+
+            var taskSpan = error.TagSafeSpan;
+            var taskPos = taskSpan.End == taskSpan.Snapshot.Length ? taskSpan.End : taskSpan.Start;
+            var taskLine = taskSpan.Snapshot.GetLineFromPosition(taskPos);
 
             var task = new ErrorTask()
             {
-                Text = error.Message,
-                Line = line.LineNumber,
-                Column = error.Span.Start - line.Start.Position,
+                Text = error.DiagnosticInfo.Message,
+                Line = taskLine.LineNumber,
+                Column = taskPos - taskLine.Start.Position,
                 Category = TaskCategory.CodeSense,
-                ErrorCategory = TaskErrorCategory.Error,
+                ErrorCategory = taskSeverity,
                 Priority = TaskPriority.Normal,
                 Document = error.File
             };
@@ -181,12 +199,14 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
                     errors.AddRange(errorsInNewSnapshot);
 
                     var diagnostics = document.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error).ToList();
-                    errors.AddRange(diagnostics.Select(x =>
+                    var diagnosticErrors = diagnostics.Select(x =>
                     {
                         var errorSpan = new SnapshotSpan(
                             span.Snapshot, span.Start + x.Location.Start, x.Location.Length);
-                        return new Error(errorSpan, x.Message, textDocument.FilePath);
-                    }));
+                        return new Error(textDocument.FilePath, errorSpan, x);
+                    });
+
+                    errors.AddRange(diagnosticErrors);
                     
                     errorsDirty = true;
                 }

@@ -433,7 +433,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static readonly KeyValuePair<UvssLexerTokenType, String>[] ProductionRules = new[]
         {
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.EndOfLine,
-                @"\G\r\n|\n|\r"),
+                @"\G\r\n|\G\n|\G\r"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.MultiLineComment,
                 @"\G/\*"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.SingleLineComment,

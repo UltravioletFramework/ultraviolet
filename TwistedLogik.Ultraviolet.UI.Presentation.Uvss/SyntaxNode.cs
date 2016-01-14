@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The width of the node's leading trivia.</returns>
         public virtual Int32 GetLeadingTriviaWidth()
         {
-            return GetFirstTerminal()?.GetLeadingTriviaWidth() ?? 0;
+            return GetFirstTerminal(includeMissing: false)?.GetLeadingTriviaWidth() ?? 0;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The width of the node's trailing trivia.</returns>
         public virtual Int32 GetTrailingTriviaWidth()
         {
-            return GetLastTerminal()?.GetTrailingTriviaWidth() ?? 0;
+            return GetLastTerminal(includeMissing: false)?.GetTrailingTriviaWidth() ?? 0;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The node's leading trivia.</returns>
         public virtual SyntaxNode GetLeadingTrivia()
         {
-            return GetFirstToken()?.GetLeadingTrivia();
+            return GetFirstToken(includeMissing: false)?.GetLeadingTrivia();
         }
 
         /// <summary>
@@ -63,7 +63,71 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The node's trailing trivia.</returns>
         public virtual SyntaxNode GetTrailingTrivia()
         {
-            return GetLastToken()?.GetTrailingTrivia();
+            return GetLastToken(includeMissing: false)?.GetTrailingTrivia();
+        }
+
+        /// <summary>
+        /// Gets the token which occurs immediately prior to this node.
+        /// </summary>
+        /// <param name="includeMissing">A value indicating whether to consider missing tokens.</param>
+        /// <returns>The token which occurs immediately prior to this node, or null
+        /// if there is no such token in the tree.</returns>
+        public SyntaxToken GetPreviousToken(Boolean includeMissing = true)
+        {
+            if (Parent == null)
+                return null;
+
+            var foundSelf = false;
+            for (int i = Parent.SlotCount - 1; i >= 0; i--)
+            {
+                var sibling = Parent.GetSlot(i);
+                if (sibling != null)
+                {
+                    if (sibling == this)
+                    {
+                        foundSelf = true;
+                    }
+                    else
+                    {
+                        if (foundSelf && (includeMissing || !sibling.IsMissing))
+                            return sibling.GetLastToken(includeMissing);
+                    }
+                }
+            }
+
+            return Parent.GetPreviousToken(includeMissing);
+        }
+
+        /// <summary>
+        /// Gets the token which occurs immediately after this node.
+        /// </summary>
+        /// <param name="includeMissing">A value indicating whether to consider missing tokens.</param>
+        /// <returns>The token which occurs immediately after this node, or null
+        /// if there is no such token in the tree.</returns>
+        public SyntaxToken GetNextToken(Boolean includeMissing = true)
+        {
+            if (Parent == null)
+                return null;
+
+            var foundSelf = false;
+            for (int i = 0; i < Parent.SlotCount; i++)
+            {
+                var sibling = Parent.GetSlot(i);
+                if (sibling != null)
+                {
+                    if (sibling == this)
+                    {
+                        foundSelf = true;
+                    }
+                    else
+                    {
+                        if (foundSelf && (includeMissing || !sibling.IsMissing))
+                            return sibling.GetFirstToken(includeMissing);
+                    }
+                }
+            }
+
+            return Parent.GetNextToken(includeMissing);
         }
 
         /// <summary>
@@ -114,8 +178,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Gets the first terminal within the subtree with this node as its root.
         /// </summary>
+        /// <param name="includeMissing">A value indicating whether to consider missing tokens.</param>
         /// <returns>The terminal that was found, or null if no terminal was found.</returns>
-        public SyntaxNode GetFirstTerminal()
+        public SyntaxNode GetFirstTerminal(Boolean includeMissing = true)
         {
             var node = this;
 
@@ -125,7 +190,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 for (int i = 0; i < node.SlotCount; i++)
                 {
                     var child = node.GetSlot(i);
-                    if (child != null)
+                    if (child != null && (includeMissing || !child.IsMissing))
                     {
                         node = child;
                         foundChild = true;
@@ -144,8 +209,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Gets the last terminal within the subtree with this node as its root.
         /// </summary>
+        /// <param name="includeMissing">A value indicating whether to consider missing tokens.</param>
         /// <returns>The terminal that was found, or null if no terminal was found.</returns>
-        public SyntaxNode GetLastTerminal()
+        public SyntaxNode GetLastTerminal(Boolean includeMissing = true)
         {
             var node = this;
 
@@ -155,7 +221,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 for (int i = node.SlotCount - 1; i >= 0; i--)
                 {
                     var child = node.GetSlot(i);
-                    if (child != null)
+                    if (child != null && (includeMissing || !child.IsMissing))
                     {
                         node = child;
                         foundChild = true;
@@ -174,19 +240,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Gets the first <see cref="SyntaxToken"/> within the subtree with this node as its root.
         /// </summary>
+        /// <param name="includeMissing">A value indicating whether to consider missing tokens.</param>
         /// <returns>The token that was found, or null if no token was found.</returns>
-        public SyntaxToken GetFirstToken()
+        public SyntaxToken GetFirstToken(Boolean includeMissing = true)
         {
-            return GetFirstTerminal() as SyntaxToken;
+            return GetFirstTerminal(includeMissing) as SyntaxToken;
         }
 
         /// <summary>
         /// Gets the last <see cref="SyntaxToken"/> within the subtree with this node as its root.
         /// </summary>
+        /// <param name="includeMissing">A value indicating whether to consider missing tokens.</param>
         /// <returns>The token that was found, or null if no token was found.</returns>
-        public SyntaxToken GetLastToken()
+        public SyntaxToken GetLastToken(Boolean includeMissing = true)
         {
-            return GetLastTerminal() as SyntaxToken;
+            return GetLastTerminal(includeMissing) as SyntaxToken;
         }
 
         /// <summary>
@@ -195,17 +263,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>A collection containing the diagnostics reported by this node and its descendants.</returns>
         public IEnumerable<DiagnosticInfo> GetDiagnostics()
         {
+
             if (diagnostics != null)
             {
                 foreach (var diagnostic in diagnostics)
                     yield return diagnostic;
             }
 
-            var leadingDiagnostics = GetLeadingTrivia()?.GetDiagnostics();
-            if (leadingDiagnostics != null)
+            if (IsToken)
             {
-                foreach (var diagnostic in leadingDiagnostics)
-                    yield return diagnostic;
+                var leadingDiagnostics = GetLeadingTrivia()?.GetDiagnostics();
+                if (leadingDiagnostics != null)
+                {
+                    foreach (var diagnostic in leadingDiagnostics)
+                        yield return diagnostic;
+                }
             }
 
             for (int i = 0; i < SlotCount; i++)
@@ -219,14 +291,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 }
             }
 
-            var trailingDiagnostics = GetTrailingTrivia()?.GetDiagnostics();
-            if (trailingDiagnostics != null)
+            if (IsToken)
             {
-                foreach (var diagnostic in trailingDiagnostics)
-                    yield return diagnostic;
+                var trailingDiagnostics = GetTrailingTrivia()?.GetDiagnostics();
+                if (trailingDiagnostics != null)
+                {
+                    foreach (var diagnostic in trailingDiagnostics)
+                        yield return diagnostic;
+                }
             }
         }
-        
+
         /// <summary>
         /// Creates a string which contains the full text of this node and its children.
         /// </summary>
@@ -313,7 +388,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Gets a value indicating whether this node or any of its children have diagnostics.
         /// </summary>
         public Boolean ContainsDiagnostics => GetDiagnostics().Any();
-        
+
         /// <summary>
         /// Gets a value indicating whether this node has any leading trivia.
         /// </summary>
@@ -323,6 +398,64 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Gets a value indicating whether this node has any trailing trivia.
         /// </summary>
         public Boolean HasTrailingTrivia => GetTrailingTriviaWidth() > 0;
+
+        /// <summary>
+        /// Gets a value indicating whether this node's leading trivia
+        /// contains any line breaks.
+        /// </summary>
+        public Boolean HasLeadingLineBreaks
+        {
+            get
+            {
+                var trivia = GetLeadingTrivia();
+                if (trivia == null)
+                    return false;
+
+                if (trivia.IsList)
+                {
+                    for (int i = 0; i < trivia.SlotCount; i++)
+                    {
+                        var child = trivia.GetSlot(i);
+                        if (child != null && child.Kind == SyntaxKind.EndOfLineTrivia)
+                            return true;
+                    }
+                    return false;
+                }
+                else
+                {
+                    return trivia.Kind == SyntaxKind.EndOfLineTrivia;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this node's trailing trivia
+        /// contains any line breaks.
+        /// </summary>
+        public Boolean HasTrailingLineBreaks
+        {
+            get
+            {
+                var trivia = GetTrailingTrivia();
+                if (trivia == null)
+                    return false;
+
+                if (trivia.IsList)
+                {
+                    for (int i = 0; i < trivia.SlotCount; i++)
+                    {
+                        var child = trivia.GetSlot(i);
+                        if (child != null && child.Kind == SyntaxKind.EndOfLineTrivia)
+                            return true;
+                    }
+                    return false;
+                }
+                else
+                {
+                    return trivia.Kind == SyntaxKind.EndOfLineTrivia;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether the node has been made stale by changes to the tree.
@@ -344,7 +477,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Gets a value indicating whether this node is a terminal token.
         /// </summary>
         public virtual Boolean IsToken { get { return false; } }
-        
+
         /// <summary>
         /// Accepts the specified syntax visitor.
         /// </summary>
@@ -417,7 +550,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 InvalidateTreePositions();
             }
         }
-        
+
         /// <summary>
         /// Changes the node's trailing trivia.
         /// </summary>
@@ -431,7 +564,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 InvalidateTreePositions();
             }
         }
-        
+
+        /// <summary>
+        /// Gets the node's internal array of diagnostics.
+        /// </summary>
+        /// <returns>The node's internal array of diagnostics.</returns>
+        internal DiagnosticInfo[] GetDiagnosticsArray()
+        {
+            return diagnostics;
+        }
+
         /// <summary>
         /// Calculates the position of the node within the source text.
         /// </summary>

@@ -290,8 +290,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newOpenParenToken != node.OpenParenToken)
                 unchanged = false;
 
-            var newArgumentList = VisitSeparatedList(node.ArgumentList);
-            if (newArgumentList.Node != node.ArgumentList.Node)
+            var newArgumentList = VisitSeparatedList(node.Arguments);
+            if (newArgumentList.Node != node.Arguments.Node)
                 unchanged = false;
 
             var newCloseParentToken = (SyntaxToken)Visit(node.CloseParenToken);
