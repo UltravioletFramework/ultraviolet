@@ -213,7 +213,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (String.IsNullOrEmpty(s))
                 return false;
 
-            var components = s.Split(' ');
+            var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
             if (components.Length != 1 && components.Length != 4)
                 return false;
 

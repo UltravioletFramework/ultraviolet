@@ -147,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             Contract.Require(s, "s");
 
-            var components = s.Split(' ');
+            var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
 
             var texture    = AssetID.Invalid;
             var x          = 0;

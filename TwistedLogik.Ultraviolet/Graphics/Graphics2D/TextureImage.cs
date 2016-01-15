@@ -166,7 +166,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The number of numeric components in the specified image string.</returns>
         private static Int32 CountNumericComponents(String value)
         {
-            var components = value.Split(' ');
+            var components = value.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
 
             var numericComponents = 0;
             for (int i = 1; i < components.Length; i++)

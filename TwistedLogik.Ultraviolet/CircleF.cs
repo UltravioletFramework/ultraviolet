@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet
             if (String.IsNullOrEmpty(s))
                 return false;
 
-            var components = s.Split(' '); 
+            var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries); 
             if (components.Length != 3)
                 return false;
 

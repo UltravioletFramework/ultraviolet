@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet
             const Int32 ComponentsPerKey = 5;
 
             var keysString     = asset.ElementValueString("Keys");
-            var keysComponents = keysString.Split(' ');
+            var keysComponents = keysString.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
             if (keysComponents.Length % ComponentsPerKey != 0)
                 throw new InvalidDataException(UltravioletStrings.InvalidCurveData);
 

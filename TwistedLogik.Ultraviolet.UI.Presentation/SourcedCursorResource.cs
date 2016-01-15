@@ -109,7 +109,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The resolved object.</returns>
         private static Object SourcedCursorResolver(String value, IFormatProvider provider)
         {
-            var components = value.Trim().Split(' ');
+            var components = value.Trim().Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
             if (components.Length != 2)
                 throw new FormatException();
             

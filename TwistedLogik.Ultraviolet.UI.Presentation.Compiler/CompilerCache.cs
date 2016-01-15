@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 if (String.IsNullOrEmpty(line))
                     continue;
 
-                var components = line.Split(' ');
+                var components = line.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
                 if (components.Length != 2)
                     throw new InvalidDataException();
 
