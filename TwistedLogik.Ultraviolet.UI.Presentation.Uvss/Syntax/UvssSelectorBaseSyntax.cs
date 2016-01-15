@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets a collection containing the selector's parts.
         /// </summary>
-        public abstract IEnumerable<UvssSelectorPartBaseSyntax> Parts { get; }
+        public abstract IEnumerable<UvssSelectorPartSyntax> Parts { get; }
 
         /// <summary>
         /// Gets a collection containing the selector's combinators.

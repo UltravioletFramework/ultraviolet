@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+using System.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -78,16 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return new SyntaxToken(SyntaxKind.NumberToken,
                 value.ToString(CultureInfo.InvariantCulture), null, null);
         }
-
-        /// <summary>
-        /// Creates a new visual descendant combinator token.
-        /// </summary>
-        /// <returns>The <see cref="SyntaxToken"/> that was created.</returns>
-        public static SyntaxToken VisualDescendantCombinator()
-        {
-            return new UvssPunctuation(SyntaxKind.SpaceToken);
-        }
-
+        
         /// <summary>
         /// Creates a new visual child combinator token.
         /// </summary>
@@ -664,11 +656,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public static UvssSelectorPartSyntax UniversalSelectorPart(
             String pseudoClass = null)
         {
-            return new UvssSelectorPartSyntax(
-                List(new[] { UniversalSelectorSubPart() }),
-                (pseudoClass == null) ? null : PseudoClass(pseudoClass));
+            return SelectorPartByType("*", pseudoClass);
         }
 
+        /// <summary>
+        /// Creates a new selector part.
+        /// </summary>
+        /// <param name="selectedType">The selector part's selected type, if any.</param>
+        /// <param name="selectedName">The selector part's selected name, if any.</param>
+        /// <param name="selectedClasses">A collection containing the selector part's selected classes, if any.</param>
+        /// <param name="pseudoClass">The selector part's pseudo-class, if any.</param>
+        /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
+        public static UvssSelectorPartSyntax SelectorPart(
+            String selectedType,
+            String selectedName,
+            IEnumerable<String> selectedClasses,
+            String pseudoClass = null)
+        {
+            return new UvssSelectorPartSyntax(
+                selectedType == null ? null : new UvssSelectorPartTypeSyntax(
+                    new UvssIdentifierSyntax(
+                        new SyntaxToken(SyntaxKind.IdentifierToken, selectedType)
+                    ),
+                    null
+                ),
+                selectedName == null ? null : new UvssSelectorPartNameSyntax(
+                    new UvssPunctuation(SyntaxKind.HashToken),
+                    new UvssIdentifierSyntax(
+                        new SyntaxToken(SyntaxKind.IdentifierToken, selectedName)
+                    )
+                ),
+                selectedClasses == null ? null : List(
+                    selectedClasses.Select(x =>
+                        new UvssSelectorPartClassSyntax(
+                            new UvssPunctuation(SyntaxKind.PeriodToken),
+                            new UvssIdentifierSyntax(
+                                new SyntaxToken(SyntaxKind.IdentifierToken, x)
+                            )
+                        )
+                    )
+                ),
+                pseudoClass == null ? null : PseudoClass(pseudoClass));
+        }
+        
         /// <summary>
         /// Creates a new selector part which selects the element with the specified name.
         /// </summary>
@@ -680,7 +710,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String pseudoClass = null)
         {
             return new UvssSelectorPartSyntax(
-                List(new[] { SelectorSubPartByName(selectedName) }),
+                null,
+                new UvssSelectorPartNameSyntax(
+                    new UvssPunctuation(SyntaxKind.HashToken),
+                    new UvssIdentifierSyntax(
+                        new SyntaxToken(SyntaxKind.IdentifierToken, selectedName)
+                    )
+                ),
+                null,
                 (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
@@ -695,7 +732,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String pseudoClass = null)
         {
             return new UvssSelectorPartSyntax(
-                List(new[] { SelectorSubPartByClass(selectedClass) }),
+                null,
+                null,
+                List(
+                    new UvssSelectorPartClassSyntax(
+                        new UvssPunctuation(SyntaxKind.PeriodToken),
+                        new UvssIdentifierSyntax(
+                            new SyntaxToken(SyntaxKind.IdentifierToken, selectedClass)
+                        )
+                    )
+                ),
+                (pseudoClass == null) ? null : PseudoClass(pseudoClass));
+        }
+
+        /// <summary>
+        /// Creates a new selector part which selects the specified class.
+        /// </summary>
+        /// <param name="selectedClasses">A collection containing the names of the selected classes.</param>
+        /// <param name="pseudoClass">The name of the selector part's pseudo-class, if any.</param>
+        /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
+        public static UvssSelectorPartSyntax SelectorPartByClasses(
+            IEnumerable<String> selectedClasses,
+            String pseudoClass = null)
+        {
+            return new UvssSelectorPartSyntax(
+                null,
+                null,
+                List(
+                    selectedClasses.Select(x =>
+                        new UvssSelectorPartClassSyntax(
+                            new UvssPunctuation(SyntaxKind.PeriodToken),
+                            new UvssIdentifierSyntax(
+                                new SyntaxToken(SyntaxKind.IdentifierToken, x)
+                            )
+                        )
+                    )
+                ),
                 (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
@@ -710,7 +782,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String pseudoClass = null)
         {
             return new UvssSelectorPartSyntax(
-                List(new[] { SelectorSubPartByType(selectedType) }),
+                new UvssSelectorPartTypeSyntax(
+                    new UvssIdentifierSyntax(
+                        new SyntaxToken(SyntaxKind.IdentifierToken, selectedType)
+                    ),
+                    null
+                ),
+                null,
+                null,
                 (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
 
@@ -725,137 +804,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String pseudoClass = null)
         {
             return new UvssSelectorPartSyntax(
-                List(new[] { SelectorSubPartBySpecificType(selectedType) }),
+                new UvssSelectorPartTypeSyntax(
+                    new UvssIdentifierSyntax(
+                        new SyntaxToken(SyntaxKind.IdentifierToken, selectedType)
+                    ),
+                    new UvssPunctuation(SyntaxKind.ExclamationMarkToken)
+                ),
+                null,
+                null,
                 (pseudoClass == null) ? null : PseudoClass(pseudoClass));
         }
-
-        /// <summary>
-        /// Creates a new selector part.
-        /// </summary>
-        /// <param name="subParts">The list of sub-parts that make up the selector part.</param>
-        /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorPartSyntax SelectorPart(
-            IEnumerable<UvssSelectorSubPartSyntax> subParts)
-        {
-            return new UvssSelectorPartSyntax(
-                List(subParts),
-                null);
-        }
-
-        /// <summary>
-        /// Creates a new selector part.
-        /// </summary>
-        /// <param name="subParts">The list of sub-parts that make up the selector part.</param>
-        /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorPartSyntax SelectorPart(
-            params UvssSelectorSubPartSyntax[] subParts)
-        {
-            return new UvssSelectorPartSyntax(
-                List(subParts),
-                null);
-        }
-
-        /// <summary>
-        /// Creates a new selector part.
-        /// </summary>
-        /// <param name="subParts">The list of sub-parts that make up the selector part.</param>
-        /// <param name="pseudoClass">The selector part's pseudo-class.</param>
-        /// <returns>The <see cref="UvssSelectorPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorPartSyntax SelectorPart(
-            SyntaxList<UvssSelectorSubPartSyntax> subParts,
-            UvssPseudoClassSyntax pseudoClass = null)
-        {
-            return new UvssSelectorPartSyntax(
-                subParts,
-                pseudoClass);
-        }
-
-        /// <summary>
-        /// Creates a new universal selector sub-part.
-        /// </summary>
-        /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorSubPartSyntax UniversalSelectorSubPart()
-        {
-            return SelectorSubPart(
-                null,
-                Identifier("*"),
-                null);
-        }
-
-        /// <summary>
-        /// Creates a new selector sub-part which selects the element with the specified name.
-        /// </summary>
-        /// <param name="selectedName">The name of the selected element.</param>
-        /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorSubPartSyntax SelectorSubPartByName(
-            String selectedName)
-        {
-            return SelectorSubPart(
-                new UvssPunctuation(SyntaxKind.HashToken),
-                Identifier(selectedName),
-                null);
-        }
-
-        /// <summary>
-        /// Creates a new selector sub-part which selects the specified class.
-        /// </summary>
-        /// <param name="selectedClass">The name of the selected class.</param>
-        /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorSubPartSyntax SelectorSubPartByClass(
-            String selectedClass)
-        {
-            return SelectorSubPart(
-                new UvssPunctuation(SyntaxKind.PeriodToken),
-                Identifier(selectedClass),
-                null);
-        }
-
-        /// <summary>
-        /// Creates a new selector sub-part which selects the specified type.
-        /// </summary>
-        /// <param name="selectedType">The name of the selected type.</param>
-        /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorSubPartSyntax SelectorSubPartByType(
-            String selectedType)
-        {
-            return SelectorSubPart(
-                null,
-                Identifier(selectedType),
-                null);
-        }
-
-        /// <summary>
-        /// Creates a new selector sub-part which selects the a specific type.
-        /// </summary>
-        /// <param name="selectedType">The name of the selected type.</param>
-        /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorSubPartSyntax SelectorSubPartBySpecificType(
-            String selectedType)
-        {
-            return SelectorSubPart(
-                null,
-                Identifier(selectedType),
-                new UvssPunctuation(SyntaxKind.ExclamationMarkToken));
-        }
-
-        /// <summary>
-        /// Creates a new selector sub-part.
-        /// </summary>
-        /// <param name="leadingQualifierToken">The sub-part's leading qualifier token.</param>
-        /// <param name="subPartIdentifier">The sub-part's identifier.</param>
-        /// <param name="trailingQualifierToken">The sub-part's trailing qualifier token.</param>
-        /// <returns>The <see cref="UvssSelectorSubPartSyntax"/> instance that was created.</returns>
-        public static UvssSelectorSubPartSyntax SelectorSubPart(
-            SyntaxToken leadingQualifierToken,
-            UvssIdentifierBaseSyntax subPartIdentifier,
-            SyntaxToken trailingQualifierToken)
-        {
-            return new UvssSelectorSubPartSyntax(
-                leadingQualifierToken,
-                subPartIdentifier,
-                trailingQualifierToken);
-        }
-
+                
         /// <summary>
         /// Creates a new pseudo-class specifier.
         /// </summary>

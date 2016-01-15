@@ -558,6 +558,101 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <inheritdoc/>
+        public override SyntaxNode VisitSelectorPart(UvssSelectorPartSyntax node)
+        {
+            var unchanged = true;
+
+            var newSelectedType = (UvssSelectorPartTypeSyntax)Visit(node.SelectedType);
+            if (newSelectedType != node.SelectedType)
+                unchanged = false;
+
+            var newSelectedName = (UvssSelectorPartNameSyntax)Visit(node.SelectedName);
+            if (newSelectedName != node.SelectedName)
+                unchanged = false;
+
+            var newSelectedClasses = VisitList(node.SelectedClasses);
+            if (newSelectedClasses.Node != node.SelectedClasses.Node)
+                unchanged = false;
+
+            var newPseudoClass = (UvssPseudoClassSyntax)Visit(node.PseudoClass);
+            if (newPseudoClass != node.PseudoClass)
+                unchanged = false;
+
+            return unchanged ? node : new UvssSelectorPartSyntax(
+                newSelectedType,
+                newSelectedName,
+                newSelectedClasses,
+                newPseudoClass);
+        }
+
+        /// <inheritdoc/>
+        public override SyntaxNode VisitSelectorPartType(UvssSelectorPartTypeSyntax node)
+        {
+            var unchanged = true;
+
+            var newSelectedTypeIdentifier = (UvssIdentifierSyntax)Visit(node.SelectedTypeIdentifier);
+            if (newSelectedTypeIdentifier != node.SelectedTypeIdentifier)
+                unchanged = false;
+
+            var newExclamationMarkToken = (SyntaxToken)Visit(node.ExclamationMarkToken);
+            if (newExclamationMarkToken != node.ExclamationMarkToken)
+                unchanged = false;
+
+            return unchanged ? node : new UvssSelectorPartTypeSyntax(
+                newSelectedTypeIdentifier,
+                newExclamationMarkToken);
+        }
+
+        /// <inheritdoc/>
+        public override SyntaxNode VisitSelectorPartName(UvssSelectorPartNameSyntax node)
+        {
+            var unchanged = true;
+
+            var newHashToken = (SyntaxToken)Visit(node.HashToken);
+            if (newHashToken != node.HashToken)
+                unchanged = false;
+
+            var newSelectedNameIdentifier = (UvssIdentifierSyntax)Visit(node.SelectedNameIdentifier);
+            if (newSelectedNameIdentifier != node.SelectedNameIdentifier)
+                unchanged = false;
+
+            return unchanged ? node : new UvssSelectorPartNameSyntax(
+                newHashToken,
+                newSelectedNameIdentifier);
+        }
+
+        /// <inheritdoc/>
+        public override SyntaxNode VisitSelectorPartClass(UvssSelectorPartClassSyntax node)
+        {
+            var unchanged = false;
+
+            var newPeriodToken = (SyntaxToken)Visit(node.PeriodToken);
+            if (newPeriodToken != node.PeriodToken)
+                unchanged = false;
+
+            var newSelectedClassIdentifier = (UvssIdentifierSyntax)Visit(node.SelectedClassIdentifier);
+            if (newSelectedClassIdentifier != node.SelectedClassIdentifier)
+                unchanged = false;
+
+            return unchanged ? node : new UvssSelectorPartClassSyntax(
+                newPeriodToken,
+                newSelectedClassIdentifier);
+        }
+
+        /// <inheritdoc/>
+        public override SyntaxNode VisitInvalidSelectorPart(UvssInvalidSelectorPartSyntax node)
+        {
+            var unchanged = true;
+
+            var newComponents = VisitList(node.Components);
+            if (newComponents.Node != node.Components.Node)
+                unchanged = false;
+
+            return unchanged ? node : new UvssInvalidSelectorPartSyntax(
+                newComponents);
+        }
+
+        /// <inheritdoc/>
         public override SyntaxNode VisitSelector(UvssSelectorSyntax node)
         {
             var unchanged = true;
@@ -573,65 +668,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return unchanged ? node : new UvssSelectorSyntax(
                 newComponents,
                 newNavigationExpression);
-        }
-
-        /// <inheritdoc/>
-        public override SyntaxNode VisitUniversalSelectorPart(UvssUniversalSelectorPartSyntax node)
-        {
-            var unchanged = true;
-
-            var newAsteriskToken = (SyntaxToken)Visit(node.AsteriskToken);
-            if (newAsteriskToken != node.AsteriskToken)
-                unchanged = false;
-
-            var newPseudoClass = (UvssPseudoClassSyntax)Visit(node.PseudoClass);
-            if (newPseudoClass != node.PseudoClass)
-                unchanged = false;
-
-            return unchanged ? node : new UvssUniversalSelectorPartSyntax(
-                newAsteriskToken,
-                newPseudoClass);
-        }
-
-        /// <inheritdoc/>
-        public override SyntaxNode VisitSelectorPart(UvssSelectorPartSyntax node)
-        {
-            var unchanged = true;
-
-            var newSubPartsList = VisitList(node.SubParts);
-            if (newSubPartsList.Node != node.SubParts.Node)
-                unchanged = false;
-
-            var newPseudoClass = (UvssPseudoClassSyntax)Visit(node.PseudoClass);
-            if (newPseudoClass != node.PseudoClass)
-                unchanged = false;
-
-            return unchanged ? node : new UvssSelectorPartSyntax(
-                newSubPartsList,
-                newPseudoClass);
-        }
-
-        /// <inheritdoc/>
-        public override SyntaxNode VisitSelectorSubPart(UvssSelectorSubPartSyntax node)
-        {
-            var unchanged = true;
-
-            var newLeadingQualifierToken = (SyntaxToken)Visit(node.LeadingQualifierToken);
-            if (newLeadingQualifierToken != node.LeadingQualifierToken)
-                unchanged = false;
-
-            var newIdentifier = (UvssIdentifierBaseSyntax)Visit(node.SubPartIdentifier);
-            if (newIdentifier != node.SubPartIdentifier)
-                unchanged = false;
-
-            var newTrailingQualifierToken = (SyntaxToken)Visit(node.TrailingQualifierToken);
-            if (newTrailingQualifierToken != node.TrailingQualifierToken)
-                unchanged = false;
-
-            return unchanged ? node : new UvssSelectorSubPartSyntax(
-                newLeadingQualifierToken,
-                newIdentifier,
-                newTrailingQualifierToken);
         }
 
         /// <inheritdoc/>

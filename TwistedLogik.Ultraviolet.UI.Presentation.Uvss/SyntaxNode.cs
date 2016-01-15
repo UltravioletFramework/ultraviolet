@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
-using System.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -345,13 +345,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         public Int32 Position
         {
-            get
-            {
-                if (position < 0)
-                    position = CalculatePosition();
-
-                return position;
-            }
+            get { return position; }
             internal set { position = value; }
         }
 
@@ -458,6 +452,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Gets a value indicating whether the node has calculated a value for the <see cref="FullWidth"/> property.
+        /// </summary>
+        public Boolean HasValidFullWidth
+        {
+            get { return fullWidth >= 0; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the node has been made stale by changes to the tree.
         /// </summary>
         public Boolean IsStale { get; internal set; }
@@ -517,24 +519,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="trailing">The node's trailing trivia.</param>
         internal virtual void ChangeTrivia(SyntaxNode leading, SyntaxNode trailing)
         {
-            var changed = false;
-
             var firstToken = GetFirstToken();
             if (firstToken != null)
-            {
                 firstToken.ChangeLeadingTrivia(leading);
-                changed = true;
-            }
 
             var lastToken = GetLastToken();
             if (lastToken != null)
-            {
                 lastToken.ChangeTrailingTrivia(trailing);
-                changed = true;
-            }
-
-            if (changed)
-                InvalidateTreePositions();
         }
 
         /// <summary>
@@ -545,10 +536,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var firstToken = GetFirstToken();
             if (firstToken != null)
-            {
                 firstToken.ChangeLeadingTrivia(trivia);
-                InvalidateTreePositions();
-            }
         }
 
         /// <summary>
@@ -559,10 +547,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             var lastToken = GetLastToken();
             if (lastToken != null)
-            {
                 lastToken.ChangeTrailingTrivia(trivia);
-                InvalidateTreePositions();
-            }
         }
 
         /// <summary>
@@ -573,36 +558,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return diagnostics;
         }
-
-        /// <summary>
-        /// Calculates the position of the node within the source text.
-        /// </summary>
-        /// <returns>The position of the node within the source text.</returns>
-        protected virtual Int32 CalculatePosition()
-        {
-            if (Parent == null)
-                return 0;
-
-            var position = Parent.Position;
-
-            if (this == Parent.GetLeadingTrivia())
-                return position;
-
-            position += Parent.GetLeadingTriviaWidth();
-            
-            for (int i = 0; i < Parent.SlotCount; i++)
-            {
-                var sibling = Parent.GetSlot(i);
-                if (sibling == this)
-                    break;
-
-                if (sibling != null)
-                    position += sibling.FullWidth;
-            }
-
-            return position;
-        }
-
+        
         /// <summary>
         /// Compuates the full width of the node, including any leading or trailing trivia.
         /// </summary>
@@ -659,43 +615,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 node.Parent.IsStale = true;
 
             node.Parent = this;
-            InvalidatePosition();
-        }
-        
-        /// <summary>
-        /// Invalidates the position of every node in the same syntax tree.
-        /// </summary>
-        private void InvalidateTreePositions()
-        {
-            var root = this;
-            while (root.Parent != null)
-                root = root.Parent;
-
-            root.InvalidatePosition();
-
-            if (position >= 0)
-                InvalidatePosition();
-        }
-
-        /// <summary>
-        /// Invalidates the position of this node and its children.
-        /// </summary>
-        private void InvalidatePosition()
-        {
-            if (position < 0)
-                return;
-
-            position = -1;
-            fullWidth = -1;
-
-            for (int i = 0; i < SlotCount; i++)
-            {
-                var child = GetSlot(i);
-                if (child != null)
-                {
-                    child.InvalidatePosition();
-                }
-            }
         }
 
         /// <summary>
@@ -753,7 +672,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
         
         // Property values.
-        private Int32 position = -1;
+        private Int32 position;
         private Int32 fullWidth = -1;
 
         // Node diagnostics.

@@ -11,24 +11,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Initializes a new instance of the <see cref="UvssSelectorPartSyntax"/> class.
         /// </summary>
         internal UvssSelectorPartSyntax()
-            : this(default(SyntaxList<UvssSelectorSubPartSyntax>), null)
+            : this(null, null, default(SyntaxList<UvssSelectorPartClassSyntax>), null)
         { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelectorPartSyntax"/> class.
         /// </summary>
         internal UvssSelectorPartSyntax(
-            SyntaxList<UvssSelectorSubPartSyntax> subParts,
+            UvssSelectorPartTypeSyntax selectedType,
+            UvssSelectorPartNameSyntax selectedName,
+            SyntaxList<UvssSelectorPartClassSyntax> selectedClasses,
             UvssPseudoClassSyntax pseudoClass)
             : base(SyntaxKind.SelectorPart)
         {
-            this.SubParts = subParts;
-            ChangeParent(subParts.Node);
+            this.SelectedType = selectedType;
+            ChangeParent(selectedType);
+
+            this.SelectedName = selectedName;
+            ChangeParent(selectedName);
+
+            this.SelectedClasses = selectedClasses;
+            ChangeParent(selectedClasses.Node);
 
             this.PseudoClass = pseudoClass;
             ChangeParent(pseudoClass);
 
-            SlotCount = 2;
+            SlotCount = 4;
             UpdateIsMissing();
         }
 
@@ -37,18 +45,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
             switch (index)
             {
-                case 0: return SubParts.Node;
-                case 1: return PseudoClass;
+                case 0: return SelectedType;
+                case 1: return SelectedName;
+                case 2: return SelectedClasses.Node;
+                case 3: return PseudoClass;
                 default:
                     throw new InvalidOperationException();
             }
         }
 
         /// <summary>
-        /// Gets the selector part's sub-parts.
+        /// Gets the selector's selected type, if any.
         /// </summary>
-        public SyntaxList<UvssSelectorSubPartSyntax> SubParts { get; internal set; }
+        public UvssSelectorPartTypeSyntax SelectedType { get; internal set; }
 
+        /// <summary>
+        /// Gets the selector's selected name, if any.
+        /// </summary>
+        public UvssSelectorPartNameSyntax SelectedName { get; internal set; }
+
+        /// <summary>
+        /// Gets the selector's selected classes, if any.
+        /// </summary>
+        public SyntaxList<UvssSelectorPartClassSyntax> SelectedClasses { get; internal set; }
+            
         /// <summary>
         /// Gets the selector's pseudo-class.
         /// </summary>

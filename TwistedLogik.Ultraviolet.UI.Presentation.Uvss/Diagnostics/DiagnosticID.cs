@@ -79,5 +79,15 @@
         /// An easing function was not recognized by the parser.
         /// </summary>
         UnrecognizedEasingFunction,
+
+        /// <summary>
+        /// A selector is invalid.
+        /// </summary>
+        InvalidSelector,
+
+        /// <summary>
+        /// A selector part was not able to be completely parsed.
+        /// </summary>
+        InvalidSelectorPart,
     }
 }

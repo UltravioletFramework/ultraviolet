@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
@@ -154,14 +155,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Gets a value indicating whether the specified lexer token contains trivia.
         /// </summary>
         /// <param name="token">The token to evaluate.</param>
-        /// <param name="treatWhiteSpaceAsCombinator">A value indicating whether white space
-        /// should be treated as a selector combinator, rather than trivia.</param>
         /// <returns>true if the token contains trivia; otherwise, false.</returns>
-        private static Boolean IsTrivia(UvssLexerToken token, Boolean treatWhiteSpaceAsCombinator = false)
+        private static Boolean IsTrivia(UvssLexerToken token)
         {
-            if (token.Type == UvssLexerTokenType.WhiteSpace && treatWhiteSpaceAsCombinator)
-                return false;
-
             return
                 token.Type == UvssLexerTokenType.EndOfLine ||
                 token.Type == UvssLexerTokenType.SingleLineComment ||
@@ -200,8 +196,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return
                 kind == SyntaxKind.GreaterThanToken ||
                 kind == SyntaxKind.GreaterThanGreaterThanToken ||
-                kind == SyntaxKind.GreaterThanQuestionMarkToken ||
-                kind == SyntaxKind.SpaceToken;
+                kind == SyntaxKind.GreaterThanQuestionMarkToken;
         }
 
         /// <summary>
@@ -231,9 +226,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static Boolean IsPotentiallyStartOfSelectorPart(SyntaxKind kind)
         {
             return
-                !IsSelectorCombinator(kind) &&
-                !IsSelectorTerminator(kind) &&
-                !IsTrivia(kind);
+                kind == SyntaxKind.AsteriskToken ||
+                kind == SyntaxKind.IdentifierToken ||
+                kind == SyntaxKind.PeriodToken ||
+                kind == SyntaxKind.HashToken ||
+                kind == SyntaxKind.ExclamationMarkToken ||
+                kind == SyntaxKind.ColonToken;
         }
 
         /// <summary>
@@ -384,22 +382,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         /// <param name="input">The lexer token stream.</param>
         /// <param name="position">The current position in the lexer token stream.</param>
-        /// <param name="treatWhiteSpaceAsMeaningful">A value indicating whether white space
-        /// should be treated as meaningful token, rather than trivia.</param>
         /// <returns>The <see cref="SyntaxKind"/> that corresponds to the next non-trivia token.</returns>
         private static SyntaxKind SyntaxKindFromNextToken(
-            IList<UvssLexerToken> input, Int32 position, Boolean treatWhiteSpaceAsMeaningful = false)
+            IList<UvssLexerToken> input, Int32 position)
         {
             while (position < input.Count)
             {
                 var token = input[position];
-                if (!IsTrivia(token, treatWhiteSpaceAsMeaningful))
+                if (!IsTrivia(token))
                 {
-                    var kind = SyntaxKindFromLexerTokenType(token);
-                    if (kind == SyntaxKind.WhitespaceTrivia && treatWhiteSpaceAsMeaningful)
-                        return SyntaxKind.SpaceToken;
-
-                    return kind;
+                    return SyntaxKindFromLexerTokenType(token);
                 }
                 position++;
             }
@@ -411,14 +403,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         /// <param name="input">The lexer token stream.</param>
         /// <param name="position">The current position within the lexer token stream.</param>
-        /// <param name="treatWhiteSpaceAsMeaningful">A value indicating whether white space
-        /// should be treated as meaningful token, rather than trivia.</param>
         /// <returns>The next syntax token.</returns>
         private static SyntaxToken GetNextToken(
-            IList<UvssLexerToken> input, ref Int32 position, Boolean treatWhiteSpaceAsMeaningful = false)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var leadingTrivia = AccumulateTrivia(input, ref position,
-                treatWhiteSpaceAsCombinator: treatWhiteSpaceAsMeaningful,
                 treatCurrentTokenAsTrivia: false,
                 isLeading: true);
             var leadingTriviaNode = ConvertTriviaList(leadingTrivia);
@@ -439,7 +428,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var trailingTriviaNode = ConvertTriviaList(trailingTrivia);
 
                 return ConvertToken(token,
-                    leadingTriviaNode, trailingTriviaNode, treatWhiteSpaceAsMeaningful);
+                    leadingTriviaNode, trailingTriviaNode);
             }
         }
 
@@ -447,13 +436,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Converts a lexer token to the corresponding syntax token.
         /// </summary>
         /// <param name="token">The token to convert.</param>
-        /// <param name="treatWhiteSpaceAsMeaningful">A value indicating whether white space
-        /// should be treated as meaningful token, rather than trivia.</param>
         /// <returns>The converted syntax token.</returns>
-        private static SyntaxToken ConvertToken(UvssLexerToken token,
-            Boolean treatWhiteSpaceAsMeaningful = false)
+        private static SyntaxToken ConvertToken(UvssLexerToken token)
         {
-            return ConvertToken(token, null, null, treatWhiteSpaceAsMeaningful);
+            return ConvertToken(token, null, null);
         }
 
         /// <summary>
@@ -462,20 +448,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="token">The token to convert.</param>
         /// <param name="leadingTrivia">The token's leading trivia, if any.</param>
         /// <param name="trailingTrivia">The token's trailing trivia, if any.</param>
-        /// <param name="treatWhiteSpaceAsMeaningful">A value indicating whether white space
-        /// should be treated as meaningful token, rather than trivia.</param>
         /// <returns>The converted syntax token.</returns>
         private static SyntaxToken ConvertToken(UvssLexerToken token,
             SyntaxNode leadingTrivia = null,
-            SyntaxNode trailingTrivia = null,
-            Boolean treatWhiteSpaceAsMeaningful = false)
+            SyntaxNode trailingTrivia = null)
         {
             var tokenKind = SyntaxKindFromLexerTokenType(token);
             var tokenText = token.Text;
-
-            if (tokenKind == SyntaxKind.WhitespaceTrivia && treatWhiteSpaceAsMeaningful)
-                tokenKind = SyntaxKind.SpaceToken;
-
+            
             return new SyntaxToken(tokenKind, tokenText, leadingTrivia, trailingTrivia)
             {
                 Position = token.SourceOffset - (leadingTrivia?.FullWidth ?? 0)
@@ -858,19 +838,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
             else
             {
-                if (nextKind != SyntaxKind.IdentifierToken)
-                    return accept ? null : MissingIdentifier(input, position);
-
-                var identifierToken =
-                    ExpectToken(input, ref position, SyntaxKind.IdentifierToken);
-
-                return WithPosition(new UvssIdentifierSyntax(
-                    identifierToken));
+                return ParseUnescapedIdentifier(input, ref position, listIndex, accept);
             }
         }
 
         /// <summary>
-        /// Accepts an identifier or qualifier identifier.
+        /// Parses an unescaped identifier.
+        /// </summary>
+        private static UvssIdentifierSyntax ParseUnescapedIdentifier(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+        {
+            var nextKind = SyntaxKindFromNextToken(input, position);
+            if (nextKind != SyntaxKind.IdentifierToken)
+                return accept ? null : MissingIdentifier(input, position);
+
+            var identifierToken =
+                ExpectToken(input, ref position, SyntaxKind.IdentifierToken);
+
+            return WithPosition(new UvssIdentifierSyntax(
+                identifierToken));
+        }
+
+        /// <summary>
+        /// Accepts an identifier.
         /// </summary>
         private static UvssIdentifierBaseSyntax AcceptIdentifier(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
@@ -879,12 +869,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
-        /// Expects an identifier or qualified identifier and produces a missing node if one is not found.
+        /// Accepts an unescaped identifier.
+        /// </summary>
+        private static UvssIdentifierSyntax AcceptUnescapedIdentifier(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            return ParseUnescapedIdentifier(input, ref position, listIndex, true);
+        }
+
+        /// <summary>
+        /// Expects an identifier and produces a missing node if one is not found.
         /// </summary>
         private static UvssIdentifierBaseSyntax ExpectIdentifier(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
             return ParseIdentifier(input, ref position, listIndex, false);
+        }
+
+        /// <summary>
+        /// Expects an unescaped identifier and produces a missing node if one is not found.
+        /// </summary>
+        private static UvssIdentifierSyntax ExpectUnescapedIdentifier(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            return ParseUnescapedIdentifier(input, ref position, listIndex, false);
         }
 
         /// <summary>
@@ -1154,6 +1162,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 components,
                 navigationExpression));
 
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            var expectingPart = false;
+            for (int i = 0; i < selector.Components.Count; i++)
+            {
+                if (i + 1 == selector.Components.Count)
+                    expectingPart = true;
+
+                var component = selector.Components[i];
+                var componentIsCombinator = !(component is UvssSelectorPartBaseSyntax);
+                if (componentIsCombinator)
+                {
+                    if (expectingPart)
+                    {
+                        DiagnosticInfo.ReportInvalidSelector(ref diagnostics, selector);
+                        break;
+                    }
+                    expectingPart = true;
+                }
+                else
+                {
+                    expectingPart = false;
+                }
+            }
+
+            selector.SetDiagnostics(diagnostics);
+
             return selector;
         }
 
@@ -1174,46 +1209,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return ParseSelector(input, ref position, listIndex, false);
         }
-
-        /// <summary>
-        /// Parses a visual descendant combinator.
-        /// </summary>
-        private static SyntaxToken ParseVisualDescendantCombinator(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
-        {
-            if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.SpaceToken)
-                return null;
-
-            return ExpectToken(input, ref position, SyntaxKind.SpaceToken);
-        }
-
-        /// <summary>
-        /// Accepts a visual descendant combinator.
-        /// </summary>
-        private static SyntaxToken AcceptVisualDescendantCombinator(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
-        {
-            return ParseVisualDescendantCombinator(input, ref position, listIndex, true);
-        }
-
-        /// <summary>
-        /// Expects a visual descendant combinator and produces a missing node if one is not found.
-        /// </summary>
-        private static SyntaxToken ExpectVisualDescendantCombinator(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
-        {
-            return ParseVisualDescendantCombinator(input, ref position, listIndex, false);
-        }
-
+        
         /// <summary>
         /// Accepts a selector part or combinator.
         /// </summary>
         private static SyntaxNode AcceptSelectorPartOrCombinator(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
-            if (listIndex > 0 && (position >= input.Count || input[position].Type == UvssLexerTokenType.WhiteSpace))
-                return ExpectVisualDescendantCombinator(input, ref position);
-
             var nextTokenKind = SyntaxKindFromNextToken(input, position);
             if (IsPotentiallyStartOfSelectorPart(nextTokenKind))
             {
@@ -1239,53 +1241,313 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
-        /// Produces a missing selector part.
+        /// Creates an invalid selector part from the specified sequence of lexer tokens.
         /// </summary>
-        private static UvssSelectorPartBaseSyntax MissingSelectorPart(
-            IList<UvssLexerToken> input, Int32 position)
+        private static UvssInvalidSelectorPartSyntax CreateInvalidSelectorPart(
+            IList<UvssLexerToken> input, Int32 start, Int32 count, SyntaxNode leadingTrivia, SyntaxNode trailingTrivia)
         {
-            return WithPosition(new UvssSelectorPartSyntax(
-                MissingList<UvssSelectorSubPartSyntax>(input, position),
-                null));
+            var componentsBuilder = SyntaxListBuilder<SyntaxToken>.Create();
+            for (int i = 0; i < count; i++)
+            {
+                var componentInput = input[start + i];
+                var componentOutput = ConvertToken(componentInput,
+                    leadingTrivia: (i == 0) ? leadingTrivia : null,
+                    trailingTrivia: (i + 1 == count) ? trailingTrivia : null);
+                componentsBuilder.Add(componentOutput);
+            }
+            var components = componentsBuilder.ToList();
+
+            var invalidSelectorPart = new UvssInvalidSelectorPartSyntax(
+                components);
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+            DiagnosticInfo.ReportInvalidSelectorPart(ref diagnostics, invalidSelectorPart);
+
+            invalidSelectorPart.SetDiagnostics(diagnostics);
+
+            return WithPosition(invalidSelectorPart);
         }
 
+        /// <summary>
+        /// Creates a selector part type from the current position in the specified sequence of lexer tokens.
+        /// </summary>
+        private static Boolean CreateSelectorPartType(
+            IList<UvssLexerToken> input, Int32 start, Int32 end, ref Int32 position, out UvssSelectorPartTypeSyntax partType)
+        {
+            partType = null;
+
+            if (position >= end)
+                return true;
+
+            var selectedTypeIdentifier = default(UvssIdentifierSyntax);
+            var exclamationMarkToken = default(SyntaxToken);
+
+            var lexerIdentifierToken = input[position];
+            if (lexerIdentifierToken.Type != UvssLexerTokenType.Keyword &&
+                lexerIdentifierToken.Type != UvssLexerTokenType.Identifier && 
+                lexerIdentifierToken.Type != UvssLexerTokenType.Asterisk)
+            {
+                return true;
+            }
+
+            selectedTypeIdentifier = WithPosition(new UvssIdentifierSyntax(
+                new SyntaxToken(SyntaxKind.IdentifierToken, lexerIdentifierToken.Text)
+                {
+                    Position = GetNodePositionFromLexerPosition(input, position)
+                }));
+
+            position++;
+
+            if (position < end)
+            {
+                var lexerExclamationMarkToken = input[position];
+                if (lexerExclamationMarkToken.Type == UvssLexerTokenType.ExclamationMark)
+                {
+                    exclamationMarkToken = ConvertToken(
+                        lexerExclamationMarkToken, null, null);
+
+                    position++;
+                }
+            }
+
+            partType = WithPosition(new UvssSelectorPartTypeSyntax(
+                selectedTypeIdentifier,
+                exclamationMarkToken));
+
+            return true;
+        }
+
+        /// <summary>
+        /// Creates a selector part name from the current position in the specified sequence of lexer tokens.
+        /// </summary>
+        private static Boolean CreateSelectorPartName(
+            IList<UvssLexerToken> input, Int32 start, Int32 end, ref Int32 position, out UvssSelectorPartNameSyntax partName)
+        {
+            partName = null;
+
+            if (position + 1 >= end)
+                return true;
+
+            var hashToken = default(SyntaxToken);
+            var selectedNameIdentifier = default(UvssIdentifierSyntax);
+
+            var lexerHashToken = input[position];
+            if (lexerHashToken.Type != UvssLexerTokenType.Hash)
+                return true;
+
+            var lexerIdentifierToken = input[position + 1];
+            if (lexerIdentifierToken.Type != UvssLexerTokenType.Identifier &&
+                lexerIdentifierToken.Type != UvssLexerTokenType.Keyword)
+            {
+                return false;
+            }
+
+            position += 2;
+
+            hashToken = 
+                ConvertToken(lexerHashToken, null, null);
+
+            selectedNameIdentifier = WithPosition(new UvssIdentifierSyntax(
+                ConvertToken(lexerIdentifierToken, null, null)));
+
+            partName = WithPosition(new UvssSelectorPartNameSyntax(
+                hashToken,
+                selectedNameIdentifier));
+
+            return true;
+        }
+
+        /// <summary>
+        /// Creates a selector part class from the current position in the specified sequence of lexer tokens.
+        /// </summary>
+        private static Boolean CreateSelectorPartClass(
+            IList<UvssLexerToken> input, Int32 start, Int32 end, ref Int32 position, out UvssSelectorPartClassSyntax partClass)
+        {
+            partClass = null;
+
+            if (position + 1 >= end)
+                return true;
+            
+            var periodToken = default(SyntaxToken);
+            var selectedClassIdentifier = default(UvssIdentifierSyntax);
+
+            var lexerPeriodToken = input[position];
+            if (lexerPeriodToken.Type != UvssLexerTokenType.Period)
+                return true;
+
+            var lexerIdentifierToken = input[position + 1];
+            if (lexerIdentifierToken.Type != UvssLexerTokenType.Identifier &&
+                lexerIdentifierToken.Type != UvssLexerTokenType.Keyword)
+            {
+                return false;
+            }
+
+            position += 2;
+
+            periodToken =
+                ConvertToken(lexerPeriodToken, null, null);
+
+            selectedClassIdentifier = WithPosition(new UvssIdentifierSyntax(
+                ConvertToken(lexerIdentifierToken, null, null)));
+
+            partClass = WithPosition(new UvssSelectorPartClassSyntax(
+                periodToken,
+                selectedClassIdentifier));
+
+            return true;
+        }
+
+        /// <summary>
+        /// Creates a selector part class list from the current position in the specified sequence of lexer tokens.
+        /// </summary>
+        private static Boolean CreateSelectorPartClasses(
+            IList<UvssLexerToken> input, Int32 start, Int32 end, ref Int32 position, out SyntaxList<UvssSelectorPartClassSyntax> partClasses)
+        {
+            partClasses = null;
+
+            var listStart = position;
+            var listBuilder = SyntaxListBuilder<UvssSelectorPartClassSyntax>.Create();
+            while (position < end)
+            {
+                var listItem = default(UvssSelectorPartClassSyntax);
+                if (!CreateSelectorPartClass(input, start, end, ref position, out listItem))
+                {
+                    position = listStart;
+                    return false;
+                }
+
+                if (listItem == null)
+                    break;
+
+                listBuilder.Add(listItem);
+            }
+
+            partClasses = 
+                listBuilder.ToList();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Creates a selector part pseudo-class from the current position in the specified sequence of lexer tokens.
+        /// </summary>
+        private static Boolean CreateSelectorPartPseudoClass(
+            IList<UvssLexerToken> input, Int32 start, Int32 end, ref Int32 position, out UvssPseudoClassSyntax partPseudoClass)
+        {
+            partPseudoClass = null;
+
+            if (position + 1 >= end)
+                return true;
+
+            var colonToken = default(SyntaxToken);
+            var classNameIdentifier = default(UvssIdentifierSyntax);
+
+            var lexerColonToken = input[position];
+            if (lexerColonToken.Type != UvssLexerTokenType.Colon)
+                return true;
+
+            var lexerIdentifierToken = input[position + 1];
+            if (lexerIdentifierToken.Type != UvssLexerTokenType.Identifier &&
+                lexerIdentifierToken.Type != UvssLexerTokenType.Keyword)
+            {
+                return false;
+            }
+
+            position += 2;
+
+            colonToken =
+                ConvertToken(lexerColonToken, null, null);
+
+            classNameIdentifier = WithPosition(new UvssIdentifierSyntax(
+                ConvertToken(lexerIdentifierToken, null, null)));
+
+            partPseudoClass = WithPosition(new UvssPseudoClassSyntax(
+                colonToken,
+                classNameIdentifier));
+
+            return true;
+        }
+        
         /// <summary>
         /// Parses a selector part.
         /// </summary>
         private static UvssSelectorPartBaseSyntax ParseSelectorPart(
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
-            var selectorPart = default(UvssSelectorPartBaseSyntax);
+            var leadingTriviaList = AccumulateTrivia(input, ref position, isLeading: true);
+            var leadingTrivia = ConvertTriviaList(leadingTriviaList);
+            
+            var partStart = position;
+            var partCount = 0;
+            var partLength = 0;
 
-            var nextKind = SyntaxKindFromNextToken(input, position);
-            if (nextKind == SyntaxKind.AsteriskToken)
+            while (position < input.Count)
             {
-                var asteriskToken =
-                    ExpectToken(input, ref position, SyntaxKind.AsteriskToken);
-
-                var pseudoClass =
-                    AcceptPseudoClass(input, ref position);
-
-                selectorPart = WithPosition(new UvssUniversalSelectorPartSyntax(
-                    asteriskToken,
-                    pseudoClass));
-            }
-            else
-            {
-                var subParts = AcceptList(input, ref position, AcceptSelectorSubPart);
-
-                if (accept && subParts.Node == null)
-                    return null;
-
-                var pseudoClass =
-                    AcceptPseudoClass(input, ref position);
-
-                selectorPart = WithPosition(new UvssSelectorPartSyntax(
-                    subParts,
-                    pseudoClass));
+                var lexerTokenType = input[position].Type;
+                if (lexerTokenType != UvssLexerTokenType.Asterisk &&
+                    lexerTokenType != UvssLexerTokenType.Identifier &&
+                    lexerTokenType != UvssLexerTokenType.Keyword &&
+                    lexerTokenType != UvssLexerTokenType.Period &&
+                    lexerTokenType != UvssLexerTokenType.Hash &&
+                    lexerTokenType != UvssLexerTokenType.ExclamationMark &&
+                    lexerTokenType != UvssLexerTokenType.Colon)
+                {
+                    break;
+                }
+                
+                partCount++;
+                partLength += input[position++].SourceLength;
             }
 
-            return selectorPart;
+            var partEnd = partStart + partCount;
+
+            var trailingTriviaList = AccumulateTrivia(input, ref position, isLeading: false);
+            var trailingTrivia = ConvertTriviaList(trailingTriviaList);
+
+            var partTextBuilder = new StringBuilder(partLength);
+            for (int i = 0; i < partCount; i++)
+                partTextBuilder.Append(input[partStart + i].Text);
+
+            var partPieces = Regex.Split(partTextBuilder.ToString(), @"(#|\.|:)")
+                .Where(x => !String.IsNullOrEmpty(x)).ToArray();
+
+            if (partPieces.Length == 0)
+                return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
+
+            var partPosition = partStart;
+
+            var partType = default(UvssSelectorPartTypeSyntax);
+            var partName = default(UvssSelectorPartNameSyntax);
+            var partClasses = default(SyntaxList<UvssSelectorPartClassSyntax>);
+            var partPseudoClass = default(UvssPseudoClassSyntax);
+
+            if (!CreateSelectorPartType(input, partStart, partEnd, ref partPosition, out partType))
+                return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
+
+            if (!CreateSelectorPartName(input, partStart, partEnd, ref partPosition, out partName))
+                return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
+
+            if (!CreateSelectorPartClasses(input, partStart, partEnd, ref partPosition, out partClasses))
+                return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
+
+            if (!CreateSelectorPartPseudoClass(input, partStart, partEnd, ref partPosition, out partPseudoClass))
+                return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
+
+            if (partPosition != partEnd)
+                return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
+
+            var selectorPart = new UvssSelectorPartSyntax(
+                partType,
+                partName,
+                partClasses,
+                partPseudoClass);
+            selectorPart.ChangeTrivia(leadingTrivia, trailingTrivia);
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            selectorPart.SetDiagnostics(diagnostics);
+
+            return WithPosition(selectorPart);
         }
 
         /// <summary>
@@ -1305,204 +1567,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return ParseSelectorPart(input, ref position, listIndex, false);
         }
-
-        /// <summary>
-        /// Produces a missing pseudo-class.
-        /// </summary>
-        private static UvssPseudoClassSyntax MissingPseudoClass(
-            IList<UvssLexerToken> input, Int32 position)
-        {
-            return WithPosition(new UvssPseudoClassSyntax(
-                MissingToken(SyntaxKind.ColonToken, input, position),
-                MissingIdentifier(input, position)));
-        }
-
-        /// <summary>
-        /// Parses a pseudo-class.
-        /// </summary>
-        private static UvssPseudoClassSyntax ParsePseudoClass(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
-        {
-            if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.ColonToken)
-                return null;
-
-            var colonToken =
-                ExpectToken(input, ref position, SyntaxKind.ColonToken);
-
-            var classNameIdentifier =
-                ExpectIdentifier(input, ref position);
-
-            var diagnostics = default(ICollection<DiagnosticInfo>);
-
-            var pseudoClass = WithPosition(new UvssPseudoClassSyntax(
-                colonToken,
-                classNameIdentifier));
-
-            if (classNameIdentifier.IsMissing)
-                DiagnosticInfo.ReportMissingNode(ref diagnostics, classNameIdentifier);
-
-            pseudoClass.SetDiagnostics(diagnostics);
-
-            return pseudoClass;
-        }
-
-        /// <summary>
-        /// Accepts a pseudo-class.
-        /// </summary>
-        private static UvssPseudoClassSyntax AcceptPseudoClass(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
-        {
-            return ParsePseudoClass(input, ref position, listIndex, true);
-        }
-
-        /// <summary>
-        /// Expects a pseudo-class and produces a missing node if one is not found.
-        /// </summary>
-        private static UvssPseudoClassSyntax ExpectPseudoClass(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
-        {
-            return ParsePseudoClass(input, ref position, listIndex, false);
-        }
-
-        /// <summary>
-        /// Produces a missing selector sub-part.
-        /// </summary>
-        private static UvssSelectorSubPartSyntax MissingSelectorSubPart(
-            IList<UvssLexerToken> input, Int32 position)
-        {
-            return WithPosition(new UvssSelectorSubPartSyntax(
-                null,
-                MissingIdentifier(input, position),
-                null));
-        }
-
-        /// <summary>
-        /// Parses the primary identifier for a selector sub-part.
-        /// </summary>
-        private static UvssIdentifierBaseSyntax ParseSelectorSubPartIdentifier(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
-        {
-            var startpos = GetNodePositionFromLexerPosition(input, position);
-            var start = position + CountTrivia(input, position);
-            var end = start;
-            var length = 0;
-
-            while (end < input.Count)
-            {
-                var current = input[end];
-                var currentKind = SyntaxKindFromLexerTokenType(current);
-
-                if (IsSelectorCombinator(currentKind) ||
-                    IsSelectorTerminator(currentKind) ||
-                    IsSelectorQualifier(currentKind) ||
-                    IsTrivia(currentKind))
-                {
-                    break;
-                }
-
-                length += current.SourceLength;
-                end++;
-            }
-
-            if (start == end)
-                return accept ? null : MissingIdentifier(input, position);
-
-            var builder = new StringBuilder(length);
-            for (int i = start; i < end; i++)
-                builder.Append(input[i].Text);
-
-            var identifierTokenLeadingTrivia = AccumulateTrivia(input, ref position, isLeading: true);
-            position += (end - start);
-            var identifierTokenTrailingTrivia = AccumulateTrivia(input, ref position);
-
-            var identifierToken = new SyntaxToken(SyntaxKind.IdentifierToken, builder.ToString());
-
-            var identifier = new UvssIdentifierSyntax(identifierToken)
-                .WithLeadingTrivia(identifierTokenLeadingTrivia)
-                .WithTrailingTrivia(identifierTokenTrailingTrivia);
-
-            identifierToken.Position = startpos;
-
-            return WithPosition(identifier);
-        }
-
-        /// <summary>
-        /// Parses a selector sub-part.
-        /// </summary>
-        private static UvssSelectorSubPartSyntax ParseSelectorSubPart(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
-        {
-            if (listIndex > 0 && (position >= input.Count || input[position].Type == UvssLexerTokenType.WhiteSpace))
-                return accept ? null : MissingSelectorSubPart(input, position);        
-
-            var leadingQualifierToken =
-                AcceptToken(input, ref position, SyntaxKind.HashToken, SyntaxKind.PeriodToken);
-
-            var subPartIdentifier =
-                ParseSelectorSubPartIdentifier(input, ref position, 0, false);
-
-            if (accept && leadingQualifierToken == null && subPartIdentifier.IsMissing)
-                return null;
-
-            var trailingQualifierToken =
-                AcceptToken(input, ref position, SyntaxKind.ExclamationMarkToken);
-
-            /* NOTE:
-            /* Selectors are the only place in the language where white space potentially has 
-            /* meaning, which is REALLY ANNOYING. Basically, after each selector part, we have to check
-            /* to see if we have trailing white space that isn't followed by another combinator. If we do,
-            /* we need to yank it out of the trivia and change our position so that the next pass through 
-            /* the AcceptSelectorPartOrCombinator() method will see that it's sitting on a white space. */
-            var nextKind = SyntaxKindFromNextToken(input, position);
-            if (!IsSelectorCombinator(nextKind) && !IsSelectorTerminator(nextKind))
-            {
-                var trailingToken = trailingQualifierToken ?? (SyntaxNode)subPartIdentifier ?? leadingQualifierToken;
-                var trailingWhiteSpaceIndex = 0;
-
-                if (HasTrailingWhiteSpace(trailingToken, out trailingWhiteSpaceIndex))
-                {
-                    var pos = trailingToken.Position;
-                    SliceTrailingTrivia(trailingToken, trailingWhiteSpaceIndex, ref position);
-                    trailingToken.Position = pos;
-                }
-            }
-
-            var diagnostics = default(ICollection<DiagnosticInfo>);
-
-            if ((leadingQualifierToken != null && subPartIdentifier.IsMissing) ||
-                (trailingQualifierToken != null && subPartIdentifier.IsMissing))
-            {
-                DiagnosticInfo.ReportMissingNode(ref diagnostics, subPartIdentifier);
-            }
-
-            var selectorPart = WithPosition(new UvssSelectorSubPartSyntax(
-                leadingQualifierToken,
-                subPartIdentifier,
-                trailingQualifierToken));
-
-            selectorPart.SetDiagnostics(diagnostics);
-
-            return selectorPart;
-        }
-
-        /// <summary>
-        /// Accepts a selector sub-part.
-        /// </summary>
-        private static UvssSelectorSubPartSyntax AcceptSelectorSubPart(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
-        {
-            return ParseSelectorSubPart(input, ref position, listIndex, true);
-        }
-
-        /// <summary>
-        /// Expects a selector sub-part and produces a missing node if one is not found.
-        /// </summary>
-        private static UvssSelectorSubPartSyntax ExpectSelectorSubPart(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
-        {
-            return ParseSelectorSubPart(input, ref position, listIndex, false);
-        }
-
+        
         /// <summary>
         /// Produces a missing parentheses-enclosed selector.
         /// </summary>
@@ -1596,8 +1661,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     break;
                 }
 
-                if (currentKind != SyntaxKind.WhitespaceTrivia &&
-                    currentKind != SyntaxKind.SpaceToken)
+                if (currentKind != SyntaxKind.WhitespaceTrivia)
                 {
                     lastNonWhitespace = end;
                 }
@@ -1622,7 +1686,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var valueToken = new SyntaxToken(SyntaxKind.PropertyValueToken, builder.ToString())
                 .WithLeadingTrivia(valueTokenLeadingTrivia)
                 .WithTrailingTrivia(valueTokenTrailingTrivia);
-
+            
             valueToken.Position = startpos;
 
             return valueToken;
@@ -3059,12 +3123,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
         {
             var trivia = AccumulateTrivia(input, ref position,
-                treatWhiteSpaceAsCombinator: false,
                 treatCurrentTokenAsTrivia: true,
                 isLeading: true);
 
             var emptyToken = new SyntaxToken(SyntaxKind.EmptyToken, null)
-            { Position = GetNodePositionFromLexerPosition(input, position) };
+            {
+                Position = GetNodePositionFromLexerPosition(input, position)
+            };
 
             var emptyStatement = new UvssEmptyStatementSyntax(emptyToken)
                 .WithLeadingTrivia(trivia);
@@ -3128,12 +3193,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxToken AcceptToken(
             IList<UvssLexerToken> input, ref Int32 position, SyntaxKind acceptedKind)
         {
-            var treatWhiteSpaceAsCombinator = (acceptedKind == SyntaxKind.SpaceToken);
-
-            var foundKind = SyntaxKindFromNextToken(input, position, treatWhiteSpaceAsCombinator);
+            var foundKind = SyntaxKindFromNextToken(input, position);
             if (foundKind == acceptedKind)
             {
-                return GetNextToken(input, ref position, treatWhiteSpaceAsCombinator);
+                return GetNextToken(input, ref position);
             }
             return null;
         }
@@ -3158,9 +3221,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxToken ExpectToken(
             IList<UvssLexerToken> input, ref Int32 position, SyntaxKind expectedKind)
         {
-            var treatWhiteSpaceAsCombinator = (expectedKind == SyntaxKind.SpaceToken);
-
-            var token = GetNextToken(input, ref position, treatWhiteSpaceAsCombinator);
+            var token = GetNextToken(input, ref position);
             if (token.Kind != expectedKind)
             {
                 RestoreToken(input, ref position, token);
@@ -3341,15 +3402,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         /// <param name="input">The lexer token stream.</param>
         /// <param name="position">The current position in the lexer token stream.</param>
-        /// <param name="treatWhiteSpaceAsCombinator">A value indicating whether white space
-        /// should be treated as a selector combinator, rather than trivia.</param>
         /// <param name="treatCurrentTokenAsTrivia">A value indicating whether to treat
         /// the current token as trivia, even if it otherwise wouldn't be considered trivia.</param>
         /// <param name="isLeading">A value indicating whether this is leading trivia.</param>
         /// <returns>The list of accumulated trivia, or null if no trivia was accumulated.</returns>
         private static IList<SyntaxTrivia> AccumulateTrivia(
             IList<UvssLexerToken> input, ref Int32 position, 
-            Boolean treatWhiteSpaceAsCombinator = false, 
             Boolean treatCurrentTokenAsTrivia = false,
             Boolean isLeading = false)
         {
@@ -3360,7 +3418,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             while (position < input.Count)
             {
-                if (!IsTrivia(input[position], treatWhiteSpaceAsCombinator))
+                if (!IsTrivia(input[position]))
                 {
                     if (!treatNextNonTriviaTokenAsTrivia)
                         break;

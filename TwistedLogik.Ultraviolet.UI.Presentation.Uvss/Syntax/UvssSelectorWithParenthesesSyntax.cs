@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             Selector?.Components ?? default(SyntaxList<SyntaxNode>);
 
         /// <inheritdoc/>
-        public override IEnumerable<UvssSelectorPartBaseSyntax> Parts => Selector?.Parts;
+        public override IEnumerable<UvssSelectorPartSyntax> Parts => Selector?.Parts;
 
         /// <inheritdoc/>
         public override IEnumerable<SyntaxToken> Combinators => Selector?.Combinators;

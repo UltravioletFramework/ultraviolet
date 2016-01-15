@@ -40,7 +40,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEscapedIdentifierSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIncompleteTriggerSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorPartBaseSyntax.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssUniversalSelectorPartSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorPartClassSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssInvalidSelectorPartSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorPartNameSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorPartTypeSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionArgumentListSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssBlockSyntax.cs" />
@@ -53,7 +56,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssAnimationKeyframeSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssAnimationSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEventNameSyntax.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorSubPartSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssStoryboardTargetSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssStoryboardSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSetTriggerActionSyntax.cs" />

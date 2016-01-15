@@ -27,18 +27,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             var selectorPart = selector.Components[0] as UvssSelectorPartSyntax;
             TheResultingNode(selectorPart)
                 .ShouldBePresent();
+            
+            var selectorPartType = selectorPart.SelectedType;
+            TheResultingNode(selectorPartType)
+                .ShouldBeNull();
 
-            var selectorSubPart = selectorPart.SubParts[0];
-            TheResultingNode(selectorSubPart)
-                .ShouldBePresent();
+            var selectorPartName = selectorPart.SelectedName;
+            TheResultingNode(selectorPartName)
+                .ShouldBePresent()
+                .ShouldHaveSpan(0, 7); // "\r\n#foo ";
 
-            var selectorHashToken = selectorSubPart.LeadingQualifierToken;
-            TheResultingNode(selectorHashToken)
+            var selectorPartNameHash = selectorPartName.HashToken;
+            TheResultingNode(selectorPartNameHash)
                 .ShouldBePresent()
                 .ShouldHaveSpan(0, 3); // "\r\n#"
 
-            var selectorIdentifier = selectorSubPart.SubPartIdentifier;
-            TheResultingNode(selectorIdentifier)
+            var selectorPartNameIdentifier = selectorPartName.SelectedNameIdentifier;
+            TheResultingNode(selectorPartNameIdentifier)
                 .ShouldBePresent()
                 .ShouldHaveSpan(3, 4); // "foo ";
         }
@@ -60,25 +65,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             var component0 = selector.Components[0];
             TheResultingNode(component0)
                 .ShouldBePresent()
-                .ShouldHaveSpan(0, 3);
+                .ShouldHaveSpan(0, 4);
 
             var component1 = selector.Components[1];
             TheResultingNode(component1)
                 .ShouldBePresent()
-                .ShouldHaveSpan(3, 1);
+                .ShouldHaveSpan(4, 4);
 
             var component2 = selector.Components[2];
             TheResultingNode(component2)
-                .ShouldBePresent()
-                .ShouldHaveSpan(4, 3);
-
-            var component3 = selector.Components[3];
-            TheResultingNode(component3)
-                .ShouldBePresent()
-                .ShouldHaveSpan(7, 1);
-
-            var component4 = selector.Components[4];
-            TheResultingNode(component4)
                 .ShouldBePresent()
                 .ShouldHaveSpan(8, 4);
         }
@@ -386,7 +381,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent()
                 .ShouldBeOfKind(SyntaxKind.GreaterThanGreaterThanToken);
 
-            var selectorComponent4 = selector.Components[4] as UvssUniversalSelectorPartSyntax;
+            var selectorComponent4 = selector.Components[4] as UvssSelectorPartSyntax;
             TheResultingNode(selectorComponent4)
                 .ShouldBePresent()
                 .ShouldHaveFullString("*");
@@ -453,7 +448,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent()
                 .ShouldBeOfKind(SyntaxKind.GreaterThanGreaterThanToken);
             
-            var selector0Component4 = selector0.Components[4] as UvssUniversalSelectorPartSyntax;
+            var selector0Component4 = selector0.Components[4] as UvssSelectorPartSyntax;
             TheResultingNode(selector0Component4)
                 .ShouldBePresent()
                 .ShouldHaveFullString("*");
@@ -467,24 +462,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             TheResultingNode(selector1Component0)
                 .ShouldBePresent()
                 .ShouldHaveFullString(".foo.bar");
-
-            var selector1Component1 = selector1.Components[1] as SyntaxToken;
+            
+            var selector1Component1 = selector1.Components[1] as UvssSelectorPartSyntax;
             TheResultingNode(selector1Component1)
-                .ShouldBePresent()
-                .ShouldBeOfKind(SyntaxKind.SpaceToken);
-
-            var selector1Component2 = selector1.Components[2] as UvssSelectorPartSyntax;
-            TheResultingNode(selector1Component2)
                 .ShouldBePresent()
                 .ShouldHaveFullString(".baz");
 
-            var selector1Component3 = selector1.Components[3] as SyntaxToken;
-            TheResultingNode(selector1Component3)
-                .ShouldBePresent()
-                .ShouldBeOfKind(SyntaxKind.SpaceToken);
-
-            var selector1Component4 = selector1.Components[4] as UvssSelectorPartSyntax;
-            TheResultingNode(selector1Component4)
+            var selector1Component2 = selector1.Components[2] as UvssSelectorPartSyntax;
+            TheResultingNode(selector1Component2)
                 .ShouldBePresent()
                 .ShouldHaveFullString(".qux");
         }

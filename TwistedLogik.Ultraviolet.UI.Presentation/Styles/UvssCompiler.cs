@@ -139,15 +139,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 {
                     case SyntaxKind.SelectorPart:
                         {
-                            var part = CompileSelectorPart((UvssSelectorPartBaseSyntax)component, qualifier);
+                            var part = CompileSelectorPart((UvssSelectorPartSyntax)component, qualifier);
                             parts.Add(part);
+                            qualifier = UvssSelectorPartQualifier.None;
                         }
                         break;
-
-                    case SyntaxKind.SpaceToken:
-                        qualifier = UvssSelectorPartQualifier.None;
-                        break;
-
+                        
                     case SyntaxKind.GreaterThanToken:
                         qualifier = UvssSelectorPartQualifier.VisualChild;
                         break;
@@ -167,9 +164,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="UvssSelectorPart"/> from the specified syntax node.
         /// </summary>
-        private static UvssSelectorPart CompileSelectorPart(UvssSelectorPartBaseSyntax node, UvssSelectorPartQualifier qualifier)
+        private static UvssSelectorPart CompileSelectorPart(UvssSelectorPartSyntax node, UvssSelectorPartQualifier qualifier)
         {
-            throw new NotImplementedException();
+            var element = 
+                node.SelectedType?.SelectedTypeIdentifier?.Text;
+
+            if (element == "*")
+                element = null;
+
+            var elementIsExact =
+                node.SelectedType?.ExclamationMarkToken != null;
+
+            var id =
+                node.SelectedName?.SelectedNameIdentifier?.Text;
+
+            var pseudoClass =
+                node.PseudoClass?.ClassNameIdentifier?.Text;
+
+            var classes = new List<String>();
+            for (int i = 0; i < node.SelectedClasses.Count; i++)
+            {
+                var selectedClass = node.SelectedClasses[i];
+                classes.Add(selectedClass.SelectedClassIdentifier.Text);
+            }
+
+            return new UvssSelectorPart(qualifier,
+                element,
+                elementIsExact,
+                id,
+                pseudoClass,
+                classes);
         }
 
         /// <summary>

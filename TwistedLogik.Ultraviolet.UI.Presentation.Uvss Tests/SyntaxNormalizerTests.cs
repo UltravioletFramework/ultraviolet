@@ -61,12 +61,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         public void SyntaxNormalizer_Selector_IsCorrectlyNormalized()
         {
             var node = Selector(
-                SelectorPartByName("foo", "pseudoclass"),
-                VisualDescendantCombinator(),
-                SelectorPart(
-                    SelectorSubPartByClass("bar"),
-                    SelectorSubPartByClass("baz")
-                ),
+                SelectorPart(null, "foo", null, "pseudoclass"),
+                SelectorPart(null, null, new[] { "bar", "baz" }),
                 VisualChildCombinator(),
                 SelectorPartByType("qux")
             );
@@ -80,12 +76,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         {
             var node = Selector(
                 List(new SyntaxNode[] {
-                    SelectorPartByName("foo", "pseudoclass"),
-                    VisualDescendantCombinator(),
-                    SelectorPart(
-                        SelectorSubPartByClass("bar"),
-                        SelectorSubPartByClass("baz")
-                    ),
+                    SelectorPart(null, "foo", null, "pseudoclass"),
+                    SelectorPart(null, null, new[] { "bar", "baz" }),
                     VisualChildCombinator(),
                     SelectorPartByType("qux")
                 }),
@@ -101,12 +93,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         {
             var node = SelectorWithParentheses(
                 Selector(
-                    SelectorPartByName("foo", "pseudoclass"),
-                    VisualDescendantCombinator(),
-                    SelectorPart(
-                        SelectorSubPartByClass("bar"),
-                        SelectorSubPartByClass("baz")
-                    ),
+                    SelectorPart(null, "foo", null, "pseudoclass"),
+                    SelectorPart(null, null, new[] { "bar", "baz" }),
                     VisualChildCombinator(),
                     SelectorPartByType("qux")
                 )

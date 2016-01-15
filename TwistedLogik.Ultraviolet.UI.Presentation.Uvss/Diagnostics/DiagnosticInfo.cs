@@ -346,6 +346,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
         }
 
         /// <summary>
+        /// Adds a diagnostic indicating that a selector is invalid
+        /// to the specified collection of diagnostics.
+        /// </summary>
+        /// <param name="collection">The collection to which to add the diagnostic.</param>
+        /// <param name="node">The syntax node which is associated with the diagnostic.</param>
+        internal static void ReportInvalidSelector(ref ICollection<DiagnosticInfo> collection,
+            UvssSelectorBaseSyntax node)
+        {
+            Contract.Require(node, nameof(node));
+
+            var span = new TextSpan(0, node.Width);
+            var diagnostic = new DiagnosticInfo(node, DiagnosticID.InvalidSelector,
+                DiagnosticSeverity.Error, span, $"Invalid selector");
+
+            Report(ref collection, diagnostic);
+        }
+
+        /// <summary>
+        /// Adds a diagnostic indicating that a selector part could not be completely parsed
+        /// to the specified collection of diagnostics.
+        /// </summary>
+        /// <param name="collection">The collection to which to add the diagnostic.</param>
+        /// <param name="node">The syntax node which is associated with the diagnostic.</param>
+        internal static void ReportInvalidSelectorPart(ref ICollection<DiagnosticInfo> collection,
+            UvssInvalidSelectorPartSyntax node)
+        {
+            Contract.Require(node, nameof(node));
+
+            var span = new TextSpan(0, node.Width);
+            var diagnostic = new DiagnosticInfo(node, DiagnosticID.InvalidSelectorPart,
+                DiagnosticSeverity.Error, span, $"Invalid selector part");
+
+            Report(ref collection, diagnostic);
+        }
+
+        /// <summary>
         /// Gets the syntax node associated with the diagnostic information..
         /// </summary>
         public SyntaxNode Node { get; }
@@ -449,8 +485,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
                     return ">>";
                 case SyntaxKind.GreaterThanQuestionMarkToken:
                     return ">?";
-                case SyntaxKind.SpaceToken:
-                    return " ";
                 case SyntaxKind.EqualsToken:
                     return "=";
                 case SyntaxKind.NotEqualsToken:
@@ -483,8 +517,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
                     return "Parentheses-enclosed selector";
                 case SyntaxKind.SelectorPart:
                     return "Selector part";
-                case SyntaxKind.SelectorSubPart:
-                    return "Selector sub-part";
                 case SyntaxKind.PseudoClass:
                     return "Pseudo-class";
                 case SyntaxKind.PropertyName:

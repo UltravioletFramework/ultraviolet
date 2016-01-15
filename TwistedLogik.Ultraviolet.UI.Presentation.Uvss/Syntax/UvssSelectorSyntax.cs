@@ -49,13 +49,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         public override SyntaxList<SyntaxNode> Components { get; }
 
         /// <inheritdoc/>
-        public override IEnumerable<UvssSelectorPartBaseSyntax> Parts
+        public override IEnumerable<UvssSelectorPartSyntax> Parts
         {
             get
             {
                 for (int i = 0; i < Components.Count; i++)
                 {
-                    var child = Components[i] as UvssSelectorPartBaseSyntax;
+                    var child = Components[i] as UvssSelectorPartSyntax;
                     if (child != null)
                         yield return child;
                 }
@@ -72,8 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
                     var child = Components[i] as SyntaxToken;
                     if (child != null)
                     {
-                        if (child.Kind == SyntaxKind.SpaceToken ||
-                            child.Kind == SyntaxKind.GreaterThanToken ||
+                        if (child.Kind == SyntaxKind.GreaterThanToken ||
                             child.Kind == SyntaxKind.GreaterThanGreaterThanToken ||
                             child.Kind == SyntaxKind.GreaterThanQuestionMarkToken)
                         {

@@ -70,8 +70,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
                     return ">>";
                 case SyntaxKind.GreaterThanQuestionMarkToken:
                     return ">?";
-                case SyntaxKind.SpaceToken:
-                    return " ";
                 case SyntaxKind.EqualsToken:
                     return "=";
                 case SyntaxKind.NotEqualsToken:

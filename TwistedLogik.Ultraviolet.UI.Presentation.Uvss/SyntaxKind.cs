@@ -196,11 +196,6 @@
         GreaterThanQuestionMarkToken,
         
         /// <summary>
-        /// A space (" ") token.
-        /// </summary>
-        SpaceToken,
-
-        /// <summary>
         /// An equals ("=") token.
         /// </summary>
         EqualsToken,
@@ -284,11 +279,26 @@
         /// A selector part.
         /// </summary>
         SelectorPart,
+        
+        /// <summary>
+        /// A selector part component which selects a type.
+        /// </summary>
+        SelectorPartType,
 
         /// <summary>
-        /// A selector sub-part.
+        /// A selector part component which selects a name.
         /// </summary>
-        SelectorSubPart,
+        SelectorPartName,
+
+        /// <summary>
+        /// A selector part component which selects a class.
+        /// </summary>
+        SelectorPartClass,
+        
+        /// <summary>
+        /// A selector part with invalid components.
+        /// </summary>
+        InvalidSelectorPart,
 
         /// <summary>
         /// A pseudo-class.

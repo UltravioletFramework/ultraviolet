@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+using System.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -162,7 +163,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             // NEVER insert a space if we're the last token in a block.
             if (next.Kind == SyntaxKind.CloseParenthesesToken && next.Parent is UvssBlockSyntax)
                 return 0;
-            
+                                    
             // ALWAYS insert a space after certain symbols...
             if (currentKind == SyntaxKind.CommaToken)
                 return 1;
@@ -170,10 +171,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             // NEVER insert a space after certain symbols...
             if (currentKind == SyntaxKind.AtSignToken ||
                 currentKind == SyntaxKind.OpenParenthesesToken ||
-                currentKind == SyntaxKind.OpenBracketToken ||
-                currentKind == SyntaxKind.SpaceToken)
+                currentKind == SyntaxKind.OpenBracketToken)
             {
                 return 0;
+            }
+
+            // ALWAYS insert a space BEFORE certain symbols...
+            if (next.Kind == SyntaxKind.PipeToken)
+            {
+                return 1;
             }
 
             // NEVER insert a space BEFORE certain symbols...
@@ -182,6 +188,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 next.Kind == SyntaxKind.CloseParenthesesToken ||
                 next.Kind == SyntaxKind.CloseBracketToken)
             {
+                return 0;
+            }
+
+            // If we're inside of a selector part...
+            if (currentParent is UvssSelectorPartTypeSyntax ||
+                currentParent is UvssSelectorPartNameSyntax ||
+                currentParent is UvssSelectorPartClassSyntax ||
+                currentParent is UvssPseudoClassSyntax)
+            {
+                // DO insert a space if we're the LAST token in the selector part...
+                var selectorPart = FindSelectorPart(current);
+                if (selectorPart?.GetLastToken() == current)
+                {
+                    // UNLESS we're the last part in the selector!
+                    var selector = FindSelector(selectorPart);
+                    if (selector?.Parts?.Last() == selectorPart)
+                        return 0;
+
+                    return 1;
+                }
                 return 0;
             }
 
@@ -202,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
 
             // If we're inside of a selector...
-            if (currentParent is UvssSelectorSubPartSyntax || currentParent is UvssPseudoClassSyntax)
+            if (currentParent is UvssSelectorPartBaseSyntax || currentParent is UvssPseudoClassSyntax)
             {
                 // ...DO NOT insert spaces after leading qualifiers.
                 if (currentKind == SyntaxKind.PeriodToken ||
@@ -214,13 +240,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 // ...DO NOT insert spaces after pseudo-class qualifiers.
                 if (currentKind == SyntaxKind.SemiColonToken)
                     return 0;
-
-                // ...DO NOT insert spaces in front of visual descendant operators (it's already a space!)
-                if (next.Kind == SyntaxKind.SpaceToken)
-                    return 0;
-
+                
                 // ...DO NOT insert spaces between selector sub-parts within the same selector part.
-                if (currentParent is UvssSelectorSubPartSyntax && nextGrandparent == currentGrandparent)
+                if (currentParent is UvssSelectorPartSyntax && nextGrandparent == currentGrandparent)
                     return 0;
 
                 // ...DO NOT insert spaces before a pseudo-class.
@@ -464,6 +486,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
 
             return GetNextToken(node.Parent);
+        }
+
+        /// <summary>
+        /// Finds the selector which contains the specified node.
+        /// </summary>
+        private UvssSelectorBaseSyntax FindSelector(SyntaxNode current)
+        {
+            while (current != null)
+            {
+                if (current is UvssSelectorBaseSyntax)
+                    return (UvssSelectorBaseSyntax)current;
+
+                current = current.Parent;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Finds the selector part which contains the specified node.
+        /// </summary>
+        private UvssSelectorPartBaseSyntax FindSelectorPart(SyntaxNode current)
+        {
+            while (current != null)
+            {
+                if (current is UvssSelectorPartBaseSyntax)
+                    return (UvssSelectorPartBaseSyntax)current;
+
+                current = current.Parent;
+            }
+            return null;
         }
 
         /// <summary>

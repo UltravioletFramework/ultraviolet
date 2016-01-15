@@ -272,23 +272,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
-        /// Visits the specified selector part node.
+        /// Visits the specified selector part type node.
         /// </summary>
         /// <param name="node">The node to visit.</param>
         /// <returns>A node which should replace the visited node, or a reference to the visited node
         /// itself if no changes were made.</returns>
-        public virtual SyntaxNode VisitUniversalSelectorPart(UvssUniversalSelectorPartSyntax node)
+        public virtual SyntaxNode VisitSelectorPartType(UvssSelectorPartTypeSyntax node)
         {
             return VisitSyntaxNode(node);
         }
 
         /// <summary>
-        /// Visits the specified selector sub-part node.
+        /// Visits the specified selector part name node.
         /// </summary>
         /// <param name="node">The node to visit.</param>
         /// <returns>A node which should replace the visited node, or a reference to the visited node
         /// itself if no changes were made.</returns>
-        public virtual SyntaxNode VisitSelectorSubPart(UvssSelectorSubPartSyntax node)
+        public virtual SyntaxNode VisitSelectorPartName(UvssSelectorPartNameSyntax node)
+        {
+            return VisitSyntaxNode(node);
+        }
+
+        /// <summary>
+        /// Visits the specified selector part class node.
+        /// </summary>
+        /// <param name="node">The node to visit.</param>
+        /// <returns>A node which should replace the visited node, or a reference to the visited node
+        /// itself if no changes were made.</returns>
+        public virtual SyntaxNode VisitSelectorPartClass(UvssSelectorPartClassSyntax node)
+        {
+            return VisitSyntaxNode(node);
+        }
+
+        /// <summary>
+        /// Visits the specified invalid selector part node.
+        /// </summary>
+        /// <param name="node">The node to visit.</param>
+        /// <returns>A node which should replace the visited node, or a reference to the visited node
+        /// itself if no changes were made.</returns>
+        public virtual SyntaxNode VisitInvalidSelectorPart(UvssInvalidSelectorPartSyntax node)
         {
             return VisitSyntaxNode(node);
         }

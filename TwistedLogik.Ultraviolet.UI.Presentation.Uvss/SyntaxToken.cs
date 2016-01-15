@@ -179,24 +179,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <inheritdoc/>
         internal override void ChangeTrivia(SyntaxNode leading, SyntaxNode trailing)
         {
-            this.leadingTrivia = leading;
-            ChangeParent(leading);
-
-            this.trailingTrivia = trailing;
-            ChangeParent(trailing);
+            this.ChangeLeadingTrivia(leading);
+            this.ChangeTrailingTrivia(trailing);
         }
 
         /// <inheritdoc/>
         internal override void ChangeLeadingTrivia(SyntaxNode trivia)
         {
+            var oldLeadingWidth = GetLeadingTriviaWidth();
+            AdjustPositionAndWidth(oldLeadingWidth, -oldLeadingWidth);
+
             this.leadingTrivia = trivia;
+
+            var newLeadingWidth = GetLeadingTriviaWidth();
+            AdjustPositionAndWidth(-newLeadingWidth, newLeadingWidth);
+
             ChangeParent(trivia);
         }
-
+        
         /// <inheritdoc/>
         internal override void ChangeTrailingTrivia(SyntaxNode trivia)
         {
+            var oldTrailingWidth = GetTrailingTriviaWidth();
+            AdjustPositionAndWidth(0, -oldTrailingWidth);
+
             this.trailingTrivia = trivia;
+
+            var newTrailingWidth = GetTrailingTriviaWidth();
+            AdjustPositionAndWidth(0, newTrailingWidth);
+
             ChangeParent(trivia);
         }
 
@@ -213,6 +224,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         protected override void UpdateIsMissing()
         {
 
+        }
+
+        /// <summary>
+        /// Adjusts the position and width of this node and all of its ancestors.
+        /// </summary>
+        private void AdjustPositionAndWidth(Int32 dpos, Int32 dwidth)
+        {
+            if (dpos == 0 && dwidth == 0)
+                return;
+
+            var current = (SyntaxNode)this;
+            while (current != null)
+            {
+                if (dpos != 0)
+                    current.Position = Math.Max(0, current.Position + dpos);
+
+                if (dwidth != 0 && current.HasValidFullWidth)
+                    current.FullWidth = Math.Max(0, current.FullWidth + dwidth);
+
+                current = current.Parent;
+            }
         }
 
         // Token trivia.
