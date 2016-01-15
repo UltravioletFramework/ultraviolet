@@ -578,7 +578,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             while (true)
             {
                 var item = itemParser(input, ref position, builder.Count);
-                if (item == null)
+                if (item == null || (item.IsMissing && builder.IsNull))
                     break;
 
                 if (builder.IsNull)
@@ -638,7 +638,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             while (true)
             {
                 var item = itemParser(input, ref position, builder.Count);
-                if (item == null)
+                if (item == null || (item.IsMissing && builder.IsNull))
                     break;
 
                 if (builder.IsNull)
