@@ -317,6 +317,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newPropertyName != node.PropertyName)
                 unchanged = false;
 
+            var newIndexer = (UvssNavigationExpressionIndexerSyntax)Visit(node.Indexer);
+            if (newIndexer != node.Indexer)
+                unchanged = false;
+
             var newAsKeyword = (SyntaxToken)Visit(node.AsKeyword);
             if (newAsKeyword != node.AsKeyword)
                 unchanged = false;
@@ -328,8 +332,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return unchanged ? node : new UvssNavigationExpressionSyntax(
                 newPipeToken,
                 newPropertyName,
+                newIndexer,
                 newAsKeyword,
                 newTypeNameIdentifier);
+        }
+
+        /// <inheritdoc/>
+        public override SyntaxNode VisitNavigationExpressionIndex(UvssNavigationExpressionIndexerSyntax node)
+        {
+            var unchanged = true;
+
+            var newOpenBracketToken = (SyntaxToken)Visit(node.OpenBracketToken);
+            if (newOpenBracketToken != node.OpenBracketToken)
+                unchanged = false;
+
+            var newNumberToken = (SyntaxToken)Visit(node.NumberToken);
+            if (newNumberToken != node.NumberToken)
+                unchanged = false;
+
+            var newCloseBracketToken = (SyntaxToken)Visit(node.CloseBracketToken);
+            if (newCloseBracketToken != node.CloseBracketToken)
+                unchanged = false;
+
+            return unchanged ? node : new UvssNavigationExpressionIndexerSyntax(
+                newOpenBracketToken,
+                newNumberToken,
+                newCloseBracketToken);
         }
 
         /// <inheritdoc/>

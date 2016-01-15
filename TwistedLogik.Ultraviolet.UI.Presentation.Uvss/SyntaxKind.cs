@@ -406,6 +406,11 @@
         NavigationExpression,
 
         /// <summary>
+        /// A navigation expression's indexing operator.
+        /// </summary>
+        NavigationExpressionIndexer,
+
+        /// <summary>
         /// A document root node.
         /// </summary>
         Document,

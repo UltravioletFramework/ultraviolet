@@ -458,7 +458,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Identifier,
                 @"\G[_\-a-zA-Z][_\-a-zA-Z0-9]*"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Number,
-                @"\G\d+(.\d+)?"),
+                @"\G\d+(\.\d*)?"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Comma,
                 @"\G,"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Colon,

@@ -146,7 +146,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
         /// <inheritdoc/>
         public override Boolean IsToken => true;
-
+        
         /// <summary>
         /// Gets the token's text.
         /// </summary>

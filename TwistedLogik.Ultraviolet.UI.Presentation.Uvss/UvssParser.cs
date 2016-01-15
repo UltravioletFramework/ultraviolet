@@ -1064,6 +1064,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return new UvssNavigationExpressionSyntax(
                 MissingToken(SyntaxKind.PipeToken, input, position),
                 MissingPropertyName(input, position),
+                null,
                 MissingToken(SyntaxKind.AsKeyword, input, position),
                 MissingIdentifier(input, position));
         }
@@ -1083,6 +1084,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var propertyName =
                 ExpectPropertyName(input, ref position);
 
+            var indexer =
+                AcceptNavigationExpressionIndexer(input, ref position);
+
             var asKeyword =
                 ExpectToken(input, ref position, SyntaxKind.AsKeyword);
 
@@ -1092,6 +1096,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var expression = WithPosition(new UvssNavigationExpressionSyntax(
                 pipeToken,
                 propertyName,
+                indexer,
                 asKeyword,
                 typeNameIdentifier));
 
@@ -1127,6 +1132,67 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
         {
             return ParseNavigationExpression(input, ref position, listIndex, false);
+        }
+
+        /// <summary>
+        /// Parses a navigation expression indexer.
+        /// </summary>
+        private static UvssNavigationExpressionIndexerSyntax ParseNavigationExpressionIndexer(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+        {
+            if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.OpenBracketToken)
+                return null;
+
+            var openBracketToken =
+                ExpectToken(input, ref position, SyntaxKind.OpenBracketToken);
+
+            var numberToken = SyntaxKindFromNextToken(input, position) == SyntaxKind.CloseBracketToken ?
+                MissingToken(SyntaxKind.NumberToken, input, position) :
+                ExpectToken(input, ref position, null);
+
+            var closeBracketToken =
+                ExpectToken(input, ref position, SyntaxKind.CloseBracketToken);
+
+            var indexer = new UvssNavigationExpressionIndexerSyntax(
+                openBracketToken,
+                numberToken,
+                closeBracketToken);
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            if (numberToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, numberToken);
+            else
+            {
+                var index = 0;
+                if (numberToken.Kind != SyntaxKind.NumberToken || !Int32.TryParse(numberToken.Text, out index))
+                    DiagnosticInfo.ReportIndexMustBeIntegerValue(ref diagnostics, numberToken);
+            }
+
+            if (closeBracketToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, closeBracketToken);
+
+            indexer.SetDiagnostics(diagnostics);
+
+            return WithPosition(indexer);
+        }
+
+        /// <summary>
+        /// Accepts a navigation expression indexer.
+        /// </summary>
+        private static UvssNavigationExpressionIndexerSyntax AcceptNavigationExpressionIndexer(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            return ParseNavigationExpressionIndexer(input, ref position, listIndex, true);
+        }
+
+        /// <summary>
+        /// Expects a navigation expression indexer and produces a missing node if one is not found.
+        /// </summary>
+        private static UvssNavigationExpressionIndexerSyntax ExpectNavigationExpressionIndexer(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            return ParseNavigationExpressionIndexer(input, ref position, listIndex, false);
         }
 
         /// <summary>
@@ -3258,13 +3324,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Expects a syntax token of the specified kind and produces a missing node if one is not found.
         /// </summary>
         private static SyntaxToken ExpectToken(
-            IList<UvssLexerToken> input, ref Int32 position, SyntaxKind expectedKind)
+            IList<UvssLexerToken> input, ref Int32 position, SyntaxKind? expectedKind)
         {
             var token = GetNextToken(input, ref position);
-            if (token.Kind != expectedKind)
+            if (expectedKind != null && token.Kind != expectedKind)
             {
                 RestoreToken(input, ref position, token);
-                var missingToken = new SyntaxToken(expectedKind, null)
+                var missingToken = new SyntaxToken(expectedKind ?? SyntaxKind.None, null)
                 {
                     IsMissing = true,
                     Position = GetNodePositionFromLexerPosition(input, position)

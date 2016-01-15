@@ -89,5 +89,10 @@
         /// A selector part was not able to be completely parsed.
         /// </summary>
         InvalidSelectorPart,
+
+        /// <summary>
+        /// An index was not an integer value.
+        /// </summary>
+        IndexMustBeIntegerValue,
     }
 }

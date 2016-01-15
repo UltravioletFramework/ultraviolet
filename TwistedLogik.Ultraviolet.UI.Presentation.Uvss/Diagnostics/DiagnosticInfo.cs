@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
         /// </summary>
         /// <param name="collection">The collection to which to add the diagnostic.</param>
         /// <param name="trivia">The unexpected node.</param>
-        internal static void ReportUnexpectedTokenInDocumentContent(ref ICollection<DiagnosticInfo> collection, 
+        internal static void ReportUnexpectedTokenInDocumentContent(ref ICollection<DiagnosticInfo> collection,
             SkippedTokensTriviaSyntax trivia)
         {
             Contract.Require(trivia, nameof(trivia));
@@ -285,7 +285,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
 
             Report(ref collection, diagnostic);
         }
-        
+
         /// <summary>
         /// Adds a diagnostic indicating that a property trigger condition is missing its comparison operator
         /// to the specified collection of diagnostics.
@@ -377,6 +377,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
             var span = new TextSpan(0, node.Width);
             var diagnostic = new DiagnosticInfo(node, DiagnosticID.InvalidSelectorPart,
                 DiagnosticSeverity.Error, span, $"Invalid selector part");
+
+            Report(ref collection, diagnostic);
+        }
+
+        /// <summary>
+        /// Adds a diagnostic indicating that an index must be an integer value
+        /// to the specified collection of diagnostics.
+        /// </summary>
+        /// <param name="collection">The collection to which to add the diagnostic.</param>
+        /// <param name="node">The syntax node which is associated with the diagnostic.</param>
+        internal static void ReportIndexMustBeIntegerValue(ref ICollection<DiagnosticInfo> collection,
+            SyntaxToken node)
+        {
+            Contract.Require(node, nameof(node));
+
+            var span = new TextSpan(0, node.Width);
+            var diagnostic = new DiagnosticInfo(node, DiagnosticID.IndexMustBeIntegerValue,
+                DiagnosticSeverity.Error, span, $"Index must be integer value");
 
             Report(ref collection, diagnostic);
         }

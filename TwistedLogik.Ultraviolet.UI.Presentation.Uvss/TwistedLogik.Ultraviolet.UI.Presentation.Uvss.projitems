@@ -39,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIdentifierSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEscapedIdentifierSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIncompleteTriggerSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssNavigationExpressionIndexerSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorPartBaseSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorPartClassSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssInvalidSelectorPartSyntax.cs" />

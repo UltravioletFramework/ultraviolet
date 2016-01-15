@@ -1998,6 +1998,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return new UvssNavigationExpressionSyntax(
                 new UvssPunctuation(SyntaxKind.PipeToken),
                 propertyName,
+                null,
                 new UvssKeyword(SyntaxKind.AsKeyword),
                 Identifier(typeName));
         }
@@ -2019,6 +2020,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return new UvssNavigationExpressionSyntax(
                 pipeToken,
                 propertyName, 
+                null,
                 asKeyword, 
                 typeNameIdentifier);
         }

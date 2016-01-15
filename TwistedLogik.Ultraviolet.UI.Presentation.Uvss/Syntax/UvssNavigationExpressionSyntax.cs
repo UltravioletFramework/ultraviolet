@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Initializes a new instance of the <see cref="UvssNavigationExpressionSyntax"/> class.
         /// </summary>
         internal UvssNavigationExpressionSyntax()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null)
         { }
 
         /// <summary>
@@ -20,6 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         internal UvssNavigationExpressionSyntax(
             SyntaxToken pipeToken,
             UvssPropertyNameSyntax propertyName,
+            UvssNavigationExpressionIndexerSyntax indexer,
             SyntaxToken asKeyword,
             UvssIdentifierBaseSyntax typeNameIdentifier)
             : base(SyntaxKind.NavigationExpression)
@@ -30,13 +31,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             this.PropertyName = propertyName;
             ChangeParent(propertyName);
 
+            this.Indexer = indexer;
+            ChangeParent(indexer);
+
             this.AsKeyword = asKeyword;
             ChangeParent(asKeyword);
 
             this.TypeNameIdentifier = typeNameIdentifier;
             ChangeParent(typeNameIdentifier);
 
-            SlotCount = 4;
+            SlotCount = 5;
             UpdateIsMissing();
         }
 
@@ -47,8 +51,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             {
                 case 0: return PipeToken;
                 case 1: return PropertyName;
-                case 2: return AsKeyword;
-                case 3: return TypeNameIdentifier;
+                case 2: return Indexer;
+                case 3: return AsKeyword;
+                case 4: return TypeNameIdentifier;
                 default:
                     throw new InvalidOperationException();
             }
@@ -63,6 +68,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Gets the navigation expression's property name.
         /// </summary>
         public UvssPropertyNameSyntax PropertyName { get; internal set; }
+
+        /// <summary>
+        /// Gets the navigation expression's optional indexer.
+        /// </summary>
+        public UvssNavigationExpressionIndexerSyntax Indexer { get; internal set; }
 
         /// <summary>
         /// Gets the navigation expression's "as" keyword.
