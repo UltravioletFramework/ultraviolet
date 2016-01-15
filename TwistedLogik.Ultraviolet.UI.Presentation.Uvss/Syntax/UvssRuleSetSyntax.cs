@@ -12,14 +12,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Initializes a new instance of the <see cref="UvssRuleSetSyntax"/> class.
         /// </summary>
         internal UvssRuleSetSyntax()
-            : this(default(SeparatedSyntaxList<UvssSelectorSyntax>), null)
+            : this(default(SeparatedSyntaxList<UvssSelectorWithNavigationExpressionSyntax>), null)
         { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssRuleSetSyntax"/> class.
         /// </summary>
         internal UvssRuleSetSyntax(
-            SeparatedSyntaxList<UvssSelectorSyntax> selectors,
+            SeparatedSyntaxList<UvssSelectorWithNavigationExpressionSyntax> selectors,
             UvssBlockSyntax body)
             : base(SyntaxKind.RuleSet)
         {
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the rule set's selector list.
         /// </summary>
-        public SeparatedSyntaxList<UvssSelectorSyntax> Selectors { get; internal set; }
+        public SeparatedSyntaxList<UvssSelectorWithNavigationExpressionSyntax> Selectors { get; internal set; }
 
         /// <summary>
         /// Gets the rule set's body.

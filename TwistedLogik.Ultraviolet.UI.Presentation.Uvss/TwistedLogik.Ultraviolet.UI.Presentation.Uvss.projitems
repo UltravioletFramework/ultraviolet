@@ -44,6 +44,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssInvalidSelectorPartSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorPartNameSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorPartTypeSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssSelectorWithNavigationExpressionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionArgumentListSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssTransitionSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssBlockSyntax.cs" />

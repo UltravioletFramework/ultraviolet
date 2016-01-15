@@ -12,24 +12,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Initializes a new instance of the <see cref="UvssSelectorSyntax"/> class.
         /// </summary>
         internal UvssSelectorSyntax()
-            : this(default(SyntaxList<SyntaxNode>), null)
+            : this(default(SyntaxList<SyntaxNode>))
         { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssSelectorSyntax"/> class.
         /// </summary>
         internal UvssSelectorSyntax(
-            SyntaxList<SyntaxNode> components,
-            UvssNavigationExpressionSyntax navigationExpression)
+            SyntaxList<SyntaxNode> components)
             : base(SyntaxKind.Selector)
         {
             this.Components = components;
             ChangeParent(components.Node);
-
-            this.NavigationExpression = navigationExpression;
-            ChangeParent(navigationExpression);
-
-            SlotCount = 2;
+            
+            SlotCount = 1;
             UpdateIsMissing();
         }
 
@@ -39,7 +35,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return Components.Node;
-                case 1: return NavigationExpression;
                 default:
                     throw new InvalidOperationException();
             }
@@ -82,11 +77,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
                 }
             }
         }
-
-        /// <summary>
-        /// Gets the selector's navigation expression.
-        /// </summary>
-        public UvssNavigationExpressionSyntax NavigationExpression { get; internal set; }
 
         /// <inheritdoc/>
         internal override SyntaxNode Accept(SyntaxVisitor visitor)

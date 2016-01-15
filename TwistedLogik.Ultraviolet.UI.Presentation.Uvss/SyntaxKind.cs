@@ -276,6 +276,11 @@
         SelectorWithParentheses,
 
         /// <summary>
+        /// A selector, followed by a navigation expression.
+        /// </summary>
+        SelectorWithNavigationExpression,
+
+        /// <summary>
         /// A selector part.
         /// </summary>
         SelectorPart,

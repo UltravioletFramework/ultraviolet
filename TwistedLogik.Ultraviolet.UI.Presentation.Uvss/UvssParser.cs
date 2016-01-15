@@ -1136,8 +1136,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             IList<UvssLexerToken> input, Int32 position)
         {
             return WithPosition(new UvssSelectorSyntax(
-                MissingList<SyntaxNode>(input, position),
-                null));
+                MissingList<SyntaxNode>(input, position)));
         }
 
         /// <summary>
@@ -1152,15 +1151,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (components.Node == null)
             {
                 return accept ? null :
-                    new UvssSelectorSyntax(components, null) { IsMissing = true };
+                    new UvssSelectorSyntax(components) { IsMissing = true };
             }
 
-            var navigationExpression =
-                AcceptNavigationExpression(input, ref position);
-
             var selector = WithPosition(new UvssSelectorSyntax(
-                components,
-                navigationExpression));
+                components));
 
             var diagnostics = default(ICollection<DiagnosticInfo>);
 
@@ -1209,7 +1204,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return ParseSelector(input, ref position, listIndex, false);
         }
-        
+
+        /// <summary>
+        /// Parses a selector with an optional trailing navigation expression.
+        /// </summary>
+        private static UvssSelectorWithNavigationExpressionSyntax ParseSelectorWithNavigationExpression(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+        {
+            var selector =
+                ExpectSelector(input, ref position, listIndex);
+
+            if (accept && selector.IsMissing)
+                return null;
+
+            var navigationExpression =
+                AcceptNavigationExpression(input, ref position, 0);
+
+            var selectorWithNavExp = new UvssSelectorWithNavigationExpressionSyntax(
+                selector,
+                navigationExpression);
+
+            var diagnostics = default(ICollection<DiagnosticInfo>);
+
+            selectorWithNavExp.SetDiagnostics(diagnostics);
+
+            return WithPosition(selectorWithNavExp);
+        }
+
+        /// <summary>
+        /// Accepts a selector with an optional trailing navigation expression.
+        /// </summary>
+        private static UvssSelectorWithNavigationExpressionSyntax AcceptSelectorWithNavigationExpression(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            return ParseSelectorWithNavigationExpression(input, ref position, listIndex, true);
+        }
+
+        /// <summary>
+        /// Expects a selector with an optional trailing navigation expression and produces a missing node if one is not found.
+        /// </summary>
+        private static UvssSelectorWithNavigationExpressionSyntax ExpectSelectorWithNavigationExpression(
+            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+        {
+            return ParseSelectorWithNavigationExpression(input, ref position, listIndex, false);
+        }
+
         /// <summary>
         /// Accepts a selector part or combinator.
         /// </summary>
@@ -1901,7 +1940,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             IList<UvssLexerToken> input, Int32 position, params SyntaxNode[] children)
         {
             return WithPosition(new UvssRuleSetSyntax(
-                MissingSeparatedList<UvssSelectorSyntax>(input, position),
+                MissingSeparatedList<UvssSelectorWithNavigationExpressionSyntax>(input, position),
                 MissingBlock(input, position, children)));
         }
 
@@ -1914,7 +1953,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var diagnostics = default(ICollection<DiagnosticInfo>);
 
             var selectors =
-                AcceptSeparatedList(input, ref position, ExpectSelector, AcceptComma);
+                AcceptSeparatedList(input, ref position, ExpectSelectorWithNavigationExpression, AcceptComma);
 
             if (accept && selectors.Node == null)
                 return null;

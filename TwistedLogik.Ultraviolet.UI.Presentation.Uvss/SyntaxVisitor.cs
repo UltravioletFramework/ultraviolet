@@ -338,6 +338,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Visits the specified selector with navigation expression node.
+        /// </summary>
+        /// <param name="node">The node to visit.</param>
+        /// <returns>A node which should replace the visited node, or a reference to the visited node
+        /// itself if no changes were made.</returns>
+        public virtual SyntaxNode VisitSelectorWithNavigationExpression(UvssSelectorWithNavigationExpressionSyntax node)
+        {
+            return VisitSyntaxNode(node);
+        }
+
+        /// <summary>
         /// Visits the specified set trigger action node.
         /// </summary>
         /// <param name="node">The node to visit.</param>

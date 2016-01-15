@@ -74,13 +74,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         [TestMethod]
         public void SyntaxNormalizer_Selector_IsCorrectlyNormalized_WithNavigationExpression()
         {
-            var node = Selector(
-                List(new SyntaxNode[] {
-                    SelectorPart(null, "foo", null, "pseudoclass"),
-                    SelectorPart(null, null, new[] { "bar", "baz" }),
-                    VisualChildCombinator(),
-                    SelectorPartByType("qux")
-                }),
+            var node = SelectorWithNavigationExpression(
+                Selector(
+                    List(new SyntaxNode[] {
+                        SelectorPart(null, "foo", null, "pseudoclass"),
+                        SelectorPart(null, null, new[] { "bar", "baz" }),
+                        VisualChildCombinator(),
+                        SelectorPartByType("qux")
+                    })
+                ),
                 NavigationExpression(PropertyName("some", "prop"), "SomeType")
             );
 
@@ -108,7 +110,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         public void SyntaxNormalizer_RuleSet_IsCorrectlyNormalized()
         {
             var node = RuleSet(
-                SelectorByName("test"),
+                SelectorWithNavigationExpression(
+                    SelectorByName("test")
+                ),
                 Block()
             );
 
@@ -123,8 +127,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         {
             var node = RuleSet(
                 SeparatedList(
-                    SelectorByName("foo"),
-                    SelectorByName("bar")
+                    SelectorWithNavigationExpression(
+                        SelectorByName("foo")
+                    ),
+                    SelectorWithNavigationExpression(
+                        SelectorByName("bar")
+                    )
                 ),
                 Block()
             );
@@ -139,8 +147,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
         public void SyntaxNormalizer_RuleSet_HasTrailingLineBreaks()
         {
             var node = Block(
-                RuleSet(SelectorByName("test"), Block()),
-                RuleSet(SelectorByName("test"), Block())
+                RuleSet(
+                    SelectorWithNavigationExpression(SelectorByName("test")), 
+                    Block()),
+                RuleSet(
+                    SelectorWithNavigationExpression(SelectorByName("test")), 
+                    Block())
             );
 
             TheResultingString(node.NormalizeWhitespace().ToFullString()).ShouldBe(

@@ -1,0 +1,74 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
+{
+    /// <summary>
+    /// Represents a UVSS selector with a trailing navigation expression.
+    /// </summary>
+    public sealed class UvssSelectorWithNavigationExpressionSyntax : UvssSelectorBaseSyntax
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssSelectorWithNavigationExpressionSyntax"/> class.
+        /// </summary>
+        internal UvssSelectorWithNavigationExpressionSyntax()
+            : this(null, null)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssSelectorWithNavigationExpressionSyntax"/> class.
+        /// </summary>
+        internal UvssSelectorWithNavigationExpressionSyntax(
+            UvssSelectorSyntax selector,
+            UvssNavigationExpressionSyntax navigationExpression)
+            : base(SyntaxKind.SelectorWithNavigationExpression)
+        {
+            this.Selector = selector;
+            ChangeParent(selector);
+
+            this.NavigationExpression = navigationExpression;
+            ChangeParent(navigationExpression);
+
+            SlotCount = 2;
+            UpdateIsMissing();
+        }
+
+        /// <inheritdoc/>
+        public override SyntaxNode GetSlot(Int32 index)
+        {
+            switch (index)
+            {
+                case 0: return Selector;
+                case 1: return NavigationExpression;
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the enclosed selector.
+        /// </summary>
+        public UvssSelectorSyntax Selector { get; internal set; }
+
+        /// <inheritdoc/>
+        public override SyntaxList<SyntaxNode> Components => 
+            Selector?.Components ?? default(SyntaxList<SyntaxNode>);
+
+        /// <inheritdoc/>
+        public override IEnumerable<UvssSelectorPartSyntax> Parts => Selector?.Parts;
+
+        /// <inheritdoc/>
+        public override IEnumerable<SyntaxToken> Combinators => Selector?.Combinators;
+
+        /// <summary>
+        /// Gets the selector's trailing navigation expression.
+        /// </summary>
+        public UvssNavigationExpressionSyntax NavigationExpression { get; internal set; }
+
+        /// <inheritdoc/>
+        internal override SyntaxNode Accept(SyntaxVisitor visitor)
+        {
+            return visitor.VisitSelectorWithNavigationExpression(this);
+        }
+    }
+}

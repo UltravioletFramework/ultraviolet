@@ -379,7 +379,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 content,
                 endOfFileToken);
         }
-
+        
         /// <summary>
         /// Creates a new rule set node.
         /// </summary>
@@ -387,7 +387,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="body">The rule set's body.</param>
         /// <returns>The <see cref="UvssRuleSetSyntax"/> instance that was created.</returns>
         public static UvssRuleSetSyntax RuleSet(
-            UvssSelectorSyntax selector,
+            UvssSelectorWithNavigationExpressionSyntax selector,
             UvssBlockSyntax body)
         {
             return new UvssRuleSetSyntax(
@@ -402,7 +402,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="body">The rule set's body.</param>
         /// <returns>The <see cref="UvssRuleSetSyntax"/> instance that was created.</returns>
         public static UvssRuleSetSyntax RuleSet(
-            IEnumerable<UvssSelectorSyntax> selectors,
+            IEnumerable<UvssSelectorWithNavigationExpressionSyntax> selectors,
             UvssBlockSyntax body)
         {
             return new UvssRuleSetSyntax(
@@ -417,7 +417,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="body">The rule set's body.</param>
         /// <returns>The <see cref="UvssRuleSetSyntax"/> instance that was created.</returns>
         public static UvssRuleSetSyntax RuleSet(
-            SeparatedSyntaxList<UvssSelectorSyntax> selectors,
+            SeparatedSyntaxList<UvssSelectorWithNavigationExpressionSyntax> selectors,
             UvssBlockSyntax body)
         {
             return new UvssRuleSetSyntax(
@@ -533,6 +533,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Creates a new selector with trailing navigation expression.
+        /// </summary>
+        /// <param name="selector">The enclosed selector.</param>
+        /// <param name="navexp">The selector's navigation expression.</param>
+        /// <returns>The <see cref="UvssSelectorWithNavigationExpressionSyntax"/> instance that was created.</returns>
+        public static UvssSelectorWithNavigationExpressionSyntax SelectorWithNavigationExpression(
+            UvssSelectorSyntax selector,
+            UvssNavigationExpressionSyntax navexp = null)
+        {
+            return new UvssSelectorWithNavigationExpressionSyntax(
+                selector,
+                navexp);
+        }
+        
+        /// <summary>
         /// Creates a new universal selector.
         /// </summary>
         /// <param name="pseudoClass">The name of the selector's pseudo-class, if any.</param>
@@ -541,8 +556,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String pseudoClass = null)
         {
             return new UvssSelectorSyntax(
-                List(new[] { UniversalSelectorPart(pseudoClass) }),
-                null);
+                List(new[] { UniversalSelectorPart(pseudoClass) }));
         }
 
         /// <summary>
@@ -556,8 +570,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String pseudoClass = null)
         {
             return new UvssSelectorSyntax(
-                List(new[] { SelectorPartByName(selectedName, pseudoClass) }),
-                null);
+                List(new[] { SelectorPartByName(selectedName, pseudoClass) }));
         }
 
         /// <summary>
@@ -571,8 +584,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String pseudoClass = null)
         {
             return new UvssSelectorSyntax(
-                List(new[] { SelectorPartByClass(selectedClass, pseudoClass) }),
-                null);
+                List(new[] { SelectorPartByClass(selectedClass, pseudoClass) }));
         }
 
         /// <summary>
@@ -586,8 +598,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String pseudoClass = null)
         {
             return new UvssSelectorSyntax(
-                List(new[] { SelectorPartByType(selectedType, pseudoClass) }),
-                null);
+                List(new[] { SelectorPartByType(selectedType, pseudoClass) }));
         }
 
         /// <summary>
@@ -601,8 +612,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             String pseudoClass = null)
         {
             return new UvssSelectorSyntax(
-                List(new[] { SelectorPartBySpecificType(selectedType, pseudoClass) }),
-                null);
+                List(new[] { SelectorPartBySpecificType(selectedType, pseudoClass) }));
         }
 
         /// <summary>
@@ -616,8 +626,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssNavigationExpressionSyntax navigationExpression = null)
         {
             return new UvssSelectorSyntax(
-                List(components),
-                navigationExpression);
+                List(components));
         }
 
         /// <summary>
@@ -629,23 +638,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             params SyntaxNode[] components)
         {
             return new UvssSelectorSyntax(
-                List(components),
-                null);
+                List(components));
         }
 
         /// <summary>
         /// Creates a new selector.
         /// </summary>
         /// <param name="components">The selector's list of components.</param>
-        /// <param name="navigationExpression">The selector's navigation expression.</param>
         /// <returns>The <see cref="UvssSelectorSyntax"/> that was created.</returns>
         public static UvssSelectorSyntax Selector(
-            SyntaxList<SyntaxNode> components,
-            UvssNavigationExpressionSyntax navigationExpression = null)
+            SyntaxList<SyntaxNode> components)
         {
             return new UvssSelectorSyntax(
-                components,
-                navigationExpression);
+                components);
         }
 
         /// <summary>

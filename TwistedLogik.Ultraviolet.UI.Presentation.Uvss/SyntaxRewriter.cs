@@ -661,13 +661,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newComponents.Node != node.Components.Node)
                 unchanged = false;
 
-            var newNavigationExpression = (UvssNavigationExpressionSyntax)Visit(node.NavigationExpression);
-            if (newNavigationExpression != node.NavigationExpression)
-                unchanged = false;
-
             return unchanged ? node : new UvssSelectorSyntax(
-                newComponents,
-                newNavigationExpression);
+                newComponents);
         }
 
         /// <inheritdoc/>
@@ -691,6 +686,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 newOpenParenToken,
                 newSelector,
                 newCloseParenToken);
+        }
+
+        /// <inheritdoc/>
+        public override SyntaxNode VisitSelectorWithNavigationExpression(UvssSelectorWithNavigationExpressionSyntax node)
+        {
+            var unchanged = true;
+
+            var newSelector = (UvssSelectorSyntax)Visit(node.Selector);
+            if (newSelector != node.Selector)
+                unchanged = false;
+
+            var newNavigationExpression = (UvssNavigationExpressionSyntax)Visit(node.NavigationExpression);
+            if (newNavigationExpression != node.NavigationExpression)
+                unchanged = false;
+
+            return unchanged ? node : new UvssSelectorWithNavigationExpressionSyntax(
+                newSelector,
+                newNavigationExpression);
         }
 
         /// <inheritdoc/>
