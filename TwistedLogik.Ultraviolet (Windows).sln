@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (Desktop)", "TwistedLogik.Ultraviolet (Desktop)\TwistedLogik.Ultraviolet (Desktop).csproj", "{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}"
 EndProject
@@ -63,6 +63,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler", "TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler\TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler.csproj", "{F95FF829-661D-4809-8150-145114B787AA}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.shproj", "{2DEF7217-0B35-423C-9085-EC46260682C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop).csproj", "{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{08b2b8d5-152f-45fb-b4eb-8c09010a9908}*SharedItemsImports = 4
@@ -72,6 +76,8 @@ Global
 		UvDebugSandbox\UvDebugSandbox.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{40d272db-90e1-4332-a32f-6effeb44fe87}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
+		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
+		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}*SharedItemsImports = 4
 		UvDebugSandbox\UvDebugSandbox.projitems*{a8c85c23-03c2-41c6-8331-48835d257634}*SharedItemsImports = 4
 		TwistedLogik.Nucleus\TwistedLogik.Nucleus.projitems*{803b586b-cbac-4e46-a787-bdf837e1ef46}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{97309779-3045-4d98-8de0-5f40a8dc1c5b}*SharedItemsImports = 13
@@ -225,6 +231,12 @@ Global
 		{F95FF829-661D-4809-8150-145114B787AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F95FF829-661D-4809-8150-145114B787AA}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{F95FF829-661D-4809-8150-145114B787AA}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
