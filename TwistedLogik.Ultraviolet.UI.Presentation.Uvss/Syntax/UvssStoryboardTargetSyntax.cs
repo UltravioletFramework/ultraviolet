@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// Initializes a new instance of the <see cref="UvssStoryboardTargetSyntax"/> class.
         /// </summary>
         internal UvssStoryboardTargetSyntax()
-            : this(null, null, null, null)
+            : this(null, default(SeparatedSyntaxList<UvssIdentifierBaseSyntax>), null, null)
         { }
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// </summary>
         internal UvssStoryboardTargetSyntax(
             SyntaxToken targetKeyword,
-            UvssIdentifierBaseSyntax typeNameIdentifier,
+            SeparatedSyntaxList<UvssIdentifierBaseSyntax> filters,
             UvssSelectorWithParenthesesSyntax selector,
             UvssBlockSyntax body)
             : base(SyntaxKind.StoryboardTarget)
@@ -27,8 +27,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             this.TargetKeyword = targetKeyword;
             ChangeParent(targetKeyword);
 
-            this.TypeNameIdentifier = typeNameIdentifier;
-            ChangeParent(typeNameIdentifier);
+            this.Filters = filters;
+            ChangeParent(filters.Node);
 
             this.Selector = selector;
             ChangeParent(selector);
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             switch (index)
             {
                 case 0: return TargetKeyword;
-                case 1: return TypeNameIdentifier;
+                case 1: return Filters.Node;
                 case 2: return Selector;
                 case 3: return Body;
                 default:
@@ -62,8 +62,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the target's optional type name.
         /// </summary>
-        public UvssIdentifierBaseSyntax TypeNameIdentifier { get; internal set; }
-
+        public SeparatedSyntaxList<UvssIdentifierBaseSyntax> Filters { get; internal set; }
+        
         /// <summary>
         /// Gets the target's selector.
         /// </summary>

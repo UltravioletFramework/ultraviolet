@@ -469,7 +469,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 CompileSelector(node.Selector);
 
             var filter =
-                CompileStoryboardTargetFilter(node.TypeNameIdentifier);
+                CompileStoryboardTargetFilter(node.Filters);
 
             var animations = new List<UvssStoryboardAnimation>();
             for (int i = 0; i < node.Body.Content.Count; i++)
@@ -488,18 +488,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="UvssStoryboardTargetFilter"/> from the specified syntax node.
         /// </summary>
-        private static UvssStoryboardTargetFilter CompileStoryboardTargetFilter(UvssIdentifierBaseSyntax identifier)
+        private static UvssStoryboardTargetFilter CompileStoryboardTargetFilter(SeparatedSyntaxList<UvssIdentifierBaseSyntax> filtersList)
         {
-            var filter = new UvssStoryboardTargetFilter();
-            if (identifier == null)
+            var filters = new UvssStoryboardTargetFilter();
+            if (filtersList.Node == null)
             {
-                filter.Add(nameof(FrameworkElement));
+                filters.Add(nameof(FrameworkElement));
             }
             else
             {
-                filter.Add(identifier.Text);
+                for (int i = 0; i < filtersList.Count; i++)
+                {
+                    filters.Add(filtersList[i].Text);
+                }
             }
-            return filter;
+            return filters;
         }
 
         /// <summary>

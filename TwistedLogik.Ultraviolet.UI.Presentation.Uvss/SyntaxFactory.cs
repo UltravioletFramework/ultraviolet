@@ -1788,7 +1788,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return new UvssStoryboardTargetSyntax(
                 new UvssKeyword(SyntaxKind.TargetKeyword),
-                null, 
+                default(SeparatedSyntaxList<UvssIdentifierBaseSyntax>), 
                 null, 
                 body);
         }
@@ -1805,7 +1805,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return new UvssStoryboardTargetSyntax(
                 new UvssKeyword(SyntaxKind.TargetKeyword),
-                Identifier(typeName), 
+                SeparatedList(
+                    Identifier(typeName)
+                ), 
                 null, 
                 body);
         }
@@ -1824,7 +1826,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return new UvssStoryboardTargetSyntax(
                 new UvssKeyword(SyntaxKind.TargetKeyword),
-                Identifier(typeName), 
+                SeparatedList(
+                    Identifier(typeName)
+                ),
                 selector, 
                 body);
         }
@@ -1845,7 +1849,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return new UvssStoryboardTargetSyntax(
                 targetKeyword, 
-                typeNameIdentifier, 
+                SeparatedList(
+                    typeNameIdentifier
+                ), 
                 selector, 
                 body);
         }

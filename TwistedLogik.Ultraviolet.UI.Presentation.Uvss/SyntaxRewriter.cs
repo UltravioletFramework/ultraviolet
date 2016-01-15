@@ -771,8 +771,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (newTargetKeyword != node.TargetKeyword)
                 unchanged = false;
 
-            var newTypeNameIdentifier = (UvssIdentifierBaseSyntax)Visit(node.TypeNameIdentifier);
-            if (newTypeNameIdentifier != node.TypeNameIdentifier)
+            var newFilters = VisitSeparatedList(node.Filters);
+            if (newFilters.Node != node.Filters.Node)
                 unchanged = false;
 
             var newSelector = (UvssSelectorWithParenthesesSyntax)Visit(node.Selector);
@@ -785,7 +785,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             return unchanged ? node : new UvssStoryboardTargetSyntax(
                 newTargetKeyword,
-                newTypeNameIdentifier,
+                newFilters,
                 newSelector,
                 newBody);
         }

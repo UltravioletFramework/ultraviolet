@@ -248,7 +248,11 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         /// <param name="storyboardTarget">The storyboard target node to visit.</param>
         private void VisitStoryboardTarget(UvssStoryboardTargetSyntax storyboardTarget)
         {
-            Style(storyboardTarget.TypeNameIdentifier, typeUvssTypeName);
+            for (int i = 0; i < storyboardTarget.Filters.Count; i++)
+            {
+                var filterNode = storyboardTarget.Filters[i];
+                Style(filterNode, typeUvssTypeName);
+            }
         }
 
         /// <summary>

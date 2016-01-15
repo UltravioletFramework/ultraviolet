@@ -1250,8 +1250,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             TheResultingNode(target)
                 .ShouldBePresent();
 
-            var typeNameIdentifier = target.TypeNameIdentifier;
-            TheResultingNode(typeNameIdentifier)
+            var typeNameIdentifier = target.Filters;
+            TheResultingNode(typeNameIdentifier.Node)
                 .ShouldBeNull();
 
             var selector = target.Selector;
@@ -1277,8 +1277,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             TheResultingNode(target)
                 .ShouldBePresent();
 
-            var typeNameIdentifier = target.TypeNameIdentifier;
-            TheResultingNode(typeNameIdentifier)
+            var typeNameIdentifier = target.Filters;
+            TheResultingNode(typeNameIdentifier.Node)
                 .ShouldBePresent()
                 .ShouldHaveFullString("Control");
 
@@ -1305,8 +1305,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             TheResultingNode(target)
                 .ShouldBePresent();
 
-            var typeNameIdentifier = target.TypeNameIdentifier;
-            TheResultingNode(typeNameIdentifier)
+            var typeNameIdentifier = target.Filters;
+            TheResultingNode(typeNameIdentifier.Node)
                 .ShouldBeNull();
 
             var selector = target.Selector.Selector;
@@ -1333,8 +1333,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             TheResultingNode(target)
                 .ShouldBePresent();
 
-            var typeNameIdentifier = target.TypeNameIdentifier;
-            TheResultingNode(typeNameIdentifier)
+            var typeNameIdentifier = target.Filters;
+            TheResultingNode(typeNameIdentifier.Node)
                 .ShouldBePresent()
                 .ShouldHaveFullString("Control");
 

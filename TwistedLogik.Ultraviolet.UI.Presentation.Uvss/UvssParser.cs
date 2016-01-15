@@ -2947,7 +2947,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         {
             return WithPosition(new UvssStoryboardTargetSyntax(
                 MissingToken(SyntaxKind.TargetKeyword, input, position),
-                null,
+                default(SeparatedSyntaxList<UvssIdentifierBaseSyntax>),
                 null,
                 MissingBlock(input, position, children)));
         }
@@ -2965,7 +2965,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 ExpectToken(input, ref position, SyntaxKind.TargetKeyword);
 
             var typeNameIdentifier =
-                AcceptIdentifier(input, ref position);
+                AcceptSeparatedList(input, ref position, ExpectIdentifier);
 
             var selector =
                 AcceptSelectorWithParentheses(input, ref position);
