@@ -385,14 +385,14 @@ Global
 		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|Any CPU.ActiveCfg = Release|Any CPU
-		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}.Signed|Any CPU.Build.0 = Signed|Any CPU
 		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|Any CPU.ActiveCfg = Release|Any CPU
-		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
