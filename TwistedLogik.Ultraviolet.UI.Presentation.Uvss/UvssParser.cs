@@ -15,11 +15,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
     /// <typeparam name="TNode">The type of node which is produced.</typeparam>
     /// <param name="input">The lexer token stream.</param>
     /// <param name="position">The current position in the lexer token stream.</param>
-    /// <param name="listIndex">If the node is going to be used as a part of a list, the node's
-    /// index within that list; otherwise, 0.</param>
     /// <returns>The node which was produced.</returns>
     internal delegate TNode UvssParserDelegate<TNode>(
-        IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex) where TNode : SyntaxNode;
+        IList<UvssLexerToken> input, ref Int32 position) where TNode : SyntaxNode;
 
     /// <summary>
     /// Contains methods for parsing UVSS source text into an abstract syntax tree.
@@ -522,7 +520,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a content node for a document.
         /// </summary>
         private static SyntaxNode AcceptDocumentContent(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var nextTokenKind = SyntaxKindFromNextToken(input, position);
             if (nextTokenKind == SyntaxKind.EndOfFileToken)
@@ -577,7 +575,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             while (true)
             {
-                var item = itemParser(input, ref position, builder.Count);
+                var item = itemParser(input, ref position);
                 if (item == null || (item.IsMissing && builder.IsNull))
                     break;
 
@@ -637,7 +635,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             while (true)
             {
-                var item = itemParser(input, ref position, builder.Count);
+                var item = itemParser(input, ref position);
                 if (item == null || (item.IsMissing && builder.IsNull))
                     break;
 
@@ -649,7 +647,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 if (item.IsMissing)
                     break;
 
-                var separator = separatorParser(input, ref position, builder.Count);
+                var separator = separatorParser(input, ref position);
                 if (separator == null)
                     break;
 
@@ -701,7 +699,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             {
                 while (true)
                 {
-                    var contentNode = contentParser(input, ref position, contentList.Count);
+                    var contentNode = contentParser(input, ref position);
                     if (contentNode == null)
                         break;
 
@@ -765,7 +763,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses an identifier.
         /// </summary>
         private static UvssIdentifierBaseSyntax ParseIdentifier(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var nextKind = SyntaxKindFromNextToken(input, position);
             if (nextKind == SyntaxKind.OpenBracketToken)
@@ -838,7 +836,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
             else
             {
-                return ParseUnescapedIdentifier(input, ref position, listIndex, accept);
+                return ParseUnescapedIdentifier(input, ref position, accept);
             }
         }
 
@@ -846,7 +844,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses an unescaped identifier.
         /// </summary>
         private static UvssIdentifierSyntax ParseUnescapedIdentifier(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var nextKind = SyntaxKindFromNextToken(input, position);
             if (nextKind != SyntaxKind.IdentifierToken)
@@ -863,36 +861,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts an identifier.
         /// </summary>
         private static UvssIdentifierBaseSyntax AcceptIdentifier(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseIdentifier(input, ref position, listIndex, true);
+            return ParseIdentifier(input, ref position, true);
         }
 
         /// <summary>
         /// Accepts an unescaped identifier.
         /// </summary>
         private static UvssIdentifierSyntax AcceptUnescapedIdentifier(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseUnescapedIdentifier(input, ref position, listIndex, true);
+            return ParseUnescapedIdentifier(input, ref position, true);
         }
 
         /// <summary>
         /// Expects an identifier and produces a missing node if one is not found.
         /// </summary>
         private static UvssIdentifierBaseSyntax ExpectIdentifier(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseIdentifier(input, ref position, listIndex, false);
+            return ParseIdentifier(input, ref position, false);
         }
 
         /// <summary>
         /// Expects an unescaped identifier and produces a missing node if one is not found.
         /// </summary>
         private static UvssIdentifierSyntax ExpectUnescapedIdentifier(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseUnescapedIdentifier(input, ref position, listIndex, false);
+            return ParseUnescapedIdentifier(input, ref position, false);
         }
 
         /// <summary>
@@ -911,7 +909,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a property name.
         /// </summary>
         private static UvssPropertyNameSyntax ParsePropertyName(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var propertyName = default(UvssPropertyNameSyntax);
 
@@ -961,18 +959,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a property name.
         /// </summary>
         private static UvssPropertyNameSyntax AcceptPropertyName(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParsePropertyName(input, ref position, listIndex, true);
+            return ParsePropertyName(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a property name and produces a missing node if one is not found.
         /// </summary>
         private static UvssPropertyNameSyntax ExpectPropertyName(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParsePropertyName(input, ref position, listIndex, false);
+            return ParsePropertyName(input, ref position, false);
         }
 
         /// <summary>
@@ -991,7 +989,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses an event name.
         /// </summary>
         private static UvssEventNameSyntax ParseEventName(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var eventName = default(UvssEventNameSyntax);
 
@@ -1041,18 +1039,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts an event name.
         /// </summary>
         private static UvssEventNameSyntax AcceptEventName(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseEventName(input, ref position, listIndex, true);
+            return ParseEventName(input, ref position, true);
         }
 
         /// <summary>
         /// Expects an event name and produces a missing node if one is not found.
         /// </summary>
         private static UvssEventNameSyntax ExpectEventName(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseEventName(input, ref position, listIndex, false);
+            return ParseEventName(input, ref position, false);
         }
 
         /// <summary>
@@ -1073,7 +1071,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a navigation expression.
         /// </summary>
         private static UvssNavigationExpressionSyntax ParseNavigationExpression(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.PipeToken)
                 return null;
@@ -1120,25 +1118,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a navigation expression.
         /// </summary>
         private static UvssNavigationExpressionSyntax AcceptNavigationExpression(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseNavigationExpression(input, ref position, listIndex, true);
+            return ParseNavigationExpression(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a navigation expression and produces a missing node if one is not found.
         /// </summary>
         private static UvssNavigationExpressionSyntax ExpectNavigationExpression(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseNavigationExpression(input, ref position, listIndex, false);
+            return ParseNavigationExpression(input, ref position, false);
         }
 
         /// <summary>
         /// Parses a navigation expression indexer.
         /// </summary>
         private static UvssNavigationExpressionIndexerSyntax ParseNavigationExpressionIndexer(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.OpenBracketToken)
                 return null;
@@ -1181,18 +1179,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a navigation expression indexer.
         /// </summary>
         private static UvssNavigationExpressionIndexerSyntax AcceptNavigationExpressionIndexer(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseNavigationExpressionIndexer(input, ref position, listIndex, true);
+            return ParseNavigationExpressionIndexer(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a navigation expression indexer and produces a missing node if one is not found.
         /// </summary>
         private static UvssNavigationExpressionIndexerSyntax ExpectNavigationExpressionIndexer(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseNavigationExpressionIndexer(input, ref position, listIndex, false);
+            return ParseNavigationExpressionIndexer(input, ref position, false);
         }
 
         /// <summary>
@@ -1209,7 +1207,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a selector.
         /// </summary>
         private static UvssSelectorSyntax ParseSelector(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var components = AcceptList(
                 input, ref position, AcceptSelectorPartOrCombinator);
@@ -1257,34 +1255,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a selector.
         /// </summary>
         private static UvssSelectorSyntax AcceptSelector(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseSelector(input, ref position, listIndex, true);
+            return ParseSelector(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a selector and produces a missing node if one is not found.
         /// </summary>
         private static UvssSelectorSyntax ExpectSelector(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseSelector(input, ref position, listIndex, false);
+            return ParseSelector(input, ref position, false);
         }
 
         /// <summary>
         /// Parses a selector with an optional trailing navigation expression.
         /// </summary>
         private static UvssSelectorWithNavigationExpressionSyntax ParseSelectorWithNavigationExpression(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var selector =
-                ExpectSelector(input, ref position, listIndex);
+                ExpectSelector(input, ref position);
 
             if (accept && selector.IsMissing)
                 return null;
 
             var navigationExpression =
-                AcceptNavigationExpression(input, ref position, 0);
+                AcceptNavigationExpression(input, ref position);
 
             var selectorWithNavExp = new UvssSelectorWithNavigationExpressionSyntax(
                 selector,
@@ -1301,25 +1299,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a selector with an optional trailing navigation expression.
         /// </summary>
         private static UvssSelectorWithNavigationExpressionSyntax AcceptSelectorWithNavigationExpression(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseSelectorWithNavigationExpression(input, ref position, listIndex, true);
+            return ParseSelectorWithNavigationExpression(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a selector with an optional trailing navigation expression and produces a missing node if one is not found.
         /// </summary>
         private static UvssSelectorWithNavigationExpressionSyntax ExpectSelectorWithNavigationExpression(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseSelectorWithNavigationExpression(input, ref position, listIndex, false);
+            return ParseSelectorWithNavigationExpression(input, ref position, false);
         }
 
         /// <summary>
         /// Accepts a selector part or combinator.
         /// </summary>
         private static SyntaxNode AcceptSelectorPartOrCombinator(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var nextTokenKind = SyntaxKindFromNextToken(input, position);
             if (IsPotentiallyStartOfSelectorPart(nextTokenKind))
@@ -1577,7 +1575,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a selector part.
         /// </summary>
         private static UvssSelectorPartBaseSyntax ParseSelectorPart(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var leadingTriviaList = AccumulateTrivia(input, ref position, isLeading: true);
             var leadingTrivia = ConvertTriviaList(leadingTriviaList);
@@ -1659,18 +1657,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a selector part.
         /// </summary>
         private static UvssSelectorPartBaseSyntax AcceptSelectorPart(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseSelectorPart(input, ref position, listIndex, true);
+            return ParseSelectorPart(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a selector part and produces a missing node if one is not found.
         /// </summary>
         private static UvssSelectorPartBaseSyntax ExpectSelectorPart(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseSelectorPart(input, ref position, listIndex, false);
+            return ParseSelectorPart(input, ref position, false);
         }
         
         /// <summary>
@@ -1689,7 +1687,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a parentheses-enclosed selector.
         /// </summary>
         private static UvssSelectorWithParenthesesSyntax ParseSelectorWithParentheses(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.OpenParenthesesToken)
                 return null;
@@ -1728,25 +1726,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a parentheses-enclosed selector.
         /// </summary>
         private static UvssSelectorWithParenthesesSyntax AcceptSelectorWithParentheses(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseSelectorWithParentheses(input, ref position, listIndex, true);
+            return ParseSelectorWithParentheses(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a parentheses-enclosed selector and produces a missing node if one is not found.
         /// </summary>
         private static UvssSelectorWithParenthesesSyntax ExpectSelectorWithParentheses(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseSelectorWithParentheses(input, ref position, listIndex, false);
+            return ParseSelectorWithParentheses(input, ref position, false);
         }
 
         /// <summary>
         /// Parses a property value token from the lexer stream.
         /// </summary>
         private static SyntaxToken ParsePropertyValueToken(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept, SyntaxKind terminator, ref Boolean eol)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept, SyntaxKind terminator, ref Boolean eol)
         {
             var startpos = GetNodePositionFromLexerPosition(input, position);
             var start = position + CountTrivia(input, position, acceptEndOfLine: false);
@@ -1801,30 +1799,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a property value token.
         /// </summary>
         private static SyntaxToken AcceptPropertyValueToken(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var eol = false;
-            return ParsePropertyValueToken(input, ref position, 0, true, SyntaxKind.SemiColonToken, ref eol);
+            return ParsePropertyValueToken(input, ref position, true, SyntaxKind.SemiColonToken, ref eol);
         }
 
         /// <summary>
         /// Expects a property value token and produces a missing node if one is not found.
         /// </summary>
         private static SyntaxToken ExpectPropertyValueToken(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var eol = false;
-            return ParsePropertyValueToken(input, ref position, 0, false, SyntaxKind.SemiColonToken, ref eol);
+            return ParsePropertyValueToken(input, ref position, false, SyntaxKind.SemiColonToken, ref eol);
         }
 
         /// <summary>
         /// Accepts a brace-enclosed property value token.
         /// </summary>
         private static SyntaxToken AcceptPropertyValueTokenWithBraces(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var eol = false;
-            return ParsePropertyValueToken(input, ref position, 0, true, SyntaxKind.CloseCurlyBraceToken, ref eol);
+            return ParsePropertyValueToken(input, ref position, true, SyntaxKind.CloseCurlyBraceToken, ref eol);
         }
         
         /// <summary>
@@ -1832,19 +1830,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// produces a missing node if one is not found.
         /// </summary>
         private static SyntaxToken ExpectPropertyValueTokenOnSameLine(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, ref Boolean eol)
+            IList<UvssLexerToken> input, ref Int32 position, ref Boolean eol)
         {
-            return ParsePropertyValueToken(input, ref position, listIndex, false, SyntaxKind.SemiColonToken, ref eol);
+            return ParsePropertyValueToken(input, ref position, false, SyntaxKind.SemiColonToken, ref eol);
         }
 
         /// <summary>
         /// Expects a brace-enclosed property value token and produces a missing node if one is not found.
         /// </summary>
         private static SyntaxToken ExpectPropertyValueTokenWithBraces(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var eol = false;
-            return ParsePropertyValueToken(input, ref position, 0, false, SyntaxKind.CloseCurlyBraceToken, ref eol);
+            return ParsePropertyValueToken(input, ref position, false, SyntaxKind.CloseCurlyBraceToken, ref eol);
         }
 
         /// <summary>
@@ -1861,10 +1859,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a property value.
         /// </summary>
         private static UvssPropertyValueSyntax ParsePropertyValue(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept, ref Boolean eol)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept, ref Boolean eol)
         {
             var contentToken =
-                ExpectPropertyValueTokenOnSameLine(input, ref position, 0, ref eol);
+                ExpectPropertyValueTokenOnSameLine(input, ref position, ref eol);
 
             if (accept && contentToken.IsMissing)
                 return null;
@@ -1877,32 +1875,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a property value.
         /// </summary>
         private static UvssPropertyValueSyntax AcceptPropertyValue(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var eol = false;
-            return ParsePropertyValue(input, ref position, listIndex, true, ref eol);
+            return ParsePropertyValue(input, ref position, true, ref eol);
         }
 
         /// <summary>
         /// Expects a property value and produces a missing node if one is not found.
         /// </summary>
         private static UvssPropertyValueSyntax ExpectPropertyValue(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var eol = false;
-            return ParsePropertyValue(input, ref position, listIndex, false, ref eol);
+            return ParsePropertyValue(input, ref position, false, ref eol);
         }
 
         /// <summary>
         /// Expects a property value on the same line as previous nodes and produces a missing node if one is not found.
         /// </summary>
         private static UvssPropertyValueSyntax ExpectPropertyValueOnSameLine(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, ref Boolean eol)
+            IList<UvssLexerToken> input, ref Int32 position, ref Boolean eol)
         {
             if (eol)
                 return MissingPropertyValue(input, position);
 
-            return ParsePropertyValue(input, ref position, listIndex, false, ref eol);
+            return ParsePropertyValue(input, ref position, false, ref eol);
         }
 
         /// <summary>
@@ -1921,7 +1919,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a brace-enclosed property value.
         /// </summary>
         private static UvssPropertyValueWithBracesSyntax ParsePropertyValueWithBraces(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.OpenCurlyBraceToken)
                 return null;
@@ -1957,25 +1955,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a brace-enclosed property value.
         /// </summary>
         private static UvssPropertyValueWithBracesSyntax AcceptPropertyValueWithBraces(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParsePropertyValueWithBraces(input, ref position, listIndex, true);
+            return ParsePropertyValueWithBraces(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a brace-enclosed property value and produces a missing node if one is not found.
         /// </summary>
         private static UvssPropertyValueWithBracesSyntax ExpectPropertyValueWithBraces(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParsePropertyValueWithBraces(input, ref position, listIndex, false);
+            return ParsePropertyValueWithBraces(input, ref position, false);
         }
 
         /// <summary>
         /// Accepts any node which is valid inside of a rule set body.
         /// </summary>
         private static SyntaxNode AcceptRuleSetBodyNode(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var nextTokenKind = SyntaxKindFromNextToken(input, position);
             if (nextTokenKind == SyntaxKind.CloseCurlyBraceToken || nextTokenKind == SyntaxKind.EndOfFileToken)
@@ -1994,7 +1992,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     return ExpectTrigger(input, ref position);
             }
 
-            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            var empty = ExpectEmptyStatement(input, ref position);
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInRuleSetBody);
             return empty;
         }
@@ -2014,7 +2012,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a rule set.
         /// </summary>
         private static UvssRuleSetSyntax ParseRuleSet(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var diagnostics = default(ICollection<DiagnosticInfo>);
 
@@ -2040,25 +2038,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a rule set.
         /// </summary>
         private static UvssRuleSetSyntax AcceptRuleSet(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseRuleSet(input, ref position, listIndex, true);
+            return ParseRuleSet(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a rule set and produces a missing node if one is not found.
         /// </summary>
         private static UvssRuleSetSyntax ExpectRuleSet(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseRuleSet(input, ref position, listIndex, false);
+            return ParseRuleSet(input, ref position, false);
         }
 
         /// <summary>
         /// Parses a rule.
         /// </summary>
         private static UvssRuleSyntax ParseRule(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var propertyName = accept ?
                 AcceptPropertyName(input, ref position) :
@@ -2073,7 +2071,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 ExpectTokenOnSameLine(input, ref position, SyntaxKind.ColonToken, ref eol);
 
             var value =
-                ExpectPropertyValueOnSameLine(input, ref position, listIndex, ref eol);
+                ExpectPropertyValueOnSameLine(input, ref position, ref eol);
 
             var qualifierToken = 
                 AcceptTokenOnSameLine(input, ref position, SyntaxKind.ImportantKeyword, ref eol);
@@ -2108,18 +2106,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a rule.
         /// </summary>
         private static UvssRuleSyntax AcceptRule(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseRule(input, ref position, listIndex, true);
+            return ParseRule(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a rule and produces a missing node if one is not found.
         /// </summary>
         private static UvssRuleSyntax ExpectRule(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseRule(input, ref position, listIndex, false);
+            return ParseRule(input, ref position, false);
         }
 
         /// <summary>
@@ -2141,7 +2139,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a transition.
         /// </summary>
         private static UvssTransitionSyntax ParseTransition(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.TransitionKeyword)
                 return null;
@@ -2152,13 +2150,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 ExpectToken(input, ref position, SyntaxKind.TransitionKeyword);
             
             var argumentList =
-                ExpectTransitionArgumentList(input, ref position, 0);
+                ExpectTransitionArgumentList(input, ref position);
 
             var colonToken =
                 ExpectTokenOnSameLine(input, ref position, SyntaxKind.ColonToken, ref eol);
 
             var value = 
-                ExpectPropertyValueOnSameLine(input, ref position, 0, ref eol);
+                ExpectPropertyValueOnSameLine(input, ref position, ref eol);
 
             var qualifierToken = 
                 AcceptTokenOnSameLine(input, ref position, SyntaxKind.ImportantKeyword, ref eol);
@@ -2205,18 +2203,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a transition.
         /// </summary>
         private static UvssTransitionSyntax AcceptTransition(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseTransition(input, ref position, listIndex, true);
+            return ParseTransition(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a transition and produces a missing node if one is not found.
         /// </summary>
         private static UvssTransitionSyntax ExpectTransition(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseTransition(input, ref position, listIndex, false);
+            return ParseTransition(input, ref position, false);
         }
 
         /// <summary>
@@ -2235,7 +2233,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a transition argument list.
         /// </summary>
         private static UvssTransitionArgumentListSyntax ParseTransitionArgumentList(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.OpenParenthesesToken)
                 return null;
@@ -2271,25 +2269,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a transition argument list.
         /// </summary>
         private static UvssTransitionArgumentListSyntax AcceptTransitionArgumentList(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseTransitionArgumentList(input, ref position, listIndex, true);
+            return ParseTransitionArgumentList(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a transition argument list and produces a missing node if one is not found.
         /// </summary>
         private static UvssTransitionArgumentListSyntax ExpectTransitionArgumentList(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseTransitionArgumentList(input, ref position, listIndex, false);
+            return ParseTransitionArgumentList(input, ref position, false);
         }
 
         /// <summary>
         /// Accepts an event trigger argument.
         /// </summary>
         private static SyntaxNode AcceptEventTriggerArgument(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var nextTokenKind = SyntaxKindFromNextToken(input, position);
             if (nextTokenKind == SyntaxKind.CloseCurlyBraceToken || nextTokenKind == SyntaxKind.EndOfFileToken)
@@ -2302,7 +2300,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (token != null)
                 return token;
 
-            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            var empty = ExpectEmptyStatement(input, ref position);
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInEventTriggerArgumentList);
             return empty;
         }
@@ -2323,7 +2321,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses an event trigger argument list.
         /// </summary>
         private static UvssEventTriggerArgumentList ParseEventTriggerArgumentList(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.OpenParenthesesToken)
                 return null;
@@ -2359,18 +2357,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts an event trigger argument list.
         /// </summary>
         private static UvssEventTriggerArgumentList AcceptEventTriggerArgumentList(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseEventTriggerArgumentList(input, ref position, listIndex, true);
+            return ParseEventTriggerArgumentList(input, ref position, true);
         }
 
         /// <summary>
         /// Expects an event trigger argument list and produces a missing node if one is not found.
         /// </summary>
         private static UvssEventTriggerArgumentList ExpectEventTriggerArgumentList(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseEventTriggerArgumentList(input, ref position, listIndex, false);
+            return ParseEventTriggerArgumentList(input, ref position, false);
         }
 
         /// <summary>
@@ -2386,7 +2384,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a comparison operator.
         /// </summary>
         private static SyntaxToken ParseComparisonOperator(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var nextTokenKind = SyntaxKindFromNextToken(input, position);
 
@@ -2418,18 +2416,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a comparison operator.
         /// </summary>
         private static SyntaxToken AcceptComparisonOperator(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseComparisonOperator(input, ref position, listIndex, true);
+            return ParseComparisonOperator(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a comparison operator and produces a missing node if one is not found.
         /// </summary>
         private static SyntaxToken ExpectComparisonOperator(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseComparisonOperator(input, ref position, listIndex, false);
+            return ParseComparisonOperator(input, ref position, false);
         }
 
         /// <summary>
@@ -2448,7 +2446,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a property trigger condition.
         /// </summary>
         private static UvssPropertyTriggerConditionSyntax ParsePropertyTriggerCondition(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var propertyName = accept ?
                 AcceptPropertyName(input, ref position) :
@@ -2482,25 +2480,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a property trigger condition.
         /// </summary>
         private static UvssPropertyTriggerConditionSyntax AcceptPropertyTriggerCondition(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParsePropertyTriggerCondition(input, ref position, listIndex, true);
+            return ParsePropertyTriggerCondition(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a property trigger condition and produces a missing node if one is not found.
         /// </summary>
         private static UvssPropertyTriggerConditionSyntax ExpectPropertyTriggerCondition(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParsePropertyTriggerCondition(input, ref position, listIndex, false);
+            return ParsePropertyTriggerCondition(input, ref position, false);
         }
 
         /// <summary>
         /// Accepts a "play-storyboard" trigger action.
         /// </summary>
         private static UvssPlayStoryboardTriggerActionSyntax AcceptPlayStoryboardTriggerAction(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var playStoryboardKeyword =
                 ExpectToken(input, ref position, SyntaxKind.PlayStoryboardKeyword);
@@ -2530,7 +2528,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a "play-sfx" trigger action.
         /// </summary>
         private static UvssPlaySfxTriggerActionSyntax AcceptPlaySfxTriggerAction(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var playSfxKeyword =
                 ExpectToken(input, ref position, SyntaxKind.PlaySfxKeyword);
@@ -2556,7 +2554,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a "set" trigger action.
         /// </summary>
         private static UvssSetTriggerActionSyntax AcceptSetTriggerAction(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var setKeyword =
                 ExpectToken(input, ref position, SyntaxKind.SetKeyword);
@@ -2590,7 +2588,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a trigger action.
         /// </summary>
         private static UvssTriggerActionBaseSyntax AcceptTriggerAction(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var nextKind = SyntaxKindFromNextToken(input, position);
             if (nextKind != SyntaxKind.PlayStoryboardKeyword &&
@@ -2603,13 +2601,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             switch (nextKind)
             {
                 case SyntaxKind.PlayStoryboardKeyword:
-                    return AcceptPlayStoryboardTriggerAction(input, ref position, listIndex);
+                    return AcceptPlayStoryboardTriggerAction(input, ref position);
 
                 case SyntaxKind.PlaySfxKeyword:
-                    return AcceptPlaySfxTriggerAction(input, ref position, listIndex);
+                    return AcceptPlaySfxTriggerAction(input, ref position);
 
                 case SyntaxKind.SetKeyword:
-                    return AcceptSetTriggerAction(input, ref position, listIndex);
+                    return AcceptSetTriggerAction(input, ref position);
 
                 default:
                     throw new InvalidOperationException();
@@ -2620,17 +2618,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts nodes which are valid inside of the body of a trigger.
         /// </summary>
         private static SyntaxNode AcceptTriggerBodyNode(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var nextKind = SyntaxKindFromNextToken(input, position);
             if (nextKind == SyntaxKind.CloseCurlyBraceToken || nextKind == SyntaxKind.EndOfFileToken)
                 return null;
 
-            var action = AcceptTriggerAction(input, ref position, listIndex);
+            var action = AcceptTriggerAction(input, ref position);
             if (action != null)
                 return action;
 
-            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            var empty = ExpectEmptyStatement(input, ref position);
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInTriggerBody);
             return empty;
         }
@@ -2639,7 +2637,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a proeprty trigger.
         /// </summary>
         private static UvssPropertyTriggerSyntax ParsePropertyTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.TriggerKeyword)
                 return null;
@@ -2691,18 +2689,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a property trigger.
         /// </summary>
         private static UvssPropertyTriggerSyntax AcceptPropertyTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParsePropertyTrigger(input, ref position, listIndex, true);
+            return ParsePropertyTrigger(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a property trigger and produces a missing node if one does not exist.
         /// </summary>
         private static UvssPropertyTriggerSyntax ExpectPropertyTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParsePropertyTrigger(input, ref position, listIndex, false) ??
+            return ParsePropertyTrigger(input, ref position, false) ??
                 new UvssPropertyTriggerSyntax() { IsMissing = true };
         }
 
@@ -2710,7 +2708,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses an event trigger.
         /// </summary>
         private static UvssEventTriggerSyntax ParseEventTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.TriggerKeyword)
                 return null;
@@ -2781,18 +2779,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts an event trigger.
         /// </summary>
         private static UvssEventTriggerSyntax AcceptEventTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseEventTrigger(input, ref position, listIndex, true);
+            return ParseEventTrigger(input, ref position, true);
         }
 
         /// <summary>
         /// Expects an event trigger and produces a missing node if one does not exist.
         /// </summary>
         private static UvssEventTriggerSyntax ExpectEventTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseEventTrigger(input, ref position, listIndex, false) ??
+            return ParseEventTrigger(input, ref position, false) ??
                 new UvssEventTriggerSyntax() { IsMissing = true };
         }
 
@@ -2800,7 +2798,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses an incomplete trigger.
         /// </summary>
         private static UvssIncompleteTriggerSyntax ParseIncompleteTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.TriggerKeyword)
                 return null;
@@ -2831,18 +2829,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts an incomplete trigger.
         /// </summary>
         private static UvssIncompleteTriggerSyntax AcceptIncompleteTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseIncompleteTrigger(input, ref position, listIndex, true);
+            return ParseIncompleteTrigger(input, ref position, true);
         }
 
         /// <summary>
         /// Expects an incomplete trigger and produces a missing node if one does not exist.
         /// </summary>
         private static UvssIncompleteTriggerSyntax ExpectIncompleteTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseIncompleteTrigger(input, ref position, listIndex, false);
+            return ParseIncompleteTrigger(input, ref position, false);
         }
 
         /// <summary>
@@ -2861,16 +2859,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a trigger.
         /// </summary>
         private static UvssTriggerBaseSyntax ParseTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var propertyTrigger =
-                AcceptPropertyTrigger(input, ref position, listIndex);
+                AcceptPropertyTrigger(input, ref position);
 
             if (propertyTrigger != null)
                 return propertyTrigger;
 
             var eventTrigger =
-                AcceptEventTrigger(input, ref position, listIndex);
+                AcceptEventTrigger(input, ref position);
 
             if (eventTrigger != null)
                 return eventTrigger;
@@ -2882,18 +2880,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a trigger.
         /// </summary>
         private static UvssTriggerBaseSyntax AcceptTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseTrigger(input, ref position, listIndex, true);
+            return ParseTrigger(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a trigger and produces a missing node if one is not found.
         /// </summary>
         private static UvssTriggerBaseSyntax ExpectTrigger(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseTrigger(input, ref position, listIndex, false);
+            return ParseTrigger(input, ref position, false);
         }
 
         /// <summary>
@@ -2913,17 +2911,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts nodes which are valid inside of the body of a storyboard.
         /// </summary>
         private static SyntaxNode AcceptStoryboardBodyNode(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var nextKind = SyntaxKindFromNextToken(input, position);
             if (nextKind == SyntaxKind.CloseCurlyBraceToken || nextKind == SyntaxKind.EndOfFileToken)
                 return null;
 
-            var storyboardTarget = AcceptStoryboardTarget(input, ref position, listIndex);
+            var storyboardTarget = AcceptStoryboardTarget(input, ref position);
             if (storyboardTarget != null)
                 return storyboardTarget;
 
-            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            var empty = ExpectEmptyStatement(input, ref position);
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInStoryboardBody);
             return empty;
         }
@@ -2932,7 +2930,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a storyboard declaration.
         /// </summary>
         private static UvssStoryboardSyntax ParseStoryboard(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.AtSignToken)
                 return null;
@@ -2972,25 +2970,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a storyboard declaration.
         /// </summary>
         private static UvssStoryboardSyntax AcceptStoryboard(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseStoryboard(input, ref position, listIndex, true);
+            return ParseStoryboard(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a storyboard declaration and produces a missing node if one is not found.
         /// </summary>
         private static UvssStoryboardSyntax ExpectStoryboard(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseStoryboard(input, ref position, listIndex, false);
+            return ParseStoryboard(input, ref position, false);
         }
 
         /// <summary>
         /// Accepts any node which is valid in the body of a storyboard target.
         /// </summary>
         private static SyntaxNode AcceptStoryboardTargetBodyNode(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var nextKind = SyntaxKindFromNextToken(input, position);
             if (nextKind == SyntaxKind.CloseCurlyBraceToken || nextKind == SyntaxKind.EndOfFileToken)
@@ -3000,7 +2998,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (animation != null)
                 return animation;
 
-            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            var empty = ExpectEmptyStatement(input, ref position);
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInStoryboardTargetBody);
             return empty;
         }
@@ -3022,7 +3020,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses a storyboard target declaration.
         /// </summary>
         private static UvssStoryboardTargetSyntax ParseStoryboardTarget(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.TargetKeyword)
                 return null;
@@ -3050,25 +3048,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a storyboard target declaration.
         /// </summary>
         private static UvssStoryboardTargetSyntax AcceptStoryboardTarget(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseStoryboardTarget(input, ref position, listIndex, true);
+            return ParseStoryboardTarget(input, ref position, true);
         }
 
         /// <summary>
         /// Expects a storyboard target declaration and produces a missing node if one is not found.
         /// </summary>
         private static UvssStoryboardTargetSyntax ExpectStoryboardTarget(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseStoryboardTarget(input, ref position, listIndex, false);
+            return ParseStoryboardTarget(input, ref position, false);
         }
 
         /// <summary>
         /// Accepts any node which is valid in the body of an animation.
         /// </summary>
         private static SyntaxNode AcceptAnimationBodyNode(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             var nextKind = SyntaxKindFromNextToken(input, position);
             if (nextKind == SyntaxKind.CloseCurlyBraceToken || nextKind == SyntaxKind.EndOfFileToken)
@@ -3078,7 +3076,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (animationKeyframe != null)
                 return animationKeyframe;
 
-            var empty = ExpectEmptyStatement(input, ref position, listIndex);
+            var empty = ExpectEmptyStatement(input, ref position);
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInAnimationBody);
             return empty;
         }
@@ -3100,7 +3098,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses an animation declaration.
         /// </summary>
         private static UvssAnimationSyntax ParseAnimation(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.AnimationKeyword)
                 return null;
@@ -3130,18 +3128,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts an animation declaration.
         /// </summary>
         private static UvssAnimationSyntax AcceptAnimation(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseAnimation(input, ref position, listIndex, true);
+            return ParseAnimation(input, ref position, true);
         }
 
         /// <summary>
         /// Expects an animation declaration and produces a missing node if one is not found.
         /// </summary>
         private static UvssAnimationSyntax ExpectAnimation(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseAnimation(input, ref position, listIndex, false);
+            return ParseAnimation(input, ref position, false);
         }
 
         /// <summary>
@@ -3161,7 +3159,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses an animation keyframe.
         /// </summary>
         private static UvssAnimationKeyframeSyntax ParseAnimationKeyframe(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             if (accept && SyntaxKindFromNextToken(input, position) != SyntaxKind.KeyframeKeyword)
                 return null;
@@ -3207,25 +3205,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts an animation keyframe.
         /// </summary>
         private static UvssAnimationKeyframeSyntax AcceptAnimationKeyframe(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseAnimationKeyframe(input, ref position, listIndex, true);
+            return ParseAnimationKeyframe(input, ref position, true);
         }
 
         /// <summary>
         /// Expects an animation keyframe and produces a missing node if one is not found.
         /// </summary>
         private static UvssAnimationKeyframeSyntax ExpectAnimationKeyframe(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseAnimationKeyframe(input, ref position, listIndex, false);
+            return ParseAnimationKeyframe(input, ref position, false);
         }
 
         /// <summary>
         /// Parses an empty statement.
         /// </summary>
         private static UvssEmptyStatementSyntax ParseEmptyStatement(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex, Boolean accept)
+            IList<UvssLexerToken> input, ref Int32 position, Boolean accept)
         {
             var trivia = AccumulateTrivia(input, ref position,
                 treatCurrentTokenAsTrivia: true,
@@ -3246,7 +3244,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts an empty statement.
         /// </summary>
         private static UvssEmptyStatementSyntax AcceptEmptyStatement(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             return null;
         }
@@ -3255,16 +3253,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Expects an empty statement.
         /// </summary>
         private static UvssEmptyStatementSyntax ExpectEmptyStatement(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
-            return ParseEmptyStatement(input, ref position, listIndex, false);
+            return ParseEmptyStatement(input, ref position, false);
         }
 
         /// <summary>
         /// Accepts a comma token.
         /// </summary>
         private static SyntaxToken AcceptComma(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             return AcceptToken(input, ref position, SyntaxKind.CommaToken);
         }
@@ -3273,7 +3271,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Expects a comma token and produces a missing node if one is not found.
         /// </summary>
         private static SyntaxToken ExpectComma(
-            IList<UvssLexerToken> input, ref Int32 position, Int32 listIndex = 0)
+            IList<UvssLexerToken> input, ref Int32 position)
         {
             return ExpectToken(input, ref position, SyntaxKind.CommaToken);
         }
