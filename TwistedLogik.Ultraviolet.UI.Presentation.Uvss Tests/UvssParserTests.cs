@@ -1250,7 +1250,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 
             var target = ((UvssStoryboardSyntax)document.Content[0]).Body.Content[0] as UvssStoryboardTargetSyntax;
             TheResultingNode(target)
-                .ShouldBePresent();
+                .ShouldBePresent()
+                .ShouldHaveNoDiagnostics();
 
             var typeNameIdentifier = target.Filters;
             TheResultingNode(typeNameIdentifier.Node)
@@ -1277,10 +1278,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 
             var target = ((UvssStoryboardSyntax)document.Content[0]).Body.Content[0] as UvssStoryboardTargetSyntax;
             TheResultingNode(target)
-                .ShouldBePresent();
+                .ShouldBePresent()
+                .ShouldHaveNoDiagnostics();
 
-            var typeNameIdentifier = target.Filters;
-            TheResultingNode(typeNameIdentifier.Node)
+            var filters = target.Filters;
+            TheResultingNode(filters.Node)
                 .ShouldBePresent()
                 .ShouldHaveFullString("Control");
 
@@ -1305,10 +1307,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 
             var target = ((UvssStoryboardSyntax)document.Content[0]).Body.Content[0] as UvssStoryboardTargetSyntax;
             TheResultingNode(target)
-                .ShouldBePresent();
+                .ShouldBePresent()
+                .ShouldHaveNoDiagnostics();
 
-            var typeNameIdentifier = target.Filters;
-            TheResultingNode(typeNameIdentifier.Node)
+            var filters = target.Filters;
+            TheResultingNode(filters.Node)
                 .ShouldBeNull();
 
             var selector = target.Selector.Selector;
@@ -1333,10 +1336,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 
             var target = ((UvssStoryboardSyntax)document.Content[0]).Body.Content[0] as UvssStoryboardTargetSyntax;
             TheResultingNode(target)
-                .ShouldBePresent();
+                .ShouldBePresent()
+                .ShouldHaveNoDiagnostics();
 
-            var typeNameIdentifier = target.Filters;
-            TheResultingNode(typeNameIdentifier.Node)
+            var filters = target.Filters;
+            TheResultingNode(filters.Node)
                 .ShouldBePresent()
                 .ShouldHaveFullString("Control");
 
@@ -1344,6 +1348,91 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             TheResultingNode(selector)
                 .ShouldBePresent()
                 .ShouldHaveFullString("#foo #bar #baz");
+
+            var body = target.Body;
+            TheResultingNode(body)
+                .ShouldBePresent()
+                .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
+        }
+
+        [TestMethod]
+        public void UvssParser_CorrectlyParsesSingleStoryboardTarget_WithMultipleTypes()
+        {
+            var document = UvssParser.Parse(
+                "@foo\r\n" +
+                "{\r\n" +
+                    "\ttarget Button, ToggleButton, RadioButton {}\r\n" +
+                "}");
+
+            var target = ((UvssStoryboardSyntax)document.Content[0]).Body.Content[0] as UvssStoryboardTargetSyntax;
+            TheResultingNode(target)
+                .ShouldBePresent()
+                .ShouldHaveNoDiagnostics();
+
+            var filters = target.Filters;
+            TheResultingValue(filters)
+                .ShouldSatisfyTheCondition(x => x.Count == 3);
+
+            TheResultingNode(filters[0])
+                .ShouldBePresent()
+                .ShouldHaveFullString("Button");
+
+            TheResultingNode(filters[1])
+                .ShouldBePresent()
+                .ShouldHaveFullString("ToggleButton");
+
+            TheResultingNode(filters[2])
+                .ShouldBePresent()
+                .ShouldHaveFullString("RadioButton");
+
+            var selector = target.Selector;
+            TheResultingNode(selector)
+                .ShouldBeNull();
+
+            var body = target.Body;
+            TheResultingNode(body)
+                .ShouldBePresent()
+                .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
+        }
+
+        [TestMethod]
+        public void UvssParser_ProducesErrorDiagnostic_ForStoryboardTarget_WithIncompleteFilter()
+        {
+            var document = UvssParser.Parse(
+                "@foo\r\n" +
+                "{\r\n" +
+                    "\ttarget Button, ToggleButton, {}\r\n" +
+                "}");
+
+            var target = ((UvssStoryboardSyntax)document.Content[0]).Body.Content[0] as UvssStoryboardTargetSyntax;
+            TheResultingNode(target)
+                .ShouldBePresent();
+
+            var filters = target.Filters;
+            TheResultingValue(filters)
+                .ShouldSatisfyTheCondition(x => x.Count == 3);
+
+            TheResultingNode(filters[0])
+                .ShouldBePresent()
+                .ShouldHaveFullString("Button");
+
+            TheResultingNode(filters[1])
+                .ShouldBePresent()
+                .ShouldHaveFullString("ToggleButton");
+
+            TheResultingNode(filters[2])
+                .ShouldBeMissing();
+
+            var filtersDiagnostics = filters.Node.GetDiagnostics().ToList();
+            TheResultingValue(filtersDiagnostics.Count)
+                .ShouldBe(1);
+
+            TheResultingObject(filtersDiagnostics[0])
+                .ShouldSatisfyTheCondition(x => x.ID == DiagnosticID.MissingToken);
+
+            var selector = target.Selector;
+            TheResultingNode(selector)
+                .ShouldBeNull();
 
             var body = target.Body;
             TheResultingNode(body)
