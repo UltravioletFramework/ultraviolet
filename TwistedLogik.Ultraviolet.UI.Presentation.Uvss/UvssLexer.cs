@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -21,62 +22,109 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="UvssLexer"/> class.
+        /// </summary>
+        /// <param name="source">The source which is being lexed.</param>
+        /// <param name="options">The lexer's options.</param>
+        private UvssLexer(String source, UvssLexerOptions options)
+        {
+            this.source = source;
+            this.options = options;
+        }
+
+        /// <summary>
         /// Tokenizes the specified Ultraviolet StyleSheets (UVSS) string.
         /// </summary>
         /// <param name="source">The source string to tokenize.</param>
         /// <param name="options">The lexer's configurable options, or null to use the default options.</param>
-        /// <returns>A list containing the tokens produced by tokenizing the specified string.</returns>
-        public IList<UvssLexerToken> Tokenize(String source, UvssLexerOptions options = null)
+        /// <returns>A <see cref="UvssLexerStream"/> instance which produces lexed tokens from the specified source text.</returns>
+        public static UvssLexerStream Tokenize(String source, UvssLexerOptions options = null)
         {
-            options = options ?? UvssLexerOptions.Default;
+            Contract.Require(source, nameof(source));
 
-            var output = new List<UvssLexerToken>();
-            
-            var lineIndex = 1;
-            var columnIndex = 1;
+            var instance = new UvssLexer(source, options ?? UvssLexerOptions.Default);
 
-            var position = 0;
-            var tokenType = default(UvssLexerTokenType);
-            var tokenText = default(String);
-            var token = default(UvssLexerToken);
+            return new UvssLexerStream(instance);
+        }
 
-            while (position < source.Length)
+        /// <summary>
+        /// Emits the next token which is produced from the lexer's source text.
+        /// </summary>
+        /// <param name="token">The token that was emitted.</param>
+        /// <returns>true if a token was emitted; otherwise, false.</returns>
+        public Boolean Emit(out UvssLexerToken token)
+        {
+            Contract.Require(source, nameof(source));
+            Contract.Require(options, nameof(options));
+
+            if (position >= source.Length)
             {
-                var match = regexLexer.Match(source, position);
-                if (match.Success)
-                {
-                    if (!GetTokenInfoFromRegexMatch(match, out tokenType, out tokenText))
-                    {
-                        var errorMessage = String.Format(UvssStrings.LexerInvalidToken,
-                            match.Value, lineIndex, columnIndex);
-                        throw new UvssLexerException(errorMessage, ErrorCodeInvalidToken, lineIndex, columnIndex);
-                    }
-
-                    ReadExtendedToken(source, position, ref tokenType, ref tokenText);
-                    
-                    var sourceOffset = position;
-                    var sourceLength = tokenText.Length;
-                    var sourceLine = lineIndex;
-                    var sourceColumn = columnIndex;
-
-                    token = new UvssLexerToken(tokenType,
-                        sourceOffset, sourceLength, sourceLine, sourceColumn, tokenText);
-                }
-                else
-                {
-                    var sourceOffset = position;
-                    var sourceLength = 1;
-                    var sourceLine = lineIndex;
-                    var sourceColumn = columnIndex;
-
-                    token = new UvssLexerToken(UvssLexerTokenType.Unknown,
-                        sourceOffset, sourceLength, sourceLine, sourceColumn, source[position].ToString());
-                }
-
-                position += EmitToken(output, token, ref lineIndex, ref columnIndex, options);
+                token = default(UvssLexerToken);
+                return false;
             }
 
-            return output;
+            var tokenType = default(UvssLexerTokenType);
+            var tokenText = default(String);
+
+            var match = regexLexer.Match(source, position);
+            if (match.Success)
+            {
+                if (!GetTokenInfoFromRegexMatch(match, out tokenType, out tokenText))
+                {
+                    var errorMessage = String.Format(UvssStrings.LexerInvalidToken,
+                        match.Value, lineIndex, columnIndex);
+                    throw new UvssLexerException(errorMessage, ErrorCodeInvalidToken, lineIndex, columnIndex);
+                }
+
+                ReadExtendedToken(source, position, ref tokenType, ref tokenText);
+
+                var sourceOffset = position;
+                var sourceLength = tokenText.Length;
+                var sourceLine = lineIndex;
+                var sourceColumn = columnIndex;
+
+                token = new UvssLexerToken(tokenType,
+                    sourceOffset, sourceLength, sourceLine, sourceColumn, tokenText);
+            }
+            else
+            {
+                var sourceOffset = position;
+                var sourceLength = 1;
+                var sourceLine = lineIndex;
+                var sourceColumn = columnIndex;
+
+                token = new UvssLexerToken(UvssLexerTokenType.Unknown,
+                    sourceOffset, sourceLength, sourceLine, sourceColumn, source[position].ToString());
+            }
+
+            HandleLineAndColumnTracking(token.Text, ref lineIndex, ref columnIndex, options);
+            position += token.Text.Length;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the lexer's current position within the source tet.
+        /// </summary>
+        public Int32 Position
+        {
+            get { return position; }
+        }
+
+        /// <summary>
+        /// Gets the line index at the lexer's current position.
+        /// </summary>
+        public Int32 LineIndex
+        {
+            get { return lineIndex; }
+        }
+
+        /// <summary>
+        /// Gets the column index at the lexer's current position.
+        /// </summary>
+        public Int32 ColumnIndex
+        {
+            get { return columnIndex; }
         }
 
         /// <summary>
@@ -514,6 +562,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
         // Lexer error codes.
         private const String ErrorCodeInvalidToken = "LEX0001";
-        private const String ErrorCodeInvalidSymbol = "LEX0002";
+
+        // Lexer instance state.
+        private String source;
+        private UvssLexerOptions options;
+        private Int32 position;
+        private Int32 lineIndex = 1;
+        private Int32 columnIndex = 1;
     }
 }

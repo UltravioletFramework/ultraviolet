@@ -25,9 +25,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var errors = tree.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error);
             if (errors.Any())
             {
-                var errorsList = String.Join(Environment.NewLine, errors.Select(x => x.Message));
-                var errorsMessage = PresentationStrings.StyleSheetParserError.Format(errorsList);
-                throw new UvssException(errorsMessage);
+                throw new UvssException(PresentationStrings.StyleSheetParserError, 
+                    errors.Select(x => UvssError.FromDiagnosticInfo(x)));
             }
 
             // Compile a list of rule sets and storyboards.
@@ -50,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                         break;
 
                     default:
-                        throw new UvssException("TODO");
+                        throw new UvssException(PresentationStrings.StyleSheetParserError);
                 }
             }
 
@@ -105,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     return LoopBehavior.Reverse;
 
                 default:
-                    throw new UvssException("TODO");
+                    throw new UvssException(PresentationStrings.StyleSheetParserError);
             }
         }
 
@@ -350,7 +349,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     break;
 
                 default:
-                    throw new UvssException("TODO");
+                    throw new UvssException(PresentationStrings.StyleSheetParserError);
             }
 
             return new UvssPropertyTriggerCondition(op, dpropName, refval);
@@ -398,7 +397,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     break;
 
                 default:
-                    throw new UvssException("TODO");
+                    throw new UvssException(PresentationStrings.StyleSheetParserError);
             }
 
             return action;

@@ -84,6 +84,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UvssLexerStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UvssLexerStreamPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerToken.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerTokenType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssParser.cs" />

@@ -350,6 +350,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Gets the index of the line of source text from which this node was parsed.
+        /// </summary>
+        public Int32 Line
+        {
+            get; internal set;
+        }
+
+        /// <summary>
+        /// Gets the index of the column of source text from which this node was parsed.
+        /// </summary>
+        public Int32 Column
+        {
+            get; internal set;
+        }
+
+        /// <summary>
         /// Gets the width of the node, excluding any leading or trailing trivia.
         /// </summary>
         public Int32 Width => FullWidth - (GetLeadingTriviaWidth() + GetTrailingTriviaWidth());

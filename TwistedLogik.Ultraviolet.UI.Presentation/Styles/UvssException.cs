@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
@@ -12,6 +15,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Initializes a new instance of the <see cref="UvssException"/> class.
         /// </summary>
         /// <param name="message">The exception message.</param>
-        public UvssException(String message) : base(message) { }
+        /// <param name="errors">The collection of errors which caused this exception to be raised.</param>
+        public UvssException(String message, params UvssError[] errors)
+            : this(message, (IEnumerable<UvssError>)errors)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssException"/> class.
+        /// </summary>
+        /// <param name="message">The exception message.</param>
+        /// <param name="errors">The collection of errors which caused this exception to be raised.</param>
+        public UvssException(String message, IEnumerable<UvssError> errors)
+            : base(message)
+        {
+            this.Errors = new ReadOnlyCollection<UvssError>(
+                (errors ?? Enumerable.Empty<UvssError>()).ToList());
+        }
+        
+        /// <summary>
+        /// Gets the collection of errors which caused this exception to be raised.
+        /// </summary>
+        public ReadOnlyCollection<UvssError> Errors { get; }
     }
 }

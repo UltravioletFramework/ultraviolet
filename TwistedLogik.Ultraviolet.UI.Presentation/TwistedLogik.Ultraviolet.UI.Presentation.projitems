@@ -264,6 +264,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SourcedCursor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringBuilderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssCompiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssSelectorPartQualifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SystemParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextWrapping.cs" />

@@ -1,58 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LocalizedStrings>
-  <String Key="STYLE_SHEET_SYNTAX_ERROR">
+  <String Key="STYLE_SHEET_PARSER_ERROR">
     <en-US>
-      <Variant>Syntax error in style sheet (line {0})</Variant>
-    </en-US>
-  </String>
-  <String Key="STYLE_SHEET_SYNTAX_UNTERMINATED_STRING">
-    <en-US>
-      <Variant>Unterminated string in style sheet (line {0})</Variant>
-    </en-US>
-  </String>
-  <String Key="STYLE_SHEET_SYNTAX_UNTERMINATED_SEQUENCE">
-    <en-US>
-      <Variant>Unterminated sequence in style sheet (line {0})</Variant>
-    </en-US>
-  </String>
-  <String Key="STYLE_SHEET_SYNTAX_INVALID_STYLE_ARGS">
-    <en-US>
-      <Variant>Invalid arguments for style '{0}'</Variant>
-    </en-US>
-  </String>
-  <String Key="STYLE_SHEET_SYNTAX_EXPECTED_TOKEN">
-    <en-US>
-      <Variant>Syntax error in style sheet (line {0}): expecting token '{2}', found '{1}'</Variant>
-    </en-US>
-  </String>
-  <String Key="STYLE_SHEET_SYNTAX_UNEXPECTED_TOKEN">
-    <en-US>
-      <Variant>Syntax error in style sheet (line {0}): unexpected token '{1}'</Variant>
-    </en-US>
-  </String>
-  <String Key="STYLE_SHEET_SYNTAX_EXPECTED_VALUE">
-    <en-US>
-      <Variant>Syntax error in style sheet (line {0}): expecting value '{2}', found '{1}'</Variant>
-    </en-US>
-  </String>
-  <String Key="STYLE_SHEET_SYNTAX_UNEXPECTED_VALUE">
-    <en-US>
-      <Variant>Syntax error in style sheet (line {0}): unexpected value '{1}'</Variant>
-    </en-US>
-  </String>
-  <String Key="STYLE_SHEET_SYNTAX_UNEXPECTED_EOF">
-    <en-US>
-      <Variant>Syntax error in style sheet (line {0}): unexpected end of file</Variant>
-    </en-US>
-  </String>
-  <String Key="STYLE_SHEET_SYNTAX_INVALID_CHARACTER">
-    <en-US>
-      <Variant>Invalid character in style sheet (line {0}): '{1}'</Variant>
-    </en-US>
-  </String>
-  <String Key="STYLE_SHEET_INVALID_TRIGGER_TYPE">
-    <en-US>
-      <Variant>The specified trigger type '{0}' is not valid. Specify 'property' for a property trigger or 'event' for an event trigger.</Variant>
+      <Variant>Failed to compile style sheet due to parsing errors.</Variant>
     </en-US>
   </String>
   <String Key="IS_NOT_DEPENDENCY_OBJECT">
