@@ -122,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var navigationPropertyIndex = (default(Int32?));
             if (node.Indexer != null)
             {
-                navigationPropertyIndex = node.Indexer.Value;
+                navigationPropertyIndex = node.Indexer.GetValue();
             }
 
             return new UvssNavigationExpression(navigationProperty, navigationPropertyType, navigationPropertyIndex);

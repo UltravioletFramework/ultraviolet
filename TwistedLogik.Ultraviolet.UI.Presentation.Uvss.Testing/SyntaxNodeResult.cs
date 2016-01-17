@@ -1,5 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing
 {
@@ -129,6 +131,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing
         {
             Assert.AreEqual(position, node.Position);
             Assert.AreEqual(fullWidth, node.FullWidth);
+            return this;
+        }
+
+        /// <summary>
+        /// Asserts that this node has no diagnostics.
+        /// </summary>
+        /// <returns>The result object.</returns>
+        public SyntaxNodeResult<TNode> ShouldHaveNoDiagnostics()
+        {
+            var diagnostics = node.GetDiagnostics();
+            Assert.IsFalse(diagnostics.Any());
+            return this;
+        }
+
+        /// <summary>
+        /// Asserts that this node has no error diagnostics.
+        /// </summary>
+        /// <returns>The result object.</returns>
+        public SyntaxNodeResult<TNode> ShouldHaveNoErrors()
+        {
+            var errors = node.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error);
+            Assert.IsFalse(errors.Any());
+            return this;
+        }
+
+        /// <summary>
+        /// Asserts that this node has no warning diagnostics.
+        /// </summary>
+        /// <returns>The result object.</returns>
+        public SyntaxNodeResult<TNode> ShouldHaveNoWarnings()
+        {
+            var warnings = node.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Warning);
+            Assert.IsFalse(warnings.Any());
             return this;
         }
 

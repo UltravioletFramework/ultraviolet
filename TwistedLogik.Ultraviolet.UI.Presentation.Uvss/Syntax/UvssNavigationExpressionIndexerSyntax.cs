@@ -68,9 +68,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Gets the index value.
         /// </summary>
-        public Int32 Value
+        /// <returns>The indexer's index value, or null if the 
+        /// indexer does not have a valid value.</returns>
+        public Int32? GetValue()
         {
-            get { return 0; }
+            if (NumberToken == null)
+                return null;
+
+            var value = 0;
+            if (Int32.TryParse(NumberToken.Text, out value))
+                return value;
+
+            return null;
         }
 
         /// <inheritdoc/>

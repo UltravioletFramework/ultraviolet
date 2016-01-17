@@ -1,5 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing;
 
@@ -1509,6 +1511,91 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             TheResultingNode(value)
                 .ShouldBePresent()
                 .ShouldSatisfyTheCondition(x => x.Value == "baz");
+        }
+
+        [TestMethod]
+        public void UvssParser_CorrectlyParsesNavigationExpression_WithIndexer()
+        {
+            var document = UvssParser.Parse(
+                "#foo | bar[3] as baz {}");
+
+            var ruleSet = document.Content[0] as UvssRuleSetSyntax;
+            TheResultingNode(ruleSet)
+                .ShouldBePresent()
+                .ShouldHaveNoDiagnostics();
+
+            var selector = ruleSet.Selectors[0];
+            TheResultingNode(selector)
+                .ShouldBePresent();
+
+            var navexp = selector.NavigationExpression;
+            TheResultingNode(navexp)
+                .ShouldBePresent();
+
+            var navexpIndexer = navexp.Indexer;
+            TheResultingNode(navexpIndexer)
+                .ShouldBePresent()
+                .ShouldSatisfyTheCondition(x => x.GetValue() == 3);
+        }
+
+        [TestMethod]
+        public void UvssParser_ProducesErrorDiagnostic_ForNavigationExpression_WithNonNumericIndexer()
+        {
+            var document = UvssParser.Parse(
+                "#foo | bar[x] as baz {}");
+
+            var ruleSet = document.Content[0] as UvssRuleSetSyntax;
+            TheResultingNode(ruleSet)
+                .ShouldBePresent();
+
+            var selector = ruleSet.Selectors[0];
+            TheResultingNode(selector)
+                .ShouldBePresent();
+
+            var navexp = selector.NavigationExpression;
+            TheResultingNode(navexp)
+                .ShouldBePresent();
+
+            var indexer = navexp.Indexer;
+            TheResultingNode(indexer)
+                .ShouldBePresent();
+
+            var indexerDiagnostics = indexer.GetDiagnostics().ToList();
+            TheResultingValue(indexerDiagnostics.Count)
+                .ShouldBe(1);
+
+            TheResultingObject(indexerDiagnostics[0])
+                .ShouldSatisfyTheCondition(x => x.ID == DiagnosticID.IndexMustBeIntegerValue);
+        }
+
+        [TestMethod]
+        public void UvssParser_ProducesErrorDiagnostic_ForNavigationExpression_WithNotIntegerIndexer()
+        {
+            var document = UvssParser.Parse(
+                "#foo | bar[3.1] as baz {}");
+
+            var ruleSet = document.Content[0] as UvssRuleSetSyntax;
+            TheResultingNode(ruleSet)
+                .ShouldBePresent();
+
+            var selector = ruleSet.Selectors[0];
+            TheResultingNode(selector)
+                .ShouldBePresent();
+
+            var navexp = selector.NavigationExpression;
+            TheResultingNode(navexp)
+                .ShouldBePresent();
+
+            var indexer = navexp.Indexer;
+            TheResultingNode(indexer)
+                .ShouldBePresent();
+
+            var indexerDiagnostics = indexer.GetDiagnostics().ToList();
+            TheResultingValue(indexerDiagnostics.Count)
+                .ShouldBe(1);
+
+            TheResultingObject(indexerDiagnostics[0])
+                .ShouldSatisfyTheCondition(x => x.ID == DiagnosticID.IndexMustBeIntegerValue);
         }
     }
 }
