@@ -3007,6 +3007,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             var diagnostics = default(ICollection<DiagnosticInfo>);
 
+            if (atSignToken.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, atSignToken);
+
+            if (nameIdentifier.IsMissing)
+                DiagnosticInfo.ReportMissingNode(ref diagnostics, nameIdentifier);
+
             if (loopIdentifier != null)
             {
                 if (!KnownLoopBehaviors.IsKnownLoopBehavior(loopIdentifier.Text))
