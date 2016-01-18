@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Represents a syntax list with two children.
         /// </summary>
+        [SyntaxNodeTypeID((Byte)SyntaxNodeType.SyntaxListWithTwoChildren)]
         internal sealed class WithTwoChildren : SyntaxList
         {
             /// <summary>
@@ -23,6 +25,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
                 this.child1 = child1;
                 ChangeParent(child1);
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="WithTwoChildren"/> class from
+            /// the specified binary reader.
+            /// </summary>
+            /// <param name="reader">The binary reader with which to deserialize the object.</param>
+            /// <param name="version">The file version of the data being read.</param>
+            private WithTwoChildren(BinaryReader reader, Int32 version)
+                : base(reader, version)
+            {
+                this.child0 = reader.ReadSyntaxNode(version);
+                ChangeParent(this.child0);
+
+                this.child1 = reader.ReadSyntaxNode(version);
+                ChangeParent(this.child1);
+            }
+
+            /// <inheritdoc/>
+            public override void Serialize(BinaryWriter writer, Int32 version)
+            {
+                base.Serialize(writer, version);
+
+                writer.Write(child0, version);
+                writer.Write(child1, version);
             }
 
             /// <inheritdoc/>

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents an empty statement.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.EmptyStatement)]
     public sealed class UvssEmptyStatementSyntax : UvssNodeSyntax
     {
         /// <summary>
@@ -19,6 +21,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 
             this.SlotCount = 1;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssEmptyStatementSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        public UvssEmptyStatementSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.EmptyToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.EmptyToken);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(EmptyToken, version);
         }
 
         /// <summary>

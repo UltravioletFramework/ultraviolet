@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS set trigger action.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.SetTriggerAction)]
     public sealed class UvssSetTriggerActionSyntax : UvssTriggerActionBaseSyntax
     {
         /// <summary>
@@ -38,6 +40,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 
             SlotCount = 4;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssSetTriggerActionSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssSetTriggerActionSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.SetKeyword = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.SetKeyword);
+
+            this.PropertyName = reader.ReadSyntaxNode<UvssPropertyNameSyntax>(version);
+            ChangeParent(this.PropertyName);
+
+            this.Selector = reader.ReadSyntaxNode<UvssSelectorWithParenthesesSyntax>(version);
+            ChangeParent(this.Selector);
+
+            this.Value = reader.ReadSyntaxNode<UvssPropertyValueWithBracesSyntax>(version);
+            ChangeParent(this.Value);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(SetKeyword, version);
+            writer.Write(PropertyName, version);
+            writer.Write(Selector, version);
+            writer.Write(Value, version);
         }
 
         /// <inheritdoc/>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
@@ -13,6 +14,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <param name="kind">The node's <see cref="SyntaxKind"/> value.</param>
         public UvssNodeSyntax(SyntaxKind kind)
             : base(kind)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssAnimationKeyframeSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        public UvssNodeSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
         {
 
         }

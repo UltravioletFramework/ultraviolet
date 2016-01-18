@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
@@ -8,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// Represents a trigger node which does not have enough information to determine
     /// what kind of trigger it should be.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.IncompleteTrigger)]
     public sealed class UvssIncompleteTriggerSyntax : UvssTriggerBaseSyntax
     {
         /// <summary>
@@ -39,6 +41,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             UpdateIsMissing();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssIncompleteTriggerSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssIncompleteTriggerSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.TriggerKeyword = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.TriggerKeyword);
+
+            this.QualifierToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.QualifierToken);
+
+            this.Body = reader.ReadSyntaxNode<UvssBlockSyntax>(version);
+            ChangeParent(this.Body);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(TriggerKeyword, version);
+            writer.Write(QualifierToken, version);
+            writer.Write(Body, version);
+        }
+        
         /// <inheritdoc/>
         public override SyntaxNode GetSlot(Int32 index)
         {

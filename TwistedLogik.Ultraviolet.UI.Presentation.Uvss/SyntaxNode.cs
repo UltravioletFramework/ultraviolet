@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
@@ -23,12 +24,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SyntaxNode"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        public SyntaxNode(BinaryReader reader, Int32 version)
+        {
+            Contract.Require(reader, nameof(reader));
+
+            this.Kind = (SyntaxKind)reader.ReadInt32();
+            this.Position = reader.ReadInt32();
+            this.Line = reader.ReadInt32();
+            this.Column = reader.ReadInt32();
+            this.SlotCount = reader.ReadInt32();
+            this.IsStale = reader.ReadBoolean();
+            this.IsMissing = reader.ReadBoolean();
+            this.diagnostics = reader.ReadDiagnosticInfoArray(this, version);
+        }
+        
+        /// <summary>
         /// Gets the child node at the specified slot index.
         /// </summary>
         /// <param name="index">The index of the child node to retrieve.</param>
         /// <returns>The child node at the specified slot index, or null if there 
         /// is no child node in the slot.</returns>
         public abstract SyntaxNode GetSlot(Int32 index);
+        
+        /// <summary>
+        /// Serializes the object to the specified stream.
+        /// </summary>
+        /// <param name="writer">The binary writer with which to serialize the object.</param>
+        /// <param name="version">The file version of the data being written.</param>
+        public virtual void Serialize(BinaryWriter writer, Int32 version)
+        {
+            Contract.Require(writer, nameof(writer));
+
+            writer.Write((Int32)Kind);
+            writer.Write(Position);
+            writer.Write(Line);
+            writer.Write(Column);
+            writer.Write(SlotCount);
+            writer.Write(IsStale);
+            writer.Write(IsMissing);
+            writer.Write(diagnostics, version);
+        }
 
         /// <summary>
         /// Gets the width of the node's leading trivia.
@@ -686,7 +726,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 yield return trivia;
             }
         }
-        
+
         // Property values.
         private Int32 position;
         private Int32 fullWidth = -1;

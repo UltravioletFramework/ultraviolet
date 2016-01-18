@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a block of nodes enclosed by curly braces.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.Block)]
     public sealed class UvssBlockSyntax : UvssNodeSyntax
     {
         /// <summary>
@@ -34,6 +36,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 
             SlotCount = 3;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssBlockSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssBlockSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.OpenCurlyBraceToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.OpenCurlyBraceToken);
+
+            this.Content = reader.ReadSyntaxList<SyntaxNode>(version);
+            ChangeParent(this.Content.Node);
+
+            this.CloseCurlyBraceToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.CloseCurlyBraceToken);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(OpenCurlyBraceToken, version);
+            writer.Write(Content, version);
+            writer.Write(CloseCurlyBraceToken, version);
         }
 
         /// <inheritdoc/>

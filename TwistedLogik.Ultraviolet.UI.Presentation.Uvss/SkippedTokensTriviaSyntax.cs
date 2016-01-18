@@ -1,10 +1,13 @@
 ﻿using System;
+using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
     /// <summary>
     /// Represents a token that could not be parsed.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.SkippedTokensTrivia)]
     public sealed class SkippedTokensTriviaSyntax : StructuredTriviaSyntax
     {
         /// <summary>
@@ -20,6 +23,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             this.SlotCount = 1;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkippedTokensTriviaSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        public SkippedTokensTriviaSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            Contract.Require(reader, nameof(reader));
+
+            this.Tokens = reader.ReadSyntaxNode(version);
+            ChangeParent(this.Tokens);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(Tokens, version);
         }
 
         /// <summary>

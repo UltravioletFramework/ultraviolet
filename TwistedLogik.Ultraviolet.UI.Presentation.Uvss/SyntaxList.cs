@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -12,6 +13,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         protected SyntaxList()
             : base(SyntaxKind.List)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SyntaxList"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        protected SyntaxList(BinaryReader reader, Int32 version)
+            : base(reader, version)
         {
 
         }

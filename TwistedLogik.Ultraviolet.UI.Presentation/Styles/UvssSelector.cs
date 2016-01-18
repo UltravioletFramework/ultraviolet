@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
@@ -19,9 +20,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         internal UvssSelector(IEnumerable<UvssSelectorPart> parts, UvssNavigationExpression navexp = null)
         {
             this.parts = parts.ToList();
-            this.priority = parts.Sum(x => x.Priority);
-            this.text = String.Join(" ", parts.Select(x => x.ToString()));
-            this.pseudoClass = parts.Where(x => !String.IsNullOrEmpty(x.PseudoClass)).Select(x => x.PseudoClass).SingleOrDefault();
+            
+            if (this.parts.Count == 1)
+            {
+                var part = this.parts[0];
+
+                this.priority = part.Priority;
+                this.text = part.ToString();
+            }
+            else
+            {
+                var builder = SelectorTextBuilder.Value;
+
+                foreach (var part in this.parts)
+                {
+                    this.priority += part.Priority;
+
+                    if (builder.Length > 0)
+                        builder.Append(' ');
+
+                    builder.Append(part.ToString());
+                }
+
+                this.text = builder.ToString();
+                builder.Length = 0;
+            }
+
             this.navexp = navexp;
         }
         
@@ -48,6 +72,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Gets the selector part at the specified index within the selector.
+        /// </summary>
+        /// <param name="index">The index of the selector part to retrieve.</param>
+        /// <returns>The selector part at the specified index within the selector.</returns>
+        public UvssSelectorPart this[Int32 index]
+        {
+            get { return parts[index]; }
+        }
+
+        /// <summary>
+        /// Gets the number of parts in the selector.
+        /// </summary>
+        public Int32 PartCount
+        {
+            get { return parts.Count; }
+        }
+
+        /// <summary>
         /// Gets the selector's relative priority.
         /// </summary>
         public Int32 Priority
@@ -62,15 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         {
             get { return text; }
         }
-
-        /// <summary>
-        /// Gets the pseudo-class associated with this selector.
-        /// </summary>
-        public String PseudoClass
-        {
-            get { return pseudoClass; }
-        }
-
+        
         /// <summary>
         /// Gets the selector's optional navigation expression, if it has one.
         /// </summary>
@@ -253,11 +287,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             }
         }
 
+        // String builder used to compile selectors text from parts.
+        private static readonly Lazy<StringBuilder> SelectorTextBuilder =
+            new Lazy<StringBuilder>(() => new StringBuilder(256));
+
         // State values.
         private readonly List<UvssSelectorPart> parts;
         private readonly Int32 priority;
         private readonly String text;
-        private readonly String pseudoClass;
         private readonly UvssNavigationExpression navexp;
     }
 }

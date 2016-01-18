@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Represents a syntax list with three children.
         /// </summary>
+        [SyntaxNodeTypeID((Byte)SyntaxNodeType.SyntaxListWithThreeChildren)]
         internal sealed class WithThreeChildren : SyntaxList
         {
             /// <summary>
@@ -27,6 +29,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
                 this.child2 = child2;
                 ChangeParent(child2);
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="WithThreeChildren"/> class from
+            /// the specified binary reader.
+            /// </summary>
+            /// <param name="reader">The binary reader with which to deserialize the object.</param>
+            /// <param name="version">The file version of the data being read.</param>
+            private WithThreeChildren(BinaryReader reader, Int32 version)
+                : base(reader, version)
+            {
+                this.child0 = reader.ReadSyntaxNode(version);
+                ChangeParent(this.child0);
+
+                this.child1 = reader.ReadSyntaxNode(version);
+                ChangeParent(this.child1);
+
+                this.child2 = reader.ReadSyntaxNode(version);
+                ChangeParent(this.child2);
+            }
+
+            /// <inheritdoc/>
+            public override void Serialize(BinaryWriter writer, Int32 version)
+            {
+                base.Serialize(writer, version);
+
+                writer.Write(child0, version);
+                writer.Write(child1, version);
+                writer.Write(child2, version);
             }
 
             /// <inheritdoc/>

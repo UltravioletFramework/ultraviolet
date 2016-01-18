@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)KnownLoopBehaviors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxList`1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SerializationExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SkippedTokensTriviaSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StructurelessSyntaxTrivia.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StructuredSyntaxTrivia.cs" />
@@ -31,8 +32,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxNodeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxNodeType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxNodeTypeIDAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxNormalizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxRewriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\ArrayElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEmptyStatementSyntax.cs" />

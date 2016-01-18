@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS rule.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.Rule)]
     public sealed class UvssRuleSyntax : UvssNodeSyntax
     {
         /// <summary>
@@ -42,6 +44,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 
             SlotCount = 5;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssRuleSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        private UvssRuleSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.PropertyName = reader.ReadSyntaxNode<UvssPropertyNameSyntax>(version);
+            ChangeParent(this.PropertyName);
+
+            this.ColonToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.ColonToken);
+
+            this.Value = reader.ReadSyntaxNode<UvssPropertyValueSyntax>(version);
+            ChangeParent(this.Value);
+
+            this.QualifierToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.QualifierToken);
+
+            this.SemiColonToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.SemiColonToken);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(PropertyName, version);
+            writer.Write(ColonToken, version);
+            writer.Write(Value, version);
+            writer.Write(QualifierToken, version);
+            writer.Write(SemiColonToken, version);
         }
 
         /// <inheritdoc/>

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS punctuation token.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.Punctuation)]
     public class UvssPunctuation : SyntaxToken
     {
         /// <summary>
@@ -28,7 +30,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         {
 
         }
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssPunctuation"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        public UvssPunctuation(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+
+        }
+
         /// <summary>
         /// Gets the text associated with the specified punctuation kind.
         /// </summary>

@@ -7,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
     /// <summary>
     /// Represents structured trivia.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.StructurelessTrivia)]
     public sealed class StructurelessSyntaxTrivia : SyntaxTrivia
     {
         /// <summary>
@@ -18,6 +19,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             : base(kind)
         {
             this.Text = text;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StructurelessSyntaxTrivia"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        public StructurelessSyntaxTrivia(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.Text = reader.ReadBoolean() ? 
+                reader.ReadString() : null;
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(Text != null);
+            if (Text != null)
+                writer.Write(Text);
         }
 
         /// <inheritdoc/>

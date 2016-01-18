@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS keyword token.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.Keyword)]
     public class UvssKeyword : SyntaxToken
     {
         /// <summary>
@@ -25,6 +27,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <param name="trailingTrivia">The keyword's trailing trivia.</param>
         public UvssKeyword(SyntaxKind kind, SyntaxNode leadingTrivia, SyntaxNode trailingTrivia)
             : base(kind, GetKeywordText(kind), leadingTrivia, trailingTrivia)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssKeyword"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        public UvssKeyword(BinaryReader reader, Int32 version)
+            : base(reader, version)
         {
 
         }

@@ -1,11 +1,40 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+﻿using System;
+using System.IO;
+using TwistedLogik.Nucleus;
+
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
     /// <summary>
     /// Represents an array element.
     /// </summary>
     /// <typeparam name="T">The type of the array element's value.</typeparam>
-    public struct ArrayElement<T>
+    public struct ArrayElement<T> where T : SyntaxNode
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ArrayElement{T}"/> structure
+        /// from the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        public ArrayElement(BinaryReader reader, Int32 version)
+        {
+            Contract.Require(reader, nameof(reader));
+
+            this.Value = (T)reader.ReadSyntaxNode(version);
+        }
+
+        /// <summary>
+        /// Serializes the object's instance data to the specified stream.
+        /// </summary>
+        /// <param name="writer">The binary writer with which to serialize the object.</param>
+        /// <param name="version">The file version of the data being written.</param>
+        public void Serialize(BinaryWriter writer, Int32 version)
+        {
+            Contract.Require(writer, nameof(writer));
+
+            writer.Write(this.Value, version);
+        }
+
         /// <summary>
         /// Implicitly converts an array element to its underlying value.
         /// </summary>

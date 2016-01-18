@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS identifier which has been escaped using square brackets.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.EscapedIdentifier)]
     public sealed class UvssEscapedIdentifierSyntax : UvssIdentifierBaseSyntax
     {
         /// <summary>
@@ -36,6 +36,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 
             SlotCount = 3;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssEmptyStatementSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssEscapedIdentifierSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.OpenBracketToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.OpenBracketToken);
+
+            this.IdentifierToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.IdentifierToken);
+
+            this.CloseBracketToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.CloseBracketToken);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(OpenBracketToken, version);
+            writer.Write(IdentifierToken, version);
+            writer.Write(CloseBracketToken, version);
         }
 
         /// <inheritdoc/>

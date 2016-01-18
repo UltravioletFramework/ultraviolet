@@ -7,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
     /// <summary>
     /// Represents a terminal token.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.Token)]
     public class SyntaxToken : SyntaxNode
     {
         /// <summary>
@@ -43,6 +44,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 this.trailingTrivia = trailingTrivia;
                 ChangeParent(trailingTrivia);
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SyntaxToken"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        public SyntaxToken(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.Text = reader.ReadBoolean() ?
+                reader.ReadString() : null;
+
+            leadingTrivia = reader.ReadSyntaxNode(version);
+            ChangeParent(leadingTrivia);
+
+            trailingTrivia = reader.ReadSyntaxNode(version);
+            ChangeParent(trailingTrivia);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+            
+            writer.Write(Text != null);
+            if (Text != null)
+                writer.Write(Text);
+
+            writer.Write(leadingTrivia, version);
+            writer.Write(trailingTrivia, version);
         }
 
         /// <summary>

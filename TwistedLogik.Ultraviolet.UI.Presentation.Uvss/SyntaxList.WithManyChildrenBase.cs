@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -22,6 +23,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     ChangeParent(children[i]);
             }
             
+            /// <summary>
+            /// Initializes a new instance of the <see cref="WithManyChildrenBase"/> class from
+            /// the specified binary reader.
+            /// </summary>
+            /// <param name="reader">The binary reader with which to deserialize the object.</param>
+            /// <param name="version">The file version of the data being read.</param>
+            internal WithManyChildrenBase(BinaryReader reader, Int32 version)
+                : base(reader, version)
+            {
+                var children = reader.ReadSyntaxNodeArray(version);
+                if (children != null)
+                {
+                    for (int i = 0; i < children.Length; i++)
+                        ChangeParent(children[i]);
+                }
+                this.children = children;
+            }
+
+            /// <inheritdoc/>
+            public override void Serialize(BinaryWriter writer, Int32 version)
+            {
+                base.Serialize(writer, version);
+
+                writer.Write(children, version);
+            }
+
             /// <inheritdoc/>
             public override SyntaxNode GetSlot(Int32 index)
             {

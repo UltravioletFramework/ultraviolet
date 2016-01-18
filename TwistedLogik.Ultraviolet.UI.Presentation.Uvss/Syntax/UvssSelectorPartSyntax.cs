@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS selector part.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.SelectorPart)]
     public sealed class UvssSelectorPartSyntax : UvssSelectorPartBaseSyntax
     {
         /// <summary>
@@ -38,6 +40,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 
             SlotCount = 4;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssSelectorPartSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssSelectorPartSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.SelectedType = reader.ReadSyntaxNode<UvssSelectorPartTypeSyntax>(version);
+            ChangeParent(this.SelectedType);
+
+            this.SelectedName = reader.ReadSyntaxNode<UvssSelectorPartNameSyntax>(version);
+            ChangeParent(this.SelectedName);
+
+            this.SelectedClasses = reader.ReadSyntaxNode<UvssSelectorPartClassSyntax>(version);
+            ChangeParent(this.SelectedClasses.Node);
+
+            this.PseudoClass = reader.ReadSyntaxNode<UvssPseudoClassSyntax>(version);
+            ChangeParent(this.PseudoClass);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(SelectedType, version);
+            writer.Write(SelectedName, version);
+            writer.Write(SelectedClasses, version);
+            writer.Write(PseudoClass, version);
         }
 
         /// <inheritdoc/>

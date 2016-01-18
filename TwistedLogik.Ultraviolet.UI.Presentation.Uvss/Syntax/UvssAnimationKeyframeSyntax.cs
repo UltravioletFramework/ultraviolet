@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS animation keyframe.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.AnimationKeyframe)]
     public sealed class UvssAnimationKeyframeSyntax : UvssNodeSyntax
     {
         /// <summary>
@@ -38,6 +40,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 
             SlotCount = 4;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssAnimationKeyframeSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssAnimationKeyframeSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.KeyframeKeyword = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.KeyframeKeyword);
+
+            this.TimeToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.TimeToken);
+
+            this.EasingIdentifier = reader.ReadSyntaxNode<UvssIdentifierBaseSyntax>(version);
+            ChangeParent(this.EasingIdentifier);
+
+            this.Value = reader.ReadSyntaxNode<UvssPropertyValueWithBracesSyntax>(version);
+            ChangeParent(this.Value);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(KeyframeKeyword, version);
+            writer.Write(TimeToken, version);
+            writer.Write(EasingIdentifier, version);
+            writer.Write(Value, version);
         }
 
         /// <inheritdoc/>

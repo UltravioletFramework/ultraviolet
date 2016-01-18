@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents the argument list for an event trigger.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.EventTriggerArgumentList)]
     public sealed class UvssEventTriggerArgumentList : UvssNodeSyntax
     {
         /// <summary>
@@ -37,6 +39,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             UpdateIsMissing();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssEventTriggerArgumentList"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssEventTriggerArgumentList(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.OpenParenToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.OpenParenToken);
+
+            this.Arguments = reader.ReadSeparatedSyntaxList<SyntaxNode>(version);
+            ChangeParent(this.Arguments.Node);
+
+            this.CloseParenToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.CloseParenToken);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(OpenParenToken, version);
+            writer.Write(Arguments, version);
+            writer.Write(CloseParenToken, version);
+        }
+        
         /// <inheritdoc/>
         public override SyntaxNode GetSlot(Int32 index)
         {

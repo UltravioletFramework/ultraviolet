@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS property name.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.PropertyName)]
     public sealed class UvssPropertyNameSyntax : UvssNodeSyntax
     {
         /// <summary>
@@ -36,6 +38,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             UpdateIsMissing();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssPropertyNameSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssPropertyNameSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.AttachedPropertyOwnerNameIdentifier = reader.ReadSyntaxNode<UvssIdentifierBaseSyntax>(version);
+            ChangeParent(this.AttachedPropertyOwnerNameIdentifier);
+
+            this.PeriodToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.PeriodToken);
+
+            this.PropertyNameIdentifier = reader.ReadSyntaxNode<UvssIdentifierBaseSyntax>(version);
+            ChangeParent(this.PropertyNameIdentifier);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(AttachedPropertyOwnerNameIdentifier, version);
+            writer.Write(PeriodToken, version);
+            writer.Write(PropertyNameIdentifier, version);
+        }
+        
         /// <inheritdoc/>
         public override SyntaxNode GetSlot(Int32 index)
         {

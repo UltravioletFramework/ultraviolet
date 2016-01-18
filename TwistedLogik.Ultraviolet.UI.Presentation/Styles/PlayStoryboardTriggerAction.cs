@@ -35,7 +35,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             }
             else
             {
-                var rooted = String.Equals(selector.PseudoClass, "trigger-root", StringComparison.InvariantCultureIgnoreCase);
+                var rooted = selector.PartCount == 0 ? false :
+                    String.Equals(selector[0].PseudoClass, "trigger-root", StringComparison.InvariantCultureIgnoreCase);
                 var target = rooted ? dobj as UIElement : null;
 
                 element.View.Select(target, selector, this, (e, s) =>
@@ -69,7 +70,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             }
             else
             {
-                var rooted = String.Equals(selector.PseudoClass, "trigger-root", StringComparison.InvariantCultureIgnoreCase);
+                var rooted = selector.PartCount == 0 ? false :
+                    String.Equals(selector[0].PseudoClass, "trigger-root", StringComparison.InvariantCultureIgnoreCase);
                 var target = rooted ? dobj as UIElement : null;
 
                 element.View.Select(target, selector, this, (e, s) =>

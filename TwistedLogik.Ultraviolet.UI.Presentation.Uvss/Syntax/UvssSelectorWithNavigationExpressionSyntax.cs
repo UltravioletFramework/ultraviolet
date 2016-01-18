@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS selector with a trailing navigation expression.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.SelectorWithNavigationExpression)]
     public sealed class UvssSelectorWithNavigationExpressionSyntax : UvssSelectorBaseSyntax
     {
         /// <summary>
@@ -31,6 +33,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 
             SlotCount = 2;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssSelectorWithNavigationExpressionSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssSelectorWithNavigationExpressionSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.Selector = reader.ReadSyntaxNode<UvssSelectorSyntax>(version);
+            ChangeParent(this.Selector);
+
+            this.NavigationExpression = reader.ReadSyntaxNode<UvssNavigationExpressionSyntax>(version);
+            ChangeParent(this.NavigationExpression);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(Selector, version);
+            writer.Write(NavigationExpression, version);
         }
 
         /// <inheritdoc/>

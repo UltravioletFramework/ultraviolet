@@ -5,4 +5,29 @@
       <Variant>Invalid token "{0}" in style sheet ({1}, {2})</Variant>
     </en-US>
   </String>
+  <String Key="SYNTAX_NODE_NEEDS_TYPE_ID">
+    <en-US>
+      <Variant>Syntax node type '{0}' needs a SyntaxNodeTypeIDAttribute.</Variant>
+    </en-US>
+  </String>
+  <String Key="SYNTAX_NODE_HAS_DUPLICATE_TYPE_ID">
+    <en-US>
+      <Variant>Type identifier for syntax node type '{0}' is already in use.</Variant>
+    </en-US>
+  </String>
+  <String Key="SYNTAX_NODE_NEEDS_DESERIALIZATION_CTOR">
+    <en-US>
+      <Variant>Syntax node type '{0}' does not have a deserialization constructor.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNRECOGNIZED_SYNTAX_NODE_TYPE">
+    <en-US>
+      <Variant>Unrecognized syntax node type '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="UNRECOGNIZED_SYNTAX_NODE_TYPE ID">
+    <en-US>
+      <Variant>Unrecognized syntax node type identifier '{0}'</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

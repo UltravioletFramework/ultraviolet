@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Represents a missing syntax list.
         /// </summary>
+        [SyntaxNodeTypeID((Byte)SyntaxNodeType.SyntaxListMissing)]
         internal sealed class MissingList : SyntaxList
         {
             /// <summary>
@@ -17,6 +19,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 IsMissing = true;
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MissingList"/> class from
+            /// the specified binary reader.
+            /// </summary>
+            /// <param name="reader">The binary reader with which to deserialize the object.</param>
+            /// <param name="version">The file version of the data being read.</param>
+            internal MissingList(BinaryReader reader, Int32 version)
+                : base(reader, version)
+            {
+
+            }
+            
             /// <inheritdoc/>
             public override SyntaxNode GetSlot(Int32 index)
             {

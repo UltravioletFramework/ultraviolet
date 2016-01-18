@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents the argument list for a visual transition.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.TransitionArgumentList)]
     public sealed class UvssTransitionArgumentListSyntax : UvssNodeSyntax
     {
         /// <summary>
@@ -35,6 +37,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 
             SlotCount = 3;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssTransitionArgumentListSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssTransitionArgumentListSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.OpenParenToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.OpenParenToken);
+
+            this.Arguments = reader.ReadSeparatedSyntaxList<SyntaxNode>(version);
+            ChangeParent(this.Arguments.Node);
+
+            this.CloseParenToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.CloseParenToken);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(OpenParenToken, version);
+            writer.Write(Arguments, version);
+            writer.Write(CloseParenToken, version);
         }
 
         /// <inheritdoc/>

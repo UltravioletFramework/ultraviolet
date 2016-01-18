@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS selector.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.Selector)]
     public sealed class UvssSelectorSyntax : UvssSelectorBaseSyntax
     {
         /// <summary>
@@ -27,6 +29,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             
             SlotCount = 1;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssSelectorSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssSelectorSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.Components = reader.ReadSyntaxList<SyntaxNode>(version);
+            ChangeParent(Components.Node);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(Components, version);
         }
 
         /// <inheritdoc/>

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS property trigger.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.PropertyTrigger)]
     public sealed class UvssPropertyTriggerSyntax : UvssTriggerBaseSyntax
     {
         /// <summary>
@@ -45,6 +47,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
             UpdateIsMissing();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssPropertyTriggerSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        internal UvssPropertyTriggerSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.TriggerKeyword = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.TriggerKeyword);
+
+            this.PropertyKeyword = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.PropertyKeyword);
+
+            this.Conditions = reader.ReadSeparatedSyntaxList<UvssPropertyTriggerConditionSyntax>(version);
+            ChangeParent(this.Conditions.Node);
+
+            this.QualifierToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.QualifierToken);
+
+            this.Body = reader.ReadSyntaxNode<UvssBlockSyntax>(version);
+            ChangeParent(this.Body);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(TriggerKeyword, version);
+            writer.Write(PropertyKeyword, version);
+            writer.Write(Conditions, version);
+            writer.Write(QualifierToken, version);
+            writer.Write(Body, version);
+        }
+        
         /// <inheritdoc/>
         public override SyntaxNode GetSlot(Int32 index)
         {

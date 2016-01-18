@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents the indexing operator of a UVSS navigation expression.
     /// </summary>
+    [SyntaxNodeTypeID((Byte)SyntaxNodeType.NavigationExpressionIndexer)]
     public sealed class UvssNavigationExpressionIndexerSyntax : UvssNodeSyntax
     {
         /// <summary>
@@ -35,6 +37,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 
             this.SlotCount = 3;
             UpdateIsMissing();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UvssNavigationExpressionIndexerSyntax"/> class from
+        /// the specified binary reader.
+        /// </summary>
+        /// <param name="reader">The binary reader with which to deserialize the object.</param>
+        /// <param name="version">The file version of the data being read.</param>
+        public UvssNavigationExpressionIndexerSyntax(BinaryReader reader, Int32 version)
+            : base(reader, version)
+        {
+            this.OpenBracketToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.OpenBracketToken);
+
+            this.NumberToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.NumberToken);
+
+            this.CloseBracketToken = reader.ReadSyntaxNode<SyntaxToken>(version);
+            ChangeParent(this.CloseBracketToken);
+        }
+
+        /// <inheritdoc/>
+        public override void Serialize(BinaryWriter writer, Int32 version)
+        {
+            base.Serialize(writer, version);
+
+            writer.Write(OpenBracketToken, version);
+            writer.Write(NumberToken, version);
+            writer.Write(CloseBracketToken, version);
         }
 
         /// <inheritdoc/>

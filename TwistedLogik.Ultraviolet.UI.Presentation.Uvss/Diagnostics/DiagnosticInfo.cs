@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
-using System.Linq;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
 {
@@ -30,6 +31,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
             this.ID = id;
             this.Severity = severity;
             this.Message = message;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiagnosticInfo"/> class
+        /// from the specified binary reader.
+        /// </summary>
+        internal DiagnosticInfo(SyntaxNode node, BinaryReader reader, Int32 version)
+        {
+            Contract.Require(node, nameof(node));
+            Contract.Require(reader, nameof(reader));
+
+            this.start = reader.ReadInt32();
+            this.length = reader.ReadInt32();
+
+            this.Node = node;
+            this.ID = (DiagnosticID)reader.ReadByte();
+            this.Severity = (DiagnosticSeverity)reader.ReadByte();
+            this.Message = reader.ReadString();
+        }
+
+        /// <summary>
+        /// Serializes the object to the specified stream.
+        /// </summary>
+        /// <param name="writer">A binary writer on the stream to which to serialize the object.</param>
+        /// <param name="version">The file version of the data being produced.</param>
+        public void Serialize(BinaryWriter writer, Int32 version)
+        {
+            Contract.Require(writer, nameof(writer));
+
+            writer.Write(start);
+            writer.Write(length);
+
+            writer.Write((Byte)ID);
+            writer.Write((Byte)Severity);
+            writer.Write(Message);
         }
 
         /// <summary>
