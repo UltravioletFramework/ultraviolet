@@ -135,12 +135,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)'=='Signed' ">
-	<Reference Include="TwistedLogik.Nucleus">
-	  <HintPath>..\..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.dll</HintPath>
-	</Reference>
-	<Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.Uvss">
-	  <HintPath>..\..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
-	</Reference>
+    <Reference Include="TwistedLogik.Nucleus">
+      <HintPath>..\..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.dll</HintPath>
+    </Reference>
+    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.Uvss">
+      <HintPath>..\..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt">
@@ -148,6 +148,10 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="uv.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="UvssPreviewImage.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
