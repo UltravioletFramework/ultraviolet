@@ -124,7 +124,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)'=='Debug' Or '$(Configuration)'=='Release' ">
     <ProjectReference Include="..\..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
       <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
@@ -133,6 +133,14 @@
       <Project>{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}</Project>
       <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)'=='Signed' ">
+	<Reference Include="TwistedLogik.Nucleus">
+	  <HintPath>..\..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.dll</HintPath>
+	</Reference>
+	<Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.Uvss">
+	  <HintPath>..\..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
+	</Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt">
