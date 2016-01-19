@@ -324,7 +324,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     break;
                 }
 
-                if (source[i] == '\r' || source[i + 1] == '\n')
+				if ((source[i] == '\r' && source[i + 1] == '\n') || source[i] == '\n')
                 {
                     length = i - offset;
                     break;
