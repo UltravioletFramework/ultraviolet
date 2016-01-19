@@ -1127,8 +1127,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var frameworkElement = uiElement as FrameworkElement;
             if (frameworkElement != null && typeof(UIElement).IsAssignableFrom(type))
             {
-                var templatedParentControl = frameworkElement.TemplatedParent as Control;
-
                 var namescope = context.Namescope;
                 if (namescope == null)
                     return null;
