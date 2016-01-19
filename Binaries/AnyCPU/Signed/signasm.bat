@@ -13,6 +13,7 @@ ECHO Strong naming assemblies...
 
 IF "%1"=="test_nucleus" GOTO test_nucleus
 IF "%1"=="test_ultraviolet" GOTO test_ultraviolet
+IF "%1"=="test_uvss" GOTO test_uvss
 
 sn.exe -R "TwistedLogik.Nucleus.dll" "%TLSN%" 
 sn.exe -R "TwistedLogik.Nucleus.Design.dll" "%TLSN%"
@@ -48,4 +49,9 @@ sn.exe -R "TwistedLogik.Ultraviolet.OpenGL.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.BASS.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.Desktop.dll" "%TLSN%"
+GOTO :eof
+
+:test_uvss
+sn.exe -R "TwistedLogik.Nucleus.dll" "%TLSN%" 
+sn.exe -R "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" "%TLSN%"
 GOTO :eof
