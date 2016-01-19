@@ -14,7 +14,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (IsBoundToItemsSource)
             {
-                var index = arrayIndex;
                 foreach (var item in itemsSource)
                     array[arrayIndex++] = item;
             }

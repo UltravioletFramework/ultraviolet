@@ -163,8 +163,12 @@
       <Name>TwistedLogik.Ultraviolet (Desktop)</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29.csproj">
-      <Project>{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}</Project>
-      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29</Name>
+      <Project>{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Gluon %28Desktop%29\TwistedLogik.Gluon %28Desktop%29.csproj">
+      <Project>{08B2B8D5-152F-45FB-B4EB-8C09010A9908}</Project>
+      <Name>TwistedLogik.Gluon (Desktop)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -285,8 +289,5 @@
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
   <PropertyGroup>
     <PostBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">if not $(ConfigurationName)==Signed ( UvDebugSandbox.exe -resolve:content -compile:content -compile:expressions )</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>REM if not $(ConfigurationName)==Signed ( UvDebugSandbox.exe -resolve:content -compile:content -compile:expressions )</PostBuildEvent>
   </PropertyGroup>
 </Project>
