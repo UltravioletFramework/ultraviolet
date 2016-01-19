@@ -5,6 +5,7 @@
     <DisplayName>Ultraviolet StyleSheets Language Support</DisplayName>
     <Description xml:space="preserve">Provides Visual Studio support for the Ultraviolet StyleSheets (UVSS) language used by the Ultraviolet Presentation Foundation for styling its views.</Description>
     <MoreInfo>https://github.com/tlgkccampbell/ultraviolet</MoreInfo>
+    <License>license.txt</License>
     <Icon>uv.ico</Icon>
     <Tags>ultraviolet uvss upf game gamedev</Tags>
   </Metadata>
