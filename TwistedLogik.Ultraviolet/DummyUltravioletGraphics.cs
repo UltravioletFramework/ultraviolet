@@ -194,6 +194,14 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            throw new NotSupportedException();
+        }
+
+        /// <inheritdoc/>
         public Single FrameRate
         {
             get

@@ -13,6 +13,11 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract Boolean SupportsDepthStencilTextures { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the device supports instanced rendering.
+        /// </summary>
+        public abstract Boolean SupportsInstancedRendering { get; }
+
+        /// <summary>
         /// Gets the maximum texture size supported by the device.
         /// </summary>
         public abstract Int32 MaximumTextureSize { get; }

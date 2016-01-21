@@ -502,6 +502,32 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             gl.DrawElements(glPrimitiveType, glVerts, glIndexType, glOffset);
             gl.ThrowIfError();
         }
+        
+        /// <inheritdoc/>
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances)
+        {
+            Contract.EnsureRange(start >= 0, "start");
+            Contract.EnsureRange(count > 0, "count");
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            Contract.Ensure<NotSupportedException>(Capabilities.SupportsInstancedRendering);
+            Contract.Ensure(geometryStream != null, OpenGLStrings.NoGeometryStream);
+            Contract.Ensure(geometryStream.IsValid, OpenGLStrings.InvalidGeometryStream);
+            Contract.Ensure(geometryStream.HasIndices, OpenGLStrings.InvalidGeometryStream);
+
+            Contract.EnsureNot(OpenGLState.GL_CURRENT_PROGRAM == 0, OpenGLStrings.NoEffect);
+
+            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM);
+
+            var glVerts = 0;
+            var glPrimitiveType = GetPrimitiveTypeGL(type, count, out glVerts);
+            var glIndexSize = sizeof(short);
+            var glIndexType = GetIndexFormatGL(geometryStream.IndexBufferElementType, out glIndexSize);
+            var glOffset = (void*)(start * glIndexSize);
+
+            gl.DrawElementsInstanced(glPrimitiveType, glVerts, glIndexType, glOffset, instances);
+            gl.ThrowIfError();
+        }
 
         /// <inheritdoc/>
         public void UpdateFrameRate()

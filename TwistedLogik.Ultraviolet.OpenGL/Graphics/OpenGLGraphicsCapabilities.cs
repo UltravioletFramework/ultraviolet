@@ -30,6 +30,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override Boolean SupportsInstancedRendering
+        {
+            get { return !gl.IsGLES2; }
+        }
+
+        /// <inheritdoc/>
         public override Int32 MaximumTextureSize
         {
             get { return maximumTextureSize; }

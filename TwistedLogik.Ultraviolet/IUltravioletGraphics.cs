@@ -169,6 +169,15 @@ namespace TwistedLogik.Ultraviolet
         void DrawIndexedPrimitives(PrimitiveType type, Int32 start, Int32 count);
 
         /// <summary>
+        /// Draws a collection of instanced geometric primitives of the specified type from the currently bound buffers.
+        /// </summary>
+        /// <param name="type">A <see cref="PrimitiveType"/> value representing the type of primitive to render.</param>
+        /// <param name="start">The index of the first vertex to render.</param>
+        /// <param name="count">The number of primitives to render.</param>
+        /// <param name="instances">The number of instances to render.</param>
+        void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances);
+
+        /// <summary>
         /// Gets the current frame rate.
         /// </summary>
         Single FrameRate

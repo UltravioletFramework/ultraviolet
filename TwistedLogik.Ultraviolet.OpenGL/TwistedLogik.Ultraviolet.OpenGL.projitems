@@ -35,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLFragmentShaderImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLFragmentShaderProcessor.cs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLGeometryStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLGeometryStream.VertexBufferBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLGraphicsCapabilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLIndexBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLRasterizerState.cs" />

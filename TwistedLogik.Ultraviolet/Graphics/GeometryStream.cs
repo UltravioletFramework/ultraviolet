@@ -42,6 +42,14 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void Attach(VertexBuffer vbuffer);
 
         /// <summary>
+        /// Attaches a vertex buffer to the geometry stream with the specified instance frequency.
+        /// </summary>
+        /// <param name="vbuffer">The <see cref="VertexBuffer"/> to attach to the geometry stream.</param>
+        /// <param name="instanceFrequency">The number of instances which are drawn with each set of
+        /// vertex data in the buffer, or 0 to disable instancing.</param>
+        public abstract void Attach(VertexBuffer vbuffer, Int32 instanceFrequency);
+
+        /// <summary>
         /// Attaches an index buffer to the geometry stream.
         /// </summary>
         /// <param name="ibuffer">The <see cref="IndexBuffer"/> to attach to the geometry buffer.</param>
@@ -54,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         {
             get { return HasVertices; }
         }
-
+        
         /// <summary>
         /// Gets a value indicating whether the geometry stream reads data from multiple vertex buffers.
         /// </summary>

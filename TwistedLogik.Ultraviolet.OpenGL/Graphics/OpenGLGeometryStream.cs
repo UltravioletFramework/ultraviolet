@@ -10,14 +10,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents the OpenGL/SDL2 implementation of the GeometryStream class.
     /// </summary>
-    public sealed class OpenGLGeometryStream : GeometryStream, IOpenGLResource
+    public sealed partial class OpenGLGeometryStream : GeometryStream, IOpenGLResource
     {
         /// <summary>
         /// Initializes the OpenGLGeometryStream type.
         /// </summary>
         static OpenGLGeometryStream()
         {
-            vertexAttributeNames = 
+            vertexAttributeNames =
                 (from name in Enum.GetNames(typeof(VertexUsage))
                  from index in Enumerable.Range(0, VertexElement.UsageIndexCount)
                  select String.Format("uv_{0}{1}", name, index)).ToArray();
@@ -47,18 +47,24 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void Attach(VertexBuffer vbuffer)
         {
-            Contract.Require(vbuffer, "vbuffer");
-            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(vbuffer, nameof(vbuffer));
 
             Ultraviolet.ValidateResource(vbuffer);
 
-            if (vbuffers == null)
-                vbuffers = new List<OpenGLVertexBuffer>(1);
+            AttachInternal(vbuffer, 0);
+        }
 
-            var sdlVertexBuffer = (OpenGLVertexBuffer)vbuffer;
-            var sdlVertexBufferName = sdlVertexBuffer.OpenGLName;
+        /// <inheritdoc/>
+        public override void Attach(VertexBuffer vbuffer, Int32 instanceFrequency)
+        {
+            Contract.Require(vbuffer, nameof(vbuffer));
+            Contract.EnsureRange(instanceFrequency >= 0, nameof(instanceFrequency));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure<NotSupportedException>(SupportsInstancedRendering || instanceFrequency == 0);
+            
+            Ultraviolet.ValidateResource(vbuffer);
 
-            this.vbuffers.Add(sdlVertexBuffer);
+            AttachInternal(vbuffer, instanceFrequency);
         }
 
         /// <inheritdoc/>
@@ -85,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
 
             this.glElementArrayBufferBinding = sdlIndexBufferName;
-            this.indexBufferElementType      = ibuffer.IndexElementType;
+            this.indexBufferElementType = ibuffer.IndexElementType;
         }
 
         /// <summary>
@@ -120,20 +126,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             if (!SwitchCachedProgram(program))
                 return;
 
-            unsafe
-            {
-                var previousBuffer = (uint)OpenGLState.GL_ARRAY_BUFFER_BINDING;
-
-                DisableVertexAttributesOnCachedProgram();
-
-                foreach (var vbuffer in vbuffers)
-                {
-                    BindVertexAttributesForBuffer(vbuffer);
-                }
-
-                gl.BindBuffer(gl.GL_ARRAY_BUFFER, previousBuffer);
-                gl.ThrowIfError();
-            }
+            BindBuffers();
 
             this.program = program;
         }
@@ -146,14 +139,22 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             get { return vao != 0; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the geometry stream supports instanced rendering.
+        /// </summary>
+        public Boolean SupportsInstancedRendering
+        {
+            get { return Ultraviolet.GetGraphics().Capabilities.SupportsInstancedRendering; }
+        }
+
         /// <inheritdoc/>
         public UInt32 OpenGLName
         {
-            get 
+            get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return vao; 
+                return vao;
             }
         }
 
@@ -319,10 +320,30 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Binds the geometry stream's buffers to the device in preparation for rendering.
+        /// </summary>
+        private void BindBuffers()
+        {
+            unsafe
+            {
+                var previousBuffer = (uint)OpenGLState.GL_ARRAY_BUFFER_BINDING;
+
+                DisableVertexAttributesOnCachedProgram();
+
+                foreach (var binding in vbuffers)
+                {
+                    BindVertexAttributesForBuffer(binding.VertexBuffer, binding.InstanceFrequency);
+                }
+
+                gl.BindBuffer(gl.GL_ARRAY_BUFFER, previousBuffer);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
         /// Binds the specified buffer's vertex attributes to the currently cached program.
         /// </summary>
-        /// <param name="vbuffer">The vertex buffer to bind to the cached program.</param>
-        private void BindVertexAttributesForBuffer(OpenGLVertexBuffer vbuffer)
+        private void BindVertexAttributesForBuffer(OpenGLVertexBuffer vbuffer, Int32 instanceFrequency)
         {
             gl.BindBuffer(gl.GL_ARRAY_BUFFER, vbuffer.OpenGLName);
             gl.ThrowIfError();
@@ -339,6 +360,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var location = gl.GetAttribLocation(program, name);
                 if (location >= 0)
                 {
+                    gl.VertexAttribDivisor((uint)location, (uint)instanceFrequency);
+                    gl.ThrowIfError();
+
                     unsafe
                     {
                         gl.VertexAttribPointer((uint)location, size, type, true, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
@@ -353,11 +377,26 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
+        /// <summary>
+        /// Attaches the specified vertex buffer to the geometry stream.
+        /// </summary>
+        private void AttachInternal(VertexBuffer vbuffer, Int32 instanceFrequency)
+        {
+            if (vbuffers == null)
+                vbuffers = new List<VertexBufferBinding>(1);
+
+            var oglVertexBuffer = (OpenGLVertexBuffer)vbuffer;
+            var sdlVertexBufferName = oglVertexBuffer.OpenGLName;
+
+            var binding = new VertexBufferBinding(oglVertexBuffer, instanceFrequency);
+            this.vbuffers.Add(binding);
+        }
+
         // The names of vertex attributes which correspond to Ultraviolet vertex usages.
         private static readonly String[] vertexAttributeNames;
 
         // Underlying vertex and index buffers.
-        private List<OpenGLVertexBuffer> vbuffers;
+        private List<VertexBufferBinding> vbuffers;
         private OpenGLIndexBuffer ibuffer;
         private IndexBufferElementType indexBufferElementType = IndexBufferElementType.Int16;
 
