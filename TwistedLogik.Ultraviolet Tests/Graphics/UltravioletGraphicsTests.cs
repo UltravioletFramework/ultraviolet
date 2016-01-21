@@ -6,15 +6,15 @@ using TwistedLogik.Ultraviolet.Testing;
 namespace TwistedLogik.Ultraviolet.Tests.Graphics
 {
     [TestClass]
-    public class UltravioletGraphicsTests : UltravioletApplicationTestFramework
+    public partial class UltravioletGraphicsTests : UltravioletApplicationTestFramework
     {
         [TestMethod]
         [TestCategory("Rendering")]
         [Description("Ensures that the Graphics subsystem can render a single untextured triangle.")]
         public void UltravioletGraphics_CanRenderAColoredTriangle()
         {
-            var effect         = default(BasicEffect);
-            var vertexBuffer   = default(VertexBuffer);
+            var effect = default(BasicEffect);
+            var vertexBuffer = default(VertexBuffer);
             var geometryStream = default(GeometryStream);
 
             var result = GivenAnUltravioletApplication()
@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                     effect = BasicEffect.Create();
 
                     vertexBuffer = VertexBuffer.Create(VertexPositionColor.VertexDeclaration, 3);
-                    vertexBuffer.SetData<VertexPositionColor>(new[]
+                    vertexBuffer.SetData(new[]
                     {
                         new VertexPositionColor(new Vector3(0, 1, 0), Color.Red),
                         new VertexPositionColor(new Vector3(1, -1, 0), Color.Lime),
@@ -35,13 +35,13 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 })
                 .Render(uv =>
                 {
-                    var gfx         = uv.GetGraphics();
-                    var window      = uv.GetPlatform().Windows.GetPrimary();
+                    var gfx = uv.GetGraphics();
+                    var window = uv.GetPlatform().Windows.GetPrimary();
                     var aspectRatio = window.ClientSize.Width / (float)window.ClientSize.Height;
 
-                    effect.World              = Matrix.Identity;
-                    effect.View               = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
-                    effect.Projection         = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, aspectRatio, 1f, 1000f);
+                    effect.World = Matrix.Identity;
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+                    effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, aspectRatio, 1f, 1000f);
                     effect.VertexColorEnabled = true;
 
                     foreach (var pass in effect.CurrentTechnique.Passes)
@@ -54,18 +54,19 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                     }
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png");
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png");
         }
-        
+
         [TestMethod]
         [TestCategory("Rendering")]
         [Description("Ensures that the Graphics subsystem can render a single textured triangle.")]
         public void UltravioletGraphics_CanRenderATexturedTriangle()
         {
-            var effect         = default(BasicEffect);
-            var vertexBuffer   = default(VertexBuffer);
+            var effect = default(BasicEffect);
+            var vertexBuffer = default(VertexBuffer);
             var geometryStream = default(GeometryStream);
-            var texture        = default(Texture2D);
+            var texture = default(Texture2D);
 
             var result = GivenAnUltravioletApplication()
                 .WithContent(content =>
@@ -73,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                     effect = BasicEffect.Create();
 
                     vertexBuffer = VertexBuffer.Create(VertexPositionTexture.VertexDeclaration, 3);
-                    vertexBuffer.SetData<VertexPositionTexture>(new[]
+                    vertexBuffer.SetData(new[]
                     {
                         new VertexPositionTexture(new Vector3(0, 1, 0), new Vector2(0, 1)),
                         new VertexPositionTexture(new Vector3(1, -1, 0), new Vector2(1, 1)),
@@ -87,16 +88,16 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 })
                 .Render(uv =>
                 {
-                    var gfx         = uv.GetGraphics();
-                    var window      = uv.GetPlatform().Windows.GetPrimary();
+                    var gfx = uv.GetGraphics();
+                    var window = uv.GetPlatform().Windows.GetPrimary();
                     var aspectRatio = window.ClientSize.Width / (float)window.ClientSize.Height;
 
-                    effect.World              = Matrix.Identity;
-                    effect.View               = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
-                    effect.Projection         = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, aspectRatio, 1f, 1000f);
+                    effect.World = Matrix.Identity;
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+                    effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, aspectRatio, 1f, 1000f);
                     effect.VertexColorEnabled = false;
-                    effect.TextureEnabled     = true;
-                    effect.Texture            = texture;
+                    effect.TextureEnabled = true;
+                    effect.Texture = texture;
 
                     foreach (var pass in effect.CurrentTechnique.Passes)
                     {
@@ -108,7 +109,87 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                     }
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png");
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that the Graphics subsystem can render several triangles using hardware instancing.")]
+        public void UltravioletGraphics_CanRenderInstancedTriangles()
+        {
+            var effect = default(Effect);
+            var vbuffer0 = default(VertexBuffer);
+            var vbuffer1 = default(VertexBuffer);
+            var ibuffer0 = default(IndexBuffer);
+            var geomstream = default(GeometryStream);
+
+            const Int32 InstancesX = 48;
+            const Int32 InstancesY = 36;
+
+            const Single TriangleWidth = 10f;
+            const Single TriangleHeight = 10f;
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    effect = content.Load<Effect>("Effects\\InstancedRenderingTestEffect");
+
+                    vbuffer0 = VertexBuffer.Create(VertexPosition.VertexDeclaration, 3);
+                    vbuffer0.SetData(new[]
+                    {
+                        new VertexPosition(new Vector3(0, 0, 0)),
+                        new VertexPosition(new Vector3(TriangleWidth, 0, 0)),
+                        new VertexPosition(new Vector3(0, TriangleHeight, 0))
+                    });
+
+                    var instanceData = new CanRenderInstancedTrianglesData[InstancesX * InstancesY];
+                    for (int y = 0; y < InstancesY; y++)
+                    {
+                        for (int x = 0; x < InstancesX; x++)
+                        {
+                            var transform =
+                                Matrix.CreateTranslation(x * TriangleWidth, y * TriangleHeight, 0);
+
+                            var color = new Color(
+                                Math.Max(0, 255 - 5 * x),
+                                Math.Max(0, 255 - 5 * y), 0);
+
+                            instanceData[(y * InstancesX) + x] = new CanRenderInstancedTrianglesData(transform, color);
+                        }
+                    }
+
+                    vbuffer1 = VertexBuffer.Create(CanRenderInstancedTrianglesData.VertexDeclaration, instanceData.Length);
+                    vbuffer1.SetData(instanceData);
+
+                    ibuffer0 = IndexBuffer.Create(IndexBufferElementType.Int16, 3);
+                    ibuffer0.SetData(new Int16[] { 0, 1, 2 });
+
+                    geomstream = GeometryStream.Create();
+                    geomstream.Attach(vbuffer0);
+                    geomstream.Attach(vbuffer1, 1);
+                    geomstream.Attach(ibuffer0);
+                })
+                .Render(uv =>
+                {
+                    var gfx = uv.GetGraphics();
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+
+                    var matrixTransform = Matrix.CreateSpriteBatchProjection(window.ClientSize.Width, window.ClientSize.Height);
+                    effect.Parameters["MatrixTransform"].SetValue(matrixTransform);
+
+                    foreach (var pass in effect.CurrentTechnique.Passes)
+                    {
+                        pass.Apply();
+
+                        gfx.SetRasterizerState(RasterizerState.CullNone);
+                        gfx.SetGeometryStream(geomstream);
+                        gfx.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 1, InstancesX * InstancesY);
+                    }
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderInstancedTriangles.png");
         }
     }
 }

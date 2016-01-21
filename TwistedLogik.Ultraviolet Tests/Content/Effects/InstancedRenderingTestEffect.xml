@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Effect>
+  <Technique Name="Technique0">
+    <Pass Name="Pass0">
+      <VertexShader>Effects\InstancedRenderingTestShader.vert</VertexShader>
+      <FragmentShader>Effects\InstancedRenderingTestShader.frag</FragmentShader>
+    </Pass>
+  </Technique>
+</Effect>

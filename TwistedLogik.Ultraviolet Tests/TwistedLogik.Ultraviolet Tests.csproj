@@ -130,6 +130,7 @@
     <Compile Include="CircleDTests.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextParserTests.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextRendererTestContent.cs" />
+    <Compile Include="Graphics\UltravioletGraphicsTests.CanRenderInstancedTrianglesData.cs" />
     <Compile Include="UI\Presentation\Controls\ExampleBoxesAdorner.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteBatchTests.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextTableTests.cs" />
@@ -284,6 +285,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Effects\InstancedRenderingTestShader.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Effects\InstancedRenderingTestShader.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Fonts\SegoeUI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -520,6 +527,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderInstancedTriangles.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\UI\Presentation\UPF_ComboBox_ArrangesItemsCorrectly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -645,6 +655,9 @@
     </None>
     <None Include="Content\UI\Screens\UPF_ComboBox_ArrangesItemsCorrectly\View.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Effects\InstancedRenderingTestEffect.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">
