@@ -37,7 +37,10 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 {
                     var gfx = uv.GetGraphics();
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var aspectRatio = window.ClientSize.Width / (float)window.ClientSize.Height;
+                    var viewport = new Viewport(0, 0, window.ClientSize.Width, window.ClientSize.Height);
+                    var aspectRatio = viewport.Width / (float)viewport.Height;
+
+                    gfx.SetViewport(viewport);
 
                     effect.World = Matrix.Identity;
                     effect.View = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
@@ -90,7 +93,10 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 {
                     var gfx = uv.GetGraphics();
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var aspectRatio = window.ClientSize.Width / (float)window.ClientSize.Height;
+                    var viewport = new Viewport(0, 0, window.ClientSize.Width, window.ClientSize.Height);
+                    var aspectRatio = viewport.Width / (float)viewport.Height;
+
+                    gfx.SetViewport(viewport);
 
                     effect.World = Matrix.Identity;
                     effect.View = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
@@ -173,9 +179,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 .Render(uv =>
                 {
                     var gfx = uv.GetGraphics();
-                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var viewport = gfx.GetViewport();
 
-                    var matrixTransform = Matrix.CreateSpriteBatchProjection(window.ClientSize.Width, window.ClientSize.Height);
+                    var matrixTransform = Matrix.CreateSpriteBatchProjection(viewport.Width, viewport.Height);
                     effect.Parameters["MatrixTransform"].SetValue(matrixTransform);
 
                     foreach (var pass in effect.CurrentTechnique.Passes)

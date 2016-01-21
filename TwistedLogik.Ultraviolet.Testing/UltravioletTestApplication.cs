@@ -236,9 +236,14 @@ namespace TwistedLogik.Ultraviolet.Testing
 
             if (!headless)
             {
-                rtargetColorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, window.ClientSize.Width, window.ClientSize.Height);
-                rtargetDepthStencilBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, window.ClientSize.Width, window.ClientSize.Height);
-                rtarget = RenderTarget2D.Create(window.ClientSize.Width, window.ClientSize.Height);
+                // HACK: AMD drivers produce weird rasterization artifacts when rendering
+                // to a NPOT render buffers??? So we have to fix it with this stupid hack???
+                var width = MathUtil.FindNextPowerOfTwo(window.ClientSize.Width);
+                var height = MathUtil.FindNextPowerOfTwo(window.ClientSize.Height);
+
+                rtargetColorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, width, height);
+                rtargetDepthStencilBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, width, height);
+                rtarget = RenderTarget2D.Create(width, height);
                 rtarget.Attach(rtargetColorBuffer);
                 rtarget.Attach(rtargetDepthStencilBuffer);
             }
@@ -315,16 +320,28 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <returns>The converted bitmap image.</returns>
         private Bitmap ConvertRenderTargetToBitmap(RenderTarget2D rt)
         {
+            // HACK: Our buffer has been rounded up to the nearest
+            // power of two, so at this point we clip it back down
+            // to the size of the window.
+
+            var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
+            var windowWidth = window.ClientSize.Width;
+            var windowHeight = window.ClientSize.Height;
+
             var data = new Color[rt.Width * rt.Height];
             rt.GetData(data);
 
-            var bmp    = new Bitmap(rtarget.Width, rtarget.Height);
-            var pixel  = 0;
-            for (int y = 0; y < rtarget.Height; y++)
+            var bmp = new Bitmap(windowWidth, windowHeight);
+            var pixel = 0;
+            for (int y = 0; y < rt.Height; y++)
             {
-                for (int x = 0; x < rtarget.Width; x++)
+                for (int x = 0; x < rt.Width; x++)
                 {
-                    bmp.SetPixel(x, y, System.Drawing.Color.FromArgb((int)data[pixel++].ToArgb()));
+                    if (x < windowWidth && y < windowHeight)
+                    {
+                        bmp.SetPixel(x, y, System.Drawing.Color.FromArgb((int)data[pixel].ToArgb()));
+                    }
+                    pixel++;
                 }
             }
 
