@@ -30,5 +30,25 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// 8-bit unsigned byte with four components.
         /// </summary>
         Color,
+
+        /// <summary>
+        /// Packed vector containing two 16-bit signed normalized integer values ranging from -1 to +1.
+        /// </summary>
+        NormalizedShort2,
+
+        /// <summary>
+        /// Packed vector containing four 16-bit signed normalized integer values ranging from -1 to +1.
+        /// </summary>
+        NormalizedShort4,
+
+        /// <summary>
+        /// Packed vector containing two 16-bit signed normalized integer values.
+        /// </summary>
+        Short2,
+
+        /// <summary>
+        /// Packed vector containing two 16-bit signed normalized integer values.
+        /// </summary>
+        Short4,
     }
 }

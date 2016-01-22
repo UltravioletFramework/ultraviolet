@@ -89,6 +89,16 @@ namespace TwistedLogik.Ultraviolet.Graphics
                         value += sizeof(Byte) * 4;
                         break;
 
+                    case VertexFormat.Short2:
+                    case VertexFormat.NormalizedShort2:
+                        value += sizeof(Int16) * 2;
+                        break;
+
+                    case VertexFormat.Short4:
+                    case VertexFormat.NormalizedShort4:
+                        value += sizeof(Int16) * 4;
+                        break;
+
                     default:
                         throw new InvalidOperationException(UltravioletStrings.UnsupportedVertexFormat);
                 }

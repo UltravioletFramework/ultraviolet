@@ -194,7 +194,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
-        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances)
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances, Int32 baseInstance = 0)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 

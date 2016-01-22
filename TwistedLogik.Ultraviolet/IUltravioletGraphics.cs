@@ -175,7 +175,8 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="start">The index of the first vertex to render.</param>
         /// <param name="count">The number of primitives to render.</param>
         /// <param name="instances">The number of instances to render.</param>
-        void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances);
+        /// <param name="baseInstance">The index of the first instance to render.</param>
+        void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances, Int32 baseInstance = 0);
 
         /// <summary>
         /// Gets the current frame rate.

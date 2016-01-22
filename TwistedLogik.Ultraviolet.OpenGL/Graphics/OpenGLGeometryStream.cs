@@ -238,35 +238,75 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="format">The vertex format to convert.</param>
         /// <param name="size">The number of components in the element.</param>
         /// <param name="stride">The vertex stride in bytes.</param>
+        /// <param name="normalize">A value indicating whether to normalize the attribute's values.</param>
+        /// <param name="integer">A value indicating whether to upload the attribute as an integer type.</param>
         /// <returns>The converted vertex format.</returns>
-        private static UInt32 GetVertexFormatGL(VertexFormat format, out Int32 size, out Int32 stride)
+        private static UInt32 GetVertexFormatGL(VertexFormat format, out Int32 size, out Int32 stride, out Boolean normalize, out Boolean integer)
         {
             switch (format)
             {
                 case VertexFormat.Single:
                     size = 1;
                     stride = size * sizeof(float);
+                    normalize = false;
+                    integer = false;
                     return gl.GL_FLOAT;
 
                 case VertexFormat.Vector2:
                     size = 2;
                     stride = size * sizeof(float);
+                    normalize = false;
+                    integer = false;
                     return gl.GL_FLOAT;
 
                 case VertexFormat.Vector3:
                     size = 3;
                     stride = size * sizeof(float);
+                    normalize = false;
+                    integer = false;
                     return gl.GL_FLOAT;
 
                 case VertexFormat.Vector4:
                     size = 4;
                     stride = size * sizeof(float);
+                    normalize = false;
+                    integer = false;
                     return gl.GL_FLOAT;
 
                 case VertexFormat.Color:
                     size = 4;
                     stride = size * sizeof(byte);
+                    normalize = true;
+                    integer = false;
                     return gl.GL_UNSIGNED_BYTE;
+
+                case VertexFormat.NormalizedShort2:
+                    size = 2;
+                    stride = size * sizeof(short);
+                    normalize = true;
+                    integer = true;
+                    return gl.GL_SHORT;
+
+                case VertexFormat.NormalizedShort4:
+                    size = 4;
+                    stride = size * sizeof(short);
+                    normalize = true;
+                    integer = true;
+                    return gl.GL_SHORT;
+
+                case VertexFormat.Short2:
+                    size = 2;
+                    stride = size * sizeof(short);
+                    normalize = false;
+                    integer = true;
+                    return gl.GL_SHORT;
+
+                case VertexFormat.Short4:
+                    size = 4;
+                    stride = size * sizeof(short);
+                    normalize = false;
+                    integer = true;
+                    return gl.GL_SHORT;
 
                 default:
                     throw new NotSupportedException(OpenGLStrings.UnsupportedVertexFormat);
@@ -355,7 +395,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var name = GetVertexAttributeNameFromUsage(element.Usage, element.Index);
                 var size = 0;
                 var stride = 0;
-                var type = GetVertexFormatGL(element.Format, out size, out stride);
+                var normalize = false;
+                var integer = false;
+                var type = GetVertexFormatGL(element.Format, out size, out stride, out normalize, out integer);
 
                 var location = gl.GetAttribLocation(program, name);
                 if (location >= 0)
@@ -365,8 +407,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                     unsafe
                     {
-                        gl.VertexAttribPointer((uint)location, size, type, true, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
-                        gl.ThrowIfError();
+                        if (integer && !gl.IsGLES2)
+                        {
+                            gl.VertexAttribIPointer((uint)location, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
+                            gl.ThrowIfError();
+                        }
+                        else
+                        {
+                            gl.VertexAttribPointer((uint)location, size, type, normalize, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
+                            gl.ThrowIfError();
+                        }
                     }
 
                     gl.EnableVertexAttribArray((uint)location);

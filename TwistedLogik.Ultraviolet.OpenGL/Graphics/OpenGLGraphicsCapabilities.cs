@@ -21,6 +21,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             this.maximumViewportWidth  = viewportDims[0];
             this.maximumViewportHeight = viewportDims[1];
+
+            this.SupportsNonZeroBaseInstance = SupportsInstancedRendering &&
+                (gl.IsVersionAtLeast(4, 2) || gl.IsExtensionSupported("GL_ARB_base_instance"));
         }
 
         /// <inheritdoc/>
@@ -34,6 +37,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             get { return !gl.IsGLES2; }
         }
+
+        /// <inheritdoc/>
+        public override Boolean SupportsNonZeroBaseInstance
+        { get; }
 
         /// <inheritdoc/>
         public override Int32 MaximumTextureSize

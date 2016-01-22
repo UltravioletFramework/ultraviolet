@@ -18,6 +18,12 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract Boolean SupportsInstancedRendering { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the device supports using a non-zero base instance
+        /// when performing instanced rendering.
+        /// </summary>
+        public abstract Boolean SupportsNonZeroBaseInstance { get; }
+
+        /// <summary>
         /// Gets the maximum texture size supported by the device.
         /// </summary>
         public abstract Int32 MaximumTextureSize { get; }
