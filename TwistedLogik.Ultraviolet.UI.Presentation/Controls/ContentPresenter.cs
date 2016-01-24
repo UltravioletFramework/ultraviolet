@@ -5,10 +5,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
-    /// <summary>
-    /// Represents an element which is used to indicate the position of child content within a component template.
-    /// </summary>
-    [UvmlKnownType]
+	/// <summary>
+	/// Represents an element which is used to indicate the position of child content within a component template.
+	/// </summary>
+	[UvmlKnownType]
     public class ContentPresenter : FrameworkElement
     {
         /// <summary>
@@ -22,32 +22,66 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
         }
 
-        /// <summary>
-        /// Gets or sets the content presenter's content.
-        /// </summary>
-        public Object Content
+		/// <summary>
+		/// Gets or sets the content presenter's content.
+		/// </summary>
+		/// <value>The <see cref="Object"/> that is displayed by the control. The
+		/// default value is <see langword="null"/></value>
+		/// <remarks>
+		/// <dprop>
+		///     <dpropField><see cref="ContentProperty"/></dpropField>
+		///     <dpropStylingName>content</dpropStylingName>
+		///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/>, <see cref="PropertyMetadataOptions.CoerceObjectToString"/></dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Object Content
         {
             get { return GetValue<Object>(ContentProperty); }
-            set { SetValue<Object>(ContentProperty, value); }
+            set { SetValue(ContentProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the formatting string used to format the content presenter's content when that content
-        /// is being displayed as string.
-        /// </summary>
-        public String ContentStringFormat
+		/// <summary>
+		/// Gets or sets the formatting string used to format the content presenter's content when that content
+		/// is being displayed as string.
+		/// </summary>
+		/// <value>A format string that specifies how to format the control's content. The default
+		/// value is <see langword="null"/>.</value>
+		/// <remarks>
+		/// <dprop>
+		///     <dpropField><see cref="ContentStringFormatProperty"/></dpropField>
+		///     <dpropStylingName>content-string-format</dpropStylingName>
+		///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public String ContentStringFormat
         {
             get { return GetValue<String>(ContentStringFormatProperty); }
-            set { SetValue<String>(ContentStringFormatProperty, value); }
+            set { SetValue(ContentStringFormatProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the name to use when aliasing the <see cref="Content"/> and <see cref="ContentStringFormat"/> properties.
-        /// </summary>
-        public String ContentSource
+		/// <summary>
+		/// Gets or sets the name to use when aliasing the <see cref="Content"/> and <see cref="ContentStringFormat"/> properties.
+		/// </summary>
+		/// <value>The name to use when aliasing the <see cref="Content"/> and <see cref="ContentStringFormat"/> properties.</value>
+		/// <remarks>
+		/// <para>When a <see cref="ContentPresenter"/> is part of a component template, its <see cref="Content"/> and 
+		/// <see cref="ContentStringFormat"/> properties will automatically be bound to corresponding properties on the
+		/// template's data source. By default, each property will be bound to a property on the data source with the same name.
+		/// When <see cref="ContentSource"/> has a non-<see langword="null"/> value, the content presenter will be automatically
+		/// bound to properties which match the specified value instead. For example, if the value of <see cref="ContentSource"/>
+		/// is set to "<code>Foo</code>", then the <see cref="Content"/> property will be bound to a property
+		/// called <code>Foo</code>, and the <see cref="ContentStringFormat"/> property will be bound to a property
+		/// called <code>FooStringFormat</code>.</para>
+		/// <dprop>
+		///     <dpropField><see cref="ContentSourceProperty"/></dpropField>
+		///     <dpropStylingName>content-source</dpropStylingName>
+		///     <dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public String ContentSource
         {
             get { return GetValue<String>(ContentSourceProperty); }
-            set { SetValue<String>(ContentSourceProperty, value); }
+            set { SetValue(ContentSourceProperty, value); }
         }
 
         /// <inheritdoc/>
@@ -56,32 +90,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get { return GetValue<Size2D>(ContentOffsetProperty); }
         }
 
-        /// <summary>
-        /// Identifies the <see cref="Content"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'content'.</remarks>
-        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentPresenter),
+		/// <summary>
+		/// Identifies the <see cref="Content"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Content"/> dependency property.</value>
+		public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(ContentPresenter),
             new PropertyMetadata<Object>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.CoerceObjectToString, HandleContentChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="ContentStringFormat"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'content-string-format'.</remarks>
-        public static readonly DependencyProperty ContentStringFormatProperty = DependencyProperty.Register("ContentStringFormat", typeof(String), typeof(ContentPresenter),
+		/// <summary>
+		/// Identifies the <see cref="ContentStringFormat"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="ContentStringFormat"/> dependency property.</value>
+		public static readonly DependencyProperty ContentStringFormatProperty = DependencyProperty.Register("ContentStringFormat", typeof(String), typeof(ContentPresenter),
             new PropertyMetadata<String>(null, PropertyMetadataOptions.AffectsMeasure, HandleContentStringFormatChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="ContentSource"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'content-source'.</remarks>
-        public static readonly DependencyProperty ContentSourceProperty = DependencyProperty.Register("ContentSource", typeof(String), typeof(ContentPresenter),
+		/// <summary>
+		/// Identifies the <see cref="ContentSource"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="ContentSource"/> dependency property.</value>
+		public static readonly DependencyProperty ContentSourceProperty = DependencyProperty.Register("ContentSource", typeof(String), typeof(ContentPresenter),
             new PropertyMetadata<String>());
 
-        /// <summary>
-        /// Identifies the <see cref="ContentOffset"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'content-offset'.</remarks>
-        public static readonly DependencyProperty ContentOffsetProperty = DependencyProperty.Register("ContentOffset", typeof(Size2D), typeof(ContentPresenter),
+		/// <summary>
+		/// Identifies the <see cref="ContentOffset"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="ContentOffset"/> dependency property.</value>
+		public static readonly DependencyProperty ContentOffsetProperty = DependencyProperty.Register("ContentOffset", typeof(Size2D), typeof(ContentPresenter),
             new PropertyMetadata<Size2D>(HandleContentOffsetChanged));
 
         /// <inheritdoc/>

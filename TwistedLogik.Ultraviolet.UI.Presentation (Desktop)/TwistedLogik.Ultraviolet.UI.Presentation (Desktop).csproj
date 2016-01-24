@@ -152,6 +152,9 @@
   </ItemGroup>
   <Import Project="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>..\..\..\Documentation\msxsl.exe "TwistedLogik.Ultraviolet.UI.Presentation.XML" "..\..\..\Documentation\transforms.xslt" -o "TwistedLogik.Ultraviolet.UI.Presentation.XML"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

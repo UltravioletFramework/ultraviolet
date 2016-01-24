@@ -34,6 +34,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value indicating whether this is the default button for the current view.
         /// </summary>
+        /// <value><see langword="true"/> if this is the view's default <see cref="Button"/>; otherwise,
+        /// <see langword="false"/>. The default is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <para>When the value of the <see cref="IsDefault"/> property is <see langword="true"/>, the user
+        /// can activate the button by pressing the ENTER key.</para>
+        /// <dprop>
+        ///     <dpropField><see cref="IsDefaultProperty"/></dpropField>
+        ///     <dpropStylingName>default</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsDefault
         {
             get { return GetValue<Boolean>(IsDefaultProperty); }
@@ -43,6 +54,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value indicating whether this is the cancel button for the current view.
         /// </summary>
+        /// <value><see langword="true"/> if this is the view's cancel button; otherwise,
+        /// <see langword="false"/>. The default is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <para>When the value of the <see cref="IsCancel"/> property is <see langword="true"/>, the user
+        /// can activate the button by pressing the ESC key.</para>
+        /// <dprop>
+        ///     <dpropField><see cref="IsCancelProperty"/></dpropField>
+        ///     <dpropStylingName>cancel</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsCancel
         {
             get { return GetValue<Boolean>(IsCancelProperty); }
@@ -52,6 +74,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets a value indicating whether the button is activated when the user presses the Enter key.
         /// </summary>
+        /// <value><see langword="true"/> if the button is activated when the user presses ENTER;
+        /// otherwise, <see langword="false"/>. The default is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsDefaultedProperty"/></dpropField>
+        ///     <dpropStylingName>defaulted</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsDefaulted
         {
             get { return GetValue<Boolean>(IsDefaultedProperty); }
@@ -60,18 +91,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="IsDefault"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="IsDefault"/> dependency property.</value>
         public static readonly DependencyProperty IsDefaultProperty = DependencyProperty.Register("IsDefault", typeof(Boolean), typeof(Button),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsDefaultChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsCancel"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="IsCancel"/> dependency property.</value>
         public static readonly DependencyProperty IsCancelProperty = DependencyProperty.Register("IsCancel", typeof(Boolean), typeof(Button),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsCancelChanged));
 
         /// <summary>
         /// The private access key for the <see cref="IsDefault"/> read-only dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="IsDefaulted"/> dependency property.</value>
         private static readonly DependencyPropertyKey IsDefaultedPropertyKey = DependencyProperty.RegisterReadOnly("IsDefaulted", typeof(Boolean), typeof(Button),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 

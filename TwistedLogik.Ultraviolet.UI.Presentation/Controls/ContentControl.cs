@@ -4,10 +4,10 @@ using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
-    /// <summary>
-    /// Represents a control which displays a single item of content.
-    /// </summary>
-    [UvmlKnownType]
+	/// <summary>
+	/// Represents a control which displays a single item of content.
+	/// </summary>
+	[UvmlKnownType]
     [DefaultProperty("Content")]
     public abstract class ContentControl : Control, IItemContainer
     {
@@ -29,29 +29,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             Content = item;
         }
 
-        /// <summary>
-        /// Gets or sets the control's content.
-        /// </summary>
-        public Object Content
+		/// <summary>
+		/// Gets or sets the control's content.
+		/// </summary>
+		/// <value>The <see cref="Object"/> that is displayed by the control. The
+		/// default value is <see langword="null"/></value>
+		/// <remarks>
+		/// <dprop>
+		///     <dpropField><see cref="ContentProperty"/></dpropField>
+		///     <dpropStylingName>content</dpropStylingName>
+		///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/>, <see cref="PropertyMetadataOptions.CoerceObjectToString"/></dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Object Content
         {
             get { return GetValue<Object>(ContentProperty); }
-            set { SetValue<Object>(ContentProperty, value); }
+            set { SetValue(ContentProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the formatting string used to format the content control's content when that content
-        /// is being displayed as string.
-        /// </summary>
-        public String ContentStringFormat
+		/// <summary>
+		/// Gets or sets the formatting string used to format the content control's content when that content
+		/// is being displayed as string.
+		/// </summary>
+		/// <value>A format string that specifies how to format the control's content. The default
+		/// value is <see langword="null"/>.</value>
+		/// <remarks>
+		/// <dprop>
+		///     <dpropField><see cref="ContentStringFormatProperty"/></dpropField>
+		///     <dpropStylingName>content-string-format</dpropStylingName>
+		///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/>, <see cref="PropertyMetadataOptions.CoerceObjectToString"/></dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public String ContentStringFormat
         {
             get { return GetValue<String>(ContentStringFormatProperty); }
-            set { SetValue<String>(ContentStringFormatProperty, value); }
+            set { SetValue(ContentStringFormatProperty, value); }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the control has any content.
-        /// </summary>
-        public Boolean HasContent
+		/// <summary>
+		/// Gets a value indicating whether the control has any content.
+		/// </summary>
+		/// <value><see langword="true"/> if the control currently has content; otherwise, <see langword="false"/>. The
+		/// default value is <see langword="false"/>.</value>
+		/// <remarks>
+		/// <dprop>
+		///     <dpropField><see cref="HasContentProperty"/></dpropField>
+		///     <dpropStylingName>has-content</dpropStylingName>
+		///     <dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Boolean HasContent
         {
             get { return GetValue<Boolean>(HasContentProperty); }
         }

@@ -20,8 +20,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets the thickness of the control's border.
+        /// Gets or sets a the thickness of the control's border.
         /// </summary>
+        /// <value>A <see cref="Thickness"/> value that describes the thickness of the
+        /// control's border on each of its four sides.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="BorderThicknessProperty"/></dpropField>
+        ///     <dpropStylingName>border-thickness</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Thickness BorderThickness
         {
             get { return GetValue<Thickness>(BorderThicknessProperty); }
@@ -31,6 +40,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the color of the control's border.
         /// </summary>
+        /// <value>A <see cref="Color"/> value that describes the color of the
+        /// control's border.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="BorderColorProperty"/></dpropField>
+        ///     <dpropStylingName>border-color</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Color BorderColor
         {
             get { return GetValue<Color>(BorderColorProperty); }
@@ -40,14 +58,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="BorderThickness"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'border-thickness'.</remarks>
+        /// <value>The identifier for the <see cref="BorderThickness"/> dependency property.</value>
         public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border),
             new PropertyMetadata<Thickness>(PresentationBoxedValues.Thickness.One, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="BorderColor"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'border-color'.</remarks>
+        /// <value>The identifier for the <see cref="BorderColor"/> dependency property.</value>
         public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(Color), typeof(Border),
             new PropertyMetadata<Color>(UltravioletBoxedValues.Color.Black));
 

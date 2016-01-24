@@ -33,6 +33,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets a value indicating whether the button is being pressed.
         /// </summary>
+        /// <value><see langword="true"/> if the button is being pressed; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsPressedProperty"/></dpropField>
+        ///     <dpropStylingName>pressed</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsPressed
         {
             get { return GetValue<Boolean>(IsPressedProperty); }
@@ -42,6 +51,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the button's click mode.
         /// </summary>
+        /// <value>A <see cref="ClickMode"/> value specifying when the button's 
+        /// <see cref="Click"/> event occurs.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ClickModeProperty"/></dpropField>
+        ///     <dpropStylingName>click-mode</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public ClickMode ClickMode
         {
             get { return GetValue<ClickMode>(ClickModeProperty); }
@@ -51,6 +69,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the button is clicked.
         /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="ClickEvent"/></revtField>
+        ///     <revtStylingName>click</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
         public event UpfRoutedEventHandler Click
         {
             add { AddHandler(ClickEvent, value); }
@@ -60,6 +86,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the button is clicked as a result of user interaction.
         /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="ClickByUserEvent"/></revtField>
+        ///     <revtStylingName>click-by-user</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
         public event UpfRoutedEventHandler ClickByUser
         {
             add { AddHandler(ClickByUserEvent, value); }
@@ -75,27 +109,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Identifies the <see cref="IsPressed"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'pressed'.</remarks>
+        /// <value>The identifier for the <see cref="IsPressed"/> dependency property.</value>
         public static readonly DependencyProperty IsPressedProperty = IsPressedPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Identifies the <see cref="ClickMode"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'click-mode'.</remarks>
+        /// <value>The identifier for the <see cref="ClickMode"/> dependency property.</value>
         public static readonly DependencyProperty ClickModeProperty = DependencyProperty.Register("ClickMode", typeof(ClickMode), typeof(ButtonBase),
             new PropertyMetadata<ClickMode>(PresentationBoxedValues.ClickMode.Release));
 
         /// <summary>
         /// Identifies the <see cref="Click"/> routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is 'click'.</remarks>
+        /// <value>The identifier for the <see cref="Click"/> event.</value>
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent("Click", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(ButtonBase));
 
         /// <summary>
-        /// Identifies the <see cref="ClickByUser"/> routed event/
+        /// Identifies the <see cref="ClickByUser"/> routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is click-by-user.</remarks>
+        /// <value>The identifier for the <see cref="ClickByUser"/> event.</value>
         public static readonly RoutedEvent ClickByUserEvent = EventManager.RegisterRoutedEvent("ClickByUser", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(ButtonBase));
 

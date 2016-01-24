@@ -9,31 +9,57 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     [UvmlKnownType]
     public class RowDefinition : DefinitionBase
     {
-        /// <summary>
-        /// Gets or sets the row's height in device independent pixels.
-        /// </summary>
-        public GridLength Height
+		/// <summary>
+		/// Gets or sets the row's height in device independent pixels.
+		/// </summary>
+		/// <value>A <see cref="GridLength"/> value that specifies the row's height.</value>
+		/// <remarks>
+		/// <dprop>
+		///     <dpropField><see cref="HeightProperty"/></dpropField>
+		///     <dpropStylingName>height</dpropStylingName>
+		///     <dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public GridLength Height
         {
             get { return GetValue<GridLength>(HeightProperty); }
-            set { SetValue<GridLength>(HeightProperty, value); }
+            set { SetValue(HeightProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the row's minimum height in device independent pixels.
-        /// </summary>
-        public Double MinHeight
+		/// <summary>
+		/// Gets or sets the row's minimum height in device independent pixels.
+		/// </summary>
+		/// <value>A <see cref="Double"/> value that specifies the row's minimum 
+		/// height in device-independent pixels.</value>
+		/// <remarks>
+		/// <dprop>
+		///     <dpropField><see cref="MinHeightProperty"/></dpropField>
+		///     <dpropStylingName>min-height</dpropStylingName>
+		///     <dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Double MinHeight
         {
             get { return GetValue<Double>(MinHeightProperty); }
-            set { SetValue<Double>(MinHeightProperty, value); }
+            set { SetValue(MinHeightProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the row's maximum height in device independent pixels.
-        /// </summary>
-        public Double MaxHeight
+		/// <summary>
+		/// Gets or sets the row's maximum height in device independent pixels.
+		/// </summary>
+		/// <value>A <see cref="Double"/> value that specifies the row's maximum 
+		/// height in device-independent pixels.</value>
+		/// <remarks>
+		/// <dprop>
+		///     <dpropField><see cref="MaxHeightProperty"/></dpropField>
+		///     <dpropStylingName>max-height</dpropStylingName>
+		///     <dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Double MaxHeight
         {
             get { return GetValue<Double>(MaxHeightProperty); }
-            set { SetValue<Double>(MaxHeightProperty, value); }
+            set { SetValue(MaxHeightProperty, value); }
         }
 
         /// <summary>
@@ -59,25 +85,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public event DefinitionEventHandler MaxHeightChanged;
 
-        /// <summary>
-        /// Identifies the <see cref="Height"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'height'.</remarks>
-        public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(GridLength), typeof(RowDefinition),
+		/// <summary>
+		/// Identifies the <see cref="Height"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Height"/> dependency property.</value>
+		public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(GridLength), typeof(RowDefinition),
             new PropertyMetadata<GridLength>(PresentationBoxedValues.GridLength.One, HandleHeightChanged));
-        
-        /// <summary>
-        /// Identifies the <see cref="MinHeight"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'min-height'.</remarks>
-        public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(RowDefinition),
+
+		/// <summary>
+		/// Identifies the <see cref="MinHeight"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="MinHeight"/> dependency property.</value>
+		public static readonly DependencyProperty MinHeightProperty = DependencyProperty.Register("MinHeight", typeof(Double), typeof(RowDefinition),
             new PropertyMetadata<Double>(HandleMinHeightChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="MaxHeight"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'max-height'.</remarks>
-        public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(RowDefinition),
+		/// <summary>
+		/// Identifies the <see cref="MaxHeight"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="MaxHeight"/> dependency property.</value>
+		public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.Register("MaxHeight", typeof(Double), typeof(RowDefinition),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.PositiveInfinity, HandleMaxHeightChanged));
 
         /// <inheritdoc/>

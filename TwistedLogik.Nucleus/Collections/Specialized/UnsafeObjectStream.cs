@@ -158,7 +158,7 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         /// <summary>
         /// Moves the stream's data pointer to the end of the stream.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The stream's data pointer after moving to the end of the stream.</returns>
         [CLSCompliant(false)]
         public void* RawSeekEnd()
         {
@@ -206,7 +206,7 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         /// <summary>
         /// Moves the stream's data pointer to the beginning of the stream.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The stream's data pointer after moving to the beginning of the stream.</returns>
         [CLSCompliant(false)]
         public IntPtr SeekBeginning()
         {
@@ -216,7 +216,7 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         /// <summary>
         /// Moves the stream's data pointer to the end of the stream.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The stream's data pointer after moving to the end of the stream.</returns>
         [CLSCompliant(false)]
         public IntPtr SeekEnd()
         {
