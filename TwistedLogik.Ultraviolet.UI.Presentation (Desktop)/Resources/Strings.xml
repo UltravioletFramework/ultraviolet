@@ -325,4 +325,9 @@
       <Variant>Error initializing view model. The view definition specifies that the view model is of type '{0}' but the provided view model was of type '{1}'</Variant>
     </en-US>
   </String>
+	<String Key="UVSS_DOCUMENT_CULTURE_MISMATCH">
+		<en-US>
+			<Variant>The specified document cannot be appended to this document because their cultures do not match ('{1}' and '{2}')</Variant>
+		</en-US>
+	</String>
 </LocalizedStrings>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
@@ -8,10 +9,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-    /// <summary>
-    /// Contains methods for compiling UVSS syntax trees into UVSS documents.
-    /// </summary>
-    internal static class UvssCompiler
+	/// <summary>
+	/// Contains methods for compiling UVSS syntax trees into UVSS documents.
+	/// </summary>
+	internal static class UvssCompiler
     {
         /// <summary>
         /// Compiles an Ultraviolet Style Sheet (UVSS) document from the specified abstract syntax tree.
@@ -29,6 +30,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     errors.Select(x => UvssError.FromDiagnosticInfo(x)));
             }
 
+			// Determine the document's culture.
+			var culture = (CultureInfo)null;
+
             // Compile a list of rule sets and storyboards.
             var docRuleSets = new List<UvssRuleSet>();
             var docStoryboards = new List<UvssStoryboard>();
@@ -39,12 +43,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 switch (contentNode.Kind)
                 {
                     case SyntaxKind.RuleSet:
-                        var ruleSet = CompileRuleSet((UvssRuleSetSyntax)contentNode);
+                        var ruleSet = CompileRuleSet((UvssRuleSetSyntax)contentNode, culture);
                         docRuleSets.Add(ruleSet);
                         break;
 
                     case SyntaxKind.Storyboard:
-                        var storyboard = CompileStoryboard((UvssStoryboardSyntax)contentNode);
+                        var storyboard = CompileStoryboard((UvssStoryboardSyntax)contentNode, culture);
                         docStoryboards.Add(storyboard);
                         break;
 
@@ -53,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 }
             }
 
-            return new UvssDocument(docRuleSets, docStoryboards);
+            return new UvssDocument(culture, docRuleSets, docStoryboards);
         }
 
         /// <summary>
@@ -203,7 +207,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="UvssRuleSet"/> from the specified syntax node.
         /// </summary>
-        private static UvssRuleSet CompileRuleSet(UvssRuleSetSyntax node)
+        private static UvssRuleSet CompileRuleSet(UvssRuleSetSyntax node, CultureInfo culture)
         {
             var selectors = new List<UvssSelector>();
             for (int i = 0; i < node.Selectors.Count; i++)
@@ -222,28 +226,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 {
                     case SyntaxKind.Rule:
                         {
-                            var rule = CompileRule((UvssRuleSyntax)bodyNode);
+                            var rule = CompileRule((UvssRuleSyntax)bodyNode, culture);
                             rules.Add(rule);
                         }
                         break;
 
                     case SyntaxKind.Transition:
                         {
-                            var transition = CompileTransition((UvssTransitionSyntax)bodyNode);
+                            var transition = CompileTransition((UvssTransitionSyntax)bodyNode, culture);
                             rules.Add(transition);
                         }
                         break;
 
                     case SyntaxKind.PropertyTrigger:
                         {
-                            var trigger = CompilePropertyTrigger((UvssPropertyTriggerSyntax)bodyNode);
+                            var trigger = CompilePropertyTrigger((UvssPropertyTriggerSyntax)bodyNode, culture);
                             triggers.Add(trigger);
                         }
                         break;
 
                     case SyntaxKind.EventTrigger:
                         {
-                            var trigger = CompileEventTrigger((UvssEventTriggerSyntax)bodyNode);
+                            var trigger = CompileEventTrigger((UvssEventTriggerSyntax)bodyNode, culture);
                             triggers.Add(trigger);
                         }
                         break;
@@ -259,7 +263,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="UvssRule"/> from the specified syntax node.
         /// </summary>
-        private static UvssRule CompileRule(UvssRuleSyntax node)
+        private static UvssRule CompileRule(UvssRuleSyntax node, CultureInfo culture)
         {
             var owner = node.PropertyName.AttachedPropertyOwnerNameIdentifier?.Text;
             var name = node.PropertyName.PropertyNameIdentifier.Text;
@@ -277,7 +281,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="UvssRule"/> from the specified syntax node.
         /// </summary>
-        private static UvssRule CompileTransition(UvssTransitionSyntax node)
+        private static UvssRule CompileTransition(UvssTransitionSyntax node, CultureInfo culture)
         {
             var arguments = new List<String>(node.ArgumentList.ArgumentIdentifiers.Select(x => x.Text));
             var name = "transition";
@@ -295,7 +299,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="UvssPropertyTrigger"/> from the specified syntax node.
         /// </summary>
-        private static UvssPropertyTrigger CompilePropertyTrigger(UvssPropertyTriggerSyntax node)
+        private static UvssPropertyTrigger CompilePropertyTrigger(UvssPropertyTriggerSyntax node, CultureInfo culture)
         {
             var isImportant = node.QualifierToken?.Kind == SyntaxKind.ImportantKeyword;
             var trigger = new UvssPropertyTrigger(isImportant);
@@ -303,12 +307,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             for (int i = 0; i < node.Conditions.Count; i++)
             {
                 var conditionNode = node.Conditions[i];
-                var condition = CompilePropertyTriggerCondition(conditionNode);
+                var condition = CompilePropertyTriggerCondition(conditionNode, culture);
                 trigger.Conditions.Add(condition);
             }
 
             foreach (var action in node.Actions)
-                trigger.Actions.Add(CompileTriggerAction(action));
+                trigger.Actions.Add(CompileTriggerAction(action, culture));
 
             return trigger;
         }
@@ -316,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="UvssPropertyTriggerCondition"/> from the specified syntax node.
         /// </summary>
-        private static UvssPropertyTriggerCondition CompilePropertyTriggerCondition(UvssPropertyTriggerConditionSyntax node)
+        private static UvssPropertyTriggerCondition CompilePropertyTriggerCondition(UvssPropertyTriggerConditionSyntax node, CultureInfo culture)
         {
             var op = default(TriggerComparisonOp);
             var dpropName = GetPropertyName(node.PropertyName);
@@ -352,13 +356,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     throw new UvssException(PresentationStrings.StyleSheetParserError);
             }
 
-            return new UvssPropertyTriggerCondition(op, dpropName, refval);
+            return new UvssPropertyTriggerCondition(op, dpropName, refval, culture);
         }
 
         /// <summary>
         /// Compiles a <see cref="UvssEventTrigger"/> from the specified syntax node.
         /// </summary>
-        private static UvssEventTrigger CompileEventTrigger(UvssEventTriggerSyntax node)
+        private static UvssEventTrigger CompileEventTrigger(UvssEventTriggerSyntax node, CultureInfo culture)
         {
             var eventName = GetEventName(node.EventName);
             var arguments = node.ArgumentList == null ? Enumerable.Empty<String>() :
@@ -370,7 +374,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var trigger = new UvssEventTrigger(eventName, handled, setHandled, isImportant);
 
             foreach (var action in node.Actions)
-                trigger.Actions.Add(CompileTriggerAction(action));
+                trigger.Actions.Add(CompileTriggerAction(action, culture));
 
             return trigger;
         }
@@ -378,22 +382,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="TriggerAction"/> from the specified syntax node.
         /// </summary>
-        private static TriggerAction CompileTriggerAction(UvssTriggerActionBaseSyntax node)
+        private static TriggerAction CompileTriggerAction(UvssTriggerActionBaseSyntax node, CultureInfo culture)
         {
             var action = default(TriggerAction);
 
             switch (node.Kind)
             {
                 case SyntaxKind.PlayStoryboardTriggerAction:
-                    action = CompilePlayStoryboardTriggerAction((UvssPlayStoryboardTriggerActionSyntax)node);
+                    action = CompilePlayStoryboardTriggerAction((UvssPlayStoryboardTriggerActionSyntax)node, culture);
                     break;
 
                 case SyntaxKind.PlaySfxTriggerAction:
-                    action = CompilePlaySfxTriggerAction((UvssPlaySfxTriggerActionSyntax)node);
+                    action = CompilePlaySfxTriggerAction((UvssPlaySfxTriggerActionSyntax)node, culture);
                     break;
 
                 case SyntaxKind.SetTriggerAction:
-                    action = CompileSetTriggerAction((UvssSetTriggerActionSyntax)node);
+                    action = CompileSetTriggerAction((UvssSetTriggerActionSyntax)node, culture);
                     break;
 
                 default:
@@ -406,7 +410,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="PlayStoryboardTriggerAction"/> from the specified syntax node.
         /// </summary>
-        private static PlayStoryboardTriggerAction CompilePlayStoryboardTriggerAction(UvssPlayStoryboardTriggerActionSyntax node)
+        private static PlayStoryboardTriggerAction CompilePlayStoryboardTriggerAction(UvssPlayStoryboardTriggerActionSyntax node, CultureInfo culture)
         {
             var storyboardName = node.Value.Value;
             var selector = node.Selector == null ? null :
@@ -418,7 +422,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="PlaySoundEffectTriggerAction"/> from the specified syntax node.
         /// </summary>
-        private static PlaySoundEffectTriggerAction CompilePlaySfxTriggerAction(UvssPlaySfxTriggerActionSyntax node)
+        private static PlaySoundEffectTriggerAction CompilePlaySfxTriggerAction(UvssPlaySfxTriggerActionSyntax node, CultureInfo culture)
         {
             var sfxAssetID = 
                 SourcedAssetID.Parse(node.Value.Value);
@@ -429,20 +433,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="SetTriggerAction"/> from the specified syntax node.
         /// </summary>
-        private static SetTriggerAction CompileSetTriggerAction(UvssSetTriggerActionSyntax node)
+        private static SetTriggerAction CompileSetTriggerAction(UvssSetTriggerActionSyntax node, CultureInfo culture)
         {
             var dpropName = GetPropertyName(node.PropertyName);
             var selector = node.Selector == null ? null :
                 CompileSelector(node.Selector);
             var value = node.Value.Value;
 
-            return new SetTriggerAction(dpropName, selector, value);
+            return new SetTriggerAction(dpropName, selector, value, culture);
         }
 
         /// <summary>
         /// Compiles a <see cref="UvssStoryboard"/> from the specified syntax node.
         /// </summary>
-        private static UvssStoryboard CompileStoryboard(UvssStoryboardSyntax node)
+        private static UvssStoryboard CompileStoryboard(UvssStoryboardSyntax node, CultureInfo culture)
         {
             var name =
                 node.NameIdentifier.Text;
@@ -454,7 +458,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             for (int i = 0; i < node.Body.Content.Count; i++)
             {
                 var targetNode = (UvssStoryboardTargetSyntax)node.Body.Content[i];
-                var target = CompileStoryboardTarget(targetNode);
+                var target = CompileStoryboardTarget(targetNode, culture);
                 targets.Add(target);
             }
 
@@ -467,19 +471,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="UvssStoryboardTarget"/> from the specified syntax node.
         /// </summary>
-        private static UvssStoryboardTarget CompileStoryboardTarget(UvssStoryboardTargetSyntax node)
+        private static UvssStoryboardTarget CompileStoryboardTarget(UvssStoryboardTargetSyntax node, CultureInfo culture)
         {
             var selector = node.Selector == null ? null :
                 CompileSelector(node.Selector);
 
             var filter =
-                CompileStoryboardTargetFilter(node.Filters);
+                CompileStoryboardTargetFilter(node.Filters, culture);
 
             var animations = new List<UvssStoryboardAnimation>();
             for (int i = 0; i < node.Body.Content.Count; i++)
             {
                 var animationNode = (UvssAnimationSyntax)node.Body.Content[i];
-                var animation = CompileStoryboardAnimation(animationNode);
+                var animation = CompileStoryboardAnimation(animationNode, culture);
                 animations.Add(animation);
             }
 
@@ -492,7 +496,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="UvssStoryboardTargetFilter"/> from the specified syntax node.
         /// </summary>
-        private static UvssStoryboardTargetFilter CompileStoryboardTargetFilter(SeparatedSyntaxList<UvssIdentifierBaseSyntax> filtersList)
+        private static UvssStoryboardTargetFilter CompileStoryboardTargetFilter(SeparatedSyntaxList<UvssIdentifierBaseSyntax> filtersList, CultureInfo culture)
         {
             var filters = new UvssStoryboardTargetFilter();
             if (filtersList.Node == null)
@@ -512,7 +516,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="UvssStoryboardAnimation"/> from the specified syntax node.
         /// </summary>
-        private static UvssStoryboardAnimation CompileStoryboardAnimation(UvssAnimationSyntax node)
+        private static UvssStoryboardAnimation CompileStoryboardAnimation(UvssAnimationSyntax node, CultureInfo culture)
         {
             var animatedProperty =
                 GetPropertyName(node.PropertyName);
@@ -524,7 +528,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             for (int i = 0; i < node.Body.Content.Count; i++)
             {
                 var keyframeNode = (UvssAnimationKeyframeSyntax)node.Body.Content[i];
-                var keyframe = CompileStoryboardKeyframe(keyframeNode);
+                var keyframe = CompileStoryboardKeyframe(keyframeNode, culture);
                 keyframes.Add(keyframe);
             }
 
@@ -537,7 +541,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Compiles a <see cref="UvssStoryboardKeyframe"/> from the specified syntax node.
         /// </summary>
-        private static UvssStoryboardKeyframe CompileStoryboardKeyframe(UvssAnimationKeyframeSyntax node)
+        private static UvssStoryboardKeyframe CompileStoryboardKeyframe(UvssAnimationKeyframeSyntax node, CultureInfo culture)
         {
             var easing =
                 node.EasingIdentifier?.Text;

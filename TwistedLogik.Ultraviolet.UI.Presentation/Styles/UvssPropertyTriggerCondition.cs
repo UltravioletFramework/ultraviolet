@@ -1,26 +1,30 @@
 ﻿using System;
+using System.Globalization;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-    /// <summary>
-    /// Represents one of the conditions of a property trigger.
-    /// </summary>
-    public class UvssPropertyTriggerCondition
+	/// <summary>
+	/// Represents one of the conditions of a property trigger.
+	/// </summary>
+	public class UvssPropertyTriggerCondition
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UvssPropertyTriggerCondition"/> class.
-        /// </summary>
-        /// <param name="op">A <see cref="TriggerComparisonOp"/> value that specifies the type of comparison performed by this condition.</param>
-        /// <param name="dpropName">The name of the dependency property to evaluate.</param>
-        /// <param name="refval">The reference value to compare to the value of the dependency property.</param>
-        internal UvssPropertyTriggerCondition(TriggerComparisonOp op, String dpropName, String refval)
-        {
-            this.op        = op;
-            this.dpropName = new UvmlName(dpropName);
-            this.refval    = refval;
-        }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="UvssPropertyTriggerCondition"/> class.
+		/// </summary>
+		/// <param name="op">A <see cref="TriggerComparisonOp"/> value that specifies the type of comparison performed by this condition.</param>
+		/// <param name="dpropName">The name of the dependency property to evaluate.</param>
+		/// <param name="refval">The reference value to compare to the value of the dependency property.</param>
+		/// <param name="culture">The culture to use when parsing the condition's value, or <see langword="culture"/> to
+		/// use the default culture (en-US).</param>
+		internal UvssPropertyTriggerCondition(TriggerComparisonOp op, String dpropName, String refval, CultureInfo culture)
+		{
+			this.op = op;
+			this.dpropName = new UvmlName(dpropName);
+			this.refval = refval;
+			this.culture = culture ?? UvssDocument.DefaultCulture;
+		}
 
         /// <summary>
         /// Evaluates whether the condition is true for the specified object.
@@ -40,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var refvalCacheType = (refvalCache == null) ? null : refvalCache.GetType();
             if (refvalCacheType == null || (refvalCacheType != dprop.PropertyType &&  refvalCacheType != dprop.UnderlyingType))
             {
-                refvalCache = ObjectResolver.FromString(refval, dprop.PropertyType);
+                refvalCache = ObjectResolver.FromString(refval, dprop.PropertyType, culture);
             }
 
             var comparison = TriggerComparisonCache.Get(dprop.PropertyType, op);
@@ -78,6 +82,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private readonly TriggerComparisonOp op;
         private readonly UvmlName dpropName;
         private readonly String refval;
-        private Object refvalCache;
+		private readonly CultureInfo culture;
+		private Object refvalCache;
     }
 }

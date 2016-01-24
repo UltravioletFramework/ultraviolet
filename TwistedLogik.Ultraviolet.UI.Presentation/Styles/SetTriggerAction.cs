@@ -1,28 +1,32 @@
 ﻿using System;
+using System.Globalization;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-    /// <summary>
-    /// Represents a "set" trigger action, which sets the value of a dependency property when it is activated.
-    /// </summary>
-    public sealed class SetTriggerAction : TriggerAction
+	/// <summary>
+	/// Represents a "set" trigger action, which sets the value of a dependency property when it is activated.
+	/// </summary>
+	public sealed class SetTriggerAction : TriggerAction
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SetTriggerAction"/> class.
-        /// </summary>
-        /// <param name="dpropName">The styling name of the dependency property which is set by this action.</param>
-        /// <param name="selector">A UVSS selector which specifies the target (or targets) of the action.</param>
-        /// <param name="value">The value which is provided by this action.</param>
-        internal SetTriggerAction(String dpropName, UvssSelector selector, String value)
-        {
-            Contract.RequireNotEmpty(dpropName, "dpropName");
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SetTriggerAction"/> class.
+		/// </summary>
+		/// <param name="dpropName">The styling name of the dependency property which is set by this action.</param>
+		/// <param name="selector">A UVSS selector which specifies the target (or targets) of the action.</param>
+		/// <param name="value">The value which is provided by this action.</param>
+		/// <param name="culture">The culture to use when parsing the action's value, or <see langword="null"/> to
+		/// use the default culture (en-US).</param>
+		internal SetTriggerAction(String dpropName, UvssSelector selector, String value, CultureInfo culture)
+		{
+			Contract.RequireNotEmpty(dpropName, "dpropName");
 
-            this.dpropName = dpropName;
-            this.selector  = selector;
-            this.value     = value;
-        }
+			this.dpropName = dpropName;
+			this.selector = selector;
+			this.value = value;
+			this.culture = culture ?? UvssDocument.DefaultCulture;
+		}
 
         /// <inheritdoc/>
         public override void Activate(DependencyObject dobj)
@@ -118,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         public T GetValue<T>()
         {
             if (valueCache == null || valueCache.GetType() != typeof(T))
-                valueCache = ObjectResolver.FromString(value, typeof(T));
+                valueCache = ObjectResolver.FromString(value, typeof(T), culture);
 
             return (T)valueCache;
         }
@@ -127,6 +131,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private readonly String dpropName;
         private readonly UvssSelector selector;
         private readonly String value;
-        private Object valueCache;
+		private readonly CultureInfo culture;
+		private Object valueCache;
     }
 }
