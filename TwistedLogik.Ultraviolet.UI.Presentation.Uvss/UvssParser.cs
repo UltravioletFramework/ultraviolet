@@ -3738,9 +3738,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     {
                         for (int i = 0; i < leading.SlotCount; i++)
                         {
-                            var child = leading.GetSlot(i);
-                            if (child != null)
-                                AddDiagnosticsToSkippedSyntaxTrivia(child, reporter);
+                            var child = leading.GetSlot(i) as SkippedTokensTriviaSyntax;
+							if (child != null)
+							{
+								AddDiagnosticsToSkippedSyntaxTrivia(child, reporter);
+								break;
+							}
                         }
                     }
                     else { AddDiagnosticsToSkippedSyntaxTrivia(leading, reporter); }
@@ -3753,9 +3756,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     {
                         for (int i = 0; i < trailing.SlotCount; i++)
                         {
-                            var child = trailing.GetSlot(i);
-                            if (child != null)
-                                AddDiagnosticsToSkippedSyntaxTrivia(child, reporter);
+                            var child = trailing.GetSlot(i) as SkippedTokensTriviaSyntax;
+							if (child != null)
+							{
+								AddDiagnosticsToSkippedSyntaxTrivia(child, reporter);
+								break;
+							}
                         }
                     }
                     else { AddDiagnosticsToSkippedSyntaxTrivia(trailing, reporter); }
@@ -3827,16 +3833,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             while (!input.IsPastEndOfStream(position))
             {
-                if (!IsTrivia(input[position]))
-                {
-                    if (!treatNextNonTriviaTokenAsTrivia)
-                        break;
+				if (!IsTrivia(input[position]))
+				{
+					if (!treatNextNonTriviaTokenAsTrivia)
+						break;
 
-                    treatNextNonTriviaTokenAsTrivia = false;
-                    treatNextTokenAsSkipped = true;
-                }
+					treatNextTokenAsSkipped = true;
+				}
+				else
+				{
+					treatNextNonTriviaTokenAsTrivia = false;
+				}
 
-                if (triviaList == null)
+				if (triviaList == null)
                     triviaList = new List<SyntaxTrivia>();
 
                 var trivia = (SyntaxTrivia)ConvertTrivia(input[position], treatNextTokenAsSkipped);
