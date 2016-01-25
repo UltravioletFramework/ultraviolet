@@ -278,6 +278,9 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
 			for (int i = 0; i < symbols.Count; i++)
 			{
 				var symbol = symbols.Values[i];
+				if (commentTracker.IsPositionInsideComment(symbol.Position))
+					continue;
+
 				if (symbol.Type == BraceSymbolType.Open)
 				{
 					countOpen++;

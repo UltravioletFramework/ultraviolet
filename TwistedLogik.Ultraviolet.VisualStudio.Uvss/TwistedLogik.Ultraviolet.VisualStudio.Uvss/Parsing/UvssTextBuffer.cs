@@ -4,11 +4,11 @@ using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
 {
-    /// <summary>
-    /// Represents a wrapper around a text buffer which tracks various parameters
-    /// required by the UVSS document parser.
-    /// </summary>
-    public sealed class UvssTextBuffer
+	/// <summary>
+	/// Represents a wrapper around a text buffer which tracks various parameters
+	/// required by the UVSS document parser.
+	/// </summary>
+	public sealed class UvssTextBuffer
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssTextBuffer"/> class.
@@ -21,7 +21,9 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
             this.multiLineCommentTracker = new MultiLineCommentTracker(buffer);
             this.braceTracker = new BraceTracker(buffer, multiLineCommentTracker);
 
-            this.Buffer = buffer;
+			this.Parser = new UvssTextParser(buffer);
+
+			this.Buffer = buffer;
             this.Buffer.Changed += Buffer_Changed;
         }
 
@@ -38,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
                     new UvssTextBuffer(buffer));
             }
         }
-
+		
         /// <summary>
         /// Gets the span of the comment at the specified position in the source text.
         /// </summary>
@@ -74,6 +76,11 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
             return braceTracker.GetOutermostBlockSpan(span);
         }
 
+		/// <summary>
+		/// Gets the parser for this text buffer.
+		/// </summary>
+		public UvssTextParser Parser { get; }
+
         /// <summary>
         /// Gets thhe text buffer which is wrapped by this object.
         /// </summary>
@@ -96,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
             multiLineCommentTracker.OnBufferChanged(sender, e);
             braceTracker.OnBufferChanged(sender, e);
         }
-        
+		
         // Symbol trackers.
         private readonly MultiLineCommentTracker multiLineCommentTracker;
         private readonly BraceTracker braceTracker;

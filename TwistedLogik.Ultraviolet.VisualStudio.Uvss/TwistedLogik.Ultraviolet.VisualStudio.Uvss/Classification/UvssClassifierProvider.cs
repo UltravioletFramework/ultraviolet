@@ -2,19 +2,15 @@
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
-using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 {
-    [Export(typeof(IClassifierProvider))]
+	[Export(typeof(IClassifierProvider))]
     [ContentType("uvss")]
     internal class UvssClassifierProvider : IClassifierProvider
     {
 #pragma warning disable 649
-
-        [Import]
-        private UvssParserService parserService;
-
+		
         [Import]
         private IClassificationTypeRegistryService classificationRegistry;
 
@@ -30,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
             return buffer.Properties.GetOrCreateSingletonProperty(creator: () => 
-                new UvssClassifier(this.classificationRegistry, this.parserService, buffer));
+                new UvssClassifier(this.classificationRegistry, buffer));
         }
 
         #endregion

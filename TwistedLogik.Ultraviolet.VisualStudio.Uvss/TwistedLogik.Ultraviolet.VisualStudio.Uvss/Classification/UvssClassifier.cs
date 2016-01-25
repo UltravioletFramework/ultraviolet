@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 {
-    /// <summary>
-    /// Classifies UVSS source text.
-    /// </summary>
-    internal class UvssClassifier : IClassifier
+	/// <summary>
+	/// Classifies UVSS source text.
+	/// </summary>
+	internal class UvssClassifier : IClassifier
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssClassifier"/> class.
@@ -19,22 +18,14 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         /// <param name="registry">The classification registry.</param>
         /// <param name="parserService">The UVSS language parser service.</param>
         /// <param name="buffer">The text buffer that contains the text being classified.</param>
-        internal UvssClassifier(IClassificationTypeRegistryService registry, IUvssParserService parserService, ITextBuffer buffer)
+        internal UvssClassifier(IClassificationTypeRegistryService registry, ITextBuffer buffer)
         {
             this.registry = registry;
-            this.parserService = parserService;
-			this.parserService.DocumentGenerated += (span, document) =>
-			{
-				if (span.Snapshot.TextBuffer == buffer)
-				{
-					RaiseClassificationChanged(span);
-				}
-			};
 			this.buffer = UvssTextBuffer.ForBuffer(buffer);
             this.buffer.CommentSpanInvalidated += (obj, span) =>
                 RaiseClassificationChanged(new SnapshotSpan(this.buffer.Buffer.CurrentSnapshot, span));
         }
-        
+		
 #pragma warning disable 67
 
         /// <summary>
@@ -48,37 +39,33 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
 
 #pragma warning restore 67
-        
-        /// <summary>
-        /// Gets all the <see cref="ClassificationSpan"/> objects that intersect with the given range of text.
-        /// </summary>
-        /// <remarks>
-        /// This method scans the given SnapshotSpan for potential matches for this classification.
-        /// In this instance, it classifies everything and returns each span as a new ClassificationSpan.
-        /// </remarks>
-        /// <param name="span">The span currently being classified.</param>
-        /// <returns>A list of ClassificationSpans that represent spans identified to be of this classification.</returns>
-        public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
-        {
-            if (span.Snapshot.Length > 5000000)
-                return emptySpanList;
 
-            var blockSpan = buffer.GetOutermostBlockSpan(span);
+		/// <summary>
+		/// Gets all the <see cref="ClassificationSpan"/> objects that intersect with the given range of text.
+		/// </summary>
+		/// <remarks>
+		/// This method scans the given SnapshotSpan for potential matches for this classification.
+		/// In this instance, it classifies everything and returns each span as a new ClassificationSpan.
+		/// </remarks>
+		/// <param name="span">The span currently being classified.</param>
+		/// <returns>A list of ClassificationSpans that represent spans identified to be of this classification.</returns>
+		public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
+		{
+			var blockSpan = buffer.GetOutermostBlockSpan(span);
 
-            var task = parserService.GetDocument(blockSpan);
-            task.Wait(100);
+			var mostRecentDocument = default(UvssTextParserResult);
+			var task = buffer.Parser.GetParseTask(span.Snapshot, out mostRecentDocument);
+			if (task.Status != TaskStatus.RanToCompletion)
+			{
+				task.ContinueWith(t =>
+				{
+					RaiseClassificationChanged(blockSpan);
+				},
+				TaskContinuationOptions.OnlyOnRanToCompletion);
+			}
 
-			if (task.Status == TaskStatus.RanToCompletion)
-					return VisitDocument(task.Result, blockSpan, blockSpan.Start);
-
-            task.ContinueWith(t =>
-            {
-                RaiseClassificationChanged(blockSpan);
-            }, 
-            TaskContinuationOptions.OnlyOnRanToCompletion);
-
-            return emptySpanList;
-        }
+			return VisitDocument(mostRecentDocument, blockSpan) ?? emptySpanList;
+		}
 
         /// <summary>
         /// Visits the specified UVSS document and returns a list of classification spans that
@@ -86,21 +73,22 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         /// </summary>
         /// <param name="document">The document to visit.</param>
         /// <param name="span">The span for which to retrieve classification spans.</param>
-        /// <param name="offset">The offset to apply to the returned classification spans.</param>
         /// <returns>The classification spans that intersect with the specified span.</returns>
-        public IList<ClassificationSpan> VisitDocument(UvssDocumentSyntax document, SnapshotSpan span, Int32 offset)
+        public IList<ClassificationSpan> VisitDocument(UvssTextParserResult result, SnapshotSpan span)
         {
-            if (document == null)
+            if (result.Document == null)
                 return null;
+
+			span = span.TranslateTo(result.Snapshot, SpanTrackingMode.EdgeExclusive);
             
             var results = new List<ClassificationSpan>();
             var visitor = new UvssClassifierVisitor(registry, (start, width, type, kind) =>
             {
-                var nodeSpan = new SnapshotSpan(span.Snapshot, start + offset, width);
+                var nodeSpan = new SnapshotSpan(span.Snapshot, start, width);
                 if (nodeSpan.IntersectsWith(span))
                     results.Add(new ClassificationSpan(nodeSpan, type));
             });
-            visitor.Visit(document);
+            visitor.Visit(result.Document);
             
             return results;
         }
@@ -122,7 +110,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 
         // Classification services.
         private readonly IClassificationTypeRegistryService registry;
-        private readonly IUvssParserService parserService;
         private readonly UvssTextBuffer buffer;
     }
 }

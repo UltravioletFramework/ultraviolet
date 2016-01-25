@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors;
 using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
 
@@ -18,35 +16,33 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
         /// <summary>
         /// Initializes a new instance of the <see cref="SyntaxErrorTagger"/> class.
         /// </summary>
-        /// <param name="parserService">The UVSS language parser service.</param>
         /// <param name="buffer">The text buffer that contains the text being tagged.</param>
-        public SyntaxErrorTagger(IUvssParserService parserService, ITextBuffer buffer)
+        public SyntaxErrorTagger(ITextBuffer buffer)
         {
-            this.parserService = parserService;
-            this.parserService.DocumentGenerated += (span, document) =>
-            {
-                if (span.Snapshot.TextBuffer == buffer)
-                {
-					RaiseTagsChanged(span);
-                }
-            };
             this.buffer = UvssTextBuffer.ForBuffer(buffer);
 			this.buffer.CommentSpanInvalidated += (obj, span) =>
 				RaiseTagsChanged(new SnapshotSpan(this.buffer.Buffer.CurrentSnapshot, span));
+
+			this.buffer.Parser.DocumentParsed += (sender, e) =>
+			{
+				UvssTextParserResult mostRecentDocument;
+				this.buffer.Parser.GetMostRecent(out mostRecentDocument);
+				RaiseTagsChanged(new SnapshotSpan(mostRecentDocument.Snapshot, 0, mostRecentDocument.Snapshot.Length));
+			};
 		}
-        
-        /// <summary>
-        /// Gets the tags for the specified spans of text.
-        /// </summary>
-        /// <param name="spans">The spans of text for which to retrieve tags.</param>
-        /// <returns>A collection containing the tags for the specified spans of text.</returns>
-        public IEnumerable<ITagSpan<IErrorTag>> GetTags(NormalizedSnapshotSpanCollection spans)
+
+		/// <summary>
+		/// Gets the tags for the specified spans of text.
+		/// </summary>
+		/// <param name="spans">The spans of text for which to retrieve tags.</param>
+		/// <returns>A collection containing the tags for the specified spans of text.</returns>
+		public IEnumerable<ITagSpan<IErrorTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
             var result = new List<ITagSpan<IErrorTag>>();
 
             var errorList = this.buffer.Buffer.GetErrorList();
-            if (errorList != null)
-                errorList.Update();
+			if (errorList != null)
+				errorList.Update();
 
 			foreach (var span in spans)
 			{
@@ -97,7 +93,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
         }
         
         // Tagging services.
-        private readonly IUvssParserService parserService;
         private readonly UvssTextBuffer buffer; 
     }
 }

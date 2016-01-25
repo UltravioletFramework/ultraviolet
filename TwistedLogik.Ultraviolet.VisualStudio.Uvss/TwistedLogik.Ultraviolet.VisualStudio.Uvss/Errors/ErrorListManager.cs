@@ -4,14 +4,13 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Utilities;
-using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
 {
-    /// <summary>
-    /// Manages the error list attached to text view.
-    /// </summary>
-    [Export(typeof(IWpfTextViewCreationListener))]
+	/// <summary>
+	/// Manages the error list attached to text view.
+	/// </summary>
+	[Export(typeof(IWpfTextViewCreationListener))]
     [ContentType("uvss")]
     [TextViewRole(PredefinedTextViewRoles.Interactive)]
     public sealed class ErrorListManager : IWpfTextViewCreationListener
@@ -21,14 +20,12 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
         /// </summary>
         /// <param name="serviceProvider">The Visual Studio service provider.</param>
         /// <param name="textDocumentFactoryService">The text document factory service.</param>
-        /// <param name="parserService">The UVSS parser service.</param>
         [ImportingConstructor]
         public ErrorListManager(SVsServiceProvider serviceProvider, 
-            ITextDocumentFactoryService textDocumentFactoryService, UvssParserService parserService)
+            ITextDocumentFactoryService textDocumentFactoryService)
         {
             this.serviceProvider = serviceProvider;
             this.textDocumentFactoryService = textDocumentFactoryService;
-            this.parserService = parserService;
         }
 
         /// <inheritdoc/>
@@ -40,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
             if (textDocumentFactoryService.TryGetTextDocument(textView.TextBuffer, out textDocument))
             {
                 textView.TextBuffer.Properties.GetOrCreateSingletonProperty(() =>
-                    new ErrorList(serviceProvider, textDocument, parserService));
+                    new ErrorList(serviceProvider, textDocument));
             }
         }
 
@@ -59,6 +56,5 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
         // Visual Studio services.
         private readonly SVsServiceProvider serviceProvider;
         private readonly ITextDocumentFactoryService textDocumentFactoryService;
-        private readonly UvssParserService parserService;
     }
 }

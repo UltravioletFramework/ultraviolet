@@ -638,6 +638,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
                 case SyntaxKind.Rule:
                     return "Rule";
                 case SyntaxKind.Selector:
+				case SyntaxKind.SelectorWithNavigationExpression:
                     return "Selector";
                 case SyntaxKind.SelectorWithParentheses:
                     return "Parentheses-enclosed selector";
