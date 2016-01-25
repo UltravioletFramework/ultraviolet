@@ -215,11 +215,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Media\Effects\BlurEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\Effects\DropShadowEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\Effects\Effect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Media\Effects\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\Effects\ShaderEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\GeneralTransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\HitTestUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\IdentityTransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\MatrixTransform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Media\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\RotateTransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\ScaleTransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\SkewTransform.cs" />

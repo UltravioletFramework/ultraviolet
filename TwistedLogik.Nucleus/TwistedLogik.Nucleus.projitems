@@ -72,6 +72,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Performance\GCDebug.NativeMethods.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Performance\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SafeDispose.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Splinq\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Splinq\StackExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Splinq\QueueExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Splinq\HashSetExtensions.cs" />
