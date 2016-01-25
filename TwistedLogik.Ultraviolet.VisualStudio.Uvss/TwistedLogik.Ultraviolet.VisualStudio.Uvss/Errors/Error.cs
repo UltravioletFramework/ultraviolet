@@ -67,8 +67,10 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
                 {
                     var prevToken = DiagnosticInfo.Node.GetPreviousToken(includeMissing: false);
                     if (prevToken.HasTrailingLineBreaks || DiagnosticInfo.Node.HasLeadingLineBreaks)
-                    {
-                        tagStart = prevToken.Position + (prevToken.FullWidth - prevToken.GetTrailingTriviaWidth());
+					{
+						var positionDelta = prevToken.Position - DiagnosticInfo.Node.Position;
+
+                        tagStart = (tagStart + positionDelta) + (prevToken.FullWidth - prevToken.GetTrailingTriviaWidth());
                         tagWidth = 1;
                     }
                 }

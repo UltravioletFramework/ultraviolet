@@ -2,10 +2,10 @@
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-    /// <summary>
-    /// Represents a trigger which fires when a collection of dependency properties are set to certain values.
-    /// </summary>
-    public sealed partial class UvssPropertyTrigger : UvssTrigger, IDependencyPropertyChangeNotificationSubscriber
+	/// <summary>
+	/// Represents a trigger which fires when a collection of dependency properties are set to certain values.
+	/// </summary>
+	public sealed partial class UvssPropertyTrigger : UvssTrigger, IDependencyPropertyChangeNotificationSubscriber
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssPropertyTrigger"/> class.
@@ -45,9 +45,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             foreach (var condition in conditions)
             {
-                var dprop = DependencyProperty.FindByStylingName(Ultraviolet, dobj, condition.DependencyPropertyName.Owner, condition.DependencyPropertyName.Name);
+                var dprop = DependencyProperty.FindByStylingName(Ultraviolet, dobj, (String)condition.PropertyName.Owner, (String)condition.PropertyName.Name);
                 if (dprop == null)
-                    throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(condition.DependencyPropertyName, dobj.GetType()));
+                    throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format((Object)condition.PropertyName, dobj.GetType()));
 
                 DependencyProperty.RegisterChangeNotification(dobj, dprop, this);
             }
@@ -65,9 +65,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             foreach (var condition in conditions)
             {
-                var dprop = DependencyProperty.FindByStylingName(Ultraviolet, dobj, condition.DependencyPropertyName.Owner, condition.DependencyPropertyName.Name);
+                var dprop = DependencyProperty.FindByStylingName(Ultraviolet, dobj, (String)condition.PropertyName.Owner, (String)condition.PropertyName.Name);
                 if (dprop == null)
-                    throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format(condition.DependencyPropertyName, dobj.GetType()));
+                    throw new InvalidOperationException(PresentationStrings.EventOrPropertyDoesNotExist.Format((Object)condition.PropertyName, dobj.GetType()));
 
                 DependencyProperty.UnregisterChangeNotification(dobj, dprop, this);
             }

@@ -3,17 +3,17 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
-    /// <summary>
-    /// Represents the key used to identify a particular animation within a storyboard target's collection of animations.
-    /// </summary>
-    public struct StoryboardTargetAnimationKey : IEquatable<StoryboardTargetAnimationKey>
+	/// <summary>
+	/// Represents the key used to identify a particular animation within a storyboard target's collection of animations.
+	/// </summary>
+	public struct StoryboardTargetAnimationKey : IEquatable<StoryboardTargetAnimationKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoryboardTargetAnimationKey"/> structure.
         /// </summary>
         /// <param name="propertyName">The name of the animated property.</param>
         /// <param name="navigationExpression">The navigation expression for the animated property, if one was specified.</param>
-        public StoryboardTargetAnimationKey(UvmlName propertyName, NavigationExpression? navigationExpression = null)
+        public StoryboardTargetAnimationKey(DependencyName propertyName, NavigationExpression? navigationExpression = null)
         {
             this.propertyName = propertyName;
             this.navigationExpression = navigationExpression;
@@ -93,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <summary>
         /// Gets the name of the animated property.
         /// </summary>
-        public UvmlName PropertyName
+        public DependencyName PropertyName
         {
             get { return propertyName; }
         }
@@ -107,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         }
 
         // Property values.
-        private readonly UvmlName propertyName;
+        private readonly DependencyName propertyName;
         private readonly NavigationExpression? navigationExpression;
     }
 }

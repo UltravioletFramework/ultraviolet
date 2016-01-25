@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -13,10 +14,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
-    /// <summary>
-    /// Contains methods for loading UI elements from UVML.
-    /// </summary>
-    internal static partial class UvmlLoader
+	/// <summary>
+	/// Contains methods for loading UI elements from UVML.
+	/// </summary>
+	internal static partial class UvmlLoader
     {
         /// <summary>
         /// Initializes the <see cref="UvmlLoader"/> type.
@@ -74,7 +75,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 view.SetViewModel(viewModel);
             }
 
-            var context = InstantiationContext.FromView(uv, view, viewModelType);
+			var cultureRequested = (String)uiPanelDefinition.RootElement.Attribute("Culture");
+			var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? "en-US");
+			var context = InstantiationContext.FromView(uv, view, viewModelType, cultureInfo);
 
             var root = view.LayoutRoot;
             root.BeginInit();
@@ -113,7 +116,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var uv = control.Ultraviolet;
-            var context = InstantiationContext.FromControl(uv, control);
+			var cultureRequested = (String)template.Root.Attribute("Culture");
+			var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? "en-US");
+            var context = InstantiationContext.FromControl(uv, control, cultureInfo);
 
             control.ComponentTemplateNamescope.Clear();
             PopulateElementPropertiesAndEvents(uv, control, viewElement, context);
@@ -1134,7 +1139,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return namescope.GetElementByName(value);
             }
 
-            return ObjectResolver.FromString(value, type);
+            return ObjectResolver.FromString(value, type, context.Culture);
         }
 
         /// <summary>

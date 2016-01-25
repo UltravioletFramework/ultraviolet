@@ -8,10 +8,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-    /// <summary>
-    /// Contains methods for reifying instances of <see cref="UvssStoryboard"/> into instances of <see cref="Storyboard"/>.
-    /// </summary>
-    internal static class UvssStoryboardReifier
+	/// <summary>
+	/// Contains methods for reifying instances of <see cref="UvssStoryboard"/> into instances of <see cref="Storyboard"/>.
+	/// </summary>
+	internal static class UvssStoryboardReifier
     {
         /// <summary>
         /// Initializes the <see cref="UvssStoryboardReifier"/> type.
@@ -57,10 +57,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="storyboardDefinition">The storyboard definition to reify.</param>
         /// <returns>The new instance of <see cref="Storyboard"/> that was created.</returns>
-        public static Storyboard ReifyStoryboard(UltravioletContext uv, UvssStoryboard storyboardDefinition)
+        public static Storyboard ReifyStoryboard(UltravioletContext uv, 
+			UvssStoryboard storyboardDefinition)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(storyboardDefinition, "storyboardDefinition");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(storyboardDefinition, nameof(storyboardDefinition));
 
             var storyboard = new Storyboard(uv);
             storyboard.LoopBehavior = storyboardDefinition.LoopBehavior;
@@ -74,15 +75,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             return storyboard;
         }
 
-        /// <summary>
-        /// Creates a new <see cref="StoryboardTarget"/> instance based on the specified <see cref="UvssStoryboardTarget"/>.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="targetDefinition">The storyboard target definition.</param>
-        /// <returns>The reified storyboard target.</returns>
-        public static StoryboardTarget ReifyStoryboardTarget(UltravioletContext uv, UvssStoryboardTarget targetDefinition)
-        {
-            Contract.Require(targetDefinition, "targetDefinition");
+		/// <summary>
+		/// Creates a new <see cref="StoryboardTarget"/> instance based on the specified <see cref="UvssStoryboardTarget"/>.
+		/// </summary>
+		/// <param name="uv">The Ultraviolet context.</param>
+		/// <param name="targetDefinition">The storyboard target definition.</param>
+		/// <returns>The reified storyboard target.</returns>
+		public static StoryboardTarget ReifyStoryboardTarget(UltravioletContext uv, 
+			UvssStoryboardTarget targetDefinition)
+		{
+			Contract.Require(uv, nameof(uv));
+			Contract.Require(targetDefinition, nameof(targetDefinition));
 
             var target = new StoryboardTarget(targetDefinition.Selector);
 
@@ -99,18 +102,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             return target;
         }
 
-        /// <summary>
-        /// Creates a new <see cref="AnimationBase"/> instance based on the specified <see cref="UvssStoryboardAnimation"/>.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="targetDefinition">The type filter on the storyboard target.</param>
-        /// <param name="animationDefinition">The storyboard animation definition.</param>
-        /// <param name="animationKey">The name of the dependency property which is being animated.</param>
-        /// <returns>The reified storyboard animation.</returns>
-        public static AnimationBase ReifyStoryboardAnimation(UltravioletContext uv, UvssStoryboardTarget targetDefinition, UvssStoryboardAnimation animationDefinition, out StoryboardTargetAnimationKey animationKey)
-        {
-            Contract.Require(targetDefinition, "targetDefinition");
-            Contract.Require(animationDefinition, "animationDefinition");
+		/// <summary>
+		/// Creates a new <see cref="AnimationBase"/> instance based on the specified <see cref="UvssStoryboardAnimation"/>.
+		/// </summary>
+		/// <param name="uv">The Ultraviolet context.</param>
+		/// <param name="targetDefinition">The type filter on the storyboard target.</param>
+		/// <param name="animationDefinition">The storyboard animation definition.</param>
+		/// <param name="animationKey">The name of the dependency property which is being animated.</param>
+		/// <returns>The reified storyboard animation.</returns>
+		public static AnimationBase ReifyStoryboardAnimation(UltravioletContext uv,	
+			UvssStoryboardTarget targetDefinition, UvssStoryboardAnimation animationDefinition, out StoryboardTargetAnimationKey animationKey)
+		{
+			Contract.Require(uv, nameof(uv));
+			Contract.Require(targetDefinition, nameof(targetDefinition));
+            Contract.Require(animationDefinition, nameof(animationDefinition));
 
             var propertyName = animationDefinition.AnimatedProperty;
             var propertyType = GetDependencyPropertyType(uv, targetDefinition.Filter, ref propertyName);
@@ -123,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 navigationExpression = NavigationExpression.FromUvssNavigationExpression(uv, navigationExpressionDef);
             }
 
-            animationKey = new StoryboardTargetAnimationKey(new UvmlName(propertyName), navigationExpression);
+            animationKey = new StoryboardTargetAnimationKey(new DependencyName(propertyName), navigationExpression);
 
             if (propertyType == null)
                 return null;
@@ -143,31 +148,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             return animation;
         }
 
-        /// <summary>
-        /// Creates a new <see cref="AnimationKeyframeBase"/> instance based on the specified <see cref="UvssStoryboardKeyframe"/>.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="keyframeDefinition">The storyboard keyframe definition.</param>
-        /// <param name="animatedType">The type of value which is being animated.</param>
-        /// <returns>The reified storyboard animation keyframe.</returns>
-        public static AnimationKeyframeBase ReifyStoryboardAnimationKeyframe(UltravioletContext uv, UvssStoryboardKeyframe keyframeDefinition, Type animatedType)
-        {
-            Contract.Require(keyframeDefinition, "keyframeDefinition");
-            Contract.Require(animatedType, "animatedType");
+		/// <summary>
+		/// Creates a new <see cref="AnimationKeyframeBase"/> instance based on the specified <see cref="UvssStoryboardKeyframe"/>.
+		/// </summary>
+		/// <param name="uv">The Ultraviolet context.</param>
+		/// <param name="keyframeDefinition">The storyboard keyframe definition.</param>
+		/// <param name="animatedType">The type of value which is being animated.</param>
+		/// <returns>The reified storyboard animation keyframe.</returns>
+		public static AnimationKeyframeBase ReifyStoryboardAnimationKeyframe(UltravioletContext uv,
+			UvssStoryboardKeyframe keyframeDefinition, Type animatedType)
+		{
+			Contract.Require(uv, nameof(uv));
+			Contract.Require(keyframeDefinition, nameof(keyframeDefinition));
+			Contract.Require(animatedType, nameof(animatedType));
 
-            var keyframeType = typeof(AnimationKeyframe<>).MakeGenericType(animatedType);
+			var keyframeType = typeof(AnimationKeyframe<>).MakeGenericType(animatedType);
 
-            var time   = TimeSpan.FromMilliseconds(keyframeDefinition.Time);
-            var easing = ParseEasingFunction(keyframeDefinition.Easing);
-            var str    = keyframeDefinition.Value == null ? null : keyframeDefinition.Value.Trim();
-            var value  = String.IsNullOrWhiteSpace(str) ? null : ObjectResolver.FromString(str, animatedType, true);
+			var time = TimeSpan.FromMilliseconds(keyframeDefinition.Time);
+			var easing = ParseEasingFunction(keyframeDefinition.Easing);
+			var value = keyframeDefinition.Value;
+			var valueObj = value.IsEmpty ? null : ObjectResolver.FromString(value.Value, animatedType, value.Culture, true);
 
-            var keyframe = (value == null) ?
-                    (AnimationKeyframeBase)Activator.CreateInstance(keyframeType, time, easing) :
-                    (AnimationKeyframeBase)Activator.CreateInstance(keyframeType, time, value, easing);
+			var keyframe = (valueObj == null) ?
+					(AnimationKeyframeBase)Activator.CreateInstance(keyframeType, time, easing) :
+					(AnimationKeyframeBase)Activator.CreateInstance(keyframeType, time, valueObj, easing);
 
-            return keyframe;
-        }
+			return keyframe;
+		}
 
         /// <summary>
         /// Parses the name of an easing function into an instance of the <see cref="EasingFunction"/> delegate.

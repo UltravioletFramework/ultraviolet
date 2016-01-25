@@ -5,10 +5,10 @@ using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-    /// <summary>
-    /// Represents a property trigger's collection of conditions.
-    /// </summary>
-    public sealed partial class UvssPropertyTriggerConditionCollection
+	/// <summary>
+	/// Represents a property trigger's collection of conditions.
+	/// </summary>
+	public sealed partial class UvssPropertyTriggerConditionCollection
     {
         /// <summary>
         /// Gets a value indicating whether the specified dependency object satisfies all of the conditions in the collection.
@@ -105,10 +105,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         private void UpdateCanonicalName()
         {
-            var conditionStrings = conditions.OrderBy(x => x.DependencyPropertyName.QualifiedName).Select(x => String.Format("{0} {1} {{ {2} }}", 
-                x.DependencyPropertyName.QualifiedName, 
+            var conditionStrings = conditions.OrderBy(x => x.PropertyName.QualifiedName).Select(x => String.Format("{0} {1} {{ {2} }}", 
+                x.PropertyName.QualifiedName, 
                 x.ComparisonOperation.ConvertToSymbol(), 
-                x.ReferenceValue));
+                x.PropertyValue));
 
             canonicalName = String.Join(", ", conditionStrings);
         }

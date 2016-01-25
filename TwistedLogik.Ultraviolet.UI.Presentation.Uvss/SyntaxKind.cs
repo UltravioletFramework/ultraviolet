@@ -429,5 +429,20 @@
         /// An empty statement.
         /// </summary>
         EmptyStatement,
+
+		/// <summary>
+		/// A directive token.
+		/// </summary>
+		DirectiveToken,
+
+		/// <summary>
+		/// An unrecognized directive.
+		/// </summary>
+		UnknownDirective,
+
+		/// <summary>
+		/// A $culture directive.
+		/// </summary>
+		CultureDirective,
     }
 }

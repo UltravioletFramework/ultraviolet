@@ -54,5 +54,8 @@
         StoryboardTarget,
         TransitionArgumentList,
         Transition,
+
+		UnknownDirective,
+		CultureDirective,
     }
 }

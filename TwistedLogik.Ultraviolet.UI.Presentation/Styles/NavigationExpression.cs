@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="propertyName">The name of the navigation property.</param>
         /// <param name="propertyType">The type of the navigation property, if specified.</param>
         /// <param name="propertyIndex">The index of the navigation property, if specified.</param>
-        public NavigationExpression(UvmlName propertyName, Type propertyType, Int32? propertyIndex = null)
+        public NavigationExpression(DependencyName propertyName, Type propertyType, Int32? propertyIndex = null)
         {
             this.propertyName = propertyName;
             this.propertyType = propertyType;
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             var upf = uv.GetUI().GetPresentationFoundation();
 
-            var navigationPropertyName = new UvmlName(uvssexp.NavigationProperty);
+            var navigationPropertyName = new DependencyName(uvssexp.NavigationProperty);
             var navigationPropertyIndex = uvssexp.NavigationPropertyIndex;
             var navigationPropertyType = default(Type);
 
@@ -187,7 +187,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets the name of the navigation property.
         /// </summary>
-        public UvmlName PropertyName
+        public DependencyName PropertyName
         {
             get { return propertyName; }
         }
@@ -209,7 +209,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         // Property values.
-        private readonly UvmlName propertyName;
+        private readonly DependencyName propertyName;
         private readonly Type propertyType;
         private readonly Int32? propertyIndex;
     }

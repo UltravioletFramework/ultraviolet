@@ -914,5 +914,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 newIdentifierToken,
                 newCloseBracketToken);
         }
-    }
+
+		/// <inheritdoc/>
+		public override SyntaxNode VisitUnknownDirective(UvssUnknownDirectiveSyntax node)
+		{
+			var unchanged = true;
+
+			var newDirectiveToken = (SyntaxToken)Visit(node.DirectiveToken);
+			if (newDirectiveToken != node.DirectiveToken)
+				unchanged = false;
+			
+			return unchanged ? node : new UvssUnknownDirectiveSyntax(
+				newDirectiveToken);
+		}
+
+		/// <inheritdoc/>
+		public override SyntaxNode VisitCultureDirective(UvssCultureDirectiveSyntax node)
+		{
+			var unchanged = true;
+
+			var newDirectiveToken = (SyntaxToken)Visit(node.DirectiveToken);
+			if (newDirectiveToken != node.DirectiveToken)
+				unchanged = false;
+
+			var newCultureValue = (UvssPropertyValueWithBracesSyntax)Visit(node.CultureValue);
+			if (newCultureValue != node.CultureValue)
+				unchanged = false;
+
+			return unchanged ? node : new UvssCultureDirectiveSyntax(
+				newDirectiveToken,
+				newCultureValue);
+		}
+	}
 }

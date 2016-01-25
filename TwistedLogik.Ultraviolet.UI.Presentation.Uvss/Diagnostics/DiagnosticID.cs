@@ -94,5 +94,26 @@
         /// An index was not an integer value.
         /// </summary>
         IndexMustBeIntegerValue,
+
+		/// <summary>
+		/// An unrecognized directive was encountered.
+		/// </summary>
+		UnknownDirective,
+
+		/// <summary>
+		/// A directive was encountered at an invalid location.
+		/// </summary>
+		DirectiveAtInvalidPosition,
+
+		/// <summary>
+		/// A directive was encountered that was not the first non-whitespace character
+		/// on its line of source code.
+		/// </summary>
+		DirectiveMustBeFirstNonWhiteSpaceOnLine,
+
+		/// <summary>
+		/// A $culture directive references an invalid culture.
+		/// </summary>
+		UnknownCulture,
     }
 }

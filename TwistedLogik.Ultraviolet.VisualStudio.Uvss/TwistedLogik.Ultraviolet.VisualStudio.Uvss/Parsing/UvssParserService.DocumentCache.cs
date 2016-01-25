@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
-using System;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
 {
-    partial class UvssParserService
+	partial class UvssParserService
     {
         /// <summary>
         /// Represents a cache of UVSS documents which have been generated for various spans
@@ -38,12 +39,28 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
                     if (parsingTasks.TryGetValue(span, out task))
                         return task;
 
-                    var sourceSpan = new SnapshotSpan(snapshot, span);
+					var options = 
+						UvssParserOptions.PartialDocument |
+						UvssParserOptions.PartialDocumentStartsOnEmptyLine;
+
+					var sourceSpan = new SnapshotSpan(snapshot, span);
                     var source = sourceSpan.GetText();
 
+					var firstLine = snapshot.GetLineFromPosition(sourceSpan.Start.Position);
+					var firstLineSource = firstLine.GetText();
+
+					if (firstLine.Start != sourceSpan.Start)
+					{
+						var precedingSource = firstLineSource.Substring(0, sourceSpan.Start.Position - firstLine.Start.Position);
+						if (precedingSource.Any(x => !Char.IsWhiteSpace(x)))
+						{
+							options &= ~UvssParserOptions.PartialDocumentStartsOnEmptyLine;
+						}
+					}
+				
                     task = Task.Run(() =>
                     {
-                        var document = UvssParser.Parse(source);
+                        var document = UvssParser.Parse(source, options);
                         if (completed != null)
                         {
                             completed(document);

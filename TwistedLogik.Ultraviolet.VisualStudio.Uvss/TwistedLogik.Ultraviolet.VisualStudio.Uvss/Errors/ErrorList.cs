@@ -67,13 +67,15 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
         /// <inheritdoc/>
         public IEnumerable<Error> GetErrors()
         {
-            return new List<Error>(errors);
+			lock (errors)
+				return new List<Error>(errors);
         }
 
         /// <inheritdoc/>
         public IEnumerable<Error> GetErrorsInSpan(SnapshotSpan span)
         {
-            return errors.Where(x => x.Span.IntersectsWith(span)).ToList();
+			lock (errors)
+				return errors.Where(x => x.Span.IntersectsWith(span)).ToList();
         }
 
         /// <inheritdoc/>

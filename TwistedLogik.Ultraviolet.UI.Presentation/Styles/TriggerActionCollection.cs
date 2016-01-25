@@ -12,24 +12,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Activates the actions in the collection, with the specified dependency object as their implicit target.
         /// </summary>
+		/// <param name="uv">The Ultraviolet context.</param>
         /// <param name="dobj">The dependency object which is the implicit target of the activated actions.</param>
-        internal void Activate(DependencyObject dobj)
+        internal void Activate(UltravioletContext uv, DependencyObject dobj)
         {
             foreach (var action in actions)
             {
-                action.Activate(dobj);
+                action.Activate(uv, dobj);
             }
         }
 
-        /// <summary>
-        /// Deactivates the actions in the collection, with the specified dependency object as their implicit target.
-        /// </summary>
-        /// <param name="dobj">The dependency object which is the implicit target of the deactivated actions.</param>
-        internal void Deactivate(DependencyObject dobj)
+		/// <summary>
+		/// Deactivates the actions in the collection, with the specified dependency object as their implicit target.
+		/// </summary>
+		/// <param name="uv">The Ultraviolet context.</param>
+		/// <param name="dobj">The dependency object which is the implicit target of the deactivated actions.</param>
+		internal void Deactivate(UltravioletContext uv, DependencyObject dobj)
         {
             foreach (var action in actions)
             {
-                action.Deactivate(dobj);
+                action.Deactivate(uv, dobj);
             }
         }
 

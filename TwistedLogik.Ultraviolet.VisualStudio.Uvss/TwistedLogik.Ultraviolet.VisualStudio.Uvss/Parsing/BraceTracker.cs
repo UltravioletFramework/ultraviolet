@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.Text;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Text;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
 {
-    /// <summary>
-    /// Tracks the positions of braces in a UVSS document.
-    /// </summary>
-    public sealed partial class BraceTracker : SymbolTrackerBase
+	/// <summary>
+	/// Tracks the positions of braces in a UVSS document.
+	/// </summary>
+	public sealed partial class BraceTracker : SymbolTrackerBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BraceTracker"/> class.
@@ -25,47 +25,47 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
             InitializeFromBuffer();
         }
 
-        /// <summary>
-        /// Gets a <see cref="SnapshotSpan"/> that represents the outermost block of text
-        /// that contains the specified position in the source text.
-        /// </summary>
-        /// <param name="position">The position in the source text to evaluate.</param>
-        /// <returns>A <see cref="SnapshotSpan"/> that represents the outermost block at 
-        /// the specified position in the source text.</returns>
-        public SnapshotSpan GetOutermostBlockSpan(Int32 position)
-        {
-            var snapshot = Buffer.CurrentSnapshot;
+		/// <summary>
+		/// Gets a <see cref="SnapshotSpan"/> that represents the outermost block of text
+		/// that contains the specified position in the source text.
+		/// </summary>
+		/// <param name="position">The position in the source text to evaluate.</param>
+		/// <returns>A <see cref="SnapshotSpan"/> that represents the outermost block at 
+		/// the specified position in the source text.</returns>
+		public SnapshotSpan GetOutermostBlockSpan(Int32 position)
+		{
+			var snapshot = Buffer.CurrentSnapshot;
 
-            var start = GetStartOfOutermostBlock(position);
-            var end = GetEndOfOutermostBlock(position);
+			var start = GetStartOfOutermostBlock(position);
+			var end = GetEndOfOutermostBlock(position);
 
-            return new SnapshotSpan(snapshot, start, end - start);
-        }
+			return new SnapshotSpan(snapshot, start, end - start);
+		}
 
-        /// <summary>
-        /// Gets a <see cref="SnapshotSpan"/> that represents the outermost block of text
-        /// that contains the specified span in the source text.
-        /// </summary>
-        /// <param name="span">The span in the source text to evaluate.</param>
-        /// <returns>A <see cref="SnapshotSpan"/> that represents the outermost block at 
-        /// the specified span in the source text.</returns>
-        public SnapshotSpan GetOutermostBlockSpan(Span span)
-        {
-            var snapshot = Buffer.CurrentSnapshot;
+		/// <summary>
+		/// Gets a <see cref="SnapshotSpan"/> that represents the outermost block of text
+		/// that contains the specified span in the source text.
+		/// </summary>
+		/// <param name="span">The span in the source text to evaluate.</param>
+		/// <returns>A <see cref="SnapshotSpan"/> that represents the outermost block at 
+		/// the specified span in the source text.</returns>
+		public SnapshotSpan GetOutermostBlockSpan(Span span)
+		{
+			var snapshot = Buffer.CurrentSnapshot;
 
-            var start = GetStartOfOutermostBlock(span.Start);
-            var end = GetEndOfOutermostBlock(span.End);
+			var start = GetStartOfOutermostBlock(span.Start);
+			var end = GetEndOfOutermostBlock(span.End);
 
-            return new SnapshotSpan(snapshot, start, end - start);
-        }
+			return new SnapshotSpan(snapshot, start, end - start);
+		}
 
-        /// <summary>
-        /// Gets the starting position of the outermost block that contains
-        /// the specified position in the source text.
-        /// </summary>
-        /// <param name="position">The position in the source text to evaluate.</param>
-        /// <returns>The position in the source text at which the outermost block begins.</returns>
-        public Int32 GetStartOfOutermostBlock(Int32 position)
+		/// <summary>
+		/// Gets the starting position of the outermost block that contains
+		/// the specified position in the source text.
+		/// </summary>
+		/// <param name="position">The position in the source text to evaluate.</param>
+		/// <returns>The position in the source text at which the outermost block begins.</returns>
+		public Int32 GetStartOfOutermostBlock(Int32 position)
         {
             var startPos = 0;
             var startSymbol = default(BraceSymbol);
@@ -112,17 +112,20 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
         {
             var endPos = Buffer.CurrentSnapshot.Length;
 
-            for (int i = symbols.Count - 1; i >= 0; i--)
+            for (int i = 0; i < symbols.Count; i++)
             {
                 var symbol = symbols.Values[i];
                 if (symbol.Position < position)
-                    break;
+                    continue;
                 
                 if (commentTracker.IsPositionInsideComment(symbol.Position))
                     continue;
 
-                if (symbol.Type == BraceSymbolType.Close && symbol.Nesting == 0)
-                    endPos = symbol.Position + 1;
+				if (symbol.Type == BraceSymbolType.Close && symbol.Nesting == 0)
+				{
+					endPos = symbol.Position + 1;
+					break;
+				}
             }
 
             return endPos;
@@ -259,29 +262,69 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
         /// </summary>
         private void UpdateNesting()
         {
-            var nesting = 0;
-            
-            for (int i = 0; i < symbols.Count; i++)
-            {
-                var symbol = symbols.Values[i];
-                if (symbol.Type == BraceSymbolType.Open)
-                {
-                    if (nesting < 0)
-                        nesting = 0;
-
-                    symbol.Nesting = nesting;
-                    nesting++;
-                }
-                else
-                {
-                    if (nesting < 1)
-                        nesting = 1;
-
-                    nesting--;
-                    symbol.Nesting = nesting;
-                }
-            }
+			UpdateNestingTopDown();
+			UpdateNestingBottomUp();
         }
+
+		/// <summary>
+		/// Updates the nesting values of known symbols by starting at the
+		/// top of the document and moving down.
+		/// </summary>
+		private void UpdateNestingTopDown()
+		{
+			var nesting = 0;
+
+			for (int i = 0; i < symbols.Count; i++)
+			{
+				var symbol = symbols.Values[i];
+				if (symbol.Type == BraceSymbolType.Open)
+				{
+					if (nesting < 0)
+						nesting = 0;
+
+					symbol.NestingTopDown = nesting;
+					nesting++;
+				}
+				else
+				{
+					if (nesting < 1)
+						nesting = 1;
+
+					nesting--;
+					symbol.NestingTopDown = nesting;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Updates the nesting values of known symbols by starting at the bottom
+		/// of the document and moving up.
+		/// </summary>
+		private void UpdateNestingBottomUp()
+		{
+			var nesting = 0;
+
+			for (int i = symbols.Count - 1; i >= 0; i--)
+			{
+				var symbol = symbols.Values[i];
+				if (symbol.Type == BraceSymbolType.Close)
+				{
+					if (nesting < 0)
+						nesting = 0;
+
+					symbol.NestingBottomUp = nesting;
+					nesting++;
+				}
+				else
+				{
+					if (nesting < 1)
+						nesting = 1;
+
+					nesting--;
+					symbol.NestingBottomUp = nesting;
+				}
+			}
+		}
 
         /// <summary>
         /// Gets the previous close symbol which occurs at the same nesting level as

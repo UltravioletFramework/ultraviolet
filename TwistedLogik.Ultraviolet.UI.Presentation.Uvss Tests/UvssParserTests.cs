@@ -1686,5 +1686,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             TheResultingObject(indexerDiagnostics[0])
                 .ShouldSatisfyTheCondition(x => x.ID == DiagnosticID.IndexMustBeIntegerValue);
         }
+
+		[TestMethod]
+		public void UvssParser_CorrectlyParsesCultureDirective()
+		{
+			var document = UvssParser.Parse(
+				"$culture { fr-FR }\r\n" +
+				"#foo { }");
+
+			TheResultingNode(document)
+				.ShouldHaveNoDiagnostics();
+
+			var directive = document.Content[0] as UvssCultureDirectiveSyntax;
+			TheResultingNode(directive)
+				.ShouldBePresent()
+				.ShouldSatisfyTheCondition(x => x.CultureValue.Value == "fr-FR");
+		}
     }
 }

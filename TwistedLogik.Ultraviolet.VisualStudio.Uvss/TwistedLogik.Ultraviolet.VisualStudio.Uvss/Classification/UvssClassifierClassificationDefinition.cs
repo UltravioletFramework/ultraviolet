@@ -61,6 +61,11 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         [BaseDefinition("CSS Property Name")]
         private static ClassificationTypeDefinition uvssTypeName;
 
+		[Export(typeof(ClassificationTypeDefinition))]
+		[Name("UvssDirective")]
+		[BaseDefinition("CSS Keyword")]
+		private static ClassificationTypeDefinition uvssDirective;
+
 #pragma warning restore 169
-    }
+	}
 }
