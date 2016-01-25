@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Ultraviolet.Testing;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -10,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
 	public class UvssCompilerTests : UltravioletTestFramework
 	{
 		[TestMethod]
-		public void UvssCompiler_DefaultsToAmericanEnglishCulture()
+		public void UvssCompiler_DefaultsToInvariantCulture()
 		{
 			UsingCulture("ru-RU", () =>
 			{
@@ -25,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
 
 				TheResultingObject(keyframe)
 					.ShouldNotBeNull()
-					.ShouldSatisfyTheCondition(x => x.Value.Culture.Name == "en-US");
+					.ShouldSatisfyTheCondition(x => x.Value.Culture.Name == String.Empty);
 			});
 		}
 

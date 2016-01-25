@@ -162,7 +162,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 		/// </summary>
 		internal static CultureInfo DefaultCulture
 		{
-			get { return CultureInfo.GetCultureInfo("en-US"); }
+			get { return CultureInfo.GetCultureInfo(String.Empty); }
 		}
 
         /// <summary>

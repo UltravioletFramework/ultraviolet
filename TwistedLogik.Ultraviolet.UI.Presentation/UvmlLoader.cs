@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
 			var cultureRequested = (String)uiPanelDefinition.RootElement.Attribute("Culture");
-			var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? "en-US");
+			var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? String.Empty);
 			var context = InstantiationContext.FromView(uv, view, viewModelType, cultureInfo);
 
             var root = view.LayoutRoot;
@@ -117,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var uv = control.Ultraviolet;
 			var cultureRequested = (String)template.Root.Attribute("Culture");
-			var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? "en-US");
+			var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? String.Empty);
             var context = InstantiationContext.FromControl(uv, control, cultureInfo);
 
             control.ComponentTemplateNamescope.Clear();
