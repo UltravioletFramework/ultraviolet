@@ -513,7 +513,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssLexerStream input, ref Int32 position)
         {
             var leadingTrivia = AccumulateTrivia(input, ref position,
-                treatCurrentTokenAsTrivia: false,
+                isCurrentTokenTrivia: false,
                 isLeading: true);
             var leadingTriviaNode = ConvertTriviaList(leadingTrivia);
 
@@ -671,7 +671,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     /* ??? */
                     default:
                         {
-                            var empty = ExpectEmptyStatement(input, ref position);
+							var empty = ExpectEmptyStatement(input, ref position, kind =>
+							{
+								return
+									IsPotentiallyStartOfSelectorPart(kind) ||
+									kind == SyntaxKind.AtSignToken ||
+									kind == SyntaxKind.DirectiveToken ||
+									kind == SyntaxKind.EndOfFileToken;
+							});
                             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInDocumentContent);
 							isDirectiveValid = false;
                             return empty;
@@ -2282,7 +2289,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     return ExpectTrigger(input, ref position);
             }
 
-            var empty = ExpectEmptyStatement(input, ref position);
+            var empty = ExpectEmptyStatement(input, ref position, kind =>
+			{
+				return
+					kind == SyntaxKind.IdentifierToken ||
+					kind == SyntaxKind.OpenBracketToken ||
+					kind == SyntaxKind.TransitionKeyword ||
+					kind == SyntaxKind.TriggerKeyword ||
+					kind == SyntaxKind.CloseCurlyBraceToken ||
+					kind == SyntaxKind.EndOfFileToken;
+			});
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInRuleSetBody);
             return empty;
         }
@@ -2584,7 +2600,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             UvssLexerStream input, ref Int32 position)
         {
             var nextTokenKind = SyntaxKindFromNextToken(input, position);
-            if (nextTokenKind == SyntaxKind.CloseCurlyBraceToken || nextTokenKind == SyntaxKind.EndOfFileToken)
+            if (nextTokenKind == SyntaxKind.CloseParenthesesToken || nextTokenKind == SyntaxKind.EndOfFileToken)
                 return null;
 
             var token = AcceptToken(input, ref position,
@@ -2594,7 +2610,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (token != null)
                 return token;
 
-            var empty = ExpectEmptyStatement(input, ref position);
+            var empty = ExpectEmptyStatement(input, ref position, kind =>
+			{
+				return
+					kind == SyntaxKind.HandledKeyword ||
+					kind == SyntaxKind.SetHandledKeyword ||
+					kind == SyntaxKind.CloseParenthesesToken ||
+					kind == SyntaxKind.EndOfFileToken;
+			});
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInEventTriggerArgumentList);
             return empty;
         }
@@ -2928,7 +2951,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (action != null)
                 return action;
 
-            var empty = ExpectEmptyStatement(input, ref position);
+            var empty = ExpectEmptyStatement(input, ref position, kind =>
+			{
+				return
+					kind == SyntaxKind.SetKeyword ||
+					kind == SyntaxKind.PlaySfxKeyword ||
+					kind == SyntaxKind.PlayStoryboardKeyword ||
+					kind == SyntaxKind.CloseCurlyBraceToken ||
+					kind == SyntaxKind.EndOfFileToken;
+			});
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInTriggerBody);
             return empty;
         }
@@ -3227,7 +3258,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (storyboardTarget != null)
                 return storyboardTarget;
 
-            var empty = ExpectEmptyStatement(input, ref position);
+            var empty = ExpectEmptyStatement(input, ref position, kind =>
+			{
+				return
+					kind == SyntaxKind.TargetKeyword ||
+					kind == SyntaxKind.CloseCurlyBraceToken ||
+					kind == SyntaxKind.EndOfFileToken;
+			});
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInStoryboardBody);
             return empty;
         }
@@ -3310,7 +3347,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (animation != null)
                 return animation;
 
-            var empty = ExpectEmptyStatement(input, ref position);
+            var empty = ExpectEmptyStatement(input, ref position, kind =>
+			{
+				return
+					kind == SyntaxKind.AnimationKeyword ||
+					kind == SyntaxKind.CloseCurlyBraceToken ||
+					kind == SyntaxKind.EndOfFileToken;
+			});
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInStoryboardTargetBody);
             return empty;
         }
@@ -3388,7 +3431,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (animationKeyframe != null)
                 return animationKeyframe;
 
-            var empty = ExpectEmptyStatement(input, ref position);
+            var empty = ExpectEmptyStatement(input, ref position, kind =>
+			{
+				return
+					kind == SyntaxKind.KeyframeKeyword ||
+					kind == SyntaxKind.CloseCurlyBraceToken ||
+					kind == SyntaxKind.EndOfFileToken;
+			});
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInAnimationBody);
             return empty;
         }
@@ -3537,11 +3586,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses an empty statement.
         /// </summary>
         private static UvssEmptyStatementSyntax ParseEmptyStatement(
-            UvssLexerStream input, ref Int32 position, Boolean accept)
+            UvssLexerStream input, ref Int32 position, Predicate<SyntaxKind> isNotSkipped, Boolean accept)
         {
             var trivia = AccumulateTrivia(input, ref position,
-                treatCurrentTokenAsTrivia: true,
-                isLeading: true);
+                isCurrentTokenTrivia: true,
+                isLeading: true,
+				isNotSkippedTriviaKind: isNotSkipped);
 
             var emptyToken = new SyntaxToken(SyntaxKind.EmptyToken, null);
             GetNodePositionFromLexerPosition(input, position, emptyToken);
@@ -3556,7 +3606,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts an empty statement.
         /// </summary>
         private static UvssEmptyStatementSyntax AcceptEmptyStatement(
-            UvssLexerStream input, ref Int32 position)
+            UvssLexerStream input, ref Int32 position, Predicate<SyntaxKind> checkAllowedToken)
         {
             return null;
         }
@@ -3565,9 +3615,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Expects an empty statement.
         /// </summary>
         private static UvssEmptyStatementSyntax ExpectEmptyStatement(
-            UvssLexerStream input, ref Int32 position)
+            UvssLexerStream input, ref Int32 position, Predicate<SyntaxKind> checkAllowedToken)
         {
-            return ParseEmptyStatement(input, ref position, false);
+            return ParseEmptyStatement(input, ref position, checkAllowedToken, false);
         }
 
         /// <summary>
@@ -3817,25 +3867,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         /// <param name="input">The lexer token stream.</param>
         /// <param name="position">The current position in the lexer token stream.</param>
-        /// <param name="treatCurrentTokenAsTrivia">A value indicating whether to treat
+        /// <param name="isCurrentTokenTrivia">A value indicating whether to treat
         /// the current token as trivia, even if it otherwise wouldn't be considered trivia.</param>
         /// <param name="isLeading">A value indicating whether this is leading trivia.</param>
+		/// <param name="isNotSkippedTriviaKind">A predicate which determines whether a given token
+		/// should be considered skipped trivia.</param>
         /// <returns>The list of accumulated trivia, or null if no trivia was accumulated.</returns>
         private static IList<SyntaxTrivia> AccumulateTrivia(
             UvssLexerStream input, ref Int32 position, 
-            Boolean treatCurrentTokenAsTrivia = false,
-            Boolean isLeading = false)
+            Boolean isCurrentTokenTrivia = false,
+            Boolean isLeading = false,
+			Predicate<SyntaxKind> isNotSkippedTriviaKind = null)
         {
             var triviaList = default(List<SyntaxTrivia>);
 
             var treatNextTokenAsSkipped = false;
-            var treatNextNonTriviaTokenAsTrivia = treatCurrentTokenAsTrivia;
+            var treatNextNonTriviaTokenAsTrivia = isCurrentTokenTrivia;
 
             while (!input.IsPastEndOfStream(position))
             {
-				if (!IsTrivia(input[position]))
+				var token = input[position];
+				if (!IsTrivia(token))
 				{
 					if (!treatNextNonTriviaTokenAsTrivia)
+						break;
+
+					var tokenKind = SyntaxKindFromLexerTokenType(token);
+					if (isNotSkippedTriviaKind != null && isNotSkippedTriviaKind(tokenKind))
 						break;
 
 					treatNextTokenAsSkipped = true;

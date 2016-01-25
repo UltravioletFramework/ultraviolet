@@ -131,26 +131,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
             var body = ruleSet.Body;
             TheResultingNode(body)
                 .ShouldBePresent()
-                .ShouldSatisfyTheCondition(x => x.Content.Count == 3);
+                .ShouldSatisfyTheCondition(x => x.Content.Count == 1);
 
             var openCurlyBrace = body.OpenCurlyBraceToken;
             TheResultingNode(openCurlyBrace)
                 .ShouldBePresent();
 
-            var empty0 = ruleSet.Body.Content[0] as UvssEmptyStatementSyntax;
-            TheResultingNode(empty0)
+            var emptyStatement = ruleSet.Body.Content[0] as UvssEmptyStatementSyntax;
+            TheResultingNode(emptyStatement)
                 .ShouldBePresent()
-                .ShouldHaveFullString("&", includeTrivia: true);
-
-            var empty1 = ruleSet.Body.Content[1] as UvssEmptyStatementSyntax;
-            TheResultingNode(empty1)
-                .ShouldBePresent()
-                .ShouldHaveFullString("&", includeTrivia: true);
-
-            var empty2 = ruleSet.Body.Content[2] as UvssEmptyStatementSyntax;
-            TheResultingNode(empty2)
-                .ShouldBePresent()
-                .ShouldHaveFullString("&", includeTrivia: true);
+                .ShouldHaveFullString("&&&", includeTrivia: true);
 
             var closeCurlyBrace = body.CloseCurlyBraceToken;
             TheResultingNode(closeCurlyBrace)
