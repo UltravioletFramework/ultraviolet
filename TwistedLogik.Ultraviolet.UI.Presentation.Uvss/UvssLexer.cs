@@ -229,6 +229,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 case nameof(UvssLexerTokenType.Pipe):
                     return UvssLexerTokenType.Pipe;
 
+				case nameof(UvssLexerTokenType.Directive):
+					return UvssLexerTokenType.Directive;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(name));
             }
@@ -473,7 +476,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static Regex CreateLexerRegex()
         {
             var pattern = String.Join("|", ProductionRules.Select(x => $"(?<{x.Key}>{x.Value})"));
-            var regex = new Regex(pattern, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+            var regex = new Regex(pattern, RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
             return regex;
         }
 
@@ -488,6 +491,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 @"\G//"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.WhiteSpace,
                 @"\G[^\S\r\n]+"),
+			new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Directive,
+				@"\G\$([_\-a-zA-Z][_\-a-zA-Z0-9]*)?"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Keyword,
                 @"\Gplay-storyboard|" +
                 @"\Gset-handled|" +

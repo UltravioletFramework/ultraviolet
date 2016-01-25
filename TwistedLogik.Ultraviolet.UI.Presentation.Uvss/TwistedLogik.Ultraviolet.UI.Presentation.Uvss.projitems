@@ -39,6 +39,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\ArrayElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssCultureDirectiveSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssDirectiveSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEmptyStatementSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssIdentifierSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEscapedIdentifierSyntax.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssRuleSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssRuleSetSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssNodeSyntax.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssUnknownDirectiveSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextSpan.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerException.cs" />

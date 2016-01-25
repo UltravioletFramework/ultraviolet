@@ -159,5 +159,10 @@
         /// The token contains a pipe (|).
         /// </summary>
         Pipe,
+
+		/// <summary>
+		/// The token contains a directive ($foo).
+		/// </summary>
+		Directive,
     }
 }

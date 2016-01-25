@@ -31,7 +31,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             }
 
 			// Determine the document's culture.
-			var culture = (CultureInfo)null;
+			var cultureDirective = GetLastDirective<UvssCultureDirectiveSyntax>(tree);
+			var culture = (cultureDirective == null) ? null : 
+				CultureInfo.GetCultureInfo(cultureDirective.CultureValue.Value);
 
             // Compile a list of rule sets and storyboards.
             var docRuleSets = new List<UvssRuleSet>();
@@ -52,6 +54,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                         docStoryboards.Add(storyboard);
                         break;
 
+					case SyntaxKind.CultureDirective:
+						/* Skip directives */
+						break;
+
                     default:
                         throw new UvssException(PresentationStrings.StyleSheetParserError);
                 }
@@ -59,6 +65,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             return new UvssDocument(culture, docRuleSets, docStoryboards);
         }
+		
+		/// <summary>
+		/// Gets the last directive of the specified type within the specified document.
+		/// </summary>
+		private static TDirective GetLastDirective<TDirective>(UvssDocumentSyntax document)
+			where TDirective : UvssDirectiveSyntax
+		{
+			return document.Directives.OfType<TDirective>().LastOrDefault();
+		}
 
         /// <summary>
         /// Gets the full property name represented by the specified syntax node.

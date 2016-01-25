@@ -327,7 +327,7 @@
   </String>
 	<String Key="UVSS_DOCUMENT_CULTURE_MISMATCH">
 		<en-US>
-			<Variant>The specified document cannot be appended to this document because their cultures do not match ('{1}' and '{2}')</Variant>
+			<Variant>The specified document cannot be appended to this document because their cultures do not match ('{0}' and '{1}')</Variant>
 		</en-US>
 	</String>
 </LocalizedStrings>
