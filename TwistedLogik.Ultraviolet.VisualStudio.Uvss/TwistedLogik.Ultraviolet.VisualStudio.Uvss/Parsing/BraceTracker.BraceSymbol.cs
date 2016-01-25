@@ -21,8 +21,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
                 this.Snapshot = snapshot;
                 this.Type = type;
                 this.Position = position;
-                this.NestingTopDown = 0;
-				this.NestingBottomUp = 0;
+                this.Nesting = 0;
             }
 
             /// <summary>
@@ -37,8 +36,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
                 this.Snapshot = snapshot;
                 this.Type = type;
                 this.Position = position;
-				this.NestingTopDown = 0;
-				this.NestingBottomUp = 0;
+				this.Nesting = 0;
 			}
 
             /// <summary>
@@ -94,17 +92,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
             /// <summary>
             /// Gets the symbol's nesting level.
             /// </summary>
-			public Int32 Nesting { get { return Math.Min(NestingTopDown, NestingBottomUp); } }
-
-			/// <summary>
-			/// Gets the symbol's nesting level when calculated top-down.
-			/// </summary>
-			public Int32 NestingTopDown { get; set; }
-
-			/// <summary>
-			/// Gets the symbol's nesting level when calculated bottom-up.
-			/// </summary>
-			public Int32 NestingBottomUp { get; set; }
+			public Int32 Nesting { get; set; }
         }
     }
 }

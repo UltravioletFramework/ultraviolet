@@ -48,27 +48,12 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
             if (errorList != null)
                 errorList.Update();
 
-            foreach (var span in spans)
-            {
-                var blockSpan = buffer.GetOutermostBlockSpan(span);
-
-                var task = parserService.GetDocument(blockSpan);
-                task.Wait(100);
-
-                if (task.Status == TaskStatus.RanToCompletion)
-                {
-                    var tags = GetTags(blockSpan, task.Result);
-                    result.AddRange(tags);
-                }
-                else
-                {
-                    task.ContinueWith(t =>
-                    {
-                        RaiseTagsChanged(blockSpan);
-                    },
-                    TaskContinuationOptions.OnlyOnRanToCompletion);
-                }
-            }
+			foreach (var span in spans)
+			{
+				var tagSpan = buffer.GetOutermostBlockSpan(span);
+				var tags = GetTags(tagSpan);
+				result.AddRange(tags);
+			}
 
             return result;
         }
@@ -77,9 +62,8 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
         /// Gets the tags for the specified document.
         /// </summary>
         /// <param name="span">The snapshot span from which the document was generated.</param>
-        /// <param name="document">The document for which to retrieve tags.</param>
         /// <returns>A collection containing the tags for the specified document.</returns>
-        public IEnumerable<ITagSpan<IErrorTag>> GetTags(SnapshotSpan span, UvssDocumentSyntax document)
+        public IEnumerable<ITagSpan<IErrorTag>> GetTags(SnapshotSpan span)
         {
             var result = new List<ITagSpan<IErrorTag>>();
 

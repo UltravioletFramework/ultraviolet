@@ -131,6 +131,14 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
             return endPos;
         }
 
+		/// <summary>
+		/// Gets a value indicating whether the document currently has mismatched braces.
+		/// </summary>
+		public Boolean AreBracesMismatched
+		{
+			get { return areBracesMismatched; }
+		}
+
         /// <summary>
         /// Called when the contents of the text buffer change.
         /// </summary>
@@ -261,71 +269,40 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
         /// Updates the nesting values of known symbols.
         /// </summary>
         private void UpdateNesting()
-        {
-			UpdateNestingTopDown();
-			UpdateNestingBottomUp();
-        }
-
-		/// <summary>
-		/// Updates the nesting values of known symbols by starting at the
-		/// top of the document and moving down.
-		/// </summary>
-		private void UpdateNestingTopDown()
 		{
 			var nesting = 0;
+
+			var countOpen = 0;
+			var countClosed = 0;
 
 			for (int i = 0; i < symbols.Count; i++)
 			{
 				var symbol = symbols.Values[i];
 				if (symbol.Type == BraceSymbolType.Open)
 				{
+					countOpen++;
+
 					if (nesting < 0)
 						nesting = 0;
 
-					symbol.NestingTopDown = nesting;
+					symbol.Nesting = nesting;
 					nesting++;
 				}
 				else
 				{
+					countClosed++;
+
 					if (nesting < 1)
 						nesting = 1;
 
 					nesting--;
-					symbol.NestingTopDown = nesting;
+					symbol.Nesting = nesting;
 				}
 			}
+
+			areBracesMismatched = (countOpen != countClosed);
 		}
-
-		/// <summary>
-		/// Updates the nesting values of known symbols by starting at the bottom
-		/// of the document and moving up.
-		/// </summary>
-		private void UpdateNestingBottomUp()
-		{
-			var nesting = 0;
-
-			for (int i = symbols.Count - 1; i >= 0; i--)
-			{
-				var symbol = symbols.Values[i];
-				if (symbol.Type == BraceSymbolType.Close)
-				{
-					if (nesting < 0)
-						nesting = 0;
-
-					symbol.NestingBottomUp = nesting;
-					nesting++;
-				}
-				else
-				{
-					if (nesting < 1)
-						nesting = 1;
-
-					nesting--;
-					symbol.NestingBottomUp = nesting;
-				}
-			}
-		}
-
+		
         /// <summary>
         /// Gets the previous close symbol which occurs at the same nesting level as
         /// the specified open symbol.
@@ -414,5 +391,6 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
         // Known brace symbols.
         private SortedList<Int32, BraceSymbol> symbols = new SortedList<Int32, BraceSymbol>();
         private SortedList<Int32, BraceSymbol> symbolsTemp = new SortedList<Int32, BraceSymbol>();
+		private Boolean areBracesMismatched;
     }
 }

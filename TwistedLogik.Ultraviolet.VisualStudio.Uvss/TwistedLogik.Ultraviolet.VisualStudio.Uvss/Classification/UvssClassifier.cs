@@ -23,7 +23,14 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         {
             this.registry = registry;
             this.parserService = parserService;
-            this.buffer = UvssTextBuffer.ForBuffer(buffer);
+			this.parserService.DocumentGenerated += (span, document) =>
+			{
+				if (span.Snapshot.TextBuffer == buffer)
+				{
+					RaiseClassificationChanged(span);
+				}
+			};
+			this.buffer = UvssTextBuffer.ForBuffer(buffer);
             this.buffer.CommentSpanInvalidated += (obj, span) =>
                 RaiseClassificationChanged(new SnapshotSpan(this.buffer.Buffer.CurrentSnapshot, span));
         }
@@ -61,8 +68,8 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
             var task = parserService.GetDocument(blockSpan);
             task.Wait(100);
 
-            if (task.Status == TaskStatus.RanToCompletion)
-                return VisitDocument(task.Result, blockSpan, blockSpan.Start);
+			if (task.Status == TaskStatus.RanToCompletion)
+					return VisitDocument(task.Result, blockSpan, blockSpan.Start);
 
             task.ContinueWith(t =>
             {
