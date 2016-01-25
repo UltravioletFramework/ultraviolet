@@ -4,17 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors;
 using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
 {
-    /// <summary>
-    /// Represents a tagger which puts squigglies under parser errors.
-    /// </summary>
-    internal sealed class SyntaxErrorTagger : ITagger<IErrorTag>
+	/// <summary>
+	/// Represents a tagger which puts squigglies under parser errors.
+	/// </summary>
+	internal sealed class SyntaxErrorTagger : ITagger<IErrorTag>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SyntaxErrorTagger"/> class.
@@ -28,11 +27,13 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
             {
                 if (span.Snapshot.TextBuffer == buffer)
                 {
-                    RaiseTagsChanged(span);
+					RaiseTagsChanged(span);
                 }
             };
             this.buffer = UvssTextBuffer.ForBuffer(buffer);
-        }
+			this.buffer.CommentSpanInvalidated += (obj, span) =>
+				RaiseTagsChanged(new SnapshotSpan(this.buffer.Buffer.CurrentSnapshot, span));
+		}
         
         /// <summary>
         /// Gets the tags for the specified spans of text.

@@ -44,8 +44,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Parses the specified source text and produces an abstract syntax tree.
         /// </summary>
         /// <param name="source">The source text to parse.</param>
+		/// <param name="options">A set of <see cref="UvssParserOptions"/> values specifying the parser options.</param>
         /// <returns>The <see cref="SyntaxNode"/> at the root of the parsed syntax tree.</returns>
-        public static UvssDocumentSyntax Parse(String source)
+        public static UvssDocumentSyntax Parse(String source, UvssParserOptions options = UvssParserOptions.None)
         {
             Contract.Require(source, "source");
 
@@ -60,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 if (position > 0)
                     input.Trim(position);
 
-                var contentNode = AcceptDocumentContent(input, ref position, ref isDirectiveValid);
+                var contentNode = AcceptDocumentContent(input, ref position, ref isDirectiveValid, options);
                 if (contentNode == null)
                     break;
 
@@ -162,46 +163,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 		/// <summary>
 		/// Gets a value indicating whether the specified token is the first non-whitespace on its line.
 		/// </summary>
-		private static Boolean IsFirstNonWhiteSpaceTokenOnLine(UvssLexerStream input, SyntaxToken token)
+		private static Boolean IsFirstNonWhiteSpaceTokenOnLine(
+			UvssLexerStream input, SyntaxToken token, UvssParserOptions options)
 		{
-			return input.IsStartOfLine(token.Position); 
-		}
+			var position = token.Position + token.GetLeadingTriviaWidth();
 
-		/// <summary>
-		/// Gets a value indicating whether the specified token has leading trivia
-		/// on the same line that is not whitespace.
-		/// </summary>
-		private static Boolean HasLeadingNonWhitespaceTriviaOnSameLine(SyntaxToken token)
-		{
 			var leadingTrivia = token.GetLeadingTrivia();
-			if (leadingTrivia == null)
-				return false;
-
-			if (leadingTrivia.IsList)
+			if (leadingTrivia != null)
 			{
-				for (int i = leadingTrivia.SlotCount - 1; i >= 0; i--)
+				if (leadingTrivia.IsList)
 				{
-					var child = leadingTrivia.GetSlot(i);
-					if (child != null)
+					for (int i = leadingTrivia.SlotCount - 1; i >= 0; i--)
 					{
-						if (child.Kind == SyntaxKind.EndOfLineTrivia)
-							break;
+						var child = leadingTrivia.GetSlot(i);
+						if (child != null)
+						{
+							if (child.Kind == SyntaxKind.EndOfLineTrivia)
+								break;
 
-						if (child.Kind == SyntaxKind.WhitespaceTrivia)
-							continue;
-
-						return true;
+							if (child.Kind == SyntaxKind.WhitespaceTrivia)
+								position -= child.FullWidth;
+							else
+								return false;
+						}
 					}
 				}
-			}
-			else
-			{
-				return 
-					leadingTrivia.Kind != SyntaxKind.EndOfLineTrivia &&
-					leadingTrivia.Kind != SyntaxKind.WhitespaceTrivia;
+				else
+				{
+					if (leadingTrivia.Kind == SyntaxKind.EndOfLineTrivia)
+						position = leadingTrivia.Position + leadingTrivia.FullWidth;
+
+					if (leadingTrivia.Kind == SyntaxKind.WhitespaceTrivia)
+						position -= leadingTrivia.FullWidth;
+					else
+						return false;
+				}
 			}
 
-			return false;
+			if (position == 0 && (options & UvssParserOptions.PartialDocumentStartsOnEmptyLine) != 0)
+				return false;
+
+			return input.IsStartOfLine(position);
 		}
 		
         /// <summary>
@@ -628,7 +630,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Accepts a content node for a document.
         /// </summary>
         private static SyntaxNode AcceptDocumentContent(
-            UvssLexerStream input, ref Int32 position, ref Boolean isDirectiveValid)
+            UvssLexerStream input, ref Int32 position, ref Boolean isDirectiveValid, UvssParserOptions options)
         {
 			var nextTokenText = String.Empty;
             var nextTokenKind = SyntaxKindFromNextToken(input, position, out nextTokenText);
@@ -659,10 +661,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 							switch (nextTokenText?.Substring(1))
 							{
 								case "culture":
-									return ExpectCultureDirective(input, ref position, isDirectiveValid);
+									return ExpectCultureDirective(input, ref position, isDirectiveValid, options);
 
 								default:
-									return ExpectUnknownDirective(input, ref position, isDirectiveValid);
+									return ExpectUnknownDirective(input, ref position, isDirectiveValid, options);
 							}
 						}
 
@@ -799,7 +801,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 		/// Parses an unrecognized directive.
 		/// </summary>
 		private static UvssUnknownDirectiveSyntax ParseUnknownDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, Boolean accept)
+			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options, Boolean accept)
 		{
 			var directiveToken =
 				ExpectToken(input, ref position, SyntaxKind.DirectiveToken);
@@ -818,7 +820,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 			}
 			else
 			{
-				if (!IsFirstNonWhiteSpaceTokenOnLine(input, directive.DirectiveToken))
+				if (!IsFirstNonWhiteSpaceTokenOnLine(input, directive.DirectiveToken, options))
 					DiagnosticInfo.ReportDirectiveMustBeFirstNonWhiteSpaceOnLine(ref diagnostics, directive);
 			}
 
@@ -833,18 +835,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 		/// Accepts an unrecognized directive.
 		/// </summary>
 		private static UvssUnknownDirectiveSyntax AcceptUnknownDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid)
+			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
 		{
-			return ParseUnknownDirective(input, ref position, isDirectiveValid, true);
+			return ParseUnknownDirective(input, ref position, isDirectiveValid, options, true);
 		}
 
 		/// <summary>
 		/// Expects an unrecognized directive and produces a missing node if one is not found.
 		/// </summary>
 		private static UvssUnknownDirectiveSyntax ExpectUnknownDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid)
+			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
 		{
-			return ParseUnknownDirective(input, ref position, isDirectiveValid, false);
+			return ParseUnknownDirective(input, ref position, isDirectiveValid, options, false);
 		}
 
 		/// <summary>
@@ -862,7 +864,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 		/// Parses a $culture directive.
 		/// </summary>
 		private static UvssCultureDirectiveSyntax ParseCultureDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, Boolean accept)
+			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options, Boolean accept)
 		{
 			var nextTokenText = String.Empty;
 			var nextToken = SyntaxKindFromNextToken(input, position, out nextTokenText);
@@ -888,7 +890,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 			}
 			else
 			{
-				if (!IsFirstNonWhiteSpaceTokenOnLine(input, directive.DirectiveToken))
+				if (!IsFirstNonWhiteSpaceTokenOnLine(input, directive.DirectiveToken, options))
 					DiagnosticInfo.ReportDirectiveMustBeFirstNonWhiteSpaceOnLine(ref diagnostics, directive);
 			}
 
@@ -907,18 +909,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 		/// Accepts a $culture directive.
 		/// </summary>
 		private static UvssCultureDirectiveSyntax AcceptCultureDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid)
+			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
 		{
-			return ParseCultureDirective(input, ref position, isDirectiveValid, true);
+			return ParseCultureDirective(input, ref position, isDirectiveValid, options, true);
 		}
 
 		/// <summary>
 		/// Expects a $culture directive and produces a missing node if one is not found.
 		/// </summary>
 		private static UvssCultureDirectiveSyntax ExpectCultureDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid)
+			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
 		{
-			return ParseCultureDirective(input, ref position, isDirectiveValid, false);
+			return ParseCultureDirective(input, ref position, isDirectiveValid, options, false);
 		}
 
 		/// <summary>

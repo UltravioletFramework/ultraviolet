@@ -1,19 +1,19 @@
-﻿using Microsoft.VisualStudio.Text.Classification;
-using System;
+﻿using System;
+using Microsoft.VisualStudio.Text.Classification;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
 {
-    /// <summary>
-    /// Represents a method which is invoked when <see cref="UvssClassifierVisitor"/> marks
-    /// a span of text for classification.
-    /// </summary>
-    /// <param name="start">The index of the first character in the span.</param>
-    /// <param name="width">The number of characters in the span.</param>
-    /// <param name="type">The classification type assigned to the span.</param>
-    /// <param name="kind">The kind of node which is being classified.</param>
-    public delegate void ClassifierAction(Int32 start, Int32 width, IClassificationType type, SyntaxKind kind);
+	/// <summary>
+	/// Represents a method which is invoked when <see cref="UvssClassifierVisitor"/> marks
+	/// a span of text for classification.
+	/// </summary>
+	/// <param name="start">The index of the first character in the span.</param>
+	/// <param name="width">The number of characters in the span.</param>
+	/// <param name="type">The classification type assigned to the span.</param>
+	/// <param name="kind">The kind of node which is being classified.</param>
+	public delegate void ClassifierAction(Int32 start, Int32 width, IClassificationType type, SyntaxKind kind);
 
     /// <summary>
     /// Represents a syntax tree visitor which provides classification spans.
@@ -35,8 +35,9 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
             this.typeUvssPropertyValue = registry.GetClassificationType("UvssPropertyValue");
             this.typeUvssStoryboard = registry.GetClassificationType("UvssStoryboard");
             this.typeUvssTypeName = registry.GetClassificationType("UvssTypeName");
+			this.typeUvssDirective = registry.GetClassificationType("UvssDirective");
 
-            this.classifier = classifier;
+			this.classifier = classifier;
         }
 
         /// <summary>
@@ -123,6 +124,14 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
                 case SyntaxKind.NavigationExpression:
                     VisitNavigationExpression((UvssNavigationExpressionSyntax)node);
                     break;
+
+				case SyntaxKind.UnknownDirective:
+					VisitUnknownDirective((UvssUnknownDirectiveSyntax)node);
+					break;
+
+				case SyntaxKind.CultureDirective:
+					VisitCultureDirective((UvssCultureDirectiveSyntax)node);
+					break;
             }
 
             for (int i = 0; i < node.SlotCount; i++)
@@ -273,14 +282,32 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
             Style(navigationExpression.TypeNameIdentifier, typeUvssTypeName);
         }
 
-        /// <summary>
-        /// Styles the specified node.
-        /// </summary>
-        /// <param name="node">The node to style.</param>
-        /// <param name="type">The classification type to apply to the node.</param>
-        /// <param name="withLeadingTrivia">A value indicating whether to style the node's leading trivia.</param>
-        /// <param name="withTrailingTrivia">A value indicating whether to style the node's trailing trivia.</param>
-        private void Style(SyntaxNode node, IClassificationType type,
+		/// <summary>
+		/// Visits an unknown directive node.
+		/// </summary>
+		/// <param name="unknownDirective">The unknown directive node to visit.</param>
+		private void VisitUnknownDirective(UvssUnknownDirectiveSyntax unknownDirective)
+		{
+			Style(unknownDirective.DirectiveToken, typeUvssDirective);
+		}
+
+		/// <summary>
+		/// Visits a culture directive node.
+		/// </summary>
+		/// <param name="cultureDirective">The unknown directive node to visit.</param>
+		private void VisitCultureDirective(UvssCultureDirectiveSyntax cultureDirective)
+		{
+			Style(cultureDirective.DirectiveToken, typeUvssDirective);
+		}
+
+		/// <summary>
+		/// Styles the specified node.
+		/// </summary>
+		/// <param name="node">The node to style.</param>
+		/// <param name="type">The classification type to apply to the node.</param>
+		/// <param name="withLeadingTrivia">A value indicating whether to style the node's leading trivia.</param>
+		/// <param name="withTrailingTrivia">A value indicating whether to style the node's trailing trivia.</param>
+		private void Style(SyntaxNode node, IClassificationType type,
             Boolean withLeadingTrivia = false,
             Boolean withTrailingTrivia = false)
         {
@@ -304,6 +331,7 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         private readonly IClassificationType typeUvssPropertyValue;
         private readonly IClassificationType typeUvssStoryboard;
         private readonly IClassificationType typeUvssTypeName;
-        private readonly ClassifierAction classifier;
+		private readonly IClassificationType typeUvssDirective;
+		private readonly ClassifierAction classifier;
     }
 }

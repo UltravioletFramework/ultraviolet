@@ -106,5 +106,18 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
         {
             this.DisplayName = "UVSS Type Name";
         }
-    }
+	}
+
+	[Export(typeof(EditorFormatDefinition))]
+	[ClassificationType(ClassificationTypeNames = "UvssDirective")]
+	[Name("UvssDirective")]
+	[UserVisible(true)]
+	[Order(Before = Priority.Default)]
+	internal sealed class UvssDirectiveFormat : ClassificationFormatDefinition
+	{
+		public UvssDirectiveFormat()
+		{
+			this.DisplayName = "UVSS Directive";
+		}
+	}
 }

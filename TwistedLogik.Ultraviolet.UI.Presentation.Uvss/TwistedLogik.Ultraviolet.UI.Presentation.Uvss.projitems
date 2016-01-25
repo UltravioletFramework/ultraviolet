@@ -96,6 +96,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerToken.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssLexerTokenType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UvssParserOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvssStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxKind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxNode.cs" />
