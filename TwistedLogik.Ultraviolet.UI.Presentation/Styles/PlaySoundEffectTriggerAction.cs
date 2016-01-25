@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <inheritdoc/>
-        public override void Activate(DependencyObject dobj)
+        public override void Activate(UltravioletContext uv, DependencyObject dobj)
         {
             var element = dobj as UIElement;
             if (element == null || element.View == null)
@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var sfx = contentManager.Load<SoundEffect>(sfxAssetID.AssetID);
             sfx.Play();
 
-            base.Activate(dobj);
+            base.Activate(uv, dobj);
         }
 
         // State values.

@@ -361,7 +361,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvmlLoader.InstantiationContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlLoader.UvmlAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlLoader.UvmlAttributeType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UvmlName.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyName.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlPlaceholderAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VersionedStringBuilder.cs" />

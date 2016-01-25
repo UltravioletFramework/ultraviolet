@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
 			// Determine the document's culture.
 			var cultureDirective = GetLastDirective<UvssCultureDirectiveSyntax>(tree);
-			var culture = (cultureDirective == null) ? null : 
+			var culture = (cultureDirective == null) ? UvssDocument.DefaultCulture : 
 				CultureInfo.GetCultureInfo(cultureDirective.CultureValue.Value);
 
             // Compile a list of rule sets and storyboards.
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 }
             }
 
-            return new UvssDocument(culture, docRuleSets, docStoryboards);
+            return new UvssDocument(docRuleSets, docStoryboards);
         }
 		
 		/// <summary>
@@ -338,8 +338,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private static UvssPropertyTriggerCondition CompilePropertyTriggerCondition(UvssPropertyTriggerConditionSyntax node, CultureInfo culture)
         {
             var op = default(TriggerComparisonOp);
-            var dpropName = GetPropertyName(node.PropertyName);
-            var refval = node.PropertyValue.Value;
+            var propertyName = new DependencyName(GetPropertyName(node.PropertyName));
+            var propertyValue = new DependencyValue(node.PropertyValue.Value, culture);
 
             switch (node.ComparisonOperatorToken.Kind)
             {
@@ -371,7 +371,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     throw new UvssException(PresentationStrings.StyleSheetParserError);
             }
 
-            return new UvssPropertyTriggerCondition(op, dpropName, refval, culture);
+            return new UvssPropertyTriggerCondition(op, propertyName, propertyValue);
         }
 
         /// <summary>
@@ -450,12 +450,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         private static SetTriggerAction CompileSetTriggerAction(UvssSetTriggerActionSyntax node, CultureInfo culture)
         {
-            var dpropName = GetPropertyName(node.PropertyName);
             var selector = node.Selector == null ? null :
                 CompileSelector(node.Selector);
-            var value = node.Value.Value;
 
-            return new SetTriggerAction(dpropName, selector, value, culture);
+			var propName = new DependencyName(GetPropertyName(node.PropertyName));
+			var propValue = new DependencyValue(node.Value.Value, culture);
+
+            return new SetTriggerAction(selector, propName, propValue);
         }
 
         /// <summary>
@@ -558,16 +559,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         private static UvssStoryboardKeyframe CompileStoryboardKeyframe(UvssAnimationKeyframeSyntax node, CultureInfo culture)
         {
-            var easing =
-                node.EasingIdentifier?.Text;
+			var time =
+				Double.Parse(node.TimeToken.Text);
 
-            var value =
-                node.Value.Value;
+			var value =
+				new DependencyValue(node.Value.Value, culture);
 
-            var time =
-                Double.Parse(node.TimeToken.Text);
+			var easing =
+				node.EasingIdentifier?.Text;
 
-            return new UvssStoryboardKeyframe(easing, value, time);
+			return new UvssStoryboardKeyframe(time, value, easing);
         }
     }
 }

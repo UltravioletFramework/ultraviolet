@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <inheritdoc/>
-        public override void Activate(DependencyObject dobj)
+        public override void Activate(UltravioletContext uv, DependencyObject dobj)
         {
             var element = dobj as UIElement;
             if (element == null || element.View == null)
@@ -50,11 +50,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     }
                 });
             }
-            base.Activate(dobj);
+            base.Activate(uv, dobj);
         }
 
         /// <inheritdoc/>
-        public override void Deactivate(DependencyObject dobj)
+        public override void Deactivate(UltravioletContext uv, DependencyObject dobj)
         {
             var element = dobj as UIElement;
             if (element == null || element.View == null)
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     }
                 });
             }
-            base.Deactivate(dobj);
+            base.Deactivate(uv, dobj);
         }
 
         // State values.

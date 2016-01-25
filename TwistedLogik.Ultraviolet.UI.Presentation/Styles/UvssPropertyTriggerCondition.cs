@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 
@@ -14,16 +13,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 		/// Initializes a new instance of the <see cref="UvssPropertyTriggerCondition"/> class.
 		/// </summary>
 		/// <param name="op">A <see cref="TriggerComparisonOp"/> value that specifies the type of comparison performed by this condition.</param>
-		/// <param name="dpropName">The name of the dependency property to evaluate.</param>
-		/// <param name="refval">The reference value to compare to the value of the dependency property.</param>
-		/// <param name="culture">The culture to use when parsing the condition's value, or <see langword="culture"/> to
-		/// use the default culture (en-US).</param>
-		internal UvssPropertyTriggerCondition(TriggerComparisonOp op, String dpropName, String refval, CultureInfo culture)
+		/// <param name="propertyName">The name of the property to evaluate.</param>
+		/// <param name="propertyValue">The value to compare to the value of the evaluated property.</param>
+		internal UvssPropertyTriggerCondition(TriggerComparisonOp op, DependencyName propertyName, DependencyValue propertyValue)
 		{
 			this.op = op;
-			this.dpropName = new UvmlName(dpropName);
-			this.refval = refval;
-			this.culture = culture ?? UvssDocument.DefaultCulture;
+			this.propertyName = propertyName;
+			this.propertyValue = propertyValue;
 		}
 
         /// <summary>
@@ -37,21 +33,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             Contract.Require(uv, "uv");
             Contract.Require(dobj, "dobj");
 
-            var dprop = DependencyProperty.FindByStylingName(uv, dobj, dpropName.Owner, dpropName.Name);
+            var dprop = DependencyProperty.FindByStylingName(uv, dobj, propertyName.Owner, propertyName.Name);
             if (dprop == null)
                 return false;
 
-            var refvalCacheType = (refvalCache == null) ? null : refvalCache.GetType();
+            var refvalCacheType = (propertyValueCachhe == null) ? null : propertyValueCachhe.GetType();
             if (refvalCacheType == null || (refvalCacheType != dprop.PropertyType &&  refvalCacheType != dprop.UnderlyingType))
             {
-                refvalCache = ObjectResolver.FromString(refval, dprop.PropertyType, culture);
+                propertyValueCachhe = ObjectResolver.FromString(
+					propertyValue.Value, dprop.PropertyType, propertyValue.Culture);
             }
 
             var comparison = TriggerComparisonCache.Get(dprop.PropertyType, op);
             if (comparison == null)
-                throw new InvalidOperationException(PresentationStrings.InvalidTriggerComparison.Format(dpropName, op, dprop.PropertyType));
+                throw new InvalidOperationException(PresentationStrings.InvalidTriggerComparison.Format(propertyName, op, dprop.PropertyType));
 
-            return comparison(dobj, dprop, refvalCache);
+            return comparison(dobj, dprop, propertyValueCachhe);
         }
 
         /// <summary>
@@ -65,24 +62,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets the name of the dependency property which is evaluated by this condition.
         /// </summary>
-        public UvmlName DependencyPropertyName
+        public DependencyName PropertyName
         {
-            get { return dpropName; }
+            get { return propertyName; }
         }
 
         /// <summary>
         /// Gets a string which represents the reference value for this condition.
         /// </summary>
-        public String ReferenceValue
+        public DependencyValue PropertyValue
         {
-            get { return refval; }
+            get { return propertyValue; }
         }
 
         // State values.
         private readonly TriggerComparisonOp op;
-        private readonly UvmlName dpropName;
-        private readonly String refval;
-		private readonly CultureInfo culture;
-		private Object refvalCache;
+        private readonly DependencyName propertyName;
+        private readonly DependencyValue propertyValue;
+		private Object propertyValueCachhe;
     }
 }

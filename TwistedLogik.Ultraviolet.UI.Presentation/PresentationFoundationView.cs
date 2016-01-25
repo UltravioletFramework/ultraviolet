@@ -17,10 +17,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
-    /// <summary>
-    /// Represents the top-level container for UI elements.
-    /// </summary>
-    public sealed class PresentationFoundationView : UIView
+	/// <summary>
+	/// Represents the top-level container for UI elements.
+	/// </summary>
+	public sealed class PresentationFoundationView : UIView
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PresentationFoundationView"/> class.
@@ -35,7 +35,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
 
             this.viewModelWrapperName = viewModelType.Name;
-			
+
+			this.combinedStyleSheet = new UvssDocument(null, null);
+
             this.namescope = new Namescope();
             this.resources = new PresentationFoundationViewResources(this);
             this.drawingContext = new DrawingContext();
@@ -1087,17 +1089,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             if (upf.GlobalStyleSheet != null)
             {
-				if (this.combinedStyleSheet == null)
-					this.combinedStyleSheet = new UvssDocument(upf.GlobalStyleSheet.Culture, null, null);
-
                 this.combinedStyleSheet.Append(upf.GlobalStyleSheet);
             }
 
             if (this.localStyleSheet != null)
             {
-				if (this.combinedStyleSheet == null)
-					this.combinedStyleSheet = new UvssDocument(localStyleSheet.Culture, null, null);
-
                 this.combinedStyleSheet.Append(this.localStyleSheet);
             }
         }
@@ -2565,7 +2561,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Property values.
         private readonly Namescope namescope;
         private readonly PresentationFoundationViewResources resources;
-        private UvssDocument combinedStyleSheet;
+        private readonly UvssDocument combinedStyleSheet;
         private UvssDocument localStyleSheet;
         private PresentationFoundationViewRoot layoutRoot;
 

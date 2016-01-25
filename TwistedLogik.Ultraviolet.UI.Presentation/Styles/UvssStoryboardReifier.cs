@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
@@ -57,21 +56,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="storyboardDefinition">The storyboard definition to reify.</param>
-		/// <param name="culture">The culture with which to reify the storyboard.</param>
         /// <returns>The new instance of <see cref="Storyboard"/> that was created.</returns>
-        public static Storyboard ReifyStoryboard(UltravioletContext uv,
-			UvssStoryboard storyboardDefinition, CultureInfo culture)
+        public static Storyboard ReifyStoryboard(UltravioletContext uv, 
+			UvssStoryboard storyboardDefinition)
         {
             Contract.Require(uv, nameof(uv));
             Contract.Require(storyboardDefinition, nameof(storyboardDefinition));
-			Contract.Require(culture, nameof(culture));
 
             var storyboard = new Storyboard(uv);
             storyboard.LoopBehavior = storyboardDefinition.LoopBehavior;
 
             foreach (var targetDefinition in storyboardDefinition.Targets)
             {
-                var target = ReifyStoryboardTarget(uv, targetDefinition, culture);
+                var target = ReifyStoryboardTarget(uv, targetDefinition);
                 storyboard.Targets.Add(target);
             }
 
@@ -83,21 +80,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 		/// </summary>
 		/// <param name="uv">The Ultraviolet context.</param>
 		/// <param name="targetDefinition">The storyboard target definition.</param>
-		/// <param name="culture">The culture with which to reify the storyboard target.</param>
 		/// <returns>The reified storyboard target.</returns>
 		public static StoryboardTarget ReifyStoryboardTarget(UltravioletContext uv, 
-			UvssStoryboardTarget targetDefinition, CultureInfo culture)
+			UvssStoryboardTarget targetDefinition)
 		{
 			Contract.Require(uv, nameof(uv));
 			Contract.Require(targetDefinition, nameof(targetDefinition));
-			Contract.Require(culture, nameof(culture));
 
             var target = new StoryboardTarget(targetDefinition.Selector);
 
             foreach (var animationDefinition in targetDefinition.Animations)
             {
                 var animationKey = default(StoryboardTargetAnimationKey);
-                var animation = ReifyStoryboardAnimation(uv, targetDefinition, animationDefinition, culture, out animationKey);
+                var animation = ReifyStoryboardAnimation(uv, targetDefinition, animationDefinition, out animationKey);
                 if (animation != null)
                 {
                     target.Animations.Add(animationKey, animation);
@@ -114,15 +109,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 		/// <param name="targetDefinition">The type filter on the storyboard target.</param>
 		/// <param name="animationDefinition">The storyboard animation definition.</param>
 		/// <param name="animationKey">The name of the dependency property which is being animated.</param>
-		/// <param name="culture">The culture with which to reify the storyboard animation.</param>
 		/// <returns>The reified storyboard animation.</returns>
-		public static AnimationBase ReifyStoryboardAnimation(UltravioletContext uv,
-			UvssStoryboardTarget targetDefinition, UvssStoryboardAnimation animationDefinition, CultureInfo culture, out StoryboardTargetAnimationKey animationKey)
+		public static AnimationBase ReifyStoryboardAnimation(UltravioletContext uv,	
+			UvssStoryboardTarget targetDefinition, UvssStoryboardAnimation animationDefinition, out StoryboardTargetAnimationKey animationKey)
 		{
 			Contract.Require(uv, nameof(uv));
 			Contract.Require(targetDefinition, nameof(targetDefinition));
             Contract.Require(animationDefinition, nameof(animationDefinition));
-			Contract.Require(culture, nameof(culture));
 
             var propertyName = animationDefinition.AnimatedProperty;
             var propertyType = GetDependencyPropertyType(uv, targetDefinition.Filter, ref propertyName);
@@ -135,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 navigationExpression = NavigationExpression.FromUvssNavigationExpression(uv, navigationExpressionDef);
             }
 
-            animationKey = new StoryboardTargetAnimationKey(new UvmlName(propertyName), navigationExpression);
+            animationKey = new StoryboardTargetAnimationKey(new DependencyName(propertyName), navigationExpression);
 
             if (propertyType == null)
                 return null;
@@ -148,7 +141,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             foreach (var keyframeDefinition in animationDefinition.Keyframes)
             {
-                var keyframe = ReifyStoryboardAnimationKeyframe(uv, keyframeDefinition, propertyType, culture);
+                var keyframe = ReifyStoryboardAnimationKeyframe(uv, keyframeDefinition, propertyType);
                 animation.AddKeyframe(keyframe);
             }
 
@@ -161,29 +154,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 		/// <param name="uv">The Ultraviolet context.</param>
 		/// <param name="keyframeDefinition">The storyboard keyframe definition.</param>
 		/// <param name="animatedType">The type of value which is being animated.</param>
-		/// <param name="culture">The culture with which to reify the animation keyframe.</param>
 		/// <returns>The reified storyboard animation keyframe.</returns>
 		public static AnimationKeyframeBase ReifyStoryboardAnimationKeyframe(UltravioletContext uv,
-			UvssStoryboardKeyframe keyframeDefinition, Type animatedType, CultureInfo culture)
+			UvssStoryboardKeyframe keyframeDefinition, Type animatedType)
 		{
 			Contract.Require(uv, nameof(uv));
 			Contract.Require(keyframeDefinition, nameof(keyframeDefinition));
-            Contract.Require(animatedType, nameof(animatedType));
-			Contract.Require(culture, nameof(culture));
+			Contract.Require(animatedType, nameof(animatedType));
 
-            var keyframeType = typeof(AnimationKeyframe<>).MakeGenericType(animatedType);
+			var keyframeType = typeof(AnimationKeyframe<>).MakeGenericType(animatedType);
 
-            var time   = TimeSpan.FromMilliseconds(keyframeDefinition.Time);
-            var easing = ParseEasingFunction(keyframeDefinition.Easing);
-            var str    = keyframeDefinition.Value == null ? null : keyframeDefinition.Value.Trim();
-            var value  = String.IsNullOrWhiteSpace(str) ? null : ObjectResolver.FromString(str, animatedType, culture, true);
+			var time = TimeSpan.FromMilliseconds(keyframeDefinition.Time);
+			var easing = ParseEasingFunction(keyframeDefinition.Easing);
+			var value = keyframeDefinition.Value;
+			var valueObj = value.IsEmpty ? null : ObjectResolver.FromString(value.Value, animatedType, value.Culture, true);
 
-            var keyframe = (value == null) ?
-                    (AnimationKeyframeBase)Activator.CreateInstance(keyframeType, time, easing) :
-                    (AnimationKeyframeBase)Activator.CreateInstance(keyframeType, time, value, easing);
+			var keyframe = (valueObj == null) ?
+					(AnimationKeyframeBase)Activator.CreateInstance(keyframeType, time, easing) :
+					(AnimationKeyframeBase)Activator.CreateInstance(keyframeType, time, valueObj, easing);
 
-            return keyframe;
-        }
+			return keyframe;
+		}
 
         /// <summary>
         /// Parses the name of an easing function into an instance of the <see cref="EasingFunction"/> delegate.

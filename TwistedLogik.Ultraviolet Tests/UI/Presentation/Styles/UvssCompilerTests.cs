@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Ultraviolet.Testing;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -14,11 +14,18 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
 		{
 			UsingCulture("ru-RU", () =>
 			{
-				var tree = UvssParser.Parse(String.Empty);
+				var tree = UvssParser.Parse("@foo { target { animation Width { keyframe 0 { 100.0 } } } }");
 				var document = UvssCompiler.Compile(tree);
 
-				TheResultingString(document.Culture.Name)
-					.ShouldBe("en-US");
+				var keyframe = document?
+					.Storyboards?.FirstOrDefault()?
+					.Targets?.FirstOrDefault()?
+					.Animations?.FirstOrDefault()?
+					.Keyframes?.FirstOrDefault();
+
+				TheResultingObject(keyframe)
+					.ShouldNotBeNull()
+					.ShouldSatisfyTheCondition(x => x.Value.Culture.Name == "en-US");
 			});
 		}
 
@@ -29,11 +36,18 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
 			{
 				var tree = UvssParser.Parse(
 					"$culture { ru-RU }\r\n" +
-					"#foo { }");
+					"@foo { target { animation Width { keyframe 0 { 100.0 } } } }");
 				var document = UvssCompiler.Compile(tree);
 
-				TheResultingString(document.Culture.Name)
-					.ShouldBe("ru-RU");
+				var keyframe = document?
+					.Storyboards?.FirstOrDefault()?
+					.Targets?.FirstOrDefault()?
+					.Animations?.FirstOrDefault()?
+					.Keyframes?.FirstOrDefault();
+
+				TheResultingObject(keyframe)
+					.ShouldNotBeNull()
+					.ShouldSatisfyTheCondition(x => x.Value.Culture.Name == "ru-RU");
 			});
 		}
 
@@ -43,13 +57,20 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
 			UsingCulture("en-US", () =>
 			{
 				var tree = UvssParser.Parse(
-				"$culture { ru-RU }\r\n" +
-				"$culture { fr-FR }\r\n" +
-				"#foo { }");
+					"$culture { ru-RU }\r\n" +
+					"$culture { fr-FR }\r\n" +
+					"@foo { target { animation Width { keyframe 0 { 100.0 } } } }");
 				var document = UvssCompiler.Compile(tree);
 
-				TheResultingString(document.Culture.Name)
-					.ShouldBe("fr-FR");
+				var keyframe = document?
+					.Storyboards?.FirstOrDefault()?
+					.Targets?.FirstOrDefault()?
+					.Animations?.FirstOrDefault()?
+					.Keyframes?.FirstOrDefault();
+
+				TheResultingObject(keyframe)
+					.ShouldNotBeNull()
+					.ShouldSatisfyTheCondition(x => x.Value.Culture.Name == "fr-FR");
 			});
 		}
 	}

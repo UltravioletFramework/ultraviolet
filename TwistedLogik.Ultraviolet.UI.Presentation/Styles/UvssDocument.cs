@@ -1,26 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
-using System.Globalization;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-    /// <summary>
-    /// Represents an Ultraviolet Style Sheet (UVSS) document.
-    /// </summary>
-    public sealed partial class UvssDocument
+	/// <summary>
+	/// Represents an Ultraviolet Style Sheet (UVSS) document.
+	/// </summary>
+	public sealed partial class UvssDocument
     {
 		/// <summary>
 		/// Initializes a new instance of the <see cref="UvssDocument"/> class with no rules or storyboards.
 		/// </summary>
-		/// <param name="culture">The document's culture, or <see langword="null"/> to use the default culture (en-US).</param>
-		public UvssDocument(CultureInfo culture = null)
-            : this(culture, null, null)
+		public UvssDocument()
+            : this(null, null)
         {
 
         }
@@ -28,12 +27,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 		/// <summary>
 		/// Initializes a new instance of the <see cref="UvssDocument"/> class.
 		/// </summary>
-		/// <param name="culture">The document's culture, or <see langword="null"/> to use the default culture (en-US).</param>
 		/// <param name="rules">A collection containing the document's rules.</param>
 		/// <param name="storyboards">A collection containing the document's storyboards.</param>
-		internal UvssDocument(CultureInfo culture, IEnumerable<UvssRuleSet> rules, IEnumerable<UvssStoryboard> storyboards)
+		internal UvssDocument(IEnumerable<UvssRuleSet> rules, IEnumerable<UvssStoryboard> storyboards)
 		{
-			this.culture = culture ?? DefaultCulture;
 			this.rules = (rules ?? Enumerable.Empty<UvssRuleSet>()).ToList();
 			this.storyboards = (storyboards ?? Enumerable.Empty<UvssStoryboard>()).ToList();
 			this.storyboardsByName = new Dictionary<String, UvssStoryboard>(StringComparer.OrdinalIgnoreCase);
@@ -112,10 +109,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         public void Append(UvssDocument document)
         {
             Contract.Require(document, "document");
-
-			if (document.Culture != this.Culture)
-				throw new InvalidOperationException(PresentationStrings.UvssDocumentCultureMismatch.Format(document.Culture, this.Culture));
-
+			
             this.rules.AddRange(document.Rules);
             this.storyboards.AddRange(document.Storyboards);
 
@@ -146,15 +140,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             return null;
         }
-
-		/// <summary>
-		/// Gets the document's culture.
-		/// </summary>
-		public CultureInfo Culture
-		{
-			get { return culture; }
-		}
-
+		
         /// <summary>
         /// Gets the document's rules.
         /// </summary>
@@ -205,7 +191,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             foreach (var storyboardDefinition in storyboards)
             {
-                var reifiedStoryboard = UvssStoryboardReifier.ReifyStoryboard(uv, storyboardDefinition, culture);
+                var reifiedStoryboard = UvssStoryboardReifier.ReifyStoryboard(uv, storyboardDefinition);
                 reifiedStoryboardsByName[storyboardDefinition.Name] = reifiedStoryboard;
             }
         }
@@ -247,7 +233,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private readonly UvssStylePrioritizer prioritizer = new UvssStylePrioritizer();
 
 		// Property values.
-		private readonly CultureInfo culture;
         private readonly List<UvssRuleSet> rules;
         private readonly List<UvssStoryboard> storyboards;
         private readonly Dictionary<String, UvssStoryboard> storyboardsByName;
