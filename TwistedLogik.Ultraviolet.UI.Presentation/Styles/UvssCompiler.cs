@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 	/// <summary>
 	/// Contains methods for compiling UVSS syntax trees into UVSS documents.
 	/// </summary>
-	internal static class UvssCompiler
+	public static class UvssCompiler
     {
         /// <summary>
         /// Compiles an Ultraviolet Style Sheet (UVSS) document from the specified abstract syntax tree.

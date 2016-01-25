@@ -234,6 +234,7 @@
     <Compile Include="UI\Presentation\PresentationFoundationTests.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation_VM.cs" />
     <Compile Include="UI\Presentation\Screens\TestScreenBase.cs" />
+    <Compile Include="UI\Presentation\Styles\UvssCompilerTests.cs" />
     <Compile Include="UI\Presentation\VersionedStringSourceTests.cs" />
     <Compile Include="UI\Presentation\VersionedStringBuilderTests.cs" />
     <Compile Include="Vector4Tests.cs" />
@@ -282,6 +283,10 @@
     <ProjectReference Include="..\TwistedLogik.Ultraviolet %28Desktop%29\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
       <Name>TwistedLogik.Ultraviolet %28Desktop%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29.csproj">
+      <Project>{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
