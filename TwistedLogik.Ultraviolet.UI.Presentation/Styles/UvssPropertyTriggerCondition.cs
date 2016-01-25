@@ -54,6 +54,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets the comparison operation performed by this condition.
         /// </summary>
+		/// <value>A <see cref="TriggerComparisonOp"/> value that specifies how the value of the condition's
+		/// dependency property will be compared against its reference value.</value>
         public TriggerComparisonOp ComparisonOperation
         {
             get { return op; }
@@ -62,6 +64,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets the name of the dependency property which is evaluated by this condition.
         /// </summary>
+		/// <value>A <see cref="DependencyName"/> value which describes the name of the dependency property
+		/// that will be compared against this condition's reference value.</value>
         public DependencyName PropertyName
         {
             get { return propertyName; }
@@ -70,6 +74,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets a string which represents the reference value for this condition.
         /// </summary>
+		/// <value>A <see cref="DependencyValue"/> value which contains the reference value which will be
+		/// compared to the value of the condition's dependency property.</value>
         public DependencyValue PropertyValue
         {
             get { return propertyValue; }

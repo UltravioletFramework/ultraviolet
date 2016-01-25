@@ -34,8 +34,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 		/// <summary>
 		/// Gets the keyframe's value.
 		/// </summary>
-		/// <value>A <see cref="String"/> that represents the value which will be applied by the keyframe.
-		/// The string will be parsed into the appropriate type via the <see cref="ObjectLoader"/> class.</value>
+		/// <value>A <see cref="DependencyValue"/> value that will be applied to the animated property by the keyframe.
+		/// The value will be parsed into the appropriate type via the <see cref="ObjectLoader"/> class.</value>
 		public DependencyValue Value
         {
             get { return value; }

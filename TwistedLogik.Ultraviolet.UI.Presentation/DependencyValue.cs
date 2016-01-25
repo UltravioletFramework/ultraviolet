@@ -58,6 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 		/// <summary>
 		/// Gets a value indicating whether this is an empty value.
 		/// </summary>
+		/// <value><see langword="true"/> if this is an empty value; otherwise, <see langword="false"/>.</value>
 		public Boolean IsEmpty { get { return String.IsNullOrEmpty(Value); } }
 
 		/// <summary>
