@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <Product Id="*" Name="Ultraviolet Framework 1.3" Language="1033" Version="1.3.2.0" Manufacturer="TwistedLogik Software" UpgradeCode="167cedac-b1a9-47d8-8646-8b986f178343">
+  <Product Id="*" Name="Ultraviolet Framework 1.3" Language="1033" Version="1.3.3.0" Manufacturer="TwistedLogik Software" UpgradeCode="167cedac-b1a9-47d8-8646-8b986f178343">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" InstallPrivileges="elevated" />
 
     <InstallExecuteSequence>
