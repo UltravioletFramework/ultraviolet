@@ -12,8 +12,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\DiagnosticInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\DiagnosticID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\DiagnosticSeverity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KnownEasingFunctions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KnownLoopBehaviors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxListBuilder`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SeparatedSyntaxList`1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SerializationExtensions.cs" />
@@ -39,6 +41,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\ArrayElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Syntax\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssCultureDirectiveSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssDirectiveSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Syntax\UvssEmptyStatementSyntax.cs" />
