@@ -4,10 +4,10 @@ using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
-    /// <summary>
-    /// Represents the base class for controls which represent a value within a specified range.
-    /// </summary>
-    [UvmlKnownType]
+	/// <summary>
+	/// Represents the base class for controls which represent a value within a specified range.
+	/// </summary>
+	[UvmlKnownType]
     [DefaultProperty("Value")]
     public abstract class RangeBase : Control
     {
@@ -57,99 +57,152 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the range control's current value.
         /// </summary>
+		/// <value>A <see cref="Double"/> that represents the value of the control. The default
+		/// value is 0.0.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="ValueProperty"/></dpropField>
+		///		<dpropStylingName>value</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Double Value
         {
             get { return GetValue<Double>(ValueProperty); }
-            set { SetValue<Double>(ValueProperty, value); }
+            set { SetValue(ValueProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the minimum allowed value of the <see cref="Value"/> property.
-        /// </summary>
-        public Double Minimum
+		/// <summary>
+		/// Gets or sets the minimum allowed value of the <see cref="Value"/> property.
+		/// </summary>
+		/// <value>A <see cref="Double"/> that represents the minimum value of the <see cref="Value"/> property.
+		/// The default value is 0.0.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="MinimumProperty"/></dpropField>
+		///		<dpropStylingName>minimum</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Double Minimum
         {
             get { return GetValue<Double>(MinimumProperty); }
-            set { SetValue<Double>(MinimumProperty, value); }
+            set { SetValue(MinimumProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the maximum allowed value of the <see cref="Value"/> property.
-        /// </summary>
-        public Double Maximum
+		/// <summary>
+		/// Gets or sets the maximum allowed value of the <see cref="Value"/> property.
+		/// </summary>
+		/// <value>A <see cref="Double"/> that represents the maximum value of the <see cref="Value"/> property.
+		/// The default value is 1.0.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="MaximumProperty"/></dpropField>
+		///		<dpropStylingName>maximum</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Double Maximum
         {
             get { return GetValue<Double>(MaximumProperty); }
-            set { SetValue<Double>(MaximumProperty, value); }
+            set { SetValue(MaximumProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the value that is added or removed from the <see cref="Value"/> property
-        /// when the range control applies a small change.
-        /// </summary>
-        public Double SmallChange
+		/// <summary>
+		/// Gets or sets the value that is added or removed from the <see cref="Value"/> property
+		/// when the range control applies a small change.
+		/// </summary>
+		/// <value>A <see cref="Double"/> that represents the amount by which the <see cref="Value"/> property
+		/// is incremented or decremented when the range control applies a small change.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="SmallChangeProperty"/></dpropField>
+		///		<dpropStylingName>small-change</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Double SmallChange
         {
             get { return GetValue<Double>(SmallChangeProperty); }
-            set { SetValue<Double>(SmallChangeProperty, value); }
+            set { SetValue(SmallChangeProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the value that is added or removed from the <see cref="Value"/> property
         /// when the range control applies a large change.
         /// </summary>
+		/// <value>A <see cref="Double"/> that represents the amount by which the <see cref="Value"/> property
+		/// is incremented or decremented when the range control applies a large change.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="LargeChangeProperty"/></dpropField>
+		///		<dpropStylingName>large-change</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Double LargeChange
         {
             get { return GetValue<Double>(LargeChangeProperty); }
-            set { SetValue<Double>(LargeChangeProperty, value); }
+            set { SetValue(LargeChangeProperty, value); }
         }
 
         /// <summary>
         /// Occurs when the value of the <see cref="Value"/> property changes.
         /// </summary>
+		/// <remarks>
+		/// <revt>
+		///		<revtField><see cref="ValueChangedEvent"/></revtField>
+		///		<revtStylingName>value-changed</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
         public event UpfRoutedEventHandler ValueChanged
         {
             add { AddHandler(ValueChangedEvent, value); }
             remove { RemoveHandler(ValueChangedEvent, value); }
         }
 
-        /// <summary>
-        /// Identifies the <see cref="Value"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'value'.</remarks>
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Double), typeof(RangeBase),
+		/// <summary>
+		/// Identifies the <see cref="Value"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Value"/> dependency property.</value>
+		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(Double), typeof(RangeBase),
             new PropertyMetadata<Double>(HandleValueChanged, CoerceValue));
 
-        /// <summary>
-        /// Identifies the <see cref="Minimum"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'minimum'.</remarks>
-        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(Double), typeof(RangeBase),
+		/// <summary>
+		/// Identifies the <see cref="Minimum"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Minimum"/> dependency property.</value>
+		public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(Double), typeof(RangeBase),
             new PropertyMetadata<Double>(HandleMinimumChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="Maximum"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'maximum'.</remarks>
-        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(Double), typeof(RangeBase),
+		/// <summary>
+		/// Identifies the <see cref="Maximum"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Maximum"/> dependency property.</value>
+		public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(Double), typeof(RangeBase),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.One, HandleMaximumChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="SmallChange"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'small-change'.</remarks>
-        public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register("SmallChange", typeof(Double), typeof(RangeBase),
+		/// <summary>
+		/// Identifies the <see cref="SmallChange"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="SmallChange"/> dependency property.</value>
+		public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register("SmallChange", typeof(Double), typeof(RangeBase),
             new PropertyMetadata<Double>(0.1));
 
-        /// <summary>
-        /// Identifies the <see cref="LargeChange"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'large-change'.</remarks>
-        public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register("LargeChange", typeof(Double), typeof(RangeBase),
+		/// <summary>
+		/// Identifies the <see cref="LargeChange"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="LargeChange"/> dependency property.</value>
+		public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register("LargeChange", typeof(Double), typeof(RangeBase),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.One));
 
-        /// <summary>
-        /// Identifies the <see cref="ValueChanged"/> routed event.
-        /// </summary>
-        /// <remarks>The styling name of this routed event is 'value-changed'.</remarks>
-        public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged", RoutingStrategy.Bubble, 
+		/// <summary>
+		/// Identifies the <see cref="ValueChanged"/> routed event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="ValueChanged"/> routed event.</value>
+		public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(RangeBase));
 
         /// <summary>

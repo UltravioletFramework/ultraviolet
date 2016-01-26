@@ -4,10 +4,10 @@ using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
-    /// <summary>
-    /// Represents a control that allows the user to select items.
-    /// </summary>
-    [UvmlKnownType]
+	/// <summary>
+	/// Represents a control that allows the user to select items.
+	/// </summary>
+	[UvmlKnownType]
     public abstract partial class Selector : ItemsControl
     {
         /// <summary>
@@ -115,82 +115,134 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Gets or sets the index of the first item in the current selection. If nothing is currently
         /// selected, this property will return negative one (-1).
         /// </summary>
+		/// <value>A <see cref="Int32"/> representing the index of the first item in the current selection,
+		/// or -1 if nothing is currently selected. The default value is -1.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="SelectedIndexProperty"/></dpropField>
+		///		<dpropStylingName>selected-index</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Int32 SelectedIndex
         {
             get { return GetValue<Int32>(SelectedIndexProperty); }
-            set { SetValue<Int32>(SelectedIndexProperty, value); }
+            set { SetValue(SelectedIndexProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the first item in the current selection.
         /// </summary>
+		/// <value>The <see cref="Object"/> that is the first item in the current selection,
+		/// or <see langword="null"/> if nothing is currently selected. The default value is <see langword="null"/></value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="SelectedItemProperty"/></dpropField>
+		///		<dpropStylingName>selected-item</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Object SelectedItem
         {
             get { return GetValue<Object>(SelectedItemProperty); }
-            set { SetValue<Object>(SelectedItemProperty, value); }
+            set { SetValue(SelectedItemProperty, value); }
         }
 
         /// <summary>
         /// Occurs when the selector's selection is changed.
         /// </summary>
+		/// <remarks>
+		/// <revt>
+		///		<revtField><see cref="SelectionChangedEvent"/></revtField>
+		///		<revtStylingName>selection-changed</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
         public event UpfRoutedEventHandler SelectionChanged
         {
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
 
-        /// <summary>
-        /// Identifies the <see cref="SelectedIndex"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selected-index'.</remarks>
-        public static readonly DependencyProperty SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(Int32), typeof(Selector),
+		/// <summary>
+		/// Identifies the <see cref="SelectedIndex"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="SelectedIndex"/> dependency property.</value>
+		public static readonly DependencyProperty SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(Int32), typeof(Selector),
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.NegativeOne, HandleSelectedIndexChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="SelectedItem"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selected-item'.</remarks>
-        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(Object), typeof(Selector),
+		/// <summary>
+		/// Identifies the <see cref="SelectedItem"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="SelectedItem"/> dependency property.</value>
+		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(Object), typeof(Selector),
             new PropertyMetadata<Object>());
 
-        /// <summary>
-        /// Identifies the IsSelected attached property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selected'.</remarks>
-        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.RegisterAttached("IsSelected", typeof(Boolean), typeof(Selector), 
+		/// <summary>
+		/// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelected"/> attached property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelected"/> attached property.</value>
+		public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.RegisterAttached("IsSelected", typeof(Boolean), typeof(Selector), 
             new PropertyMetadata<Boolean>());
 
-        /// <summary>
-        /// The private access key for the IsSelectionActive read-only attached dependency property.
-        /// </summary>
-        private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterAttachedReadOnly("IsSelectionActive", typeof(Boolean), typeof(Selector),
+		/// <summary>
+		/// The private access key for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelectionActive"/> read-only attached dependency property.
+		/// </summary>
+		private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterAttachedReadOnly("IsSelectionActive", typeof(Boolean), typeof(Selector),
             new PropertyMetadata<Boolean>());
 
-        /// <summary>
-        /// Identifies the IsSelectionActive attached property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selection-active'.</remarks>
-        public static readonly DependencyProperty IsSelectionActiveProperty = IsSelectionActivePropertyKey.DependencyProperty;
+		/// <summary>
+		/// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelectionActive."/> attached property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelectionActive"/> attached property.</value>
+		public static readonly DependencyProperty IsSelectionActiveProperty = IsSelectionActivePropertyKey.DependencyProperty;
 
-        /// <summary>
-        /// Identifies the <see cref="SelectionChanged"/> routed event.
-        /// </summary>
-        /// <remarks>The styling name of this routed event is 'selection-changed'.</remarks>
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble,
+		/// <summary>
+		/// Identifies the <see cref="SelectionChanged"/> routed event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="SelectionChanged"/> dependency property.</value>
+		public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Selector));
 
-        /// <summary>
-        /// Identifies the Selected attached event.
-        /// </summary>
-        /// <remarks>The styling name of this routed event is 'selected'.</remarks>
-        public static readonly RoutedEvent SelectedEvent = EventManager.RegisterRoutedEvent("Selected", RoutingStrategy.Bubble, 
+		/// <summary>
+		/// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Selected"/> attached event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Selected"/> attached event.</value>
+		/// <AttachedEventComments>
+		/// <summary>
+		/// Occurs when an item within a selector is selected.
+		/// </summary>
+		/// <remarks>
+		/// <revt>
+		///		<revtField><see cref="SelectedEvent"/></revtField>
+		///		<revtStylingName>selected</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
+		/// </AttachedEventComments>
+		public static readonly RoutedEvent SelectedEvent = EventManager.RegisterRoutedEvent("Selected", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(Selector));
 
-        /// <summary>
-        /// Identifies the Unselected attached event.
-        /// </summary>
-        /// <remarks>The styling name of this routed event is 'unselected'.</remarks>
-        public static readonly RoutedEvent UnselectedEvent = EventManager.RegisterRoutedEvent("Unselected", RoutingStrategy.Bubble,
+		/// <summary>
+		/// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Unselected"/> attached event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Unselected"/> attached event.</value>
+		/// <AttachedEventComments>
+		/// <summary>
+		/// Occurs when an item within a selector is unselected.
+		/// </summary>
+		/// <remarks>
+		/// <revt>
+		///		<revtField><see cref="UnselectedEvent"/></revtField>
+		///		<revtStylingName>unselected</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
+		/// </AttachedEventComments>
+		public static readonly RoutedEvent UnselectedEvent = EventManager.RegisterRoutedEvent("Unselected", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(Selector));
         
         /// <inheritdoc/>

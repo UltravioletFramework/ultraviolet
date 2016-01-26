@@ -3,10 +3,10 @@ using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
-    /// <summary>
-    /// Represents a button on a user interface which can be toggled between its states.
-    /// </summary>
-    [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Templates.ToggleButton.xml")]
+	/// <summary>
+	/// Represents a button on a user interface which can be toggled between its states.
+	/// </summary>
+	[UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Templates.ToggleButton.xml")]
     public class ToggleButton : ButtonBase
     {
         /// <summary>
@@ -32,16 +32,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets a value indicating whether the button is checked.
         /// </summary>
+		/// <value><see langword="true"/> if the button is checked, <see langword="false"/> if the button is not
+		/// checked, or <see langword="null"/> if the button is in an indeterminate state. The default value is
+		/// <see langword="false"/>.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="IsCheckedProperty"/></dpropField>
+		///		<dpropStylingName>checked</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Boolean? IsChecked
         {
             get { return GetValue<Boolean?>(IsCheckedProperty); }
             set { SetValue(IsCheckedProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the control supports three states.
-        /// </summary>
-        public Boolean IsThreeState
+		/// <summary>
+		/// Gets or sets a value indicating whether the control supports three states.
+		/// </summary>
+		/// <value><see langword="true"/> if the button has three states; otherwise, <see langword="false"/>. 
+		/// The default value is <see langword="false"/>.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="IsThreeStateProperty"/></dpropField>
+		///		<dpropStylingName>three-state</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Boolean IsThreeState
         {
             get { return GetValue<Boolean>(IsThreeStateProperty); }
             set { SetValue(IsThreeStateProperty, value); }
@@ -50,111 +69,159 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the toggle button is checked.
         /// </summary>
+		/// <remarks>
+		/// <revt>
+		///		<revtField><see cref="CheckedEvent"/></revtField>
+		///		<revtStylingName>checked</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
         public event UpfRoutedEventHandler Checked
         {
             add { AddHandler(CheckedEvent, value); }
             remove { RemoveHandler(CheckedEvent, value); }
         }
 
-        /// <summary>
-        /// Occurs when the toggle button is checked as a result of user interaction.
-        /// </summary>
-        public event UpfRoutedEventHandler CheckedByUser
+		/// <summary>
+		/// Occurs when the toggle button is checked as a result of user interaction.
+		/// </summary>
+		/// <remarks>
+		/// <revt>
+		///		<revtField><see cref="CheckedByUserEvent"/></revtField>
+		///		<revtStylingName>checked-by-user</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
+		public event UpfRoutedEventHandler CheckedByUser
         {
             add { AddHandler(CheckedByUserEvent, value); }
             remove { RemoveHandler(CheckedByUserEvent, value); }
         }
 
-        /// <summary>
-        /// Occurs when the toggle button is unchecked.
-        /// </summary>
-        public event UpfRoutedEventHandler Unchecked
+		/// <summary>
+		/// Occurs when the toggle button is unchecked.
+		/// </summary>
+		/// <remarks>
+		/// <revt>
+		///		<revtField><see cref="UncheckedEvent"/></revtField>
+		///		<revtStylingName>unchecked</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
+		public event UpfRoutedEventHandler Unchecked
         {
             add { AddHandler(UncheckedEvent, value); }
             remove { RemoveHandler(UncheckedEvent, value); }
         }
 
-        /// <summary>
-        /// Occurs when the toggle button is unchecked as a result of user interaction.
-        /// </summary>
-        public event UpfRoutedEventHandler UncheckedByUser
+		/// <summary>
+		/// Occurs when the toggle button is unchecked as a result of user interaction.
+		/// </summary>
+		/// <remarks>
+		/// <revt>
+		///		<revtField><see cref="UncheckedByUserEvent"/></revtField>
+		///		<revtStylingName>unchecked-by-user</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
+		public event UpfRoutedEventHandler UncheckedByUser
         {
             add { AddHandler(UncheckedByUserEvent, value); }
             remove { RemoveHandler(UncheckedByUserEvent, value); }
         }
 
-        /// <summary>
-        /// Occurs when the toggle button enters an indeterminate state.
-        /// </summary>
-        public event UpfRoutedEventHandler Indeterminate
+		/// <summary>
+		/// Occurs when the toggle button enters an indeterminate state.
+		/// </summary>
+		/// <remarks>
+		/// <revt>
+		///		<revtField><see cref="IndeterminateEvent"/></revtField>
+		///		<revtStylingName>indeterminate</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
+		public event UpfRoutedEventHandler Indeterminate
         {
             add { AddHandler(IndeterminateEvent, value); }
             remove { RemoveHandler(IndeterminateEvent, value); }
         }
 
-        /// <summary>
-        /// Occurs when the toggle button enters an indeterminate state as a result of user interaction.
-        /// </summary>
-        public event UpfRoutedEventHandler IndeterminateByUser
+		/// <summary>
+		/// Occurs when the toggle button enters an indeterminate state as a result of user interaction.
+		/// </summary>
+		/// <remarks>
+		/// <revt>
+		///		<revtField><see cref="IndeterminateByUserEvent"/></revtField>
+		///		<revtStylingName>indeterminate-by-user</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
+		public event UpfRoutedEventHandler IndeterminateByUser
         {
             add { AddHandler(IndeterminateByUserEvent, value); }
             remove { RemoveHandler(IndeterminateByUserEvent, value); }
         }
 
-        /// <summary>
-        /// Identifies the <see cref="IsChecked"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'checked'.</remarks>
-        public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(Boolean?), typeof(ToggleButton),
+		/// <summary>
+		/// Identifies the <see cref="IsChecked"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="IsChecked"/> dependency property.</value>
+		public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(Boolean?), typeof(ToggleButton),
             new PropertyMetadata<Boolean?>(CommonBoxedValues.Boolean.False, HandleIsCheckedChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="IsThreeState"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'three-state'.</remarks>
-        public static readonly DependencyProperty IsThreeStateProperty = DependencyProperty.Register("IsThreeState", typeof(Boolean), typeof(ToggleButton),
+		/// <summary>
+		/// Identifies the <see cref="IsThreeState"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="IsThreeState"/> dependency property.</value>
+		public static readonly DependencyProperty IsThreeStateProperty = DependencyProperty.Register("IsThreeState", typeof(Boolean), typeof(ToggleButton),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
-        
-        /// <summary>
-        /// Identifies the <see cref="Checked"/> routed event.
-        /// </summary>
-        /// <remarks>The styling name of this routed event is 'checked'.</remarks>
-        public static readonly RoutedEvent CheckedEvent = EventManager.RegisterRoutedEvent("Checked", RoutingStrategy.Bubble, 
+
+		/// <summary>
+		/// Identifies the <see cref="Checked"/> routed event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Checked"/> routed event.</value>
+		public static readonly RoutedEvent CheckedEvent = EventManager.RegisterRoutedEvent("Checked", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
-        /// <summary>
-        /// Identifies the <see cref="CheckedByUser"/> routed event.
-        /// </summary>
-        /// <remarks>The styling name of this routed event is 'checked-by-user'.</remarks>
-        public static readonly RoutedEvent CheckedByUserEvent = EventManager.RegisterRoutedEvent("CheckedByUser", RoutingStrategy.Bubble,
+		/// <summary>
+		/// Identifies the <see cref="CheckedByUser"/> routed event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CheckedByUser"/> routed event.</value>
+		public static readonly RoutedEvent CheckedByUserEvent = EventManager.RegisterRoutedEvent("CheckedByUser", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
-        /// <summary>
-        /// Identifies the <see cref="Unchecked"/> routed event.
-        /// </summary>
-        /// <remarks>The styling name of this routed event is 'unchecked'.</remarks>
-        public static readonly RoutedEvent UncheckedEvent = EventManager.RegisterRoutedEvent("Unchecked", RoutingStrategy.Bubble, 
+		/// <summary>
+		/// Identifies the <see cref="Unchecked"/> routed event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Unchecked"/> routed event.</value>
+		public static readonly RoutedEvent UncheckedEvent = EventManager.RegisterRoutedEvent("Unchecked", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
-        /// <summary>
-        /// Identifies the <see cref="UncheckedByUser"/> routed event.
-        /// </summary>
-        /// <remarks>The styling name of this routed event is 'unchecked-by-user'.</remarks>
-        public static readonly RoutedEvent UncheckedByUserEvent = EventManager.RegisterRoutedEvent("UncheckedByUser", RoutingStrategy.Bubble,
+		/// <summary>
+		/// Identifies the <see cref="UncheckedByUser"/> routed event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="UncheckedByUser"/> routed event.</value>
+		public static readonly RoutedEvent UncheckedByUserEvent = EventManager.RegisterRoutedEvent("UncheckedByUser", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
-        /// <summary>
-        /// Identifies the <see cref="Indeterminate"/> routed event.
-        /// </summary>
-        /// <remarks>The styling name of this routed event is 'indeterminate'.</remarks>
-        public static readonly RoutedEvent IndeterminateEvent = EventManager.RegisterRoutedEvent("Indeterminate", RoutingStrategy.Bubble,
+		/// <summary>
+		/// Identifies the <see cref="Indeterminate"/> routed event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Indeterminate"/> routed event.</value>
+		public static readonly RoutedEvent IndeterminateEvent = EventManager.RegisterRoutedEvent("Indeterminate", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
-        /// <summary>
-        /// Identifies the <see cref="IndeterminateByUser"/> routed event.
-        /// </summary>
-        /// <remarks>The styling name of this routed event is 'indeterminate-by-user'.</remarks>
-        public static readonly RoutedEvent IndeterminateByUserEvent = EventManager.RegisterRoutedEvent("IndeterminateByUser", RoutingStrategy.Bubble,
+		/// <summary>
+		/// Identifies the <see cref="IndeterminateByUser"/> routed event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="IndeterminateByUser"/> routed event.</value>
+		public static readonly RoutedEvent IndeterminateByUserEvent = EventManager.RegisterRoutedEvent("IndeterminateByUser", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(ToggleButton));
 
         /// <inheritdoc/>

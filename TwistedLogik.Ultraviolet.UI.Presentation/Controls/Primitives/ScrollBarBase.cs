@@ -4,13 +4,13 @@ using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
-    /// <summary>
-    /// Represents the method that handles a <see cref="ScrollBarBase.Scroll"/> event.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="type">The scroll event type.</param>
-    /// <param name="data">The routed event data.</param>
-    public delegate void UpfScrollEventHandler(DependencyObject element, ScrollEventType type, ref RoutedEventData data);
+	/// <summary>
+	/// Represents the method that handles a <see cref="ScrollBarBase.Scroll"/> event.
+	/// </summary>
+	/// <param name="element">The element that raised the event.</param>
+	/// <param name="type">The scroll event type.</param>
+	/// <param name="data">The routed event data.</param>
+	public delegate void UpfScrollEventHandler(DependencyObject element, ScrollEventType type, ref RoutedEventData data);
 
     /// <summary>
     /// Represents the base class for scroll bars.
@@ -48,34 +48,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the amount of scrollable content that is currently visible.
         /// </summary>
+		/// <value>A <see cref="Double"/> that represents the amount of scrollable content that is currently
+		/// visible in device-independent pixels.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="ViewportSizeProperty"/></dpropField>
+		///		<dpropStylingName>viewport-size</dpropStylingName>
+		///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Double ViewportSize
         {
             get { return GetValue<Double>(ViewportSizeProperty); }
-            set { SetValue<Double>(ViewportSizeProperty, value); }
+            set { SetValue(ViewportSizeProperty, value); }
         }
 
         /// <summary>
         /// Occurs when the scroll bar's content is scrolled as a result of the user moving the thumb.
         /// </summary>
-        /// <remarks>This event is not raised when the scroll bar's value is changed programatically.</remarks>
+        /// <remarks>
+		/// <para>This event is not raised when the scroll bar's value is changed programatically.</para>
+		/// <revt>
+		///		<revtField><see cref="ScrollEvent"/></revtField>
+		///		<revtStylingName>scroll</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfScrollEventHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
         public event UpfScrollEventHandler Scroll
         {
             add { AddHandler(ScrollEvent, value); }
             remove { RemoveHandler(ScrollEvent, value); }
         }
 
-        /// <summary>
-        /// Identifies the <see cref="ViewportSize"/> dependency property.
-        /// </summary>
-        /// <remarks>The styling name of this dependency property is 'viewport-size'.</remarks>
-        public static readonly DependencyProperty ViewportSizeProperty = DependencyProperty.Register("ViewportSize", typeof(Double), typeof(ScrollBarBase),
+		/// <summary>
+		/// Identifies the <see cref="ViewportSize"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="ViewportSize"/> dependency property.</value>
+		public static readonly DependencyProperty ViewportSizeProperty = DependencyProperty.Register("ViewportSize", typeof(Double), typeof(ScrollBarBase),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsMeasure));
 
-        /// <summary>
-        /// Identifies the <see cref="Scroll"/> routed event.
-        /// </summary>
-        /// <remarks>The styling name of this routed event is 'scroll'.</remarks>
-        public static readonly RoutedEvent ScrollEvent = EventManager.RegisterRoutedEvent("Scroll", RoutingStrategy.Bubble,
+		/// <summary>
+		/// Identifies the <see cref="Scroll"/> routed event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Scroll"/> routed event.</value>
+		public static readonly RoutedEvent ScrollEvent = EventManager.RegisterRoutedEvent("Scroll", RoutingStrategy.Bubble,
             typeof(UpfScrollEventHandler), typeof(ScrollBarBase));
 
         /// <inheritdoc/>

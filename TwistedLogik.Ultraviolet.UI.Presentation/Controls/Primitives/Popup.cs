@@ -35,7 +35,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the popup's content.
         /// </summary>
-		/// <value>The <see cref="UIElement"/> that represents the popup's content.</value>
+		/// <value>The <see cref="UIElement"/> that represents the popup's content. The default
+		/// value is <see langword="null"/></value>
 		/// <remarks>
 		///	<dprop>
 		///		<dpropField><see cref="ChildProperty"/></dpropField>

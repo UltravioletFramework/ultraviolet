@@ -9,16 +9,16 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
-    /// <summary>
-    /// Represents the method that is called when a <see cref="TextEditor"/> is validating a character for entry.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="text">The editor's current text.</param>
-    /// <param name="offset">The offset at which the character is being inserted into the text.</param>
-    /// <param name="character">The character being inserted into the text.</param>
-    /// <param name="valid">A value indicating whether the character is considered valid for entry.</param>
-    /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfTextEntryValidationHandler(DependencyObject element, 
+	/// <summary>
+	/// Represents the method that is called when a <see cref="TextEditor"/> is validating a character for entry.
+	/// </summary>
+	/// <param name="element">The element that raised the event.</param>
+	/// <param name="text">The editor's current text.</param>
+	/// <param name="offset">The offset at which the character is being inserted into the text.</param>
+	/// <param name="character">The character being inserted into the text.</param>
+	/// <param name="valid">A value indicating whether the character is considered valid for entry.</param>
+	/// <param name="data">The routed event metadata for this event invocation.</param>
+	public delegate void UpfTextEntryValidationHandler(DependencyObject element, 
         StringSegment text, Int32 offset, Char character, ref Boolean valid, ref RoutedEventData data);
 
     /// <summary>
@@ -496,6 +496,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets the total number of characters in the text editor's text.
         /// </summary>
+		/// <value>An <see cref="Int32"/> which represents the total number of characters
+		/// in the text editor's text.</value>
         public Int32 TextLength
         {
             get { return bufferText.Length; }
@@ -504,6 +506,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets the total number of lines in the text editor's text.
         /// </summary>
+		/// <value>A <see cref="Int32"/> which represents the total number of lines
+		/// of text which are being displayed in the text editor.</value>
         public Int32 LineCount
         {
             get { return textLayoutStream.LineCount; }
@@ -512,6 +516,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the current position of the insertion caret.
         /// </summary>
+		/// <value>A <see cref="Int32"/> which represents the offset of the insertion caret
+		/// within the text editor's text.</value>
         public Int32 CaretIndex
         {
             get { return caretPosition; }
@@ -531,6 +537,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the starting point of the selected text.
         /// </summary>
+		/// <value>A <see cref="Int32"/> which represents the offset of the beginning of the selected text.</value>
         public Int32 SelectionStart
         {
             get { return Math.Min(selectionPosition ?? caretPosition, caretPosition); }
@@ -547,6 +554,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the length of the selected text.
         /// </summary>
+		/// <value>A <see cref="Int32"/> which represents the length in characters of the selected text.</value>
         public Int32 SelectionLength
         {
             get
@@ -569,16 +577,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets a value indicating whether the caret is drawn on top of the text while the caret is in insertion mode.
         /// </summary>
+		/// <value><see langword="true"/> if the caret is drawn above the text while the caret is in insertion mode;
+		/// otherwise, <see langword="false"/>. The default value is <see langword="true"/>.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="CaretInsertTopmostProperty"/></dpropField>
+		///		<dpropStylingName>caret-insert-topmost</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Boolean CaretInsertTopmost
         {
             get { return GetValue<Boolean>(CaretInsertTopmostProperty); }
             set { SetValue(CaretInsertTopmostProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the caret is drawn on top of the text while the caret is in insertion mode.
-        /// </summary>
-        public Boolean CaretOverwriteTopmost
+		/// <summary>
+		/// Gets or sets a value indicating whether the caret is drawn on top of the text while the caret is in overwrite mode.
+		/// </summary>
+		/// <value><see langword="true"/> if the caret is drawn above the text while the caret is in overwrite mode;
+		/// otherwise, <see langword="false"/>. The default value is <see langword="true"/>.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="CaretOverwriteTopmostProperty"/></dpropField>
+		///		<dpropStylingName>caret-overwrite-topmost</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Boolean CaretOverwriteTopmost
         {
             get { return GetValue<Boolean>(CaretOverwriteTopmostProperty); }
             set { SetValue(CaretOverwriteTopmostProperty, value); }
@@ -587,6 +613,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the image used to draw the caret while the caret is in insertion mode.
         /// </summary>
+		/// <value>A <see cref="SourcedImage"/> which represents the image that is used to draw the 
+		/// caret while the caret is in insertion mode. The default value is an invalid image.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="CaretInsertImageProperty"/></dpropField>
+		///		<dpropStylingName>caret-insert-image</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public SourcedImage CaretInsertImage
         {
             get { return GetValue<SourcedImage>(CaretInsertImageProperty); }
@@ -596,6 +631,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the image used to draw the caret while the caret is in overwrite mode.
         /// </summary>
+		/// <value>A <see cref="SourcedImage"/> which represents the image that is used to draw the
+		/// caret while the caret is in overwrite mode. The default value is an invalid image.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="CaretOverwriteImageProperty"/></dpropField>
+		///		<dpropStylingName>caret-overwrite-image</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public SourcedImage CaretOverwriteImage
         {
             get { return GetValue<SourcedImage>(CaretInsertImageProperty); }
@@ -605,6 +649,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the color with which the caret is drawn while the caret is in insertion mode.
         /// </summary>
+		/// <value>A <see cref="Color"/> value which is used to draw the caret while it is in insertion mode.
+		/// The default value is <see cref="Color.White"/>.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="CaretInsertColorProperty"/></dpropField>
+		///		<dpropStylingName>caret-insert-color</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Color CaretInsertColor
         {
             get { return GetValue<Color>(CaretInsertColorProperty); }
@@ -614,6 +667,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the color with which the caret is drawn while the caret is in overwrite mode.
         /// </summary>
+		/// <value>A <see cref="Color"/> value which is used to draw the caret while it is in overwrite mode.
+		/// The default value is <see cref="Color.White"/>.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="CaretOverwriteColorProperty"/></dpropField>
+		///		<dpropStylingName>caret-overwrite-color</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Color CaretOverwriteColor
         {
             get { return GetValue<Color>(CaretOverwriteColorProperty); }
@@ -623,7 +685,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the caret's width when it is in insertion mode, specified in device in independent pixels.
         /// </summary>
-        /// <remarks>The caret will never be wider than the glyph at which it is positioned, regardless of this value.</remarks>
+		/// <value>A <see cref="Double"/> which represents the width of the caret in device-independent pixels while
+		/// the caret is in insertion mode. The default value is 1.0.</value>
+        /// <remarks>
+		/// <para>The caret will never be wider than the glyph at which it is positioned, regardless of this value.</para>
+		/// <dprop>
+		///		<dpropField><see cref="CaretWidthProperty"/></dpropField>
+		///		<dpropStylingName>caret-width</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Double CaretWidth
         {
             get { return GetValue<Double>(CaretWidthProperty); }
@@ -633,7 +704,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the cart's thickness when it is in overwrite mode, specified in device independent pixels.
         /// </summary>
-        /// <remarks>The caret will never be taller than the glyph at which it is positioned, regardless of this value.</remarks>
+		/// <value>A <see cref="Double"/> which represents the thickness of the caret in device-independent pixels while
+		/// the caret is in overwrite mode. The default value is 4.0.</value>
+        /// <remarks>
+		/// <para>The caret will never be taller than the glyph at which it is positioned, regardless of this value.</para>
+		/// <dprop>
+		///		<dpropField><see cref="CaretThicknessProperty"/></dpropField>
+		///		<dpropStylingName>caret-thickness</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Double CaretThickness
         {
             get { return GetValue<Double>(CaretThicknessProperty); }
@@ -643,6 +723,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the image used to draw the selection highlight.
         /// </summary>
+		/// <value>A <see cref="SourcedImage"/> which represents the image that is used to draw the text selection highlight.
+		/// The default value is an invalid image.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="SelectionImageProperty"/></dpropField>
+		///		<dpropStylingName>selection-image</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public SourcedImage SelectionImage
         {
             get { return GetValue<SourcedImage>(SelectionImageProperty); }
@@ -652,6 +741,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the color with which the selection highlight is drawn.
         /// </summary>
+		/// <value>A <see cref="Color"/> value which is used to draw the text selection highlight while
+		/// the text box has focus. The default value is <see cref="Color.Blue"/> at 40% opacity.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="SelectionColorProperty"/></dpropField>
+		///		<dpropStylingName>selection-color</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Color SelectionColor
         {
             get { return GetValue<Color>(SelectionColorProperty); }
@@ -661,82 +759,116 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the color with which the selection highlight is drawn when the control does not have focus.
         /// </summary>
+		/// <value>A <see cref="Color"/> value which is used to draw the text selection highlight while
+		/// the text box does not have focus. The default value is <see cref="Color.Silver"/> at 40% opacity.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="InactiveSelectionColorProperty"/></dpropField>
+		///		<dpropStylingName>inactive-selection-color</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Color InactiveSelectionColor
         {
             get { return GetValue<Color>(InactiveSelectionColorProperty); }
             set { SetValue(InactiveSelectionColorProperty, value); }
         }
 
-        /// <summary>
-        /// Identifies the <see cref="CaretInsertTopmost"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CaretInsertTopmostProperty = DependencyProperty.Register("CaretInsertTopmost", typeof(Boolean), typeof(TextEditor),
+		/// <summary>
+		/// Identifies the <see cref="CaretInsertTopmost"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CaretInsertTopmost"/> dependency property.</value>
+		public static readonly DependencyProperty CaretInsertTopmostProperty = DependencyProperty.Register("CaretInsertTopmost", typeof(Boolean), typeof(TextEditor),
             new PropertyMetadata<Boolean>(true, PropertyMetadataOptions.None));
 
-        /// <summary>
-        /// Identifies the <see cref="CaretOverwriteTopmost"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CaretOverwriteTopmostProperty = DependencyProperty.Register("CaretOverwriteTopmost", typeof(Boolean), typeof(TextEditor),
+		/// <summary>
+		/// Identifies the <see cref="CaretOverwriteTopmost"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CaretOverwriteTopmost"/> dependency property.</value>
+		public static readonly DependencyProperty CaretOverwriteTopmostProperty = DependencyProperty.Register("CaretOverwriteTopmost", typeof(Boolean), typeof(TextEditor),
             new PropertyMetadata<Boolean>(true, PropertyMetadataOptions.None));
 
-        /// <summary>
-        /// Identifies the <see cref="CaretInsertImage"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CaretInsertImageProperty = DependencyProperty.Register("CaretInsertImage", typeof(SourcedImage), typeof(TextEditor),
+		/// <summary>
+		/// Identifies the <see cref="CaretInsertImage"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CaretInsertImage"/> dependency property.</value>
+		public static readonly DependencyProperty CaretInsertImageProperty = DependencyProperty.Register("CaretInsertImage", typeof(SourcedImage), typeof(TextEditor),
             new PropertyMetadata<SourcedImage>(null, PropertyMetadataOptions.None, HandleCaretInsertImageChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="CaretOverwriteImage"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CaretOverwriteImageProperty = DependencyProperty.Register("CaretOverwriteImage", typeof(SourcedImage), typeof(TextEditor),
+		/// <summary>
+		/// Identifies the <see cref="CaretOverwriteImage"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CaretOverwriteImage"/> dependency property.</value>
+		public static readonly DependencyProperty CaretOverwriteImageProperty = DependencyProperty.Register("CaretOverwriteImage", typeof(SourcedImage), typeof(TextEditor),
             new PropertyMetadata<SourcedImage>(null, PropertyMetadataOptions.None, HandleCaretOverwriteImageChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="CaretInsertColor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CaretInsertColorProperty = DependencyProperty.Register("CaretInsertColor", typeof(Color), typeof(TextEditor),
+		/// <summary>
+		/// Identifies the <see cref="CaretInsertColor"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CaretInsertColor"/> dependency property.</value>
+		public static readonly DependencyProperty CaretInsertColorProperty = DependencyProperty.Register("CaretInsertColor", typeof(Color), typeof(TextEditor),
             new PropertyMetadata<Color>(Color.White, PropertyMetadataOptions.None));
 
-        /// <summary>
-        /// Identifies the <see cref="CaretOverwriteColor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CaretOverwriteColorProperty = DependencyProperty.Register("CaretOverwriteColor", typeof(Color), typeof(TextEditor),
+		/// <summary>
+		/// Identifies the <see cref="CaretOverwriteColor"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CaretOverwriteColor"/> dependency property.</value>
+		public static readonly DependencyProperty CaretOverwriteColorProperty = DependencyProperty.Register("CaretOverwriteColor", typeof(Color), typeof(TextEditor),
             new PropertyMetadata<Color>(Color.White, PropertyMetadataOptions.None));
 
-        /// <summary>
-        /// Identifies the <see cref="CaretWidth"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CaretWidthProperty = DependencyProperty.Register("CaretWidth", typeof(Double), typeof(TextEditor),
+		/// <summary>
+		/// Identifies the <see cref="CaretWidth"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CaretWidth"/> dependency property.</value>
+		public static readonly DependencyProperty CaretWidthProperty = DependencyProperty.Register("CaretWidth", typeof(Double), typeof(TextEditor),
             new PropertyMetadata<Double>(1.0, PropertyMetadataOptions.None));
 
-        /// <summary>
-        /// Identifies the <see cref="CaretThickness"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextEditor),
+		/// <summary>
+		/// Identifies the <see cref="CaretThickness"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CaretThickness"/> dependency property.</value>
+		public static readonly DependencyProperty CaretThicknessProperty = DependencyProperty.Register("CaretThickness", typeof(Double), typeof(TextEditor),
             new PropertyMetadata<Double>(4.0, PropertyMetadataOptions.None));
 
-        /// <summary>
-        /// Identifies the <see cref="SelectionImage"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedImage), typeof(TextEditor),
+		/// <summary>
+		/// Identifies the <see cref="SelectionImage"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="SelectionImage"/> dependency property.</value>
+		public static readonly DependencyProperty SelectionImageProperty = DependencyProperty.Register("SelectionImage", typeof(SourcedImage), typeof(TextEditor),
             new PropertyMetadata<SourcedImage>(null, PropertyMetadataOptions.None, HandleSelectionImageChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="SelectionColor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(Color), typeof(TextEditor),
+		/// <summary>
+		/// Identifies the <see cref="SelectionColor"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="SelectionColor"/> dependency property.</value>
+		public static readonly DependencyProperty SelectionColorProperty = DependencyProperty.Register("SelectionColor", typeof(Color), typeof(TextEditor),
             new PropertyMetadata<Color>(Color.Blue * 0.4f, PropertyMetadataOptions.None));
 
-        /// <summary>
-        /// Identifies the <see cref="InactiveSelectionColor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty InactiveSelectionColorProperty = DependencyProperty.Register("InactiveSelectionColor", typeof(Color), typeof(TextEditor),
+		/// <summary>
+		/// Identifies the <see cref="InactiveSelectionColor"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="InactiveSelectionColor"/> dependency property.</value>
+		public static readonly DependencyProperty InactiveSelectionColorProperty = DependencyProperty.Register("InactiveSelectionColor", typeof(Color), typeof(TextEditor),
             new PropertyMetadata<Color>(Color.Silver * 0.4f, PropertyMetadataOptions.None));
 
-        /// <summary>
-        /// Identifies the TextEntryValidation attached routed event.
-        /// </summary>
-        public static readonly RoutedEvent TextEntryValidationEvent = EventManager.RegisterRoutedEvent("TextEntryValidation",
+		/// <summary>
+		/// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> attached routed event.
+		/// </summary>
+		/// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> attached routed event.</value>
+		/// <AttachedEventComments>
+		/// <summary>
+		/// Occurs when the text editor is validating text that has been entered.
+		/// </summary>
+		/// <remarks>
+		/// <revt>
+		///		<revtField><see cref="TextEntryValidationEvent"/></revtField>
+		///		<revtStylingName>text-entry-validation</revtStylingName>
+		///		<revtStrategy>Bubbling</revtStrategy>
+		///		<revtDelegate><see cref="UpfTextEntryValidationHandler"/></revtDelegate>
+		/// </revt>
+		/// </remarks>
+		/// </AttachedEventComments>
+		public static readonly RoutedEvent TextEntryValidationEvent = EventManager.RegisterRoutedEvent("TextEntryValidation",
             RoutingStrategy.Bubble, typeof(UpfTextEntryValidationHandler), typeof(TextEditor));
 
         /// <summary>

@@ -120,6 +120,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 		/// <summary>
 		/// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Left"/> attached property.
 		/// </summary>
+		/// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Left"/> attached property.</value>
 		/// <AttachedPropertyComments>
 		/// <summary>
 		/// Gets or sets a value indicating the distance between the left edge of an element
@@ -144,6 +145,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 		/// <summary>
 		/// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Top"/> attached property.
 		/// </summary>
+		/// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Top"/> attached property.</value>
 		/// <AttachedPropertyComments>
 		/// <summary>
 		/// Gets or sets a value indicating the distance between the top edge of an element
@@ -168,6 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 		/// <summary>
 		/// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Right"/> attached property.
 		/// </summary>
+		/// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Right"/> attached property.</value>
 		/// <AttachedPropertyComments>
 		/// <summary>
 		/// Gets or sets a value indicating the distance between the right edge of an element
@@ -192,6 +195,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 		/// <summary>
 		/// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Bottom"/> attached property.
 		/// </summary>
+		/// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Bottom"/> attached property.</value>
 		/// <AttachedPropertyComments>
 		/// <summary>
 		/// Gets or sets a value indicating the distance between the bottom edge of an element
