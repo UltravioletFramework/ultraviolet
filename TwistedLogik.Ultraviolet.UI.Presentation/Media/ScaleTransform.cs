@@ -30,61 +30,101 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets or sets the transform's scaling factor along the x-axis.
         /// </summary>
+		/// <value>A <see cref="Single"/> value that represents the scaling factor applied
+		/// along the transformed object's x-axis. The default value is 1.0.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="ScaleXProperty"/></dpropField>
+		///		<dpropStylingName>scale-x</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Single ScaleX
         {
             get { return GetValue<Single>(ScaleXProperty); }
-            set { SetValue<Single>(ScaleXProperty, value); }
+            set { SetValue(ScaleXProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the transform's scaling factor along the y-axis.
-        /// </summary>
-        public Single ScaleY
+		/// <summary>
+		/// Gets or sets the transform's scaling factor along the y-axis.
+		/// </summary>
+		/// <value>A <see cref="Single"/> value that represents the scaling factor applied
+		/// along the transformed object's y-axis. The default value is 1.0.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="ScaleYProperty"/></dpropField>
+		///		<dpropStylingName>scale-y</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Single ScaleY
         {
             get { return GetValue<Single>(ScaleYProperty); }
-            set { SetValue<Single>(ScaleYProperty, value); }
+            set { SetValue(ScaleYProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the x-coordinate around which the object is scaled.
-        /// </summary>
-        public Double CenterX
+		/// <summary>
+		/// Gets or sets the x-coordinate around which the object is scaled.
+		/// </summary>
+		/// <value>A <see cref="Double"/> value that represents the x-coordinate, in device-independent pixels,
+		/// around which the object is scaled. The default value is 0.0.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="CenterXProperty"/></dpropField>
+		///		<dpropStylingName>center-x</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Double CenterX
         {
             get { return GetValue<Double>(CenterXProperty); }
-            set { SetValue<Double>(CenterXProperty, value); }
+            set { SetValue(CenterXProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the y-coordinate around which the object is scaled.
-        /// </summary>
-        public Double CenterY
+		/// <summary>
+		/// Gets or sets the y-coordinate around which the object is scaled.
+		/// </summary>
+		/// <value>A <see cref="Double"/> value that represents the y-coordinate, in device-independent pixels,
+		/// around which the object is scaled. The default value is 0.0.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="CenterYProperty"/></dpropField>
+		///		<dpropStylingName>center-y</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Double CenterY
         {
             get { return GetValue<Double>(CenterYProperty); }
-            set { SetValue<Double>(CenterYProperty, value); }
+            set { SetValue(CenterYProperty, value); }
         }
 
-        /// <summary>
-        /// Identifies the <see cref="ScaleX"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ScaleXProperty = DependencyProperty.Register("ScaleX", typeof(Single), typeof(ScaleTransform),
+		/// <summary>
+		/// Identifies the <see cref="ScaleX"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="ScaleX"/> dependency property.</value>
+		public static readonly DependencyProperty ScaleXProperty = DependencyProperty.Register("ScaleX", typeof(Single), typeof(ScaleTransform),
             new PropertyMetadata<Single>(CommonBoxedValues.Single.One, PropertyMetadataOptions.None, HandleScaleChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="ScaleY"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ScaleYProperty = DependencyProperty.Register("ScaleY", typeof(Single), typeof(ScaleTransform),
+		/// <summary>
+		/// Identifies the <see cref="ScaleY"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="ScaleY"/> dependency property.</value>
+		public static readonly DependencyProperty ScaleYProperty = DependencyProperty.Register("ScaleY", typeof(Single), typeof(ScaleTransform),
             new PropertyMetadata<Single>(CommonBoxedValues.Single.One, PropertyMetadataOptions.None, HandleScaleChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="CenterX"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CenterXProperty = DependencyProperty.Register("CenterX", typeof(Double), typeof(ScaleTransform),
+		/// <summary>
+		/// Identifies the <see cref="CenterX"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CenterX"/> dependency property.</value>
+		public static readonly DependencyProperty CenterXProperty = DependencyProperty.Register("CenterX", typeof(Double), typeof(ScaleTransform),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None, HandleCenterChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="CenterY"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CenterYProperty = DependencyProperty.Register("CenterY", typeof(Double), typeof(ScaleTransform),
+		/// <summary>
+		/// Identifies the <see cref="CenterY"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CenterY"/> dependency property.</value>
+		public static readonly DependencyProperty CenterYProperty = DependencyProperty.Register("CenterY", typeof(Double), typeof(ScaleTransform),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None, HandleCenterChanged));
 
         /// <summary>

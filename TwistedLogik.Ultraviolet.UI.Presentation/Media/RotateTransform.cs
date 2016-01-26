@@ -30,6 +30,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets tor sets the angle of rotation in degrees.
         /// </summary>
+		/// <value>A <see cref="Single"/> value that represents the transformation's angle
+		/// of rotation in degrees. The default value is 0.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="AngleProperty"/></dpropField>
+		///		<dpropStylingName>angle</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Single Angle
         {
             get { return GetValue<Single>(AngleProperty); }
@@ -39,37 +48,58 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets or sets the x-coordinate around which the object is rotated.
         /// </summary>
+		/// <value>A <see cref="Double"/> value that represents the x-coordinate, in device-independent pixels,
+		/// around which the object is rotated. The default value is 0.0.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="CenterXProperty"/></dpropField>
+		///		<dpropStylingName>center-x</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Double CenterX
         {
             get { return GetValue<Double>(CenterXProperty); }
             set { SetValue(CenterXProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the y-coordinate around which the object is rotated.
-        /// </summary>
-        public Double CenterY
+		/// <summary>
+		/// Gets or sets the y-coordinate around which the object is rotated.
+		/// </summary>
+		/// <value>A <see cref="Double"/> value that represents the y-coordinate, in device-independent pixels,
+		/// around which the object is rotated. The default value is 0.0.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="CenterYProperty"/></dpropField>
+		///		<dpropStylingName>center-y</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
+		public Double CenterY
         {
             get { return GetValue<Double>(CenterYProperty); }
             set { SetValue(CenterYProperty, value); }
         }
 
-        /// <summary>
-        /// Identifies the <see cref="Angle"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(Single), typeof(RotateTransform),
+		/// <summary>
+		/// Identifies the <see cref="Angle"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Angle"/> dependency property.</value>
+		public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(Single), typeof(RotateTransform),
             new PropertyMetadata<Single>(CommonBoxedValues.Single.Zero, PropertyMetadataOptions.None, HandleAngleChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="CenterX"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CenterXProperty = DependencyProperty.Register("CenterX", typeof(Double), typeof(RotateTransform),
+		/// <summary>
+		/// Identifies the <see cref="CenterX"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CenterX"/> dependency property.</value>
+		public static readonly DependencyProperty CenterXProperty = DependencyProperty.Register("CenterX", typeof(Double), typeof(RotateTransform),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None, HandleCenterChanged));
 
-        /// <summary>
-        /// Identifies the <see cref="CenterY"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CenterYProperty = DependencyProperty.Register("CenterY", typeof(Double), typeof(RotateTransform),
+		/// <summary>
+		/// Identifies the <see cref="CenterY"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="CenterY"/> dependency property.</value>
+		public static readonly DependencyProperty CenterYProperty = DependencyProperty.Register("CenterY", typeof(Double), typeof(RotateTransform),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None, HandleCenterChanged));
 
         /// <summary>

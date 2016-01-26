@@ -2,10 +2,10 @@
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
-    /// <summary>
-    /// Represents a transformation based on an arbitrary matrix.
-    /// </summary>
-    [UvmlKnownType]
+	/// <summary>
+	/// Represents a transformation based on an arbitrary matrix.
+	/// </summary>
+	[UvmlKnownType]
     public sealed class MatrixTransform : Transform
     {
         /// <summary>
@@ -46,16 +46,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets or sets the transformation matrix that this transform represents.
         /// </summary>
+		/// <value>A <see cref="Matrix"/> which represents the transformation applied by this instance.
+		/// The default value is <see cref="Matrix.Identity"/>.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="MatrixProperty"/></dpropField>
+		///		<dpropStylingName>matrix</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Matrix Matrix
         {
             get { return GetValue<Matrix>(MatrixProperty); }
             set { SetValue<Matrix>(MatrixProperty, value); }
         }
 
-        /// <summary>
-        /// Identifies the <see cref="Matrix"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty MatrixProperty = DependencyProperty.Register("Matrix", typeof(Matrix), typeof(MatrixTransform),
+		/// <summary>
+		/// Identifies the <see cref="Matrix"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Matrix"/> dependency property.</value>
+		public static readonly DependencyProperty MatrixProperty = DependencyProperty.Register("Matrix", typeof(Matrix), typeof(MatrixTransform),
             new PropertyMetadata<Matrix>(Matrix.Identity, PropertyMetadataOptions.None, HandleMatrixChanged));
 
         /// <summary>

@@ -35,6 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets the identity transformation.
         /// </summary>
+		/// <value>A <see cref="Transform"/> that represents an identity transformation.</value>
         public static Transform Identity
         {
             get { return identity; }
@@ -43,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets the <see cref="Matrix"/> that represents this transformation.
         /// </summary>
-        /// <returns>A <see cref="Matrix"/> that represents the transformation.</returns>
+		/// <value>A <see cref="Matrix"/> that represents the transformation applied by this instance.</value>
         public abstract Matrix Value
         {
             get;
@@ -52,12 +53,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets the inverse of this transform, if it exists.
         /// </summary>
+		/// <value>A <see cref="Matrix"/> that represents the inverse of the transformation applied by
+		/// this instance, or <see langword="null"/> if the transform has no inverse.</value>
         public abstract Matrix? Inverse
         {
             get;
         }
 
-        /// Property values.
+        // Property values.
         private static readonly Transform identity = new IdentityTransform();
     }
 }
