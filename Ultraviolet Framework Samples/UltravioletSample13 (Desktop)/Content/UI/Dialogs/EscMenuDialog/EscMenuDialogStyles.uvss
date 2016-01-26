@@ -3,7 +3,7 @@
 	margin: 0;
 }
 
-#btn-resume, #btn-exit, 
+#btn-resume, #btn-exit
 {
 	margin: 0 0 0 8;
 }
