@@ -1482,8 +1482,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             if (components.Node == null)
             {
-                return accept ? null :
-                    new UvssSelectorSyntax(components) { IsMissing = true };
+				if (accept)
+					return null;
+
+				var componentsBuilder = new SyntaxListBuilder<SyntaxNode>(1);
+				componentsBuilder.Add(MissingToken(SyntaxKind.IdentifierToken, input, position));
+				components = componentsBuilder.ToList();
+
+                return WithPosition(new UvssSelectorSyntax(components));
             }
 
             var selector = WithPosition(new UvssSelectorSyntax(
@@ -1606,7 +1612,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                         return ExpectToken(input, ref position, SyntaxKind.GreaterThanGreaterThanToken);
 
                     default:
-                        return null;
+						return null;
                 }
             }
         }
