@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <inheritdoc/>
-        public override bool IsIdentity
+        public override Boolean IsIdentity
         {
             get { return isIdentity; }
         }

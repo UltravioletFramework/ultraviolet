@@ -31,16 +31,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         /// <summary>
         /// Gets or sets the radius of the blur which is applied to the element.
         /// </summary>
+		/// <value>A <see cref="Double"/> value that represents the radius of the blur. 
+		/// The default value is 5.0.</value>
+		/// <remarks>
+		/// <dprop>
+		///		<dpropField><see cref="RadiusProperty"/></dpropField>
+		///		<dpropStylingName>radius</dpropStylingName>
+		///		<dpropMetadata>None</dpropMetadata>
+		/// </dprop>
+		/// </remarks>
         public Double Radius
         {
             get { return GetValue<Double>(RadiusProperty); }
             set { SetValue(RadiusProperty, value); }
         }
 
-        /// <summary>
-        /// Identifies the <see cref="Radius"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register("Radius", typeof(Double), typeof(BlurEffect),
+		/// <summary>
+		/// Identifies the <see cref="Radius"/> dependency property.
+		/// </summary>
+		/// <value>The identifier for the <see cref="Radius"/> dependency property.</value>
+		public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register("Radius", typeof(Double), typeof(BlurEffect),
             new PropertyMetadata<Double>(5.0, PropertyMetadataOptions.None));        
 
         /// <inheritdoc/>
