@@ -10,14 +10,14 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
-	/// <summary>
-	/// Represents a method which produces a parsed node from the specified inputs.
-	/// </summary>
-	/// <typeparam name="TNode">The type of node which is produced.</typeparam>
-	/// <param name="input">The lexer token stream.</param>
-	/// <param name="position">The current position in the lexer token stream.</param>
-	/// <returns>The node which was produced.</returns>
-	internal delegate TNode UvssParserDelegate<TNode>(
+    /// <summary>
+    /// Represents a method which produces a parsed node from the specified inputs.
+    /// </summary>
+    /// <typeparam name="TNode">The type of node which is produced.</typeparam>
+    /// <param name="input">The lexer token stream.</param>
+    /// <param name="position">The current position in the lexer token stream.</param>
+    /// <returns>The node which was produced.</returns>
+    internal delegate TNode UvssParserDelegate<TNode>(
         UvssLexerStream input, ref Int32 position) where TNode : SyntaxNode;
 
     /// <summary>
@@ -31,20 +31,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private delegate void SkippedTokensDiagnosticsReporter(
             ref ICollection<DiagnosticInfo> diagnostics, SkippedTokensTriviaSyntax trivia);
 
-		/// <summary>
-		/// Initializes the <see cref="UvssParser"/> type.
-		/// </summary>
-		static UvssParser()
-		{
-			recognizedCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
-				.Select(x => x.Name).ToList();
-		}
+        /// <summary>
+        /// Initializes the <see cref="UvssParser"/> type.
+        /// </summary>
+        static UvssParser()
+        {
+            recognizedCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+                .Select(x => x.Name).ToList();
+        }
 
         /// <summary>
         /// Parses the specified source text and produces an abstract syntax tree.
         /// </summary>
         /// <param name="source">The source text to parse.</param>
-		/// <param name="options">A set of <see cref="UvssParserOptions"/> values specifying the parser options.</param>
+        /// <param name="options">A set of <see cref="UvssParserOptions"/> values specifying the parser options.</param>
         /// <returns>The <see cref="SyntaxNode"/> at the root of the parsed syntax tree.</returns>
         public static UvssDocumentSyntax Parse(String source, UvssParserOptions options = UvssParserOptions.None)
         {
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             var input = UvssLexer.Tokenize(source);
             var position = 0;
-			var isDirectiveValid = true;
+            var isDirectiveValid = true;
 
             var contentNodes = new List<SyntaxNode>();
 
@@ -160,52 +160,52 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return count;
         }
 
-		/// <summary>
-		/// Gets a value indicating whether the specified token is the first non-whitespace on its line.
-		/// </summary>
-		private static Boolean IsFirstNonWhiteSpaceTokenOnLine(
-			UvssLexerStream input, SyntaxToken token, UvssParserOptions options)
-		{
-			var position = token.Position + token.GetLeadingTriviaWidth();
+        /// <summary>
+        /// Gets a value indicating whether the specified token is the first non-whitespace on its line.
+        /// </summary>
+        private static Boolean IsFirstNonWhiteSpaceTokenOnLine(
+            UvssLexerStream input, SyntaxToken token, UvssParserOptions options)
+        {
+            var position = token.Position + token.GetLeadingTriviaWidth();
 
-			var leadingTrivia = token.GetLeadingTrivia();
-			if (leadingTrivia != null)
-			{
-				if (leadingTrivia.IsList)
-				{
-					for (int i = leadingTrivia.SlotCount - 1; i >= 0; i--)
-					{
-						var child = leadingTrivia.GetSlot(i);
-						if (child != null)
-						{
-							if (child.Kind == SyntaxKind.EndOfLineTrivia)
-								break;
+            var leadingTrivia = token.GetLeadingTrivia();
+            if (leadingTrivia != null)
+            {
+                if (leadingTrivia.IsList)
+                {
+                    for (int i = leadingTrivia.SlotCount - 1; i >= 0; i--)
+                    {
+                        var child = leadingTrivia.GetSlot(i);
+                        if (child != null)
+                        {
+                            if (child.Kind == SyntaxKind.EndOfLineTrivia)
+                                break;
 
-							if (child.Kind == SyntaxKind.WhitespaceTrivia)
-								position -= child.FullWidth;
-							else
-								return false;
-						}
-					}
-				}
-				else
-				{
-					if (leadingTrivia.Kind == SyntaxKind.EndOfLineTrivia)
-						position = leadingTrivia.Position + leadingTrivia.FullWidth;
+                            if (child.Kind == SyntaxKind.WhitespaceTrivia)
+                                position -= child.FullWidth;
+                            else
+                                return false;
+                        }
+                    }
+                }
+                else
+                {
+                    if (leadingTrivia.Kind == SyntaxKind.EndOfLineTrivia)
+                        position = leadingTrivia.Position + leadingTrivia.FullWidth;
 
-					if (leadingTrivia.Kind == SyntaxKind.WhitespaceTrivia)
-						position -= leadingTrivia.FullWidth;
-					else
-						return false;
-				}
-			}
+                    if (leadingTrivia.Kind == SyntaxKind.WhitespaceTrivia)
+                        position -= leadingTrivia.FullWidth;
+                    else
+                        return false;
+                }
+            }
 
-			if (position == 0 && (options & UvssParserOptions.PartialDocumentStartsOnEmptyLine) != 0)
-				return false;
+            if (position == 0 && (options & UvssParserOptions.PartialDocumentStartsOnEmptyLine) != 0)
+                return false;
 
-			return input.IsStartOfLine(position);
-		}
-		
+            return input.IsStartOfLine(position);
+        }
+        
         /// <summary>
         /// Gets a value indicating whether the specified node occurs at the end of its line.
         /// </summary>
@@ -456,37 +456,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 case UvssLexerTokenType.Pipe:
                     return SyntaxKind.PipeToken;
 
-				case UvssLexerTokenType.Directive:
-					return SyntaxKind.DirectiveToken;
+                case UvssLexerTokenType.Directive:
+                    return SyntaxKind.DirectiveToken;
 
                 default:
                     throw new InvalidOperationException();
             }
         }
 
-		/// <summary>
-		/// Seeks ahead in the lexer stream and returns the <see cref="SyntaxKind"/> that corresponds
-		/// to the next non-trivia lexer token.
-		/// </summary>
-		/// <param name="input">The lexer token stream.</param>
-		/// <param name="position">The current position in the lexer token stream.</param>
-		/// <returns>The <see cref="SyntaxKind"/> that corresponds to the next non-trivia token.</returns>
-		private static SyntaxKind SyntaxKindFromNextToken(
-			UvssLexerStream input, Int32 position)
-		{
-			String text;
-			return SyntaxKindFromNextToken(input, position, out text);
-		}
+        /// <summary>
+        /// Seeks ahead in the lexer stream and returns the <see cref="SyntaxKind"/> that corresponds
+        /// to the next non-trivia lexer token.
+        /// </summary>
+        /// <param name="input">The lexer token stream.</param>
+        /// <param name="position">The current position in the lexer token stream.</param>
+        /// <returns>The <see cref="SyntaxKind"/> that corresponds to the next non-trivia token.</returns>
+        private static SyntaxKind SyntaxKindFromNextToken(
+            UvssLexerStream input, Int32 position)
+        {
+            String text;
+            return SyntaxKindFromNextToken(input, position, out text);
+        }
 
-		/// <summary>
-		/// Seeks ahead in the lexer stream and returns the <see cref="SyntaxKind"/> that corresponds
-		/// to the next non-trivia lexer token.
-		/// </summary>
-		/// <param name="input">The lexer token stream.</param>
-		/// <param name="position">The current position in the lexer token stream.</param>
-		/// <param name="text">The text of the next token in the stream.</param>
-		/// <returns>The <see cref="SyntaxKind"/> that corresponds to the next non-trivia token.</returns>
-		private static SyntaxKind SyntaxKindFromNextToken(
+        /// <summary>
+        /// Seeks ahead in the lexer stream and returns the <see cref="SyntaxKind"/> that corresponds
+        /// to the next non-trivia lexer token.
+        /// </summary>
+        /// <param name="input">The lexer token stream.</param>
+        /// <param name="position">The current position in the lexer token stream.</param>
+        /// <param name="text">The text of the next token in the stream.</param>
+        /// <returns>The <see cref="SyntaxKind"/> that corresponds to the next non-trivia token.</returns>
+        private static SyntaxKind SyntaxKindFromNextToken(
             UvssLexerStream input, Int32 position, out String text)
         {
             while (!input.IsPastEndOfStream(position))
@@ -494,12 +494,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var token = input[position];
                 if (!IsTrivia(token))
                 {
-					text = token.Text;
+                    text = token.Text;
                     return SyntaxKindFromLexerTokenType(token);
                 }
                 position++;
             }
-			text = null;
+            text = null;
             return SyntaxKind.EndOfFileToken;
         }
 
@@ -632,7 +632,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxNode AcceptDocumentContent(
             UvssLexerStream input, ref Int32 position, ref Boolean isDirectiveValid, UvssParserOptions options)
         {
-			var nextTokenText = String.Empty;
+            var nextTokenText = String.Empty;
             var nextTokenKind = SyntaxKindFromNextToken(input, position, out nextTokenText);
             if (nextTokenKind == SyntaxKind.EndOfFileToken)
                 return null;
@@ -640,8 +640,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (IsPotentiallyStartOfSelectorPart(nextTokenKind))
             {
                 var ruleSet = ExpectRuleSet(input, ref position);
-				isDirectiveValid = false;
-				return ruleSet;
+                isDirectiveValid = false;
+                return ruleSet;
             }
             else
             {
@@ -649,38 +649,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 {
                     /* Storyboard */
                     case SyntaxKind.AtSignToken:
-						{
-							var storyboard = ExpectStoryboard(input, ref position);
-							isDirectiveValid = false;
-							return storyboard;
-						}
+                        {
+                            var storyboard = ExpectStoryboard(input, ref position);
+                            isDirectiveValid = false;
+                            return storyboard;
+                        }
 
-					/* Directive */
-					case SyntaxKind.DirectiveToken:
-						{
-							switch (nextTokenText?.Substring(1))
-							{
-								case "culture":
-									return ExpectCultureDirective(input, ref position, isDirectiveValid, options);
+                    /* Directive */
+                    case SyntaxKind.DirectiveToken:
+                        {
+                            switch (nextTokenText?.Substring(1))
+                            {
+                                case "culture":
+                                    return ExpectCultureDirective(input, ref position, isDirectiveValid, options);
 
-								default:
-									return ExpectUnknownDirective(input, ref position, isDirectiveValid, options);
-							}
-						}
+                                default:
+                                    return ExpectUnknownDirective(input, ref position, isDirectiveValid, options);
+                            }
+                        }
 
                     /* ??? */
                     default:
                         {
-							var empty = ExpectEmptyStatement(input, ref position, kind =>
-							{
-								return
-									IsPotentiallyStartOfSelectorPart(kind) ||
-									kind == SyntaxKind.AtSignToken ||
-									kind == SyntaxKind.DirectiveToken ||
-									kind == SyntaxKind.EndOfFileToken;
-							});
+                            var empty = ExpectEmptyStatement(input, ref position, kind =>
+                            {
+                                return
+                                    IsPotentiallyStartOfSelectorPart(kind) ||
+                                    kind == SyntaxKind.AtSignToken ||
+                                    kind == SyntaxKind.DirectiveToken ||
+                                    kind == SyntaxKind.EndOfFileToken;
+                            });
                             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInDocumentContent);
-							isDirectiveValid = false;
+                            isDirectiveValid = false;
                             return empty;
                         }
                 }
@@ -804,136 +804,136 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return list;
         }
 
-		/// <summary>
-		/// Parses an unrecognized directive.
-		/// </summary>
-		private static UvssUnknownDirectiveSyntax ParseUnknownDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options, Boolean accept)
-		{
-			var directiveToken =
-				ExpectToken(input, ref position, SyntaxKind.DirectiveToken);
+        /// <summary>
+        /// Parses an unrecognized directive.
+        /// </summary>
+        private static UvssUnknownDirectiveSyntax ParseUnknownDirective(
+            UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options, Boolean accept)
+        {
+            var directiveToken =
+                ExpectToken(input, ref position, SyntaxKind.DirectiveToken);
 
-			if (accept && directiveToken.IsMissing)
-				return null;
+            if (accept && directiveToken.IsMissing)
+                return null;
 
-			var directive = WithPosition(new UvssUnknownDirectiveSyntax(
-				directiveToken));
+            var directive = WithPosition(new UvssUnknownDirectiveSyntax(
+                directiveToken));
 
-			var diagnostics = default(ICollection<DiagnosticInfo>);
+            var diagnostics = default(ICollection<DiagnosticInfo>);
 
-			if (!isDirectiveValid)
-			{
-				DiagnosticInfo.ReportDirectiveAtInvalidPosition(ref diagnostics, directive);
-			}
-			else
-			{
-				if (!IsFirstNonWhiteSpaceTokenOnLine(input, directive.DirectiveToken, options))
-					DiagnosticInfo.ReportDirectiveMustBeFirstNonWhiteSpaceOnLine(ref diagnostics, directive);
-			}
+            if (!isDirectiveValid)
+            {
+                DiagnosticInfo.ReportDirectiveAtInvalidPosition(ref diagnostics, directive);
+            }
+            else
+            {
+                if (!IsFirstNonWhiteSpaceTokenOnLine(input, directive.DirectiveToken, options))
+                    DiagnosticInfo.ReportDirectiveMustBeFirstNonWhiteSpaceOnLine(ref diagnostics, directive);
+            }
 
-			DiagnosticInfo.ReportUnknownDirective(ref diagnostics, directive);
+            DiagnosticInfo.ReportUnknownDirective(ref diagnostics, directive);
 
-			directive.SetDiagnostics(diagnostics);
+            directive.SetDiagnostics(diagnostics);
 
-			return directive;
-		}
+            return directive;
+        }
 
-		/// <summary>
-		/// Accepts an unrecognized directive.
-		/// </summary>
-		private static UvssUnknownDirectiveSyntax AcceptUnknownDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
-		{
-			return ParseUnknownDirective(input, ref position, isDirectiveValid, options, true);
-		}
+        /// <summary>
+        /// Accepts an unrecognized directive.
+        /// </summary>
+        private static UvssUnknownDirectiveSyntax AcceptUnknownDirective(
+            UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
+        {
+            return ParseUnknownDirective(input, ref position, isDirectiveValid, options, true);
+        }
 
-		/// <summary>
-		/// Expects an unrecognized directive and produces a missing node if one is not found.
-		/// </summary>
-		private static UvssUnknownDirectiveSyntax ExpectUnknownDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
-		{
-			return ParseUnknownDirective(input, ref position, isDirectiveValid, options, false);
-		}
+        /// <summary>
+        /// Expects an unrecognized directive and produces a missing node if one is not found.
+        /// </summary>
+        private static UvssUnknownDirectiveSyntax ExpectUnknownDirective(
+            UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
+        {
+            return ParseUnknownDirective(input, ref position, isDirectiveValid, options, false);
+        }
 
-		/// <summary>
-		/// Produces a missing $culture directive.
-		/// </summary>
-		private static UvssCultureDirectiveSyntax MissingCultureDirective(
-			UvssLexerStream input, Int32 position)
-		{
-			return WithPosition(new UvssCultureDirectiveSyntax(
-				MissingToken(SyntaxKind.CultureDirective, input, position),
-				MissingPropertyValueWithBraces(input, position)));
-		}
+        /// <summary>
+        /// Produces a missing $culture directive.
+        /// </summary>
+        private static UvssCultureDirectiveSyntax MissingCultureDirective(
+            UvssLexerStream input, Int32 position)
+        {
+            return WithPosition(new UvssCultureDirectiveSyntax(
+                MissingToken(SyntaxKind.CultureDirective, input, position),
+                MissingPropertyValueWithBraces(input, position)));
+        }
 
-		/// <summary>
-		/// Parses a $culture directive.
-		/// </summary>
-		private static UvssCultureDirectiveSyntax ParseCultureDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options, Boolean accept)
-		{
-			var nextTokenText = String.Empty;
-			var nextToken = SyntaxKindFromNextToken(input, position, out nextTokenText);
+        /// <summary>
+        /// Parses a $culture directive.
+        /// </summary>
+        private static UvssCultureDirectiveSyntax ParseCultureDirective(
+            UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options, Boolean accept)
+        {
+            var nextTokenText = String.Empty;
+            var nextToken = SyntaxKindFromNextToken(input, position, out nextTokenText);
 
-			if (nextToken != SyntaxKind.DirectiveToken || nextTokenText != "$culture")
-				return accept ? null : MissingCultureDirective(input, position);
+            if (nextToken != SyntaxKind.DirectiveToken || nextTokenText != "$culture")
+                return accept ? null : MissingCultureDirective(input, position);
 
-			var directiveToken =
-				ExpectToken(input, ref position, SyntaxKind.DirectiveToken);
+            var directiveToken =
+                ExpectToken(input, ref position, SyntaxKind.DirectiveToken);
 
-			var cultureValue =
-				ExpectPropertyValueWithBraces(input, ref position);
+            var cultureValue =
+                ExpectPropertyValueWithBraces(input, ref position);
 
-			var directive = WithPosition(new UvssCultureDirectiveSyntax(
-				directiveToken,
-				cultureValue));
-			
-			var diagnostics = default(ICollection<DiagnosticInfo>);
+            var directive = WithPosition(new UvssCultureDirectiveSyntax(
+                directiveToken,
+                cultureValue));
+            
+            var diagnostics = default(ICollection<DiagnosticInfo>);
 
-			if (!isDirectiveValid)
-			{
-				DiagnosticInfo.ReportDirectiveAtInvalidPosition(ref diagnostics, directive);
-			}
-			else
-			{
-				if (!IsFirstNonWhiteSpaceTokenOnLine(input, directive.DirectiveToken, options))
-					DiagnosticInfo.ReportDirectiveMustBeFirstNonWhiteSpaceOnLine(ref diagnostics, directive);
-			}
+            if (!isDirectiveValid)
+            {
+                DiagnosticInfo.ReportDirectiveAtInvalidPosition(ref diagnostics, directive);
+            }
+            else
+            {
+                if (!IsFirstNonWhiteSpaceTokenOnLine(input, directive.DirectiveToken, options))
+                    DiagnosticInfo.ReportDirectiveMustBeFirstNonWhiteSpaceOnLine(ref diagnostics, directive);
+            }
 
-			if (!directive.CultureValue.IsMissing && !recognizedCultures.Contains(cultureValue.Value))
-			{
-				DiagnosticInfo.ReportUnknownCulture(ref diagnostics,
-					(SyntaxNode)directive.CultureValue.ContentToken ?? directive.CultureValue);
-			}
+            if (!directive.CultureValue.IsMissing && !recognizedCultures.Contains(cultureValue.Value))
+            {
+                DiagnosticInfo.ReportUnknownCulture(ref diagnostics,
+                    (SyntaxNode)directive.CultureValue.ContentToken ?? directive.CultureValue);
+            }
 
-			directive.SetDiagnostics(diagnostics);
-			
-			return directive;
-		}
+            directive.SetDiagnostics(diagnostics);
+            
+            return directive;
+        }
 
-		/// <summary>
-		/// Accepts a $culture directive.
-		/// </summary>
-		private static UvssCultureDirectiveSyntax AcceptCultureDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
-		{
-			return ParseCultureDirective(input, ref position, isDirectiveValid, options, true);
-		}
+        /// <summary>
+        /// Accepts a $culture directive.
+        /// </summary>
+        private static UvssCultureDirectiveSyntax AcceptCultureDirective(
+            UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
+        {
+            return ParseCultureDirective(input, ref position, isDirectiveValid, options, true);
+        }
 
-		/// <summary>
-		/// Expects a $culture directive and produces a missing node if one is not found.
-		/// </summary>
-		private static UvssCultureDirectiveSyntax ExpectCultureDirective(
-			UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
-		{
-			return ParseCultureDirective(input, ref position, isDirectiveValid, options, false);
-		}
+        /// <summary>
+        /// Expects a $culture directive and produces a missing node if one is not found.
+        /// </summary>
+        private static UvssCultureDirectiveSyntax ExpectCultureDirective(
+            UvssLexerStream input, ref Int32 position, Boolean isDirectiveValid, UvssParserOptions options)
+        {
+            return ParseCultureDirective(input, ref position, isDirectiveValid, options, false);
+        }
 
-		/// <summary>
-		/// Produces a missing block of nodes.
-		/// </summary>
-		private static UvssBlockSyntax MissingBlock(
+        /// <summary>
+        /// Produces a missing block of nodes.
+        /// </summary>
+        private static UvssBlockSyntax MissingBlock(
             UvssLexerStream input, Int32 position, params SyntaxNode[] children)
         {
             var block = SyntaxFactory.Block(children);
@@ -1482,12 +1482,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             if (components.Node == null)
             {
-				if (accept)
-					return null;
+                if (accept)
+                    return null;
 
-				var componentsBuilder = new SyntaxListBuilder<SyntaxNode>(1);
-				componentsBuilder.Add(MissingToken(SyntaxKind.IdentifierToken, input, position));
-				components = componentsBuilder.ToList();
+                var componentsBuilder = new SyntaxListBuilder<SyntaxNode>(1);
+                componentsBuilder.Add(MissingToken(SyntaxKind.IdentifierToken, input, position));
+                components = componentsBuilder.ToList();
 
                 return WithPosition(new UvssSelectorSyntax(components));
             }
@@ -1612,7 +1612,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                         return ExpectToken(input, ref position, SyntaxKind.GreaterThanGreaterThanToken);
 
                     default:
-						return null;
+                        return null;
                 }
             }
         }
@@ -2020,8 +2020,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         private static SyntaxToken ParsePropertyValueToken(
             UvssLexerStream input, ref Int32 position, Boolean accept, SyntaxKind terminator, ref Boolean eol)
         {
-			if (eol)
-				return accept ? null : MissingToken(SyntaxKind.PropertyValueToken, input, position);
+            if (eol)
+                return accept ? null : MissingToken(SyntaxKind.PropertyValueToken, input, position);
 
             var startpos = position;
             var start = position + CountTrivia(input, position, acceptEndOfLine: false);
@@ -2034,11 +2034,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 var current = input[end];
                 var currentKind = SyntaxKindFromLexerTokenType(current);
 
-				if (currentKind == SyntaxKind.EndOfLineTrivia)
-				{
-					eol = true;
-					break;
-				}
+                if (currentKind == SyntaxKind.EndOfLineTrivia)
+                {
+                    eol = true;
+                    break;
+                }
 
                 if (currentKind == terminator ||
                     currentKind == SyntaxKind.ImportantKeyword)
@@ -2097,59 +2097,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return ParsePropertyValueToken(input, ref position, false, SyntaxKind.SemiColonToken, ref eol);
         }
 
-		/// <summary>
-		/// Expects a property value token on the same line as previous nodes and
-		/// produces a missing node if one is not found.
-		/// </summary>
-		private static SyntaxToken ExpectPropertyValueTokenOnSameLine(
-			UvssLexerStream input, ref Int32 position, ref Boolean eol)
-		{
-			return ParsePropertyValueToken(input, ref position, false, SyntaxKind.SemiColonToken, ref eol);
-		}
+        /// <summary>
+        /// Expects a property value token on the same line as previous nodes and
+        /// produces a missing node if one is not found.
+        /// </summary>
+        private static SyntaxToken ExpectPropertyValueTokenOnSameLine(
+            UvssLexerStream input, ref Int32 position, ref Boolean eol)
+        {
+            return ParsePropertyValueToken(input, ref position, false, SyntaxKind.SemiColonToken, ref eol);
+        }
 
-		/// <summary>
-		/// Accepts a brace-enclosed property value token.
-		/// </summary>
-		private static SyntaxToken AcceptPropertyValueTokenWithBraces(
+        /// <summary>
+        /// Accepts a brace-enclosed property value token.
+        /// </summary>
+        private static SyntaxToken AcceptPropertyValueTokenWithBraces(
             UvssLexerStream input, ref Int32 position)
         {
             var eol = false;
             return ParsePropertyValueToken(input, ref position, true, SyntaxKind.CloseCurlyBraceToken, ref eol);
         }
 
-		/// <summary>
-		/// Accepts a brace-enclosed property value token on the same line as previous nodes.
-		/// </summary>
-		private static SyntaxToken AcceptPropertyValueTokenWithBracesOnSameLine(
-			UvssLexerStream input, ref Int32 position, ref Boolean eol)
-		{
-			return ParsePropertyValueToken(input, ref position, true, SyntaxKind.CloseCurlyBraceToken, ref eol);
-		}
+        /// <summary>
+        /// Accepts a brace-enclosed property value token on the same line as previous nodes.
+        /// </summary>
+        private static SyntaxToken AcceptPropertyValueTokenWithBracesOnSameLine(
+            UvssLexerStream input, ref Int32 position, ref Boolean eol)
+        {
+            return ParsePropertyValueToken(input, ref position, true, SyntaxKind.CloseCurlyBraceToken, ref eol);
+        }
 
-		/// <summary>
-		/// Expects a brace-enclosed property value token and produces a missing node if one is not found.
-		/// </summary>
-		private static SyntaxToken ExpectPropertyValueTokenWithBraces(
-			UvssLexerStream input, ref Int32 position)
-		{
-			var eol = false;
-			return ParsePropertyValueToken(input, ref position, false, SyntaxKind.CloseCurlyBraceToken, ref eol);
-		}
+        /// <summary>
+        /// Expects a brace-enclosed property value token and produces a missing node if one is not found.
+        /// </summary>
+        private static SyntaxToken ExpectPropertyValueTokenWithBraces(
+            UvssLexerStream input, ref Int32 position)
+        {
+            var eol = false;
+            return ParsePropertyValueToken(input, ref position, false, SyntaxKind.CloseCurlyBraceToken, ref eol);
+        }
 
-		/// <summary>
-		/// Expects a brace-enclosed property value token on the same line as previous nodes and
-		/// produces a missing node if one is not found.
-		/// </summary>
-		private static SyntaxToken ExpectPropertyValueTokenWithBracesOnSameLine(
-			UvssLexerStream input, ref Int32 position, ref Boolean eol)
-		{
-			return ParsePropertyValueToken(input, ref position, false, SyntaxKind.CloseCurlyBraceToken, ref eol);
-		}
+        /// <summary>
+        /// Expects a brace-enclosed property value token on the same line as previous nodes and
+        /// produces a missing node if one is not found.
+        /// </summary>
+        private static SyntaxToken ExpectPropertyValueTokenWithBracesOnSameLine(
+            UvssLexerStream input, ref Int32 position, ref Boolean eol)
+        {
+            return ParsePropertyValueToken(input, ref position, false, SyntaxKind.CloseCurlyBraceToken, ref eol);
+        }
 
-		/// <summary>
-		/// Produces a missing property value.
-		/// </summary>
-		private static UvssPropertyValueSyntax MissingPropertyValue(
+        /// <summary>
+        /// Produces a missing property value.
+        /// </summary>
+        private static UvssPropertyValueSyntax MissingPropertyValue(
             UvssLexerStream input, Int32 position)
         {
             return WithPosition(new UvssPropertyValueSyntax(
@@ -2228,9 +2228,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var openCurlyBraceToken =
                 ExpectToken(input, ref position, SyntaxKind.OpenCurlyBraceToken);
 
-			var eol = IsEndOfLine(openCurlyBraceToken);
+            var eol = IsEndOfLine(openCurlyBraceToken);
 
-			var contentToken = openCurlyBraceToken.IsMissing ? null :
+            var contentToken = openCurlyBraceToken.IsMissing ? null :
                 AcceptPropertyValueTokenWithBracesOnSameLine(input, ref position, ref eol);
 
             var closeCurlyBraceToken = openCurlyBraceToken.IsMissing ? MissingToken(SyntaxKind.CloseCurlyBraceToken, input, position) :
@@ -2296,15 +2296,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             }
 
             var empty = ExpectEmptyStatement(input, ref position, kind =>
-			{
-				return
-					kind == SyntaxKind.IdentifierToken ||
-					kind == SyntaxKind.OpenBracketToken ||
-					kind == SyntaxKind.TransitionKeyword ||
-					kind == SyntaxKind.TriggerKeyword ||
-					kind == SyntaxKind.CloseCurlyBraceToken ||
-					kind == SyntaxKind.EndOfFileToken;
-			});
+            {
+                return
+                    kind == SyntaxKind.IdentifierToken ||
+                    kind == SyntaxKind.OpenBracketToken ||
+                    kind == SyntaxKind.TransitionKeyword ||
+                    kind == SyntaxKind.TriggerKeyword ||
+                    kind == SyntaxKind.CloseCurlyBraceToken ||
+                    kind == SyntaxKind.EndOfFileToken;
+            });
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInRuleSetBody);
             return empty;
         }
@@ -2617,13 +2617,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return token;
 
             var empty = ExpectEmptyStatement(input, ref position, kind =>
-			{
-				return
-					kind == SyntaxKind.HandledKeyword ||
-					kind == SyntaxKind.SetHandledKeyword ||
-					kind == SyntaxKind.CloseParenthesesToken ||
-					kind == SyntaxKind.EndOfFileToken;
-			});
+            {
+                return
+                    kind == SyntaxKind.HandledKeyword ||
+                    kind == SyntaxKind.SetHandledKeyword ||
+                    kind == SyntaxKind.CloseParenthesesToken ||
+                    kind == SyntaxKind.EndOfFileToken;
+            });
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInEventTriggerArgumentList);
             return empty;
         }
@@ -2958,14 +2958,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return action;
 
             var empty = ExpectEmptyStatement(input, ref position, kind =>
-			{
-				return
-					kind == SyntaxKind.SetKeyword ||
-					kind == SyntaxKind.PlaySfxKeyword ||
-					kind == SyntaxKind.PlayStoryboardKeyword ||
-					kind == SyntaxKind.CloseCurlyBraceToken ||
-					kind == SyntaxKind.EndOfFileToken;
-			});
+            {
+                return
+                    kind == SyntaxKind.SetKeyword ||
+                    kind == SyntaxKind.PlaySfxKeyword ||
+                    kind == SyntaxKind.PlayStoryboardKeyword ||
+                    kind == SyntaxKind.CloseCurlyBraceToken ||
+                    kind == SyntaxKind.EndOfFileToken;
+            });
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInTriggerBody);
             return empty;
         }
@@ -3265,12 +3265,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return storyboardTarget;
 
             var empty = ExpectEmptyStatement(input, ref position, kind =>
-			{
-				return
-					kind == SyntaxKind.TargetKeyword ||
-					kind == SyntaxKind.CloseCurlyBraceToken ||
-					kind == SyntaxKind.EndOfFileToken;
-			});
+            {
+                return
+                    kind == SyntaxKind.TargetKeyword ||
+                    kind == SyntaxKind.CloseCurlyBraceToken ||
+                    kind == SyntaxKind.EndOfFileToken;
+            });
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInStoryboardBody);
             return empty;
         }
@@ -3354,12 +3354,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return animation;
 
             var empty = ExpectEmptyStatement(input, ref position, kind =>
-			{
-				return
-					kind == SyntaxKind.AnimationKeyword ||
-					kind == SyntaxKind.CloseCurlyBraceToken ||
-					kind == SyntaxKind.EndOfFileToken;
-			});
+            {
+                return
+                    kind == SyntaxKind.AnimationKeyword ||
+                    kind == SyntaxKind.CloseCurlyBraceToken ||
+                    kind == SyntaxKind.EndOfFileToken;
+            });
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInStoryboardTargetBody);
             return empty;
         }
@@ -3438,12 +3438,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 return animationKeyframe;
 
             var empty = ExpectEmptyStatement(input, ref position, kind =>
-			{
-				return
-					kind == SyntaxKind.KeyframeKeyword ||
-					kind == SyntaxKind.CloseCurlyBraceToken ||
-					kind == SyntaxKind.EndOfFileToken;
-			});
+            {
+                return
+                    kind == SyntaxKind.KeyframeKeyword ||
+                    kind == SyntaxKind.CloseCurlyBraceToken ||
+                    kind == SyntaxKind.EndOfFileToken;
+            });
             AddDiagnosticsToSkippedSyntaxTrivia(empty, DiagnosticInfo.ReportUnexpectedTokenInAnimationBody);
             return empty;
         }
@@ -3597,7 +3597,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             var trivia = AccumulateTrivia(input, ref position,
                 isCurrentTokenTrivia: true,
                 isLeading: true,
-				isNotSkippedTriviaKind: isNotSkipped);
+                isNotSkippedTriviaKind: isNotSkipped);
 
             var emptyToken = new SyntaxToken(SyntaxKind.EmptyToken, null);
             GetNodePositionFromLexerPosition(input, position, emptyToken);
@@ -3795,11 +3795,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                         for (int i = 0; i < leading.SlotCount; i++)
                         {
                             var child = leading.GetSlot(i) as SkippedTokensTriviaSyntax;
-							if (child != null)
-							{
-								AddDiagnosticsToSkippedSyntaxTrivia(child, reporter);
-								break;
-							}
+                            if (child != null)
+                            {
+                                AddDiagnosticsToSkippedSyntaxTrivia(child, reporter);
+                                break;
+                            }
                         }
                     }
                     else { AddDiagnosticsToSkippedSyntaxTrivia(leading, reporter); }
@@ -3813,11 +3813,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                         for (int i = 0; i < trailing.SlotCount; i++)
                         {
                             var child = trailing.GetSlot(i) as SkippedTokensTriviaSyntax;
-							if (child != null)
-							{
-								AddDiagnosticsToSkippedSyntaxTrivia(child, reporter);
-								break;
-							}
+                            if (child != null)
+                            {
+                                AddDiagnosticsToSkippedSyntaxTrivia(child, reporter);
+                                break;
+                            }
                         }
                     }
                     else { AddDiagnosticsToSkippedSyntaxTrivia(trailing, reporter); }
@@ -3876,14 +3876,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="isCurrentTokenTrivia">A value indicating whether to treat
         /// the current token as trivia, even if it otherwise wouldn't be considered trivia.</param>
         /// <param name="isLeading">A value indicating whether this is leading trivia.</param>
-		/// <param name="isNotSkippedTriviaKind">A predicate which determines whether a given token
-		/// should be considered skipped trivia.</param>
+        /// <param name="isNotSkippedTriviaKind">A predicate which determines whether a given token
+        /// should be considered skipped trivia.</param>
         /// <returns>The list of accumulated trivia, or null if no trivia was accumulated.</returns>
         private static IList<SyntaxTrivia> AccumulateTrivia(
             UvssLexerStream input, ref Int32 position, 
             Boolean isCurrentTokenTrivia = false,
             Boolean isLeading = false,
-			Predicate<SyntaxKind> isNotSkippedTriviaKind = null)
+            Predicate<SyntaxKind> isNotSkippedTriviaKind = null)
         {
             var triviaList = default(List<SyntaxTrivia>);
 
@@ -3892,24 +3892,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
             while (!input.IsPastEndOfStream(position))
             {
-				var token = input[position];
-				if (!IsTrivia(token))
-				{
-					if (!treatNextNonTriviaTokenAsTrivia)
-						break;
+                var token = input[position];
+                if (!IsTrivia(token))
+                {
+                    if (!treatNextNonTriviaTokenAsTrivia)
+                        break;
 
-					var tokenKind = SyntaxKindFromLexerTokenType(token);
-					if (isNotSkippedTriviaKind != null && isNotSkippedTriviaKind(tokenKind))
-						break;
+                    var tokenKind = SyntaxKindFromLexerTokenType(token);
+                    if (isNotSkippedTriviaKind != null && isNotSkippedTriviaKind(tokenKind))
+                        break;
 
-					treatNextTokenAsSkipped = true;
-				}
-				else
-				{
-					treatNextNonTriviaTokenAsTrivia = false;
-				}
+                    treatNextTokenAsSkipped = true;
+                }
+                else
+                {
+                    treatNextNonTriviaTokenAsTrivia = false;
+                }
 
-				if (triviaList == null)
+                if (triviaList == null)
                     triviaList = new List<SyntaxTrivia>();
 
                 var trivia = (SyntaxTrivia)ConvertTrivia(input[position], treatNextTokenAsSkipped);
@@ -3925,7 +3925,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             return triviaList;
         }
 
-		// The list of cultures installed on this machine.
-		private static readonly IEnumerable<String> recognizedCultures;
+        // The list of cultures installed on this machine.
+        private static readonly IEnumerable<String> recognizedCultures;
     }
 }
