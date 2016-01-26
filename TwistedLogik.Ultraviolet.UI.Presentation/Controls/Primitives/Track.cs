@@ -4,10 +4,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
-	/// <summary>
-	/// Represents the track for a scroll bar or slider.
-	/// </summary>
-	[UvmlKnownType]
+    /// <summary>
+    /// Represents the track for a scroll bar or slider.
+    /// </summary>
+    [UvmlKnownType]
     public class Track : FrameworkElement
     {
         /// <summary>
@@ -60,15 +60,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the track's orientation.
         /// </summary>
-		/// <value>A <see cref="Orientation"/> value which indicates whether the track is oriented vertically
-		/// or horizontally. The default value is <see cref="Orientation.Horizontal"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="OrientationProperty"/></dpropField>
-		///		<dpropStylingName>orientation</dpropStylingName>
-		///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value>A <see cref="Orientation"/> value which indicates whether the track is oriented vertically
+        /// or horizontally. The default value is <see cref="Orientation.Horizontal"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="OrientationProperty"/></dpropField>
+        ///		<dpropStylingName>orientation</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Orientation Orientation
         {
             get { return GetValue<Orientation>(OrientationProperty); }
@@ -78,8 +78,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the size of the track's associated viewport.
         /// </summary>
-		/// <value>A <see cref="Double"/> that represents the size in device independent pixels of the 
-		/// track's associated viewport.</value>
+        /// <value>A <see cref="Double"/> that represents the size in device independent pixels of the 
+        /// track's associated viewport.</value>
         public Double ViewportSize
         {
             get
@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the track's minimum value.
         /// </summary>
-		/// <value>A <see cref="Double"/> that represents the minimum value of the <see cref="Value"/> property.</value>
+        /// <value>A <see cref="Double"/> that represents the minimum value of the <see cref="Value"/> property.</value>
         public Double Minimum
         {
             get
@@ -121,7 +121,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the track's maximum value.
         /// </summary>
-		/// <value>A <see cref="Double"/> that represents the maximum value of the <see cref="Value"/> property.</value>
+        /// <value>A <see cref="Double"/> that represents the maximum value of the <see cref="Value"/> property.</value>
         public Double Maximum
         {
             get
@@ -142,7 +142,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the track's current value.
         /// </summary>
-		/// <value>A <see cref="Double"/> that represents the track's current value.</value>
+        /// <value>A <see cref="Double"/> that represents the track's current value.</value>
         public Double Value
         {
             get
@@ -160,11 +160,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
         }
 
-		/// <summary>
-		/// Identifies the <see cref="Orientation"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="Orientation"/> dependency property.</value>
-		public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(Track),
+        /// <summary>
+        /// Identifies the <see cref="Orientation"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Orientation"/> dependency property.</value>
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(Track),
             new PropertyMetadata<Orientation>(null, PropertyMetadataOptions.AffectsMeasure));
 
         /// <inheritdoc/>

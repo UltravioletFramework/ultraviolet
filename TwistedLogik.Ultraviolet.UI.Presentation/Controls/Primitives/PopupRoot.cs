@@ -4,10 +4,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
-	/// <summary>
-	/// Represents the root visual for elements inside of a <see cref="Popup"/> control.
-	/// </summary>
-	internal class PopupRoot : FrameworkElement
+    /// <summary>
+    /// Represents the root visual for elements inside of a <see cref="Popup"/> control.
+    /// </summary>
+    internal class PopupRoot : FrameworkElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PopupRoot"/> class.
@@ -23,40 +23,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             this.nonLogicalAdornerDecorator.ChangeLogicalParent(this);
         }
 
-		/// <summary>
-		/// Gets or sets the popup root's child element.
-		/// </summary>
-		/// <value>The <see cref="UIElement"/> that represents the popup's content. The default
-		/// value is <see langword="null"/></value>
-		/// <remarks>
-		///	<dprop>
-		///		<dpropField><see cref="ChildProperty"/></dpropField>
-		///		<dpropStylingName>child</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public UIElement Child
+        /// <summary>
+        /// Gets or sets the popup root's child element.
+        /// </summary>
+        /// <value>The <see cref="UIElement"/> that represents the popup's content. The default
+        /// value is <see langword="null"/></value>
+        /// <remarks>
+        ///	<dprop>
+        ///		<dpropField><see cref="ChildProperty"/></dpropField>
+        ///		<dpropStylingName>child</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public UIElement Child
         {
             get { return GetValue<UIElement>(ChildProperty); }
             set { SetValue(ChildProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets a value indicating whether the popup is currently open.
-		/// </summary>
-		/// <value><see langword="true"/> if the popup is open; otherwise, <see langword="false"/>. The
-		/// default value is <see langword="false"/>.</value>
-		public Boolean IsOpen
+        /// <summary>
+        /// Gets or sets a value indicating whether the popup is currently open.
+        /// </summary>
+        /// <value><see langword="true"/> if the popup is open; otherwise, <see langword="false"/>. The
+        /// default value is <see langword="false"/>.</value>
+        public Boolean IsOpen
         {
             get { return isOpen; }
             set { isOpen = value; } 
         }
 
-		/// <summary>
-		/// Identifies the <see cref="Child"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="Child"/> dependency property.</value>
-		public static readonly DependencyProperty ChildProperty = DependencyProperty.Register("Child", typeof(UIElement), typeof(PopupRoot),
+        /// <summary>
+        /// Identifies the <see cref="Child"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Child"/> dependency property.</value>
+        public static readonly DependencyProperty ChildProperty = DependencyProperty.Register("Child", typeof(UIElement), typeof(PopupRoot),
             new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None, HandleChildChanged));
 
         /// <inheritdoc/>

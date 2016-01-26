@@ -43,10 +43,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         /// <summary>
         /// Gets the number of additional render targets which are required by this effect.
         /// </summary>
-		/// <value>An <see cref="Int32"/> value that represents the number of additional render 
-		/// targets (all effects get at least one) which should be allocated to this effect.</value>
+        /// <value>An <see cref="Int32"/> value that represents the number of additional render 
+        /// targets (all effects get at least one) which should be allocated to this effect.</value>
         /// <remarks>This property is only examined when the effect is first applied to an element. 
-		/// Changing it after that point will do nothing.</remarks>
+        /// Changing it after that point will do nothing.</remarks>
         public virtual Int32 AdditionalRenderTargetsRequired
         {
             get { return 0; }

@@ -6,14 +6,14 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
-	/// <summary>
-	/// Represents a popup window.
-	/// </summary>
-	/// <remarks>For more information on the calculations used to position popups, see the MSDN article on how it's 
-	/// handled in WPF (https://msdn.microsoft.com/en-us/library/bb613596(v=vs.90).aspx). Ultraviolet follows the algorithms 
-	/// described on that page. See in particular the tables under the "How the Properties Work Together" and 
-	/// "When the Popup Encounters the Edge of the Screen" headings.</remarks>
-	[UvmlKnownType]
+    /// <summary>
+    /// Represents a popup window.
+    /// </summary>
+    /// <remarks>For more information on the calculations used to position popups, see the MSDN article on how it's 
+    /// handled in WPF (https://msdn.microsoft.com/en-us/library/bb613596(v=vs.90).aspx). Ultraviolet follows the algorithms 
+    /// described on that page. See in particular the tables under the "How the Properties Work Together" and 
+    /// "When the Popup Encounters the Edge of the Screen" headings.</remarks>
+    [UvmlKnownType]
     [DefaultProperty("Child")]
     public partial class Popup : FrameworkElement
     {
@@ -35,15 +35,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the popup's content.
         /// </summary>
-		/// <value>The <see cref="UIElement"/> that represents the popup's content. The default
-		/// value is <see langword="null"/></value>
-		/// <remarks>
-		///	<dprop>
-		///		<dpropField><see cref="ChildProperty"/></dpropField>
-		///		<dpropStylingName>child</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value>The <see cref="UIElement"/> that represents the popup's content. The default
+        /// value is <see langword="null"/></value>
+        /// <remarks>
+        ///	<dprop>
+        ///		<dpropField><see cref="ChildProperty"/></dpropField>
+        ///		<dpropStylingName>child</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public UIElement Child
         {
             get { return GetValue<UIElement>(ChildProperty); }
@@ -53,15 +53,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets a value indicating whether the popup is currently open.
         /// </summary>
-		/// <value><see langword="true"/> if the popup is open; otherwise, <see langword="false"/>. The
-		/// default value is <see langword="false"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="IsOpenProperty"/></dpropField>
-		///		<dpropStylingName>open</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value><see langword="true"/> if the popup is open; otherwise, <see langword="false"/>. The
+        /// default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="IsOpenProperty"/></dpropField>
+        ///		<dpropStylingName>open</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsOpen
         {
             get { return GetValue<Boolean>(IsOpenProperty); }
@@ -71,34 +71,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the horizontal offset between the popup's placement point and its position on the screen.
         /// </summary>
-		/// <value>A <see cref="Double"/> value which describes the horizontal offset in device-independent pixels between
-		/// the popup's placement point and its position on the screen. The default value is 0.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="HorizontalOffsetProperty"/></dpropField>
-		///		<dpropStylingName>hoffset</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value>A <see cref="Double"/> value which describes the horizontal offset in device-independent pixels between
+        /// the popup's placement point and its position on the screen. The default value is 0.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="HorizontalOffsetProperty"/></dpropField>
+        ///		<dpropStylingName>hoffset</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Double HorizontalOffset
         {
             get { return GetValue<Double>(HorizontalOffsetProperty); }
             set { SetValue(HorizontalOffsetProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets the vertical offset between the popup's placement point and its position on the screen.
-		/// </summary>
-		/// <value>A <see cref="Double"/> value which describes the vertical offset in device-independent pixels between
-		/// the popup's placement point and its position on the screen. The default value is 0.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="VerticalOffsetProperty"/></dpropField>
-		///		<dpropStylingName>voffset</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public Double VerticalOffset
+        /// <summary>
+        /// Gets or sets the vertical offset between the popup's placement point and its position on the screen.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value which describes the vertical offset in device-independent pixels between
+        /// the popup's placement point and its position on the screen. The default value is 0.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="VerticalOffsetProperty"/></dpropField>
+        ///		<dpropStylingName>voffset</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double VerticalOffset
         {
             get { return GetValue<Double>(VerticalOffsetProperty); }
             set { SetValue(VerticalOffsetProperty, value); }
@@ -107,15 +107,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the rectangle relative to which the popup is positioned.
         /// </summary>
-		/// <value>A <see cref="RectangleD"/> value which describes the area in device-independent pixels
-		/// relative to which the popup is positioned. The default value is <see cref="RectangleD.Empty"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="PlacementRectangleProperty"/></dpropField>
-		///		<dpropStylingName>placement-rectangle</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value>A <see cref="RectangleD"/> value which describes the area in device-independent pixels
+        /// relative to which the popup is positioned. The default value is <see cref="RectangleD.Empty"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="PlacementRectangleProperty"/></dpropField>
+        ///		<dpropStylingName>placement-rectangle</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public RectangleD PlacementRectangle
         {
             get { return GetValue<RectangleD>(PlacementRectangleProperty); }
@@ -126,15 +126,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Gets or sets the <see cref="PlacementMode"/> value which specifies how the <see cref="Popup"/> is
         /// positioned relative to its placement target.
         /// </summary>
-		/// <value>A <see cref="PlacementMode"/> value which specifies how the <see cref="Popup"/> is positioned
-		/// relative to its placement target. The default value is <see cref="PlacementMode.Bottom"/>.</value>
-		/// <remarks>
-		///	<dprop>
-		///		<dpropField><see cref="PlacementProperty"/></dpropField>
-		///		<dpropStylingName>placement</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value>A <see cref="PlacementMode"/> value which specifies how the <see cref="Popup"/> is positioned
+        /// relative to its placement target. The default value is <see cref="PlacementMode.Bottom"/>.</value>
+        /// <remarks>
+        ///	<dprop>
+        ///		<dpropField><see cref="PlacementProperty"/></dpropField>
+        ///		<dpropStylingName>placement</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public PlacementMode Placement
         {
             get { return GetValue<PlacementMode>(PlacementProperty); }
@@ -144,15 +144,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets <see cref="UIElement"/> relative to which the <see cref="Popup"/> will be positioned.
         /// </summary>
-		/// <value>The <see cref="UIElement"/> relative to which the <see cref="Popup"/> will be positioned. The
-		/// default value is <see langword="null"/>.</value>
-		/// <remarks>
-		///	<dprop>
-		///		<dpropField><see cref="PlacementTargetProperty"/></dpropField>
-		///		<dpropStylingName>placement-target</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value>The <see cref="UIElement"/> relative to which the <see cref="Popup"/> will be positioned. The
+        /// default value is <see langword="null"/>.</value>
+        /// <remarks>
+        ///	<dprop>
+        ///		<dpropField><see cref="PlacementTargetProperty"/></dpropField>
+        ///		<dpropStylingName>placement-target</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public UIElement PlacementTarget
         {
             get { return GetValue<UIElement>(PlacementTargetProperty); }
@@ -177,61 +177,61 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         public event UpfEventHandler Closed;
 
-		/// <summary>
-		/// Identifies the <see cref="Child"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="Child"/> dependency property.</value>
-		public static readonly DependencyProperty ChildProperty = DependencyProperty.Register("Child", typeof(UIElement), typeof(Popup),
+        /// <summary>
+        /// Identifies the <see cref="Child"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Child"/> dependency property.</value>
+        public static readonly DependencyProperty ChildProperty = DependencyProperty.Register("Child", typeof(UIElement), typeof(Popup),
             new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None, HandleChildChanged));
 
-		/// <summary>
-		/// Identifies the <see cref="IsOpen"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="IsOpen"/> dependency property.</value>
-		public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register("IsOpen", typeof(Boolean), typeof(Popup),
+        /// <summary>
+        /// Identifies the <see cref="IsOpen"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsOpen"/> dependency property.</value>
+        public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register("IsOpen", typeof(Boolean), typeof(Popup),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsOpenChanged, CoerceIsOpen));
 
-		/// <summary>
-		/// Identifies the <see cref="HorizontalOffset"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="HorizontalOffset"/> dependency property.</value>
-		public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", "hoffset", typeof(Double), typeof(Popup),
+        /// <summary>
+        /// Identifies the <see cref="HorizontalOffset"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="HorizontalOffset"/> dependency property.</value>
+        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", "hoffset", typeof(Double), typeof(Popup),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
 
-		/// <summary>
-		/// Identifies the <see cref="VerticalOffset"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="VerticalOffset"/> dependency property.</value>
-		public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", "voffset", typeof(Double), typeof(Popup),
+        /// <summary>
+        /// Identifies the <see cref="VerticalOffset"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="VerticalOffset"/> dependency property.</value>
+        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", "voffset", typeof(Double), typeof(Popup),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
 
-		/// <summary>
-		/// Identifies the <see cref="PlacementRectangle"/> property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="PlacementRectangle"/> dependency property.</value>
-		public static readonly DependencyProperty PlacementRectangleProperty = DependencyProperty.Register("PlacementRectangle", typeof(RectangleD), typeof(Popup),
+        /// <summary>
+        /// Identifies the <see cref="PlacementRectangle"/> property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="PlacementRectangle"/> dependency property.</value>
+        public static readonly DependencyProperty PlacementRectangleProperty = DependencyProperty.Register("PlacementRectangle", typeof(RectangleD), typeof(Popup),
             new PropertyMetadata<RectangleD>(RectangleD.Empty, PropertyMetadataOptions.None, HandlePlacementRectangleChanged));
 
-		/// <summary>
-		/// Identifies the <see cref="Placement"/> property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="Placement"/> dependency property.</value>
-		public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register("Placement", typeof(PlacementMode), typeof(Popup),
-			new PropertyMetadata<PlacementMode>(PlacementMode.Bottom, PropertyMetadataOptions.None, HandlePlacementChanged));
+        /// <summary>
+        /// Identifies the <see cref="Placement"/> property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Placement"/> dependency property.</value>
+        public static readonly DependencyProperty PlacementProperty = DependencyProperty.Register("Placement", typeof(PlacementMode), typeof(Popup),
+            new PropertyMetadata<PlacementMode>(PlacementMode.Bottom, PropertyMetadataOptions.None, HandlePlacementChanged));
 
-		/// <summary>
-		/// Identifies the <see cref="PlacementTarget"/> property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="PlacementTarget"/> dependency property.</value>
-		public static readonly DependencyProperty PlacementTargetProperty = DependencyProperty.Register("PlacementTarget", typeof(UIElement), typeof(Popup),
-			new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None, HandlePlacementTargetChanged));
+        /// <summary>
+        /// Identifies the <see cref="PlacementTarget"/> property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="PlacementTarget"/> dependency property.</value>
+        public static readonly DependencyProperty PlacementTargetProperty = DependencyProperty.Register("PlacementTarget", typeof(UIElement), typeof(Popup),
+            new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None, HandlePlacementTargetChanged));
 
-		/// <summary>
-		/// Converts the specified point in screen coordinates to popup coordinates.
-		/// </summary>
-		/// <param name="point">The point to convert.</param>
-		/// <returns>The converted point.</returns>
-		internal Point2D ScreenToPopup(Point2D point)
+        /// <summary>
+        /// Converts the specified point in screen coordinates to popup coordinates.
+        /// </summary>
+        /// <param name="point">The point to convert.</param>
+        /// <returns>The converted point.</returns>
+        internal Point2D ScreenToPopup(Point2D point)
         {
             Point2D.Transform(ref point, ref transformToViewInverse, out point);
             return point + popupTransformOrigin;

@@ -30,51 +30,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets or sets the amount that the object is translated along the x-axis.
         /// </summary>
-		/// <value>A <see cref="Double"/> value that represents the distance along the x-axis, in 
-		/// device-independent pixels, across which the transformed object is translated.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="XProperty"/></dpropField>
-		///		<dpropStylingName>x</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value>A <see cref="Double"/> value that represents the distance along the x-axis, in 
+        /// device-independent pixels, across which the transformed object is translated.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="XProperty"/></dpropField>
+        ///		<dpropStylingName>x</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Double X
         {
             get { return GetValue<Double>(XProperty); }
             set { SetValue(XProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets the amount that the object is translated along the y-axis.
-		/// </summary>
-		/// <value>A <see cref="Double"/> value that represents the distance along the y-axis, in 
-		/// device-independent pixels, across which the transformed object is translated.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="YProperty"/></dpropField>
-		///		<dpropStylingName>y</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public Double Y
+        /// <summary>
+        /// Gets or sets the amount that the object is translated along the y-axis.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the distance along the y-axis, in 
+        /// device-independent pixels, across which the transformed object is translated.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="YProperty"/></dpropField>
+        ///		<dpropStylingName>y</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double Y
         {
             get { return GetValue<Double>(YProperty); }
             set { SetValue(YProperty, value); }
         }
 
-		/// <summary>
-		/// Identifies the <see cref="X"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="X"/> dependency property.</value>
-		public static readonly DependencyProperty XProperty = DependencyProperty.Register("X", typeof(Double), typeof(TranslateTransform),
+        /// <summary>
+        /// Identifies the <see cref="X"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="X"/> dependency property.</value>
+        public static readonly DependencyProperty XProperty = DependencyProperty.Register("X", typeof(Double), typeof(TranslateTransform),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None, HandleTranslationChanged));
 
-		/// <summary>
-		/// Identifies the <see cref="Y"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="Y"/> dependency property.</value>
-		public static readonly DependencyProperty YProperty = DependencyProperty.Register("Y", typeof(Double), typeof(TranslateTransform),
+        /// <summary>
+        /// Identifies the <see cref="Y"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Y"/> dependency property.</value>
+        public static readonly DependencyProperty YProperty = DependencyProperty.Register("Y", typeof(Double), typeof(TranslateTransform),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None, HandleTranslationChanged));
 
         /// <summary>

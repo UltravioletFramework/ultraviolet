@@ -61,8 +61,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets a value indicating whether this is an identity transform.
         /// </summary>
-		/// <value><see langword="true"/> if this is an identity transform; otherwise,
-		/// <see langword="false"/>.</value>
+        /// <value><see langword="true"/> if this is an identity transform; otherwise,
+        /// <see langword="false"/>.</value>
         public abstract Boolean IsIdentity
         {
             get;

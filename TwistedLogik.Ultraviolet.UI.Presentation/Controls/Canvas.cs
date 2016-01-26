@@ -117,104 +117,104 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             element.SetValue<Double>(BottomProperty, value);
         }
 
-		/// <summary>
-		/// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Left"/> attached property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Left"/> attached property.</value>
-		/// <AttachedPropertyComments>
-		/// <summary>
-		/// Gets or sets a value indicating the distance between the left edge of an element
-		/// and the left edge of its containing <see cref="Canvas"/>.
-		/// </summary>
-		/// <value>A <see cref="Double"/> that represents the distance between the edge of the element
-		/// and its containing <see cref="Canvas"/>. The default value is <see cref="Double.NaN"/>.</value>
-		/// <remarks>
-		/// <para>If both the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Left"/> property and
-		/// the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Right"/> property are
-		/// specified (i.e., not <see cref="Double.NaN"/>), then the child element is stretched to fit the area between the offsets.</para>
-		/// <dprop>
-		///		<dpropField><see cref="LeftProperty"/></dpropField>
-		///		<dpropStylingName>left</dpropStylingName>
-		///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		/// </AttachedPropertyComments>
-		public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(Double), typeof(Canvas),
+        /// <summary>
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Left"/> attached property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Left"/> attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating the distance between the left edge of an element
+        /// and the left edge of its containing <see cref="Canvas"/>.
+        /// </summary>
+        /// <value>A <see cref="Double"/> that represents the distance between the edge of the element
+        /// and its containing <see cref="Canvas"/>. The default value is <see cref="Double.NaN"/>.</value>
+        /// <remarks>
+        /// <para>If both the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Left"/> property and
+        /// the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Right"/> property are
+        /// specified (i.e., not <see cref="Double.NaN"/>), then the child element is stretched to fit the area between the offsets.</para>
+        /// <dprop>
+        ///		<dpropField><see cref="LeftProperty"/></dpropField>
+        ///		<dpropStylingName>left</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
-		/// <summary>
-		/// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Top"/> attached property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Top"/> attached property.</value>
-		/// <AttachedPropertyComments>
-		/// <summary>
-		/// Gets or sets a value indicating the distance between the top edge of an element
-		/// and the top edge of its containing <see cref="Canvas"/>.
-		/// </summary>
-		/// <value>A <see cref="Double"/> that represents the distance between the edge of the element
-		/// and its containing <see cref="Canvas"/>. The default value is <see cref="Double.NaN"/>.</value>
-		/// <remarks>
-		/// <para>If both the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Top"/> property and
-		/// the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Bottom"/> property are
-		/// specified (i.e., not <see cref="Double.NaN"/>), then the child element is stretched to fit the area between the offsets.</para>
-		/// <dprop>
-		///		<dpropField><see cref="TopProperty"/></dpropField>
-		///		<dpropStylingName>top</dpropStylingName>
-		///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		/// </AttachedPropertyComments>
-		public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(Double), typeof(Canvas),
+        /// <summary>
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Top"/> attached property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Top"/> attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating the distance between the top edge of an element
+        /// and the top edge of its containing <see cref="Canvas"/>.
+        /// </summary>
+        /// <value>A <see cref="Double"/> that represents the distance between the edge of the element
+        /// and its containing <see cref="Canvas"/>. The default value is <see cref="Double.NaN"/>.</value>
+        /// <remarks>
+        /// <para>If both the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Top"/> property and
+        /// the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Bottom"/> property are
+        /// specified (i.e., not <see cref="Double.NaN"/>), then the child element is stretched to fit the area between the offsets.</para>
+        /// <dprop>
+        ///		<dpropField><see cref="TopProperty"/></dpropField>
+        ///		<dpropStylingName>top</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
-		/// <summary>
-		/// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Right"/> attached property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Right"/> attached property.</value>
-		/// <AttachedPropertyComments>
-		/// <summary>
-		/// Gets or sets a value indicating the distance between the right edge of an element
-		/// and the right edge of its containing <see cref="Canvas"/>.
-		/// </summary>
-		/// <value>A <see cref="Double"/> that represents the distance between the edge of the element
-		/// and its containing <see cref="Canvas"/>. The default value is <see cref="Double.NaN"/>.</value>
-		/// <remarks>
-		/// <para>If both the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Left"/> property and
-		/// the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Right"/> property are
-		/// specified (i.e., not <see cref="Double.NaN"/>), then the child element is stretched to fit the area between the offsets.</para>
-		/// <dprop>
-		///		<dpropField><see cref="RightProperty"/></dpropField>
-		///		<dpropStylingName>right</dpropStylingName>
-		///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		/// </AttachedPropertyComments>
-		public static readonly DependencyProperty RightProperty = DependencyProperty.RegisterAttached("Right", typeof(Double), typeof(Canvas),
+        /// <summary>
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Right"/> attached property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Right"/> attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating the distance between the right edge of an element
+        /// and the right edge of its containing <see cref="Canvas"/>.
+        /// </summary>
+        /// <value>A <see cref="Double"/> that represents the distance between the edge of the element
+        /// and its containing <see cref="Canvas"/>. The default value is <see cref="Double.NaN"/>.</value>
+        /// <remarks>
+        /// <para>If both the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Left"/> property and
+        /// the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Right"/> property are
+        /// specified (i.e., not <see cref="Double.NaN"/>), then the child element is stretched to fit the area between the offsets.</para>
+        /// <dprop>
+        ///		<dpropField><see cref="RightProperty"/></dpropField>
+        ///		<dpropStylingName>right</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty RightProperty = DependencyProperty.RegisterAttached("Right", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
-		/// <summary>
-		/// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Bottom"/> attached property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Bottom"/> attached property.</value>
-		/// <AttachedPropertyComments>
-		/// <summary>
-		/// Gets or sets a value indicating the distance between the bottom edge of an element
-		/// and the bottom edge of its containing <see cref="Canvas"/>.
-		/// </summary>
-		/// <value>A <see cref="Double"/> that represents the distance between the edge of the element
-		/// and its containing <see cref="Canvas"/>. The default value is <see cref="Double.NaN"/>.</value>
-		/// <remarks>
-		/// <para>If both the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Top"/> property and
-		/// the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Bottom"/> property are
-		/// specified (i.e., not <see cref="Double.NaN"/>), then the child element is stretched to fit the area between the offsets.</para>
-		/// <dprop>
-		///		<dpropField><see cref="BottomProperty"/></dpropField>
-		///		<dpropStylingName>bottom</dpropStylingName>
-		///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		/// </AttachedPropertyComments>
-		public static readonly DependencyProperty BottomProperty = DependencyProperty.RegisterAttached("Bottom", typeof(Double), typeof(Canvas),
+        /// <summary>
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Bottom"/> attached property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Bottom"/> attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating the distance between the bottom edge of an element
+        /// and the bottom edge of its containing <see cref="Canvas"/>.
+        /// </summary>
+        /// <value>A <see cref="Double"/> that represents the distance between the edge of the element
+        /// and its containing <see cref="Canvas"/>. The default value is <see cref="Double.NaN"/>.</value>
+        /// <remarks>
+        /// <para>If both the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Top"/> property and
+        /// the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Canvas.Bottom"/> property are
+        /// specified (i.e., not <see cref="Double.NaN"/>), then the child element is stretched to fit the area between the offsets.</para>
+        /// <dprop>
+        ///		<dpropField><see cref="BottomProperty"/></dpropField>
+        ///		<dpropStylingName>bottom</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty BottomProperty = DependencyProperty.RegisterAttached("Bottom", typeof(Double), typeof(Canvas),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsMeasure));
 
         /// <inheritdoc/>

@@ -5,10 +5,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
-	/// <summary>
-	/// Represents the base class for text box controls.
-	/// </summary>
-	[UvmlKnownType]
+    /// <summary>
+    /// Represents the base class for text box controls.
+    /// </summary>
+    [UvmlKnownType]
     public abstract class TextBoxBase : Control
     {
         /// <summary>
@@ -226,15 +226,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets a value indicating whether the text box will accept the return key as a normal character.
         /// </summary>
-		/// <value><see langword="true"/> if the text box will accept the RETURN key as a character;
-		/// otherwise, <see langword="false"/>. The default value is <see langword="false"/></value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="AcceptsReturnProperty"/></dpropField>
-		///		<dpropStylingName>accepts-return</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value><see langword="true"/> if the text box will accept the RETURN key as a character;
+        /// otherwise, <see langword="false"/>. The default value is <see langword="false"/></value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="AcceptsReturnProperty"/></dpropField>
+        ///		<dpropStylingName>accepts-return</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean AcceptsReturn
         {
             get { return GetValue<Boolean>(AcceptsReturnProperty); }
@@ -245,15 +245,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Gets or sets a value indicating whether the text box will accept the tab key as a normal character. If false,
         /// tab will instead be used for tab navigation.
         /// </summary>
-		/// <value><see langword="true"/> if the text box will accept the TAB key as a character;
-		/// otherwise, <see langword="false"/>. The default value is <see langword="false"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="AcceptsTabProperty"/></dpropField>
-		///		<dpropStylingName>accepts-tab</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value><see langword="true"/> if the text box will accept the TAB key as a character;
+        /// otherwise, <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="AcceptsTabProperty"/></dpropField>
+        ///		<dpropStylingName>accepts-tab</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean AcceptsTab
         {
             get { return GetValue<Boolean>(AcceptsTabProperty); }
@@ -263,34 +263,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets a <see cref="ScrollBarVisibility"/> value which specifies whether the text box's horizontal scroll bar is visible.
         /// </summary>
-		/// <value>A <see cref="ScrollBarVisibility"/> value which specifies whether the text box's horizontal scroll bar is visible.
-		/// The default value is <see cref="ScrollBarVisibility.Hidden"/>.</value>
-		/// <remarks>
-		///	<dprop>
-		///		<dpropFields><see cref="HorizontalScrollBarVisibilityProperty"/></dpropFields>
-		///		<dpropStylingName>horizontal-scroll-bar-visibility</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value>A <see cref="ScrollBarVisibility"/> value which specifies whether the text box's horizontal scroll bar is visible.
+        /// The default value is <see cref="ScrollBarVisibility.Hidden"/>.</value>
+        /// <remarks>
+        ///	<dprop>
+        ///		<dpropFields><see cref="HorizontalScrollBarVisibilityProperty"/></dpropFields>
+        ///		<dpropStylingName>horizontal-scroll-bar-visibility</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public ScrollBarVisibility HorizontalScrollBarVisibility
         {
             get { return GetValue<ScrollBarVisibility>(HorizontalScrollBarVisibilityProperty); }
             set { SetValue(HorizontalScrollBarVisibilityProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets a <see cref="ScrollBarVisibility"/> value which specifies whether the text box's vertical scroll bar is visible.
-		/// </summary>
-		/// <value>A <see cref="ScrollBarVisibility"/> value which specifies whether the text box's vertical scroll bar is visible.
-		/// The default value is <see cref="ScrollBarVisibility.Hidden"/>.</value>
-		/// <remarks>
-		///	<dprop>
-		///		<dpropFields><see cref="VerticalScrollBarVisibilityProperty"/></dpropFields>
-		///		<dpropStylingName>vertical-scroll-bar-visibility</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public ScrollBarVisibility VerticalScrollBarVisibility
+        /// <summary>
+        /// Gets or sets a <see cref="ScrollBarVisibility"/> value which specifies whether the text box's vertical scroll bar is visible.
+        /// </summary>
+        /// <value>A <see cref="ScrollBarVisibility"/> value which specifies whether the text box's vertical scroll bar is visible.
+        /// The default value is <see cref="ScrollBarVisibility.Hidden"/>.</value>
+        /// <remarks>
+        ///	<dprop>
+        ///		<dpropFields><see cref="VerticalScrollBarVisibilityProperty"/></dpropFields>
+        ///		<dpropStylingName>vertical-scroll-bar-visibility</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public ScrollBarVisibility VerticalScrollBarVisibility
         {
             get { return GetValue<ScrollBarVisibility>(VerticalScrollBarVisibilityProperty); }
             set { SetValue(VerticalScrollBarVisibilityProperty, value); }
@@ -299,15 +299,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets a value indicating whether the selection highlight is displayed when the text box does not have focus.
         /// </summary>
-		/// <value><see langword="true"/> if the selection highlight is displayed when the text box does not have focus;
-		/// otherwise, <see langword="false"/>. The default value is <see langword="false"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="IsInactiveSelectionHighlightEnabledProperty"/></dpropField>
-		///		<dpropStylingName>inactive-selection-highlight-enabled</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value><see langword="true"/> if the selection highlight is displayed when the text box does not have focus;
+        /// otherwise, <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="IsInactiveSelectionHighlightEnabledProperty"/></dpropField>
+        ///		<dpropStylingName>inactive-selection-highlight-enabled</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsInactiveSelectionHighlightEnabled
         {
             get { return GetValue<Boolean>(IsInactiveSelectionHighlightEnabledProperty); }
@@ -318,15 +318,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Gets or sets a value indicating whether this is a read-only text box. A read-only text box cannot be changed by the
         /// user, but may still be changed programmatically.
         /// </summary>
-		/// <value><see langword="true"/> if the text box cannot be edited by the user; otherwise, <see langword="false"/>.
-		/// The default value is <see langword="false"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropFields><see cref="IsReadOnlyProperty"/></dpropFields>
-		///		<dpropStylingName>read-only</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value><see langword="true"/> if the text box cannot be edited by the user; otherwise, <see langword="false"/>.
+        /// The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropFields><see cref="IsReadOnlyProperty"/></dpropFields>
+        ///		<dpropStylingName>read-only</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsReadOnly
         {
             get { return GetValue<Boolean>(IsReadOnlyProperty); }
@@ -336,15 +336,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets a value indicating whether the caret is visible when this text box is read-only.
         /// </summary>
-		/// <value><see langword="true"/> if the caret is visible when the text box is read-only; otherwise,
-		/// <see langword="false"/>. The default value is <see langword="false"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="IsReadOnlyCaretVisibleProperty"/></dpropField>
-		///		<dpropStylingName>read-only-caret-visible</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value><see langword="true"/> if the caret is visible when the text box is read-only; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="IsReadOnlyCaretVisibleProperty"/></dpropField>
+        ///		<dpropStylingName>read-only-caret-visible</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsReadOnlyCaretVisible
         {
             get { return GetValue<Boolean>(IsReadOnlyCaretVisibleProperty); }
@@ -354,15 +354,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets a value indicating whether the text box has focus and selected text.
         /// </summary>
-		/// <value><see langword="true"/> if the text box is focused and has selected text; otherwise,
-		/// <see langword="false"/>. The default value is <see langword="false"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="IsSelectionActiveProperty"/></dpropField>
-		///		<dpropStylingName>selection-active</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value><see langword="true"/> if the text box is focused and has selected text; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="IsSelectionActiveProperty"/></dpropField>
+        ///		<dpropStylingName>selection-active</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsSelectionActive
         {
             get { return GetValue<Boolean>(IsSelectionActiveProperty); }
@@ -371,8 +371,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets the horizontal offset of the text box's scroll viewer.
         /// </summary>
-		/// <value>A <see cref="Double"/> which represents the current horizontal 
-		/// offset in device-independent pixels of the text box's scroll viewer.</value>
+        /// <value>A <see cref="Double"/> which represents the current horizontal 
+        /// offset in device-independent pixels of the text box's scroll viewer.</value>
         public Double HorizontalOffset
         {
             get
@@ -385,8 +385,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets the vertical offset of the text box's scroll viewer.
         /// </summary>
-		/// <value>A <see cref="Double"/> which represents the current vertical
-		/// offset in device-independent pixels of the text box's scroll viewer.</value>
+        /// <value>A <see cref="Double"/> which represents the current vertical
+        /// offset in device-independent pixels of the text box's scroll viewer.</value>
         public Double VerticalOffset
         {
             get
@@ -399,8 +399,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets the width of the content which is being displayed by the text box's scroll viewer.
         /// </summary>
-		/// <value>A <see cref="Double"/> which represents the width in device-independent pixels of 
-		/// the content which is being displayed by the text box's scroll viewer.</value>
+        /// <value>A <see cref="Double"/> which represents the width in device-independent pixels of 
+        /// the content which is being displayed by the text box's scroll viewer.</value>
         public Double ExtentWidth
         {
             get
@@ -413,8 +413,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets the height of the content which is being displayed by the text box's scroll viewer.
         /// </summary>
-		/// <value>A <see cref="Double"/> which represents the height in device-independent pixels of
-		/// the content which is being displayed by the text box's scroll viewer.</value>
+        /// <value>A <see cref="Double"/> which represents the height in device-independent pixels of
+        /// the content which is being displayed by the text box's scroll viewer.</value>
         public Double ExtentHeight
         {
             get
@@ -427,8 +427,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets the width of the text box's scrollable viewport.
         /// </summary>
-		/// <value>A <see cref="Double"/> which represents the width in device-independent pixels
-		/// of the text box's scrollable viewport.</value>
+        /// <value>A <see cref="Double"/> which represents the width in device-independent pixels
+        /// of the text box's scrollable viewport.</value>
         public Double ViewportWidth
         {
             get
@@ -441,8 +441,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets the height of the text box's scrollable viewport.
         /// </summary>
-		/// <value>A <see cref="Double"/> which represents the height in device-independent pixels
-		/// of the text box's scrollable viewport.</value>
+        /// <value>A <see cref="Double"/> which represents the height in device-independent pixels
+        /// of the text box's scrollable viewport.</value>
         public Double ViewportHeight
         {
             get
@@ -455,14 +455,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the selected text is changed.
         /// </summary>
-		/// <remarks>
-		/// <revt>
-		///		<revtField><see cref="SelectionChangedEvent"/></revtField>
-		///		<revtStylingName>selection-changed</revtStylingName>
-		///		<revtStrategy>Bubbling</revtStrategy>
-		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
-		/// </revt>
-		/// </remarks>
+        /// <remarks>
+        /// <revt>
+        ///		<revtField><see cref="SelectionChangedEvent"/></revtField>
+        ///		<revtStylingName>selection-changed</revtStylingName>
+        ///		<revtStrategy>Bubbling</revtStrategy>
+        ///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
         public event UpfRoutedEventHandler SelectionChanged
         {
             add { AddHandler(SelectionChangedEvent, value); }
@@ -472,92 +472,92 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Occurs when the text box's text changes.
         /// </summary>
-		/// <remarks>
-		/// <revt>
-		///		<revtField><see cref="TextChangedEvent"/></revtField>
-		///		<revtStylingName>text-changed</revtStylingName>
-		///		<revtStrategy>Bubbling</revtStrategy>
-		///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
-		/// </revt>
-		/// </remarks>
+        /// <remarks>
+        /// <revt>
+        ///		<revtField><see cref="TextChangedEvent"/></revtField>
+        ///		<revtStylingName>text-changed</revtStylingName>
+        ///		<revtStrategy>Bubbling</revtStrategy>
+        ///		<revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
         public event UpfRoutedEventHandler TextChanged
         {
             add { AddHandler(TextChangedEvent, value); }
             remove { RemoveHandler(TextChangedEvent, value); }
         }
 
-		/// <summary>
-		/// Identifies the <see cref="AcceptsReturn"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="AcceptsReturn"/> dependency property.</value>
-		public static readonly DependencyProperty AcceptsReturnProperty = KeyboardNavigation.AcceptsReturnProperty.AddOwner(typeof(TextBoxBase));
+        /// <summary>
+        /// Identifies the <see cref="AcceptsReturn"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="AcceptsReturn"/> dependency property.</value>
+        public static readonly DependencyProperty AcceptsReturnProperty = KeyboardNavigation.AcceptsReturnProperty.AddOwner(typeof(TextBoxBase));
 
-		/// <summary>
-		/// Identifies the <see cref="AcceptsTab"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="AcceptsTab"/> dependency property.</value>
-		public static readonly DependencyProperty AcceptsTabProperty = DependencyProperty.Register("AcceptsTab", typeof(Boolean), typeof(TextBoxBase),
+        /// <summary>
+        /// Identifies the <see cref="AcceptsTab"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="AcceptsTab"/> dependency property.</value>
+        public static readonly DependencyProperty AcceptsTabProperty = DependencyProperty.Register("AcceptsTab", typeof(Boolean), typeof(TextBoxBase),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
-		/// <summary>
-		/// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="HorizontalScrollBarVisibility"/> dependency property.</value>
-		public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextBoxBase),
+        /// <summary>
+        /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="HorizontalScrollBarVisibility"/> dependency property.</value>
+        public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextBoxBase),
             new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, PropertyMetadataOptions.None));
 
-		/// <summary>
-		/// Identifies the <see cref="VerticalScrollBarVisibility"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="VerticalScrollBarVisibility"/> dependency property.</value>
-		public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextBoxBase),
+        /// <summary>
+        /// Identifies the <see cref="VerticalScrollBarVisibility"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="VerticalScrollBarVisibility"/> dependency property.</value>
+        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(TextBoxBase),
             new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, PropertyMetadataOptions.None));
 
-		/// <summary>
-		/// Identifies the <see cref="IsInactiveSelectionHighlightEnabled"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="IsInactiveSelectionHighlightEnabled"/> dependency property.</value>
-		public static readonly DependencyProperty IsInactiveSelectionHighlightEnabledProperty = DependencyProperty.Register("IsInactiveSelectionHighlightEnabled", typeof(Boolean), typeof(TextBoxBase),
+        /// <summary>
+        /// Identifies the <see cref="IsInactiveSelectionHighlightEnabled"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsInactiveSelectionHighlightEnabled"/> dependency property.</value>
+        public static readonly DependencyProperty IsInactiveSelectionHighlightEnabledProperty = DependencyProperty.Register("IsInactiveSelectionHighlightEnabled", typeof(Boolean), typeof(TextBoxBase),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
-		/// <summary>
-		/// Identifies the <see cref="IsReadOnly"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="IsReadOnly"/> dependency property.</value>
-		public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(Boolean), typeof(TextBoxBase),
+        /// <summary>
+        /// Identifies the <see cref="IsReadOnly"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsReadOnly"/> dependency property.</value>
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(Boolean), typeof(TextBoxBase),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
-		/// <summary>
-		/// Identifies the <see cref="IsReadOnlyCaretVisible"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="IsReadOnlyCaretVisible"/> dependency property.</value>
-		public static readonly DependencyProperty IsReadOnlyCaretVisibleProperty = DependencyProperty.Register("IsReadOnlyCaretVisibleProperty", typeof(Boolean), typeof(TextBoxBase),
+        /// <summary>
+        /// Identifies the <see cref="IsReadOnlyCaretVisible"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsReadOnlyCaretVisible"/> dependency property.</value>
+        public static readonly DependencyProperty IsReadOnlyCaretVisibleProperty = DependencyProperty.Register("IsReadOnlyCaretVisibleProperty", typeof(Boolean), typeof(TextBoxBase),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
-		/// <summary>
-		/// The private access key for the <see cref="IsSelectionActive"/> read-only dependency property.
-		/// </summary>
-		internal static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(TextBoxBase),
+        /// <summary>
+        /// The private access key for the <see cref="IsSelectionActive"/> read-only dependency property.
+        /// </summary>
+        internal static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterReadOnly("IsSelectionActive", typeof(Boolean), typeof(TextBoxBase),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
-		/// <summary>
-		/// Identifies the <see cref="IsSelectionActive"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="IsSelectionActive"/> dependency property.</value>
-		public static readonly DependencyProperty IsSelectionActiveProperty = IsSelectionActivePropertyKey.DependencyProperty;
+        /// <summary>
+        /// Identifies the <see cref="IsSelectionActive"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsSelectionActive"/> dependency property.</value>
+        public static readonly DependencyProperty IsSelectionActiveProperty = IsSelectionActivePropertyKey.DependencyProperty;
 
-		/// <summary>
-		/// Identifies the <see cref="SelectionChanged"/> routed event.
-		/// </summary>
-		/// <value>The identifier for the <see cref="SelectionChanged"/> routed event.</value>
-		public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged",
+        /// <summary>
+        /// Identifies the <see cref="SelectionChanged"/> routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="SelectionChanged"/> routed event.</value>
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged",
             RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(TextBoxBase));
 
-		/// <summary>
-		/// Identifies the <see cref="TextChanged"/> routed event.
-		/// </summary>
-		/// <value>The identifier for the <see cref="TextChanged"/> routed event.</value>
-		public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent("TextChanged",
+        /// <summary>
+        /// Identifies the <see cref="TextChanged"/> routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TextChanged"/> routed event.</value>
+        public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent("TextChanged",
             RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(TextBoxBase));
 
         /// <summary>

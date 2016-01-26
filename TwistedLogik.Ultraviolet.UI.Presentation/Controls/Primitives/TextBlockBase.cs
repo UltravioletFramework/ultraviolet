@@ -3,10 +3,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
-	/// <summary>
-	/// Represents the base class for text blocks.
-	/// </summary>
-	[UvmlKnownType]
+    /// <summary>
+    /// Represents the base class for text blocks.
+    /// </summary>
+    [UvmlKnownType]
     public abstract class TextBlockBase : TextElement
     {
         /// <summary>
@@ -23,34 +23,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the horizontal alignment of the label's content.
         /// </summary>
-		/// <value>A <see cref="HorizontalAlignment"/> value which specifies the horizontal alignment of
-		/// the label's text. The default value is <see cref="HorizontalAlignment.Left"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="HorizontalContentAlignmentProperty"/></dpropField>
-		///		<dpropStylingName>content-halign</dpropStylingName>
-		///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value>A <see cref="HorizontalAlignment"/> value which specifies the horizontal alignment of
+        /// the label's text. The default value is <see cref="HorizontalAlignment.Left"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="HorizontalContentAlignmentProperty"/></dpropField>
+        ///		<dpropStylingName>content-halign</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public HorizontalAlignment HorizontalContentAlignment
         {
             get { return GetValue<HorizontalAlignment>(HorizontalContentAlignmentProperty); }
             set { SetValue(HorizontalContentAlignmentProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets the vertical alignment of the label's content.
-		/// </summary>
-		/// <value>A <see cref="VerticalAlignment"/> value which specifies the vertical alignment of
-		/// the label's text. The default value is <see cref="VerticalAlignment.Top"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="VerticalContentAlignmentProperty"/></dpropField>
-		///		<dpropStylingName>content-valign</dpropStylingName>
-		///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public VerticalAlignment VerticalContentAlignment
+        /// <summary>
+        /// Gets or sets the vertical alignment of the label's content.
+        /// </summary>
+        /// <value>A <see cref="VerticalAlignment"/> value which specifies the vertical alignment of
+        /// the label's text. The default value is <see cref="VerticalAlignment.Top"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="VerticalContentAlignmentProperty"/></dpropField>
+        ///		<dpropStylingName>content-valign</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public VerticalAlignment VerticalContentAlignment
         {
             get { return GetValue<VerticalAlignment>(VerticalContentAlignmentProperty); }
             set { SetValue(VerticalContentAlignmentProperty, value); }
@@ -65,19 +65,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Occurs when the value of the <see cref="VerticalContentAlignment"/> property changes.
         /// </summary>
         public event UpfEventHandler VerticalContentAlignmentChanged;
-		
-		/// <summary>
-		/// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="HorizontalContentAlignment"/> dependency property.</value>
-		public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", "content-halign",
+        
+        /// <summary>
+        /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="HorizontalContentAlignment"/> dependency property.</value>
+        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", "content-halign",
             typeof(HorizontalAlignment), typeof(TextBlockBase), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange, HandleHorizontalContentAlignmentChanged));
 
-		/// <summary>
-		/// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="VerticalContentAlignment"/> dependency property.</value>
-		public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", "content-valign",
+        /// <summary>
+        /// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="VerticalContentAlignment"/> dependency property.</value>
+        public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", "content-valign",
             typeof(VerticalAlignment), typeof(TextBlockBase), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange, HandleVerticalContentAlignmentChanged));
 
         /// <summary>
