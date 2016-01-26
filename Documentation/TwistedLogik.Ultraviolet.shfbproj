@@ -14,7 +14,7 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
-    <OutputPath>.\Help\</OutputPath>
+    <OutputPath>Help\</OutputPath>
     <HtmlHelpName>Ultraviolet</HtmlHelpName>
     <Language>en-US</Language>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
@@ -66,12 +66,13 @@
       <Argument Key="maxVersionParts" Value="" />
       <Argument Key="defaultLanguage" Value="cs" />
     </TransformComponentArguments>
-    <PlugInConfigurations />
-    <DependencyPropertyTypeName>TwistedLogik.Ultraviolet.UI.Presentation.DependencyProperty</DependencyPropertyTypeName>
-    <DependencyPropertySuffix>Property</DependencyPropertySuffix>
-    <RoutedEventTypeName>TwistedLogik.Ultraviolet.UI.Presentation.RoutedEvent</RoutedEventTypeName>
-    <RoutedEventSuffix>Event</RoutedEventSuffix>
+    <PlugInConfigurations>
+      <PlugInConfig id="UPF Dependency Object Support" enabled="True">
+        <configuration />
+      </PlugInConfig>
+    </PlugInConfigurations>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
+    <ComponentPath>Plugins\</ComponentPath>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
