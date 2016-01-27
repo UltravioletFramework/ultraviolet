@@ -14,6 +14,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var upf = uv.GetUI().GetPresentationFoundation();
             upf.BindingExpressionCompilerAssemblyName = config.BindingExpressionCompilerAssembly;
-		}
+        }
     }
 }

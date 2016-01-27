@@ -14,10 +14,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
-	/// <summary>
-	/// Contains methods for loading UI elements from UVML.
-	/// </summary>
-	internal static partial class UvmlLoader
+    /// <summary>
+    /// Contains methods for loading UI elements from UVML.
+    /// </summary>
+    internal static partial class UvmlLoader
     {
         /// <summary>
         /// Initializes the <see cref="UvmlLoader"/> type.
@@ -75,9 +75,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 view.SetViewModel(viewModel);
             }
 
-			var cultureRequested = (String)uiPanelDefinition.RootElement.Attribute("Culture");
-			var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? String.Empty);
-			var context = InstantiationContext.FromView(uv, view, viewModelType, cultureInfo);
+            var cultureRequested = (String)uiPanelDefinition.RootElement.Attribute("Culture");
+            var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? String.Empty);
+            var context = InstantiationContext.FromView(uv, view, viewModelType, cultureInfo);
 
             var root = view.LayoutRoot;
             root.BeginInit();
@@ -116,8 +116,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var uv = control.Ultraviolet;
-			var cultureRequested = (String)template.Root.Attribute("Culture");
-			var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? String.Empty);
+            var cultureRequested = (String)template.Root.Attribute("Culture");
+            var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? String.Empty);
             var context = InstantiationContext.FromControl(uv, control, cultureInfo);
 
             control.ComponentTemplateNamescope.Clear();

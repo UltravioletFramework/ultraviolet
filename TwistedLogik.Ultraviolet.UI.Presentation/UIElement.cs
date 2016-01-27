@@ -205,7 +205,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     if (parentPopup != null)
                     {
                         var transformMatrix = parentPopup.PopupTransformToViewInDevicePixels;
-						var transformIsNotIdentity = !transformMatrix.Equals(Matrix.Identity);
+                        var transformIsNotIdentity = !transformMatrix.Equals(Matrix.Identity);
                         if (transformIsNotIdentity)
                         {
                             dc.End();

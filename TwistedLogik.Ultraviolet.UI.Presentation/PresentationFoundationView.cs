@@ -17,10 +17,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
-	/// <summary>
-	/// Represents the top-level container for UI elements.
-	/// </summary>
-	public sealed class PresentationFoundationView : UIView
+    /// <summary>
+    /// Represents the top-level container for UI elements.
+    /// </summary>
+    public sealed class PresentationFoundationView : UIView
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PresentationFoundationView"/> class.
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.viewModelWrapperName = viewModelType.Name;
 
-			this.combinedStyleSheet = new UvssDocument(null, null);
+            this.combinedStyleSheet = new UvssDocument(null, null);
 
             this.namescope = new Namescope();
             this.resources = new PresentationFoundationViewResources(this);
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             HookTouchEvents();
             HookGamePadEvents();
 
-			SetStyleSheet(null);
+            SetStyleSheet(null);
         }
 
         /// <summary>
@@ -1083,8 +1083,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void UpdateCombinedStyleSheet()
         {
-			if (this.combinedStyleSheet != null)
-				this.combinedStyleSheet.Clear();
+            if (this.combinedStyleSheet != null)
+                this.combinedStyleSheet.Clear();
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             if (upf.GlobalStyleSheet != null)

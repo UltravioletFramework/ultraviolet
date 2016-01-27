@@ -8,7 +8,7 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
-	partial class UvmlLoader
+    partial class UvmlLoader
     {
         /// <summary>
         /// Represents a context within which the view loader instantiates new controls.
@@ -17,38 +17,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// determines how expressions are bound, and tracks scoped data like the current templated parent.</remarks>
         private class InstantiationContext
         {
-			/// <summary>
-			/// Initializes a new instance of the <see cref="InstantiationContext"/> class.
-			/// </summary>
-			/// <param name="uv">The Ultraviolet context.</param>
-			/// <param name="dataSource">The data source for the current scope.</param>
-			/// <param name="dataSourceType">The type of the data source for the current scope.</param>
-			/// <param name="culture">The culture used to parse UVML values.</param>
-			private InstantiationContext(UltravioletContext uv, Object dataSource, Type dataSourceType, CultureInfo culture)
+            /// <summary>
+            /// Initializes a new instance of the <see cref="InstantiationContext"/> class.
+            /// </summary>
+            /// <param name="uv">The Ultraviolet context.</param>
+            /// <param name="dataSource">The data source for the current scope.</param>
+            /// <param name="dataSourceType">The type of the data source for the current scope.</param>
+            /// <param name="culture">The culture used to parse UVML values.</param>
+            private InstantiationContext(UltravioletContext uv, Object dataSource, Type dataSourceType, CultureInfo culture)
             {
                 this.Ultraviolet = uv;
                 this.Namescope = new Namescope();
                 this.DataSource = dataSource;
                 this.DataSourceType = dataSourceType;
-				this.Culture = culture;
+                this.Culture = culture;
 
                 FindCompiledBindingExpressions();
             }
 
-			/// <summary>
-			/// Creates an instantiation context for a view.
-			/// </summary>
-			/// <param name="uv">The Ultraviolet context.</param>
-			/// <param name="view">The view which is being loaded.</param>
-			/// <param name="viewModelType">The view model type for the view which is being loaded.</param>
-			/// <param name="culture">The culture used to parse UVML values.</param>
-			/// <returns>The instantiation context for the specified view.</returns>
-			public static InstantiationContext FromView(UltravioletContext uv,
-				PresentationFoundationView view, Type viewModelType, CultureInfo culture)
-			{
-				Contract.Require(culture, nameof(culture));
+            /// <summary>
+            /// Creates an instantiation context for a view.
+            /// </summary>
+            /// <param name="uv">The Ultraviolet context.</param>
+            /// <param name="view">The view which is being loaded.</param>
+            /// <param name="viewModelType">The view model type for the view which is being loaded.</param>
+            /// <param name="culture">The culture used to parse UVML values.</param>
+            /// <returns>The instantiation context for the specified view.</returns>
+            public static InstantiationContext FromView(UltravioletContext uv,
+                PresentationFoundationView view, Type viewModelType, CultureInfo culture)
+            {
+                Contract.Require(culture, nameof(culture));
 
-				return new InstantiationContext(uv, view, viewModelType, culture);
+                return new InstantiationContext(uv, view, viewModelType, culture);
             }
 
             /// <summary>
@@ -56,14 +56,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// </summary>
             /// <param name="uv">The Ultraviolet context.</param>
             /// <param name="control">The control which is being loaded.</param>
-			/// <param name="culture">The culture used to parse UVML values.</param>
+            /// <param name="culture">The culture used to parse UVML values.</param>
             /// <returns>The instantiation context for the specified control.</returns>
             public static InstantiationContext FromControl(UltravioletContext uv, 
-				Control control, CultureInfo culture)
-			{
-				Contract.Require(culture, nameof(culture));
+                Control control, CultureInfo culture)
+            {
+                Contract.Require(culture, nameof(culture));
 
-				var wrapper = PresentationFoundation.GetDataSourceWrapper(control);
+                var wrapper = PresentationFoundation.GetDataSourceWrapper(control);
                 return new InstantiationContext(uv, control, wrapper.GetType(), culture);
             }            
             
@@ -130,14 +130,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 private set;
             }
 
-			/// <summary>
-			/// Gets the culture which is used to parse UVML values.
-			/// </summary>
-			public CultureInfo Culture
-			{
-				get;
-				private set;
-			}
+            /// <summary>
+            /// Gets the culture which is used to parse UVML values.
+            /// </summary>
+            public CultureInfo Culture
+            {
+                get;
+                private set;
+            }
 
             /// <summary>
             /// Finds all of the compiled binding expressions on the current view model and adds them to the context's registry.
