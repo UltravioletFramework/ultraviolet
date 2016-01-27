@@ -160,38 +160,141 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Identifies the AcceptsReturn attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.AcceptsReturn"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.AcceptsReturn"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating whether the element accepts the Return character.
+        /// </summary>
+        /// <value><see langword="true"/> if the element accepts the Return character; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="AcceptsReturnProperty"/></dpropField>
+        ///     <dpropStylingName>accepts-return</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty AcceptsReturnProperty = DependencyProperty.RegisterAttached("AcceptsReturn", typeof(Boolean), typeof(KeyboardNavigation),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the IsTabStop attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.IsTabStop"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.IsTabStop"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating whether the element is a tab stop.
+        /// </summary>
+        /// <value><see langword="true"/> if the element is a tab stop character; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="true"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsTabStopProperty"/></dpropField>
+        ///     <dpropStylingName>tab-stop</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty IsTabStopProperty = DependencyProperty.RegisterAttached("IsTabStop", typeof(Boolean), typeof(KeyboardNavigation),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the TabIndex attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.TabIndex"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.TabIndex"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the element's tab index.
+        /// </summary>
+        /// <value>A <see cref="Int32"/> value which represents the element's position within its
+        /// container's tab navigation order. The default value is <see cref="Int32.MaxValue"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TabIndexProperty"/></dpropField>
+        ///     <dpropStylingName>tab-index</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty TabIndexProperty = DependencyProperty.RegisterAttached("TabIndex", typeof(Int32), typeof(KeyboardNavigation),
             new PropertyMetadata<Int32>(Int32.MaxValue, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the TabNavigation attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.TabNavigation"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.TabNavigation"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the element's TAB navigation mode.
+        /// </summary>
+        /// <value>A <see cref="KeyboardNavigationMode"/> value which represents the element's 
+        /// behavior when navigating by pressing the TAB key. The default value is <see cref="KeyboardNavigationMode.Continue"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TabNavigationProperty"/></dpropField>
+        ///     <dpropStylingName>tab-navigation</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty TabNavigationProperty = DependencyProperty.RegisterAttached("TabNavigation", typeof(KeyboardNavigationMode), typeof(KeyboardNavigation),
             new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Continue, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the ControlNavigation attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.ControlTabNavigation"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.ControlTabNavigation"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the element's CTRL+TAB navigation mode.
+        /// </summary>
+        /// <value>A <see cref="KeyboardNavigationMode"/> value which represents the element's 
+        /// behavior when navigating by pressing the CTRL+TAB keys. The default value is <see cref="KeyboardNavigationMode.Continue"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ControlTabNavigationProperty"/></dpropField>
+        ///     <dpropStylingName>control-tab-navigation</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty ControlTabNavigationProperty = DependencyProperty.RegisterAttached("ControlTabNavigation", typeof(KeyboardNavigationMode), typeof(KeyboardNavigation),
             new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Continue, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the DirectionalNavigation attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.DirectionalNavigation"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.DirectionalNavigation"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the element's directional navigation mode.
+        /// </summary>
+        /// <value>A <see cref="KeyboardNavigationMode"/> value which represents the element's 
+        /// behavior when navigating by pressing one of the directional keys. The default value is 
+        /// <see cref="KeyboardNavigationMode.Continue"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="DirectionalNavigationProperty"/></dpropField>
+        ///     <dpropStylingName>directional-navigation</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty DirectionalNavigationProperty = DependencyProperty.RegisterAttached("DirectionalNavigation", typeof(KeyboardNavigationMode), typeof(KeyboardNavigation),
             new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Continue, PropertyMetadataOptions.None));        
     }
