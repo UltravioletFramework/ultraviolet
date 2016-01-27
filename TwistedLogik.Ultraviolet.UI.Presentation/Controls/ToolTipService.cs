@@ -322,7 +322,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Adds a handler for the ToolTipOpening attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -334,7 +335,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Adds a handler for the ToolTipClosing attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -346,7 +348,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Removes a handler for the ToolTipOpening attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -358,7 +361,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Removes a handler for the ToolTipClosing attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>

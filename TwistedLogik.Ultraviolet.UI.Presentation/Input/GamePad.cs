@@ -78,7 +78,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -91,7 +92,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -104,7 +106,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisUp"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisUp"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -117,7 +120,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonDown"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonDown"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -130,7 +134,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonUp"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonUp"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -143,7 +148,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisChanged"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisChanged"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -156,7 +162,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisDown"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisDown"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -169,7 +176,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisUp"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisUp"/>
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -182,7 +190,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonDown"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonDown"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -195,7 +204,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonUp"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonUp"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -208,7 +218,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/> attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -249,7 +260,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonDown"/> attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonDown"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -262,7 +274,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonUp"/> attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonUp"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -275,7 +288,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisChanged"/> attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisChanged"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -316,7 +330,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonDown"/> attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonDown"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -329,7 +344,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonUp"/> attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonUp"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -352,7 +368,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Gets or sets the axis which is used to perform left/right directional navigation if <see cref="UseAxisForDirectionalNavigation"/> is <c>true</c>.
+        /// Gets or sets the axis which is used to perform left/right directional navigation if
+        /// <see cref="UseAxisForDirectionalNavigation"/> is <c>true</c>.
         /// </summary>
         public static GamePadAxis DirectionalNavigationAxisX
         {
@@ -361,7 +378,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Gets or sets the axis which is used to perform up/down directional navigation if <see cref="UseAxisForDirectionalNavigation"/> is <c>true</c>.
+        /// Gets or sets the axis which is used to perform up/down directional navigation if
+        /// <see cref="UseAxisForDirectionalNavigation"/> is <c>true</c>.
         /// </summary>
         public static GamePadAxis DirectionalNavigationAxisY
         {
