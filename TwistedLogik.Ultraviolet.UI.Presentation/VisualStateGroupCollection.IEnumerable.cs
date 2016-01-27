@@ -6,7 +6,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     partial class VisualStateGroupCollection
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>A <see cref="Dictionary{TKey, TValue}.Enumerator"/> that iterates through the collection.</returns>
         public Dictionary<String, VisualStateGroup>.Enumerator GetEnumerator()
         {
             return groups.GetEnumerator();

@@ -5,7 +5,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
     public partial class VisualCollection : IList<Visual>
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>A <see cref="List{T}.Enumerator"/> that iterates through the collection.</returns>
         public List<Visual>.Enumerator GetEnumerator()
         {
             return storage.GetEnumerator();

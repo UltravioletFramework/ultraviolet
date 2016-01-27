@@ -8,7 +8,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     partial class UIElementCollection
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>A <see cref="List{T}.Enumerator"/> that iterates through the collection.</returns>
         public GenericEnumerator<UIElement> GetEnumerator()
         {
             return new GenericEnumerator<UIElement>(visualChildren,

@@ -5,7 +5,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     partial class UvssStoryboardAnimationCollection
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>A <see cref="List{T}.Enumerator"/> that iterates through the collection.</returns>
         public List<UvssStoryboardAnimation>.Enumerator GetEnumerator()
         {
             return animations.GetEnumerator();

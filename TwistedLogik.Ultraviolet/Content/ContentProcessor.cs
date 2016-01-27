@@ -30,19 +30,38 @@ namespace TwistedLogik.Ultraviolet.Content
             return Process(manager, metadata, (Input)input);
         }
 
-        /// <inheritdoc/>
-        public virtual void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, Input obj, Boolean delete)
+        /// <summary>
+        /// Exports an asset to a preprocessed binary stream.
+        /// </summary>
+        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="metadata">The asset's metadata.</param>
+        /// <param name="writer">A writer on the stream to which to export the asset.</param>
+        /// <param name="input">The asset to export to the stream.</param>
+        /// <param name="delete">A value indicating whether the original file will be deleted after preprocessing is complete.</param>
+        public virtual void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, Input input, Boolean delete)
         {
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Imports an asset from the specified preprocessed binary stream.
+        /// </summary>
+        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="metadata">The asset's metadata.</param>
+        /// <param name="reader">A reader on the stream that contains the asset to import.</param>
+        /// <returns>The asset that was imported from the stream.</returns>
         public virtual Output ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Processes the specified data structure into a game asset.
+        /// </summary>
+        /// <param name="manager">The content manager with which the asset is being processed.</param>
+        /// <param name="metadata">The asset's metadata.</param>
+        /// <param name="input">The input data structure to process.</param>
+        /// <returns>The game asset that was created.</returns>
         public abstract Output Process(ContentManager manager, IContentProcessorMetadata metadata, Input input);
 
         /// <inheritdoc/>

@@ -2,10 +2,10 @@
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-	/// <summary>
-	/// Represents a trigger which fires when a collection of dependency properties are set to certain values.
-	/// </summary>
-	public sealed partial class UvssPropertyTrigger : UvssTrigger, IDependencyPropertyChangeNotificationSubscriber
+    /// <summary>
+    /// Represents a trigger which fires when a collection of dependency properties are set to certain values.
+    /// </summary>
+    public sealed partial class UvssPropertyTrigger : UvssTrigger, IDependencyPropertyChangeNotificationSubscriber
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssPropertyTrigger"/> class.

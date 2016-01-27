@@ -84,7 +84,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             set { SetValue(ContentSourceProperty, value); }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets the distance in device-independent pixels by which the presenter's content is offset.
+        /// </summary>
+        /// <value>A <see cref="Size2D"/> that represents the distance in device-independent pixels
+        /// by which the presenter's content is offset along both axes. The default value is
+        /// <see cref="Size2D.Zero"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ContentOffsetProperty"/></dpropField>
+        ///     <dpropStylingName>content-offset</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Size2D ContentOffset
         {
             get { return GetValue<Size2D>(ContentOffsetProperty); }

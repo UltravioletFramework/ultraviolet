@@ -5,7 +5,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
     partial class UvssRuleCollection
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>A <see cref="List{T}.Enumerator"/> that iterates through the collection.</returns>
         public List<UvssRule>.Enumerator GetEnumerator()
         {
             return rules.GetEnumerator();

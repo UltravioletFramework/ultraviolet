@@ -10,42 +10,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsKeyboardFocused
         {
             get { return GetValue<Boolean>(IsKeyboardFocusedProperty); }
-            internal set { SetValue<Boolean>(IsKeyboardFocusedPropertyKey, value); }
+            internal set { SetValue(IsKeyboardFocusedPropertyKey, value); }
         }
 
         /// <inheritdoc/>
         public Boolean IsKeyboardFocusWithin
         {
             get { return GetValue<Boolean>(IsKeyboardFocusWithinProperty); }
-            internal set { SetValue<Boolean>(IsKeyboardFocusWithinPropertyKey, value); }
+            internal set { SetValue(IsKeyboardFocusWithinPropertyKey, value); }
         }
 
         /// <inheritdoc/>
         public Boolean IsMouseCaptured
         {
             get { return GetValue<Boolean>(IsMouseCapturedProperty); }
-            internal set { SetValue<Boolean>(IsMouseCapturedPropertyKey, value); }
+            internal set { SetValue(IsMouseCapturedPropertyKey, value); }
         }
 
         /// <inheritdoc/>
         public Boolean IsMouseCaptureWithin
         {
             get { return GetValue<Boolean>(IsMouseCaptureWithinProperty); }
-            internal set { SetValue<Boolean>(IsMouseCaptureWithinPropertyKey, value); }
+            internal set { SetValue(IsMouseCaptureWithinPropertyKey, value); }
         }
 
         /// <inheritdoc/>
         public Boolean IsMouseOver
         {
             get { return GetValue<Boolean>(IsMouseOverProperty); }
-            internal set { SetValue<Boolean>(IsMouseOverPropertyKey, value); }
+            internal set { SetValue(IsMouseOverPropertyKey, value); }
         }
 
         /// <inheritdoc/>
         public Boolean IsMouseDirectlyOver
         {
             get { return GetValue<Boolean>(IsMouseDirectlyOverProperty); }
-            internal set { SetValue<Boolean>(IsMouseDirectlyOverPropertyKey, value); }
+            internal set { SetValue(IsMouseDirectlyOverPropertyKey, value); }
         }
 
         /// <summary>

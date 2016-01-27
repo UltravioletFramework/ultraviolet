@@ -5,7 +5,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
     partial class StoryboardTargetAnimationCollection
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>A <see cref="Dictionary{TKey, TValue}.Enumerator"/> that iterates through the collection.</returns>
         public Dictionary<StoryboardTargetAnimationKey, AnimationBase>.Enumerator GetEnumerator()
         {
             return animations.GetEnumerator();

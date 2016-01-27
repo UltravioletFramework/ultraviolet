@@ -94,6 +94,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         event UpfKeyboardEventHandler PreviewTextInput;
 
         /// <summary>
+        /// Occurs when the element receives text editing information from the keyboard.
+        /// </summary>
+        event UpfKeyboardEventHandler PreviewTextEditing;
+
+        /// <summary>
         /// Occurs when a key is pressed while the element has focus.
         /// </summary>
         event UpfKeyDownEventHandler PreviewKeyDown;
@@ -107,6 +112,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the element receives text input from the keyboard.
         /// </summary>
         event UpfKeyboardEventHandler TextInput;
+
+        /// <summary>
+        /// Occurs when the element receives text editing information from the keyboard.
+        /// </summary>
+        event UpfKeyboardEventHandler TextEditing;
 
         /// <summary>
         /// Occurs when a key is pressed while the element has focus.

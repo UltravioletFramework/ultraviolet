@@ -14,7 +14,10 @@ namespace TwistedLogik.Ultraviolet.Platform
             get { return null; }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>A <see cref="List{T}.Enumerator"/> that iterates through the collection.</returns>
         public List<IUltravioletDisplay>.Enumerator GetEnumerator()
         {
             return displays.GetEnumerator();

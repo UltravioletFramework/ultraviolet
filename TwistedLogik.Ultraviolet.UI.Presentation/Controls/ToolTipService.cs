@@ -482,13 +482,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.IsEnabled"/> attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowDuration"/>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.IsEnabled"/>
         /// attached property.</value>
         /// <summary>
         /// Gets or sets a value indicating whether a tool tip is displayed for the element.
         /// </summary>
         /// <value><see langword="true"/> if a tool tip is displayed for the element; otherwise,
         /// <see langword="false"/>. The default value is <see langword="true"/>.</value>
+        /// <remarks>
         /// <dprop>
         ///     <dpropField><see cref="IsEnabledProperty"/></dpropField>
         ///     <dpropStylingName>enabled</dpropStylingName>
