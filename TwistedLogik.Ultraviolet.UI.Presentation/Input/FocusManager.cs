@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the GotFocus attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.GotFocus"/> attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -103,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the LostFocus attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.LostFocus"/> attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -116,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the GotFocus attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.GotFocus"/> attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -129,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the LostFocus attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.LostFocus"/> attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -142,26 +142,78 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Identifies the FocusedElement attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.FocusedElement"/> attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.FocusedElement"/> attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the element with logical focus within its focus scope.
+        /// </summary>
+        /// <value>The <see cref="IInputElement"/> that currently has logical focus within the focus scope. The
+        /// default value is <see langword="null"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="FocusedElementProperty"/></dpropField>
+        ///     <dpropStylingName>focused-element</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty FocusedElementProperty = DependencyProperty.RegisterAttached("FocusedElement", typeof(IInputElement), typeof(FocusManager),
             new PropertyMetadata<IInputElement>(null, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the IsFocusScope attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.IsFocusScope"/> attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.IsFocusScope"/> attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating whether the specified element is a focus scope.
+        /// </summary>
+        /// <value><see langword="true"/> if the element is a focus scope; otherwise, <see langword="false"/>. The default
+        /// value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsFocusScopeProperty"/></dpropField>
+        ///     <dpropStylingName>focus-scope</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty IsFocusScopeProperty = DependencyProperty.RegisterAttached("IsFocusScope", typeof(Boolean), typeof(FocusManager),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the GotFocus routed event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.Presentation.Input.FocusManger.GotFocus"/> attached routed event.
         /// </summary>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when an element receives logical focus.
+        /// </summary>
+        /// <revt>
+        ///     <revtField><see cref="GotFocusEvent"/></revtField>
+        ///     <revtStylingName>got-focus</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent GotFocusEvent = EventManager.RegisterRoutedEvent("GotFocus", RoutingStrategy.Bubble, 
             typeof(UpfRoutedEventHandler), typeof(FocusManager));
 
         /// <summary>
-        /// Identifies the LostFocus routed event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.Presentation.Input.FocusManger.LostFocus"/> attached routed event.
         /// </summary>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when an element loses logical focus.
+        /// </summary>
+        /// <revt>
+        ///     <revtField><see cref="LostFocusEvent"/></revtField>
+        ///     <revtStylingName>lost-focus</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent LostFocusEvent = EventManager.RegisterRoutedEvent("LostFocus", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(FocusManager));
     }

@@ -3,10 +3,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
-	/// <summary>
-	/// Represents the key used to identify a particular animation within a storyboard target's collection of animations.
-	/// </summary>
-	public struct StoryboardTargetAnimationKey : IEquatable<StoryboardTargetAnimationKey>
+    /// <summary>
+    /// Represents the key used to identify a particular animation within a storyboard target's collection of animations.
+    /// </summary>
+    public struct StoryboardTargetAnimationKey : IEquatable<StoryboardTargetAnimationKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoryboardTargetAnimationKey"/> structure.

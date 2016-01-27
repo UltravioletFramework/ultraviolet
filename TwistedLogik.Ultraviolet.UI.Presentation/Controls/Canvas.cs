@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Double>(LeftProperty, value);
+            element.SetValue(LeftProperty, value);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Double>(TopProperty, value);
+            element.SetValue(TopProperty, value);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Double>(RightProperty, value);
+            element.SetValue(RightProperty, value);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             Contract.Require(element, "element");
 
-            element.SetValue<Double>(BottomProperty, value);
+            element.SetValue(BottomProperty, value);
         }
 
         /// <summary>

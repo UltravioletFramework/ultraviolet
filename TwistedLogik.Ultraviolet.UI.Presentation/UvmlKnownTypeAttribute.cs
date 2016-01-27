@@ -12,11 +12,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="UvmlKnownTypeAttribute"/> class.
         /// </summary>
-        /// <param name="name">The name of the XML element that represents this class.</param>
+        /// <param name="name">The name of the XML element that represents this class, or <see langword="null"/> to use the .NET type name.</param>
         /// <param name="componentTemplate">The manifest resource name of the element's default component template, if it has one.</param>
         public UvmlKnownTypeAttribute(String name = null, String componentTemplate = null)
         {
-            this.name              = name;
+            this.name = name;
             this.componentTemplate = componentTemplate;
         }
 

@@ -18,7 +18,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     public static class Generic
     {
         /// <summary>
-        /// Adds a handler for the PreviewGenericInteraction attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewTap"/>
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -31,7 +32,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the GenericInteraction attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.GenericInteraction"/>
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -44,7 +46,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the PreviewGenericInteraction attached event to the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewGenericInteraction"/>
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -57,7 +60,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the GenericInteraction attached event to the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.GenericInteraction"/>
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -78,22 +82,67 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Identifies the PreviewGenericInteraction routed event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewGenericInteraction"/> 
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is preview-generic-interaction.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewTap"/> 
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when an element is tapped or clicked.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtFields><see cref="PreviewGenericInteractionEvent"/></revtFields>
+        ///     <revtStylingName>preview-generic-interaction</revtStylingName>
+        ///     <revtStrategy>Tunneling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfGenericInteractionEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding bubbling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.GenericInteraction"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent PreviewGenericInteractionEvent = EventManager.RegisterRoutedEvent("PreviewGenericInteraction", RoutingStrategy.Tunnel,
             typeof(UpfGenericInteractionEventHandler), typeof(Generic));
 
         /// <summary>
-        /// Identifies the GenericInteraction routed event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.GenericInteraction"/> 
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is generic-interaction.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.GenericInteraction"/> 
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when an element is tapped or clicked.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="GenericInteractionEvent"/></revtField>
+        ///     <revtStylingName>generic-interaction</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfGenericInteractionEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding tunneling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewGenericInteraction"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent GenericInteractionEvent = EventManager.RegisterRoutedEvent("GenericInteraction", RoutingStrategy.Bubble,
             typeof(UpfGenericInteractionEventHandler), typeof(Generic));
 
         /// <summary>
-        /// Raises the PreviewGenericInteraction attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewGenericInteraction"/> 
+        /// attached event for the specified element.
         /// </summary>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewGenericInteraction"/> 
+        /// attached routed event.</value>
         internal static void RaisePreviewGenericInteraction(DependencyObject element, UltravioletResource device, ref RoutedEventData data)
         {
             var temp = EventManager.GetInvocationDelegate<UpfGenericInteractionEventHandler>(PreviewGenericInteractionEvent);
@@ -104,7 +153,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the GenericInteraction attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.GenericInteraction"/>
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaiseGenericInteraction(DependencyObject element, UltravioletResource device, ref RoutedEventData data)
         {

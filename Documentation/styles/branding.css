@@ -558,7 +558,8 @@ sup.citation a:link a:visited a:active {
 /* Ultraviolet */
 .revtTable, .dpropTable {
 	border: 1px solid #dbdbdb;
-	width: 400px;
+	width: auto;
+	min-width: 400px;
 }
 
 .revtTable td, .dpropTable td {

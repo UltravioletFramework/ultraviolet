@@ -72,7 +72,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="SelectedEvent"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Selected"/>
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the event handler.</param>
         /// <param name="handler">The event handler to add to the element.</param>
@@ -82,7 +83,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="UnselectedEvent"/> attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Unselected"/>
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the event handler.</param>
         /// <param name="handler">The event handler to add to the element.</param>
@@ -92,7 +94,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="SelectedEvent"/> attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Selected"/>
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the event handler.</param>
         /// <param name="handler">The event handler to remove from the element.</param>
@@ -102,7 +105,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="UnselectedEvent"/> attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Unselected"/>
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the event handler.</param>
         /// <param name="handler">The event handler to remove from the element.</param>

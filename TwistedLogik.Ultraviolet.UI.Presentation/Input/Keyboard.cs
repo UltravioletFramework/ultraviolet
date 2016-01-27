@@ -88,7 +88,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the PreviewGotKeyboardFocus attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewGotKeyboardFocus"/>
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -101,7 +102,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the PreviewLostKeyboardFocus attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewLostKeyboardFocus"/>
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -114,7 +116,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the GotKeyboardFocus attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.GotKeyboardFocus"/>
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -127,7 +130,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the LostKeyboardFocus attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.LostKeyboardFocus"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -140,7 +144,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the PreviewTextInput attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextInput"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -153,7 +158,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the PreviewKeyDown attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyDown"/>
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -166,7 +172,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the PreviewKeyUp attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyUp"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -179,7 +186,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the TextInput attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextInput"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -192,7 +200,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the KeyDown attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyDown"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -205,7 +214,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the KeyUp attached event to the specified element.
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyUp"/> 
+        /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
@@ -218,7 +228,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the PreviewGotKeyboardFocus attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewGotKeyboardFocus"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -231,7 +242,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the PreviewLostKeyboardFocus attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewLostKeyboardFocus"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -244,7 +256,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the GotKeyboardFocus attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.GotKeyboardFocus"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -257,7 +270,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the LostKeyboardFocus attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.LostKeyboardFocus"/>
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -270,7 +284,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the PreviewTextInput attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextInput"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -283,7 +298,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the PreviewKeyDown attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyDown"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -296,7 +312,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the PreviewKeyUp attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyUp"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -309,7 +326,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the TextInput attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextInput"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -322,7 +340,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the KeyDown attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyDown"/>
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -335,7 +354,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the KeyUp attached event from the specified element.
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyUp"/> 
+        /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
@@ -371,89 +391,346 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Identifies the PreviewGotKeyboardFocus routed event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewGotKeyboardFocus"/> 
+        /// attached routed event.
         /// </summary>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewGotKeyboardFocus"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the element gets keyboard focus.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="PreviewGotKeyboardFocusEvent"/></revtField>
+        ///     <revtStylingName>preview-got-keyboard-focus</revtStylingName>
+        ///     <revtStrategy>Tunneling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyboardFocusChangedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding bubbling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.GotKeyboardFocus"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent PreviewGotKeyboardFocusEvent = EventManager.RegisterRoutedEvent("PreviewGotKeyboardFocus", RoutingStrategy.Tunnel,
             typeof(UpfKeyboardFocusChangedEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Identifies the PreviewLostKeyboardFocus routed event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewLostKeyboardFocus"/>
+        /// attached routed event.
         /// </summary>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewLostKeyboardFocus"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the element loses keyboard focus.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="PreviewLostKeyboardFocusEvent"/></revtField>
+        ///     <revtStylingName>preview-lost-keyboard-focus</revtStylingName>
+        ///     <revtStrategy>Tunneling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyboardFocusChangedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding bubbling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.LostKeyboardFocus"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent PreviewLostKeyboardFocusEvent = EventManager.RegisterRoutedEvent("PreviewLostKeyboardFocus", RoutingStrategy.Tunnel,
             typeof(UpfKeyboardFocusChangedEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Identifies the GotKeyboardFocus attached event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.GotKeyboardFocus"/>
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is got-keyboard-focus.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.GotKeyboardFocus"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the element gets keyboard focus.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="GotKeyboardFocusEvent"/></revtField>
+        ///     <revtStylingName>got-keyboard-focus</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyboardFocusChangedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding tunneling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewGotKeyboardFocus"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent GotKeyboardFocusEvent = EventManager.RegisterRoutedEvent("GotKeyboardFocus", RoutingStrategy.Bubble,
             typeof(UpfKeyboardFocusChangedEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Identifies the LostKeyboardFocus attached event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.LostKeyboardFocus"/>
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is lost-keyboard-focus.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.LostKeyboardFocus"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the element loses keyboard focus.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="LostKeyboardFocusEvent"/></revtField>
+        ///     <revtStylingName>lost-keyboard-focus</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyboardFocusChangedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding tunneling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewLostKeyboardFocus"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent LostKeyboardFocusEvent = EventManager.RegisterRoutedEvent("LostKeyboardFocus", RoutingStrategy.Bubble,
             typeof(UpfKeyboardFocusChangedEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Identifies the PreviewTextInput attached event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextInput"/> 
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is preview-text-input.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextInput"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the user enters text while the element has focus.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="PreviewTextInputEvent"/></revtField>
+        ///     <revtStylingName>preview-text-input</revtStylingName>
+        ///     <revtStrategy>Tunneling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyboardEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding bubbling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextInput"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent PreviewTextInputEvent = EventManager.RegisterRoutedEvent("PreviewTextInput", RoutingStrategy.Tunnel,
             typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Identifies the PreviewTextEditing attached event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextEditing"/> 
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is preview-text-input.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextEditing"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the user edits text (for example, when composing text with the Android 
+        /// software keyboard) while the element has focus.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="PreviewTextEditingEvent"/></revtField>
+        ///     <revtStylingName>preview-text-editing</revtStylingName>
+        ///     <revtStrategy>Tunneling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyboardEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding bubbling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextEditing"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent PreviewTextEditingEvent = EventManager.RegisterRoutedEvent("PreviewTextEditing", RoutingStrategy.Tunnel,
             typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Identifies the PreviewKeyDown attached event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyDown"/> 
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is preview-key-down.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyDown"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when a key enters the "down" state while the element has focus.
+        /// </summary>
+        /// </AttachedEventComments>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="PreviewKeyDownEvent"/></revtField>
+        ///     <revtStylingName>preview-key-down</revtStylingName>
+        ///     <revtStrategy>Tunneling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyDownEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding bubbling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyDown"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
         public static readonly RoutedEvent PreviewKeyDownEvent = EventManager.RegisterRoutedEvent("PreviewKeyDown", RoutingStrategy.Tunnel,
             typeof(UpfKeyDownEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Identifies the PreviewKeyUp attached event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyUp"/> 
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is preview-key-up.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyUp"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when a key enters the "up" state while the element has focus.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="PreviewKeyUpEvent"/></revtField>
+        ///     <revtStylingName>preview-key-up</revtStylingName>
+        ///     <revtStrategy>Tunneling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding bubbling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyUp"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent PreviewKeyUpEvent = EventManager.RegisterRoutedEvent("PreviewKeyUp", RoutingStrategy.Tunnel,
             typeof(UpfKeyEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Identifies the TextInput attached event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextInput"/> 
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is text-input.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextInput"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the user enters text while the element has focus.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="TextInputEvent"/></revtField>
+        ///     <revtStylingName>text-input</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyboardEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding tunneling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextInput"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent TextInputEvent = EventManager.RegisterRoutedEvent("TextInput", RoutingStrategy.Bubble,
             typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Identifies the TextEditing attached event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextEditing"/> 
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is text-input.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextEditing"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the user edits text (for example, when composing text with the Android 
+        /// software keyboard) while the element has focus.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="TextEditingEvent"/></revtField>
+        ///     <revtStylingName>text-editing</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyboardEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding tunneling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextEditing"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent TextEditingEvent = EventManager.RegisterRoutedEvent("TextEditing", RoutingStrategy.Bubble,
             typeof(UpfKeyboardEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Identifies the KeyDown attached event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyDown"/> 
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is key-down.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyDown"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when a key enters the "down" state while the element has focus.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="KeyDownEvent"/></revtField>
+        ///     <revtStylingName>key-down</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyDownEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding tunneling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyDown"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent KeyDownEvent = EventManager.RegisterRoutedEvent("KeyDown", RoutingStrategy.Bubble,
             typeof(UpfKeyDownEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Identifies the KeyUp attached event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyUp"/> 
+        /// attached routed event.
         /// </summary>
-        /// <remarks>The styling name of this routed event is key-up.</remarks>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyUp"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when a key enters the "up" state while the element has focus.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="KeyUpEvent"/></revtField>
+        ///     <revtStylingName>key-up</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfKeyEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding tunneling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyUp"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent KeyUpEvent = EventManager.RegisterRoutedEvent("KeyUp", RoutingStrategy.Bubble,
             typeof(UpfKeyEventHandler), typeof(Keyboard));
 
         /// <summary>
-        /// Raises the PreviewGotKeyboardFocus attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewGotKeyboardFocus"/>
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewGotKeyboardFocus(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
@@ -465,7 +742,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the PreviewLostKeyboardFocus attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewLostKeyboardFocus"/>
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewLostKeyboardFocus(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
@@ -477,7 +755,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the GotKeyboardFocus attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.GotKeyboardFocus"/> 
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaiseGotKeyboardFocus(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
@@ -489,7 +768,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the LostKeyboardFocus attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.LostKeyboardFocus"/>
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaiseLostKeyboardFocus(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
         {
@@ -501,7 +781,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the PreviewTextInput attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextInput"/>
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewTextInput(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
         {
@@ -513,7 +794,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the PreviewTextEditing attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextEditing"/>
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewTextEditing(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
         {
@@ -525,19 +807,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the KeyDown attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyDown"/>
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewKeyDown(DependencyObject element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref RoutedEventData data)
         {
             var temp = EventManager.GetInvocationDelegate<UpfKeyDownEventHandler>(PreviewKeyDownEvent);
             if (temp != null)
             {
-                temp(element, device, key, Keyboard.Modifiers, ref data);
+                temp(element, device, key, Modifiers, ref data);
             }
         }
 
         /// <summary>
-        /// Raises the PreviewKeyUp attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyUp"/> attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewKeyUp(DependencyObject element, KeyboardDevice device, Key key, ref RoutedEventData data)
         {
@@ -549,7 +832,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the TextInput attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextInput"/> 
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaiseTextInput(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
         {
@@ -561,7 +845,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the TextEditing attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextEditing"/>
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaiseTextEditing(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
         {
@@ -573,7 +858,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the KeyDown attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyDown"/> 
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaiseKeyDown(DependencyObject element, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat, ref RoutedEventData data)
         {
@@ -586,7 +872,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the KeyUp attached event for the specified element.
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyUp"/> 
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaiseKeyUp(DependencyObject element, KeyboardDevice device, Key key, ref RoutedEventData data)
         {
