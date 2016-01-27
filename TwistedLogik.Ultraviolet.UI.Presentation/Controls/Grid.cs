@@ -136,30 +136,94 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Identifies the Row attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.Row"/>
+        /// attached property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'row'.</remarks>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.Row"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the index of the <see cref="Grid"/> row that contains the element.
+        /// </summary>
+        /// <value>An <see cref="Int32"/> which represents the index of the row that contains the element.
+        /// The default value is 0.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="RowProperty"/></dpropField>
+        ///     <dpropStylingName>row</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty RowProperty = DependencyProperty.RegisterAttached("Row", typeof(Int32), typeof(Grid),
             new PropertyMetadata<Int32>(null, PropertyMetadataOptions.AffectsMeasure, HandleRowChanged));
 
         /// <summary>
-        /// Identifies the Column attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.Column"/>
+        /// attached property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'column'.</remarks>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.Column"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the index of the <see cref="Grid"/> column that contains the element.
+        /// </summary>
+        /// <value>An <see cref="Int32"/> that represents the index of the column that contains the element.
+        /// The default value is 0.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ColumnProperty"/></dpropField>
+        ///     <dpropStylingName>column</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty ColumnProperty = DependencyProperty.RegisterAttached("Column", typeof(Int32), typeof(Grid),
             new PropertyMetadata<Int32>(null, PropertyMetadataOptions.AffectsMeasure, HandleColumnChanged));
 
         /// <summary>
-        /// Identifies the RowSpan attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.RowSpan"/>
+        /// attached property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'row-span'.</remarks>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.RowSpan"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the number of rows that are spanned by the specified child of a <see cref="Grid"/>.
+        /// </summary>
+        /// <value>An <see cref="Int32"/> that represents the number of rows that are spanned by the element.
+        /// The default value is 1.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="RowSpanProperty"/></dpropField>
+        ///     <dpropStylingName>row-span</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty RowSpanProperty = DependencyProperty.RegisterAttached("RowSpan", typeof(Int32), typeof(Grid),
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.One));
 
         /// <summary>
-        /// Identifies the ColumnSpan attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.ColumnSpan"/>
+        /// attached property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'column-span'.</remarks>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.ColumnSpan"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the number of columns that are spanned by the specified child of a <see cref="Grid"/>.
+        /// </summary>
+        /// <value>An <see cref="Int32"/> that represents the number of columns that are spanned by the element.
+        /// The default value is 1.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ColumnSpanProperty"/></dpropField>
+        ///     <dpropStylingName>column-span</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty ColumnSpanProperty = DependencyProperty.RegisterAttached("ColumnSpan", typeof(Int32), typeof(Grid),
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.One));
 

@@ -7,10 +7,10 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
-	/// <summary>
-	/// Represents a framework element which consists of multiple component elements.
-	/// </summary>
-	[UvmlKnownType]
+    /// <summary>
+    /// Represents a framework element which consists of multiple component elements.
+    /// </summary>
+    [UvmlKnownType]
     public abstract class Control : FrameworkElement
     {
         /// <summary>
@@ -35,178 +35,178 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             LoadComponentRoot();
         }
 
-		/// <summary>
-		/// Gets or sets a value indicating whether this control is included in tab navigation.
-		/// </summary>
-		/// <value><see langword="true"/> if the control is included in tab navigation; otherwise,
-		/// <see langword="false"/>. The default value is <see langword="true"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///     <dpropField><see cref="IsTabStopProperty"/></dpropField>
-		///     <dpropStylingName>tab-stop</dpropStylingName>
-		///     <dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public Boolean IsTabStop
-		{
-			get { return GetValue<Boolean>(IsTabStopProperty); }
-			set { SetValue(IsTabStopProperty, value); }
-		}
+        /// <summary>
+        /// Gets or sets a value indicating whether this control is included in tab navigation.
+        /// </summary>
+        /// <value><see langword="true"/> if the control is included in tab navigation; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="true"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsTabStopProperty"/></dpropField>
+        ///     <dpropStylingName>tab-stop</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean IsTabStop
+        {
+            get { return GetValue<Boolean>(IsTabStopProperty); }
+            set { SetValue(IsTabStopProperty, value); }
+        }
 
-		/// <summary>
-		/// Gets or sets the font used to draw the control's text.
-		/// </summary>
-		/// <value>A <see cref="SourcedResource{T}"/> value that specifies the font to
-		/// use when rendering the control's text. The default value is an invalid resource.</value>
-		/// <remarks>
-		/// <dprop>
-		///     <dpropField><see cref="FontProperty"/></dpropField>
-		///     <dpropStylingName>font</dpropStylingName>
-		///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public SourcedResource<SpriteFont> Font
+        /// <summary>
+        /// Gets or sets the font used to draw the control's text.
+        /// </summary>
+        /// <value>A <see cref="SourcedResource{T}"/> value that specifies the font to
+        /// use when rendering the control's text. The default value is an invalid resource.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="FontProperty"/></dpropField>
+        ///     <dpropStylingName>font</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public SourcedResource<SpriteFont> Font
         {
             get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
             set { SetValue(FontProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets the font style which is used to draw the control's text.
-		/// </summary>
-		/// <value>A <see cref="SpriteFontStyle"/> value that specifies the style
-		/// with which to draw the control's text. The default value is <see cref="SpriteFontStyle.Regular"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///     <dpropField><see cref="FontStyleProperty"/></dpropField>
-		///     <dpropStylingName>font-style</dpropStylingName>
-		///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public SpriteFontStyle FontStyle
+        /// <summary>
+        /// Gets or sets the font style which is used to draw the control's text.
+        /// </summary>
+        /// <value>A <see cref="SpriteFontStyle"/> value that specifies the style
+        /// with which to draw the control's text. The default value is <see cref="SpriteFontStyle.Regular"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="FontStyleProperty"/></dpropField>
+        ///     <dpropStylingName>font-style</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public SpriteFontStyle FontStyle
         {
             get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
             set { SetValue(FontStyleProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets the control's foreground color.
-		/// </summary>
-		/// <value>A <see cref="Color"/> value that specifies the color with which
-		/// to draw the control's foreground elements, such as text. The default 
-		/// value is <see cref="Color.Black"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///     <dpropField><see cref="ForegroundProperty"/></dpropField>
-		///     <dpropStylingName>foreground</dpropStylingName>
-		///     <dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public Color Foreground
+        /// <summary>
+        /// Gets or sets the control's foreground color.
+        /// </summary>
+        /// <value>A <see cref="Color"/> value that specifies the color with which
+        /// to draw the control's foreground elements, such as text. The default 
+        /// value is <see cref="Color.Black"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ForegroundProperty"/></dpropField>
+        ///     <dpropStylingName>foreground</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Color Foreground
         {
             get { return GetValue<Color>(ForegroundProperty); }
             set { SetValue(ForegroundProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets the control's background color.
-		/// </summary>
-		/// <value>A <see cref="Color"/> value that specifies the color with which
-		/// to draw the control's background elements. The default 
-		/// value is <see cref="Color.White"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///     <dpropField><see cref="BackgroundProperty"/></dpropField>
-		///     <dpropStylingName>background</dpropStylingName>
-		///     <dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public Color Background
+        /// <summary>
+        /// Gets or sets the control's background color.
+        /// </summary>
+        /// <value>A <see cref="Color"/> value that specifies the color with which
+        /// to draw the control's background elements. The default 
+        /// value is <see cref="Color.White"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="BackgroundProperty"/></dpropField>
+        ///     <dpropStylingName>background</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Color Background
         {
             get { return GetValue<Color>(BackgroundProperty); }
             set { SetValue(BackgroundProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets the horizontal alignment of the control's content.
-		/// </summary>
-		/// <value>A <see cref="HorizontalAlignment"/> value that specifies the alignment of the control's content
-		/// within its layout area. The default value is <see cref="HorizontalAlignment.Left"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///     <dpropField><see cref="HorizontalContentAlignmentProperty"/></dpropField>
-		///     <dpropStylingName>content-halign</dpropStylingName>
-		///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public HorizontalAlignment HorizontalContentAlignment
+        /// <summary>
+        /// Gets or sets the horizontal alignment of the control's content.
+        /// </summary>
+        /// <value>A <see cref="HorizontalAlignment"/> value that specifies the alignment of the control's content
+        /// within its layout area. The default value is <see cref="HorizontalAlignment.Left"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="HorizontalContentAlignmentProperty"/></dpropField>
+        ///     <dpropStylingName>content-halign</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public HorizontalAlignment HorizontalContentAlignment
         {
             get { return GetValue<HorizontalAlignment>(HorizontalContentAlignmentProperty); }
             set { SetValue(HorizontalContentAlignmentProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets the vertical alignment of the control's content.
-		/// </summary>
-		/// <value>A <see cref="VerticalAlignment"/> value that specifies the alignment of the control's content
-		/// within its layout area. The default value is <see cref="VerticalAlignment.Top"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///     <dpropField><see cref="VerticalContentAlignmentProperty"/></dpropField>
-		///     <dpropStylingName>content-valign</dpropStylingName>
-		///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public VerticalAlignment VerticalContentAlignment
+        /// <summary>
+        /// Gets or sets the vertical alignment of the control's content.
+        /// </summary>
+        /// <value>A <see cref="VerticalAlignment"/> value that specifies the alignment of the control's content
+        /// within its layout area. The default value is <see cref="VerticalAlignment.Top"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="VerticalContentAlignmentProperty"/></dpropField>
+        ///     <dpropStylingName>content-valign</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public VerticalAlignment VerticalContentAlignment
         {
             get { return GetValue<VerticalAlignment>(VerticalContentAlignmentProperty); }
             set { SetValue(VerticalContentAlignmentProperty, value); }
         }
 
-		/// <summary>
-		/// Identifies the IsTabStop dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="IsTabStop"/> dependency property.</value>
-		public static readonly DependencyProperty IsTabStopProperty = KeyboardNavigation.IsTabStopProperty.AddOwner(typeof(Control));
+        /// <summary>
+        /// Identifies the IsTabStop dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsTabStop"/> dependency property.</value>
+        public static readonly DependencyProperty IsTabStopProperty = KeyboardNavigation.IsTabStopProperty.AddOwner(typeof(Control));
 
-		/// <summary>
-		/// Identifies the <see cref="Font"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="Font"/> dependency property.</value>
-		public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(Control),
+        /// <summary>
+        /// Identifies the <see cref="Font"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Font"/> dependency property.</value>
+        public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(Control),
             new PropertyMetadata<SourcedResource<SpriteFont>>(null, PropertyMetadataOptions.AffectsArrange, HandleFontChanged));
 
-		/// <summary>
-		/// Identifies the <see cref="FontStyle"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="FontStyle"/> dependency property.</value>
-		public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(Control),
+        /// <summary>
+        /// Identifies the <see cref="FontStyle"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="FontStyle"/> dependency property.</value>
+        public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(Control),
             new PropertyMetadata<SpriteFontStyle>(null, PropertyMetadataOptions.AffectsArrange));
 
-		/// <summary>
-		/// Identifies the <see cref="Foreground"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="Foreground"/> dependency property.</value>
-		public static readonly DependencyProperty ForegroundProperty = TextElement.ForegroundProperty.AddOwner(typeof(Control));
+        /// <summary>
+        /// Identifies the <see cref="Foreground"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Foreground"/> dependency property.</value>
+        public static readonly DependencyProperty ForegroundProperty = TextElement.ForegroundProperty.AddOwner(typeof(Control));
 
-		/// <summary>
-		/// Identifies the <see cref="Background"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="Background"/> dependency property.</value>
-		public static readonly DependencyProperty BackgroundProperty = TextElement.BackgroundProperty.AddOwner(typeof(Control));
+        /// <summary>
+        /// Identifies the <see cref="Background"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Background"/> dependency property.</value>
+        public static readonly DependencyProperty BackgroundProperty = TextElement.BackgroundProperty.AddOwner(typeof(Control));
 
-		/// <summary>
-		/// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="HorizontalContentAlignment"/> dependency property.</value>
-		public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", "content-halign",
+        /// <summary>
+        /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="HorizontalContentAlignment"/> dependency property.</value>
+        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", "content-halign",
             typeof(HorizontalAlignment), typeof(Control), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Left, PropertyMetadataOptions.AffectsArrange));
 
-		/// <summary>
-		/// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="VerticalContentAlignment"/> dependency property.</value>
-		public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", "content-valign",
+        /// <summary>
+        /// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="VerticalContentAlignment"/> dependency property.</value>
+        public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", "content-valign",
             typeof(VerticalAlignment), typeof(Control), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Top, PropertyMetadataOptions.AffectsArrange));
         
         /// <summary>

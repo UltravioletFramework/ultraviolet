@@ -50,14 +50,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the panel's collection of children.
         /// </summary>
+        /// <value>A <see cref="UIElementCollection"/> that contains the panel's children.</value>
         public UIElementCollection Children
         {
             get { return children; }
         }
 
         /// <summary>
-        /// Identifies the ZIndex attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Panel.ZIndex"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Panel.ZIndex"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <value>A <see cref="Int32"/> value that specifies the relative layer on which the child of
+        /// a <see cref="Panel"/> control is drawn. The default value is 0.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ZIndexProperty"/></dpropField>
+        ///     <dpropStylingName>z-index</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty ZIndexProperty = DependencyProperty.RegisterAttached("ZIndex", typeof(Int32), typeof(Panel),
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.Zero, PropertyMetadataOptions.None, HandleZIndexChanged));
 

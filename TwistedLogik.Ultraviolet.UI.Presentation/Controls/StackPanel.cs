@@ -24,16 +24,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the panel's orientation.
         /// </summary>
+        /// <value>A <see cref="Orientation"/> value which determines whether the panel is oriented horizontally
+        /// or vertically. The default value is <see cref="Orientation.Vertical"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="OrientationProperty"/></dpropField>
+        ///     <dpropStylingName>orientation</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Orientation Orientation
         {
             get { return GetValue<Orientation>(OrientationProperty); }
-            set { SetValue<Orientation>(OrientationProperty, value); }
+            set { SetValue(OrientationProperty, value); }
         }
 
         /// <summary>
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'orientation'.</remarks>
+        /// <value>The identifier for the <see cref="Orientation"/> dependency property.</value>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanel),
             new PropertyMetadata<Orientation>(PresentationBoxedValues.Orientation.Vertical, PropertyMetadataOptions.AffectsMeasure));
 

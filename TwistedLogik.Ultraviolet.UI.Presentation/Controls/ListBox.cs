@@ -31,21 +31,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ListBox(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            SetValue<ListBoxSelectedItems>(SelectedItemsPropertyKey, selectedItems);
+            SetValue(SelectedItemsPropertyKey, selectedItems);
         }
 
         /// <summary>
         /// Gets or sets the list box's selection mode.
         /// </summary>
+        /// <value>A <see cref="SelectionMode"/> value indicating how items in the list box are selected.
+        /// The default value is <see cref="SelectionMode.Single"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="SelectionModeProperty"/></dpropField>
+        ///     <dpropStylingName>selection-mode</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public SelectionMode SelectionMode
         {
             get { return GetValue<SelectionMode>(SelectionModeProperty); }
-            set { SetValue<SelectionMode>(SelectionModeProperty, value); }
+            set { SetValue(SelectionModeProperty, value); }
         }
 
         /// <summary>
         /// Gets the list box's collection of selected items.
         /// </summary>
+        /// <value>A <see cref="ListBoxSelectedItems"/> collection which represents the items
+        /// in the list box that are currently selected.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="SelectedItemsProperty"/></dpropField>
+        ///     <dpropStylingName>selected-items</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public ListBoxSelectedItems SelectedItems
         {
             get { return GetValue<ListBoxSelectedItems>(SelectedItemsProperty); }
@@ -54,20 +72,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="SelectionMode"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selection-mode'.</remarks>
+        /// <value>The identifier for the <see cref="SelectionMode"/> dependency property.</value>
         public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(ListBox),
             new PropertyMetadata<SelectionMode>(SelectionMode.Single));
 
         /// <summary>
         /// The private access key for the <see cref="SelectedItems"/> read-only dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="SelectedItems"/> dependency property.</value>
         private static readonly DependencyPropertyKey SelectedItemsPropertyKey = DependencyProperty.RegisterReadOnly("SelectedItems", typeof(ListBoxSelectedItems), typeof(ListBox),
             new PropertyMetadata<ListBoxSelectedItems>());
 
         /// <summary>
         /// Identifies the <see cref="SelectedItems"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selected-items'.</remarks>
+        /// <value>The identifier for the <see cref="SelectedItems"/> dependency property.</value>
         public static readonly DependencyProperty SelectedItemsProperty = SelectedItemsPropertyKey.DependencyProperty;
 
         /// <summary>

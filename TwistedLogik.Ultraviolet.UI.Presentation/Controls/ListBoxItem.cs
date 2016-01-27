@@ -35,27 +35,45 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value indicating whether the list box item is currently selected.
         /// </summary>
+        /// <value><see langword="true"/> if the item is currently selected; otherwise, <see langword="false"/>.
+        /// The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsSelectedProperty"/></dpropField>
+        ///     <dpropStylingName>selected</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsSelected
         {
             get { return GetValue<Boolean>(IsSelectedProperty); }
-            set { SetValue<Boolean>(IsSelectedProperty, value); }
+            set { SetValue(IsSelectedProperty, value); }
+        }
+        
+        /// <summary>
+        /// Gets the opacity of the list box item's selection highlight.
+        /// </summary>
+        /// <value>A <see cref="Double"/> that represents the opacity of the list box item's
+        /// selection highlight. The default value is 0.0.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="HighlightOpacityProperty"/></dpropField>
+        ///     <dpropStylingName>highlight-opacity</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double HighlightOpacity
+        {
+            get { return GetValue<Double>(HighlightOpacityProperty); }
+            private set { SetValue(HighlightOpacityPropertyKey, value); }
         }
 
         /// <summary>
         /// Identifies the <see cref="IsSelected"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selected'.</remarks>
+        /// <value>The identifier for the <see cref="IsSelected"/> dependency property.</value>
         public static readonly DependencyProperty IsSelectedProperty = Selector.IsSelectedProperty.AddOwner(typeof(ListBoxItem),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsSelectedChanged));
-
-        /// <summary>
-        /// Gets the opacity of the list box item's selection highlight.
-        /// </summary>
-        public Double HighlightOpacity
-        {
-            get { return GetValue<Double>(HighlightOpacityProperty); }
-            private set { SetValue<Double>(HighlightOpacityPropertyKey, value); }
-        }
         
         /// <summary>
         /// The private access key for the <see cref="HighlightOpacity"/> read-only dependency property.
@@ -66,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="HighlightOpacity"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'highlight-opacity'.</remarks>
+        /// <value>The identifier for the <see cref="HighlightOpacity"/> dependency property.</value>
         public static readonly DependencyProperty HighlightOpacityProperty = HighlightOpacityPropertyKey.DependencyProperty;
 
         /// <inheritdoc/>

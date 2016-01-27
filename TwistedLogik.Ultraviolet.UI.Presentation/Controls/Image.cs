@@ -24,32 +24,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the image source.
         /// </summary>
+        /// <value>A <see cref="SourcedImage"/> which represents the image that is drawn
+        /// by this control. The default value is an invalid image.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="SourceProperty"/></dpropField>
+        ///     <dpropStylingName>source-image</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public SourcedImage Source
         {
             get { return GetValue<SourcedImage>(SourceProperty); }
-            set { SetValue<SourcedImage>(SourceProperty, value); }
+            set { SetValue(SourceProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the color with which the image is drawn.
         /// </summary>
+        /// <value>A <see cref="Color"/> value that specifies the color with which
+        /// the control draws its image. The default value is <see cref="Color.White"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="SourceColorProperty"/></dpropField>
+        ///     <dpropStylingName>source-color</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Color SourceColor
         {
             get { return GetValue<Color>(SourceColorProperty); }
-            set { SetValue<Color>(SourceColorProperty, value); }
+            set { SetValue(SourceColorProperty, value); }
         }
 
         /// <summary>
         /// Identifies the <see cref="Source"/> property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'source-image'.</remarks>
+        /// <value>The identifier for the <see cref="Source"/> dependency property.</value>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", "source-image",
             typeof(SourcedImage), typeof(Image), new PropertyMetadata<SourcedImage>(HandleSourceChanged));
         
         /// <summary>
         /// Identifies the <see cref="SourceColor"/> property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'source-color'.</remarks>
+        /// <value>The identifier for the <see cref="SourceColor"/> property.</value>
         public static readonly DependencyProperty SourceColorProperty = DependencyProperty.Register("SourceColor", typeof(Color), typeof(Image),
             new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White));
 

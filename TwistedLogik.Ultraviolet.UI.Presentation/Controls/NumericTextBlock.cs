@@ -25,19 +25,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the label's value.
         /// </summary>
+        /// <value>A <see cref="Double"/> that represents the label's value.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ValueProperty"/></dpropField>
+        ///     <dpropStylingName>value</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Double Value
         {
             get { return GetValue<Double>(ValueProperty); }
-            set { SetValue<Double>(ValueProperty, value); }
+            set { SetValue(ValueProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the format string used to format the label's value.
         /// </summary>
+        /// <value>A format string that specifies how to format the text box's value. The default
+        /// value is <see langword="null"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="FormatProperty"/></dpropField>
+        ///     <dpropStylingName>format</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public String Format
         {
             get { return GetValue<String>(FormatProperty); }
-            set { SetValue<String>(FormatProperty, value); }
+            set { SetValue(FormatProperty, value); }
         }
 
         /// <summary>

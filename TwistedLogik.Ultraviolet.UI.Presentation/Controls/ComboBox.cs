@@ -44,87 +44,87 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the maximum height of the combo box's drop-down list.
         /// </summary>
-		/// <value>A <see cref="Double"/> value that specifies the maximum height of the combo
-		/// box's drop down list in device-independent pixels. The default value is <see cref="Double.NaN"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="MaxDropDownHeightProperty"/></dpropField>
-		///		<dpropStylingName>max-drop-down-height</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
+        /// <value>A <see cref="Double"/> value that specifies the maximum height of the combo
+        /// box's drop down list in device-independent pixels. The default value is <see cref="Double.NaN"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="MaxDropDownHeightProperty"/></dpropField>
+        ///		<dpropStylingName>max-drop-down-height</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Double MaxDropDownHeight
         {
             get { return GetValue<Double>(MaxDropDownHeightProperty); }
             set { SetValue(MaxDropDownHeightProperty, value); }
         }
 
-		/// <summary>
-		/// Gets the actual maximum height of the combo box's drop-down list, after
-		/// considering the amount of available space in the current window.
-		/// </summary>
-		/// <value>A <see cref="Double"/> value that specifies the actual height of the combo
-		/// box's drop down list in device-independent pixels after layout has been performed.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="ActualMaxDropDownHeightProperty"/></dpropField>
-		///		<dpropStylingName>actual-drop-down-height</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public Double ActualMaxDropDownHeight
+        /// <summary>
+        /// Gets the actual maximum height of the combo box's drop-down list, after
+        /// considering the amount of available space in the current window.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value that specifies the actual height of the combo
+        /// box's drop down list in device-independent pixels after layout has been performed.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="ActualMaxDropDownHeightProperty"/></dpropField>
+        ///		<dpropStylingName>actual-drop-down-height</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double ActualMaxDropDownHeight
         {
             get { return GetValue<Double>(ActualMaxDropDownHeightProperty); }
         }
 
-		/// <summary>
-		/// Gets or sets a value indicating whether the combo box's drop-down list is currently open.
-		/// </summary>
-		/// <value><see langword="true"/> if the drop down is open; otherwise, <see langword="false"/>. The
-		/// default value is <see langword="false"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="IsDropDownOpenProperty"/></dpropField>
-		///		<dpropStylingName>drop-down-open</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public Boolean IsDropDownOpen
+        /// <summary>
+        /// Gets or sets a value indicating whether the combo box's drop-down list is currently open.
+        /// </summary>
+        /// <value><see langword="true"/> if the drop down is open; otherwise, <see langword="false"/>. The
+        /// default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="IsDropDownOpenProperty"/></dpropField>
+        ///		<dpropStylingName>drop-down-open</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean IsDropDownOpen
         {
             get { return GetValue<Boolean>(IsDropDownOpenProperty); }
             set { SetValue(IsDropDownOpenProperty, value); }
-		}
+        }
 
         /// <summary>
         /// Gets the item that is displayed in the combo box's selection box.
         /// </summary>
-		/// <value>The <see cref="Object"/> that is currently being displayed
-		/// in the combo box's selection box. The default value is <see langword="null"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="SelectionBoxItemProperty"/></dpropField>
-		///		<dpropStylingName>selection-box-item</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public Object SelectionBoxItem
+        /// <value>The <see cref="Object"/> that is currently being displayed
+        /// in the combo box's selection box. The default value is <see langword="null"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="SelectionBoxItemProperty"/></dpropField>
+        ///		<dpropStylingName>selection-box-item</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Object SelectionBoxItem
         {
             get { return GetValue<Object>(SelectionBoxItemProperty); }
         }
 
-		/// <summary>
-		/// Gets or sets the formatting string used to format the item in the selection box.
-		/// </summary>
-		/// <value>A format string that specifies how to format the combo box's selected item. The
-		/// default value is <see langword="null"/>.</value>
-		/// <remarks>
-		/// <dprop>
-		///		<dpropField><see cref="SelectionBoxItemStringFormatProperty"/></dpropField>
-		///		<dpropStylingName>selection-box-item-string-format</dpropStylingName>
-		///		<dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public String SelectionBoxItemStringFormat
+        /// <summary>
+        /// Gets or sets the formatting string used to format the item in the selection box.
+        /// </summary>
+        /// <value>A format string that specifies how to format the combo box's selected item. The
+        /// default value is <see langword="null"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="SelectionBoxItemStringFormatProperty"/></dpropField>
+        ///		<dpropStylingName>selection-box-item-string-format</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public String SelectionBoxItemStringFormat
         {
             get { return GetValue<String>(SelectionBoxItemStringFormatProperty); }
         }
@@ -139,11 +139,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public event UpfEventHandler DropDownClosed;
 
-		/// <summary>
-		/// Identifies the <see cref="MaxDropDownHeight"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="MaxDropDownHeight"/> dependency property.</value>
-		public static readonly DependencyProperty MaxDropDownHeightProperty = DependencyProperty.Register("MaxDropDownHeight", "max-dropdown-height", typeof(Double), typeof(ComboBox),
+        /// <summary>
+        /// Identifies the <see cref="MaxDropDownHeight"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="MaxDropDownHeight"/> dependency property.</value>
+        public static readonly DependencyProperty MaxDropDownHeightProperty = DependencyProperty.Register("MaxDropDownHeight", "max-dropdown-height", typeof(Double), typeof(ComboBox),
             new PropertyMetadata<Double>(Double.NaN, PropertyMetadataOptions.None));
 
         /// <summary>
@@ -152,17 +152,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static readonly DependencyPropertyKey ActualMaxDropDownHeightPropertyKey = DependencyProperty.RegisterReadOnly("ActualMaxDropDownHeight", typeof(Double), typeof(ComboBox),
             new PropertyMetadata<Double>());
 
-		/// <summary>
-		/// Identifies the <see cref="ActualMaxDropDownHeight"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="ActualMaxDropDownHeight"/> dependency property.</value>
-		public static readonly DependencyProperty ActualMaxDropDownHeightProperty = ActualMaxDropDownHeightPropertyKey.DependencyProperty;
+        /// <summary>
+        /// Identifies the <see cref="ActualMaxDropDownHeight"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ActualMaxDropDownHeight"/> dependency property.</value>
+        public static readonly DependencyProperty ActualMaxDropDownHeightProperty = ActualMaxDropDownHeightPropertyKey.DependencyProperty;
 
-		/// <summary>
-		/// Identifies the <see cref="IsDropDownOpen"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="IsDropDownOpen"/> dependency property.</value>
-		public static readonly DependencyProperty IsDropDownOpenProperty = DependencyProperty.Register("IsDropDownOpen", "dropdown-open", typeof(Boolean), typeof(ComboBox),
+        /// <summary>
+        /// Identifies the <see cref="IsDropDownOpen"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsDropDownOpen"/> dependency property.</value>
+        public static readonly DependencyProperty IsDropDownOpenProperty = DependencyProperty.Register("IsDropDownOpen", "dropdown-open", typeof(Boolean), typeof(ComboBox),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, HandleIsDropDownOpenChanged));
 
         /// <summary>
@@ -171,11 +171,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static readonly DependencyPropertyKey SelectionBoxItemPropertyKey = DependencyProperty.RegisterReadOnly("SelectionBoxItem", typeof(Object), typeof(ComboBox),
             new PropertyMetadata<Boolean>(null));
 
-		/// <summary>
-		/// Identifies the <see cref="SelectionBoxItem"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="SelectionBoxItem"/> dependency property.</value>
-		public static readonly DependencyProperty SelectionBoxItemProperty = SelectionBoxItemPropertyKey.DependencyProperty;
+        /// <summary>
+        /// Identifies the <see cref="SelectionBoxItem"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="SelectionBoxItem"/> dependency property.</value>
+        public static readonly DependencyProperty SelectionBoxItemProperty = SelectionBoxItemPropertyKey.DependencyProperty;
 
         /// <summary>
         /// The private access key for the <see cref="SelectionBoxItemStringFormat"/> read-only dependency property.
@@ -183,11 +183,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static readonly DependencyPropertyKey SelectionBoxItemStringFormatPropertyKey = DependencyProperty.RegisterReadOnly("SelectionBoxItemStringFormat", typeof(String), typeof(ComboBox),
             new PropertyMetadata<String>(null));
 
-		/// <summary>
-		/// Identifies the <see cref="SelectionBoxItemStringFormat"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="SelectionBoxItemStringFormatProperty"/> dependency property.</value>
-		public static readonly DependencyProperty SelectionBoxItemStringFormatProperty = SelectionBoxItemStringFormatPropertyKey.DependencyProperty;
+        /// <summary>
+        /// Identifies the <see cref="SelectionBoxItemStringFormat"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="SelectionBoxItemStringFormatProperty"/> dependency property.</value>
+        public static readonly DependencyProperty SelectionBoxItemStringFormatProperty = SelectionBoxItemStringFormatPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Called to inform the combo box that one of its items was clicked.

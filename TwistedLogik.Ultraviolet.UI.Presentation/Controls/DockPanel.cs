@@ -47,23 +47,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value indicating whether the panel's last child stretches to fit the available space.
         /// </summary>
+        /// <value><see langword="true"/> if the panel's last child stretches to fit the available space;
+        /// otherwise, <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="LastChildFillProperty"/></dpropField>
+        ///     <dpropStylingName>last-child-fill</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean LastChildFill
         {
             get { return GetValue<Boolean>(LastChildFillProperty); }
-            set { SetValue<Boolean>(LastChildFillProperty, value); }
+            set { SetValue(LastChildFillProperty, value); }
         }
 
         /// <summary>
-        /// Identifies the Dock attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.DockPanel.Dock"/>
+        /// attached property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'dock'.</remarks>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.DockPanel.Dock"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a <see cref="Dock"/> value which specifies how a child element is arranged
+        /// within its parent <see cref="DockPanel"/>.
+        /// </summary>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="DockProperty"/></dpropField>
+        ///     <dpropStylingName>dock</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty DockProperty = DependencyProperty.RegisterAttached("Dock", typeof(Dock), typeof(DockPanel),
             new PropertyMetadata<Dock>(PresentationBoxedValues.Dock.Left, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="LastChildFill"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'last-child-fill'.</remarks>
+        /// <value>The identifier for the <see cref="LastChildFill"/> dependency property.</value>
         public static readonly DependencyProperty LastChildFillProperty = DependencyProperty.Register("LastChildFill", typeof(Boolean), typeof(DockPanel),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.AffectsArrange));
 

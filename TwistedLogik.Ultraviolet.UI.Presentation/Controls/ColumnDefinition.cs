@@ -3,60 +3,60 @@ using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
-	/// <summary>
-	/// Represents the definition for a column in a <see cref="Grid"/> control.
-	/// </summary>
-	[UvmlKnownType]
+    /// <summary>
+    /// Represents the definition for a column in a <see cref="Grid"/> control.
+    /// </summary>
+    [UvmlKnownType]
     public class ColumnDefinition : DefinitionBase
     {
-		/// <summary>
-		/// Gets or sets the column's width in device independent pixels.
-		/// </summary>
-		/// <value>A <see cref="GridLength"/> value that specifies the column's width.</value>
-		/// <remarks>
-		/// <dprop>
-		///     <dpropField><see cref="WidthProperty"/></dpropField>
-		///     <dpropStylingName>width</dpropStylingName>
-		///     <dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public GridLength Width
+        /// <summary>
+        /// Gets or sets the column's width in device independent pixels.
+        /// </summary>
+        /// <value>A <see cref="GridLength"/> value that specifies the column's width.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="WidthProperty"/></dpropField>
+        ///     <dpropStylingName>width</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public GridLength Width
         {
             get { return GetValue<GridLength>(WidthProperty); }
             set { SetValue(WidthProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets the column's minimum width in device independent pixels.
-		/// </summary>
-		/// <value>A <see cref="Double"/> value that specifies the column's minimum 
-		/// width in device-independent pixels.</value>
-		/// <remarks>
-		/// <dprop>
-		///     <dpropField><see cref="MinWidthProperty"/></dpropField>
-		///     <dpropStylingName>min-width</dpropStylingName>
-		///     <dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public Double MinWidth
+        /// <summary>
+        /// Gets or sets the column's minimum width in device independent pixels.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value that specifies the column's minimum 
+        /// width in device-independent pixels.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="MinWidthProperty"/></dpropField>
+        ///     <dpropStylingName>min-width</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double MinWidth
         {
             get { return GetValue<Double>(MinWidthProperty); }
             set { SetValue(MinWidthProperty, value); }
         }
 
-		/// <summary>
-		/// Gets or sets the column's maximum width in device independent pixels.
-		/// </summary>
-		/// <value>A <see cref="Double"/> value that specifies the column's maximum 
-		/// width in device-independent pixels.</value>
-		/// <remarks>
-		/// <dprop>
-		///     <dpropField><see cref="MaxWidthProperty"/></dpropField>
-		///     <dpropStylingName>max-width</dpropStylingName>
-		///     <dpropMetadata>None</dpropMetadata>
-		/// </dprop>
-		/// </remarks>
-		public Double MaxWidth
+        /// <summary>
+        /// Gets or sets the column's maximum width in device independent pixels.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value that specifies the column's maximum 
+        /// width in device-independent pixels.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="MaxWidthProperty"/></dpropField>
+        ///     <dpropStylingName>max-width</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double MaxWidth
         {
             get { return GetValue<Double>(MaxWidthProperty); }
             set { SetValue(MaxWidthProperty, value); }
@@ -85,25 +85,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public event DefinitionEventHandler MaxWidthChanged;
 
-		/// <summary>
-		/// Identifies the <see cref="Width"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="Width"/> dependency property.</value>
-		public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(GridLength), typeof(ColumnDefinition),
+        /// <summary>
+        /// Identifies the <see cref="Width"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Width"/> dependency property.</value>
+        public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(GridLength), typeof(ColumnDefinition),
             new PropertyMetadata<GridLength>(PresentationBoxedValues.GridLength.One, HandleWidthChanged));
 
-		/// <summary>
-		/// Identifies the <see cref="MinWidth"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="MinWidth"/> dependency property.</value>
-		public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(ColumnDefinition),
+        /// <summary>
+        /// Identifies the <see cref="MinWidth"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="MinWidth"/> dependency property.</value>
+        public static readonly DependencyProperty MinWidthProperty = DependencyProperty.Register("MinWidth", typeof(Double), typeof(ColumnDefinition),
             new PropertyMetadata<Double>(HandleMinWidthChanged));
 
-		/// <summary>
-		/// Identifies the <see cref="MaxWidth"/> dependency property.
-		/// </summary>
-		/// <value>The identifier for the <see cref="MaxWidth"/> dependency property.</value>
-		public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(ColumnDefinition),
+        /// <summary>
+        /// Identifies the <see cref="MaxWidth"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="MaxWidth"/> dependency property.</value>
+        public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.Register("MaxWidth", typeof(Double), typeof(ColumnDefinition),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.PositiveInfinity, HandleMaxWidthChanged));
         
         /// <inheritdoc/>

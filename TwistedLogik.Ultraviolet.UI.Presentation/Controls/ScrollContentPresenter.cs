@@ -23,6 +23,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value indicating whether the presenter's content can scroll horizontally.
         /// </summary>
+        /// <value><see langword="true"/> if the presenter's content can scroll horizontally;
+        /// otherwise, <see langword="false"/>.</value>
         public Boolean CanScrollHorizontally
         {
             get { return canScrollHorizontally; }
@@ -32,6 +34,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value indicating whether the presenter's content can scroll vertically.
         /// </summary>
+        /// <value><see langword="true"/> if the presenter's content can scroll vertically;
+        /// otherwise, <see langword="false"/>.</value>
         public Boolean CanScrollVertically
         {
             get { return canScrollVertically; }
@@ -41,6 +45,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the width of the scrolled content.
         /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the width of the scrolled
+        /// content in device-independent pixels.</value>
         public Double ExtentWidth
         {
             get { return extentWidth; }
@@ -49,6 +55,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the height of the scrolled content.
         /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the height of the scrolled
+        /// content in device-independent pixels.</value>
         public Double ExtentHeight
         {
             get { return extentHeight; }
@@ -57,6 +65,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the width of the scrolling viewport.
         /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the width of the scrolling
+        /// viewport in device-independent pixels.</value>
         public Double ViewportWidth
         {
             get { return viewportWidth; }
@@ -65,6 +75,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the height of the scrolling viewport.
         /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the height of the scrolling
+        /// viewport in device-independent pixels.</value>
         public Double ViewportHeight
         {
             get { return viewportHeight; }

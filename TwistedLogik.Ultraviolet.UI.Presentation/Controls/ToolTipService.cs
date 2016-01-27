@@ -5,9 +5,9 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
-    /// Represents the method that is called when a tooltip is opened or closed.
+    /// Represents the method that is called when a tool tip is opened or closed.
     /// </summary>
-    /// <param name="dobj">The tooltip that was opened or closed.</param>
+    /// <param name="dobj">The tool tip that was opened or closed.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfToolTipEventHandler(DependencyObject dobj, ref RoutedEventData data);
 
@@ -18,10 +18,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     public static class ToolTipService
     {
         /// <summary>
-        /// Gets the horizontal offset between the tooltip's placement point and its position on the screen.
+        /// Gets the horizontal offset between the tool tip's placement point and its position on the screen.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns>The horizontal offset between the tooltip's placement point and its position on the screen.</returns>
+        /// <returns>The horizontal offset between the tool tip's placement point and its position on the screen.</returns>
         public static Double GetHorizontalOffset(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -30,10 +30,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the vertical offset between the tooltip's placement point and its position on the screen.
+        /// Gets the vertical offset between the tool tip's placement point and its position on the screen.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns>The vertical offset between the tooltip's placement point and its position on the screen.</returns>
+        /// <returns>The vertical offset between the tool tip's placement point and its position on the screen.</returns>
         public static Double GetVerticalOffset(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -42,10 +42,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the delay in milliseconds before the tooltip opens.
+        /// Gets the delay in milliseconds before the tool tip opens.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns>The delay in milliseconds before the tooltip opens.</returns>
+        /// <returns>The delay in milliseconds before the tool tip opens.</returns>
         public static Double GetInitialShowDelay(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -54,11 +54,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the maximum time in milliseconds after the closing of a tooltip during which another tooltip
+        /// Gets the maximum time in milliseconds after the closing of a tool tip during which another tool tip
         /// can be opened without a delay.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns>The maximum time in milliseconds after the closing of a tooltip during which another tooltip
+        /// <returns>The maximum time in milliseconds after the closing of a tool tip during which another tool tip
         /// can be opened without a delay.</returns>
         public static Double GetBetweenShowDelay(DependencyObject element)
         {
@@ -68,10 +68,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the amount of time in milliseconds that the tooltip remains visible.
+        /// Gets the amount of time in milliseconds that the tool tip remains visible.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns>The amount of time in milliseconds that the tooltip remains visible.</returns>
+        /// <returns>The amount of time in milliseconds that the tool tip remains visible.</returns>
         public static Double GetShowDuration(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -80,10 +80,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets a value indicating whether a tooltip is displayed for the element.
+        /// Gets a value indicating whether a tool tip is displayed for the element.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if a tooltip is displayed; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if a tool tip is displayed; otherwise, <c>false</c>.</returns>
         public static Boolean GetIsEnabled(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -92,10 +92,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets a value indicating whether a tooltip is currently open for the element.
+        /// Gets a value indicating whether a tool tip is currently open for the element.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the tooltip is open; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the tool tip is open; otherwise, <c>false</c>.</returns>
         public static Boolean GetIsOpen(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -104,10 +104,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets a value indicating whether the tooltip has a drop shadow.
+        /// Gets a value indicating whether the tool tip has a drop shadow.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the tooltip has a drop shadow; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the tool tip has a drop shadow; otherwise, <c>false</c>.</returns>
         public static Boolean GetHasDropShadow(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -116,10 +116,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets a value indicating whether the tooltip is displayed even if the element is disabled.
+        /// Gets a value indicating whether the tool tip is displayed even if the element is disabled.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the tooltip is displayed for a disabled element; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the tool tip is displayed for a disabled element; otherwise, <c>false</c>.</returns>
         public static Boolean GetShowOnDisabled(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -128,10 +128,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the tooltip's placement mode.
+        /// Gets the tool tip's placement mode.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns>A <see cref="PlacementMode"/> value which specifies how the tooltip is arranged on the screen.</returns>
+        /// <returns>A <see cref="PlacementMode"/> value which specifies how the tool tip is arranged on the screen.</returns>
         public static PlacementMode GetPlacement(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -140,10 +140,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the tooltip's placement rectangle.
+        /// Gets the tool tip's placement rectangle.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns>The rectangle relative to which the tooltip popup is placed.</returns>
+        /// <returns>The rectangle relative to which the tool tip popup is placed.</returns>
         public static RectangleD GetPlacementRectangle(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -152,10 +152,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the tooltip's placement target.
+        /// Gets the tool tip's placement target.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns>The element relative to which the tooltip popup is placed.</returns>
+        /// <returns>The element relative to which the tool tip popup is placed.</returns>
         public static UIElement GetPlacementTarget(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -164,10 +164,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the tooltip's content.
+        /// Gets the tool tip's content.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns>The content of the specified element's tooltip, or <c>null</c> if the element has no tooltip.</returns>
+        /// <returns>The content of the specified element's tool tip, or <c>null</c> if the element has no tool tip.</returns>
         public static Object GetToolTip(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -176,10 +176,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
         
         /// <summary>
-        /// Sets the horizontal offset between the tooltip's placement point and its position on the screen.
+        /// Sets the horizontal offset between the tool tip's placement point and its position on the screen.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value">The horizontal offset between the tooltip's placement point and its position on the screen.</param>
+        /// <param name="value">The horizontal offset between the tool tip's placement point and its position on the screen.</param>
         public static void SetHorizontalOffset(DependencyObject element, Double value)
         {
             Contract.Require(element, "element");
@@ -188,10 +188,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the vertical offset between the tooltip's placement point and its position on the screen.
+        /// Sets the vertical offset between the tool tip's placement point and its position on the screen.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value">The vertical offset between the tooltip's placement point and its position on the screen.</param>
+        /// <param name="value">The vertical offset between the tool tip's placement point and its position on the screen.</param>
         public static void SetVerticalOffset(DependencyObject element, Double value)
         {
             Contract.Require(element, "element");
@@ -200,10 +200,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the delay in milliseconds before the tooltip opens.
+        /// Sets the delay in milliseconds before the tool tip opens.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value">The delay in milliseconds before the tooltip opens.</param>
+        /// <param name="value">The delay in milliseconds before the tool tip opens.</param>
         public static void SetInitialShowDelay(DependencyObject element, Double value)
         {
             Contract.Require(element, "element");
@@ -212,11 +212,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the maximum time in milliseconds after the closing of a tooltip during which another tooltip
+        /// Sets the maximum time in milliseconds after the closing of a tool tip during which another tool tip
         /// can be opened without a delay.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value">The maximum time in milliseconds after the closing of a tooltip during which another tooltip
+        /// <param name="value">The maximum time in milliseconds after the closing of a tool tip during which another tool tip
         /// can be opened without a delay.</param>
         public static void SetBetweenShowDelay(DependencyObject element, Double value)
         {
@@ -226,10 +226,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the amount of time in milliseconds that the tooltip remains visible.
+        /// Sets the amount of time in milliseconds that the tool tip remains visible.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value">The amount of time in milliseconds that the tooltip remains visible.</param>
+        /// <param name="value">The amount of time in milliseconds that the tool tip remains visible.</param>
         public static void SetShowDuration(DependencyObject element, Double value)
         {
             Contract.Require(element, "element");
@@ -238,10 +238,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets a value indicating whether a tooltip is displayed for the element.
+        /// Sets a value indicating whether a tool tip is displayed for the element.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value"><c>true</c> if a tooltip is displayed; otherwise, <c>false</c>.</param>
+        /// <param name="value"><c>true</c> if a tool tip is displayed; otherwise, <c>false</c>.</param>
         public static void SetIsEnabled(DependencyObject element, Boolean value)
         {
             Contract.Require(element, "element");
@@ -250,10 +250,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets a value indicating whether the tooltip has a drop shadow.
+        /// Sets a value indicating whether the tool tip has a drop shadow.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value"><c>true</c> if the tooltip has a drop shadow; otherwise, <c>false</c>.</param>
+        /// <param name="value"><c>true</c> if the tool tip has a drop shadow; otherwise, <c>false</c>.</param>
         public static void SetHasDropShadow(DependencyObject element, Boolean value)
         {
             Contract.Require(element, "element");
@@ -262,10 +262,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets a value indicating whether the tooltip is displayed even if the element is disabled.
+        /// Sets a value indicating whether the tool tip is displayed even if the element is disabled.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value"><c>true</c> if the tooltip is displayed for a disabled element; otherwise, <c>false</c>.</param>
+        /// <param name="value"><c>true</c> if the tool tip is displayed for a disabled element; otherwise, <c>false</c>.</param>
         public static void SetShowOnDisabled(DependencyObject element, Boolean value)
         {
             Contract.Require(element, "element");
@@ -274,10 +274,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the tooltip's placement mode.
+        /// Sets the tool tip's placement mode.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value">A <see cref="PlacementMode"/> value which specifies how the tooltip is arranged on the screen.</param>
+        /// <param name="value">A <see cref="PlacementMode"/> value which specifies how the tool tip is arranged on the screen.</param>
         public static void SetPlacement(DependencyObject element, PlacementMode value)
         {
             Contract.Require(element, "element");
@@ -286,10 +286,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the tooltip's placement rectangle.
+        /// Sets the tool tip's placement rectangle.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value">The rectangle relative to which the tooltip popup is placed.</param>
+        /// <param name="value">The rectangle relative to which the tool tip popup is placed.</param>
         public static void SetPlacementRectangle(DependencyObject element, RectangleD value)
         {
             Contract.Require(element, "element");
@@ -298,10 +298,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the tooltip's placement target.
+        /// Sets the tool tip's placement target.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value">The element relative to which the tooltip popup is placed.</param>
+        /// <param name="value">The element relative to which the tool tip popup is placed.</param>
         public static void SetPlacementTarget(DependencyObject element, UIElement value)
         {
             Contract.Require(element, "element");
@@ -310,10 +310,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the tooltip's content.
+        /// Sets the tool tip's content.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value">The content of the specified element's tooltip, or <c>null</c> if the element has no tooltip.</param>
+        /// <param name="value">The content of the specified element's tool tip, or <c>null</c> if the element has no tool tip.</param>
         public static void SetToolTip(DependencyObject element, Object value)
         {
             Contract.Require(element, "element");
@@ -370,102 +370,345 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Identifies the HorizontalOffset attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.HorizontalOffset"/> 
+        /// attached property.
         /// </summary>
-        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.RegisterAttached("HorizontalOffset", typeof(Double), typeof(ToolTipService),
-            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
-        
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.HorizontalOffset"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
         /// <summary>
-        /// Identifies the VerticalOffset attached property.
+        /// Gets or sets the horizontal offset between the tool tip's placement point and its position on the screen.
         /// </summary>
-        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.RegisterAttached("VerticalOffset", typeof(Double), typeof(ToolTipService),
+        /// <value>A <see cref="Double"/> value which describes the horizontal offset in device-independent pixels between
+        /// the element's tool tip's placement point and its position on the screen. The default value is 0.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="HorizontalOffsetProperty"/></dpropField>
+        ///		<dpropStylingName>hoffset</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.RegisterAttached("HorizontalOffset", "hoffset", typeof(Double), typeof(ToolTipService),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the InitialShowDelay attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.VerticalOffset"/> 
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.VerticalOffset"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the vertical offset between the tool tip's placement point and its position on the screen.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value which describes the vertical offset in device-independent pixels between
+        /// the element's tool tip's placement point and its position on the screen. The default value is 0.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="VerticalOffsetProperty"/></dpropField>
+        ///		<dpropStylingName>voffset</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.RegisterAttached("VerticalOffset", "voffset", typeof(Double), typeof(ToolTipService),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.InitialShowDelay"/>
+        /// attached property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.VerticalOffset"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the delay in milliseconds before the element's tool tip opens.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value which specifies the delay in milliseconds before the tool tip opens.
+        /// The default value is determined by the underlying system settings for tool tips.</value>
+        /// <dprop>
+        ///     <dpropField><see cref="InitialShowDelayProperty"/></dpropField>
+        ///     <dpropStylingName>initial-show-delay</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty InitialShowDelayProperty = DependencyProperty.RegisterAttached("InitialShowDelay", typeof(Double), typeof(ToolTipService),
             new PropertyMetadata<Double>(SystemParameters.MouseHoverTime, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the BetweenShowDelay attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.BetweenShowDelay"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.InitialShowDelay"/>
+        /// attached property.</value>
+        /// <remarks>
+        /// <summary>
+        /// Gets or sets the time in milliseconds after the closing of a 
+        /// tool tip during which another tool tip can be opened without a delay.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value which specifies the time in milliseconds after the closing of a 
+        /// tool tip during which another tool tip can be opened without a delay. The default value is 100.0.</value>
+        /// <dprop>
+        ///     <dpropField><see cref="BetweenShowDelayProperty"/></dpropField>
+        ///     <dpropStylingName>between-show-delay</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public static readonly DependencyProperty BetweenShowDelayProperty = DependencyProperty.RegisterAttached("BetweenShowDelay", typeof(Double), typeof(ToolTipService),
             new PropertyMetadata<Double>(100.0, PropertyMetadataOptions.None));
-        
+
         /// <summary>
-        /// Identifies the ShowDuration attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowDuration"/> 
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowDuration"/>
+        /// attached property.</value>
+        /// <remarks>
+        /// <summary>
+        /// Gets or sets the amount of time in milliseconds that the element's tool tip remains visible.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value which specifies the amount of time in milliseconds 
+        /// that the tool tip remains visible. The default value is 5000.0.</value>
+        /// <dprop>
+        ///     <dpropField><see cref="ShowDurationProperty"/></dpropField>
+        ///     <dpropStylingName>show-duration</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public static readonly DependencyProperty ShowDurationProperty = DependencyProperty.RegisterAttached("ShowDuration", typeof(Double), typeof(ToolTipService),
             new PropertyMetadata<Double>(5000.0, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the IsEnabled attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.IsEnabled"/> attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowDuration"/>
+        /// attached property.</value>
+        /// <summary>
+        /// Gets or sets a value indicating whether a tool tip is displayed for the element.
+        /// </summary>
+        /// <value><see langword="true"/> if a tool tip is displayed for the element; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="true"/>.</value>
+        /// <dprop>
+        ///     <dpropField><see cref="IsEnabledProperty"/></dpropField>
+        ///     <dpropStylingName>enabled</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(Boolean), typeof(ToolTipService),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// The private access key for the IsOpen read-only dependency property.
+        /// The private access key for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.IsOpen"/> 
+        /// read-only attached property.
         /// </summary>
         internal static readonly DependencyPropertyKey IsOpenPropertyKey = DependencyProperty.RegisterReadOnly("IsOpen", typeof(Boolean), typeof(ToolTipService),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the IsOpen attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.IsOpen"/> 
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.IsOpen"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets a value indicating whether the element's tool tip is open.
+        /// </summary>
+        /// <value><see langword="true"/> if the tool tip is open; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsOpenProperty"/></dpropField>
+        ///     <dpropStylingName>open</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty IsOpenProperty = IsOpenPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Identifies the HasDropShadow attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.HasDropShadow"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.HasDropShadow"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating whether the element's tool tip has a drop shadow.
+        /// </summary>
+        /// <value><see langword="true"/> if the element's tool tip has a drop shadow; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="true"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="HasDropShadowProperty"/></dpropField>
+        ///     <dpropStylingName>has-drop-shadow</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty HasDropShadowProperty = DependencyProperty.RegisterAttached("HasDropShadow", typeof(Boolean), typeof(ToolTipService),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
-        
+
         /// <summary>
-        /// Identifies the ShowOnDisabled attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowOnDisabled"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowOnDisabled"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating whether the element's tool tip is displayed
+        /// even if the element is disabled.
+        /// </summary>
+        /// <value><see langword="true"/> if the element's tool tip is displayed if the element is disabled; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ShowOnDisabledProperty"/></dpropField>
+        ///     <dpropStylingName>show-on-disabled</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty ShowOnDisabledProperty = DependencyProperty.RegisterAttached("ShowOnDisabled", typeof(Boolean), typeof(ToolTipService),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the Placement attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.Placement"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowOnDisabled"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the placement mode for the element's tool tip.
+        /// </summary>
+        /// <value>A <see cref="PlacementMode"/> value which specifies how the element's tool tip is positioned
+        /// relative to its placement target. The default value is <see cref="PlacementMode.Mouse"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="PlacementProperty"/></dpropField>
+        ///     <dpropStylingName>placement</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty PlacementProperty = DependencyProperty.RegisterAttached("Placement", typeof(PlacementMode), typeof(ToolTipService),
             new PropertyMetadata<PlacementMode>(PlacementMode.Mouse, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the PlacementRectangle attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.PlacementRectangle"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.Placement"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the placement rectangle for the element's tool tip.
+        /// </summary>
+        /// <value>A <see cref="RectangleD"/> value which describes the area in device-independent pixels
+        /// relative to which the tool tip is positioned. The default value is <see cref="RectangleD.Empty"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="PlacementProperty"/></dpropField>
+        ///     <dpropStylingName>placement</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty PlacementRectangleProperty = DependencyProperty.RegisterAttached("PlacementRectangle", typeof(RectangleD), typeof(ToolTipService),
             new PropertyMetadata<RectangleD>(RectangleD.Empty, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the PlacementTarget attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.PlacementTarget"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.PlacementRectangle"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the placement rectangle for the element's tool tip.
+        /// </summary>
+        /// <value>The <see cref="UIElement"/> relative to which the tool tip will be positioned. The
+        /// default value is <see langword="null"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="PlacementTargetProperty"/></dpropField>
+        ///     <dpropStylingName>placement-target</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty PlacementTargetProperty = DependencyProperty.RegisterAttached("PlacementTarget", typeof(UIElement), typeof(ToolTipService),
             new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the ToolTip attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTip"/>
+        /// attached property.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTip"/>
+        /// attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the element's tool tip content.
+        /// </summary>
+        /// <value>An <see cref="Object"/> which represents the content of the element's tool tip, or
+        /// <see langword="null"/> if the element does not have a tool tip. The default value is <see langword="null"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ToolTipProperty"/></dpropField>
+        ///     <dpropStylingName>tool-tip</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
         public static readonly DependencyProperty ToolTipProperty = DependencyProperty.RegisterAttached("ToolTip", typeof(Object), typeof(ToolTipService),
             new PropertyMetadata<Object>(null, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the ToolTipOpening attached routed event.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/>
+        /// attached routed event.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the element's tool tip is opened.
+        /// </summary>
+        /// <revt>
+        ///     <revtField><see cref="ToolTipOpeningEvent"/></revtField>
+        ///     <revtStylingName>tool-tip-opening</revtStylingName>
+        ///     <revtStrategy>Direct</revtStrategy>
+        ///     <revtDelegate><see cref="UpfToolTipEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent ToolTipOpeningEvent = EventManager.RegisterRoutedEvent("ToolTipOpening", RoutingStrategy.Direct, 
             typeof(UpfToolTipEventHandler), typeof(ToolTipService));
 
         /// <summary>
-        /// Identifies the ToolTipClosing attached routed event.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/>
+        /// attached routed event.
         /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/>
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the element's tool tip is closed.
+        /// </summary>
+        /// <revt>
+        ///     <revtField><see cref="ToolTipClosingEvent"/></revtField>
+        ///     <revtStylingName>tool-tip-closing</revtStylingName>
+        ///     <revtStrategy>Direct</revtStrategy>
+        ///     <revtDelegate><see cref="UpfToolTipEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </AttachedEventComments>
         public static readonly RoutedEvent ToolTipClosingEvent = EventManager.RegisterRoutedEvent("ToolTipClosing", RoutingStrategy.Direct,
             typeof(UpfToolTipEventHandler), typeof(ToolTipService));
-        
+
         /// <summary>
-        /// Raises the ToolTipOpening attached event for the specified element.
+        /// Raises the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/>
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaiseToolTipOpening(DependencyObject element, RoutedEventData data)
         {
@@ -477,7 +720,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Raises the ToolTipClosing attached event for the specified element.
+        /// Raises the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/>
+        /// attached event for the specified element.
         /// </summary>
         internal static void RaiseToolTipClosing(DependencyObject element, RoutedEventData data)
         {

@@ -269,6 +269,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the text box's current keyboard mode.
         /// </summary>
+        /// <value>A <see cref="KeyboardMode"/> value which determines the kind of software keyboard
+        /// which is displayed by this text box on platforms which use software keyboard. The default
+        /// value is <see cref="KeyboardMode.Text"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="KeyboardModeProperty"/></dpropField>
+        ///     <dpropStylingName>keyboard-mode</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public KeyboardMode KeyboardMode
         {
             get { return GetValue<KeyboardMode>(KeyboardModeProperty); }
@@ -276,8 +286,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a <see cref="CharacterCasing"/> value which specifies the casing which is applies to the text box's text.
+        /// Gets or sets a <see cref="CharacterCasing"/> value which specifies the casing which is 
+        /// applied to the text box's text.
         /// </summary>
+        /// <value>A <see cref="CharacterCasing"/> value which specifies the casing which is 
+        /// applied to the text box's text. The default value is <see cref="CharacterCasing.Normal"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="CharacterCasingProperty"/></dpropField>
+        ///     <dpropStylingName>character-casing</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public CharacterCasing CharacterCasing
         {
             get { return GetValue<CharacterCasing>(CharacterCasingProperty); }
@@ -287,6 +307,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value specifying how the text box's text is aligned.
         /// </summary>
+        /// <value>A <see cref="TextAlignment"/> value which specifies how the text box's text is aligned.
+        /// The default value is <see cref="TextAlignment.Left"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TextAlignmentProperty"/></dpropField>
+        ///     <dpropStylingName>text-alignment</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public TextAlignment TextAlignment
         {
             get { return GetValue<TextAlignment>(TextAlignmentProperty); }
@@ -296,6 +325,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value specifying how the text box's text wraps when it reaches the edge of its container.
         /// </summary>
+        /// <value>A <see cref="TextWrapping"/> value which specifies how the text box's text is wrapped
+        /// when it reaches the edge of its container. The default value is <see cref="TextWrapping.NoWrap"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TextWrappingProperty"/></dpropField>
+        ///     <dpropStylingName>text-wrapping</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public TextWrapping TextWrapping
         {
             get { return GetValue<TextWrapping>(TextWrappingProperty); }
@@ -305,6 +343,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the total number of characters in the text box's text.
         /// </summary>
+        /// <value>An <see cref="Int32"/> value which represents the total number of characters
+        /// in the text box's text.</value>
         public Int32 TextLength
         {
             get
@@ -319,6 +359,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the maximum length of the text which is entered into the text box.
         /// </summary>
+        /// <value>An <see cref="Int32"/> value which represents the maximum length of the
+        /// text box's text, or 0 if the text has no maximum length. The default value is 0.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="MaxLengthProperty"/></dpropField>
+        ///     <dpropStylingName>max-length</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Int32 MaxLength
         {
             get { return GetValue<Int32>(MaxLengthProperty); }
@@ -326,8 +375,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the minimum number of visible lines.
+        /// </summary>
+        /// <value>An <see cref="Int32"/> value which represents the minimum number of lines
+        /// which will be displayed by the text box. The default value is 1.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="MinLinesProperty"/></dpropField>
+        ///     <dpropStylingName>min-lines</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Int32 MinLines
+        {
+            get { return GetValue<Int32>(MinLinesProperty); }
+            set { SetValue(MinLinesProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum number of visible lines.
+        /// </summary>
+        /// <value>An <see cref="Int32"/> which represents the maximum number of lines
+        /// which will be displayed by the text box. The default value is <see cref="Int32.MaxValue"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="MaxLinesProperty"/></dpropField>
+        ///     <dpropStylingName>max-lines</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Int32 MaxLines
+        {
+            get { return GetValue<Int32>(MaxLinesProperty); }
+            set { SetValue(MaxLinesProperty, value); }
+        }
+        
+        /// <summary>
         /// Gets the total number of lines in the text box's text.
         /// </summary>
+        /// <value>An <see cref="Int32"/> value which represents the total number of
+        /// line in the text box's text.</value>
         public Int32 LineCount
         {
             get
@@ -340,26 +427,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets the minimum number of visible lines.
-        /// </summary>
-        public Int32 MinLines
-        {
-            get { return GetValue<Int32>(MinLinesProperty); }
-            set { SetValue(MinLinesProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the maximum number of visible lines.
-        /// </summary>
-        public Int32 MaxLines
-        {
-            get { return GetValue<Int32>(MaxLinesProperty); }
-            set { SetValue(MaxLinesProperty, value); }
-        }
-
-        /// <summary>
         /// Gets or sets the current position of the insertion caret.
         /// </summary>
+        /// <value>A <see cref="Int32"/> value which represents the position of the insertion
+        /// caret within the text box's text.</value>
         public Int32 CaretIndex
         {
             get
@@ -379,6 +450,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the starting point of the selected text.
         /// </summary>
+        /// <value>A <see cref="Int32"/> value which represents the offset of the text selection
+        /// within the text box's text.</value>
         public Int32 SelectionStart
         {
             get
@@ -398,6 +471,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the length of the selected text.
         /// </summary>
+        /// <value>A <see cref="Int32"/> value which represents the length of the text selection.</value>
         public Int32 SelectionLength
         {
             get
@@ -415,8 +489,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
         
         /// <summary>
-        /// Identifies the Text dependency property.
+        /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="Text"/> dependency property.</value>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextBox),
             new PropertyMetadata<VersionedStringSource>(VersionedStringSource.Invalid, PropertyMetadataOptions.None, HandleTextChanged));
 
@@ -430,38 +505,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="CharacterCasing"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="CharacterCasing"/> dependency property.</value>
         public static readonly DependencyProperty CharacterCasingProperty = DependencyProperty.Register("CharacterCasing", typeof(CharacterCasing), typeof(TextBox),
             new PropertyMetadata<CharacterCasing>(CharacterCasing.Normal, PropertyMetadataOptions.None));
-        
+
         /// <summary>
         /// Identifies the <see cref="TextAlignment"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="TextAlignment"/> dependency property.</value>
         public static readonly DependencyProperty TextAlignmentProperty = DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextBox),
             new PropertyMetadata<TextAlignment>(TextAlignment.Left, PropertyMetadataOptions.AffectsMeasure, HandleTextAlignmentChanged));
 
         /// <summary>
         /// Identifies the <see cref="TextWrapping"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="TextWrapping"/> dependency property.</value>
         public static readonly DependencyProperty TextWrappingProperty = DependencyProperty.Register("TextWrapping", typeof(TextWrapping), typeof(TextBox),
             new PropertyMetadata<TextWrapping>(TextWrapping.NoWrap, PropertyMetadataOptions.AffectsMeasure, HandleTextWrappingChanged));
-        
+
+        /// <summary>
+        /// Identifies the <see cref="MaxLength"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="MaxLength"/> dependency property.</value>
+        public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
+            new PropertyMetadata<Int32>(CommonBoxedValues.Int32.Zero, PropertyMetadataOptions.None));
+
         /// <summary>
         /// Identifies the <see cref="MinLines"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="MinLines"/> dependency property.</value>
         public static readonly DependencyProperty MinLinesProperty = DependencyProperty.Register("MinLines", typeof(Int32), typeof(TextBox),
             new PropertyMetadata<Int32>(1, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="MaxLines"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="MaxLines"/> dependency property.</value>
         public static readonly DependencyProperty MaxLinesProperty = DependencyProperty.Register("MaxLines", typeof(Int32), typeof(TextBox),
             new PropertyMetadata<Int32>(Int32.MaxValue, PropertyMetadataOptions.AffectsMeasure));
-
-        /// <summary>
-        /// Identifies the <see cref="MaxLength"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register("MaxLength", typeof(Int32), typeof(TextBox),
-            new PropertyMetadata<Int32>(CommonBoxedValues.Int32.Zero, PropertyMetadataOptions.None));
 
         /// <inheritdoc/>
         internal override void LineUpInternal()
@@ -491,6 +572,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + fontLineHeight);
+        }
+
+        /// <summary>
+        /// Gets or sets the text box's text.
+        /// </summary>
+        /// <value>A <see cref="String"/> that represents the text box's text. The default
+        /// value is <see langword="null"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TextProperty"/></dpropField>
+        ///     <dpropStylingName>text</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        internal String Text
+        {
+            get { return GetValue<VersionedStringSource>(TextProperty).ToString(); }
+            set { SetValue(TextProperty, new VersionedStringSource(value)); }
         }
 
         /// <inheritdoc/>

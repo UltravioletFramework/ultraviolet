@@ -134,6 +134,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the character which is used to mask the entered password.
         /// </summary>
+        /// <value>A <see cref="Char"/> value which represents the character that is used
+        /// to make the password box's password. The default value is '*'.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="PasswordCharProperty"/></dpropField>
+        ///     <dpropStylingName>password-char</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Char PasswordChar
         {
             get { return GetValue<Char>(PasswordCharProperty); }
@@ -143,6 +152,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets an instance of <see cref="SecureString"/> that represents the password box's current content.
         /// </summary>
+        /// <value>A <see cref="SecureString"/> that represents the password box's current content.</value>
         public SecureString SecurePassword
         {
             get
@@ -157,6 +167,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value indicating whether the selection highlight is displayed when the password box does not have focus.
         /// </summary>
+        /// <value><see langword="true"/> if the selection highlight is displayed when the text box does not have focus;
+        /// otherwise, <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="IsInactiveSelectionHighlightEnabledProperty"/></dpropField>
+        ///		<dpropStylingName>inactive-selection-highlight-enabled</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsInactiveSelectionHighlightEnabled
         {
             get { return GetValue<Boolean>(IsInactiveSelectionHighlightEnabledProperty); }
@@ -166,6 +185,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets a value indicating whether the password box has focus and selected text.
         /// </summary>
+        /// <value><see langword="true"/> if the password box is focused and has selected text; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="IsSelectionActiveProperty"/></dpropField>
+        ///		<dpropStylingName>selection-active</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsSelectionActive
         {
             get { return GetValue<Boolean>(IsSelectionActiveProperty); }
@@ -174,6 +202,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the maximum length of the password which is entered into the password box.
         /// </summary>
+        /// <value>An <see cref="Int32"/> which specifies the maximum length of the password which is entered
+        /// into the password box, or 0 if the password has no maximum length. The default value is 0.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="MaxLengthProperty"/></dpropField>
+        ///     <dpropStylingName>max-length</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Int32 MaxLength
         {
             get { return GetValue<Int32>(MaxLengthProperty); }
@@ -183,6 +220,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the password box's password changes.
         /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="PasswordChangedEvent"/></revtField>
+        ///     <revtStylingName>password-changed</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
         public event UpfRoutedEventHandler PasswordChanged
         {
             add { AddHandler(PasswordChangedEvent, value); }
@@ -192,30 +237,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="PasswordChar"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="PasswordChar"/> dependency property.</value>
         public static readonly DependencyProperty PasswordCharProperty = DependencyProperty.Register("PasswordChar", typeof(Char), typeof(PasswordBox),
             new PropertyMetadata<Char>('*', PropertyMetadataOptions.None, HandlePasswordCharChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsInactiveSelectionHighlightEnabled"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="IsInactiveSelectionHighlightEnabled"/> dependency property.</value>
         public static readonly DependencyProperty IsInactiveSelectionHighlightEnabledProperty = 
             TextBoxBase.IsInactiveSelectionHighlightEnabledProperty.AddOwner(typeof(PasswordBox));
 
         /// <summary>
         /// Identifies the <see cref="IsSelectionActive"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="IsSelectionActive"/> dependency property.</value>
         public static readonly DependencyProperty IsSelectionActiveProperty =
             TextBoxBase.IsSelectionActiveProperty.AddOwner(typeof(PasswordBox));
 
         /// <summary>
         /// Identifies the <see cref="MaxLength"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="MaxLength"/> dependency property.</value>
         public static readonly DependencyProperty MaxLengthProperty = 
             TextBox.MaxLengthProperty.AddOwner(typeof(PasswordBox));
 
         /// <summary>
         /// Identifies the <see cref="PasswordChanged"/> routed event.
         /// </summary>
+        /// <value>The identifier for the <see cref="PasswordChanged"/> routed event.</value>
         public static readonly RoutedEvent PasswordChangedEvent = EventManager.RegisterRoutedEvent("PasswordChanged",
             RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(PasswordBox));
 

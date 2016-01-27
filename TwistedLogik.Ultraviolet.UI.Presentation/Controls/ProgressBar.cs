@@ -35,96 +35,150 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the image used to draw the progress bar's background.
         /// </summary>
+        /// <value>A <see cref="SourcedImage"/> value which represents the image used
+        /// to draw the progress bar's background. The default value is an invalid image.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="BarImageProperty"/></dpropField>
+        ///     <dpropStylingName>bar-image</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public SourcedImage BarImage
         {
             get { return GetValue<SourcedImage>(BarImageProperty); }
-            set { SetValue<SourcedImage>(BarImageProperty, value); }
+            set { SetValue(BarImageProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the color of the progress bar's background.
         /// </summary>
+        /// <value>A <see cref="Color"/> value which represents the color used
+        /// to draw the progress bar's background. The default value is <see cref="Color.White"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="BarColorProperty"/></dpropField>
+        ///     <dpropStylingName>bar-color</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Color BarColor
         {
             get { return GetValue<Color>(BarColorProperty); }
-            set { SetValue<Color>(BarColorProperty, value); }
+            set { SetValue(BarColorProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the image used to draw the progress bar's fill.
         /// </summary>
+        /// <value>A <see cref="SourcedImage"/> value which represents the image used
+        /// to draw the progress bar's fill. The default value is an invalid image.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="FillImageProperty"/></dpropField>
+        ///     <dpropStylingName>fill-image</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public SourcedImage FillImage
         {
             get { return GetValue<SourcedImage>(FillImageProperty); }
-            set { SetValue<SourcedImage>(FillImageProperty, value); }
+            set { SetValue(FillImageProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the color of the progress bar's fill.
         /// </summary>
+        /// <value>A <see cref="Color"/> value which represents the color used
+        /// to draw the progress bar's fill. The default value is <see cref="Color.White"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="FillColorProperty"/></dpropField>
+        ///     <dpropStylingName>fill-color</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Color FillColor
         {
             get { return GetValue<Color>(FillColorProperty); }
-            set { SetValue<Color>(FillColorProperty, value); }
+            set { SetValue(FillColorProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the progress bar's overlay image.
         /// </summary>
+        /// <value>A <see cref="SourcedImage"/> value which represents the image used
+        /// to draw the progress bar's overlay. The default value is an invalid image.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="OverlayImageProperty"/></dpropField>
+        ///     <dpropStylingName>overlay-image</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public SourcedImage OverlayImage
         {
             get { return GetValue<SourcedImage>(OverlayImageProperty); }
-            set { SetValue<SourcedImage>(OverlayImageProperty, value); }
+            set { SetValue(OverlayImageProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the color of the progress bar's overlay.
         /// </summary>
+        /// <value>A <see cref="Color"/> value which represents the color used
+        /// to draw the progress bar's overlay. The default value is <see cref="Color.White"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="OverlayColorProperty"/></dpropField>
+        ///     <dpropStylingName>overlay-color</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Color OverlayColor
         {
             get { return GetValue<Color>(OverlayColorProperty); }
-            set { SetValue<Color>(OverlayColorProperty, value); }
+            set { SetValue(OverlayColorProperty, value); }
         }
 
         /// <summary>
         /// Identifies the <see cref="BarImage"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'bar-image'.</remarks>
+        /// <value>The identifier for the <see cref="BarImage"/> dependency property.</value>
         public static readonly DependencyProperty BarImageProperty = DependencyProperty.Register("BarImage", typeof(SourcedImage), typeof(ProgressBar),
             new PropertyMetadata<SourcedImage>(HandleBarImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="BarColor"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'bar-color'.</remarks>
+        /// <value>The identifier for the <see cref="BarColor"/> dependency property.</value>
         public static readonly DependencyProperty BarColorProperty = DependencyProperty.Register("BarColor", typeof(Color), typeof(ProgressBar),
             new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White));
 
         /// <summary>
         /// Identifies the <see cref="FillImage"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'fill-image'.</remarks>
+        /// <value>The identifier for the <see cref="FillImage"/> dependency property.</value>
         public static readonly DependencyProperty FillImageProperty = DependencyProperty.Register("FillImage", typeof(SourcedImage), typeof(ProgressBar),
             new PropertyMetadata<SourcedImage>(HandleFillImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="FillColor"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'fill-color'.</remarks>
+        /// <value>The identifier for the <see cref="FillColor"/> dependency property.</value>
         public static readonly DependencyProperty FillColorProperty = DependencyProperty.Register("FillColor", typeof(Color), typeof(ProgressBar),
             new PropertyMetadata<Color>(Color.Lime));
 
         /// <summary>
         /// Identifies the <see cref="OverlayImage"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'overlay-image'.</remarks>
+        /// <value>The identifier for the <see cref="OverlayImage"/> dependency property.</value>
         public static readonly DependencyProperty OverlayImageProperty = DependencyProperty.Register("OverlayImage", typeof(SourcedImage), typeof(ProgressBar),
             new PropertyMetadata<SourcedImage>(HandleOverlayImageChanged));
 
         /// <summary>
         /// Identifies the <see cref="OverlayColor"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'overlay-color'.</remarks>
+        /// <value>The identifier for the <see cref="OverlayColor"/> dependency property.</value>
         public static readonly DependencyProperty OverlayColorProperty = DependencyProperty.Register("OverlayColor", typeof(Color), typeof(ProgressBar),
             new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White));
 

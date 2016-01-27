@@ -27,18 +27,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the text area's text.
+        /// Gets the text block's text.
         /// </summary>
-        /// <returns>A <see cref="String"/> instance containing the text area's text.</returns>
+        /// <returns>A <see cref="String"/> instance containing the text block's text.</returns>
         public String GetText()
         {
             return GetValue<VersionedStringSource>(TextProperty).ToString();
         }
 
         /// <summary>
-        /// Gets the text area's text.
+        /// Gets the text block's text.
         /// </summary>
-        /// <param name="stringBuilder">A <see cref="StringBuilder"/> instance to populate with the text area's text.</param>
+        /// <param name="stringBuilder">A <see cref="StringBuilder"/> instance to populate with the text block's text.</param>
         public void GetText(StringBuilder stringBuilder)
         {
             Contract.Require(stringBuilder, "stringBuilder");
@@ -50,29 +50,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the text area's text.
+        /// Sets the text block's text.
         /// </summary>
-        /// <param name="value">A <see cref="String"/> instance to set as the text area's text.</param>
+        /// <param name="value">A <see cref="String"/> instance to set as the text block's text.</param>
         public void SetText(String value)
         {
             SetValue(TextProperty, new VersionedStringSource(value));
         }
 
         /// <summary>
-        /// Sets the text area's text.
+        /// Sets the text block's text.
         /// </summary>
-        /// <param name="value">A <see cref="StringBuilder"/> instance whose contents will be set as the text area's text.</param>
+        /// <param name="value">A <see cref="StringBuilder"/> instance whose contents will be set as the text block's text.</param>
         public void SetText(StringBuilder value)
         {
             SetValue(TextProperty, (value == null) ? VersionedStringSource.Invalid : new VersionedStringSource(value.ToString()));
         }
 
         /// <summary>
-        /// Identifies the Text dependency property.
+        /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'text'.</remarks>
+        /// <value>The identifier for the <see cref="Text"/> dependency property.</value>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextBlock),
             new PropertyMetadata<VersionedStringSource>(VersionedStringSource.Invalid, PropertyMetadataOptions.AffectsMeasure, HandleTextChanged));
+
+        /// <summary>
+        /// Gets or sets the text block's text.
+        /// </summary>
+        /// <value>A <see cref="String"/> that represents the text block's text. The default
+        /// value is <see langword="null"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TextProperty"/></dpropField>
+        ///     <dpropStylingName>text</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        internal String Text
+        {
+            get { return GetValue<VersionedStringSource>(TextProperty).ToString(); }
+            set { SetValue(TextProperty, new VersionedStringSource(value)); }
+        }
 
         /// <inheritdoc/>
         protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)

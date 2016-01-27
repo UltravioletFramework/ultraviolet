@@ -41,16 +41,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the number of decimal places that are displayed by the control.
         /// </summary>
+        /// <value>An <see cref="Int32"/> value which specifies the number of decimal places
+        /// that are displayed by the control.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="DecimalPlacesProperty"/></dpropField>
+        ///     <dpropStylingName>decimal-places</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Int32 DecimalPlaces
         {
             get { return GetValue<Int32>(DecimalPlacesProperty); }
-            set { SetValue<Int32>(DecimalPlacesProperty, value); }
+            set { SetValue(DecimalPlacesProperty, value); }
         }
 
         /// <summary>
         /// Identifies the <see cref="DecimalPlaces"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'decimal-places'.</remarks>
+        /// <value>The identifier for the <see cref="DecimalPlaces"/> dependency property.</value>
         public static readonly DependencyProperty DecimalPlacesProperty = DependencyProperty.Register("DecimalPlaces", typeof(Int32), typeof(NumericUpDown),
             new PropertyMetadata<Int32>(HandleDecimalPlacesChanged));
 

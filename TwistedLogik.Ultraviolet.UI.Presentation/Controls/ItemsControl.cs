@@ -57,6 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the <see cref="ItemContainerGenerator"/> for this control.
         /// </summary>
+        /// <value>The <see cref="ItemContainerGenerator"/> which generates this control's item containers.</value>
         public ItemContainerGenerator ItemContainerGenerator
         {
             get { return itemContainerGenerator; }
@@ -65,6 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the collection that contains the control's items.
         /// </summary>
+        /// <value>A <see cref="ItemCollection"/> that contains the control's items.</value>
         public ItemCollection Items
         {
             get { return items; }
@@ -73,25 +75,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets the collection which is used to generate the control's items.
         /// </summary>
+        /// <value>An <see cref="IEnumerable"/> which is used to generate the control's items.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ItemsSourceProperty"/></dpropField>
+        ///     <dpropStylingName>items-source</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public IEnumerable ItemsSource
         {
             get { return GetValue<IEnumerable>(ItemsSourceProperty); }
-            set { SetValue<IEnumerable>(ItemsSourceProperty, value); }
+            set { SetValue(ItemsSourceProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the formatting string which is used to format the control's items,
         /// if they are displayed as strings.
         /// </summary>
+        /// <value>A format string that specifies how to format the control's items. The default
+        /// value is <see langword="null"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ItemStringFormatProperty"/></dpropField>
+        ///     <dpropStylingName>item-string-format</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public String ItemStringFormat
         {
             get { return GetValue<String>(ItemStringFormatProperty); }
-            set { SetValue<String>(ItemStringFormatProperty, value); }
+            set { SetValue(ItemStringFormatProperty, value); }
         }
 
         /// <summary>
         /// Gets a value indicating whether the control has any items.
         /// </summary>
+        /// <value><see langword="true"/> if the control has items; otherwise, <see langword="false"/>.
+        /// The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="HasItemsProperty"/></dpropField>
+        ///     <dpropStylingName>has-items</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean HasItems
         {
             get { return GetValue<Boolean>(HasItemsProperty); }
@@ -100,27 +128,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="ItemsSource"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'items-source'.</remarks>
+        /// <value>The identifier for the <see cref="ItemsSource"/> dependency property.</value>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ItemsControl),
             new PropertyMetadata<IEnumerable>(HandleItemsSourceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ItemStringFormat"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'item-string-format'.</remarks>
+        /// <value>The identifier for the <see cref="ItemStringFormat"/> dependency property.</value>
         public static readonly DependencyProperty ItemStringFormatProperty = DependencyProperty.Register("ItemStringFormat", typeof(String), typeof(ItemsControl),
             new PropertyMetadata<String>(HandleItemStringFormatChanged));
 
         /// <summary>
         /// The private access key for the <see cref="HasItems"/> read-only dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'has-items'.</remarks>
         private static readonly DependencyPropertyKey HasItemsPropertyKey = DependencyProperty.RegisterReadOnly("HasItems", typeof(Boolean), typeof(ItemsControl),
             new PropertyMetadata<Boolean>());
 
         /// <summary>
         /// Identifies the <see cref="HasItems"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="HasItems"/> dependency property.</value>
         public static readonly DependencyProperty HasItemsProperty = HasItemsPropertyKey.DependencyProperty;
 
         /// <summary>

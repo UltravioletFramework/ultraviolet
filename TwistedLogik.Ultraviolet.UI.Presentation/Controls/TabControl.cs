@@ -36,6 +36,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a <see cref="Dock"/> value which specifies how the tab headers are positioned relative to their content.
         /// </summary>
+        /// <value>A <see cref="Dock"/> value which specifies how the tab headers are positioned relative to their content.
+        /// The default value is <see cref="Dock.Top"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TabStripPlacementProperty"/></dpropField>
+        ///     <dpropStylingName>tab-strip-placement</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Dock TabStripPlacement
         {
             get { return GetValue<Dock>(TabStripPlacementProperty); }
@@ -45,6 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="TabStripPlacement"/> dependency property.
         /// </summary>
+        /// <value>The identifier for the <see cref="TabStripPlacement"/> dependency property.</value>
         public static readonly DependencyProperty TabStripPlacementProperty = DependencyProperty.Register("TabStripPlacement", typeof(Dock), typeof(TabControl),
             new PropertyMetadata<Dock>(Dock.Top, HandleTabStripPlacementPropertyChanged));
 

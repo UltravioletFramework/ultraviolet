@@ -38,6 +38,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value indicating whether the tab item is currently selected.
         /// </summary>
+        /// <value><see langword="true"/> if the tab item is currently selected; otherwise, 
+        /// <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsSelectedProperty"/></dpropField>
+        ///     <dpropStylingName>selected</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean IsSelected
         {
             get { return GetValue<Boolean>(IsSelectedProperty); }
@@ -47,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="IsSelected"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'selected'.</remarks>
+        /// <value>The identifier for the <see cref="IsSelected"/> dependency property.</value>
         public static readonly DependencyProperty IsSelectedProperty = Selector.IsSelectedProperty.AddOwner(typeof(TabItem),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsSelectedChanged));
 

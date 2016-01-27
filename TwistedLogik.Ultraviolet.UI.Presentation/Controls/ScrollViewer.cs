@@ -151,15 +151,80 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets or sets a value indicating whether this scroll viewer applies a clipping rectangle to its content pane.
         /// </summary>
+        /// <value><see langword="true"/> if the scroll viewer's content is clipped; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ContentClippedProperty"/></dpropField>
+        ///     <dpropStylingName>content-clipped</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Boolean ContentClipped
         {
             get { return GetValue<Boolean>(ContentClippedProperty); }
             set { SetValue(ContentClippedProperty, value); }
         }
+        
+        /// <summary>
+        /// Gets or sets the margin which is applied to the scroll viewer's content pane.
+        /// </summary>
+        /// <value>A <see cref="Thickness"/> value which represents the margin that is applied
+        /// to the scroll viewer's content pane.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ContentMarginProperty"/></dpropField>
+        ///     <dpropStylingName>content-margin</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Thickness ContentMargin
+        {
+            get { return GetValue<Thickness>(ContentMarginProperty); }
+            set { SetValue(ContentMarginProperty, value); }
+        }
+        
+        /// <summary>
+        /// Gets or sets a value specifying the visibility of the scroll viewer's horizontal scroll bar.
+        /// </summary>
+        /// <value>A <see cref="ScrollBarVisibility"/> value that specifies the visibility of the scroll
+        /// viewer's horizontal scroll bar. The default value is <see cref="ScrollBarVisibility.Disabled"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="HorizontalScrollBarVisibilityProperty"/></dpropField>
+        ///     <dpropStylingName>hscrollbar-visibility</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public ScrollBarVisibility HorizontalScrollBarVisibility
+        {
+            get { return GetValue<ScrollBarVisibility>(HorizontalScrollBarVisibilityProperty); }
+            set { SetValue(HorizontalScrollBarVisibilityProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value specifying the visibility of the scroll viewer's vertical scroll bar.
+        /// </summary>
+        /// <value>A <see cref="ScrollBarVisibility"/> value that specifies the visibility of the scroll
+        /// viewer's vertical scroll bar. The default value is <see cref="ScrollBarVisibility.Disabled"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="VerticalScrollBarVisibilityProperty"/></dpropField>
+        ///     <dpropStylingName>vscrollbar-visibility</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public ScrollBarVisibility VerticalScrollBarVisibility
+        {
+            get { return GetValue<ScrollBarVisibility>(VerticalScrollBarVisibilityProperty); }
+            set { SetValue(VerticalScrollBarVisibilityProperty, value); }
+        }
 
         /// <summary>
         /// Gets the width of the content which is being displayed by the scroll viewer.
         /// </summary>
+        /// <value>A <see cref="Double"/> that represents the width in device-independent
+        /// pixels of the content which is being displayed by the scroll viewer.</value>
         public Double ExtentWidth
         {
             get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ExtentWidth; }
@@ -168,6 +233,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the height of the content which is being displayed by the scroll viewer.
         /// </summary>
+        /// <value>A <see cref="Double"/> that represents the height in device-independent
+        /// pixels of the content which is being displayed by the scroll viewer.</value>
         public Double ExtentHeight
         {
             get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ExtentHeight; }
@@ -176,6 +243,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the width of the scroll viewer's scrollable area.
         /// </summary>
+        /// <value>A <see cref="Double"/> that represents the width in device-independent
+        /// pixels of the scroll viewer's scrollable area.</value>
         public Double ScrollableWidth
         {
             get { return ExtentWidth - ViewportWidth; }
@@ -184,6 +253,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the height of the scroll viewer's scrollable area.
         /// </summary>
+        /// <value>A <see cref="Double"/> that represents the height in device-independent
+        /// pixels of the scroll viewer's scrollable area.</value>
         public Double ScrollableHeight
         {
             get { return ExtentHeight - ViewportHeight; }
@@ -192,6 +263,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the width of the scroll viewer's viewport.
         /// </summary>
+        /// <value>A <see cref="Double"/> that represents the width in device-independent
+        /// pixels of the scroll viewer's viewport.</value>
         public Double ViewportWidth
         {
             get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ViewportWidth; }
@@ -200,14 +273,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the height of the scroll viewer's viewport.
         /// </summary>
+        /// <value>A <see cref="Double"/> that represents the height in device-independent
+        /// pixels of the scroll viewer's viewport.</value>
         public Double ViewportHeight
         {
             get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ViewportHeight; }
         }
-         
+
         /// <summary>
         /// Gets the horizontal offset of the scrolled content.
         /// </summary>
+        /// <value>A <see cref="Double"/> that represents the horizontal offset
+        /// of the scrolled content in device-independent pixels.</value>
         public Double HorizontalOffset
         {
             get { return PART_HScroll == null || !PART_HScroll.IsEnabled ? 0 : PART_HScroll.Value; }
@@ -216,41 +293,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets the vertical offset of the scrolled content.
         /// </summary>
+        /// <value>A <see cref="Double"/> that represents the vertical offset
+        /// of the scrolled content in device-independent pixels.</value>
         public Double VerticalOffset
         {
             get { return PART_VScroll == null || !PART_VScroll.IsEnabled ? 0 : PART_VScroll.Value; }
         }
 
         /// <summary>
-        /// Gets or sets a value specifying the visibility of the scroll viewer's horizontal scroll bar.
-        /// </summary>
-        public ScrollBarVisibility HorizontalScrollBarVisibility
-        {
-            get { return GetValue<ScrollBarVisibility>(HorizontalScrollBarVisibilityProperty); }
-            set { SetValue<ScrollBarVisibility>(HorizontalScrollBarVisibilityProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value specifying the visibility of the scroll viewer's vertical scroll bar.
-        /// </summary>
-        public ScrollBarVisibility VerticalScrollBarVisibility
-        {
-            get { return GetValue<ScrollBarVisibility>(VerticalScrollBarVisibilityProperty); }
-            set { SetValue<ScrollBarVisibility>(VerticalScrollBarVisibilityProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the margin which is applied to the scroll viewer's content pane.
-        /// </summary>
-        public Thickness ContentMargin
-        {
-            get { return GetValue<Thickness>(ContentMarginProperty); }
-            set { SetValue(ContentMarginProperty, value); }
-        }
-
-        /// <summary>
         /// Occurs when the scroll viewer's scrolling properties are changed.
         /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="ScrollChangedEvent"/></revtField>
+        ///     <revtStylingName>scroll-changed</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfScrollChangedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
         public event UpfScrollChangedEventHandler ScrollChanged
         {
             add { AddHandler(ScrollChangedEvent, value); }
@@ -260,34 +320,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="ContentClipped"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'content-clipped'.</remarks>
+        /// <value>The identifier for the <see cref="ContentClipped"/> dependency property.</value>
         public static readonly DependencyProperty ContentClippedProperty = DependencyProperty.Register("ContentClipped", typeof(Boolean), typeof(ScrollViewer),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleContentClippedChanged));
 
         /// <summary>
         /// Identifies the <see cref="ContentMargin"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'content-margin'.</remarks>
+        /// <value>The identifier for the <see cref="ContentMargin"/> dependency property.</value>
         public static readonly DependencyProperty ContentMarginProperty = DependencyProperty.Register("ContentMargin", typeof(Thickness), typeof(ScrollViewer),
             new PropertyMetadata<Thickness>(PresentationBoxedValues.Thickness.Zero, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'hscrollbar-visibility'.</remarks>
+        /// <value>The identifier for the <see cref="HorizontalScrollBarVisibility"/> dependency property.</value>
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", "hscrollbar-visibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
             new PropertyMetadata<ScrollBarVisibility>(PresentationBoxedValues.ScrollBarVisibility.Disabled, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="VerticalScrollBarVisibility"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'vscrollbar-visibility'.</remarks>
+        /// <value>The identifier for the <see cref="VerticalScrollBarVisibility"/> dependency property.</value>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", "vscrollbar-visibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
             new PropertyMetadata<ScrollBarVisibility>(PresentationBoxedValues.ScrollBarVisibility.Visible, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="ScrollChanged"/> event.
         /// </summary>
+        /// <value>The identifier for the <see cref="ScrollChanged"/> routed event.</value>
         public static readonly RoutedEvent ScrollChangedEvent = EventManager.RegisterRoutedEvent("ScrollChanged", RoutingStrategy.Bubble, 
             typeof(UpfScrollChangedEventHandler), typeof(ScrollViewer));
 

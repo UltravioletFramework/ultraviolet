@@ -33,32 +33,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets or sets the amount of time, in milliseconds, that the button waits prior to 
         /// beginning its repetitions.
         /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the amount of time, in milliseconds,
+        /// that the button waits prior to beginning its repetitions.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="DelayProperty"/></dpropField>
+        ///     <dpropStylingName>delay</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Double Delay
         {
             get { return GetValue<Double>(DelayProperty); }
-            set { SetValue<Double>(DelayProperty, value); }
+            set { SetValue(DelayProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the interval between repeated <see cref="Primitives.ButtonBase.Click"/> events, in milliseconds.
         /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the interval, in milliseconds, 
+        /// between <see cref="Primitives.ButtonBase.Click"/> events.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IntervalProperty"/></dpropField>
+        ///     <dpropStylingName>interval</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
         public Double Interval
         {
             get { return GetValue<Double>(IntervalProperty); }
-            set { SetValue<Double>(IntervalProperty, value); }
+            set { SetValue(IntervalProperty, value); }
         }
 
         /// <summary>
         /// Identifies the <see cref="Delay"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'delay'.</remarks>
+        /// <value>The identifier for the <see cref="Delay"/> dependency property.</value>
         public static readonly DependencyProperty DelayProperty = DependencyProperty.Register("Delay", typeof(Double), typeof(RepeatButton),
             new PropertyMetadata<Double>(SystemParameters.KeyboardDelay));
-        
+
         /// <summary>
         /// Identifies the <see cref="Interval"/> dependency property.
         /// </summary>
-        /// <remarks>The styling name of this dependency property is 'interval'.</remarks>
+        /// <value>The identifier for the <see cref="Interval"/> dependency property.</value>
         public static readonly DependencyProperty IntervalProperty = DependencyProperty.Register("Interval", typeof(Double), typeof(RepeatButton),
             new PropertyMetadata<Double>(SystemParameters.KeyboardSpeed));
 
