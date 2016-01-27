@@ -59,10 +59,6 @@
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -70,6 +66,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Version.cs">
@@ -101,8 +100,8 @@
       <Name>TwistedLogik.Ultraviolet (Desktop)</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29.csproj">
-      <Project>{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}</Project>
-      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29</Name>
+      <Project>{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -153,7 +152,7 @@
   <Import Project="..\TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>..\..\..\Documentation\msxsl.exe "TwistedLogik.Ultraviolet.UI.Presentation.XML" "..\..\..\Documentation\transforms.xslt" -o "TwistedLogik.Ultraviolet.UI.Presentation.XML"</PostBuildEvent>
+    <PostBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">..\..\..\Documentation\msxsl.exe "TwistedLogik.Ultraviolet.UI.Presentation.XML" "..\..\..\Documentation\transforms.xslt" -o "TwistedLogik.Ultraviolet.UI.Presentation.XML"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
