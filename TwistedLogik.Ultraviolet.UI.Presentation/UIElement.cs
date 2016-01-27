@@ -1175,7 +1175,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// The private access key for the <see cref="IsFocused"/> read-only dependency property.
         /// </summary>
         internal static readonly DependencyPropertyKey IsFocusedPropertyKey = DependencyProperty.RegisterReadOnly("IsFocused", typeof(Boolean), typeof(UIElement),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsFocusedChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsFocused"/> dependency property.
@@ -2672,6 +2672,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             element.OnIsHitTestVisibleChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsFocused"/> dependency property changes.
+        /// </summary>
+        private static void HandleIsFocusedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            var uiElement = (UIElement)dobj;
+
+            if (newValue)
+            {
+                var data = new RoutedEventData(dobj);
+                uiElement.OnGotFocus(ref data);
+            }
+            else
+            {
+                var data = new RoutedEventData(dobj);
+                uiElement.OnLostFocus(ref data);
+            }
         }
 
         /// <summary>

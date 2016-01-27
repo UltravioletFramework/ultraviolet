@@ -531,21 +531,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
-        /// Invoked whien the <see cref="FocusManager.GotFocusEvent"/> attached routed event occurs.
+        /// Invoked when the <see cref="FocusManager.GotFocusEvent"/> attached routed event occurs.
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
         protected virtual void OnGotFocus(ref RoutedEventData data)
         {
-
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(GotFocusEvent);
+            evtDelegate(this, ref data);
         }
 
         /// <summary>
-        /// Invoked whien the <see cref="FocusManager.LostFocusEvent"/> attached routed event occurs.
+        /// Invoked when the <see cref="FocusManager.LostFocusEvent"/> attached routed event occurs.
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
         protected virtual void OnLostFocus(ref RoutedEventData data)
         {
-
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(LostFocusEvent);
+            evtDelegate(this, ref data);
         }
 
         /// <summary>
