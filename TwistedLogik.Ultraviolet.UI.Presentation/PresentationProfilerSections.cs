@@ -8,8 +8,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public static class PresentationProfilerSections
     {
         /// <summary>
-        /// Identifies the profiler section that starts at the beginning of <see cref="PresentationFoundation.PerformLayout"/> and
-        /// ends at the end of that method.
+        /// Identifies the profiler section that starts at the beginning of layout processing and ends
+        /// when layout processing is complete.
         /// </summary>
         public const String Layout = "UPF_Layout";
 

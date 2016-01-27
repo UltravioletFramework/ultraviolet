@@ -48,11 +48,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        public Boolean Equals(DependencyValue obj)
+        public Boolean Equals(DependencyValue other)
         {
             return 
-                this.Value == obj.Value &&
-                this.Culture == obj.Culture;
+                this.Value == other.Value &&
+                this.Culture == other.Culture;
         }
 
         /// <summary>

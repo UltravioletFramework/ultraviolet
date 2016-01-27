@@ -17,10 +17,10 @@ namespace TwistedLogik.Ultraviolet.Graphics
     public sealed partial class TextureAtlasProcessor : ContentProcessor<XDocument, TextureAtlas>
     {
         /// <inheritdoc/>
-        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument obj, Boolean delete)
+        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
         {
             // Pack the texture atlas.
-            var definition = new TextureAtlasDefinition(obj, manager, metadata.AssetPath);
+            var definition = new TextureAtlasDefinition(input, manager, metadata.AssetPath);
 
             var outputWidth = 0;
             var outputHeight = 0;

@@ -53,10 +53,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Performs an action for each of the specified object's visual children which are of the specified type.
         /// </summary>
+        /// <typeparam name="TChild">The type of child to retrieve.</typeparam>
         /// <param name="dobj">The parent object.</param>
         /// <param name="state">A state value to pass to the performed action.</param>
         /// <param name="action">The action to perform on each of the specified object's visual children.</param>
-        public static void ForEachChild<T>(DependencyObject dobj, Object state, Action<T, Object> action) where T : class
+        public static void ForEachChild<TChild>(DependencyObject dobj, Object state, Action<TChild, Object> action) where TChild : class
         {
             Contract.Require(dobj, "dobj");
             Contract.Require(action, "action");
@@ -64,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             var children = GetChildrenCount(dobj);
             for (int i = 0; i < children; i++)
             {
-                var child = GetChild(dobj, i) as T;
+                var child = GetChild(dobj, i) as TChild;
                 if (child != null)
                 {
                     action(child, state);
@@ -162,11 +163,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets the first visual child of <paramref name="dobj"/> which matches the specified predicate.
         /// </summary>
+        /// <typeparam name="TChild">The type of child to retrieve.</typeparam>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate children. If <paramref name="predicate"/> is not null,
         /// any children which cause it to return <c>false</c> will be skipped over by this method.</param>
         /// <returns>The first child of <paramref name="dobj"/> in the visual tree which matches the specified predicate, or <c>null</c> if no such child exists.</returns>
-        public static DependencyObject GetFirstChild<T>(DependencyObject dobj, Predicate<T> predicate = null) where T : DependencyObject
+        public static DependencyObject GetFirstChild<TChild>(DependencyObject dobj, Predicate<TChild> predicate = null) where TChild : DependencyObject
         {
             Contract.Require(dobj, "dobj");
 
@@ -176,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 
             for (int i = 0; i < children; i++)
             {
-                var child = GetChild(dobj, i) as T;
+                var child = GetChild(dobj, i) as TChild;
                 if (child != null && (predicate == null || predicate(child)))
                     return child;
             }
@@ -199,11 +201,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets the last visual child of <paramref name="dobj"/> which matches the specified predicate.
         /// </summary>
+        /// <typeparam name="TChild">The type of child to retrieve.</typeparam>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate children. If <paramref name="predicate"/> is not null,
         /// any children which cause it to return <c>false</c> will be skipped over by this method.</param>
         /// <returns>The last child of <paramref name="dobj"/> in the visual tree which matches the specified predicate, or <c>null</c> if no such child exists.</returns>
-        public static DependencyObject GetLastChild<T>(DependencyObject dobj, Predicate<T> predicate = null) where T : DependencyObject
+        public static DependencyObject GetLastChild<TChild>(DependencyObject dobj, Predicate<TChild> predicate = null) where TChild : DependencyObject
         {
             Contract.Require(dobj, "dobj");
 
@@ -213,7 +216,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 
             for (int i = children - 1; i >= 0; i--)
             {
-                var child = GetChild(dobj, i) as T;
+                var child = GetChild(dobj, i) as TChild;
                 if (child != null && (predicate == null || predicate(child)))
                     return child;
             }
@@ -234,13 +237,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <summary>
-        /// Gets the next sibling object after the specified object in the visual tree.
+        /// Gets the next sibling object of the specified type after the specified object in the visual tree.
         /// </summary>
+        /// <typeparam name="TSibling">The type of sibling to retrieve.</typeparam>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate siblings. If <paramref name="predicate"/> is not null,
         /// any siblings which cause it to return <c>false</c> will be skipped over by this method.</param>
         /// <returns>The next sibling of <paramref name="dobj"/> in the visual tree which matches the specified predicate, or <c>null</c> if no such sibling exists.</returns>
-        public static DependencyObject GetNextSibling<T>(DependencyObject dobj, Predicate<T> predicate = null) where T : DependencyObject
+        public static DependencyObject GetNextSibling<TSibling>(DependencyObject dobj, Predicate<TSibling> predicate = null) where TSibling : DependencyObject
         {
             Contract.Require(dobj, "dobj");
 
@@ -255,7 +259,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
             var children = GetChildrenCount(parent);
             for (int i = childIndex + 1; i < children; i++)
             {
-                var sibling = GetChild(parent, i) as T;
+                var sibling = GetChild(parent, i) as TSibling;
                 if (sibling != null && (predicate == null || predicate(sibling)))
                     return sibling;
             }
@@ -276,13 +280,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <summary>
-        /// Gets the previous sibling object after the specified object in the visual tree.
+        /// Gets the previous sibling object of the specified type after the specified object in the visual tree.
         /// </summary>
+        /// <typeparam name="TSibling">The type of sibling to retrieve.</typeparam>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate siblings. If <paramref name="predicate"/> is not null,
         /// any siblings which cause it to return <c>false</c> will be skipped over by this method.</param>
         /// <returns>The previous sibling of <paramref name="dobj"/> in the visual tree, or <c>null</c> if no such sibling exists.</returns>
-        public static DependencyObject GetPreviousSibling<T>(DependencyObject dobj, Predicate<T> predicate = null) where T : DependencyObject
+        public static DependencyObject GetPreviousSibling<TSibling>(DependencyObject dobj, Predicate<TSibling> predicate = null) where TSibling : DependencyObject
         {
             Contract.Require(dobj, "dobj");
 
@@ -296,7 +301,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 
             for (int i = childIndex - 1; i >= 0; i--)
             {
-                var sibling = GetChild(parent, i) as T;
+                var sibling = GetChild(parent, i) as TSibling;
                 if (sibling != null && (predicate == null || predicate(sibling)))
                     return sibling;
             }

@@ -39,6 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Explicitly converts a <see cref="VersionedStringBuilder"/> instance to a <see cref="String"/> instance.
         /// </summary>
         /// <param name="vsb">The <see cref="VersionedStringBuilder"/> to convert.</param>
+        /// <returns>The <see cref="String"/> instance that was created.</returns>
         public static explicit operator String(VersionedStringBuilder vsb)
         {
             return vsb.ToString();
@@ -48,6 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Explicitly converts a <see cref="VersionedStringBuilder"/> instance to a <see cref="StringBuilder"/> instance.
         /// </summary>
         /// <param name="vsb">The <see cref="VersionedStringBuilder"/> to convert.</param>
+        /// <returns>The <see cref="StringBuilder"/> instance that was created.</returns>
         public static explicit operator StringBuilder(VersionedStringBuilder vsb)
         {
             return vsb.stringBuilder;
@@ -76,6 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Clears the string builder.
         /// </summary>
+        /// <returns>The current instance of <see cref="VersionedStringBuilder"/>.</returns>
         public VersionedStringBuilder Clear()
         {
             stringBuilder.Clear();

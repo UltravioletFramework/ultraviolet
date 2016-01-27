@@ -11,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <summary>
         /// Initializes a new instance of the <see cref="Storyboard"/> class.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         public Storyboard(UltravioletContext uv)
         {
             this.targets = new StoryboardTargetCollection(this);

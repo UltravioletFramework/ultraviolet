@@ -668,10 +668,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Object>(null, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/>
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/>
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/>
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -688,10 +688,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             typeof(UpfToolTipEventHandler), typeof(ToolTipService));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/>
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/>
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/>
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>

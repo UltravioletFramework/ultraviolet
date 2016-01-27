@@ -35,6 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// to its underlying <see cref="SyntaxListBuilder"/> instance.
         /// </summary>
         /// <param name="builder">The <see cref="SyntaxListBuilder{TNode}"/> to convert.</param>
+        /// <returns>The specified syntax list builder's underlying <see cref="SyntaxListBuilder"/> instance.</returns>
         public static implicit operator SyntaxListBuilder(SyntaxListBuilder<TNode> builder)
         {
             return builder.builder;
@@ -45,6 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// to a <see cref="SyntaxList{TNode}"/> instance.
         /// </summary>
         /// <param name="builder">The <see cref="SyntaxListBuilder{TNode}"/> to convert.</param>
+        /// <returns>The <see cref="SeparatedSyntaxList{TNode}"/> that was built by the specified list builder.</returns>
         public static implicit operator SyntaxList<TNode>(SyntaxListBuilder<TNode> builder)
         {
             return builder.ToList();
@@ -141,6 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Creates a <see cref="SyntaxList{TNode}"/> that represents the builder's list.
         /// </summary>
+        /// <typeparam name="TDerived">The type of node contained by the created list.</typeparam>
         /// <returns>A <see cref="SyntaxList{TNode}"/> that represents the builder's list.</returns>
         public SyntaxList<TDerived> ToList<TDerived>() where TDerived : SyntaxNode =>
             builder.ToList<TDerived>();

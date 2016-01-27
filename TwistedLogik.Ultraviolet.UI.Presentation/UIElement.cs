@@ -562,6 +562,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invalidates the element's styling state.
         /// </summary>
+        /// <param name="recursive"><see langword="true"/> to recursively invalidate the styles of all
+        /// of this element's descendants; otherwise, <see langword="false"/>.</param>
         public void InvalidateStyle(Boolean recursive = false)
         {
             if (View == null)
@@ -1701,9 +1703,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <inheritdoc/>
-        protected internal sealed override void ApplyStyles(UvssDocument styleSheet)
+        protected internal sealed override void ApplyStyles(UvssDocument document)
         {
-            styleSheet.ApplyStyles(this);
+            document.ApplyStyles(this);
         }
 
         /// <inheritdoc/>
@@ -2171,6 +2173,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="finalRect">The element's final position and size relative to its parent element.</param>
         /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
+        /// <returns>A <see cref="Size2D"/> which describes the amount of space which was used by the arranged element.</returns>
         protected virtual Size2D ArrangeCore(RectangleD finalRect, ArrangeOptions options)
         {
             return new Size2D(finalRect.Width, finalRect.Height);
@@ -2295,8 +2298,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified image from the global content manager.
         /// </summary>
+        /// <typeparam name="TImage">The type of image to load.</typeparam>
         /// <param name="image">The image to load.</param>
-        protected void LoadGlobalImage<T>(T image) where T : TextureImage
+        protected void LoadGlobalImage<TImage>(TImage image) where TImage : TextureImage
         {
             if (View == null)
                 return;
@@ -2307,8 +2311,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified image from the local content manager.
         /// </summary>
+        /// <typeparam name="TImage">The type of image to load.</typeparam>
         /// <param name="image">The image to load.</param>
-        protected void LoadLocalImage<T>(T image) where T : TextureImage
+        protected void LoadLocalImage<TImage>(TImage image) where TImage : TextureImage
         {
             if (View == null)
                 return;
@@ -2319,9 +2324,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified resource from the global content manager.
         /// </summary>
+        /// <typeparam name="TResource">The type of resource to load.</typeparam>
         /// <param name="resource">The resource to load.</param>
         /// <param name="asset">The asset identifier that specifies which resource to load.</param>
-        protected void LoadGlobalResource<T>(FrameworkResource<T> resource, AssetID asset) where T : class
+        protected void LoadGlobalResource<TResource>(FrameworkResource<TResource> resource, AssetID asset) where TResource : class
         {
             if (View == null)
                 return;
@@ -2332,9 +2338,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified resource from the local content manager.
         /// </summary>
+        /// <typeparam name="TResources">The type of resource to load.</typeparam>
         /// <param name="resource">The resource to load.</param>
         /// <param name="asset">The asset identifier that specifies which resource to load.</param>
-        protected void LoadLocalResource<T>(FrameworkResource<T> resource, AssetID asset) where T : class
+        protected void LoadLocalResource<TResources>(FrameworkResource<TResources> resource, AssetID asset) where TResources : class
         {
             if (View == null)
                 return;
@@ -2369,9 +2376,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified sourced resource.
         /// </summary>
-        /// <typeparam name="T">The type of resource being loaded.</typeparam>
+        /// <typeparam name="TResource">The type of resource being loaded.</typeparam>
         /// <param name="resource">The sourced resource to load.</param>
-        protected void LoadResource<T>(SourcedResource<T> resource) where T : class
+        protected void LoadResource<TResource>(SourcedResource<TResource> resource) where TResource : class
         {
             if (View == null)
                 return;
@@ -2577,7 +2584,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Checks to see whether this element, or any of its ancestors, is transformed.
         /// </summary>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the element or any of its ancestors is transformed;
+        /// otherwise, <see langword="false"/>.</returns>
         protected Boolean CheckIsTransformed()
         {
             var current = (DependencyObject)this;

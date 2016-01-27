@@ -574,9 +574,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified resource from the global content manager.
         /// </summary>
+        /// <typeparam name="TResource">The type of resource to load.</typeparam>
         /// <param name="resource">The resource to load.</param>
         /// <param name="asset">The asset identifier that specifies which resource to load.</param>
-        public void LoadGlobalResource<T>(FrameworkResource<T> resource, AssetID asset) where T : class
+        public void LoadGlobalResource<TResource>(FrameworkResource<TResource> resource, AssetID asset) where TResource : class
         {
             if (resource == null || GlobalContent == null)
                 return;
@@ -587,9 +588,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified resource from the local content manager.
         /// </summary>
+        /// <typeparam name="TResource">The type of resource to load.</typeparam>
         /// <param name="resource">The resource to load.</param>
         /// <param name="asset">The asset identifier that specifies which resource to load.</param>
-        public void LoadLocalResource<T>(FrameworkResource<T> resource, AssetID asset) where T : class
+        public void LoadLocalResource<TResource>(FrameworkResource<TResource> resource, AssetID asset) where TResource : class
         {
             if (resource == null || LocalContent == null)
                 return;
@@ -660,8 +662,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Loads the specified sourced resource.
         /// </summary>
+        /// <typeparam name="TResource">The type of resource to load.</typeparam>
         /// <param name="resource">The identifier of the resource to load.</param>
-        public void LoadResource<T>(SourcedResource<T> resource) where T : class
+        public void LoadResource<TResource>(SourcedResource<TResource> resource) where TResource : class
         {
             if (resource.Resource == null)
                 return;
@@ -688,15 +691,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        public override T GetViewModel<T>()
+        public override TViewModel GetViewModel<TViewModel>()
         {
             var vm = ViewModel;
             var vmWrapper = vm as IDataSourceWrapper;
             if (vmWrapper != null)
             {
-                return vmWrapper.WrappedDataSource as T;
+                return vmWrapper.WrappedDataSource as TViewModel;
             }
-            return vm as T;
+            return vm as TViewModel;
         }
 
         /// <summary>

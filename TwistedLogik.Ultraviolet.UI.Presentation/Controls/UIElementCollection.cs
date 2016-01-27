@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="logicalParent">The logical parent of items in the collection.</param>
         public UIElementCollection(UIElement visualParent, FrameworkElement logicalParent)
         {
-            Contract.Require(visualParent, "visualParent");
+            Contract.Require(visualParent, nameof(visualParent));
 
             this.visualParent   = visualParent;
             this.visualChildren = new VisualCollection(visualParent);
@@ -62,19 +62,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        public void Add(UIElement element)
+        public void Add(UIElement item)
         {
-            Contract.Require(element, "element");
+            Contract.Require(item, nameof(item));
 
-            AddLogicalChild(element);
-            visualChildren.Add(element);
+            AddLogicalChild(item);
+            visualChildren.Add(item);
             visualParent.InvalidateMeasure();
         }
 
         /// <inheritdoc/>
         public void Insert(Int32 index, UIElement item)
         {
-            Contract.Require(item, "item");
+            Contract.Require(item, nameof(item));
 
             AddLogicalChild(item);
             visualChildren.Insert(index, item);
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         public Boolean Remove(UIElement item)
         {
-            Contract.Require(item, "element");
+            Contract.Require(item, nameof(item));
 
             if (visualChildren.Remove(item))
             {
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         public Boolean Contains(UIElement item)
         {
-            Contract.Require(item, "item");
+            Contract.Require(item, nameof(item));
 
             return visualChildren.Contains(item);
         }
@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         public Int32 IndexOf(UIElement item)
         {
-            Contract.Require(item, "item");
+            Contract.Require(item, nameof(item));
 
             return visualChildren.IndexOf(item);
         }
@@ -125,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get { return (UIElement)visualChildren[index]; }
             set
             {
-                Contract.Require(value, "value");
+                Contract.Require(value, nameof(value));
 
                 var existing = visualChildren[index];
                 RemoveLogicalChild(existing);

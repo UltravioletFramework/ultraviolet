@@ -39,6 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Implicitly converts an array element to its underlying value.
         /// </summary>
         /// <param name="element">The array element to convert.</param>
+        /// <returns>The underlying value of the specified array element.</returns>
         public static implicit operator T(ArrayElement<T> element)
         {
             return element.Value;

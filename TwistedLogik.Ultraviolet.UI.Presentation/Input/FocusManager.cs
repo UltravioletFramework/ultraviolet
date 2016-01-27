@@ -184,7 +184,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.Presentation.Input.FocusManger.GotFocus"/> attached routed event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManger.GotFocus"/> attached routed event.
         /// </summary>
         /// <AttachedEventComments>
         /// <summary>
@@ -201,7 +201,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfRoutedEventHandler), typeof(FocusManager));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.Presentation.Input.FocusManger.LostFocus"/> attached routed event.
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManger.LostFocus"/> attached routed event.
         /// </summary>
         /// <AttachedEventComments>
         /// <summary>

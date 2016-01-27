@@ -132,9 +132,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// than the comparison value.
         /// </summary>
         /// <returns>The <see cref="SyntaxToken"/> instance which was created.</returns>
-        public static SyntaxToken LessThanComparison(
-            SyntaxNode leadingTrivia = null,
-            SyntaxNode trailingTrivia = null)
+        public static SyntaxToken LessThanComparison()
         {
             return new UvssPunctuation(SyntaxKind.LessThanToken);
         }
@@ -839,7 +837,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// </summary>
         /// <param name="colonToken">The colon token that precedes the class name.</param>
         /// <param name="classNameIdentifier">The identifier that contains the class name.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="UvssPseudoClassSyntax"/> instance that was created.</returns>
         public static UvssPseudoClassSyntax PseudoClass(
             SyntaxToken colonToken,
             UvssIdentifierBaseSyntax classNameIdentifier)
@@ -1641,7 +1639,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <param name="value">The name of the storyboard that is played when the transition is triggered.</param>
         /// <param name="qualifierToken">The transition's qualifier token.</param>
         /// <param name="semiColonToken">The semi-colon that terminates the transition.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="UvssTransitionSyntax"/> instance that was created.</returns>
         public static UvssTransitionSyntax Transition(
             SyntaxToken transitionKeyword,
             UvssTransitionArgumentListSyntax argumentList,

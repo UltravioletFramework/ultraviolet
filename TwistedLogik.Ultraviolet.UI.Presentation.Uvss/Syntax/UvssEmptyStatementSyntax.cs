@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssEmptyStatementSyntax"/> class.
         /// </summary>
-        public UvssEmptyStatementSyntax(
+        internal UvssEmptyStatementSyntax(
             SyntaxToken emptyToken)
             : base(SyntaxKind.EmptyStatement)
         {
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// </summary>
         /// <param name="reader">The binary reader with which to deserialize the object.</param>
         /// <param name="version">The file version of the data being read.</param>
-        public UvssEmptyStatementSyntax(BinaryReader reader, Int32 version)
+        internal UvssEmptyStatementSyntax(BinaryReader reader, Int32 version)
             : base(reader, version)
         {
             this.EmptyToken = reader.ReadSyntaxNode<SyntaxToken>(version);

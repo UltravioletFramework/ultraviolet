@@ -10,6 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Creates a new syntax tree based on the specified syntax tree which has normalized white space.
         /// </summary>
+        /// <typeparam name="TSyntax">The type of node on which this operation is being performed.</typeparam>
         /// <param name="this">The node which represents the root of the syntax tree to normalize.</param>
         /// <returns>The node which is at the root of the normalized syntax tree.</returns>
         public static TSyntax NormalizeWhitespace<TSyntax>(this TSyntax @this)

@@ -158,8 +158,9 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Loads the specified image from the global content manager.
         /// </summary>
+        /// <typeparam name="TImage">The type of image to load.</typeparam>
         /// <param name="image">The image to load.</param>
-        public void LoadGlobalImage<T>(T image) where T : TextureImage
+        public void LoadGlobalImage<TImage>(TImage image) where TImage : TextureImage
         {
             if (image == null || globalContent == null)
                 return;
@@ -170,8 +171,9 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Loads the specified image from the local content manager.
         /// </summary>
+        /// <typeparam name="TImage">The type of image to load.</typeparam>
         /// <param name="image">The image to load.</param>
-        public void LoadLocalImage<T>(T image) where T : TextureImage
+        public void LoadLocalImage<TImage>(TImage image) where TImage : TextureImage
         {
             if (image == null || localContent == null)
                 return;
@@ -224,10 +226,11 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <summary>
         /// Gets the view's view model object.
         /// </summary>
+        /// <typeparam name="TViewModel">The type of view model to retrieve.</typeparam>
         /// <returns>The view's view model object.</returns>
-        public virtual T GetViewModel<T>() where T : class
+        public virtual TViewModel GetViewModel<TViewModel>() where TViewModel : class
         {
-            return ViewModel as T;
+            return ViewModel as TViewModel;
         }
 
         /// <summary>

@@ -199,6 +199,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Creates a <see cref="SyntaxList{TNode}"/> that represents the builder's list.
         /// </summary>
+        /// <typeparam name="TDerived">The type of node contained by the created list.</typeparam>
         /// <returns>A <see cref="SyntaxList{TNode}"/> that represents the builder's list.</returns>
         public SyntaxList<TDerived> ToList<TDerived>() where TDerived : SyntaxNode
         {

@@ -63,6 +63,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Panel.ZIndex"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets the element's z-index.
+        /// </summary>
         /// <value>A <see cref="Int32"/> value that specifies the relative layer on which the child of
         /// a <see cref="Panel"/> control is drawn. The default value is 0.</value>
         /// <remarks>

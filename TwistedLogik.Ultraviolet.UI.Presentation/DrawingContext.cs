@@ -16,10 +16,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public sealed partial class DrawingContext
     {
         /// <summary>
-        /// Explicitly converts an instance of <see cref="DrawingContext"/> to its underlying <see cref="SpriteBatch"/>.
+        /// Explicitly converts an instance of <see cref="DrawingContext"/> to its underlying <see cref="Graphics.Graphics2D.SpriteBatch"/>.
         /// </summary>
         /// <param name="dc">The <see cref="DrawingContext"/> instance to convert.</param>
-        /// <returns>The drawing context's underlying <see cref="SpriteBatch"/> instance.</returns>
+        /// <returns>The drawing context's underlying <see cref="Graphics.Graphics2D.SpriteBatch"/> instance.</returns>
         public static explicit operator SpriteBatch(DrawingContext dc)
         {
             return dc.SpriteBatch;
@@ -54,6 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Begins a new sprite batch using the appropriate settings for rendering UPF.
         /// </summary>
+        /// <param name="sortMode">The sorting mode to use when rendering interface elements.</param>
         public void Begin(SpriteSortMode sortMode)
         {
             Begin(sortMode, null, null, null, Matrix.Identity);

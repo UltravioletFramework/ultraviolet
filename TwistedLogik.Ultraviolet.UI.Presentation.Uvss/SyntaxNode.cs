@@ -173,6 +173,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Gets a collection containing the node's child nodes.
         /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> which contains the node's child nodes.</returns>
         public IEnumerable<SyntaxNode> ChildNodes()
         {
             for (int i = 0; i < SlotCount; i++)

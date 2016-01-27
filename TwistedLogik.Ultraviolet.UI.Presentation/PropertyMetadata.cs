@@ -5,19 +5,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the method that is invoked when a dependency property's value changes.
     /// </summary>
+    /// <typeparam name="TValue">The type of value being changed.</typeparam>
     /// <param name="dependencyObject">The dependency object that raised the event.</param>
     /// <param name="oldValue">The old value of the dependency property.</param>
     /// <param name="newValue">The new value of the dependency property.</param>
-    public delegate void PropertyChangedCallback<T>(DependencyObject dependencyObject, T oldValue, T newValue);
+    public delegate void PropertyChangedCallback<TValue>(DependencyObject dependencyObject, TValue oldValue, TValue newValue);
 
     /// <summary>
     /// Represents the method that is invoked to coerce the value of a dependency property.
     /// </summary>
-    /// <typeparam name="T">The type of value being coerced.</typeparam>
+    /// <typeparam name="TValue">The type of value being coerced.</typeparam>
     /// <param name="dependencyObject">The dependency property that raised the event.</param>
     /// <param name="value">The raw value of the dependency property prior to coercion.</param>
     /// <returns>The coerced value of the dependency property.</returns>
-    public delegate T CoerceValueCallback<T>(DependencyObject dependencyObject, T value);
+    public delegate TValue CoerceValueCallback<TValue>(DependencyObject dependencyObject, TValue value);
 
     /// <summary>
     /// Represents the metadata for a dependency property.

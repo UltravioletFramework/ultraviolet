@@ -26,6 +26,8 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <summary>
         /// Creates a new instance of the <see cref="ScreenDensityService"/> class.
         /// </summary>
+        /// <param name="display">The <see cref="IUltravioletDisplay"/> for which 
+        /// to retrieve a screen density service.</param>
         /// <returns>The instance of <see cref="ScreenDensityService"/> that was created.</returns>
         public static ScreenDensityService Create(IUltravioletDisplay display)
         {

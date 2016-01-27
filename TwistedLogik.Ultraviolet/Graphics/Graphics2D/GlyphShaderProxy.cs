@@ -50,6 +50,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Implicitly converts a glyph shader to a <see cref="GlyphShaderProxy"/> structure.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to convert.</param>
+        /// <returns>The <see cref="GlyphShaderProxy"/> instance that was created.</returns>
         public static implicit operator GlyphShaderProxy(GlyphShader glyphShader)
         {
             return glyphShader == null ? Invalid : new GlyphShaderProxy(glyphShader);
@@ -59,6 +60,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Implicitly converts a stack of glyph shaders to a <see cref="GlyphShaderProxy"/> structure.
         /// </summary>
         /// <param name="glyphShaderStack">The glyph shader stack to convert.</param>
+        /// <returns>The <see cref="GlyphShaderProxy"/> instance that was created.</returns>
         public static implicit operator GlyphShaderProxy(Stack<GlyphShader> glyphShaderStack)
         {
             return glyphShaderStack == null ? Invalid : new GlyphShaderProxy(glyphShaderStack);
@@ -68,6 +70,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Implicitly converts a scoped stack of glyph shaders to a <see cref="GlyphShaderProxy"/> structure.
         /// </summary>
         /// <param name="glyphShaderScopedStack">The scoped glyph shader stack to convert.</param>
+        /// <returns>The <see cref="GlyphShaderProxy"/> instance that was created.</returns>
         public static implicit operator GlyphShaderProxy(Stack<TextStyleScoped<GlyphShader>> glyphShaderScopedStack)
         {
             return (glyphShaderScopedStack == null) ? Invalid : new GlyphShaderProxy(glyphShaderScopedStack);

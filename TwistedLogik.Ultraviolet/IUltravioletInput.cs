@@ -23,6 +23,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Displays the software keyboard, if one is available, using the specified keyboard mode.
         /// </summary>
+        /// <param name="mode">A <see cref="KeyboardMode"/> value which specifies the type of software keyboard to display.</param>
         void ShowSoftwareKeyboard(KeyboardMode mode);
 
         /// <summary>

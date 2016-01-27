@@ -22,6 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Implicitly converts a single node to a <see cref="SyntaxList{TNode}"/> instance.
         /// </summary>
         /// <param name="node">The node to convert.</param>
+        /// <returns>A <see cref="SyntaxList{TNode}"/> instance that represents the specified node.</returns>
         public static implicit operator SyntaxList<TNode>(TNode node)
         {
             return new SyntaxList<TNode>(node);
@@ -31,6 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Implicitly converts a typed list of nodes to an untyped list of nodes.
         /// </summary>
         /// <param name="nodes">The typed list of nodes to convert.</param>
+        /// <returns>An untyped <see cref="SyntaxList{TNode}"/> that contains the nodes in the specified type list.</returns>
         public static implicit operator SyntaxList<SyntaxNode>(SyntaxList<TNode> nodes)
         {
             return new SyntaxList<SyntaxNode>(nodes.node);

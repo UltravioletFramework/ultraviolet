@@ -48,9 +48,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        public Boolean Equals(DependencyName obj)
+        public Boolean Equals(DependencyName other)
         {
-            return this.QualifiedName == obj.QualifiedName;
+            return this.QualifiedName == other.QualifiedName;
         }
 
         /// <summary>

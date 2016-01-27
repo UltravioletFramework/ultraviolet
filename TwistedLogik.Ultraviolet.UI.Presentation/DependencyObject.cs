@@ -799,23 +799,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
 
         }
-
-        /// <summary>
-        /// Called when the value of the <see cref="DependencyDataSource"/> property changes.
-        /// </summary>
-        protected void OnDependencyDataSourceChanged()
-        {
-            var dataSource = DependencyDataSource;
-
-            using (var buffer = GetDependencyPropertyValuesBuffer())
-            {
-                foreach (var value in buffer.Object)
-                {
-                    value.HandleDataSourceChanged(dataSource);
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Converts a string to a value to be applied to a styled dependency property.
         /// </summary>

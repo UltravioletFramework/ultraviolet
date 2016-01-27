@@ -197,9 +197,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             new PropertyMetadata<Boolean>());
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelectionActive."/> attached property.
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelectionActive"/> 
+        /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelectionActive"/> attached property.</value>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelectionActive"/> 
+        /// attached property.</value>
         public static readonly DependencyProperty IsSelectionActiveProperty = IsSelectionActivePropertyKey.DependencyProperty;
 
         /// <summary>
