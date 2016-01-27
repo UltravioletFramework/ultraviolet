@@ -46,15 +46,18 @@
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="TwistedLogik.Nucleus" isExposed="True">
-        <Filter entryType="Class" fullName="TwistedLogik.Nucleus.NucleusStrings" filterName="NucleusStrings" isExposed="False" />
-      </Filter>
-      <Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet" isExposed="True">
-        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UltravioletStrings" filterName="UltravioletStrings" isExposed="False" />
-      </Filter>
-      <Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet.UI.Presentation" isExposed="True">
-        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.PresentationStrings" filterName="PresentationStrings" isExposed="False" />
-      </Filter>
-    </ApiFilter>
+  <Filter entryType="Class" fullName="TwistedLogik.Nucleus.NucleusStrings" filterName="NucleusStrings" isExposed="False" />
+</Filter>
+<Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet" isExposed="True">
+  <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UltravioletStrings" filterName="UltravioletStrings" isExposed="False" />
+</Filter>
+<Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet.UI.Presentation" isExposed="True">
+  <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.MessageBoxViewModel_Impl" filterName="MessageBoxViewModel_Impl" isExposed="False" />
+  <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.PresentationStrings" filterName="PresentationStrings" isExposed="False" />
+</Filter>
+<Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet.UI.Presentation.Uvss" isExposed="True">
+  <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.Uvss.UvssStrings" filterName="UvssStrings" isExposed="False" />
+</Filter></ApiFilter>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <TransformComponentArguments>
       <Argument Key="logoFile" Value="" />

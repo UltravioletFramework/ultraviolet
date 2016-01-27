@@ -267,6 +267,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the text box's text source.
+        /// </summary>
+        /// <value>A <see cref="VersionedStringSource"/> which represents the source of the text box's text.
+        /// The default value is <see cref="VersionedStringSource.Invalid"/>.</value>
+        /// <remarks>
+        /// <para>In most cases, rather than using this property to access the element's text, you should use the <see cref="GetText(StringBuilder)"/>
+        /// and <see cref="SetText(StringBuilder)"/> methods in order to avoid allocating onto the managed heap.</para>
+        /// <dprop>
+        ///     <dpropField><see cref="TextProperty"/></dpropField>
+        ///     <dpropStylingName>text</dpropStylingName>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public VersionedStringSource Text
+        {
+            get { return GetValue<VersionedStringSource>(TextProperty); }
+            set { SetValue(TextProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the text box's current keyboard mode.
         /// </summary>
         /// <value>A <see cref="KeyboardMode"/> value which determines the kind of software keyboard
@@ -573,25 +593,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (scrollViewer != null)
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + fontLineHeight);
         }
-
-        /// <summary>
-        /// Gets or sets the text box's text.
-        /// </summary>
-        /// <value>A <see cref="String"/> that represents the text box's text. The default
-        /// value is <see langword="null"/>.</value>
-        /// <remarks>
-        /// <dprop>
-        ///     <dpropField><see cref="TextProperty"/></dpropField>
-        ///     <dpropStylingName>text</dpropStylingName>
-        ///     <dpropMetadata>None</dpropMetadata>
-        /// </dprop>
-        /// </remarks>
-        internal String Text
-        {
-            get { return GetValue<VersionedStringSource>(TextProperty).ToString(); }
-            set { SetValue(TextProperty, new VersionedStringSource(value)); }
-        }
-
+        
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {

@@ -39,6 +39,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> 
+        /// attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddTextEntryValidationHandler(DependencyObject element, UpfTextEntryValidationHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            UIElementHelper.AddHandler(element, TextEntryValidationEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> 
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveTextEntryValidationHandler(DependencyObject element, UpfTextEntryValidationHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            UIElementHelper.RemoveHandler(element, TextEntryValidationEvent, handler);
+        }
+
+        /// <summary>
         /// Gets the selected text.
         /// </summary>
         /// <returns>A string containing the selected text.</returns>

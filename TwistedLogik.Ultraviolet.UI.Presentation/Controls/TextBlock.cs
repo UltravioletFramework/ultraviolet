@@ -68,29 +68,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Identifies the <see cref="Text"/> dependency property.
+        /// Gets or sets the text block's text source.
         /// </summary>
-        /// <value>The identifier for the <see cref="Text"/> dependency property.</value>
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextBlock),
-            new PropertyMetadata<VersionedStringSource>(VersionedStringSource.Invalid, PropertyMetadataOptions.AffectsMeasure, HandleTextChanged));
-
-        /// <summary>
-        /// Gets or sets the text block's text.
-        /// </summary>
-        /// <value>A <see cref="String"/> that represents the text block's text. The default
-        /// value is <see langword="null"/>.</value>
+        /// <value>A <see cref="VersionedStringSource"/> which represents the source of the text block's text.
+        /// The default value is <see cref="VersionedStringSource.Invalid"/>.</value>
         /// <remarks>
+        /// <para>In most cases, rather than using this property to access the element's text, you should use the <see cref="GetText(StringBuilder)"/>
+        /// and <see cref="SetText(StringBuilder)"/> methods in order to avoid allocating onto the managed heap.</para>
         /// <dprop>
         ///     <dpropField><see cref="TextProperty"/></dpropField>
         ///     <dpropStylingName>text</dpropStylingName>
         ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
         /// </dprop>
         /// </remarks>
-        internal String Text
+        public VersionedStringSource Text
         {
-            get { return GetValue<VersionedStringSource>(TextProperty).ToString(); }
-            set { SetValue(TextProperty, new VersionedStringSource(value)); }
+            get { return GetValue<VersionedStringSource>(TextProperty); }
+            set { SetValue(TextProperty, value); }
         }
+
+        /// <summary>
+        /// Identifies the <see cref="Text"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Text"/> dependency property.</value>
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(VersionedStringSource), typeof(TextBlock),
+            new PropertyMetadata<VersionedStringSource>(VersionedStringSource.Invalid, PropertyMetadataOptions.AffectsMeasure, HandleTextChanged));
 
         /// <inheritdoc/>
         protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)

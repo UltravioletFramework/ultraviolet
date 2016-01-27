@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <inheritdoc/>
-        public void ReceiveDependencyPropertyChangeNotification(DependencyObject dobj, DependencyProperty dprop)
+        void IDependencyPropertyChangeNotificationSubscriber.ReceiveDependencyPropertyChangeNotification(DependencyObject dobj, DependencyProperty dprop)
         {
             Evaluate(dobj);
         }

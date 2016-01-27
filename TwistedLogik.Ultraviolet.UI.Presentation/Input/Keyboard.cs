@@ -158,6 +158,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextEditing"/> 
+        /// attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewTextEditingHandler(DependencyObject element, UpfKeyboardEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.AddHandler(element, PreviewTextEditingEvent, handler);
+        }
+
+        /// <summary>
         /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyDown"/>
         /// attached event to the specified element.
         /// </summary>
@@ -177,7 +191,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewKeyUpEventHandler(DependencyObject element, UpfKeyEventHandler handler)
+        public static void AddPreviewKeyUpHandler(DependencyObject element, UpfKeyEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
@@ -200,6 +214,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextEditing"/> 
+        /// attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddTextEditingHandler(DependencyObject element, UpfKeyboardEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.AddHandler(element, TextEditingEvent, handler);
+        }
+
+        /// <summary>
         /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.KeyDown"/> 
         /// attached event to the specified element.
         /// </summary>
@@ -219,7 +247,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddKeyUpEventHandler(DependencyObject element, UpfKeyEventHandler handler)
+        public static void AddKeyUpHandler(DependencyObject element, UpfKeyEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
@@ -298,6 +326,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTextEditing"/> 
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewTextEditingHandler(DependencyObject element, UpfKeyboardEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.RemoveHandler(element, PreviewTextEditingEvent, handler);
+        }
+
+        /// <summary>
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewKeyDown"/> 
         /// attached event from the specified element.
         /// </summary>
@@ -337,6 +379,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(handler, "handler");
 
             IInputElementHelper.RemoveHandler(element, TextInputEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.TextEditing"/> 
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveTextEditingHandler(DependencyObject element, UpfKeyboardEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.RemoveHandler(element, TextEditingEvent, handler);
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ namespace TwistedLogik.Nucleus.Data
     /// <summary>
     /// Represents a registry of data-driven objects of a particular type.
     /// </summary>
-    internal interface IDataObjectRegistry
+    public interface IDataObjectRegistry
     {
         /// <summary>
         /// Indicates that the registry has been added to the global collection of registries.

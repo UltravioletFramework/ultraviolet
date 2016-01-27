@@ -302,7 +302,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.Tap"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.Tap"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -330,7 +330,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.FingerDown"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.FingerDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -358,7 +358,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.FingerUp"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.FingerUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -386,7 +386,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.FingerMotion"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.FingerMotion"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -415,7 +415,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewTap"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTap"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -442,7 +442,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewFingerDown"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewFingerDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -470,7 +470,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewFingerUp"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewFingerUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -498,7 +498,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewFingerMotion"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewFingerMotion"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>

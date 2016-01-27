@@ -56,6 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <summary>
     /// Represents the primary game pad device.
     /// </summary>
+    [UvmlKnownType]
     public static class GamePad
     {
         /// <summary>
@@ -220,6 +221,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/>
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewAxisDownHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.RemoveHandler(element, PreviewAxisDownEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisUp"/> 
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewAxisUpHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.RemoveHandler(element, PreviewAxisUpEvent, handler);
+        }
+
+        /// <summary>
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonDown"/> attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -256,6 +285,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(handler, "handler");
 
             IInputElementHelper.RemoveHandler(element, AxisChangedEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisUp"/> 
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveAxisDownHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.RemoveHandler(element, AxisDownEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisDown"/> 
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveAxisUpHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
+        {
+            Contract.Require(element, "element");
+            Contract.Require(handler, "handler");
+
+            IInputElementHelper.RemoveHandler(element, AxisDownEvent, handler);
         }
 
         /// <summary>

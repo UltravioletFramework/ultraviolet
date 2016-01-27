@@ -324,7 +324,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDown"/>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseUp"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -717,7 +717,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.MouseMove"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseMove"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -745,7 +745,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.MouseDown"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -773,7 +773,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.MouseUp"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -801,7 +801,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.MouseClick"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseClick"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -830,7 +830,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.MouseDoubleClick"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDoubleClick"/>.</description>
         ///     </item>
         /// </list>
         /// </AttachedEventComments>
@@ -857,7 +857,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.MouseWheel"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseWheel"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -885,7 +885,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewMouseMove"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseMove"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -957,7 +957,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewMouseDown"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -985,7 +985,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewMouseUp"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1013,7 +1013,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewMouseClick"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseClick"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1041,7 +1041,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewMouseDoubleClick"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDoubleClick"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1069,7 +1069,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Keyboard.PreviewMouseWheel"/>.</description>
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseWheel"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>

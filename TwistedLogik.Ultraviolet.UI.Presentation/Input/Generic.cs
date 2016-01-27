@@ -18,12 +18,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     public static class Generic
     {
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewTap"/>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewGenericInteraction"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewTapHandler(DependencyObject element, UpfGenericInteractionEventHandler handler)
+        public static void AddPreviewGenericInteractionHandler(DependencyObject element, UpfGenericInteractionEventHandler handler)
         {
             Contract.Require(element, "element");
             Contract.Require(handler, "handler");
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             IInputElementHelper.AddHandler(element, GenericInteractionEvent, handler);
         }
-
+        
         /// <summary>
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewGenericInteraction"/>
         /// attached event to the specified element.
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewGenericInteraction"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewTap"/> 
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewGenericInteraction"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
