@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.viewModelWrapperName = viewModelType.Name;
 
-            this.combinedStyleSheet = new UvssDocument(null, null);
+            this.combinedStyleSheet = new UvssDocument(uv);
 
             this.namescope = new Namescope();
             this.resources = new PresentationFoundationViewResources(this);
@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var view = UvmlLoader.Load(uv, uiPanel, uiPanelDefinition, vmfactory);
 
             var uvss = String.Join(Environment.NewLine, uiPanelDefinition.StyleSheets);
-            var uvssdoc = UvssDocument.Compile(uvss);
+            var uvssdoc = UvssDocument.Compile(uv, uvss);
 
             view.SetStyleSheet(uvssdoc);
 
@@ -713,7 +713,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (StyleSheet != null)
             {
-                return StyleSheet.InstantiateStoryboardByName(LayoutRoot.Ultraviolet, name);
+                return StyleSheet.GetStoryboardInstance(name);
             }
 
             return null;

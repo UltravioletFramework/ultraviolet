@@ -16,9 +16,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="targets">The storyboard's collection of targets.</param>
         internal UvssStoryboard(String name, LoopBehavior loopBehavior, UvssStoryboardTargetCollection targets)
         {
-            this.name         = name;
+            this.name = name;
             this.loopBehavior = loopBehavior;
-            this.targets      = targets;
+            this.targets = targets;
         }
 
         /// <summary>

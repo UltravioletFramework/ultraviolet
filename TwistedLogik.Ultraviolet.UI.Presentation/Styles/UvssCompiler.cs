@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
@@ -9,19 +10,22 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-	/// <summary>
-	/// Contains methods for compiling UVSS syntax trees into UVSS documents.
-	/// </summary>
-	public static class UvssCompiler
+    /// <summary>
+    /// Contains methods for compiling UVSS syntax trees into UVSS documents.
+    /// </summary>
+    public static class UvssCompiler
     {
         /// <summary>
         /// Compiles an Ultraviolet Style Sheet (UVSS) document from the specified abstract syntax tree.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="tree">A <see cref="UvssDocumentSyntax"/> that represents the
         /// abstract syntax tree to compile.</param>
         /// <returns>A new instance of <see cref="UvssDocument"/> that represents the compiled data.</returns>
-        public static UvssDocument Compile(UvssDocumentSyntax tree)
+        public static UvssDocument Compile(UltravioletContext uv, UvssDocumentSyntax tree)
         {
+            Contract.Require(uv, nameof(uv));
+
             // Fail to compile if the tree reports any error diagnostics.
             var errors = tree.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error);
             if (errors.Any())
@@ -30,10 +34,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     errors.Select(x => UvssError.FromDiagnosticInfo(x)));
             }
 
-			// Determine the document's culture.
-			var cultureDirective = GetLastDirective<UvssCultureDirectiveSyntax>(tree);
-			var culture = (cultureDirective == null) ? UvssDocument.DefaultCulture : 
-				CultureInfo.GetCultureInfo(cultureDirective.CultureValue.Value);
+            // Determine the document's culture.
+            var cultureDirective = GetLastDirective<UvssCultureDirectiveSyntax>(tree);
+            var culture = (cultureDirective == null) ? UvssDocument.DefaultCulture : 
+                CultureInfo.GetCultureInfo(cultureDirective.CultureValue.Value);
 
             // Compile a list of rule sets and storyboards.
             var docRuleSets = new List<UvssRuleSet>();
@@ -54,26 +58,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                         docStoryboards.Add(storyboard);
                         break;
 
-					case SyntaxKind.CultureDirective:
-						/* Skip directives */
-						break;
+                    case SyntaxKind.CultureDirective:
+                        /* Skip directives */
+                        break;
 
                     default:
                         throw new UvssException(PresentationStrings.StyleSheetParserError);
                 }
             }
 
-            return new UvssDocument(docRuleSets, docStoryboards);
+            return new UvssDocument(uv, docRuleSets, docStoryboards);
         }
-		
-		/// <summary>
-		/// Gets the last directive of the specified type within the specified document.
-		/// </summary>
-		private static TDirective GetLastDirective<TDirective>(UvssDocumentSyntax document)
-			where TDirective : UvssDirectiveSyntax
-		{
-			return document.Directives.OfType<TDirective>().LastOrDefault();
-		}
+        
+        /// <summary>
+        /// Gets the last directive of the specified type within the specified document.
+        /// </summary>
+        private static TDirective GetLastDirective<TDirective>(UvssDocumentSyntax document)
+            where TDirective : UvssDirectiveSyntax
+        {
+            return document.Directives.OfType<TDirective>().LastOrDefault();
+        }
 
         /// <summary>
         /// Gets the full property name represented by the specified syntax node.
@@ -453,8 +457,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var selector = node.Selector == null ? null :
                 CompileSelector(node.Selector);
 
-			var propName = new DependencyName(GetPropertyName(node.PropertyName));
-			var propValue = new DependencyValue(node.Value.Value, culture);
+            var propName = new DependencyName(GetPropertyName(node.PropertyName));
+            var propValue = new DependencyValue(node.Value.Value, culture);
 
             return new SetTriggerAction(selector, propName, propValue);
         }
@@ -559,16 +563,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         private static UvssStoryboardKeyframe CompileStoryboardKeyframe(UvssAnimationKeyframeSyntax node, CultureInfo culture)
         {
-			var time =
-				Double.Parse(node.TimeToken.Text);
+            var time =
+                Double.Parse(node.TimeToken.Text);
 
-			var value =
-				new DependencyValue(node.Value.Value, culture);
+            var value =
+                new DependencyValue(node.Value.Value, culture);
 
-			var easing =
-				node.EasingIdentifier?.Text;
+            var easing =
+                node.EasingIdentifier?.Text;
 
-			return new UvssStoryboardKeyframe(time, value, easing);
+            return new UvssStoryboardKeyframe(time, value, easing);
         }
     }
 }

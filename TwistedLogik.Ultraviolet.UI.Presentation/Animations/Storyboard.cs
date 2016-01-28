@@ -12,9 +12,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Initializes a new instance of the <see cref="Storyboard"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        public Storyboard(UltravioletContext uv)
+        /// <param name="loopBehavior">The storyboard's loop behavior.</param>
+        public Storyboard(UltravioletContext uv, LoopBehavior loopBehavior = LoopBehavior.None)
         {
             this.targets = new StoryboardTargetCollection(this);
+            this.loopBehavior = loopBehavior;
         }
 
         /// <summary>

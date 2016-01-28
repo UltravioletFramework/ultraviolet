@@ -332,7 +332,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssStoryboardKeyframe.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssStoryboardKeyframeCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssStoryboardKeyframeCollection.IEnumerable.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssStoryboardReifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssStoryboardTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssStoryboardTargetCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssStoryboardTargetCollection.IEnumerable.cs" />

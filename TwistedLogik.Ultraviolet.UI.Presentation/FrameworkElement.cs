@@ -484,7 +484,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 style.CachedResolvedValue = value;
 
-                var storyboard = View.StyleSheet.InstantiateStoryboardByName(Ultraviolet, value);
+                var storyboard = View.StyleSheet.GetStoryboardInstance(value);
                 if (storyboard != null)
                 {
                     var group = default(String);

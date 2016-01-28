@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <inheritdoc/>
         public override UvssDocument Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
         {
-            return UvssDocument.Compile(input);
+            return UvssDocument.Compile(manager.Ultraviolet, input);
         }
 
         /// <inheritdoc/>
@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 throw new InvalidDataException();
             
             var ast = (UvssDocumentSyntax)SyntaxSerializer.FromStream(reader, version);           
-            return UvssCompiler.Compile(ast);
+            return UvssCompiler.Compile(manager.Ultraviolet, ast);
         }
 
         /// <inheritdoc/>
