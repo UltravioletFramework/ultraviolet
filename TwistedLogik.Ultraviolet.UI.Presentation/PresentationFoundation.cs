@@ -887,7 +887,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             PerformanceStats.BeginUpdate();
 
             PerformLayout();
-            OutOfBandRenderer.Update();
+
+            if (OutOfBandRenderer != null)
+                OutOfBandRenderer.Update();
 
             PerformanceStats.EndUpdate();
         }
@@ -899,10 +901,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         private void OnDrawing(UltravioletContext uv, UltravioletTime time)
         {
-            if (uv.IsRunningInServiceMode)
-                return;
-
-            OutOfBandRenderer.DrawRenderTargets(time);
+            if (OutOfBandRenderer != null)
+                OutOfBandRenderer.DrawRenderTargets(time);
         }
 
         /// <summary>

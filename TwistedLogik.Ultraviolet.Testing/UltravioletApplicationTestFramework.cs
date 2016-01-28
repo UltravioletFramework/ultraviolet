@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         {
             if (application != null)
                 throw new InvalidOperationException("An application has already been created.");
-            
+
             application = new UltravioletTestApplication();
 
             return application;
@@ -94,7 +94,21 @@ namespace TwistedLogik.Ultraviolet.Testing
             if (application != null)
                 throw new InvalidOperationException("An application has already been created.");
 
-            application = new UltravioletTestApplication(true);
+            application = new UltravioletTestApplication(headless: true);
+
+            return application;
+        }
+
+        /// <summary>
+        /// Creates an Ultraviolet Framework test application with an Ultraviolet context in service mode.
+        /// </summary>
+        /// <returns>The test application that was created.</returns>
+        protected IUltravioletTestApplication GivenAnUltravioletApplicationInServiceMode()
+        {
+            if (application != null)
+                throw new InvalidOperationException("An application has already been created.");
+
+            application = new UltravioletTestApplication(headless: true, serviceMode: true);
 
             return application;
         }

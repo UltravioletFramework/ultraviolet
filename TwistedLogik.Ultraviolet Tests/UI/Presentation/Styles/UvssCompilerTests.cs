@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
         [TestMethod]
         public void UvssCompiler_DefaultsToInvariantCulture()
         {
-            GivenAnUltravioletApplicationWithNoWindow()
+            GivenAnUltravioletApplicationInServiceMode()
                 .OnFrame(0, app =>
                 {
                     UsingCulture("ru-RU", () =>
@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
         [TestMethod]
         public void UvssCompiler_ReadsCultureDirective()
         {
-            GivenAnUltravioletApplicationWithNoWindow()
+            GivenAnUltravioletApplicationInServiceMode()
                .OnFrame(0, app =>
                {
                    UsingCulture("en-US", () =>
@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
         [TestMethod]
         public void UvssCompiler_ReadsCultureDirective_WhenMultipleDirectivesExist()
         {
-            GivenAnUltravioletApplicationWithNoWindow()
+            GivenAnUltravioletApplicationInServiceMode()
                .OnFrame(0, app =>
                {
                     UsingCulture("en-US", () =>

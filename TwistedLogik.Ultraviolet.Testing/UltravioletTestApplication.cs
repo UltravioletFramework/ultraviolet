@@ -23,12 +23,14 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// Initializes a new instance of the UltravioletTestApplication class.
         /// </summary>
         /// <param name="headless">A value indicating whether to create a headless context.</param>
-        public UltravioletTestApplication(Boolean headless = false)
+        /// <param name="serviceMode">A value indicating whether to create a service mode context.</param>
+        public UltravioletTestApplication(Boolean headless = false, Boolean serviceMode = false)
             : base("TwistedLogik", "Ultraviolet Unit Tests")
         {
             PreserveApplicationSettings = false;
             
             this.headless = headless;
+            this.serviceMode = serviceMode;
         }
 
         /// <inheritdoc/>
@@ -185,7 +187,9 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <inheritdoc/>
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
-            var configuration = new OpenGLUltravioletConfiguration() { Headless = headless };
+            var configuration = new OpenGLUltravioletConfiguration();
+            configuration.Headless = headless;
+            configuration.EnableServiceMode = serviceMode;
             configuration.IsHardwareInputDisabled = true;
             configuration.Debug = true;
             configuration.DebugLevels = DebugLevels.Error | DebugLevels.Warning;
@@ -350,6 +354,7 @@ namespace TwistedLogik.Ultraviolet.Testing
 
         // State values.
         private readonly Boolean headless;
+        private readonly Boolean serviceMode;
         private Boolean configureUPF;
         private String audioSubsystem;
         private Func<Boolean> shouldExit;
