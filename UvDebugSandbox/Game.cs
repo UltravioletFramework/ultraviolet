@@ -169,7 +169,7 @@ namespace UvDebugSandbox
 
             if (!ShouldRunInServiceMode())
             {
-                var globalStyleSheet = new UvssDocument();
+                var globalStyleSheet = new UvssDocument(Ultraviolet);
                 globalStyleSheet.Append(content.Load<UvssDocument>("UI/DefaultUIStyles"));
                 globalStyleSheet.Append(content.Load<UvssDocument>("UI/GameStyles"));
                 upf.SetGlobalStyleSheet(globalStyleSheet);
