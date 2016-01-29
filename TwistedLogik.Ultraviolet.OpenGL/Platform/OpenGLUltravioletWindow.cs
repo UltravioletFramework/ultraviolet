@@ -795,6 +795,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
         // The default window icon.
         private static readonly UltravioletSingleton<Surface2D> DefaultWindowIcon = new UltravioletSingleton<Surface2D>(
-            uv => LoadDefaultWindowIcon(uv);
+            uv => LoadDefaultWindowIcon(uv));
     }
 }

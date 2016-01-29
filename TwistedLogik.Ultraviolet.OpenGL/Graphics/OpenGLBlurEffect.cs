@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// Initializes a new instance of the <see cref="OpenGLBlurEffect"/> class.
         /// </summary>
         public OpenGLBlurEffect(UltravioletContext uv)
-            : base(CreateEffectImplementationuv)
+            : base(CreateEffectImplementation(uv))
         {
             epDirection = Parameters["Direction"];
             epResolution = Parameters["Resolution"];
