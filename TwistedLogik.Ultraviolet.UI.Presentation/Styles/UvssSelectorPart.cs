@@ -13,23 +13,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Initializes a new instance of the <see cref="UvssSelectorPart"/> class.
         /// </summary>
         /// <param name="qualifier">The qualifier value for this selector part, if it has one.</param>
-        /// <param name="element">The name of the element type that matches this selector part.</param>
-        /// <param name="elementIsExact">A value indicating whether the element type that matches this 
+        /// <param name="type">The name of the element type that matches this selector part.</param>
+        /// <param name="typeIsExact">A value indicating whether the element type that matches this 
         /// selector part must be an exact match.</param>
-        /// <param name="id">The identifier of the element that matches this selector part.</param>
+        /// <param name="name">The name of the element that matches this selector part.</param>
         /// <param name="pseudoClass">The selector part's pseudo-class, if any.</param>
         /// <param name="classes">The list of classes which match this selector part.</param>
-        internal UvssSelectorPart(UvssSelectorPartQualifier qualifier, String element, Boolean elementIsExact,
-            String id, String pseudoClass, IEnumerable<String> classes)
+        internal UvssSelectorPart(UvssSelectorPartQualifier qualifier, String type, Boolean typeIsExact,
+            String name, String pseudoClass, IEnumerable<String> classes)
         {
-            var rawID = (id != null && id.StartsWith("#")) ? id.Substring(1) : id;
+            var rawName = (name != null && name.StartsWith("#")) ? name.Substring(1) : name;
             var rawPseudoClass = (pseudoClass != null && pseudoClass.StartsWith(":")) ? pseudoClass.Substring(1) : pseudoClass;
             var rawClassNames = from c in classes select c.StartsWith(".") ? c.Substring(1) : c;
 
             this.qualifier = qualifier;
-            this.element = element;
-            this.elementIsExact = elementIsExact;
-            this.id = rawID;
+            this.type = type;
+            this.typeIsExact = typeIsExact;
+            this.name = rawName;
             this.pseudoClass = rawPseudoClass;
             this.classes = new UvssClassCollection(rawClassNames);
             this.priority = CalculatePriority();
@@ -55,11 +55,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                     break;
             }
 
-            var partElement = Universal ? "*" : element;
-            var partID      = HasID ? "#" + ID : null;
+            var partElement = Universal ? "*" : type;
+            var partName = HasName ? "#" + Name : null;
             var partClasses = String.Join(String.Empty, classes.Select(x => "." + x));
 
-            return String.Format("{0}{1}{2}{3}", partQualifier, partElement, partID, partClasses);
+            return String.Format("{0}{1}{2}{3}", partQualifier, partElement, partName, partClasses);
         }
 
         /// <summary>
@@ -84,31 +84,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         public Boolean Universal
         {
-            get { return !HasElement && !HasID && !HasClasses; }
+            get { return !HasType && !HasName && !HasClasses; }
         }
-
+        
         /// <summary>
         /// Gets a value indicating whether this selector part includes an element type.
         /// </summary>
-        public Boolean HasElement
+        public Boolean HasType
         {
-            get { return !String.IsNullOrEmpty(Element); }
+            get { return !String.IsNullOrEmpty(Type); }
         }
 
         /// <summary>
         /// Gets a value indicating whether this selelector part must exactly match element types.
         /// </summary>
-        public Boolean ElementIsExact
+        public Boolean HasExactType
         {
-            get { return HasElement && elementIsExact; }
+            get { return HasType && typeIsExact; }
         }
 
         /// <summary>
-        /// Gets a value indicating whether this selector part includes an ID.
+        /// Gets a value indicating whether this selector part includes an element name.
         /// </summary>
-        public Boolean HasID
+        public Boolean HasName
         {
-            get { return !String.IsNullOrEmpty(ID); }
+            get { return !String.IsNullOrEmpty(Name); }
         }
 
         /// <summary>
@@ -130,17 +130,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets the name of the element type that matches this selector part.
         /// </summary>
-        public String Element
+        public String Type
         {
-            get { return element; }
+            get { return type; }
         }
 
         /// <summary>
         /// Gets the identifier of the element that matches this selector part.
         /// </summary>
-        public String ID
+        public String Name
         {
-            get { return id; }
+            get { return name; }
         }
         
         /// <summary>
@@ -171,9 +171,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             const Int32 ClassPriority      = 10;
             const Int32 IdentifierPriority = 100;
 
-            if (!String.IsNullOrEmpty(element))
+            if (!String.IsNullOrEmpty(type))
             {
-                if (String.Equals(element, "document", StringComparison.OrdinalIgnoreCase))
+                if (String.Equals(type, "document", StringComparison.OrdinalIgnoreCase))
                 {
                     priority += IdentifierPriority;
                 }
@@ -185,7 +185,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             priority += ClassPriority * classes.Count();
 
-            if (!String.IsNullOrEmpty(id))
+            if (!String.IsNullOrEmpty(name))
             {
                 priority += IdentifierPriority;
             }
@@ -196,9 +196,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         // Property values.
         private readonly Int32 priority;
         private readonly UvssSelectorPartQualifier qualifier;
-        private readonly Boolean elementIsExact;
-        private readonly String element;
-        private readonly String id;
+        private readonly Boolean typeIsExact;
+        private readonly String type;
+        private readonly String name;
         private readonly String pseudoClass;
         private readonly UvssClassCollection classes;
     }

@@ -6,8 +6,8 @@
 
 View 
 { 
-	cursor: #Global:Cursors:Cursors Normal;
-	blank-image: #Global:Textures:DefaultUI 431 684 30 48; 
+    cursor: #Global:Cursors:Cursors Normal;
+    blank-image: #Global:Textures:DefaultUI 431 684 30 48; 
 }
 
 // ============================================================================
@@ -16,436 +16,436 @@ View
  
 *
 {
-	font: #Global:Fonts:DefaultUI;
-	foreground: #ffffffff;
+    font: #Global:Fonts:DefaultUI;
+    foreground: #ffffffff;
 }
 
 // ============================================================================
 // BUTTONS
 // ============================================================================
 
-Button, RepeatButton, ToggleButton!
+Button!, RepeatButton!, ToggleButton!
 {
-	padding: 10 7 10 9;
-		
-	transition (common, normal): button-to-normal;
-	transition (common, hover): button-to-hover;
-	transition (common, pressed): button-to-pressed;
-	transition (common, disabled): button-to-disabled;
+    padding: 10 7 10 9;
+        
+    transition (common, normal): button-to-normal;
+    transition (common, hover): button-to-hover;
+    transition (common, pressed): button-to-pressed;
+    transition (common, disabled): button-to-disabled;
 
-	trigger event Mouse.mouse-enter
-	{
-		play-sfx { #Global:SoundEffects:Rollover3 }
-	}
-	trigger event click-by-user (set-handled)
-	{
-		play-sfx { #Global:SoundEffects:Click1 }
-	}
+    trigger event Mouse.mouse-enter
+    {
+        play-sfx { #Global:SoundEffects:Rollover3 }
+    }
+    trigger event click-by-user (set-handled)
+    {
+        play-sfx { #Global:SoundEffects:Click1 }
+    }
 }
 
 ToggleButton!
 {
-	transition (common, hover): null;
-	transition (common, pressed): null;
+    transition (common, hover): null;
+    transition (common, pressed): null;
 
-	trigger property checked = { false }, mouse-over = { true }
-	{
-		set source-image (*:trigger-root >> .button-background) { #Global:Textures:DefaultUI 1 660 142 66 8 8 8 8 }	
-	}
-	trigger property checked = { true }
-	{
-		set foreground { #ffaaaaaa }
-		set source-image (*:trigger-root >> .button-background) { #Global:Textures:DefaultUI 1 727 142 66 8 8 8 8 }
-	}
+    trigger property checked = { false }, mouse-over = { true }
+    {
+        set source-image (*:trigger-root >> .button-background) { #Global:Textures:DefaultUI 1 660 142 66 8 8 8 8 }	
+    }
+    trigger property checked = { true }
+    {
+        set foreground { #ffaaaaaa }
+        set source-image (*:trigger-root >> .button-background) { #Global:Textures:DefaultUI 1 727 142 66 8 8 8 8 }
+    }
 }
 
-	  Button  >> .button-background, 
-RepeatButton  >> .button-background,
+      Button! >> .button-background, 
+RepeatButton! >> .button-background,
 ToggleButton! >> .button-background
 {
-	source-image: #Global:Textures:DefaultUI 1 593 142 66 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 1 593 142 66 8 8 8 8;
 }
 
-	  Button  >> .button-focus-image, 
-RepeatButton  >> .button-focus-image,
+      Button! >> .button-focus-image, 
+RepeatButton! >> .button-focus-image,
 ToggleButton! >> .button-focus-image
 {
-	margin: 4;
-	source-color: #ff000000;
-	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    margin: 4;
+    source-color: #ff000000;
+    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
 }
 
 @button-to-normal
 {
-	target Control (*:storyboard-root)
-	{
-		animation foreground
-		{
-			keyframe 0 { }
-		}
-	}
-	target Image (*:storyboard-root >> .button-background)
-	{
-		animation source-image
-		{
-			keyframe 0 { }
-		}
-		animation source-color
-		{
-			keyframe 0 { }
-		}
-	}
+    target Control (*:storyboard-root)
+    {
+        animation foreground
+        {
+            keyframe 0 { }
+        }
+    }
+    target Image (*:storyboard-root >> .button-background)
+    {
+        animation source-image
+        {
+            keyframe 0 { }
+        }
+        animation source-color
+        {
+            keyframe 0 { }
+        }
+    }
 }
 @button-to-hover
 {
-	target Control (*:storyboard-root)
-	{
-		animation foreground
-		{
-			keyframe 0 { }
-		}
-	}
-	target Image (*:storyboard-root >> .button-background)
-	{
-		animation source-image
-		{
-			keyframe 0 { #Global:Textures:DefaultUI 1 660 142 66 8 8 8 8 }
-		}
-	}
+    target Control (*:storyboard-root)
+    {
+        animation foreground
+        {
+            keyframe 0 { }
+        }
+    }
+    target Image (*:storyboard-root >> .button-background)
+    {
+        animation source-image
+        {
+            keyframe 0 { #Global:Textures:DefaultUI 1 660 142 66 8 8 8 8 }
+        }
+    }
 }
 @button-to-pressed
 {
-	target Control (*:storyboard-root)
-	{
-		animation foreground
-		{
-			keyframe 0 { #ffacb3bf }
-		}
-	}
-	target Image (*:storyboard-root >> .button-background)
-	{
-		animation source-image
-		{
-			keyframe 0 { #Global:Textures:DefaultUI 1 727 142 66 8 8 8 8 }
-		}
-	}
+    target Control (*:storyboard-root)
+    {
+        animation foreground
+        {
+            keyframe 0 { #ffacb3bf }
+        }
+    }
+    target Image (*:storyboard-root >> .button-background)
+    {
+        animation source-image
+        {
+            keyframe 0 { #Global:Textures:DefaultUI 1 727 142 66 8 8 8 8 }
+        }
+    }
 }
 @button-to-disabled
 {
-	target Button (*:storyboard-root)
-	{
-		animation foreground
-		{
-			keyframe 0 { #ffaaaaaa }
-		}
-	}
+    target Button (*:storyboard-root)
+    {
+        animation foreground
+        {
+            keyframe 0 { #ffaaaaaa }
+        }
+    }
 }
 
-RadioButton, CheckBox
+RadioButton!, CheckBox!
 {
-	transition (common, normal): toggle-to-normal;
-	transition (common, hover): toggle-to-hover;
+    transition (common, normal): toggle-to-normal;
+    transition (common, hover): toggle-to-hover;
 }
 
 @toggle-to-normal
 {
-	target Image (.toggle-mark)
-	{
-		animation source-color
-		{	
-			keyframe 0 { }
-		}
-	}
+    target Image (.toggle-mark)
+    {
+        animation source-color
+        {	
+            keyframe 0 { }
+        }
+    }
 }
 @toggle-to-hover
 {
-	target Image (.toggle-mark)
-	{
-		animation source-color
-		{	
-			keyframe 0 { #ffffffff }
-		}
-	}
+    target Image (.toggle-mark)
+    {
+        animation source-color
+        {	
+            keyframe 0 { #ffffffff }
+        }
+    }
 }
 
 // ============================================================================
 // RADIO BUTTONS
 // ============================================================================
 
-RadioButton
+RadioButton!
 {
-	transition (checkstate, unchecked): radiobutton-to-unchecked;
-	transition (checkstate, checked): radiobutton-to-checked;
+    transition (checkstate, unchecked): radiobutton-to-unchecked;
+    transition (checkstate, checked): radiobutton-to-checked;
 
-	trigger event checked-by-user
-	{
-		play-sfx { #Global:SoundEffects:Click1 }
-	}
+    trigger event checked-by-user
+    {
+        play-sfx { #Global:SoundEffects:Click1 }
+    }
 }
 
-RadioButton >> .toggle-content
+RadioButton! >> .toggle-content
 {
-	margin: 4 0 0 0;
+    margin: 4 0 0 0;
 }
 
-RadioButton >> .toggle-focus-image
+RadioButton! >> .toggle-focus-image
 {
-	source-color: #ff000000;
-	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    source-color: #ff000000;
+    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
 }
 
 .radiobutton-component > .toggle-box
 {
-	source-image: #Global:Textures:DefaultUI 1 911 32 34;
-	min-width: 16;
-	min-height: 17;
+    source-image: #Global:Textures:DefaultUI 1 911 32 34;
+    min-width: 16;
+    min-height: 17;
 }
 
 .radiobutton-component > .toggle-mark
 {
-	source-image: #Global:Textures:DefaultUI 34 911 32 34;
-	source-color: #ffcccccc;
-	min-width: 16;
-	min-height: 17;
+    source-image: #Global:Textures:DefaultUI 34 911 32 34;
+    source-color: #ffcccccc;
+    min-width: 16;
+    min-height: 17;
 }
 
 @radiobutton-to-unchecked
 {
-	target Image (.toggle-mark)
-	{
-		animation visibility
-		{
-			keyframe 0 { collapsed }
-		}
-	}
+    target Image (.toggle-mark)
+    {
+        animation visibility
+        {
+            keyframe 0 { collapsed }
+        }
+    }
 }
 @radiobutton-to-checked
 {
-	target Image (.toggle-mark)
-	{
-		animation visibility
-		{
-			keyframe 0 { visible }
-		}
-	}
+    target Image (.toggle-mark)
+    {
+        animation visibility
+        {
+            keyframe 0 { visible }
+        }
+    }
 }
 
 // ============================================================================
 // CHECK BOXES
 // ============================================================================
 
-CheckBox
+CheckBox!
 {
-	transition (checkstate, unchecked): checkbox-to-unchecked;
-	transition (checkstate, checked): checkbox-to-checked;
-	transition (checkstate, indeterminate): checkbox-to-indeterminate;
+    transition (checkstate, unchecked): checkbox-to-unchecked;
+    transition (checkstate, checked): checkbox-to-checked;
+    transition (checkstate, indeterminate): checkbox-to-indeterminate;
 
-	trigger event checked-by-user
-	{
-		play-sfx { #Global:SoundEffects:Click1 }
-	}
-	trigger event unchecked-by-user
-	{
-		play-sfx { #Global:SoundEffects:Click1 }
-	}
-	trigger event indeterminate-by-user
-	{
-		play-sfx { #Global:SoundEffects:Click1 }
-	}
+    trigger event checked-by-user
+    {
+        play-sfx { #Global:SoundEffects:Click1 }
+    }
+    trigger event unchecked-by-user
+    {
+        play-sfx { #Global:SoundEffects:Click1 }
+    }
+    trigger event indeterminate-by-user
+    {
+        play-sfx { #Global:SoundEffects:Click1 }
+    }
 }
 
-CheckBox >> .toggle-content
+CheckBox! >> .toggle-content
 {
-	margin: 4 0 0 0;
+    margin: 4 0 0 0;
 }
 
-CheckBox >> .toggle-focus-image
+CheckBox! >> .toggle-focus-image
 {
-	source-color: #ff000000;
-	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    source-color: #ff000000;
+    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
 }
 
 .checkbox-component > .toggle-box
 {
-	source-image: #Global:Textures:DefaultUI 1 876 32 34;
-	min-width: 16;
-	min-height: 17;
+    source-image: #Global:Textures:DefaultUI 1 876 32 34;
+    min-width: 16;
+    min-height: 17;
 }
 
 .checkbox-component > .toggle-mark
 {
-	source-image: #Global:Textures:DefaultUI 34 876 32 34;
-	source-color: #ffcccccc;
-	min-width: 16;
-	min-height: 17;
+    source-image: #Global:Textures:DefaultUI 34 876 32 34;
+    source-color: #ffcccccc;
+    min-width: 16;
+    min-height: 17;
 }
 
 @checkbox-to-unchecked
 {
-	target Image (.toggle-mark)
-	{
-		animation visibility
-		{
-			keyframe 0 { collapsed }
-		}
-	}
+    target Image (.toggle-mark)
+    {
+        animation visibility
+        {
+            keyframe 0 { collapsed }
+        }
+    }
 }
 @checkbox-to-checked
 {
-	target Image (.toggle-mark)
-	{
-		animation source-image
-		{
-			keyframe 0 { }
-		}
-		animation visibility
-		{
-			keyframe 0 { visible }
-		}
-	}
+    target Image (.toggle-mark)
+    {
+        animation source-image
+        {
+            keyframe 0 { }
+        }
+        animation visibility
+        {
+            keyframe 0 { visible }
+        }
+    }
 }
 @checkbox-to-indeterminate
 {
-	target Image (.toggle-mark)
-	{
-		animation source-image
-		{
-			keyframe 0 { #Global:Textures:DefaultUI 100 876 32 34 }
-		}
-		animation visibility
-		{
-			keyframe 0 { visible }
-		}
-	}
+    target Image (.toggle-mark)
+    {
+        animation source-image
+        {
+            keyframe 0 { #Global:Textures:DefaultUI 100 876 32 34 }
+        }
+        animation visibility
+        {
+            keyframe 0 { visible }
+        }
+    }
 }
 
 // ============================================================================
 // TEXT BOX
 // ============================================================================
 
-    TextBox,
-PasswordBox
+    TextBox!,
+PasswordBox!
 {
-	cursor: #Global:Cursors:Cursors IBeam;
-	padding: 6 4 6 4;
+    cursor: #Global:Cursors:Cursors IBeam;
+    padding: 6 4 6 4;
 }
 
-    TextBox >>     TextEditor,
-PasswordBox >> PasswordEditor
+    TextBox! >>     TextEditor!,
+PasswordBox! >> PasswordEditor!
 {
-	caret-insert-color: #ffffffff;
-	caret-insert-topmost: true;
-	caret-overwrite-color: #ffffffff;
-	caret-overwrite-topmost: true;
-	selection-color: #ff528cc9;
+    caret-insert-color: #ffffffff;
+    caret-insert-topmost: true;
+    caret-overwrite-color: #ffffffff;
+    caret-overwrite-topmost: true;
+    selection-color: #ff528cc9;
 }
 
-    TextBox >> ScrollViewer >> Border,
-PasswordBox >> ScrollViewer >> Border
+    TextBox! >> ScrollViewer! >> Border!,
+PasswordBox! >> ScrollViewer! >> Border!
 {
-	border-thickness: 0;
+    border-thickness: 0;
 }
 
-    TextBox >>     .textbox-background,
-PasswordBox >> .passwordbox-background
+    TextBox! >>     .textbox-background,
+PasswordBox! >> .passwordbox-background
 {
-	source-image: #Global:Textures:DefaultUI 144 788 124 62 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 144 788 124 62 8 8 8 8;
 }
 
-    TextBox >>     .textbox-scrollviewer,
-PasswordBox >> .passwordbox-scrollviewer
+    TextBox! >>     .textbox-scrollviewer,
+PasswordBox! >> .passwordbox-scrollviewer
 {
-	margin: 4;
+    margin: 4;
 }
 
     .textbox-focus-border,
 .passwordbox-focus-border
 {
-	margin: 2 2 2 3;
-	border-color: #ff5b9bd1;
+    margin: 2 2 2 3;
+    border-color: #ff5b9bd1;
 }
 
 // ============================================================================
 // SLIDERS
 // ============================================================================
 
-Track Button, Track RepeatButton
+Track! Button!, Track! RepeatButton!
 {
-	trigger event Mouse.mouse-enter { }
-	trigger event click-by-user { }
+    trigger event Mouse.mouse-enter { }
+    trigger event click-by-user { }
 }
 
-HSlider
+HSlider!
 {
-	min-width: 32;
-	min-height: 19;
+    min-width: 32;
+    min-height: 19;
 }
 
-VSlider
+VSlider!
 {
-	min-width: 19;
-	min-height: 32;
+    min-width: 19;
+    min-height: 32;
 }
 
-HSlider .track-thumb
+HSlider! .track-thumb
 {
-	width: 10;
-	height: 19;
+    width: 10;
+    height: 19;
 }
 
-VSlider .track-thumb
+VSlider! .track-thumb
 {
-	width: 19;
-	height: 10;
+    width: 19;
+    height: 10;
 }
 
-HSlider .track-thumb .button-background
+HSlider! .track-thumb .button-background
 {
-	source-image: #Global:Textures:DefaultUI 430 593 20 38;
+    source-image: #Global:Textures:DefaultUI 430 593 20 38;
 }
 
-VSlider .track-thumb .button-background
+VSlider! .track-thumb .button-background
 {
-	source-image: #Global:Textures:DefaultUI 451 593 38 20;
+    source-image: #Global:Textures:DefaultUI 451 593 38 20;
 }
 
-HSlider .track-thumb, VSlider .track-thumb
+HSlider! .track-thumb, VSlider! .track-thumb
 {
-	transition (focus, blurred): null;
-	transition (focus, focused): null;
-	transition (common, normal): null;
-	transition (common, hover): null;
-	transition (common, pressed): null;
+    transition (focus, blurred): null;
+    transition (focus, focused): null;
+    transition (common, normal): null;
+    transition (common, hover): null;
+    transition (common, pressed): null;
 }
 
-HSlider .slider-track-background
+HSlider! .slider-track-background
 {
-	source-image: #Global:Textures:DefaultUI 358 856 106 20 8 8;
-	height: 10;
+    source-image: #Global:Textures:DefaultUI 358 856 106 20 8 8;
+    height: 10;
 }
 
-VSlider .slider-track-background
+VSlider! .slider-track-background
 {
-	source-image: #Global:Textures:DefaultUI 337 788 20 106 8 8 vertical;
-	width: 10;
+    source-image: #Global:Textures:DefaultUI 337 788 20 106 8 8 vertical;
+    width: 10;
 }
 
-HSlider .slider-focus-image, VSlider .slider-focus-image
+HSlider! .slider-focus-image, VSlider! .slider-focus-image
 {
-	source-color: #ff000000;
-	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    source-color: #ff000000;
+    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
 }
 
 // ============================================================================
 // PROGRESS BARS
 // ============================================================================
 
-ProgressBar
+ProgressBar!
 {
-	bar-image: #Global:Textures:DefaultUI 1 794 142 40 20 20 tile-center;
-	fill-image: #Global:Textures:DefaultUI 1 835 142 40 20 20 tile-center;
-	fill-color: #ff5ea0d2;
-	height: 20;
+    bar-image: #Global:Textures:DefaultUI 1 794 142 40 20 20 tile-center;
+    fill-image: #Global:Textures:DefaultUI 1 835 142 40 20 20 tile-center;
+    fill-color: #ff5ea0d2;
+    height: 20;
 }
 
 // ============================================================================
@@ -454,368 +454,368 @@ ProgressBar
 
 .listbox-scrollviewer
 {
-	content-margin: 1 2 1 2;
+    content-margin: 1 2 1 2;
 }
 
-.listbox-scrollviewer >> Border
+.listbox-scrollviewer >> Border!
 {
-	border-thickness: 0;
+    border-thickness: 0;
 }
 
 .listbox-scrollviewer >> .scrollviewer-background
 {
-	source-image: #Global:Textures:DefaultUI 144 851 124 62 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 144 851 124 62 8 8 8 8;
 }
 
-.listbox-scrollviewer >> VScrollBar
+.listbox-scrollviewer >> VScrollBar!
 {
-	margin: 2 0 0 0;
+    margin: 2 0 0 0;
 }
 
-.listbox-scrollviewer >> HScrollBar
+.listbox-scrollviewer >> HScrollBar!
 {
-	margin: 0 2 0 0;
+    margin: 0 2 0 0;
 }
 
 .listbox-border
 {
-	border-thickness: 0;
+    border-thickness: 0;
 }
 
-ListBoxItem
+ListBoxItem!
 {
-	padding: 10 0 10 0;
-	min-height: 25;
-	content-valign: Center;
+    padding: 10 0 10 0;
+    min-height: 25;
+    content-valign: Center;
 
-	trigger event Generic.generic-interaction (handled)
-	{
-		play-sfx { #Global:SoundEffects:Click1 }
-	}
+    trigger event Generic.generic-interaction (handled)
+    {
+        play-sfx { #Global:SoundEffects:Click1 }
+    }
 }
 
 .listboxitem-highlight
 {
-	source-image: #Global:Textures:DefaultUI 431 632 30 50;
+    source-image: #Global:Textures:DefaultUI 431 632 30 50;
 }
 
 .listboxitem-focus-image
 {
-	margin: 2;
-	source-color: #ff000000;
-	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    margin: 2;
+    source-color: #ff000000;
+    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
 }
 
 // ============================================================================
 // COMBO BOXES
 // ============================================================================
 
-ComboBox
+ComboBox!
 {
-	transition (opened, open): combobox-to-open;
-	transition (opened, closed): combobox-to-closed;
+    transition (opened, open): combobox-to-open;
+    transition (opened, closed): combobox-to-closed;
 }
 
-ComboBox >> ContentPresenter
+ComboBox! >> ContentPresenter!
 {
-	margin: 10 7 10 9;
+    margin: 10 7 10 9;
 }
 
 .combobox-focus-image
 {
-	margin: 4;
-	source-color: #ff000000;
-	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    margin: 4;
+    source-color: #ff000000;
+    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
 }
 
 .combobox-dropdown-grid
 {
-	margin: 0 0 0 0;
+    margin: 0 0 0 0;
 }
 
 .combobox-dropdown-background
 {
-	source-image: #Global:Textures:DefaultUI 144 914 18 18 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 144 914 18 18 8 8 8 8;
 }
 
 .combobox-dropdown-border
 {
-	border-thickness: 0;
+    border-thickness: 0;
 }
 
 .combobox-dropdown-scrollviewer
 {
-	margin: 1 4 1 4;
+    margin: 1 4 1 4;
 }
 
-.combobox-dropdown-scrollviewer >> Border
+.combobox-dropdown-scrollviewer >> Border!
 {
-	border-thickness: 0;
+    border-thickness: 0;
 }
 
 .combobox-dropdown-scrollviewer >> .scrollviewer-vscroll
 {
-	margin: 2 0 2 0;
+    margin: 2 0 2 0;
 }
 
 .combobox-dropdown-popup
 {
-	voffset: 2;
+    voffset: 2;
 }
 
 .combobox-arrow
 {
-	source-image: #Global:Textures:DefaultUI 224 915 22 18;
-	margin: 0 0 10 0;
-	width: 11;
-	height: 9;
+    source-image: #Global:Textures:DefaultUI 224 915 22 18;
+    margin: 0 0 10 0;
+    width: 11;
+    height: 9;
 }
 
 .combobox-arrow-open
 {
-	source-color: #ffacb3bf;
+    source-color: #ffacb3bf;
 }
 
 @combobox-to-open
 {
-	target Control (*:storyboard-root)
-	{	
-		animation foreground
-		{
-			keyframe 0 { #ffacb3bf }
-		}
-	}
+    target Control (*:storyboard-root)
+    {	
+        animation foreground
+        {
+            keyframe 0 { #ffacb3bf }
+        }
+    }
 }
 @combobox-to-closed
 {
-	target Control (*:storyboard-root)
-	{	
-		animation foreground
-		{
-			keyframe 0 { }
-		}
-	}
+    target Control (*:storyboard-root)
+    {	
+        animation foreground
+        {
+            keyframe 0 { }
+        }
+    }
 }
 
-ComboBoxItem
+ComboBoxItem!
 {
-	min-height: 25;
-	padding: 10 1 10 1;
-	content-valign: Center;
+    min-height: 25;
+    padding: 10 1 10 1;
+    content-valign: Center;
 
-	trigger event Generic.generic-interaction (handled)
-	{
-		play-sfx { #Global:SoundEffects:Click1 }
-	}
+    trigger event Generic.generic-interaction (handled)
+    {
+        play-sfx { #Global:SoundEffects:Click1 }
+    }
 }
 
 .comboboxitem-focus-border
 {
-	border-color: #ff5b9bd1;
+    border-color: #ff5b9bd1;
 }
 
 .comboboxitem-focus-image
 {
-	margin: 2;
-	source-color: #ff000000;
-	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    margin: 2;
+    source-color: #ff000000;
+    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
 }
 
 .comboboxitem-highlight
 {
-	source-image: #Global:Textures:DefaultUI 431 632 30 50;
+    source-image: #Global:Textures:DefaultUI 431 632 30 50;
 }
 
 // ============================================================================
 // NUMERIC UP/DOWNS
 // ============================================================================
 
-NumericUpDown
+NumericUpDown!
 {
-	min-width: 64;
-	min-height: 32;
+    min-width: 64;
+    min-height: 32;
 }
 
-NumericUpDown >> TextBox >> .textbox-focus-border
+NumericUpDown! >> TextBox! >> .textbox-focus-border
 {
-	margin: 2 2 18 3;
+    margin: 2 2 18 3;
 }
 
 .updown-button
 {
-	padding: 6 0 6 0;
+    padding: 6 0 6 0;
 }
 
 .updown-button-up
 {
-	transition (common, normal): updown-button-up-to-normal;
-	transition (common, hover): updown-button-up-to-hover;
-	transition (common, pressed): updown-button-up-to-pressed;
-	transition (common, disabled): updown-button-up-to-disabled;
+    transition (common, normal): updown-button-up-to-normal;
+    transition (common, hover): updown-button-up-to-hover;
+    transition (common, pressed): updown-button-up-to-pressed;
+    transition (common, disabled): updown-button-up-to-disabled;
 }
 
 .updown-button-up >> .button-background
 {
-	source-image: #Global:Textures:DefaultUI 144 593 142 64 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 144 593 142 64 8 8 8 8;
 }
 
 .updown-button-up-arrow
 {
-	source-image: #Global:Textures:DefaultUI 163 956 10 10;
-	width: 5;
-	height: 5;
+    source-image: #Global:Textures:DefaultUI 163 956 10 10;
+    width: 5;
+    height: 5;
 }
 
 @updown-button-up-to-normal
 {
-	target Image (*:storyboard-root >> .button-background)
-	{
-		animation source-image
-		{
-			keyframe 0 { }
-		}
-		animation source-color
-		{
-			keyframe 0 { }
-		}
-	}
-	target Image (*:storyboard-root > .updown-button-up-arrow)
-	{
-		animation source-color
-		{
-			keyframe 0 { }
-		}
-	}
+    target Image (*:storyboard-root >> .button-background)
+    {
+        animation source-image
+        {
+            keyframe 0 { }
+        }
+        animation source-color
+        {
+            keyframe 0 { }
+        }
+    }
+    target Image (*:storyboard-root > .updown-button-up-arrow)
+    {
+        animation source-color
+        {
+            keyframe 0 { }
+        }
+    }
 }
 @updown-button-up-to-hover
 {
-	target Image (*:storyboard-root >> .button-background)
-	{
-		animation source-image
-		{
-			keyframe 0 { #Global:Textures:DefaultUI 144 658 142 64 8 8 8 8 }
-		}
-	}
-	target Image (*:storyboard-root > .updown-button-up-arrow)
-	{
-		animation source-color
-		{
-			keyframe 0 { }
-		}
-	}
+    target Image (*:storyboard-root >> .button-background)
+    {
+        animation source-image
+        {
+            keyframe 0 { #Global:Textures:DefaultUI 144 658 142 64 8 8 8 8 }
+        }
+    }
+    target Image (*:storyboard-root > .updown-button-up-arrow)
+    {
+        animation source-color
+        {
+            keyframe 0 { }
+        }
+    }
 }
 @updown-button-up-to-pressed
 {
-	target Image (*:storyboard-root >> .button-background)
-	{
-		animation source-image
-		{
-			keyframe 0 { #Global:Textures:DefaultUI 144 723 142 64 8 8 8 8 }
-		}
-	}
-	target Image (*:storyboard-root > .updown-button-up-arrow)
-	{
-		animation source-color
-		{
-			keyframe 0 { #ffacb3bf }
-		}
-	}
+    target Image (*:storyboard-root >> .button-background)
+    {
+        animation source-image
+        {
+            keyframe 0 { #Global:Textures:DefaultUI 144 723 142 64 8 8 8 8 }
+        }
+    }
+    target Image (*:storyboard-root > .updown-button-up-arrow)
+    {
+        animation source-color
+        {
+            keyframe 0 { #ffacb3bf }
+        }
+    }
 }
 @updown-button-up-to-disabled
 {
-	target Image (*:storyboard-root > .updown-button-up-arrow)
-	{
-		animation source-color
-		{
-			keyframe 0 { #ffaaaaaa }
-		}
-	}
+    target Image (*:storyboard-root > .updown-button-up-arrow)
+    {
+        animation source-color
+        {
+            keyframe 0 { #ffaaaaaa }
+        }
+    }
 }
 
 .updown-button-down
 {
-	transition (common, normal): updown-button-down-to-normal;
-	transition (common, hover): updown-button-down-to-hover;
-	transition (common, pressed): updown-button-down-to-pressed;
-	transition (common, disabled): updown-button-down-to-disabled;
+    transition (common, normal): updown-button-down-to-normal;
+    transition (common, hover): updown-button-down-to-hover;
+    transition (common, pressed): updown-button-down-to-pressed;
+    transition (common, disabled): updown-button-down-to-disabled;
 }
 
 .updown-button-down >> .button-background
 {
-	source-image: #Global:Textures:DefaultUI 287 593 142 64 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 287 593 142 64 8 8 8 8;
 }
 
 .updown-button-down-arrow
 {
-	source-image: #Global:Textures:DefaultUI 174 956 10 10;
-	width: 5;
-	height: 5;
+    source-image: #Global:Textures:DefaultUI 174 956 10 10;
+    width: 5;
+    height: 5;
 }
 
 @updown-button-down-to-normal
 {
-	target Image (*:storyboard-root >> .button-background)
-	{
-		animation source-image
-		{
-			keyframe 0 { }
-		}
-		animation source-color
-		{
-			keyframe 0 { }
-		}
-	}
-	target Image (*:storyboard-root > .updown-button-down-arrow)
-	{
-		animation source-color
-		{
-			keyframe 0 { }
-		}
-	}
+    target Image (*:storyboard-root >> .button-background)
+    {
+        animation source-image
+        {
+            keyframe 0 { }
+        }
+        animation source-color
+        {
+            keyframe 0 { }
+        }
+    }
+    target Image (*:storyboard-root > .updown-button-down-arrow)
+    {
+        animation source-color
+        {
+            keyframe 0 { }
+        }
+    }
 }
 @updown-button-down-to-hover
 {
-	target Image (*:storyboard-root >> .button-background)
-	{
-		animation source-image
-		{
-			keyframe 0 { #Global:Textures:DefaultUI 287 658 142 64 8 8 8 8 }
-		}
-	}
-	target Image (*:storyboard-root > .updown-button-down-arrow)
-	{
-		animation source-color
-		{
-			keyframe 0 { }
-		}
-	}
+    target Image (*:storyboard-root >> .button-background)
+    {
+        animation source-image
+        {
+            keyframe 0 { #Global:Textures:DefaultUI 287 658 142 64 8 8 8 8 }
+        }
+    }
+    target Image (*:storyboard-root > .updown-button-down-arrow)
+    {
+        animation source-color
+        {
+            keyframe 0 { }
+        }
+    }
 }
 @updown-button-down-to-pressed
 {
-	target Image (*:storyboard-root >> .button-background)
-	{
-		animation source-image
-		{
-			keyframe 0 { #Global:Textures:DefaultUI 287 723 142 64 8 8 8 8 }
-		}
-	}
-	target Image (*:storyboard-root > .updown-button-down-arrow)
-	{
-		animation source-color
-		{
-			keyframe 0 { #ffacb3bf }
-		}
-	}
+    target Image (*:storyboard-root >> .button-background)
+    {
+        animation source-image
+        {
+            keyframe 0 { #Global:Textures:DefaultUI 287 723 142 64 8 8 8 8 }
+        }
+    }
+    target Image (*:storyboard-root > .updown-button-down-arrow)
+    {
+        animation source-color
+        {
+            keyframe 0 { #ffacb3bf }
+        }
+    }
 }
 @updown-button-up-to-disabled
 {
-	target Image (*:storyboard-root > .updown-button-down-arrow)
-	{
-		animation source-color
-		{
-			keyframe 0 { #ffaaaaaa }
-		}
-	}
+    target Image (*:storyboard-root > .updown-button-down-arrow)
+    {
+        animation source-color
+        {
+            keyframe 0 { #ffaaaaaa }
+        }
+    }
 }
 
 // ============================================================================
@@ -824,165 +824,165 @@ NumericUpDown >> TextBox >> .textbox-focus-border
 
 .scroll-button
 {
-	trigger event Mouse.mouse-enter { }
-	trigger event click { }
+    trigger event Mouse.mouse-enter { }
+    trigger event click { }
 }
 
-VScrollBar
+VScrollBar!
 {
-	width: 17;
-	min-height: 64;
+    width: 17;
+    min-height: 64;
 }
 
-VScrollBar >> Track > .track-thumb
+VScrollBar! >> Track! > .track-thumb
 {
-	transition (common, hover): null;
-	transition (common, pressed): null;
+    transition (common, hover): null;
+    transition (common, pressed): null;
 }
 
-VScrollBar >> Track > .track-thumb >> .button-background
+VScrollBar! >> Track! > .track-thumb >> .button-background
 {
-	source-image: #Global:Textures:DefaultUI 304 788 32 106 16 16 vertical;
+    source-image: #Global:Textures:DefaultUI 304 788 32 106 16 16 vertical;
 }
 
 .scroll-button-up, .scroll-button-down
 {
-	padding: 0;
-	width: 17;
-	height: 21;
-		
-	transition (common, normal): scrollbutton-to-normal;
-	transition (common, hover): scrollbutton-to-hover;
-	transition (common, pressed): scrollbutton-to-pressed;
-	transition (common, disabled): scrollbutton-to-disabled;
+    padding: 0;
+    width: 17;
+    height: 21;
+        
+    transition (common, normal): scrollbutton-to-normal;
+    transition (common, hover): scrollbutton-to-hover;
+    transition (common, pressed): scrollbutton-to-pressed;
+    transition (common, disabled): scrollbutton-to-disabled;
 }
 
 .scroll-button-up-arrow
 {
-	source-image: #Global:Textures:DefaultUI 189 937 18 12;
-	width: 9;
-	height: 6;
+    source-image: #Global:Textures:DefaultUI 189 937 18 12;
+    width: 9;
+    height: 6;
 }
 
 .scroll-button-down-arrow
 {
-	source-image: #Global:Textures:DefaultUI 208 937 18 12;
-	width: 9;
-	height: 6;
+    source-image: #Global:Textures:DefaultUI 208 937 18 12;
+    width: 9;
+    height: 6;
 }
 
 .scroll-button-up >> .button-background
 {
-	source-image: #Global:Textures:DefaultUI 269 788 34 42;
+    source-image: #Global:Textures:DefaultUI 269 788 34 42;
 }
 
 .scroll-button-down >> .button-background
 {
-	source-image: #Global:Textures:DefaultUI 269 852 34 42;
+    source-image: #Global:Textures:DefaultUI 269 852 34 42;
 }
 
 .scroll-track-bg-vertical
 {
-	source-image: #Global:Textures:DefaultUI 269 830 34 22 16 8 16 8;
+    source-image: #Global:Textures:DefaultUI 269 830 34 22 16 8 16 8;
 }
 
-HScrollBar
+HScrollBar!
 {
-	min-width: 64;
-	height: 17;
+    min-width: 64;
+    height: 17;
 }
 
-HScrollBar >> Track > .track-thumb
+HScrollBar! >> Track! > .track-thumb
 {
-	transition (common, hover): null;
-	transition (common, pressed): null;
+    transition (common, hover): null;
+    transition (common, pressed): null;
 }
 
-HScrollBar >> Track > .track-thumb >> .button-background
+HScrollBar! >> Track! > .track-thumb >> .button-background
 {
-	source-image: #Global:Textures:DefaultUI 358 823 106 32 16 16;
+    source-image: #Global:Textures:DefaultUI 358 823 106 32 16 16;
 }
 
 .scroll-button-left, .scroll-button-right
 {
-	padding: 0;
-	width: 21;
-	height: 17;
+    padding: 0;
+    width: 21;
+    height: 17;
 
-	transition (common, normal): scrollbutton-to-normal;
-	transition (common, hover): scrollbutton-to-hover;
-	transition (common, pressed): scrollbutton-to-pressed;
-	transition (common, disabled): scrollbutton-to-disabled;
+    transition (common, normal): scrollbutton-to-normal;
+    transition (common, hover): scrollbutton-to-hover;
+    transition (common, pressed): scrollbutton-to-pressed;
+    transition (common, disabled): scrollbutton-to-disabled;
 }
 
 .scroll-button-left-arrow
 {
-	source-image: #Global:Textures:DefaultUI 163 937 12 18;
-	width: 6;
-	height: 9;
+    source-image: #Global:Textures:DefaultUI 163 937 12 18;
+    width: 6;
+    height: 9;
 }
 
 .scroll-button-right-arrow
 {
-	source-image: #Global:Textures:DefaultUI 176 937 12 18;
-	width: 6;
-	height: 9;
+    source-image: #Global:Textures:DefaultUI 176 937 12 18;
+    width: 6;
+    height: 9;
 }
 
 .scroll-button-left >> .button-background
 {
-	source-image: #Global:Textures:DefaultUI 358 788 42 34;
+    source-image: #Global:Textures:DefaultUI 358 788 42 34;
 }
 
 .scroll-button-right >> .button-background
 {
-	source-image: #Global:Textures:DefaultUI 422 788 42 34;
+    source-image: #Global:Textures:DefaultUI 422 788 42 34;
 }
 
 .scroll-track-bg-horizontal
 {
-	source-image: #Global:Textures:DefaultUI 400 788 22 34 8 16 8 16;
+    source-image: #Global:Textures:DefaultUI 400 788 22 34 8 16 8 16;
 }
 
 @scrollbutton-to-normal
 {
-	target Image (*:storyboard-root > Image) 
-	{
-		animation source-color
-		{
-			keyframe 0 { }
-		}
-	}
+    target Image (*:storyboard-root > Image!) 
+    {
+        animation source-color
+        {
+            keyframe 0 { }
+        }
+    }
 }
 @scrollbutton-to-hover
 {
-	target Image (*:storyboard-root > Image) 
-	{
-		animation source-color
-		{
-			keyframe 0 { }
-		}
-	}
+    target Image (*:storyboard-root > Image!) 
+    {
+        animation source-color
+        {
+            keyframe 0 { }
+        }
+    }
 }
 @scrollbutton-to-pressed
 {
-	target Image (*:storyboard-root > Image) 
-	{
-		animation source-color
-		{
-			keyframe 0 { #ffacb3bf }
-		}
-	}
+    target Image (*:storyboard-root > Image!) 
+    {
+        animation source-color
+        {
+            keyframe 0 { #ffacb3bf }
+        }
+    }
 }
 @scrollbutton-to-disabled
 {
-	target Image (*:storyboard-root > Image) 
-	{
-		animation source-color
-		{
-			keyframe 0 { #ffaaaaaa }
-		}
-	}
+    target Image (*:storyboard-root > Image!) 
+    {
+        animation source-color
+        {
+            keyframe 0 { #ffaaaaaa }
+        }
+    }
 }
 
 // ============================================================================
@@ -991,36 +991,36 @@ HScrollBar >> Track > .track-thumb >> .button-background
 
 .scrollviewer-rect
 {
-	visibility: collapsed;
+    visibility: collapsed;
 }
 
 .scrollviewer-vscroll
 {
-	margin: 2 0 0 0;
+    margin: 2 0 0 0;
 }
 
 .scrollviewer-hscroll
 {
-	margin: 0 2 0 0;
+    margin: 0 2 0 0;
 }
 
 // ============================================================================
 // TOOL TIPS
 // ============================================================================
 
-ToolTip
+ToolTip!
 {
-	padding: 4;
+    padding: 4;
 }
 
 .tooltip-background
 {
-	fill-color: #ff808080;
+    fill-color: #ff808080;
 }
 
 .tooltip-border
 {
-	border-color: #ff000000;
+    border-color: #ff000000;
 }
 
 // ============================================================================
@@ -1029,153 +1029,153 @@ ToolTip
 
 .tabcontrol-background
 {
-	source-image: #Global:Textures:DefaultUI 463 697 32 64 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 463 697 32 64 8 8 8 8;
 }
 
 .tabcontrol-content
 {
-	margin: 8;
+    margin: 8;
 }
 
-TabControl.left >> TabPanel
+TabControl!.left >> TabPanel!
 {
-	margin: 2 2 0 2;
+    margin: 2 2 0 2;
 }
 
-TabControl.top >> TabPanel
+TabControl!.top >> TabPanel!
 {
-	margin: 2 2 2 0;
+    margin: 2 2 2 0;
 }
 
-TabControl.right >> TabPanel
+TabControl!.right >> TabPanel!
 {
-	margin: 0 2 2 2;
+    margin: 0 2 2 2;
 }
 
-TabControl.bottom >> TabPanel
+TabControl!.bottom >> TabPanel!
 {
-	margin: 2 0 2 2;
+    margin: 2 0 2 2;
 }
 
-TabPanel
+TabPanel!
 {
-	margin: 2;
-	Panel.z-index: 1;
+    margin: 2;
+    Panel.z-index: 1;
 }
 
-TabItem
+TabItem!
 {
-	padding: 4;
+    padding: 4;
 }
 
-TabItem.selected
+TabItem!.selected
 {
-	Panel.z-index: 1;
+    Panel.z-index: 1;
 }
 
 .tabitem-focus-image
 {
-	margin: 4;
-	source-color: #ff000000;
-	source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    margin: 4;
+    source-color: #ff000000;
+    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
 }
 
 .tabitem-grid
 {
-	min-width: 50;
-	min-height: 32;
+    min-width: 50;
+    min-height: 32;
 }
 
-TabControl.left >? TabItem
+TabControl!.left >? TabItem!
 {
-	trigger property Selector.selected = { false }, mouse-over = { true }
-	{
-		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 465 795 64 32 8 8 8 8 }	
-	}
+    trigger property Selector.selected = { false }, mouse-over = { true }
+    {
+        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 465 795 64 32 8 8 8 8 }	
+    }
 }
 
-TabControl.left >? TabItem.selected
+TabControl!.left >? TabItem!.selected
 {
-	margin: -2 -2 -1 -2;
+    margin: -2 -2 -1 -2;
 }
 
-TabControl.left >? TabItem >> .tabitem-background
+TabControl!.left >? TabItem! >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 465 762 64 32 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 465 762 64 32 8 8 8 8;	
 }
 
-TabControl.left >? TabItem.selected >> .tabitem-background
+TabControl!.left >? TabItem!.selected >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 465 828 64 32 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 465 828 64 32 8 8 8 8;	
 }
 
-TabControl.top >? TabItem
+TabControl!.top >? TabItem!
 {
-	trigger property Selector.selected = { false }, mouse-over = { true }
-	{
-		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 529 697 32 64 8 8 8 8 }	
-	}
+    trigger property Selector.selected = { false }, mouse-over = { true }
+    {
+        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 529 697 32 64 8 8 8 8 }	
+    }
 }
 
-TabControl.top >? TabItem.selected
+TabControl!.top >? TabItem!.selected
 {
-	margin: -2 -2 -2 -1;
+    margin: -2 -2 -2 -1;
 }
 
-TabControl.top >? TabItem >> .tabitem-background
+TabControl!.top >? TabItem! >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 496 697 32 64 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 496 697 32 64 8 8 8 8;	
 }
 
-TabControl.top >? TabItem.selected >> .tabitem-background
+TabControl!.top >? TabItem!.selected >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 562 697 32 64 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 562 697 32 64 8 8 8 8;	
 }
 
-TabControl.right >? TabItem
+TabControl!.right >? TabItem!
 {
-	trigger property Selector.selected = { false }, mouse-over = { true }
-	{
-		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 530 795 64 32 8 8 8 8 }	
-	}
+    trigger property Selector.selected = { false }, mouse-over = { true }
+    {
+        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 530 795 64 32 8 8 8 8 }	
+    }
 }
 
-TabControl.right >? TabItem.selected
+TabControl!.right >? TabItem!.selected
 {
-	margin: -1 -2 -2 -2;
+    margin: -1 -2 -2 -2;
 }
 
-TabControl.right >? TabItem >> .tabitem-background
+TabControl!.right >? TabItem! >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 530 762 64 32 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 530 762 64 32 8 8 8 8;	
 }
 
-TabControl.right >? TabItem.selected >> .tabitem-background
+TabControl!.right >? TabItem!.selected >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 530 828 64 32 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 530 828 64 32 8 8 8 8;	
 }
 
-TabControl.bottom >? TabItem
+TabControl!.bottom >? TabItem!
 {
-	trigger property Selector.selected = { false }, mouse-over = { true }
-	{
-		set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 628 697 32 64 8 8 8 8 }	
-	}
+    trigger property Selector.selected = { false }, mouse-over = { true }
+    {
+        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 628 697 32 64 8 8 8 8 }	
+    }
 }
 
-TabControl.bottom >? TabItem.selected
+TabControl!.bottom >? TabItem!.selected
 {
-	margin: -2 -1 -2 -2;
+    margin: -2 -1 -2 -2;
 }
 
-TabControl.bottom >? TabItem >> .tabitem-background
+TabControl!.bottom >? TabItem! >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 595 697 32 64 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 595 697 32 64 8 8 8 8;	
 }
 
-TabControl.bottom >? TabItem.selected >> .tabitem-background
+TabControl!.bottom >? TabItem!.selected >> .tabitem-background
 {
-	source-image: #Global:Textures:DefaultUI 661 697 32 64 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 661 697 32 64 8 8 8 8;	
 }
 
 // ============================================================================
@@ -1184,133 +1184,133 @@ TabControl.bottom >? TabItem.selected >> .tabitem-background
 
 .msgbox
 {
-	trigger event View.opening
-	{
-		play-storyboard { msgbox-opening }
-	}
-	trigger event View.closing
-	{
-		play-storyboard { msgbox-closing }
-	}
+    trigger event View.opening
+    {
+        play-storyboard { msgbox-opening }
+    }
+    trigger event View.closing
+    {
+        play-storyboard { msgbox-closing }
+    }
 }
 
 .msgbox-fade
 {
-	fill-color: #ff000000;
+    fill-color: #ff000000;
 }
 
 .msgbox-box
 {
-	min-width: 300;
-	max-width: 400;
+    min-width: 300;
+    max-width: 400;
 }
 
 .msgbox-box | effect as DropShadowEffect
 {
-	blur-radius: 2.0;
-	shadow-depth: 2.0;
+    blur-radius: 2.0;
+    shadow-depth: 2.0;
 }
 
 .msgbox-box-background
 {
-	source-image: #Global:Textures:DefaultUI 463 632 32 64 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 463 632 32 64 8 8 8 8;
 }
 
 .msgbox-box-content
 {
-	margin: 8;
+    margin: 8;
 }
 
 .msgbox-caption
 {
-	margin: 0 0 0 8;
-	font-style: bold;
+    margin: 0 0 0 8;
+    font-style: bold;
 }
 
 .msgbox-text-panel
 {
-	margin: 0 0 0 8;
+    margin: 0 0 0 8;
 }
 
 .msgbox-img
 {
-	width: 96;
-	height: 96;
-	margin: 0 0 8 0;
+    width: 96;
+    height: 96;
+    margin: 0 0 8 0;
 }
 
 .msgbox-img-hand
 {
-	source-image: #Global:Textures:DefaultUI 269 895 96 96;
+    source-image: #Global:Textures:DefaultUI 269 895 96 96;
 }
 
 .msgbox-img-exclamation
 {
-	source-image: #Global:Textures:DefaultUI 560 895 96 96;
+    source-image: #Global:Textures:DefaultUI 560 895 96 96;
 }
 
 .msgbox-img-question
 {
-	source-image: #Global:Textures:DefaultUI 366 895 96 96;
+    source-image: #Global:Textures:DefaultUI 366 895 96 96;
 }
 
 .msgbox-img-asterisk
 {
-	source-image: #Global:Textures:DefaultUI 463 895 96 96;
+    source-image: #Global:Textures:DefaultUI 463 895 96 96;
 }
 
 .msgbox-btn
 {
-	min-width: 75;
-	margin: 8 0 0 0;
+    min-width: 75;
+    margin: 8 0 0 0;
 }
 
 @msgbox-opening
 {
-	target Rectangle (*:storyboard-root > .msgbox-fade)
-	{
-		animation opacity
-		{
-			keyframe   0                { 0.00 }
-			keyframe 250 ease-out-cubic { 0.75 }
-		}
-	}
-	target Grid (*:storyboard-root > .msgbox-box)
-	{
-		animation opacity
-		{
-			keyframe   0                { 0.0 }
-			keyframe 250 ease-out-cubic { 1.0 }
-		}
-		animation y | render-transform as TranslateTransform
-		{
-			keyframe   0				{ 250 }
-			keyframe 500 ease-out-cubic {   0 }
-		}
-	}
+    target Rectangle (*:storyboard-root > .msgbox-fade)
+    {
+        animation opacity
+        {
+            keyframe   0                { 0.00 }
+            keyframe 250 ease-out-cubic { 0.75 }
+        }
+    }
+    target Grid (*:storyboard-root > .msgbox-box)
+    {
+        animation opacity
+        {
+            keyframe   0                { 0.0 }
+            keyframe 250 ease-out-cubic { 1.0 }
+        }
+        animation y | render-transform as TranslateTransform
+        {
+            keyframe   0				{ 250 }
+            keyframe 500 ease-out-cubic {   0 }
+        }
+    }
 }
 @msgbox-closing
 {
-	target Rectangle (*:storyboard-root > .msgbox-fade)
-	{
-		animation opacity
-		{
-			keyframe   0                { 0.75 }
-			keyframe 250                { 0.75 }
-			keyframe 500 ease-out-cubic { 0.00 }
-		}
-	}
-	target Grid (*:storyboard-root > .msgbox-box)
-	{
-		animation opacity
-		{
-			keyframe   0                { 1.0 }
-			keyframe 250 ease-out-cubic { 0.0 }
-		}
-		animation y | render-transform as TranslateTransform
-		{
-			keyframe   0				{   0 }
-			keyframe 500 ease-out-cubic { 250 }
-		}
-	}
+    target Rectangle (*:storyboard-root > .msgbox-fade)
+    {
+        animation opacity
+        {
+            keyframe   0                { 0.75 }
+            keyframe 250                { 0.75 }
+            keyframe 500 ease-out-cubic { 0.00 }
+        }
+    }
+    target Grid (*:storyboard-root > .msgbox-box)
+    {
+        animation opacity
+        {
+            keyframe   0                { 1.0 }
+            keyframe 250 ease-out-cubic { 0.0 }
+        }
+        animation y | render-transform as TranslateTransform
+        {
+            keyframe   0				{   0 }
+            keyframe 500 ease-out-cubic { 250 }
+        }
+    }
 }

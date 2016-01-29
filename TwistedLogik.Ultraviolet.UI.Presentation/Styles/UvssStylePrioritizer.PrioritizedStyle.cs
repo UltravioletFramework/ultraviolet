@@ -15,11 +15,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             /// <param name="style">The style being applied.</param>
             /// <param name="selector">The selector which caused the style to be applied.</param>
             /// <param name="priority">The style's priority.</param>
-            public PrioritizedStyle(UvssRule style, UvssSelector selector, Int32 priority)
+            /// <param name="index">The index of the style's rule set within its style sheet.</param>
+            public PrioritizedStyle(UvssRule style, UvssSelector selector, Int32 priority, Int32 index)
             {
-                this.Style    = style;
+                this.Style = style;
                 this.Selector = selector;
                 this.Priority = priority;
+                this.Index = index;
             }
 
             /// <summary>
@@ -36,6 +38,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             /// The style's priority.
             /// </summary>
             public readonly Int32 Priority;
+
+            /// <summary>
+            /// The index of the style's rule set within its style sheet.
+            /// </summary>
+            public readonly Int32 Index;
         }
     }
 }

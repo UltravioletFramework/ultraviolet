@@ -89,6 +89,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 storyboardDefinitionsByName[storyboardDefinition.Name] = storyboardDefinition;
 
             InstantiateStoryboards();
+
+            CategorizeRuleSets();
         }
 
         /// <summary>
@@ -171,6 +173,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             foreach (var storyboardInstance in document.storyboardInstancesByName)
                 this.storyboardInstancesByName[storyboardInstance.Key] = storyboardInstance.Value;
+
+            CategorizeRuleSets();
         }
 
         /// <summary>
@@ -188,7 +192,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             storyboardInstancesByName.TryGetValue(name, out storyboard);
             return storyboard;
         }
-        
+
         /// <summary>
         /// Gets the document's rule sets.
         /// </summary>
@@ -231,7 +235,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
             ApplyStylesInternal(element);
         }
-        
+
         /// <summary>
         /// Retrieves the registered element type with the specified name.
         /// </summary>
@@ -307,7 +311,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 storyboardInstancesByName[storyboardDefinition.Name] = storyboardInstance;
             }
         }
-        
+
         /// <summary>
         /// Creates a new <see cref="Storyboard"/> instance from the specified storyboard definition.
         /// </summary>
@@ -415,6 +419,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         /// <summary>
+        /// Adds the specified rule set to the style prioritizer.
+        /// </summary>
+        private void AddRuleSetToPrioritizer(UIElement element, UvssSelector selector, UvssRuleSet ruleSet, Int32 index)
+        {
+            if (!selector.MatchesElement(element))
+                return;
+
+            var navexp = NavigationExpression.FromUvssNavigationExpression(Ultraviolet, selector.NavigationExpression);
+
+            foreach (var rule in ruleSet.Rules)
+                prioritizer.Add(Ultraviolet, selector, navexp, rule, index);
+
+            foreach (var trigger in ruleSet.Triggers)
+                prioritizer.Add(Ultraviolet, selector, navexp, trigger, index);
+        }
+
+        /// <summary>
         /// Applies styles to the specified element.
         /// </summary>
         /// <param name="element">The element to which to apply styles.</param>
@@ -422,29 +443,142 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         {
             element.ClearStyledValues(false);
 
-            // Gather styles from document
-            var selector = default(UvssSelector);
-            foreach (var rule in ruleSets)
+            // Prioritize styles from name.
+            var frameworkElement = element as FrameworkElement;
+            if (frameworkElement != null && !String.IsNullOrEmpty(frameworkElement.Name))
             {
-                if (!rule.MatchesElement(element, out selector))
-                    continue;
-
-                var uv = element.Ultraviolet;
-                var navexp = NavigationExpression.FromUvssNavigationExpression(uv, selector.NavigationExpression);
-
-                foreach (var style in rule.Rules)
+                var ruleSetsByName = GetRuleSetsByName(frameworkElement.Name, onlyIfExists: true);
+                if (ruleSetsByName != null)
                 {
-                    prioritizer.Add(uv, selector, navexp, style);
-                }
-
-                foreach (var trigger in rule.Triggers)
-                {
-                    prioritizer.Add(uv, selector, navexp, trigger);
+                    foreach (var categorized in ruleSetsByName)
+                        AddRuleSetToPrioritizer(element, categorized.Selector, categorized.RuleSet, categorized.Index);
                 }
             }
 
+            // Prioritize styles from class.
+            foreach (var @class in element.Classes)
+            {
+                var ruleSetsByCategory = GetRuleSetsByClass(@class, onlyIfExists: true);
+                if (ruleSetsByCategory != null)
+                {
+                    foreach (var categorized in ruleSetsByCategory)
+                        AddRuleSetToPrioritizer(element, categorized.Selector, categorized.RuleSet, categorized.Index);
+                }
+            }
+
+            // Prioritize rules from type.
+            var ruleSetsByType = GetRuleSetsByType(element.UvmlName, onlyIfExists: true);
+            if (ruleSetsByType != null)
+            {
+                foreach (var categorized in ruleSetsByType)
+                    AddRuleSetToPrioritizer(element, categorized.Selector, categorized.RuleSet, categorized.Index);
+            }
+
+            // Prioritize uncategorized styles.
+            foreach (var categorized in ruleSetsWithoutCategory)
+                AddRuleSetToPrioritizer(element, categorized.Selector, categorized.RuleSet, categorized.Index);
+            
             // Apply styles to element
             prioritizer.Apply(element);
+        }
+        
+        /// <summary>
+        /// Sorts the document's rule sets into categories for faster querying.
+        /// </summary>
+        private void CategorizeRuleSets()
+        {
+            ruleSetsWithoutCategory.Clear();
+            ruleSetsByName.Clear();
+            ruleSetsByType.Clear();
+            ruleSetsByClass.Clear();
+
+            for (int i = 0; i < ruleSets.Count; i++)
+            {
+                var ruleSet = ruleSets[i];
+
+                foreach (var selector in ruleSet.Selectors)
+                {
+                    var lastSelectorPart = selector[selector.PartCount - 1];
+                    var categorized = false;
+
+                    if (!categorized && lastSelectorPart.HasName)
+                    {
+                        var category = GetRuleSetsByName(lastSelectorPart.Name);
+                        category.Add(new CategorizedRuleSet(selector, ruleSet, i));
+                        categorized = true;
+                    }
+                    
+                    if (!categorized && lastSelectorPart.HasClasses)
+                    {
+                        foreach (var @class in lastSelectorPart.Classes)
+                        {
+                            var category = GetRuleSetsByClass(@class);
+                            category.Add(new CategorizedRuleSet(selector, ruleSet, i));
+                            categorized = true;
+                        }
+                    }
+
+                    if (!categorized && lastSelectorPart.HasExactType)
+                    {
+                        var category = GetRuleSetsByType(lastSelectorPart.Type);
+                        category.Add(new CategorizedRuleSet(selector, ruleSet, i));
+                        categorized = true;
+                    }
+
+                    if (!categorized)
+                        GetRuleSetsWithoutCategory().Add(new CategorizedRuleSet(selector, ruleSet, i));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the list of rule sets which have no particular category.
+        /// </summary>
+        private List<CategorizedRuleSet> GetRuleSetsWithoutCategory()
+        {
+            return ruleSetsWithoutCategory;
+        }
+
+        /// <summary>
+        /// Gets the list of rule sets which apply to the specified name.
+        /// </summary>
+        private List<CategorizedRuleSet> GetRuleSetsByName(String name, Boolean onlyIfExists = false)
+        {
+            return GetRuleSetCategory(ruleSetsByName, name, onlyIfExists);
+        }
+
+        /// <summary>
+        /// Gets the list of rule sets which apply to the specified type.
+        /// </summary>
+        private List<CategorizedRuleSet> GetRuleSetsByType(String element, Boolean onlyIfExists = false)
+        {
+            return GetRuleSetCategory(ruleSetsByType, element, onlyIfExists);
+        }
+
+        /// <summary>
+        /// Gets the list of rule sets which apply to the specified class.
+        /// </summary>
+        private List<CategorizedRuleSet> GetRuleSetsByClass(String @class, Boolean onlyIfExists = false)
+        {
+            return GetRuleSetCategory(ruleSetsByClass, @class, onlyIfExists);
+        }
+
+        /// <summary>
+        /// Gets the list of rule sets which apply to the specified category.
+        /// </summary>
+        private List<CategorizedRuleSet> GetRuleSetCategory(Dictionary<String, List<CategorizedRuleSet>> ruleSets, 
+            String key, Boolean onlyIfExists = false)
+        {
+            List<CategorizedRuleSet> category;
+            if (!ruleSets.TryGetValue(key, out category))
+            {
+                if (onlyIfExists)
+                    return null;
+
+                category = new List<CategorizedRuleSet>();
+                ruleSets[key] = category;
+            }
+            return category;
         }
 
         // The standard easing functions which can be specified in an animation.
@@ -459,5 +593,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         private readonly List<UvssStoryboard> storyboardDefinitions;
         private readonly Dictionary<String, UvssStoryboard> storyboardDefinitionsByName;
         private readonly Dictionary<String, Storyboard> storyboardInstancesByName;
+
+        // Categorize rule sets based on their selectors.
+        private readonly Dictionary<String, List<CategorizedRuleSet>> ruleSetsByName =
+            new Dictionary<String, List<CategorizedRuleSet>>();
+        private readonly Dictionary<String, List<CategorizedRuleSet>> ruleSetsByType =
+            new Dictionary<String, List<CategorizedRuleSet>>();
+        private readonly Dictionary<String, List<CategorizedRuleSet>> ruleSetsByClass =
+            new Dictionary<String, List<CategorizedRuleSet>>();
+
+        private readonly List<CategorizedRuleSet> ruleSetsWithoutCategory = 
+            new List<CategorizedRuleSet>();
     }
 }

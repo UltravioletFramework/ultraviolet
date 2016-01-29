@@ -54,23 +54,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             (navexp == null) ? Text : String.Format("{0} | {1}", Text, navexp);
 
         /// <summary>
-        /// Gets a value indicating whether this selector has a higher (or equal) priority than the specified selector.
+        /// Compares the priority of this selector with the priority of another selector
+        /// and returns a value which represents their relative order.
         /// </summary>
         /// <param name="selector">The selector to compare to this selector.</param>
-        /// <returns><c>true</c> if this selector's priority is higher than or the same as the specified selector; otherwise, <c>false</c>.</returns>
-        public Boolean IsHigherPriorityThan(UvssSelector selector)
+        /// <returns>A value which represents the relative order of the objects being compared.</returns>
+        public Int32 ComparePriority(UvssSelector selector)
         {
-            Contract.Require(selector, "selector");
-            
+            Contract.Require(selector, nameof(selector));
+
             if (IsDirectlyTargeted && !selector.IsDirectlyTargeted)
-                return true;
+                return 1;
 
             if (!IsDirectlyTargeted && selector.IsDirectlyTargeted)
-                return false;
+                return -1;
 
-            return Priority >= selector.Priority;
+            return priority.CompareTo(selector.priority);
         }
-
+        
         /// <summary>
         /// Gets the selector part at the specified index within the selector.
         /// </summary>
@@ -123,7 +124,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 if (parts.Count == 0)
                     return false;
 
-                return parts[parts.Count - 1].HasID;
+                return parts[parts.Count - 1].HasName;
             }
         }
 
@@ -140,7 +141,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 
                 var part = parts[0];
 
-                return !part.HasClasses && !part.HasID && String.Equals(part.Element, "view", StringComparison.OrdinalIgnoreCase);
+                return !part.HasClasses && !part.HasName && String.Equals(part.Type, "view", StringComparison.OrdinalIgnoreCase);
             }
         }
 
@@ -182,15 +183,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns><c>true</c> if the element matches the selector part; otherwise, <c>false</c>.</returns>
         private static Boolean ElementMatchesSelectorPart(UIElement root, UIElement element, UvssSelectorPart part)
         {
-            if (element.Parent == null && String.Equals(part.Element, "document", StringComparison.OrdinalIgnoreCase))
+            if (element.Parent == null && String.Equals(part.Type, "document", StringComparison.OrdinalIgnoreCase))
                 return true;
 
-            if (part.HasID)
+            if (part.HasName)
             {
                 var frameworkElement = element as FrameworkElement;
                 if (frameworkElement != null && !String.IsNullOrWhiteSpace(frameworkElement.Name))
                 {
-                    if (!String.Equals(frameworkElement.Name, part.ID, StringComparison.OrdinalIgnoreCase))
+                    if (!String.Equals(frameworkElement.Name, part.Name, StringComparison.OrdinalIgnoreCase))
                         return false;
                 }
                 else
@@ -208,13 +209,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
                 }
             }
 
-            if (part.HasElement)
+            if (part.HasType)
             {
                 var partElementType = default(Type);
-                if (!element.Ultraviolet.GetUI().GetPresentationFoundation().GetKnownType(part.Element, false, out partElementType))
+                if (!element.Ultraviolet.GetUI().GetPresentationFoundation().GetKnownType(part.Type, false, out partElementType))
                     return false;
 
-                if (part.ElementIsExact)
+                if (part.HasExactType)
                 {
                     if (partElementType != element.GetType())
                         return false;

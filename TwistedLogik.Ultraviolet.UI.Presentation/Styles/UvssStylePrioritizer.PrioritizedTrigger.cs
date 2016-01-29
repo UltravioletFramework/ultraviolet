@@ -15,11 +15,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             /// <param name="trigger">The trigger being applied.</param>
             /// <param name="selector">The selector which caused the trigger to be applied.</param>
             /// <param name="priority">The trigger's priority.</param>
-            public PrioritizedTrigger(UvssTrigger trigger, UvssSelector selector, Int32 priority)
+            /// <param name="index">The index of the trigger's rule set within its style sheet.</param>
+            public PrioritizedTrigger(UvssTrigger trigger, UvssSelector selector, Int32 priority, Int32 index)
             {
-                this.Trigger  = trigger;
+                this.Trigger = trigger;
                 this.Selector = selector;
                 this.Priority = priority;
+                this.Index = index;
             }
 
             /// <summary>
@@ -36,6 +38,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             /// The trigger's priority.
             /// </summary>
             public readonly Int32 Priority;
+
+            /// <summary>
+            /// The index of the trigger's rule set within its style sheet.
+            /// </summary>
+            public readonly Int32 Index;
         }
     }
 }

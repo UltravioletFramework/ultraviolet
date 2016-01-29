@@ -25,9 +25,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="selector">The selector which caused this style to be considered.</param>
         /// <param name="navigationExpression">The navigation expression associated with the style.</param>
         /// <param name="rule">The styling rule to add to the prioritizer.</param>
-        public void Add(UltravioletContext uv, UvssSelector selector, NavigationExpression? navigationExpression, UvssRule rule)
+        /// <param name="index">The index of the rule's rule set within the style sheet.</param>
+        public void Add(UltravioletContext uv, UvssSelector selector, NavigationExpression? navigationExpression, UvssRule rule, Int32 index)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             var key = new StyleKey(rule.CanonicalName, navigationExpression);
             var priority = CalculatePriorityFromSelector(selector, rule.IsImportant);
@@ -35,13 +36,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             PrioritizedStyle existing;
             if (!rules.TryGetValue(key, out existing))
             {
-                rules[key] = new PrioritizedStyle(rule, selector, priority);
+                rules[key] = new PrioritizedStyle(rule, selector, priority, index);
             }
             else
             {
-                if (selector.IsHigherPriorityThan(existing.Selector) && (rule.IsImportant || !existing.Style.IsImportant))
+                var comparison = selector.ComparePriority(existing.Selector);
+                if (comparison == 0 && index > existing.Index)
+                    comparison = 1;
+
+                if (comparison > 0 && (rule.IsImportant || !existing.Style.IsImportant))
                 {
-                    rules[key] = new PrioritizedStyle(rule, selector, priority);
+                    rules[key] = new PrioritizedStyle(rule, selector, priority, index);
                 }
             }
         }
@@ -53,9 +58,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="selector">The selector which caused this style to be considered.</param>
         /// <param name="navigationExpression">The navigation expression associated with the style.</param>
         /// <param name="trigger">The trigger to add to the prioritizer.</param>
-        public void Add(UltravioletContext uv, UvssSelector selector, NavigationExpression? navigationExpression, UvssTrigger trigger)
+        /// <param name="index">The index of the trigger's rule set within the style sheet.</param>
+        public void Add(UltravioletContext uv, UvssSelector selector, NavigationExpression? navigationExpression, UvssTrigger trigger, Int32 index)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             var key = new StyleKey(trigger.CanonicalName, navigationExpression);
             var priority = CalculatePriorityFromSelector(selector, false);
@@ -63,13 +69,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             PrioritizedTrigger existing;
             if (!triggers.TryGetValue(key, out existing))
             {
-                triggers[key] = new PrioritizedTrigger(trigger, selector, priority);
+                triggers[key] = new PrioritizedTrigger(trigger, selector, priority, index);
             }
             else
             {
-                if (selector.IsHigherPriorityThan(existing.Selector) && (trigger.IsImportant || !existing.Trigger.IsImportant))
+                var comparison = selector.ComparePriority(existing.Selector);
+                if (comparison == 0 && index > existing.Index)
+                    comparison = 1;
+
+                if (comparison > 0 && (trigger.IsImportant || !existing.Trigger.IsImportant))
                 {
-                    triggers[key] = new PrioritizedTrigger(trigger, selector, priority);
+                    triggers[key] = new PrioritizedTrigger(trigger, selector, priority, index);
                 }
             }
         }

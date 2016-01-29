@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             {
                 if (potentialMatch.MatchesElement(element))
                 {
-                    if (selector == null || potentialMatch.IsHigherPriorityThan(selector))
+                    if (selector == null || potentialMatch.ComparePriority(selector) >= 0)
                     {
                         selector = potentialMatch;
                     }

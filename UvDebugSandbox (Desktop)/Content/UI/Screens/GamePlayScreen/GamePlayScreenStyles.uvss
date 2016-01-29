@@ -18,7 +18,7 @@
 	margin: 0 16 0 16;
 }
 
-#display-panel > Rectangle
+#display-panel > Rectangle!
 {
 	fill-color: #80000000;
 }
@@ -30,7 +30,7 @@
 	margin: 16;
 }
 
-#vertex-colors-panel TriangleColorSelector
+#vertex-colors-panel TriangleColorSelector!
 {
 	margin: 0 0 0 8;
 }
