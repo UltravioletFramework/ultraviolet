@@ -9,8 +9,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets an enumerator for the collection.
         /// </summary>
-        /// <returns>A <see cref="HashSet{T}.Enumerator"/> that iterates through the collection.</returns>
-        public HashSet<String>.Enumerator GetEnumerator()
+        /// <returns>A <see cref="List{T}.Enumerator"/> that iterates through the collection.</returns>
+        public List<String>.Enumerator GetEnumerator()
         {
             return classes.GetEnumerator();
         }
