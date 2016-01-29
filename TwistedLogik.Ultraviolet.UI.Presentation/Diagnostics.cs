@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     if (boundingBoxImageTexture == null)
                     {
-                        boundingBoxImageTexture = new UltravioletSingleton<Texture2D>((uv) =>
+                        boundingBoxImageTexture = new UltravioletSingleton<Texture2D>(UltravioletSingletonFlags.DisabledInServiceMode, uv =>
                         {
                             var texture = Texture2D.Create(3, 3);
                             texture.SetData(new[] { Color.White, Color.White, Color.White, Color.White, Color.Transparent, Color.White, Color.White, Color.White, Color.White });

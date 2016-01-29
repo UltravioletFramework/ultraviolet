@@ -109,9 +109,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         }
 
         // The singleton instance of effect used to render the shadow.
-        private static readonly UltravioletSingleton<Graphics.BlurEffect> effect = new UltravioletSingleton<Graphics.BlurEffect>((uv) =>
-        {
-            return uv.IsRunningInServiceMode ? null : Graphics.BlurEffect.Create();
-        });
+        private static readonly UltravioletSingleton<Graphics.BlurEffect> effect = 
+            new UltravioletSingleton<Graphics.BlurEffect>(UltravioletSingletonFlags.DisabledInServiceMode, uv =>
+                Graphics.BlurEffect.Create());
     }
 }
