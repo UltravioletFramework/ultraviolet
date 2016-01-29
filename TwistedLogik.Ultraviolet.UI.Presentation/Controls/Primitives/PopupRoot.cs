@@ -136,6 +136,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Recursively invalidates the measurement state of the
+        /// popup root and all of its descendants.
+        /// </summary>
+        internal void InvalidateMeasureRecursively()
+        {
+            InvalidateMeasureRecursively(this);
+        }
+
+        /// <summary>
         /// Hooks the popup root's children into the visual tree of its parent popup.
         /// </summary>
         internal void HookIntoVisualTree()
@@ -164,6 +173,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             var popupRoot = (PopupRoot)dobj;
             popupRoot.nonLogicalAdornerDecorator.Child = newValue;
+        }
+
+        /// <summary>
+        /// Recursively invalidates the measurement state of the
+        /// specified element and all of its descendants.
+        /// </summary>
+        private static void InvalidateMeasureRecursively(UIElement element)
+        {
+            element.InvalidateMeasure();
+
+            VisualTreeHelper.ForEachChild(element, null, (child, state) =>
+            {
+                InvalidateMeasureRecursively((UIElement)child);
+            });
         }
 
         // State values.

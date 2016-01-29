@@ -532,8 +532,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 root.IsOpen = true;
 
                 root.HookIntoVisualTree();
-                
-                popup.UpdatePopupStyle(popup.MostRecentStyleSheet);
+
+                if (popup.stylesNeedUpdate)
+                    popup.UpdatePopupStyle(popup.MostRecentStyleSheet);
+
                 popup.UpdatePopupMeasure();
                 popup.UpdatePopupArrange(popup.MostRecentFinalRect.Size);
                 
@@ -598,10 +600,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private void UpdatePopupStyle(UvssDocument styleSheet)
         {
             if (!IsOpen || styleSheet == null)
+            {
+                stylesNeedUpdate = true;
                 return;
+            }
 
             root.InvalidateStyle(true);
             root.Style(MostRecentStyleSheet);
+
+            stylesNeedUpdate = false;
         }
 
         /// <summary>
@@ -609,7 +616,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void UpdatePopupMeasure()
         {
-            root.InvalidateMeasure();
+            root.InvalidateMeasureRecursively();
             root.Measure(new Size2D(Double.PositiveInfinity, Double.PositiveInfinity));
         }
 
@@ -1226,6 +1233,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         // State values.
         private readonly PopupRoot root;
         private Boolean loadingDeferred;
+        private Boolean stylesNeedUpdate = true;
         
         // The assumed size of the default cursor, since there's currently no way to query it.
         private const Int32 DefaultCursorWidth = 16;
