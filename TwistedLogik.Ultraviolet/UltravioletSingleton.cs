@@ -16,13 +16,25 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="initializer">A function which initializes a new instance of the bound resource.</param>
         public UltravioletSingleton(Func<UltravioletContext, T> initializer)
+            : this(UltravioletSingletonFlags.None, initializer)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UltravioletSingleton{T}"/> class.
+        /// </summary>
+        /// <param name="flags">A set of flags which modify the singleton's behavior.</param>
+        /// <param name="initializer">A function which initializes a new instance of the bound resource.</param>
+        public UltravioletSingleton(UltravioletSingletonFlags flags, Func<UltravioletContext, T> initializer)
         {
             Contract.Require(initializer, "initializer");
 
+            this.flags = flags;
             this.initializer = initializer;
 
             var uv = UltravioletContext.RequestCurrent();
-            if (uv != null && uv.IsInitialized)
+            if (uv != null && uv.IsInitialized && ShouldInitializeResource(uv))
             {
                 resource = initializer(uv);
             }
@@ -42,6 +54,14 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets the singleton's flags.
+        /// </summary>
+        public UltravioletSingletonFlags Flags
+        {
+            get { return flags; }
+        }
+
+        /// <summary>
         /// Gets the bound resource.
         /// </summary>
         public T Value
@@ -51,6 +71,19 @@ namespace TwistedLogik.Ultraviolet
                 InitializeResource();
                 return resource; 
             }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the singleton should be initialized for the
+        /// specified Ultraviolet context.
+        /// </summary>
+        private Boolean ShouldInitializeResource(UltravioletContext uv)
+        {
+            var disabledInServiceMode = (flags & UltravioletSingletonFlags.DisabledInServiceMode) == UltravioletSingletonFlags.DisabledInServiceMode;
+            if (disabledInServiceMode && uv.IsRunningInServiceMode)
+                return false;
+
+            return true;
         }
 
         /// <summary>
@@ -64,7 +97,8 @@ namespace TwistedLogik.Ultraviolet
 
             if (resource == null || resource.Ultraviolet != uv)
             {
-                resource = initializer(uv);
+                if (ShouldInitializeResource(uv))
+                    resource = initializer(uv);
             }
         }
 
@@ -85,6 +119,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         // Property values.
+        private readonly UltravioletSingletonFlags flags;
         private T resource;
 
         // State values.

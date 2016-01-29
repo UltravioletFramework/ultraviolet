@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
-	/// <summary>
-	/// Represents a trigger specified by an Ultraviolet style sheet. Triggers can be used
-	/// to modify the property values of a dependency object when certain conditions are met.
-	/// </summary>
-	public abstract class UvssTrigger
+    /// <summary>
+    /// Represents a trigger specified by an Ultraviolet style sheet. Triggers can be used
+    /// to modify the property values of a dependency object when certain conditions are met.
+    /// </summary>
+    public abstract class UvssTrigger
     {
         /// <summary>
         /// Initializes a new instance of thhe <see cref="UvssTrigger"/> class.
@@ -188,10 +188,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         }
 
         // A singleton reference to the current Presentation Foundation.
-        private static readonly UltravioletSingleton<PresentationFoundation> upf = new UltravioletSingleton<PresentationFoundation>((uv) =>
-        {
-            return uv.GetUI().GetPresentationFoundation(); 
-        });
+        private static readonly UltravioletSingleton<PresentationFoundation> upf =
+            new UltravioletSingleton<PresentationFoundation>(uv => uv.GetUI().GetPresentationFoundation());
 
         // State values.
         private readonly TriggerActionCollection actions = new TriggerActionCollection();

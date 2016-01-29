@@ -140,6 +140,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 
         // The singleton instance of the clock pool.
         private static UltravioletSingleton<SimpleClockPool> instance = 
-            new UltravioletSingleton<SimpleClockPool>((uv) => new SimpleClockPool(uv));
+            new UltravioletSingleton<SimpleClockPool>(uv => new SimpleClockPool(uv));
     }
 }

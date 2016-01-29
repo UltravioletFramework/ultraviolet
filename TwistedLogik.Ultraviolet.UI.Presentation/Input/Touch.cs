@@ -620,6 +620,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
         // Represents the device state of the current Ultraviolet context.
         private static readonly UltravioletSingleton<TouchState> touchState =
-            new UltravioletSingleton<TouchState>((uv) => new TouchState(uv));
+            new UltravioletSingleton<TouchState>(uv => new TouchState(uv));
     }
 }

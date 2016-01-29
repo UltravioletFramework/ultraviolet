@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// Initializes a new instance of the <see cref="OpenGLBlurEffect"/> class.
         /// </summary>
         public OpenGLBlurEffect(UltravioletContext uv)
-            : base(CreateEffectImplementation(uv))
+            : base(CreateEffectImplementationuv)
         {
             epDirection = Parameters["Direction"];
             epResolution = Parameters["Resolution"];
@@ -131,22 +131,28 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         const Int32 UnrolledFragmentShaderCount = 5;
 
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius1 =
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius1.frag")); });
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode, 
+                uv => new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius1.frag")));
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius3 =
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius3.frag")); });
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode, 
+                uv => new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius3.frag")));
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius5 =
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius5.frag")); });
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius5.frag")));
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius7 =
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius7.frag")); });
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius7.frag")));
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader_Radius9 =
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius9.frag")); });
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffectRadius9.frag")));
 
         // Shaders
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShader = 
-            new UltravioletSingleton<OpenGLVertexShader>((uv) => { return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffect.vert")); });
+            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffect.vert")));
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader = 
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => { return 
-                IsArbitaryRadiusBlurAvailable ? new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffect.frag")) : null; });
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
+                uv => IsArbitaryRadiusBlurAvailable ? new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffect.frag")) : null);
 
         // Cached effect parameters
         private readonly EffectParameter epDirection;

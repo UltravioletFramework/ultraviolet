@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.Input
             if (ctor == null)
                 throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(typeof(T).Name));
 
-            return new UltravioletSingleton<T>((uv) =>
+            return new UltravioletSingleton<T>(uv =>
             {
                 var instance = (T)ctor.Invoke(new object[] { uv });
                 instance.CreateActions();

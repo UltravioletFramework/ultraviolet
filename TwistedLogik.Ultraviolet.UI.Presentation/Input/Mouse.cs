@@ -1335,6 +1335,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
         // Represents the device state of the current Ultraviolet context.
         private static readonly UltravioletSingleton<MouseState> mouseState = 
-            new UltravioletSingleton<MouseState>((uv) => new MouseState(uv));
+            new UltravioletSingleton<MouseState>(uv => new MouseState(uv));
     }
 }

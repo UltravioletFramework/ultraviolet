@@ -112,6 +112,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // The singleton instance of the clock pool.
         private static UltravioletSingleton<WeakReferencePool> instance =
-            new UltravioletSingleton<WeakReferencePool>((uv) => new WeakReferencePool(uv));
+            new UltravioletSingleton<WeakReferencePool>(uv => new WeakReferencePool(uv));
     }
 }

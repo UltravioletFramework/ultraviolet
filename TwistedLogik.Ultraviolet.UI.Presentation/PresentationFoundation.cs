@@ -1183,7 +1183,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // The singleton instance of the Ultraviolet Presentation Foundation.
         private static readonly UltravioletSingleton<PresentationFoundation> instance =
-            new UltravioletSingleton<PresentationFoundation>((uv) =>
+            new UltravioletSingleton<PresentationFoundation>(uv =>
             {
                 var instance = new PresentationFoundation(uv);
                 uv.FrameStart += instance.OnFrameStart;

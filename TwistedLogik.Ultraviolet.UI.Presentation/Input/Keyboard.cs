@@ -967,6 +967,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
         // Represents the device state of the current Ultraviolet context.
         private static readonly UltravioletSingleton<KeyboardState> keyboardState = 
-            new UltravioletSingleton<KeyboardState>((uv) => new KeyboardState(uv));
+            new UltravioletSingleton<KeyboardState>(uv => new KeyboardState(uv));
     }
 }

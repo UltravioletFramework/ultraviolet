@@ -35,10 +35,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
 
         // The shaders that make up this effect.
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShader = 
-            new UltravioletSingleton<OpenGLVertexShader>((uv) => { 
+            new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode, uv => { 
                 return new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("SpriteBatchEffect.vert")); });
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader = 
-            new UltravioletSingleton<OpenGLFragmentShader>((uv) => {
+            new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode, uv => {
                 return new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("SpriteBatchEffect.frag")); });
     }
 }
