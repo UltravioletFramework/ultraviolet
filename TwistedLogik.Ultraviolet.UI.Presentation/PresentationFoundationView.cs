@@ -1470,12 +1470,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var mouse = Ultraviolet.GetInput().GetMouse();
 
             // Determine which element is currently under the mouse cursor.
-            var mousePos = Display.PixelsToDips(mouse.Position);
+            var mousePos = Display.PixelsToDips((Point2D)mouse.Position);
             var mouseView = mouse.Window == Window ? this : null;
 
             elementUnderMousePopupPrev = elementUnderMousePopup;
             elementUnderMousePrev = elementUnderMouse;
-            elementUnderMouse = (mouseView == null) ? null : mouseView.HitTestInternal((Point2)mousePos, out elementUnderMousePopup) as UIElement;
+            elementUnderMouse = (mouseView == null) ? null : mouseView.HitTestInternal(mousePos, out elementUnderMousePopup) as UIElement;
             elementUnderMouse = RedirectMouseInput(elementUnderMouse);
 
             elementUnderMouseBeforeValidityCheckPrev = elementUnderMouseBeforeValidityCheck;
