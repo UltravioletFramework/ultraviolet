@@ -107,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="newValue">The new value of the <see cref="Header"/> property.</param>
         protected virtual void OnHeaderChanged(Object oldValue, Object newValue)
         {
-            // TODO
+
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void HandleHeaderChanged(DependencyObject dobj, Object oldValue, Object newValue)
         {
-            // TODO
+
         }
     }
 }

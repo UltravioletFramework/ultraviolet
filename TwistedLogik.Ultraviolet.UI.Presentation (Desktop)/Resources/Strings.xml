@@ -117,12 +117,17 @@
   </String>
   <String Key="COLLECTION_HAS_NO_ADD_METHOD">
     <en-US>
-      <Variant>The collection type '{0}' could not be instantiated because it has no 'Add' method.</Variant>
+      <Variant>The collection type '{0}' could not be instantiated because it does not have a compatible 'Add' or 'AddRange' method.</Variant>
     </en-US>
   </String>
   <String Key="COLLECTION_CANNOT_BE_CLEARED">
     <en-US>
       <Variant>The collection property '{0}' already has a value, but new items cannot be specified because the existing collection does not have a 'Clear' method.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_CANNOT_BE_CREATED">
+    <en-US>
+      <Variant>The collection property '{0}' cannot be set because a new collection instance could not be created.</Variant>
     </en-US>
   </String>
   <String Key="CONTENT_PRESENTER_IS_NOT_A_COMPONENT">
@@ -323,6 +328,16 @@
   <String Key="VIEW_MODEL_MISMATCH">
     <en-US>
       <Variant>Error initializing view model. The view definition specifies that the view model is of type '{0}' but the provided view model was of type '{1}'</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_EVENT_HANDLER">
+    <en-US>
+      <Variant>Event handler '{0}' for event '{1}' was invalid or could not be found on the data source.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_TYPE_NOT_SUPPORTED">
+    <en-US>
+      <Variant>Collection type '{0}' is not supported because it does not implement IEnumerable&gt;T&lt; or because it implements IEnumerable&gt;T&lt; more than once.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

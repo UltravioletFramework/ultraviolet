@@ -48,6 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource CollectionContainsInvalidElements    = new StringResource(StringDatabase, "COLLECTION_CONTAINS_INVALID_ELEMENTS");
         public static readonly StringResource CollectionHasNoAddMethod             = new StringResource(StringDatabase, "COLLECTION_HAS_NO_ADD_METHOD");
         public static readonly StringResource CollectionCannotBeCleared            = new StringResource(StringDatabase, "COLLECTION_CANNOT_BE_CLEARED");
+        public static readonly StringResource CollectionCannotBeCreated            = new StringResource(StringDatabase, "COLLECTION_CANNOT_BE_CREATED");
         public static readonly StringResource ContentPresenterIsNotAComponent      = new StringResource(StringDatabase, "CONTENT_PRESENTER_IS_NOT_A_COMPONENT");
         public static readonly StringResource MeasureMustProduceFiniteDesiredSize  = new StringResource(StringDatabase, "MEASURE_MUST_PRODUCE_FINITE_DESIRED_SIZE");
         public static readonly StringResource CollectionIsBoundToItemsSource       = new StringResource(StringDatabase, "COLLECTION_IS_BOUND_TO_ITEMS_SOURCE");
@@ -88,6 +89,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource CannotFindViewModelWrapper           = new StringResource(StringDatabase, "CANNOT_FIND_VIEW_MODEL_WRAPPER");
         public static readonly StringResource VersionedStringSourceIsStale         = new StringResource(StringDatabase, "VERSIONED_STRING_SOURCE_IS_STALE");
         public static readonly StringResource ViewModelMismatch                    = new StringResource(StringDatabase, "VIEW_MODEL_MISMATCH");
+        public static readonly StringResource InvalidEventHandler                  = new StringResource(StringDatabase, "INVALID_EVENT_HANDLER");
+        public static readonly StringResource CollectionTypeNotSupported           = new StringResource(StringDatabase, "COLLECTION_TYPE_NOT_SUPPORTED");
 #pragma warning restore 1591
     }
 }
