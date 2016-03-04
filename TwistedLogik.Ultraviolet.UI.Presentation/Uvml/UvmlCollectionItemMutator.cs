@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
     /// <summary>
     /// Represents a UVML mutator which sets the items for an object which is itself a collection.
     /// </summary>
-    internal abstract class UvmlCollectionItemMutator : UvmlCollectionItemMutatorBase
+    internal class UvmlCollectionItemMutator : UvmlCollectionItemMutatorBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvmlCollectionItemMutator"/> class.
@@ -26,8 +26,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         }
 
         /// <inheritdoc/>
-        protected override Boolean GetCollection(Object instance, out Object collection)
+        protected override Boolean GetCollection(Object instance, out Object collection, out String propname)
         {
+            propname = null;
             collection = instance;
             return true;
         }

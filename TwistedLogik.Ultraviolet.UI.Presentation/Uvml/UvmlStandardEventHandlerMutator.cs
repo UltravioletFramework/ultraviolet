@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
     /// <summary>
     /// Represents a UVML mutator which sets a standard event handler.
     /// </summary>
-    internal sealed class UvmlStandardEventHandlerMutator : UvmlMutator
+    internal sealed class UvmlStandardEventHandlerMutator : UvmlEventMutator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvmlStandardEventHandlerMutator"/> class.
@@ -30,11 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
             if (eventHandlerName == null)
                 throw new UvmlException(PresentationStrings.InvalidEventHandler.Format(eventInfo.Name, "(null)"));
 
-            var eventHandlerMethod = context.DataSourceType.GetMethod(eventHandlerName);
-            if (eventHandlerMethod == null)
-                throw new UvmlException(PresentationStrings.InvalidEventHandler.Format(eventInfo.Name, eventHandlerName));
-
-            var eventHandlerDelegate = Delegate.CreateDelegate(eventInfo.EventHandlerType, eventHandlerMethod);
+            var eventHandlerDelegate = CreateEventHandlerDelegate(eventHandlerName, eventInfo.EventHandlerType, context);
             eventInfo.AddEventHandler(instance, eventHandlerDelegate);
         }
 

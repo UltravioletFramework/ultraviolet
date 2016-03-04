@@ -274,5 +274,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         private Comparer<Int32> zIndexComparer;
         private List<Visual> storage;
         private List<Int32> storageByZIndex;
+
+        // An empty storage list for enumerating through an empty collection.
+        private static readonly List<Visual> emptyStorage = new List<Visual>(0);
     }
 }

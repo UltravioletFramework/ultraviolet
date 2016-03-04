@@ -71,6 +71,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             visualParent.InvalidateMeasure();
         }
 
+        /// <summary>
+        /// Adds a collection of items to this collection.
+        /// </summary>
+        /// <param name="items">The collection of items to add to this collection.</param>
+        public void AddRange(IEnumerable<UIElement> items)
+        {
+            Contract.Require(items, nameof(items));
+
+            foreach (var item in items)
+            {
+                AddLogicalChild(item);
+                visualChildren.Add(item);
+            }
+            visualParent.InvalidateMeasure();
+        }
+
         /// <inheritdoc/>
         public void Insert(Int32 index, UIElement item)
         {

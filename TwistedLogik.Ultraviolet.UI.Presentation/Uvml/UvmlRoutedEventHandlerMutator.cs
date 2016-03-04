@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
     /// <summary>
     /// Represents a UVML mutator which sets a routed event handler.
     /// </summary>
-    internal sealed class UvmlRoutedEventHandlerMutator : UvmlMutator
+    internal sealed class UvmlRoutedEventHandlerMutator : UvmlEventMutator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvmlRoutedEventHandlerMutator"/> class.
@@ -33,11 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
             if (eventHandlerName == null)
                 throw new UvmlException(PresentationStrings.InvalidEventHandler.Format(revtID.Name, "(null)"));
 
-            var eventHandlerMethod = context.DataSourceType.GetMethod(eventHandlerName);
-            if (eventHandlerMethod == null)
-                throw new UvmlException(PresentationStrings.InvalidEventHandler.Format(revtID.Name, eventHandlerName));
-
-            var eventHandlerDelegate = Delegate.CreateDelegate(revtID.DelegateType, eventHandlerMethod);
+            var eventHandlerDelegate = CreateEventHandlerDelegate(eventHandlerName, revtID.DelegateType, context);
             uiElement.AddHandler(revtID, eventHandlerDelegate);
         }
 

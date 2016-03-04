@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
@@ -11,6 +12,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>A <see cref="List{T}.Enumerator"/> that iterates through the collection.</returns>
         public List<Visual>.Enumerator GetEnumerator()
         {
+            if (storage == null)
+                return emptyStorage.GetEnumerator();
+
             return storage.GetEnumerator();
         }
 

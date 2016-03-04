@@ -337,7 +337,12 @@
   </String>
   <String Key="COLLECTION_TYPE_NOT_SUPPORTED">
     <en-US>
-      <Variant>Collection type '{0}' is not supported because it does not implement IEnumerable&gt;T&lt; or because it implements IEnumerable&gt;T&lt; more than once.</Variant>
+      <Variant>Collection type '{0}' is not supported because it does not implement IEnumerable&lt;T&gt; or because it implements IEnumerable&lt;T&gt; more than once.</Variant>
+    </en-US>
+  </String>
+  <String Key="TEMPLATE_TYPE_MISMATCH">
+    <en-US>
+      <Variant>Failed to construct UVML template for type '{0}' because UVML specified an incompatible type '{1}'</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

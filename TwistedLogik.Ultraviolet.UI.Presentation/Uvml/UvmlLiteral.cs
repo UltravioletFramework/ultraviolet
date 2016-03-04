@@ -30,6 +30,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         /// <inheritdoc/>
         public override Object Instantiate(UltravioletContext uv, UvmlInstantiationContext context)
         {
+            if (String.Equals(Literal, "{{null}}", StringComparison.Ordinal))
+                return Type.IsValueType ? Activator.CreateInstance(Type) : null;
+
+            if (typeof(UIElement).IsAssignableFrom(Type))
+            {
+                if (context.Namescope == null)
+                    return null;
+
+                return context.Namescope.GetElementByName(Literal);
+            }
+
             return ObjectResolver.FromString(Literal, Type, Culture);
         }
 

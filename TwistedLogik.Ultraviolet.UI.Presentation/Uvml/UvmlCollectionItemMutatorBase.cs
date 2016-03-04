@@ -39,24 +39,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
                     throw new UvmlException(PresentationStrings.PropertyHasNoSetter.Format(propname));
             }
 
-            var listType = instance.GetType();
+            var listType = collection.GetType();
             var listItemType = GetCollectionItemType(listType);
             if (listItemType == null)
                 throw new UvmlException(PresentationStrings.CollectionTypeNotSupported.Format(listType));
 
-            var listClearMethod = instance.GetType().GetMethod("Clear",
+            var listClearMethod = listType.GetMethod("Clear",
                 BindingFlags.Public | BindingFlags.Instance, null, Type.EmptyTypes, null);
             if (listClearMethod == null)
                 throw new UvmlException(PresentationStrings.CollectionCannotBeCleared.Format(listType.Name));
 
-            listClearMethod.Invoke(instance, null);
+            listClearMethod.Invoke(collection, null);
 
             var listAddRangeMethod = listType.GetMethod("AddRange",
                 BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(IEnumerable<>).MakeGenericType(listItemType) }, null);
             if (listAddRangeMethod != null)
             {
-                var itemInstances = items.Select(x => x.Instantiate(uv, context)).ToArray();
-                listAddRangeMethod.Invoke(instance, new [] { itemInstances });
+                var itemInstances = Array.CreateInstance(listItemType, items.Count);
+                for (int i = 0; i < items.Count; i++)
+                {
+                    var item = items[i].Instantiate(uv, context);
+                    itemInstances.SetValue(item, i);
+                }
+                listAddRangeMethod.Invoke(collection, new [] { itemInstances });
             }
             else
             {
@@ -68,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
                     foreach (var item in items)
                     {
                         listAddMethodParameters[0] = item.Instantiate(uv, context);
-                        listAddMethod.Invoke(instance, listAddMethodParameters);
+                        listAddMethod.Invoke(collection, listAddMethodParameters);
                     }
                 }
                 else
@@ -76,6 +81,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
                     throw new UvmlException(PresentationStrings.CollectionHasNoAddMethod.Format(listType.Name));
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified type is a collection type
+        /// which is supported by collection mutators.
+        /// </summary>
+        /// <param name="type">The type to evaluate.</param>
+        /// <param name="itemType">The type of item contained by the collection, if it is a collection.</param>
+        /// <returns><see langword="true"/> if the type is a supported collection type;
+        /// otherwise, <see langword="false"/>.</returns>
+        internal static Boolean IsSupportedCollectionType(Type type, out Type itemType)
+        {
+            itemType = GetCollectionItemType(type);
+            return itemType != null;
         }
 
         /// <summary>
@@ -136,7 +155,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         /// <summary>
         /// Gets the item type of the specified collection type.
         /// </summary>
-        private Type GetCollectionItemType(Type type)
+        private static Type GetCollectionItemType(Type type)
         {
             var ifaces = type.GetInterfaces().Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>));
             if (ifaces.Count() > 1 || !ifaces.Any())

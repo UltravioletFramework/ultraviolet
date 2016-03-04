@@ -365,6 +365,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvmlPlaceholderAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlCollectionItemMutatorBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlDependencyPropertyBindingMutator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlEventMutator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlMutatorTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlStandardPropertyCollectionItemMutator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlDependencyPropertyCollectionItemMutator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlInstantiationContext.cs" />

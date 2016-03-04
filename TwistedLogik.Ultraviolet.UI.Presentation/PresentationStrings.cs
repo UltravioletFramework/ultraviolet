@@ -91,6 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource ViewModelMismatch                    = new StringResource(StringDatabase, "VIEW_MODEL_MISMATCH");
         public static readonly StringResource InvalidEventHandler                  = new StringResource(StringDatabase, "INVALID_EVENT_HANDLER");
         public static readonly StringResource CollectionTypeNotSupported           = new StringResource(StringDatabase, "COLLECTION_TYPE_NOT_SUPPORTED");
+        public static readonly StringResource TemplateTypeMismatch                 = new StringResource(StringDatabase, "TEMPLATE_TYPE_MISMATCH");
 #pragma warning restore 1591
     }
 }

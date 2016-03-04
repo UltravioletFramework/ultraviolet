@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Initializes a new instance of the <see cref="DependencyName"/> structure.
         /// </summary>
-        /// <param name="qualifiedName">The dependency property's qualified name.</param>
+        /// <param name="qualifiedName">The dependency property or routed event's qualified name.</param>
         public DependencyName(String qualifiedName)
         {
             Contract.RequireNotEmpty(qualifiedName, nameof(qualifiedName));
@@ -54,27 +54,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the dependency property's fully-qualified name.
+        /// Gets the dependency property or routed event's fully-qualified name.
         /// </summary>
-        /// <value>A <see cref="String"/> that contains the fully-qualified name of the dependency property.</value>
+        /// <value>A <see cref="String"/> that contains the fully-qualified name of the dependency property or routed event.</value>
         public String QualifiedName { get; }
 
         /// <summary>
-        /// Gets the name of the type which owns this property, if it is an attached property.
+        /// Gets the name of the type which owns this property or event, if it is an attached property or event.
         /// </summary>
-        /// <value>A <see cref="String"/> that contains the name of the attached property's owner type.</value>
+        /// <value>A <see cref="String"/> that contains the name of the attached property or event's owner type.</value>
         public String Owner { get; }
 
         /// <summary>
-        /// Gets the name of the dependency property without its owner type.
+        /// Gets the name of the dependency property or routed event without its owner type.
         /// </summary>
-        /// <value>A <see cref="String"/> that contains the unqualified name of the property.</value>
+        /// <value>A <see cref="String"/> that contains the unqualified name of the property or event.</value>
         public String Name { get; }
 
         /// <summary>
-        /// Gets a value indicating whether this property name represents an attached property.
+        /// Gets a value indicating whether this property name represents an attached property or event.
         /// </summary>
-        public Boolean IsAttachedProperty
+        public Boolean IsAttached
         {
             get { return Owner != null; }
         }

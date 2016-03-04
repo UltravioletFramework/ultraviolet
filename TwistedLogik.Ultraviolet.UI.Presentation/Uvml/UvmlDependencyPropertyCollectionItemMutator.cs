@@ -48,8 +48,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         }
 
         /// <inheritdoc/>
-        protected override Boolean GetCollection(Object instance, out Object collection)
+        protected override Boolean GetCollection(Object instance, out Object collection, out String propname)
         {
+            propname = dpropID.Name;
             collection = dpropGetter.Invoke(instance, new[] { dpropID });
             return true;
         }
