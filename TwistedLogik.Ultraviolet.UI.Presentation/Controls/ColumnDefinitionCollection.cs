@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="definition">The column definition to add to the collection.</param>
         public void Add(ColumnDefinition definition)
         {
-            Contract.Require(definition, "definition");
+            Contract.Require(definition, nameof(definition));
 
             if (definition.Grid != null)
                 definition.Grid.ColumnDefinitions.Remove(definition);
@@ -54,6 +54,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             storage.Add(definition);
 
             OnModified();
+        }
+
+        /// <summary>
+        /// Adds a collection of columns to the collection.
+        /// </summary>
+        /// <param name="definitions">The collection of columns to add to the collection.</param>
+        public void AddRange(IEnumerable<ColumnDefinition> definitions)
+        {
+            Contract.Require(definitions, nameof(definitions));
+
+            var modified = false;
+
+            foreach (var definition in definitions)
+            {
+                modified = true;
+
+                if (definition.Grid != null)
+                    definition.Grid.ColumnDefinitions.Remove(definition);
+
+                definition.Grid = grid;
+                storage.Add(definition);
+            }
+
+            if (modified)
+                OnModified();
         }
 
         /// <summary>

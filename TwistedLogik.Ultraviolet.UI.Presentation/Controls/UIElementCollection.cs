@@ -53,6 +53,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         public void Clear()
         {
+            if (Count == 0)
+                return;
+
             foreach (var element in visualChildren)
             {
                 RemoveLogicalChild(element);

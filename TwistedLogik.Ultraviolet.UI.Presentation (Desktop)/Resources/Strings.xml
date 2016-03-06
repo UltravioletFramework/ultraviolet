@@ -345,4 +345,9 @@
       <Variant>Failed to construct UVML template for type '{0}' because UVML specified an incompatible type '{1}'</Variant>
     </en-US>
   </String>
+  <String Key="NAMED_ELEMENT_DOES_NOT_EXIST">
+    <en-US>
+      <Variant>No element named '{0}' exists within the current namescope.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

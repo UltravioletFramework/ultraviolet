@@ -32,6 +32,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             EnsureNotBoundToItemsSource();
 
+            if (Count == 0)
+                return;
+
             itemsStorage.Clear();
             OnCollectionReset();
         }
@@ -43,6 +46,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             itemsStorage.Add(item);
             OnCollectionItemAdded(itemsStorage.Count - 1, item);
+        }
+
+        /// <summary>
+        /// Adds the specified collection of items to this collection.
+        /// </summary>
+        /// <param name="items">The collection of items to add to this collection.</param>
+        public void AddRange(IEnumerable<Object> items)
+        {
+            Contract.Require(items, nameof(items));
+
+            EnsureNotBoundToItemsSource();
+
+            foreach (var item in items)
+            {
+                itemsStorage.Add(item);
+                OnCollectionItemAdded(itemsStorage.Count - 1, item);
+            }
         }
 
         /// <inheritdoc/>

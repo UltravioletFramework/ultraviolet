@@ -681,15 +681,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 comboBox.DigestImmediately(SelectedIndexProperty);
                 comboBox.DigestImmediately(ItemsSourceProperty);
 
-                var primary = comboBox.Ultraviolet.GetPlatform().Windows.GetPrimary();
-
-                var actualMaxDropDownHeight = Double.IsNaN(comboBox.MaxDropDownHeight) ? comboBox.Display.PixelsToDips(primary.ClientSize.Height) / 3.0 : comboBox.MaxDropDownHeight;
-                if (actualMaxDropDownHeight != comboBox.GetValue<Double>(ActualMaxDropDownHeightProperty))
+                if (comboBox.IsLoaded)
                 {
-                    comboBox.SetValue(ActualMaxDropDownHeightPropertyKey, actualMaxDropDownHeight);
+                    comboBox.UpdateActualMaxDropDownHeight();
+                    comboBox.UpdateMouseCapture(true);
                 }
-
-                Mouse.Capture(comboBox.View, comboBox, CaptureMode.SubTree);
 
                 if (comboBox.PART_Arrow != null)
                 {
@@ -698,18 +694,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
 
                 comboBox.UpdateVisualState();
+                comboBox.UpdateSelectionBox();
                 comboBox.OnDropDownOpened();
-
-                comboBox.viewSize = comboBox.View.Area.Size;
-
+                
                 var focused = (comboBox.SelectedIndex >= 0) ? comboBox.ItemContainers[selectedIndex] as UIElement : comboBox;
                 if (focused != null)
                     focused.Focus();                
             }
             else
             {
-                if (comboBox.IsMouseCaptured)
-                    Mouse.Capture(comboBox.View, null, CaptureMode.None);
+                comboBox.UpdateMouseCapture(false);
 
                 if (comboBox.PART_Arrow != null)
                 {
@@ -720,9 +714,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 comboBox.UpdateVisualState();
                 comboBox.OnDropDownClosed();
 
-                var focused = Keyboard.GetFocusedElement(comboBox.View) as DependencyObject;
-                if (focused != null && ItemsControlFromItemContainer(focused) == comboBox)
-                    comboBox.Focus();
+                if (comboBox.IsLoaded)
+                {
+                    var focused = Keyboard.GetFocusedElement(comboBox.View) as DependencyObject;
+                    if (focused != null && ItemsControlFromItemContainer(focused) == comboBox)
+                        comboBox.Focus();
+                }
             }
 
             comboBox.isDropDownOpenChanging = false;
@@ -735,6 +732,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var comboBox = (ComboBox)dobj;
             comboBox.viewSize = (comboBox.View == null) ? Size2.Zero : comboBox.View.Area.Size;
+            comboBox.UpdateMouseCapture(comboBox.IsDropDownOpen);
+            comboBox.UpdateActualMaxDropDownHeight();
         }
 
         /// <summary>
@@ -845,6 +844,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             else
             {
                 VisualStateGroups.GoToState("opened", "closed");
+            }
+        }
+
+        /// <summary>
+        /// Updates the combo box's mouse capture state.
+        /// </summary>
+        private void UpdateMouseCapture(Boolean captured)
+        {
+            if (captured)
+            {
+                Mouse.Capture(View, this, CaptureMode.SubTree);
+            }
+            else
+            {
+                if (IsMouseCaptured)
+                    Mouse.Capture(View, null, CaptureMode.None);
+            }
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="ActualMaxDropDownHeight"/> property.
+        /// </summary>
+        private void UpdateActualMaxDropDownHeight()
+        {
+            var primary = Ultraviolet.GetPlatform().Windows.GetPrimary();
+            var actualMaxDropDownHeight = Double.IsNaN(MaxDropDownHeight) ? Display.PixelsToDips(primary.ClientSize.Height) / 3.0 : MaxDropDownHeight;
+            if (actualMaxDropDownHeight != GetValue<Double>(ActualMaxDropDownHeightProperty))
+            {
+                SetValue(ActualMaxDropDownHeightPropertyKey, actualMaxDropDownHeight);
             }
         }
 

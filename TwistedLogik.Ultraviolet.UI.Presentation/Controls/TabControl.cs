@@ -117,6 +117,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void OnInitialized()
+        {
+            ConstrainSelectedIndex();
+
+            base.OnInitialized();
+        }
+
+        /// <inheritdoc/>
         protected override void OnSelectionChanged()
         {
             UpdateTabContent();
@@ -127,10 +135,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnItemsChanged()
         {
-            if ((SelectedIndex < 0 || SelectedIndex > Items.Count) && Items.Count > 0)
-            {
-                SelectedIndex = 0;
-            }
+            if (IsInitialized)
+                ConstrainSelectedIndex();
+
             base.OnItemsChanged();
         }
 
@@ -207,6 +214,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Dock.Bottom:
                     tabControl.Classes.Add("bottom");
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Constrains the value of <see cref="Selector.SelectedIndex"/> so that it represents a valid tab.
+        /// </summary>
+        private void ConstrainSelectedIndex()
+        {
+            if ((SelectedIndex < 0 || SelectedIndex > Items.Count) && Items.Count > 0)
+            {
+                SelectedIndex = 0;
             }
         }
 

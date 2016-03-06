@@ -92,6 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource InvalidEventHandler                  = new StringResource(StringDatabase, "INVALID_EVENT_HANDLER");
         public static readonly StringResource CollectionTypeNotSupported           = new StringResource(StringDatabase, "COLLECTION_TYPE_NOT_SUPPORTED");
         public static readonly StringResource TemplateTypeMismatch                 = new StringResource(StringDatabase, "TEMPLATE_TYPE_MISMATCH");
+        public static readonly StringResource NamedElementDoesNotExist             = new StringResource(StringDatabase, "NAMED_ELEMENT_DOES_NOT_EXIST");
 #pragma warning restore 1591
     }
 }

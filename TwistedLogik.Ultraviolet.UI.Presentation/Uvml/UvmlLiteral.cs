@@ -38,7 +38,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
                 if (context.Namescope == null)
                     return null;
 
-                return context.Namescope.GetElementByName(Literal);
+                var element = context.Namescope.GetElementByName(Literal);
+                if (element == null)
+                    throw new UvmlException(PresentationStrings.NamedElementDoesNotExist.Format(Literal));
             }
 
             return ObjectResolver.FromString(Literal, Type, Culture);
