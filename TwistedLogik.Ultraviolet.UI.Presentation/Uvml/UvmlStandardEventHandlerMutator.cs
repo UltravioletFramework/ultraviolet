@@ -24,9 +24,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         }
 
         /// <inheritdoc/>
+        public override Object InstantiateValue(UltravioletContext uv, Object instance, UvmlInstantiationContext context)
+        {
+            return eventHandler.Instantiate(uv, context);
+        }
+
+        /// <inheritdoc/>
         public override void Mutate(UltravioletContext uv, Object instance, UvmlInstantiationContext context)
         {
-            var eventHandlerName = eventHandler.Instantiate(uv, context) as String;
+            var value = InstantiateValue(uv, instance, context);
+            Mutate(uv, instance, value, context);
+        }
+
+        /// <inheritdoc/>
+        public override void Mutate(UltravioletContext uv, Object instance, Object value, UvmlInstantiationContext context)
+        {
+            var eventHandlerName = ProcessPrecomputedValue<String>(value, context);
             if (eventHandlerName == null)
                 throw new UvmlException(PresentationStrings.InvalidEventHandler.Format(eventInfo.Name, "(null)"));
 

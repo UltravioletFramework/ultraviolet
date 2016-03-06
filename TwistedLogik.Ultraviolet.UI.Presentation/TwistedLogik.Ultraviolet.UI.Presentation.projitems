@@ -365,6 +365,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvmlPlaceholderAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlCollectionItemMutatorBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlDependencyPropertyBindingMutator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlElementReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlEventMutator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlMutatorTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlStandardPropertyCollectionItemMutator.cs" />
@@ -379,6 +380,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlStandardEventHandlerMutator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlStandardPropertyValueMutator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlTemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlTemplateInstance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VersionedStringBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VersionedStringSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VersionedStringSourceTypeConverter.cs" />

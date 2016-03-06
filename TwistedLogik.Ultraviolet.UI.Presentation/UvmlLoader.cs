@@ -82,7 +82,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 
                 var rootGridTemplate = CreateTemplateFromXml(puv, viewElement, null, typeof(Grid), cultureInfo);
                 var rootGridContext = UvmlInstantiationContext.ForView(puv, view);
-                var rootGrid = (Grid)rootGridTemplate.Instantiate(puv, rootGridContext);
+
+                var rootGridTemplateInstance = (UvmlTemplateInstance)rootGridTemplate.Instantiate(puv, rootGridContext);
+                var rootGrid = (Grid)rootGridTemplateInstance.Finalize();
 
                 rootAdornerDecorator.Child = rootGrid;
 
@@ -97,7 +99,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             });
             
             // Instantiate the view template.
-            return (PresentationFoundationView)viewTemplate.Instantiate(uv, null);
+            var viewTemplateInstance = (UvmlTemplateInstance)viewTemplate.Instantiate(uv, null);
+            return (PresentationFoundationView)viewTemplateInstance.Finalize();
         }
 
         /// <summary>
@@ -133,7 +136,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 componentTemplateCache[template] = componentTemplate;
             }
 
-            var component = (UIElement)componentTemplate.Instantiate(control.Ultraviolet, componentContext);
+            var componentTemplateInstance = (UvmlTemplateInstance)componentTemplate.Instantiate(control.Ultraviolet, componentContext);
+            var component = (UIElement)componentTemplateInstance.Finalize();
             componentContext.Namescope.PopulateFieldsFromRegisteredElements(control);
 
             return component;

@@ -35,12 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
 
             if (typeof(UIElement).IsAssignableFrom(Type))
             {
-                if (context.Namescope == null)
-                    return null;
-
-                var element = context.Namescope.GetElementByName(Literal);
-                if (element == null)
-                    throw new UvmlException(PresentationStrings.NamedElementDoesNotExist.Format(Literal));
+                return new UvmlElementReference(Literal);
             }
 
             return ObjectResolver.FromString(Literal, Type, Culture);

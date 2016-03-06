@@ -35,13 +35,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         }
 
         /// <inheritdoc/>
+        public override Object InstantiateValue(UltravioletContext uv, Object instance, UvmlInstantiationContext context)
+        {
+            return dpropValue.Instantiate(uv, context);
+        }
+
+        /// <inheritdoc/>
         public override void Mutate(UltravioletContext uv, Object instance, UvmlInstantiationContext context)
+        {
+            var value = InstantiateValue(uv, instance, context);
+            Mutate(uv, instance, value, context);
+        }
+
+        /// <inheritdoc/>
+        public override void Mutate(UltravioletContext uv, Object instance, Object value, UvmlInstantiationContext context)
         {
             var dobj = instance as DependencyObject;
             if (dobj == null)
                 return;
-            
-            dpropSetter.Invoke(instance, new Object[] { dpropID, dpropValue.Instantiate(uv, context) });
+
+            var processedValue = ProcessPrecomputedValue<Object>(value, context);
+            dpropSetter.Invoke(instance, new Object[] { dpropID, processedValue });
         }
 
         // Reflection information for the open generic version of SetLocalValue() on DependencyObject

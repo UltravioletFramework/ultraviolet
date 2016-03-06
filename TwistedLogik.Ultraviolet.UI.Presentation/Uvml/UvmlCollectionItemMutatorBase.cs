@@ -23,10 +23,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         }
 
         /// <inheritdoc/>
-        public override sealed void Mutate(UltravioletContext uv, Object instance, UvmlInstantiationContext context)
+        public override Object InstantiateValue(UltravioletContext uv, Object instance, UvmlInstantiationContext context)
         {
-            String propname;
-            Object collection;
+            return items.Select(x => x.Instantiate(uv, context)).ToList();
+        }
+
+        /// <inheritdoc/>
+        public override void Mutate(UltravioletContext uv, Object instance, UvmlInstantiationContext context)
+        {
+            var value = InstantiateValue(uv, instance, context);
+            Mutate(uv, instance, value, context);
+        }
+
+        /// <inheritdoc/>
+        public override void Mutate(UltravioletContext uv, Object instance, Object value, UvmlInstantiationContext context)
+        {
+            var items = ProcessPrecomputedValue<List<Object>>(value, context);
+            if (items == null)
+                throw new ArgumentException(nameof(value));
+
+            var propname = default(String);
+            var collection = default(Object);
             if (!GetCollection(instance, out collection, out propname))
                 throw new UvmlException(PresentationStrings.PropertyHasNoGetter.Format(propname));
 
@@ -58,10 +75,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
                 var itemInstances = Array.CreateInstance(listItemType, items.Count);
                 for (int i = 0; i < items.Count; i++)
                 {
-                    var item = items[i].Instantiate(uv, context);
+                    var item = ProcessPrecomputedValue<Object>(items[i], context);
                     itemInstances.SetValue(item, i);
                 }
-                listAddRangeMethod.Invoke(collection, new [] { itemInstances });
+                listAddRangeMethod.Invoke(collection, new[] { itemInstances });
             }
             else
             {
@@ -72,7 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
                 {
                     foreach (var item in items)
                     {
-                        listAddMethodParameters[0] = item.Instantiate(uv, context);
+                        listAddMethodParameters[0] = ProcessPrecomputedValue<Object>(item, context);
                         listAddMethod.Invoke(collection, listAddMethodParameters);
                     }
                 }

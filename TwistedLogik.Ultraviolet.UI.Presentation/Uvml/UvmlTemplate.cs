@@ -33,6 +33,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         {
             Contract.Require(element, nameof(element));
             Contract.Require(type, nameof(type));
+
+            if (type == typeof(Controls.StackPanel))
+                Console.WriteLine();
             
             var templatedObjectName = (String)element.Attribute("Name");
             if (String.IsNullOrWhiteSpace(templatedObjectName))
@@ -48,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
                 this.classes = new List<String>(classesString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
             }
         }
-
+        
         /// <inheritdoc/>
         public override Object Instantiate(UltravioletContext uv, UvmlInstantiationContext context)
         {
@@ -58,25 +61,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
 
             InitializeFrameworkElement(uv, instance, context);
             InitializeElement(uv, instance, context);
-            
-            foreach (var mutator in mutators)
-                mutator.Mutate(uv, instance, context);
-
             InitializeDependencyObject(uv, instance, context);
-            InitializeContentPresenter(uv, instance, context);
-            
-            if (IsItemsPanelForTemplatedParent)
+
+            if (instance is Controls.StackPanel)
+                Console.WriteLine();
+
+            var mutatorsWithValues =
+                (from mutator in mutators
+                 select new
+                 {
+                     Mutator = mutator,
+                     Value = mutator.InstantiateValue(uv, instance, context)
+                 }).ToList();
+
+            return new UvmlTemplateInstance(instance, () =>
             {
-                var itemsControl = context.TemplatedParent as ItemsControl;
-                if (itemsControl != null)
-                    itemsControl.ItemsPanelElement = instance as Panel;
-            }
+                foreach (var mutator in mutatorsWithValues)
+                    mutator.Mutator.Mutate(uv, instance, mutator.Value, context);
 
-            var fe = instance as FrameworkElement;
-            if (fe != null)
-                fe.EndInit();
+                InitializeContentPresenter(uv, instance, context);
 
-            return instance;
+                if (IsItemsPanelForTemplatedParent)
+                {
+                    var itemsControl = context.TemplatedParent as ItemsControl;
+                    if (itemsControl != null)
+                        itemsControl.ItemsPanelElement = instance as Panel;
+                }
+
+                var fe = instance as FrameworkElement;
+                if (fe != null)
+                    fe.EndInit();
+            });
         }
 
         /// <summary>

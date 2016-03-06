@@ -23,13 +23,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         }
 
         /// <inheritdoc/>
+        public override Object InstantiateValue(UltravioletContext uv, Object instance, UvmlInstantiationContext context)
+        {
+            return dpropValue.Instantiate(uv, context);
+        }
+
+        /// <inheritdoc/>
         public override void Mutate(UltravioletContext uv, Object instance, UvmlInstantiationContext context)
+        {
+            var value = InstantiateValue(uv, instance, context);
+            Mutate(uv, instance, value, context);
+        }
+
+        /// <inheritdoc/>
+        public override void Mutate(UltravioletContext uv, Object instance, Object value, UvmlInstantiationContext context)
         {
             var dobj = instance as DependencyObject;
             if (dobj == null)
                 return;
 
-            var expression = dpropValue.Instantiate(uv, context) as String;
+            var expression = ProcessPrecomputedValue<String>(value, context);
             if (expression == null)
                 throw new UvmlException(PresentationStrings.InvalidBindingExpression.Format("(null)"));
 
@@ -38,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
                 throw new UvmlException(PresentationStrings.CompiledExpressionNotFound.Format(expression));
 
             dobj.BindValue(dpropID, context.DataSourceType, "{{" + compiled.Name + "}}");
-        }        
+        }
 
         // State values.
         private readonly DependencyProperty dpropID;
