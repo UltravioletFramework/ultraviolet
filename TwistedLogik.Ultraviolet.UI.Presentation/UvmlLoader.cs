@@ -208,7 +208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Determines whether the specified target is a dependency property, routed event, or standard property/event.
         /// </summary>
         private static UvmlMutatorTarget GetMutatorTarget(UltravioletContext uv, 
-            String parent, String name, String value, Type type, out Object target, out Type targetType)
+            String name, String value, Type type, out Object target, out Type targetType)
         {
             var upf = uv.GetUI().GetPresentationFoundation();
             
@@ -216,16 +216,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var depname = new DependencyName(name);
             if (depname.IsAttached)
             {
-                // NOTE: If we're mutating a <Foo> element and we find a <Foo.Bar> child element,
-                // that's not actually an attached property/event, it's just mutating its parent.
-                if (!String.Equals(depname.Owner, parent, StringComparison.Ordinal))
-                {
-                    var attachedOwnerType = default(Type);
-                    if (!upf.GetKnownType(depname.Owner, out attachedOwnerType))
-                        throw new UvmlException(PresentationStrings.UnrecognizedType.Format(depname.Owner));
+                var attachedOwnerType = default(Type);
+                if (!upf.GetKnownType(depname.Owner, out attachedOwnerType))
+                    throw new UvmlException(PresentationStrings.UnrecognizedType.Format(depname.Owner));
 
-                    type = attachedOwnerType;
-                }
+                type = attachedOwnerType;
             }
 
             // Is it a dependency property?
@@ -326,7 +321,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var target = default(Object);
             var targetType = default(Type);
-            var targetKind = GetMutatorTarget(uv, parent.Name.LocalName, xmlName, xmlValue, templatedObjectType, out target, out targetType);
+            var targetKind = GetMutatorTarget(uv, xmlName, xmlValue, templatedObjectType, out target, out targetType);
 
             return CreateMutatorForTarget(targetKind, templatedParentType, templatedObjectType, target, 
                 new UvmlLiteral(xmlValue, targetType, cultureInfo));
@@ -349,7 +344,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (elementChildren.Any() || element.IsEmpty)
             {
                 targetKind = GetMutatorTarget(uv, 
-                    parent.Name.LocalName, element.Name.LocalName, null, templatedObjectType, out target, out targetType);
+                    element.Name.LocalName, null, templatedObjectType, out target, out targetType);
 
                 var itemType = default(Type);
                 if (UvmlCollectionItemMutatorBase.IsSupportedCollectionType(targetType, out itemType))
@@ -368,7 +363,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             else
             {
                 targetKind = GetMutatorTarget(uv, 
-                    parent.Name.LocalName, element.Name.LocalName, element.Value, templatedObjectType, out target, out targetType);
+                    element.Name.LocalName, element.Value, templatedObjectType, out target, out targetType);
 
                 value = new UvmlLiteral(element.Value, targetType, cultureInfo);
             }
@@ -391,7 +386,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var target = default(Object);
                 var targetType = default(Type);
                 var targetKind = GetMutatorTarget(uv, 
-                    parent.Name.LocalName, defaultPropertyAttr.Name, null, templatedObjectType, out target, out targetType);
+                    defaultPropertyAttr.Name, null, templatedObjectType, out target, out targetType);
 
                 // Is the default property a supported collection?
                 if (UvmlCollectionItemMutatorBase.IsSupportedCollectionType(targetType, out itemType))
@@ -435,7 +430,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var target = default(Object);
                 var targetType = default(Type);
                 var targetKind = GetMutatorTarget(uv,
-                    parent.Name.LocalName, defaultPropertyAttr.Name, value, templatedObjectType, out target, out targetType);
+                    defaultPropertyAttr.Name, value, templatedObjectType, out target, out targetType);
 
                 return CreateMutatorForTarget(targetKind, templatedParentType, templatedObjectType,
                     target, new UvmlLiteral(value, targetType, cultureInfo));
