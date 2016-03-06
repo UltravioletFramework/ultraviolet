@@ -420,7 +420,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static UvmlMutator CreateMutatorForLiteralDefaultProperty(UltravioletContext uv,
             XElement parent, Type templatedParentType, Type templatedObjectType, CultureInfo cultureInfo)
         {
-            var value = parent.Value;
+            var value = default(String);
+
+            var xtext = parent.Nodes().OfType<XText>();
+            if (xtext.Any())
+                value = String.Join(String.Empty, xtext.Select(x => x.Value.Trim()));
+
             if (String.IsNullOrWhiteSpace(value))
                 return null;
 
