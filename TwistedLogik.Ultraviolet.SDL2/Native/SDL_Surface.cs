@@ -74,15 +74,34 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
             var height = source.Height;
 
             var bmpSurface = new SDL_Surface(width, height);
+
+            var pDstData = (byte*)bmpSurface.Native->pixels;
+            var pSrcData = (byte*)source.Data;
+
+            var dstExtraBytes = bmpSurface.Native->pitch - (bmpSurface.Native->w * 4);
+            var srcExtraBytes = source.Stride - (source.Width * 4);
+
+            byte srcR, srcG, srcB, srcA;
+
             for (int y = 0; y < height; y++)
             {
-                var pDst = (uint*)((byte*)bmpSurface.Native->pixels + (bmpSurface.Native->pitch * y));
                 for (int x = 0; x < width; x++)
                 {
-                    *pDst++ = source[x, y].ToArgb();
-                }
-            }
+                    srcR = *pSrcData++;
+                    srcG = *pSrcData++;
+                    srcB = *pSrcData++;
+                    srcA = *pSrcData++;
 
+                    *pDstData++ = srcB;
+                    *pDstData++ = srcG;
+                    *pDstData++ = srcR;
+                    *pDstData++ = srcA;
+                }
+
+                pDstData += dstExtraBytes;
+                pSrcData += srcExtraBytes;
+            }
+            
             return bmpSurface;
         }
 
@@ -105,37 +124,76 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
             Contract.EnsureNotDisposed(this, disposed);
             Contract.EnsureNot(readyForTextureExport, SDL2Strings.SurfaceAlreadyPreparedForExport);
 
+            var pitch = Pitch;
+            var magenta = Color.Magenta.PackedValue;
+            var transparent = Color.Transparent.PackedValue;
+
+            uint srcValue;
+            uint dstValue;
+
+            byte srcR, srcG, srcB, srcA;
+            byte dstR, dstG, dstB, dstA;
+
             var rowsToProcess = (ptr->h % 2 == 0) ? ptr->h / 2 : 1 + ptr->h / 2;
             for (var y = 0; y < rowsToProcess; y++)
             {
                 var y1 = (y);
                 var y2 = (ptr->h - 1) - y;
 
-                var pSrc = (UInt32*)((Byte*)ptr->pixels + (y1 * Pitch));
-                var pDst = (UInt32*)((Byte*)ptr->pixels + (y2 * Pitch));
+                var pSrc = (UInt32*)((Byte*)ptr->pixels + (y1 * pitch));
+                var pDst = (UInt32*)((Byte*)ptr->pixels + (y2 * pitch));
 
                 for (var x = 0; x < ptr->w; x++)
                 {
-                    var colorSrc = Color.FromRgba(*pSrc);
-                    var colorDst = Color.FromRgba(*pDst);
+                    srcValue = *pSrc;
+                    dstValue = *pDst;
 
-                    if (colorSrc.Equals(Color.Magenta))
+                    if (srcValue == magenta)
                     {
-                        colorSrc = Color.Transparent;
+                        *pDst = transparent;
                     }
-                    if (colorDst.Equals(Color.Magenta))
+                    else
                     {
-                        colorDst = Color.Transparent;
+                        srcA = (byte)(srcValue >> 24);
+                        srcB = (byte)(srcValue >> 16);
+                        srcG = (byte)(srcValue >> 8);
+                        srcR = (byte)(srcValue);
+
+                        if (premultiplyAlpha)
+                        {
+                            var factor = srcA / 255f;
+                            srcR = (byte)(srcR * factor);
+                            srcG = (byte)(srcG * factor);
+                            srcB = (byte)(srcB * factor);
+                        }
+
+                        *pDst = (uint)((srcR) | (srcG << 8) | (srcB << 16) | (srcA << 24));
                     }
 
-                    if (premultiplyAlpha)
+                    if (dstValue == magenta)
                     {
-                        colorSrc = PremultiplyColor(colorSrc);
-                        colorDst = PremultiplyColor(colorDst);
+                        *pSrc = transparent;
                     }
+                    else
+                    {
+                        dstA = (byte)(dstValue >> 24);
+                        dstB = (byte)(dstValue >> 16);
+                        dstG = (byte)(dstValue >> 8);
+                        dstR = (byte)(dstValue);
 
-                    *pSrc++ = colorDst.PackedValue;
-                    *pDst++ = colorSrc.PackedValue;
+                        if (premultiplyAlpha)
+                        {
+                            var factor = dstA / 255f;
+                            dstR = (byte)(dstR * factor);
+                            dstG = (byte)(dstG * factor);
+                            dstB = (byte)(dstB * factor);
+                        }
+
+                        *pSrc = (uint)((dstR) | (dstG << 8) | (dstB << 16) | (dstA << 24));
+                    }
+                    
+                    pDst++;
+                    pSrc++;
                 }
             }
 
@@ -300,22 +358,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         {
             get { return ptr; }
         }
-
-        /// <summary>
-        /// Premultiplies the specified color's alpha.
-        /// </summary>
-        /// <param name="color">The color to premultiply.</param>
-        /// <returns>The premultiplied color.</returns>
-        private static Color PremultiplyColor(Color color)
-        {
-            var factor = color.A / 255f;
-
-            return new Color(
-                (byte)(color.R * factor),
-                (byte)(color.G * factor),
-                (byte)(color.B * factor), color.A);
-        }
-
+        
         /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
