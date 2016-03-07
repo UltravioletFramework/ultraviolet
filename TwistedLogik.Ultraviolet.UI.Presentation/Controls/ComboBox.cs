@@ -683,6 +683,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 if (comboBox.IsLoaded)
                 {
+                    if (comboBox.View != null)
+                        comboBox.viewSize = comboBox.View.Area.Size;
+
                     comboBox.UpdateActualMaxDropDownHeight();
                     comboBox.UpdateMouseCapture(true);
                 }
