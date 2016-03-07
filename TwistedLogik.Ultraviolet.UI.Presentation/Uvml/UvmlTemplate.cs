@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
@@ -33,9 +34,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         {
             Contract.Require(element, nameof(element));
             Contract.Require(type, nameof(type));
-
-            if (type == typeof(Controls.StackPanel))
-                Console.WriteLine();
             
             var templatedObjectName = (String)element.Attribute("Name");
             if (String.IsNullOrWhiteSpace(templatedObjectName))
@@ -62,17 +60,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
             InitializeFrameworkElement(uv, instance, context);
             InitializeElement(uv, instance, context);
             InitializeDependencyObject(uv, instance, context);
-
-            if (instance is Controls.StackPanel)
-                Console.WriteLine();
-
+            
             var mutatorsWithValues =
                 (from mutator in mutators
                  select new
                  {
                      Mutator = mutator,
                      Value = mutator.InstantiateValue(uv, instance, context)
-                 }).ToList();
+                 }).ToArray();
 
             return new UvmlTemplateInstance(instance, () =>
             {
@@ -110,19 +105,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         /// <returns>The instantiator function which was created.</returns>
         private static UvmlTemplateInstantiator CreateDefaultInstantiator(Type type)
         {
+            var paramUv = Expression.Parameter(typeof(UltravioletContext), "uv");
+            var paramName = Expression.Parameter(typeof(String), "name");
+
             var ctorWithContextAndName = type.GetConstructor(new[] { typeof(UltravioletContext), typeof(String) });
             if (ctorWithContextAndName != null)
-                return new UvmlTemplateInstantiator((uv, name) => ctorWithContextAndName.Invoke(new Object[] { uv, name }));
+            {
+                return Expression.Lambda<UvmlTemplateInstantiator>(
+                    Expression.New(ctorWithContextAndName, paramUv, paramName), paramUv, paramName).Compile();
+            }
 
             var ctorWithContext = type.GetConstructor(new[] { typeof(UltravioletContext) });
             if (ctorWithContext != null)
-                return new UvmlTemplateInstantiator((uv, name) => ctorWithContext.Invoke(new[] { uv }));
+            {
+                return Expression.Lambda<UvmlTemplateInstantiator>(
+                    Expression.New(ctorWithContext, paramUv), paramUv, paramName).Compile();
+            }
 
             var ctorDefault = type.GetConstructor(Type.EmptyTypes);
             if (ctorDefault == null)
                 throw new UvmlException(UltravioletStrings.NoValidConstructor.Format(type.Name));
 
-            return new UvmlTemplateInstantiator((uv, name) => ctorDefault.Invoke(null));
+            return Expression.Lambda<UvmlTemplateInstantiator>(
+                Expression.New(ctorDefault), paramUv, paramName).Compile();
         }
 
         /// <summary>
