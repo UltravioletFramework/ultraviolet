@@ -306,6 +306,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             if (disposing)
             {
+                if (!Ultraviolet.Disposed)
+                    ((OpenGLUltravioletGraphics)Ultraviolet.GetGraphics()).ReleaseReferences(this);
+
                 if (willNotBeSampled)
                 {
                     if (!Ultraviolet.Disposed && renderbuffer != 0)
