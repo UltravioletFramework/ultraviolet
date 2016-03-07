@@ -40,6 +40,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
             this.focused = (flags & SDL_WindowFlags.INPUT_FOCUS) == SDL_WindowFlags.INPUT_FOCUS;
             this.minimized = (flags & SDL_WindowFlags.MINIMIZED) == SDL_WindowFlags.MINIMIZED;
+
+            this.compositor = DefaultCompositor.Create();
         }
 
         /// <summary>
@@ -116,6 +118,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             if (!disposed)
             {
+                SafeDispose.Dispose(compositor);
                 SDL.DestroyWindow(ptr);
                 disposed = true;
             }
@@ -519,6 +522,26 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
+        /// <inheritdoc/>
+        public Compositor Compositor
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, disposed);
+
+                return compositor;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, disposed);
+
+                if (IsCurrentWindow)
+                    throw new InvalidOperationException(OpenGLStrings.CannotChangeCompositorWhileCurrent);
+
+                compositor = value ?? DefaultCompositor.Create();
+            }
+        }
+
         /// <summary>
         /// Occurs when the window is shown.
         /// </summary>
@@ -553,6 +576,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// Occurs when the window is drawing its UI layer.
         /// </summary>
         public event UltravioletWindowDrawingEventHandler DrawingUI;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this is the current window.
+        /// </summary>
+        internal Boolean IsCurrentWindow
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Loads the default window icon.
@@ -784,6 +816,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         private Boolean synchronizeWithVerticalRetrace;
         private readonly Boolean native;
         private Surface2D icon;
+        private Compositor compositor;
 
         // State values.
         private readonly IntPtr ptr;

@@ -161,6 +161,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
+            if (currentWindow != null && renderTarget == null)
+                renderTarget = currentWindow.Compositor.GetRenderTarget();
+
             Ultraviolet.ValidateResource(renderTarget);
 
             var oglRenderTarget = (OpenGLRenderTarget2D)renderTarget;
@@ -169,7 +173,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 var targetName = 0u;
                 var targetSize = Size2.Zero;
 
-                var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
                 if (oglRenderTarget != null)
                 {
                     oglRenderTarget.ValidateStatus();

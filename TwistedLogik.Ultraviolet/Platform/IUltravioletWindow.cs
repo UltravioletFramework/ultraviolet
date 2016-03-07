@@ -182,6 +182,15 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Gets or sets the window's current compositor.
+        /// </summary>
+        Compositor Compositor
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Occurs when the window is shown.
         /// </summary>
         event UltravioletWindowEventHandler Shown;
