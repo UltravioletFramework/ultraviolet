@@ -82,6 +82,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\BlurEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ColorWriteChannels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\CompareFunction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\CompositionContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Compositor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\CullMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DefaultCompositor.cs" />

@@ -24,8 +24,37 @@
         public abstract RenderTarget2D GetRenderTarget();
 
         /// <summary>
+        /// Prepares the compositor to begin rendering a frame.
+        /// </summary>
+        public virtual void BeginFrame()
+        {
+
+        }
+
+        /// <summary>
+        /// Prepares the compositor for the specified composition context.
+        /// </summary>
+        /// <param name="context">The <see cref="CompositionContext"/> to which the compositor should transition.</param>
+        public virtual void BeginContext(CompositionContext context)
+        {
+            CurrentContext = context;
+        }
+
+        /// <summary>
         /// Presents the composited scene to the graphics device.
         /// </summary>
-        public abstract void Present();
+        public virtual void Present()
+        {
+
+        }
+
+        /// <summary>
+        /// Gets the current composition context.
+        /// </summary>
+        public virtual CompositionContext CurrentContext
+        {
+            get;
+            private set;
+        }
     }
 }

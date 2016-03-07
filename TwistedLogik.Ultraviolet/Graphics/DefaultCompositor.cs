@@ -30,6 +30,13 @@
         public override RenderTarget2D GetRenderTarget() => null;
 
         /// <inheritdoc/>
-        public override void Present() { }
+        public override void BeginFrame()
+        {
+            var window = Ultraviolet.GetPlatform().Windows.GetCurrent();
+            var graphics = Ultraviolet.GetGraphics();
+            graphics.SetRenderTarget(null);
+            graphics.SetViewport(new Viewport(0, 0, window.ClientSize.Width, window.ClientSize.Height));
+            graphics.Clear(Color.CornflowerBlue, 1.0f, 0);
+        }        
     }
 }

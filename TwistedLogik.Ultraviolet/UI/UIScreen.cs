@@ -1,6 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI
@@ -61,10 +62,15 @@ namespace TwistedLogik.Ultraviolet.UI
 
             if (!IsOnCurrentWindow)
                 return;
-
+            
             OnDrawingBackground(time, spriteBatch);
+
+            Window.Compositor.BeginContext(CompositionContext.Interface);
+
             DrawView(time, spriteBatch);
             OnDrawingForeground(time, spriteBatch);
+
+            Window.Compositor.BeginContext(CompositionContext.Scene);
         }
 
         /// <inheritdoc/>
