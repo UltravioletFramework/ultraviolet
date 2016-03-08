@@ -125,7 +125,7 @@ namespace SAFE_PROJECT_NAME
         {
             spriteBatch.Begin();
 
-            var size = Ultraviolet.GetPlatform().Windows.GetCurrent().ClientSize;
+            var size = Ultraviolet.GetPlatform().Windows.GetCurrent().Compositor.Size;
             var settings = new TextLayoutSettings(spriteFont, size.Width, size.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle);
             textRenderer.Draw(spriteBatch, "Welcome to the |c:FFFF00C0|Ultraviolet Framework|c|!", Vector2.Zero, Color.White, settings);
 
@@ -143,7 +143,7 @@ namespace SAFE_PROJECT_NAME
 
             spriteBatch.Begin();
 
-            var size = Ultraviolet.GetPlatform().Windows.GetCurrent().ClientSize;
+            var size = Ultraviolet.GetPlatform().Windows.GetCurrent().Compositor.Size;
             var settings = new TextLayoutSettings(spriteFont, size.Width, size.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle);
             textRenderer.Draw(spriteBatch, "This is a |c:FF00FF00|secondary tool window|c|.", Vector2.Zero, Color.White, settings);
 

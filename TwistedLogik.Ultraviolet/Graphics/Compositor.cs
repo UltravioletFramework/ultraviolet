@@ -31,6 +31,48 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract RenderTarget2D GetRenderTarget();
 
         /// <summary>
+        /// Converts a point in compositor space to an equivalent point in window space.
+        /// </summary>
+        /// <param name="pt">The point in screen space to convert.</param>
+        /// <returns>The converted point in window space.</returns>
+        public virtual Point2 PointToWindow(Point2 pt)
+        {
+            return pt;
+        }
+        
+        /// <summary>
+        /// Converts a point in compositor space to an equivalent point in window space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the point in screen space to convert.</param>
+        /// <param name="y">The y-coordinate of the point in screen space to convert.</param>
+        /// <returns>The converted point in window space.</returns>
+        public Point2 PointToWindow(Int32 x, Int32 y)
+        {
+            return PointToWindow(new Point2(x, y));
+        }
+
+        /// <summary>
+        /// Converts a point in window space to an equivalent point in compositor space.
+        /// </summary>
+        /// <param name="pt">The point in window space to convert.</param>
+        /// <returns>The converted point in compositor space.</returns>
+        public virtual Point2 WindowToPoint(Point2 pt)
+        {
+            return pt;
+        }
+
+        /// <summary>
+        /// Converts a point in window space to an equivalent point in compositor space.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the point in window space to convert.</param>
+        /// <param name="y">The y-coordinate of the point in window space to convert.</param>
+        /// <returns>The converted point in compositor space.</returns>
+        public Point2 WindowToPoint(Int32 x, Int32 y)
+        {
+            return WindowToPoint(new Point2(x, y));
+        }
+
+        /// <summary>
         /// Prepares the compositor to begin rendering a frame.
         /// </summary>
         public virtual void BeginFrame()

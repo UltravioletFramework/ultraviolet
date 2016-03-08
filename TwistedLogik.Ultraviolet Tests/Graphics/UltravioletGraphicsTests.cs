@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 {
                     var gfx = uv.GetGraphics();
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var viewport = new Viewport(0, 0, window.ClientSize.Width, window.ClientSize.Height);
+                    var viewport = new Viewport(0, 0, window.Compositor.Width, window.Compositor.Height);
                     var aspectRatio = viewport.Width / (float)viewport.Height;
 
                     gfx.SetViewport(viewport);
@@ -93,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 {
                     var gfx = uv.GetGraphics();
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var viewport = new Viewport(0, 0, window.ClientSize.Width, window.ClientSize.Height);
+                    var viewport = new Viewport(0, 0, window.Compositor.Width, window.Compositor.Height);
                     var aspectRatio = viewport.Width / (float)viewport.Height;
 
                     gfx.SetViewport(viewport);

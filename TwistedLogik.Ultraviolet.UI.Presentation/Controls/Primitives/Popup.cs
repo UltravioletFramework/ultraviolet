@@ -1201,14 +1201,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var mouse = Ultraviolet.GetInput().GetMouse();
             if (mouse == null)
                 return RectangleD.Empty;
-
+            
             var cursor = Ultraviolet.GetPlatform().Cursor;
 
-            var mousePos    = Display.PixelsToDips(mouse.Position);
-            var mouseWidth  = Display.PixelsToDips(cursor == null ? DefaultCursorWidth : cursor.Width);
+            var mousePosInWindow = mouse.GetPositionInWindow(Window);
+            if (mousePosInWindow == null)
+                return RectangleD.Empty;
+
+            var mousePosDips = Display.PixelsToDips((Point2)mousePosInWindow);
+            var mouseWidth = Display.PixelsToDips(cursor == null ? DefaultCursorWidth : cursor.Width);
             var mouseHeight = Display.PixelsToDips(cursor == null ? DefaultCursorHeight : cursor.Height);
 
-            return new RectangleD(mousePos.X, mousePos.Y, mouseWidth, mouseHeight);
+            return new RectangleD(mousePosDips.X, mousePosDips.Y, mouseWidth, mouseHeight);
         }
 
         /// <summary>

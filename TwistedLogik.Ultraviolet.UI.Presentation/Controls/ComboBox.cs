@@ -869,7 +869,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private void UpdateActualMaxDropDownHeight()
         {
             var primary = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            var actualMaxDropDownHeight = Double.IsNaN(MaxDropDownHeight) ? Display.PixelsToDips(primary.ClientSize.Height) / 3.0 : MaxDropDownHeight;
+            var actualMaxDropDownHeight = Double.IsNaN(MaxDropDownHeight) ? Display.PixelsToDips(primary.Compositor.Height) / 3.0 : MaxDropDownHeight;
             if (actualMaxDropDownHeight != GetValue<Double>(ActualMaxDropDownHeightProperty))
             {
                 SetValue(ActualMaxDropDownHeightPropertyKey, actualMaxDropDownHeight);

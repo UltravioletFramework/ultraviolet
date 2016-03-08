@@ -53,7 +53,8 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets the mouse cursor's position within the specified window.
         /// </summary>
         /// <param name="window">The window to evaluate.</param>
-        /// <returns>The cursor's position within the specified window, or <c>null</c> if the cursor is outside of the window.</returns>
+        /// <returns>The cursor's compositor-space position within the specified 
+        /// window, or <see langword="null"/> if the cursor is outside of the window.</returns>
         public abstract Vector2? GetPositionInWindow(IUltravioletWindow window);
 
         /// <summary>

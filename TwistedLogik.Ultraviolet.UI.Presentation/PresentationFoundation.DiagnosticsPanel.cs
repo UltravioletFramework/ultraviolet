@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 var panelWidth = 400;
                 var panelHeight = 16f + (7.5f * font.Regular.LineSpacing);
-                var panelArea = new RectangleF((window.ClientSize.Width - panelWidth) / 2, 0, panelWidth, panelHeight);
+                var panelArea = new RectangleF((window.Compositor.Width - panelWidth) / 2, 0, panelWidth, panelHeight);
 
                 var colorHeader = Color.Yellow;
                 var colorSubheader = new Color(200, 200, 0);
