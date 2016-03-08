@@ -13,9 +13,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
     /// <summary>
     /// Represents the OpenGL/SDL2 implementation of the IUltravioletWindow interface.
     /// </summary>    
-    public sealed unsafe partial class OpenGLUltravioletWindow : 
+    public sealed unsafe partial class OpenGLUltravioletWindow :
         IMessageSubscriber<UltravioletMessageID>,
-        IUltravioletWindow, 
+        IUltravioletWindow,
         IDisposable
     {
         /// <summary>
@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             this.focused = (flags & SDL_WindowFlags.INPUT_FOCUS) == SDL_WindowFlags.INPUT_FOCUS;
             this.minimized = (flags & SDL_WindowFlags.MINIMIZED) == SDL_WindowFlags.MINIMIZED;
 
-            this.compositor = DefaultCompositor.Create();
+            ChangeCompositor(DefaultCompositor.Create(this));
         }
 
         /// <summary>
@@ -184,11 +184,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                     case WindowMode.Fullscreen:
                         SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN);
                         break;
-                    
+
                     case WindowMode.FullscreenWindowed:
                         SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN_DESKTOP);
                         break;
-                    
+
                     default:
                         throw new NotSupportedException("mode");
                 }
@@ -248,6 +248,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 return WindowState.Minimized;
 
             return WindowState.Normal;
+        }
+
+        /// <inheritdoc/>
+        public void ChangeCompositor(Compositor compositor)
+        {
+            Contract.EnsureNotDisposed(this, disposed);
+
+            if (compositor.Window != this)
+                throw new InvalidOperationException(UltravioletStrings.CompositorAssociatedWithWrongWindow);
+
+            if (IsCurrentWindow)
+                throw new InvalidOperationException(UltravioletStrings.CannotChangeCompositorWhileCurrent);
+
+            if (this.compositor != null)
+                this.compositor.Dispose();
+
+            this.compositor = compositor ?? DefaultCompositor.Create(this);
         }
 
         /// <summary>
@@ -530,15 +547,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 Contract.EnsureNotDisposed(this, disposed);
 
                 return compositor;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, disposed);
-
-                if (IsCurrentWindow)
-                    throw new InvalidOperationException(OpenGLStrings.CannotChangeCompositorWhileCurrent);
-
-                compositor = value ?? DefaultCompositor.Create();
             }
         }
 

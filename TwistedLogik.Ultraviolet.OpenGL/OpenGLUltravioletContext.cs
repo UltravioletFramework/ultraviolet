@@ -181,6 +181,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 }
 
                 windowInfo.DesignateCurrent(null, glcontext);
+
+                oglgfx.SetRenderTargetToBackBuffer();
                 oglgfx.UpdateFrameRate();
             }
 

@@ -69,6 +69,13 @@ namespace TwistedLogik.Ultraviolet.Platform
         WindowState GetWindowState();
 
         /// <summary>
+        /// Changes the window's compositor.
+        /// </summary>
+        /// <param name="compositor">The compositor to set at the window's current compositor.</param>
+        /// <remarks>The previous compositor instance will be disposed.</remarks>
+        void ChangeCompositor(Compositor compositor);
+
+        /// <summary>
         /// Gets the window's identifier within its windowing system.
         /// </summary>
         Int32 ID
@@ -182,12 +189,11 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
-        /// Gets or sets the window's current compositor.
+        /// Gets the window's current compositor.
         /// </summary>
         Compositor Compositor
         {
             get;
-            set;
         }
 
         /// <summary>

@@ -165,45 +165,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (currentWindow != null && renderTarget == null)
                 renderTarget = currentWindow.Compositor.GetRenderTarget();
 
-            Ultraviolet.ValidateResource(renderTarget);
+            SetRenderTargetInternal(renderTarget);
+        }
 
-            var oglRenderTarget = (OpenGLRenderTarget2D)renderTarget;
-            if (oglRenderTarget != this.renderTarget)
-            {
-                var targetName = 0u;
-                var targetSize = Size2.Zero;
+        /// <inheritdoc/>
+        public void SetRenderTargetToBackBuffer()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
 
-                if (oglRenderTarget != null)
-                {
-                    oglRenderTarget.ValidateStatus();
-
-                    targetName = oglRenderTarget.OpenGLName;
-                    targetSize = renderTarget.Size;
-                }
-                else
-                {
-                    if (currentWindow != null)
-                        targetSize = currentWindow.ClientSize;
-                }
-
-                OpenGLState.BindFramebuffer(targetName);
-
-                if (this.renderTarget != null)
-                    this.renderTarget.UnbindWrite();
-
-                this.renderTarget = oglRenderTarget;
-
-                if (this.renderTarget != null)
-                    this.renderTarget.BindWrite();
-
-                this.viewport = default(Viewport);
-                SetViewport(new Viewport(0, 0, targetSize.Width, targetSize.Height));
-
-                if (this.renderTarget != null)
-                {
-                    Clear(Color.FromArgb(0xFF442288));
-                }
-            }
+            SetRenderTargetInternal(null);
         }
 
         /// <inheritdoc/>
@@ -800,6 +770,53 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
 
             y = renderTargetHeight - (height + y);
+        }
+
+        /// <summary>
+        /// Sets the current render target.
+        /// </summary>
+        private void SetRenderTargetInternal(RenderTarget2D renderTarget)
+        {
+            Ultraviolet.ValidateResource(renderTarget);
+
+            var oglRenderTarget = (OpenGLRenderTarget2D)renderTarget;
+            if (oglRenderTarget != this.renderTarget)
+            {
+                var targetName = 0u;
+                var targetSize = Size2.Zero;
+
+                if (oglRenderTarget != null)
+                {
+                    oglRenderTarget.ValidateStatus();
+
+                    targetName = oglRenderTarget.OpenGLName;
+                    targetSize = renderTarget.Size;
+                }
+                else
+                {
+                    var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
+                    if (currentWindow != null)
+                        targetSize = currentWindow.ClientSize;
+                }
+
+                OpenGLState.BindFramebuffer(targetName);
+
+                if (this.renderTarget != null)
+                    this.renderTarget.UnbindWrite();
+
+                this.renderTarget = oglRenderTarget;
+
+                if (this.renderTarget != null)
+                    this.renderTarget.BindWrite();
+
+                this.viewport = default(Viewport);
+                SetViewport(new Viewport(0, 0, targetSize.Width, targetSize.Height));
+
+                if (this.renderTarget != null)
+                {
+                    Clear(Color.FromArgb(0xFF442288));
+                }
+            }
         }
 
         // Property values.

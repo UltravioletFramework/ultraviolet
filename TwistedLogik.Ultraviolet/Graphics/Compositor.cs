@@ -1,4 +1,8 @@
-﻿namespace TwistedLogik.Ultraviolet.Graphics
+﻿using System;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Platform;
+
+namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents a window compositor, which is responsible for assembling the various components of a
@@ -10,10 +14,13 @@
         /// Initializes a new instance of the <see cref="Compositor"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        public Compositor(UltravioletContext uv)
+        /// <param name="window">The window with which this compositor is associated.</param>
+        public Compositor(UltravioletContext uv, IUltravioletWindow window)
             : base(uv)
         {
+            Contract.Require(window, nameof(window));
 
+            this.window = window;
         }
 
         /// <summary>
@@ -37,7 +44,7 @@
         /// <param name="context">The <see cref="CompositionContext"/> to which the compositor should transition.</param>
         public virtual void BeginContext(CompositionContext context)
         {
-            CurrentContext = context;
+            this.currentContext = context;
         }
 
         /// <summary>
@@ -47,14 +54,59 @@
         {
 
         }
+        
+        /// <summary>
+        /// Gets the window with which this compositor is associated.
+        /// </summary>
+        public IUltravioletWindow Window
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return window;
+            }
+        }
 
         /// <summary>
         /// Gets the current composition context.
         /// </summary>
-        public virtual CompositionContext CurrentContext
+        public CompositionContext CurrentContext
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return currentContext;
+            }
+        }
+
+        /// <summary>
+        /// Gets the current size of the composition buffer.
+        /// </summary>
+        public abstract Size2 Size
         {
             get;
-            private set;
         }
+
+        /// <summary>
+        /// Gets the current width of the composition buffer.
+        /// </summary>
+        public Int32 Width
+        {
+            get { return Size.Width; }
+        }
+
+        /// <summary>
+        /// Gets the current height of the composition buffer.
+        /// </summary>
+        public Int32 Height
+        {
+            get { return Size.Height; }
+        }
+
+        // Property values.
+        private readonly IUltravioletWindow window;
+        private CompositionContext currentContext;        
     }
 }

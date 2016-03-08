@@ -126,6 +126,8 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource NotSupportedInServiceMode            = new StringResource(StringDatabase, "NOT_SUPPORTED_IN_SERVICE_MODE");
         public static readonly StringResource ContextDoesNotHaveProfiler           = new StringResource(StringDatabase, "CONTEXT_DOES_NOT_HAVE_PROFILER");
         public static readonly StringResource LineInfoIsNotFromSameSource          = new StringResource(StringDatabase, "LINE_INFO_IS_NOT_FROM_SAME_SOURCE");
+        public static readonly StringResource CannotChangeCompositorWhileCurrent   = new StringResource(StringDatabase, "CANNOT_CHANGE_COMPOSITOR_WHILE_CURRENT");
+        public static readonly StringResource CompositorAssociatedWithWrongWindow  = new StringResource(StringDatabase, "COMPOSITOR_ASSOCIATED_WITH_WRONG_WINDOW");
 #pragma warning restore 1591
     }
 }
