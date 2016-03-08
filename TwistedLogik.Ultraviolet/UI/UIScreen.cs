@@ -68,9 +68,10 @@ namespace TwistedLogik.Ultraviolet.UI
             Window.Compositor.BeginContext(CompositionContext.Interface);
 
             DrawView(time, spriteBatch);
-            OnDrawingForeground(time, spriteBatch);
 
-            Window.Compositor.BeginContext(CompositionContext.Scene);
+            Window.Compositor.BeginContext(CompositionContext.Overlay);
+
+            OnDrawingForeground(time, spriteBatch);
         }
 
         /// <inheritdoc/>

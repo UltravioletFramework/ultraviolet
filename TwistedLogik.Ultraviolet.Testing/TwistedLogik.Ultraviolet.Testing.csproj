@@ -63,6 +63,7 @@
     <Compile Include="BitmapResult.cs" />
     <Compile Include="CircleDResult.cs" />
     <Compile Include="Graphics\Graphics2D\Text\LineInfoResult.cs" />
+    <Compile Include="Graphics\ITestFrameworkCompositor.cs" />
     <Compile Include="IUltravioletTestApplication.cs" />
     <Compile Include="Point2DResult.cs" />
     <Compile Include="Point2FResult.cs" />

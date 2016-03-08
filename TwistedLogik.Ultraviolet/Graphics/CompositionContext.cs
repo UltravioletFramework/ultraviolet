@@ -15,5 +15,10 @@
         /// The context containing the user interface elements.
         /// </summary>
         Interface,
+
+        /// <summary>
+        /// The context containing graphics which are drawn on top of the interface.
+        /// </summary>
+        Overlay,
     }
 }

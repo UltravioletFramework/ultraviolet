@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="window">The window with which this compositor is associated.</param>
-        private DefaultCompositor(UltravioletContext uv, IUltravioletWindow window)
+        public DefaultCompositor(UltravioletContext uv, IUltravioletWindow window)
             : base(uv, window)
         {
 

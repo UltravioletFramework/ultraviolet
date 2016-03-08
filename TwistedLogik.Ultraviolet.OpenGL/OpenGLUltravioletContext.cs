@@ -175,6 +175,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
                     OnWindowDrawn(time, window);
 
+                    window.Compositor.Compose();
                     window.Compositor.Present();
 
                     windowInfo.Swap();

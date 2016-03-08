@@ -84,9 +84,19 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// Prepares the compositor for the specified composition context.
         /// </summary>
         /// <param name="context">The <see cref="CompositionContext"/> to which the compositor should transition.</param>
-        public virtual void BeginContext(CompositionContext context)
+        /// <param name="force">A value indicating whether to force the compositor to prepare the device for
+        /// the specified context, even if the compositor thinks the device is already prepared for the context.</param>
+        public virtual void BeginContext(CompositionContext context, Boolean force = false)
         {
             this.currentContext = context;
+        }
+
+        /// <summary>
+        /// Composes the scene prior to presenting it to the graphics device.
+        /// </summary>
+        public virtual void Compose()
+        {
+
         }
 
         /// <summary>
