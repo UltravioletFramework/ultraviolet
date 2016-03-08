@@ -24,6 +24,12 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract Boolean SupportsNonZeroBaseInstance { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the current platform has in-hardware support for
+        /// preserving the content of a render target after it has been unbound for rendering.
+        /// </summary>
+        public abstract Boolean SupportsPreservingRenderTargetContentInHardware { get; }
+
+        /// <summary>
         /// Gets the maximum texture size supported by the device.
         /// </summary>
         public abstract Int32 MaximumTextureSize { get; }

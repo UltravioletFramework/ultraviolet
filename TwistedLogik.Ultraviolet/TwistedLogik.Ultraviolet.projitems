@@ -207,6 +207,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderBufferFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderBufferOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderTarget2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderTargetUsage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SamplerState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SetDataOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SetDataOrigin.cs" />

@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             factory.SetFactoryMethod<Surface2DFactory>((uv, width, height) => new OpenGLSurface2D(uv, width, height));
             factory.SetFactoryMethod<Surface2DFromSourceFactory>((uv, source) => new OpenGLSurface2D(uv, source));
             factory.SetFactoryMethod<Texture2DFactory>((uv, width, height, immutable) => new OpenGLTexture2D(uv, width, height, immutable));
-            factory.SetFactoryMethod<RenderTarget2DFactory>((uv, width, height) => new OpenGLRenderTarget2D(uv, width, height));
+            factory.SetFactoryMethod<RenderTarget2DFactory>((uv, width, height, usage) => new OpenGLRenderTarget2D(uv, width, height, usage));
             factory.SetFactoryMethod<RenderBuffer2DFactory>((uv, format, width, height, options) => new OpenGLRenderBuffer2D(uv, format, width, height, options));
 
             // Core effects

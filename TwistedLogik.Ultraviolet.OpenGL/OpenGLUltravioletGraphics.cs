@@ -55,6 +55,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             this.maxTextureStages = Math.Min(16, gl.GetInteger(gl.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
             this.textures = new Texture2D[maxTextureStages];
             this.samplerStates = new SamplerState[maxTextureStages];
+            this.backBufferRenderTargetUsage = configuration.BackBufferRenderTargetUsage;
 
             this.capabilities = new OpenGLGraphicsCapabilities();
 
@@ -779,6 +780,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             Ultraviolet.ValidateResource(renderTarget);
 
+            var usage = renderTarget?.RenderTargetUsage ?? backBufferRenderTargetUsage;
+            if (usage == RenderTargetUsage.PlatformContents)
+            {
+                usage = Capabilities.SupportsPreservingRenderTargetContentInHardware ?
+                    RenderTargetUsage.PreserveContents :
+                    RenderTargetUsage.DiscardContents;
+            }
+
             var oglRenderTarget = (OpenGLRenderTarget2D)renderTarget;
             if (oglRenderTarget != this.renderTarget)
             {
@@ -812,7 +821,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 this.viewport = default(Viewport);
                 SetViewport(new Viewport(0, 0, targetSize.Width, targetSize.Height));
 
-                if (this.renderTarget != null)
+                if (usage == RenderTargetUsage.DiscardContents)
                 {
                     Clear(Color.FromArgb(0xFF442288));
                 }
@@ -831,6 +840,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         private OpenGLDepthStencilState depthStencilState;
         private OpenGLRasterizerState rasterizerState;
         private Rectangle? scissorRectangle;
+        private RenderTargetUsage backBufferRenderTargetUsage;
 
         // Frame rate counter.
         private Stopwatch frameRateTimer = new Stopwatch();
