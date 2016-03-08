@@ -40,7 +40,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         /// <inheritdoc/>
         public override Boolean SupportsNonZeroBaseInstance
-        { get; }
+        {
+            get;
+        }
+
+        /// <inheritdoc/>
+        public override Boolean SupportsPreservingRenderTargetContentInHardware
+        {
+            get { return true; }
+        }
 
         /// <inheritdoc/>
         public override Int32 MaximumTextureSize

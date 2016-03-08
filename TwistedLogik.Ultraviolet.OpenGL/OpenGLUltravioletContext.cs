@@ -160,28 +160,30 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             var oglgfx = graphics as OpenGLUltravioletGraphics;
             if (oglgfx != null)
             {
-                oglgfx.SetRenderTarget(null);
-
                 var glcontext = oglgfx.OpenGLContext;
                 var windowInfo = ((OpenGLUltravioletWindowInfo)platform.Windows);
                 foreach (OpenGLUltravioletWindow window in windowInfo)
                 {
                     windowInfo.DesignateCurrent(window, glcontext);
 
-                    var size = window.ClientSize;
-                    oglgfx.SetViewport(new Viewport(0, 0, size.Width, size.Height));
-                    oglgfx.Clear(Color.CornflowerBlue, 1.0, 0);
-
+                    window.Compositor.BeginFrame();
+                    window.Compositor.BeginContext(CompositionContext.Scene);
+                    
                     OnWindowDrawing(time, window);
 
                     windowInfo.Draw(time);
 
                     OnWindowDrawn(time, window);
 
+                    window.Compositor.Compose();
+                    window.Compositor.Present();
+
                     windowInfo.Swap();
                 }
 
                 windowInfo.DesignateCurrent(null, glcontext);
+
+                oglgfx.SetRenderTargetToBackBuffer();
                 oglgfx.UpdateFrameRate();
             }
 

@@ -184,7 +184,7 @@ namespace SAFE_PROJECT_NAME
 
             spriteBatch.DrawString(spriteFont, textBuffer, Vector2.One * 8f, Color.White);
 
-            var size = Ultraviolet.GetPlatform().Windows.GetCurrent().ClientSize;
+            var size = Ultraviolet.GetPlatform().Windows.GetCurrent().Compositor.Size;
             var settings = new TextLayoutSettings(spriteFont, size.Width, size.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle);
             textRenderer.Draw(spriteBatch, "Welcome to the |c:FFFF00C0|Ultraviolet Framework|c|!", Vector2.Zero, Color.White, settings);
 

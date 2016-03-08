@@ -520,4 +520,14 @@
       <Variant>The specified LineInfo object was not created by this command stream.</Variant>
     </en-US>
   </String>
+  <String Key="CANNOT_CHANGE_COMPOSITOR_WHILE_CURRENT">
+    <en-US>
+      <Variant>A window's compositor cannot be changed while its contents are being drawn.</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPOSITOR_ASSOCIATED_WITH_WRONG_WINDOW">
+    <en-US>
+      <Variant>The specified compositor is associated with a different window.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

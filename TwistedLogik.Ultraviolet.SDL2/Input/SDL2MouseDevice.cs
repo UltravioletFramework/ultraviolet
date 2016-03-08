@@ -80,7 +80,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// Gets the mouse cursor's position within the specified window.
         /// </summary>
         /// <param name="window">The window to evaluate.</param>
-        /// <returns>The cursor's position within the specified window, or <c>null</c> if the cursor is outside of the window.</returns>
+        /// <returns>The cursor's compositor-space position within the specified 
+        /// window, or <see langword="null"/> if the cursor is outside of the window.</returns>
         public override Vector2? GetPositionInWindow(IUltravioletWindow window)
         {
             Contract.Require(window, "window");
@@ -88,7 +89,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             if (Window != window)
                 return null;
 
-            return Position;
+            var spos = (Point2)Position;
+            var cpos = Window.Compositor.WindowToPoint(spos);
+
+            return (Vector2)cpos;
         }
 
         /// <inheritdoc/>

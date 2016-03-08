@@ -34,8 +34,14 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Sets the render target.
         /// </summary>
-        /// <param name="rt">The render target to set, or <c>null</c> to revert to the default render target.</param>
+        /// <param name="rt">The render target to set, or <see langword="null"/> to revert to t
+        /// he default render target for the current window's compositor.</param>
         void SetRenderTarget(RenderTarget2D rt);
+
+        /// <summary>
+        /// Sets the render target to the back buffer, bypassing any window compositors.
+        /// </summary>
+        void SetRenderTargetToBackBuffer();
 
         /// <summary>
         /// Gets the device's current render target.

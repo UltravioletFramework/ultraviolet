@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Ultraviolet.Graphics;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests.Graphics
@@ -37,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 {
                     var gfx = uv.GetGraphics();
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var viewport = new Viewport(0, 0, window.ClientSize.Width, window.ClientSize.Height);
+                    var viewport = new Viewport(0, 0, window.Compositor.Width, window.Compositor.Height);
                     var aspectRatio = viewport.Width / (float)viewport.Height;
 
                     gfx.SetViewport(viewport);
@@ -93,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 {
                     var gfx = uv.GetGraphics();
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var viewport = new Viewport(0, 0, window.ClientSize.Width, window.ClientSize.Height);
+                    var viewport = new Viewport(0, 0, window.Compositor.Width, window.Compositor.Height);
                     var aspectRatio = viewport.Width / (float)viewport.Height;
 
                     gfx.SetViewport(viewport);
@@ -196,6 +197,64 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderInstancedTriangles.png");
+        }
+
+        [TestMethod]
+        [TestCategory("Rendering")]
+        [Description("Ensures that the Graphics subsystem correctly renders a scene when using a custom compositor.")]
+        public void UltravioletGraphics_RendersFrameCorrectly_WithCustomCompositor()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var spriteTexture = default(Texture2D);
+
+            var result = GivenAnUltravioletApplication()
+                .WithInitialization(uv =>
+                {
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    window.ChangeCompositor(new CustomCompositor(uv, window));
+                })
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    spriteTexture = Texture2D.Create(1, 1);
+                    spriteTexture.SetData(new Color[] { Color.White });
+                })
+                .Render(uv =>
+                {
+                    var window = uv.GetPlatform().Windows.GetCurrent();
+
+                    var width = window.Compositor.Width;
+                    var height = window.Compositor.Height;
+
+                    window.Compositor.BeginContext(CompositionContext.Scene);
+
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                    spriteBatch.Draw(spriteTexture, new RectangleF(0, 0, width / 2, height), Color.White);
+                    spriteBatch.End();
+
+                    window.Compositor.BeginContext(CompositionContext.Interface);
+
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                    spriteBatch.Draw(spriteTexture, new RectangleF(16, 16, 16, 16), null, Color.DarkGray,
+                        Radians.FromDegrees(45), new Vector2(8, 8), SpriteEffects.OriginRelativeToDestination, 0f);
+                    spriteBatch.End();
+                    
+                    window.Compositor.BeginContext(CompositionContext.Scene);
+
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                    spriteBatch.Draw(spriteTexture, new RectangleF(width / 2, 0, width / 2, height), Color.DarkGray);
+                    spriteBatch.End();
+
+                    window.Compositor.BeginContext(CompositionContext.Interface);
+
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                    spriteBatch.Draw(spriteTexture, new RectangleF(width - 16, height - 16, 16, 16), null, Color.White,
+                        Radians.FromDegrees(45), new Vector2(8, 8), SpriteEffects.OriginRelativeToDestination, 0f);
+                    spriteBatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_RendersFrameCorrectly_WithCustomCompositor.png");
         }
     }
 }

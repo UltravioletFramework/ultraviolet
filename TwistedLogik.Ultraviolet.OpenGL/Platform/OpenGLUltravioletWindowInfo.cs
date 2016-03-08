@@ -82,7 +82,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             {
                 OnCurrentWindowChanging();
 
+                var glCurrentOld = current as OpenGLUltravioletWindow;
+                if (glCurrentOld != null)
+                    glCurrentOld.IsCurrentWindow = false;
+
                 current = window;
+
+                var glCurrentNew = current as OpenGLUltravioletWindow;
+                if (glCurrentNew != null)
+                    glCurrentNew.IsCurrentWindow = true;
 
                 if (window != null && (window != glwin || window.SynchronizeWithVerticalRetrace != vsync))
                 {

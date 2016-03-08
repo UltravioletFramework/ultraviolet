@@ -658,7 +658,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 if (window == null)
                     return Size2.Zero;
 
-                return window.ClientSize;
+                return window.Compositor.Size;
             }
         }
 
@@ -672,7 +672,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 if (window == null)
                     return 0;
 
-                return window.ClientSize.Width;
+                return window.Compositor.Width;
             }
         }
 
@@ -686,7 +686,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 if (window == null)
                     return 0;
 
-                return window.ClientSize.Height;
+                return window.Compositor.Height;
             }
         }
 

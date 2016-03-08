@@ -26,6 +26,12 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <inheritdoc/>
+        public override Boolean SupportsPreservingRenderTargetContentInHardware
+        {
+            get { return false; }
+        }
+
+        /// <inheritdoc/>
         public override Int32 MaximumTextureSize
         {
             get { return 0; }

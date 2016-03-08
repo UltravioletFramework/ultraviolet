@@ -1395,11 +1395,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             isMouseOverSet.Clear();
 
-            var elementAtMouse = (DependencyObject)HitTestScreenPixel((Point2)mouse.Position);
-            while (elementAtMouse != null)
+            var mousePosInWindow = mouse.GetPositionInWindow(Window);
+            var mouseElement = mousePosInWindow == null ? null : 
+                (DependencyObject)HitTestScreenPixel((Point2)mousePosInWindow.Value);
+
+            while (mouseElement != null)
             {
-                isMouseOverSet.Add(elementAtMouse);
-                elementAtMouse = VisualTreeHelper.GetParent(elementAtMouse);
+                isMouseOverSet.Add(mouseElement);
+                mouseElement = VisualTreeHelper.GetParent(mouseElement);
             }
 
             var current = root as DependencyObject;
@@ -1470,7 +1473,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var mouse = Ultraviolet.GetInput().GetMouse();
 
             // Determine which element is currently under the mouse cursor.
-            var mousePos = Display.PixelsToDips((Point2D)mouse.Position);
+            var mousePosInWindow = mouse.GetPositionInWindow(Window) ?? Vector2.Zero;
+            var mousePos = Display.PixelsToDips((Point2D)mousePosInWindow);
             var mouseView = mouse.Window == Window ? this : null;
 
             elementUnderMousePopupPrev = elementUnderMousePopup;
@@ -1754,8 +1758,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var xRelativeToWindow = windowSize.Width * x;
             var yRelativeToWindow = windowSize.Height * y;
 
-            var xRelativeToView = xRelativeToWindow - this.X;
-            var yRelativeToView = yRelativeToWindow - this.Y;
+            var posRelativeToCompositor = 
+                Window.Compositor.WindowToPoint((Int32)xRelativeToWindow, (Int32)yRelativeToWindow);
+
+            var xRelativeToView = posRelativeToCompositor.X - this.X;
+            var yRelativeToView = posRelativeToCompositor.Y - this.Y;
 
             return (Point2D)Display.PixelsToDips(new Vector2(xRelativeToView, yRelativeToView));
         }

@@ -28,8 +28,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width = window.ClientSize.Width / 2;
-                    var height = window.ClientSize.Height / 2;
+                    var width = window.Compositor.Width / 2;
+                    var height = window.Compositor.Height / 2;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
                         new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
 
@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         positionY += content.TextLayoutResult.ActualHeight;
                     }
 
-                    positionX = uv.GetPlatform().Windows.GetPrimary().ClientSize.Width / 3;
+                    positionX = uv.GetPlatform().Windows.GetPrimary().Compositor.Width / 3;
                     positionY = 0f;
 
                     for (int i = 0; i < content.Text.Length; i++)
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         positionY += content.TextLayoutResult.ActualHeight;
                     }
 
-                    positionX = 2 * uv.GetPlatform().Windows.GetPrimary().ClientSize.Width / 3;
+                    positionX = 2 * uv.GetPlatform().Windows.GetPrimary().Compositor.Width / 3;
                     positionY = 0f;
 
                     for (int i = 0; i < content.Text.Length; i++)
@@ -118,8 +118,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width = window.ClientSize.Width / 2;
-                    var height = window.ClientSize.Height;
+                    var width = window.Compositor.Width / 2;
+                    var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
                         new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
 
@@ -150,8 +150,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width = window.ClientSize.Width / 2;
-                    var height = window.ClientSize.Height;
+                    var width = window.Compositor.Width / 2;
+                    var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
                         new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
 
@@ -185,8 +185,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width = window.ClientSize.Width / 2;
-                    var height = window.ClientSize.Height;
+                    var width = window.Compositor.Width / 2;
+                    var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
                         new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.Standard));
 
@@ -221,8 +221,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width = window.ClientSize.Width / 2;
-                    var height = window.ClientSize.Height;
+                    var width = window.Compositor.Width / 2;
+                    var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
                         new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.Standard, TextLayoutOptions.Hyphenate));
 
@@ -258,8 +258,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width = window.ClientSize.Width / 2;
-                    var height = window.ClientSize.Height;
+                    var width = window.Compositor.Width / 2;
+                    var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
                         new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
 
@@ -312,8 +312,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width = window.ClientSize.Width / 2;
-                    var height = window.ClientSize.Height;
+                    var width = window.Compositor.Width / 2;
+                    var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
                         new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignRight, TextLayoutOptions.None));
 
@@ -366,8 +366,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width = window.ClientSize.Width / 2;
-                    var height = window.ClientSize.Height;
+                    var width = window.Compositor.Width / 2;
+                    var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
                         new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignCenter, TextLayoutOptions.None));
 
@@ -421,7 +421,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
 
                     content.TextLayoutResult.AcquirePointers();
                     var lines = new[]
@@ -473,7 +473,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
 
                     content.TextLayoutResult.AcquirePointers();
                     var lines = new[]
@@ -526,7 +526,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
 
                     content.TextLayoutResult.AcquirePointers();
                     var lines = new[]
@@ -582,7 +582,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
 
                     content.TextLayoutResult.AcquirePointers();
                     lines = new Int32?[5];
@@ -638,7 +638,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
 
                     content.TextLayoutResult.AcquirePointers();
                     var lines = new Int32?[5];
@@ -694,7 +694,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
                     content.TextLayoutResult.AcquirePointers();
                     var line0Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 0);
@@ -736,7 +736,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
                     content.TextLayoutResult.AcquirePointers();
                     var line0Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 0);
@@ -778,7 +778,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
                     content.TextLayoutResult.AcquirePointers();
                     var glyph0Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 0);
@@ -834,7 +834,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.ClientSize.Width, window.ClientSize.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
                     content.TextLayoutResult.AcquirePointers();
                     var glyph0Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 0);
@@ -948,8 +948,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .Render(uv =>
                 {
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width  = window.ClientSize.Width;
-                    var height = window.ClientSize.Height;
+                    var width  = window.Compositor.Width;
+                    var height = window.Compositor.Height;
 
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
@@ -1010,8 +1010,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         "|c:FFFF0000|red|c| |c:FFFF8000|orange|c| |c:FFFFFF00|yellow|c| |c:FF00FF00|green|c| |c:FF0000FF|blue|c| |c:FF6F00FF|indigo|c| |c:FFFF00FF|magenta|c|";
                     
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width  = window.ClientSize.Width;
-                    var height = window.ClientSize.Height;
+                    var width  = window.Compositor.Width;
+                    var height = window.Compositor.Height;
 
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
@@ -1055,8 +1055,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         "\n";
                     
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width = window.ClientSize.Width;
-                    var height = window.ClientSize.Height;
+                    var width = window.Compositor.Width;
+                    var height = window.Compositor.Height;
 
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 

@@ -17,8 +17,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="width">The render target's width in pixels.</param>
         /// <param name="height">The render target's height in pixels.</param>
+        /// <param name="usage">A <see cref="RenderTargetUsage"/> value specifying whether the 
+        /// render target's data is discarded or preserved when it is bound to the graphics device.</param>
         /// <param name="buffers">The collection of render buffers to attach to the target.</param>
-        public OpenGLRenderTarget2D(UltravioletContext uv, Int32 width, Int32 height, IEnumerable<RenderBuffer2D> buffers = null)
+        public OpenGLRenderTarget2D(UltravioletContext uv, Int32 width, Int32 height, RenderTargetUsage usage, IEnumerable<RenderBuffer2D> buffers = null)
             : base(uv)
         {
             Contract.EnsureRange(width > 0, "width");
@@ -46,12 +48,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             this.width = width;
             this.height = height;
             this.framebuffer = framebuffer;
+            this.renderTargetUsage = usage;
         }
 
-        /// <summary>
-        /// Attaches a render buffer to this render target.
-        /// </summary>
-        /// <param name="buffer">The render buffer to attach to this render target.</param>
+        /// <inheritdoc/>
         public override void Attach(RenderBuffer2D buffer)
         {
             Contract.Require(buffer, "buffer");
@@ -99,10 +99,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             this.height = height;
         }
 
-        /// <summary>
-        /// Gets the render target's data.
-        /// </summary>
-        /// <param name="data">An array to populate with the render target's data.</param>
+        /// <inheritdoc/>
         public override unsafe void GetData(Color[] data)
         {
             Contract.Require(data, "data");
@@ -114,11 +111,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             GetDataInternal(data, new Rectangle(0, 0, Width, Height));
         }
 
-        /// <summary>
-        /// Gets the render target's data.
-        /// </summary>
-        /// <param name="data">An array to populate with the render target's data.</param>
-        /// <param name="region">The region of the render target from which to retrieve data.</param>
+        /// <inheritdoc/>
         public override unsafe void GetData(Color[] data, Rectangle region)
         {
             Contract.Require(data, "data");
@@ -239,9 +232,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the render target's size in pixels.
-        /// </summary>
+        /// <inheritdoc/>
         public override Size2 Size
         {
             get
@@ -252,9 +243,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the render target's width in pixels.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Width
         {
             get
@@ -265,9 +254,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the render target's height in pixels.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Height
         {
             get
@@ -278,9 +265,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the render target is bound to the device for reading.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean BoundForReading
         {
             get
@@ -296,9 +281,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the render target is bound to the device for writing.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean BoundForWriting
         {
             get
@@ -314,10 +297,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <inheritdoc/>
+        public override RenderTargetUsage RenderTargetUsage
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return renderTargetUsage;
+            }
+        }
+
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -535,6 +526,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         // Property values.
+        private readonly RenderTargetUsage renderTargetUsage;
         private Int32 width;
         private Int32 height;
 

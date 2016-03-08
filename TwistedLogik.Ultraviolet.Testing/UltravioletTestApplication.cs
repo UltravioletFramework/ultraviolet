@@ -11,6 +11,7 @@ using TwistedLogik.Ultraviolet.SDL2;
 using TwistedLogik.Ultraviolet.SDL2.Messages;
 using TwistedLogik.Ultraviolet.SDL2.Native;
 using TwistedLogik.Ultraviolet.UI.Presentation;
+using TwistedLogik.Ultraviolet.Testing.Graphics;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
@@ -241,7 +242,7 @@ namespace TwistedLogik.Ultraviolet.Testing
             if (!headless)
             {
                 // HACK: AMD drivers produce weird rasterization artifacts when rendering
-                // to a NPOT render buffers??? So we have to fix it with this stupid hack???
+                // to a NPOT render buffer??? So we have to fix it with this stupid hack???
                 var width = MathUtil.FindNextPowerOfTwo(window.ClientSize.Width);
                 var height = MathUtil.FindNextPowerOfTwo(window.ClientSize.Height);
 
@@ -279,15 +280,29 @@ namespace TwistedLogik.Ultraviolet.Testing
         {
             if (framesToSkip == 0)
             {
-                Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
-                Ultraviolet.GetGraphics().Clear(Color.Black);
+                var window = 
+                    Ultraviolet.GetPlatform().Windows.GetPrimary();
 
-                if (renderer != null)
+                var compositor = window.Compositor as ITestFrameworkCompositor;
+                if (compositor != null)
+                    compositor.TestFrameworkRenderTarget = rtarget;
+                else
                 {
-                    renderer(Ultraviolet);
+                    Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
+                    Ultraviolet.GetGraphics().Clear(Color.Black);
                 }
 
-                Ultraviolet.GetGraphics().SetRenderTarget(null);
+                if (renderer != null)
+                    renderer(Ultraviolet);
+
+                if (compositor != null)
+                {
+                    window.Compositor.Compose();
+                    window.Compositor.Present();
+                }
+
+                Ultraviolet.GetGraphics().SetRenderTargetToBackBuffer();
+                Ultraviolet.GetGraphics().Clear(Color.CornflowerBlue);
                 bmp = ConvertRenderTargetToBitmap(rtarget);
             }
             else

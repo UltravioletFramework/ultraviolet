@@ -13,9 +13,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
     /// <summary>
     /// Represents the OpenGL/SDL2 implementation of the IUltravioletWindow interface.
     /// </summary>    
-    public sealed unsafe partial class OpenGLUltravioletWindow : 
+    public sealed unsafe partial class OpenGLUltravioletWindow :
         IMessageSubscriber<UltravioletMessageID>,
-        IUltravioletWindow, 
+        IUltravioletWindow,
         IDisposable
     {
         /// <summary>
@@ -40,6 +40,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
             this.focused = (flags & SDL_WindowFlags.INPUT_FOCUS) == SDL_WindowFlags.INPUT_FOCUS;
             this.minimized = (flags & SDL_WindowFlags.MINIMIZED) == SDL_WindowFlags.MINIMIZED;
+
+            ChangeCompositor(DefaultCompositor.Create(this));
         }
 
         /// <summary>
@@ -116,6 +118,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             if (!disposed)
             {
+                SafeDispose.Dispose(compositor);
                 SDL.DestroyWindow(ptr);
                 disposed = true;
             }
@@ -181,11 +184,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                     case WindowMode.Fullscreen:
                         SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN);
                         break;
-                    
+
                     case WindowMode.FullscreenWindowed:
                         SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN_DESKTOP);
                         break;
-                    
+
                     default:
                         throw new NotSupportedException("mode");
                 }
@@ -245,6 +248,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 return WindowState.Minimized;
 
             return WindowState.Normal;
+        }
+
+        /// <inheritdoc/>
+        public void ChangeCompositor(Compositor compositor)
+        {
+            Contract.EnsureNotDisposed(this, disposed);
+
+            if (compositor.Window != this)
+                throw new InvalidOperationException(UltravioletStrings.CompositorAssociatedWithWrongWindow);
+
+            if (IsCurrentWindow)
+                throw new InvalidOperationException(UltravioletStrings.CannotChangeCompositorWhileCurrent);
+
+            if (this.compositor != null)
+                this.compositor.Dispose();
+
+            this.compositor = compositor ?? DefaultCompositor.Create(this);
         }
 
         /// <summary>
@@ -519,6 +539,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
+        /// <inheritdoc/>
+        public Compositor Compositor
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, disposed);
+
+                return compositor;
+            }
+        }
+
         /// <summary>
         /// Occurs when the window is shown.
         /// </summary>
@@ -553,6 +584,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// Occurs when the window is drawing its UI layer.
         /// </summary>
         public event UltravioletWindowDrawingEventHandler DrawingUI;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this is the current window.
+        /// </summary>
+        internal Boolean IsCurrentWindow
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Loads the default window icon.
@@ -784,6 +824,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         private Boolean synchronizeWithVerticalRetrace;
         private readonly Boolean native;
         private Surface2D icon;
+        private Compositor compositor;
 
         // State values.
         private readonly IntPtr ptr;

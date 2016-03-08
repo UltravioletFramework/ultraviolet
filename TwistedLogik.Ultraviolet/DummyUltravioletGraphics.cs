@@ -56,6 +56,12 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
+        public void SetRenderTargetToBackBuffer()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
         public RenderTarget2D GetRenderTarget()
         {
             Contract.EnsureNotDisposed(this, Disposed);

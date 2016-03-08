@@ -55,6 +55,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             this.maxTextureStages = Math.Min(16, gl.GetInteger(gl.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
             this.textures = new Texture2D[maxTextureStages];
             this.samplerStates = new SamplerState[maxTextureStages];
+            this.backBufferRenderTargetUsage = configuration.BackBufferRenderTargetUsage;
 
             this.capabilities = new OpenGLGraphicsCapabilities();
 
@@ -161,46 +162,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            Ultraviolet.ValidateResource(renderTarget);
+            var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
+            if (currentWindow != null && renderTarget == null)
+                renderTarget = currentWindow.Compositor.GetRenderTarget();
 
-            var oglRenderTarget = (OpenGLRenderTarget2D)renderTarget;
-            if (oglRenderTarget != this.renderTarget)
-            {
-                var targetName = 0u;
-                var targetSize = Size2.Zero;
+            SetRenderTargetInternal(renderTarget);
+        }
 
-                var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
-                if (oglRenderTarget != null)
-                {
-                    oglRenderTarget.ValidateStatus();
+        /// <inheritdoc/>
+        public void SetRenderTargetToBackBuffer()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
 
-                    targetName = oglRenderTarget.OpenGLName;
-                    targetSize = renderTarget.Size;
-                }
-                else
-                {
-                    if (currentWindow != null)
-                        targetSize = currentWindow.ClientSize;
-                }
-
-                OpenGLState.BindFramebuffer(targetName);
-
-                if (this.renderTarget != null)
-                    this.renderTarget.UnbindWrite();
-
-                this.renderTarget = oglRenderTarget;
-
-                if (this.renderTarget != null)
-                    this.renderTarget.BindWrite();
-
-                this.viewport = default(Viewport);
-                SetViewport(new Viewport(0, 0, targetSize.Width, targetSize.Height));
-
-                if (this.renderTarget != null)
-                {
-                    Clear(Color.FromArgb(0xFF442288));
-                }
-            }
+            SetRenderTargetInternal(null);
         }
 
         /// <inheritdoc/>
@@ -799,6 +773,61 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             y = renderTargetHeight - (height + y);
         }
 
+        /// <summary>
+        /// Sets the current render target.
+        /// </summary>
+        private void SetRenderTargetInternal(RenderTarget2D renderTarget)
+        {
+            Ultraviolet.ValidateResource(renderTarget);
+
+            var usage = renderTarget?.RenderTargetUsage ?? backBufferRenderTargetUsage;
+            if (usage == RenderTargetUsage.PlatformContents)
+            {
+                usage = Capabilities.SupportsPreservingRenderTargetContentInHardware ?
+                    RenderTargetUsage.PreserveContents :
+                    RenderTargetUsage.DiscardContents;
+            }
+
+            var oglRenderTarget = (OpenGLRenderTarget2D)renderTarget;
+            if (oglRenderTarget != this.renderTarget)
+            {
+                var targetName = 0u;
+                var targetSize = Size2.Zero;
+
+                if (oglRenderTarget != null)
+                {
+                    oglRenderTarget.ValidateStatus();
+
+                    targetName = oglRenderTarget.OpenGLName;
+                    targetSize = renderTarget.Size;
+                }
+                else
+                {
+                    var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
+                    if (currentWindow != null)
+                        targetSize = currentWindow.ClientSize;
+                }
+
+                OpenGLState.BindFramebuffer(targetName);
+
+                if (this.renderTarget != null)
+                    this.renderTarget.UnbindWrite();
+
+                this.renderTarget = oglRenderTarget;
+
+                if (this.renderTarget != null)
+                    this.renderTarget.BindWrite();
+
+                this.viewport = default(Viewport);
+                SetViewport(new Viewport(0, 0, targetSize.Width, targetSize.Height));
+
+                if (usage == RenderTargetUsage.DiscardContents)
+                {
+                    Clear(Color.FromArgb(0xFF442288));
+                }
+            }
+        }
+
         // Property values.
         private readonly GraphicsCapabilities capabilities;
 
@@ -811,6 +840,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         private OpenGLDepthStencilState depthStencilState;
         private OpenGLRasterizerState rasterizerState;
         private Rectangle? scissorRectangle;
+        private RenderTargetUsage backBufferRenderTargetUsage;
 
         // Frame rate counter.
         private Stopwatch frameRateTimer = new Stopwatch();

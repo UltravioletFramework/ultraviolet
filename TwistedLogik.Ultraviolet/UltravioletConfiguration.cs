@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -15,6 +16,15 @@ namespace TwistedLogik.Ultraviolet
             WindowIsVisible = true;
             WindowIsResizable = true;
             InitialWindowPosition = new Rectangle(100, 100, 640, 480);
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="RenderTargetUsage"/> value which is used by the back buffer.
+        /// </summary>
+        public RenderTargetUsage BackBufferRenderTargetUsage
+        {
+            get;
+            set;
         }
 
         /// <summary>

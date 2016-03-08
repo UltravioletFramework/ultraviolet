@@ -82,7 +82,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\BlurEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ColorWriteChannels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\CompareFunction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\CompositionContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Compositor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\CullMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\DefaultCompositor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DepthStencilState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DummyGraphicsCapabilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicIndexBuffer.cs" />
@@ -204,6 +207,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderBufferFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderBufferOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderTarget2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderTargetUsage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SamplerState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SetDataOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SetDataOrigin.cs" />
