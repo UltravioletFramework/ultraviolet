@@ -31,14 +31,16 @@ namespace TwistedLogik.Ultraviolet.Tooling
                         throw new InvalidCommandLineException();
                     }
 
-                    var key   = arg.Substring(1, ixDelimiter - 1);
+                    var key = arg.Substring(1, ixDelimiter - 1);
                     var value = arg.Substring(ixDelimiter + 1);
-                 
-                    arguments[key] = value;
+
+                    arguments[key.ToLowerInvariant()] = value;
                 }
                 else
                 {
-                    arguments[arg.ToLowerInvariant()] = null;
+                    var key = arg.Substring(1);
+
+                    arguments[key.ToLowerInvariant()] = null;
                 }
             }
         }
