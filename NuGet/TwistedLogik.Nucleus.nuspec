@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>TwistedLogik.Nucleus</id>
+    <version>1.3.4</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the "Nucleus" core library, which implements basic data structures, collections, and algorithms used throughout the Framework.</description>
+    <tags>ultraviolet gamedev</tags>	
+  <dependencies>
+    <dependency id="Newtonsoft.Json" version="7.0.1"/>
+  </dependencies>
+  </metadata>
+  <files>
+  <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.dll" target="lib\net40\"/>
+  <file src="..\Binaries\Android\Signed\TwistedLogik.Nucleus.dll" target="lib\MonoAndroid404\"/>
+  </files>  
+</package>

@@ -1,0 +1,13 @@
+nuget pack TwistedLogik.Gluon.nuspec
+nuget pack TwistedLogik.Nucleus.nuspec
+nuget pack TwistedLogik.Ultraviolet.Android.nuspec
+nuget pack TwistedLogik.Ultraviolet.BASS.Native.nuspec
+nuget pack TwistedLogik.Ultraviolet.BASS.nuspec
+nuget pack TwistedLogik.Ultraviolet.Desktop.nuspec
+nuget pack TwistedLogik.Ultraviolet.nuspec
+nuget pack TwistedLogik.Ultraviolet.OpenGL.nuspec
+nuget pack TwistedLogik.Ultraviolet.OSX.nuspec
+nuget pack TwistedLogik.Ultraviolet.SDL2.Native.nuspec
+nuget pack TwistedLogik.Ultraviolet.SDL2.nuspec
+nuget pack TwistedLogik.Ultraviolet.UI.Presentation.Compiler.nuspec
+nuget pack TwistedLogik.Ultraviolet.UI.Presentation.nuspec
