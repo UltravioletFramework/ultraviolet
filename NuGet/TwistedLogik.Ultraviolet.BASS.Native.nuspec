@@ -2,38 +2,39 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>TwistedLogik.Ultraviolet.BASS.Native</id>
-    <version>1.3.4</version>
+    <version>1.3.4.1</version>
     <authors>Cole Campbell</authors>
     <owners>Cole Campbell</owners>
     <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
     <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<title>TwistedLogik.Ultraviolet.BASS Native Dependencies</title>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the BASS implementation of the Framework's audio subsystem.</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
-    <dependency id="TwistedLogik.Ultraviolet.BASS" version="1.3.4" />
+    <dependency id="TwistedLogik.Ultraviolet.BASS" version="1.3.4.1" />
   </dependencies>
   </metadata>
   <files>
-  <file src="TwistedLogik.Ultraviolet.BASS.Native\build\net40\TwistedLogik.Ultraviolet.BASS.Native.targets" target="build\net40\TwistedLogik.Ultraviolet.BASS.Native.targets"/>
-  <file src="..\Dependencies\BASS\x86\unix\libbass.so" target="build\net40\x86\unix\libbass.so"/>
-  <file src="..\Dependencies\BASS\x86\unix\libbass_fx.so" target="build\net40\x86\unix\libbass_fx.so"/>
-  <file src="..\Dependencies\BASS\x64\unix\libbass.so" target="build\net40\x64\unix\libbass.so"/>
-  <file src="..\Dependencies\BASS\x64\unix\libbass_fx.so" target="build\net40\x64\unix\libbass_fx.so"/>
-  <file src="..\Dependencies\BASS\x86\win32nt\bass.dll" target="build\net40\x86\win32nt\bass.dll"/>
-  <file src="..\Dependencies\BASS\x86\win32nt\bass_fx.dll" target="build\net40\x86\win32nt\bass_fx.dll"/>
-  <file src="..\Dependencies\BASS\x64\win32nt\bass.dll" target="build\net40\x64\win32nt\bass.dll"/>
-  <file src="..\Dependencies\BASS\x64\win32nt\bass_fx.dll" target="build\net40\x64\win32nt\bass_fx.dll"/>
-  <file src="..\Dependencies\BASS\x64\osx\libbass.dylib" target="build\net40\x64\osx\libbass.dylib"/>
-  <file src="..\Dependencies\BASS\x64\osx\libbass_fx.dylib" target="build\net40\x64\osx\libbass_fx.dylib"/>
+    <file src="TwistedLogik.Ultraviolet.BASS.Native\build\net40\TwistedLogik.Ultraviolet.BASS.Native.targets" target="build\net40\TwistedLogik.Ultraviolet.BASS.Native.targets"/>
+    <file src="..\Dependencies\BASS\x86\unix\libbass.so" target="build\net40\x86\unix\libbass.so"/>
+    <file src="..\Dependencies\BASS\x86\unix\libbass_fx.so" target="build\net40\x86\unix\libbass_fx.so"/>
+    <file src="..\Dependencies\BASS\x64\unix\libbass.so" target="build\net40\x64\unix\libbass.so"/>
+    <file src="..\Dependencies\BASS\x64\unix\libbass_fx.so" target="build\net40\x64\unix\libbass_fx.so"/>
+    <file src="..\Dependencies\BASS\x86\win32nt\bass.dll" target="build\net40\x86\win32nt\bass.dll"/>
+    <file src="..\Dependencies\BASS\x86\win32nt\bass_fx.dll" target="build\net40\x86\win32nt\bass_fx.dll"/>
+    <file src="..\Dependencies\BASS\x64\win32nt\bass.dll" target="build\net40\x64\win32nt\bass.dll"/>
+    <file src="..\Dependencies\BASS\x64\win32nt\bass_fx.dll" target="build\net40\x64\win32nt\bass_fx.dll"/>
+    <file src="..\Dependencies\BASS\x64\osx\libbass.dylib" target="build\net40\x64\osx\libbass.dylib"/>
+    <file src="..\Dependencies\BASS\x64\osx\libbass_fx.dylib" target="build\net40\x64\osx\libbass_fx.dylib"/>
   
-  <file src="TwistedLogik.Ultraviolet.BASS.Native\build\MonoAndroid404\TwistedLogik.Ultraviolet.BASS.Native.targets" target="build\MonoAndroid404\TwistedLogik.Ultraviolet.BASS.Native.targets"/>
-  <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\MonoAndroid404\lib\armeabi-v7a\bass.dll"/>
-  <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so" target="build\MonoAndroid404\lib\armeabi-v7a\bass_fx.dll"/>	
-  <file src="..\Dependencies\BASS\Android\armeabi\libbass.so" target="build\MonoAndroid404\lib\armeabi\bass.dll"/>
-  <file src="..\Dependencies\BASS\Android\armeabi\libbass_fx.so" target="build\MonoAndroid404\lib\armeabi\bass_fx.dll"/>
-  <file src="..\Dependencies\BASS\Android\x86\libbass.so" target="build\MonoAndroid404\lib\x86\bass.dll"/>
-  <file src="..\Dependencies\BASS\Android\x86\libbass_fx.so" target="build\MonoAndroid404\lib\x86\bass_fx.dll"/>
+    <file src="TwistedLogik.Ultraviolet.BASS.Native\build\MonoAndroid404\TwistedLogik.Ultraviolet.BASS.Native.targets" target="build\MonoAndroid404\TwistedLogik.Ultraviolet.BASS.Native.targets"/>
+    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\MonoAndroid404\lib\armeabi-v7a\bass.dll"/>
+    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so" target="build\MonoAndroid404\lib\armeabi-v7a\bass_fx.dll"/>	
+    <file src="..\Dependencies\BASS\Android\armeabi\libbass.so" target="build\MonoAndroid404\lib\armeabi\bass.dll"/>
+    <file src="..\Dependencies\BASS\Android\armeabi\libbass_fx.so" target="build\MonoAndroid404\lib\armeabi\bass_fx.dll"/>
+    <file src="..\Dependencies\BASS\Android\x86\libbass.so" target="build\MonoAndroid404\lib\x86\bass.dll"/>
+    <file src="..\Dependencies\BASS\Android\x86\libbass_fx.so" target="build\MonoAndroid404\lib\x86\bass_fx.dll"/>
   </files>  
 </package>

@@ -45,6 +45,8 @@
     <DefineConstants>SIGNED</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
