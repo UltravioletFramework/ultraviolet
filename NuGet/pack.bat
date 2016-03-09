@@ -1,3 +1,5 @@
+del *.nupkg
+
 nuget pack TwistedLogik.Gluon.nuspec -Symbols
 nuget pack TwistedLogik.Nucleus.nuspec -Symbols
 nuget pack TwistedLogik.Ultraviolet.Android.nuspec -Symbols
