@@ -20,5 +20,9 @@
       <Link>x64\osx\libSDL2.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.SDL2.dll.config">
+      <Link>TwistedLogik.Ultraviolet.SDL2.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

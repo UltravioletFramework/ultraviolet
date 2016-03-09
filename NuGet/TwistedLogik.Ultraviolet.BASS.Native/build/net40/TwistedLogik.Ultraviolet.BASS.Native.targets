@@ -40,5 +40,9 @@
       <Link>x64\osx\libbass_fx.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.BASS.dll.config">
+      <Link>TwistedLogik.Ultraviolet.BASS.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

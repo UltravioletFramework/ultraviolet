@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>TwistedLogik.Ultraviolet.SDL2.Native</id>
-    <version>1.3.4.1</version>
+    <version>1.3.4.2</version>
     <authors>Cole Campbell</authors>
     <owners>Cole Campbell</owners>
     <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
@@ -18,6 +18,7 @@
   </metadata>
   <files>
     <file src="TwistedLogik.Ultraviolet.SDL2.Native\build\net40\TwistedLogik.Ultraviolet.SDL2.Native.targets" target="build\net40\TwistedLogik.Ultraviolet.SDL2.Native.targets"/>
+	<file src="..\TwistedLogik.Ultraviolet.SDL2 (Desktop)\TwistedLogik.Ultraviolet.SDL2.dll.config" target="build\net40\TwistedLogik.Ultraviolet.SDL2.dll.config"/>
     <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\net40\x86\unix\libSDL2.so"/>
     <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\net40\x64\unix\libSDL2.so"/>
     <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\net40\x86\win32nt\SDL2.dll"/>
