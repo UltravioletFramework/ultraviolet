@@ -21,9 +21,9 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         Android,
 
-		/// <summary>
-		/// Mac OS X.
-		/// </summary>
-		OSX,
+        /// <summary>
+        /// Mac OS X.
+        /// </summary>
+        OSX,
     }
 }

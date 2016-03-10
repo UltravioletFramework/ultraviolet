@@ -271,6 +271,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletSubsystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletUI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Matrix.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageBoxType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\OrientationChangedMessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MutableVector2.cs" />

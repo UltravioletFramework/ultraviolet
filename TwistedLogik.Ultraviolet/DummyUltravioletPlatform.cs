@@ -1,4 +1,5 @@
-﻿using TwistedLogik.Nucleus;
+﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet
@@ -30,6 +31,12 @@ namespace TwistedLogik.Ultraviolet
             {
                 temp(this, time);
             }
+        }
+
+        /// <inheritdoc/>
+        public void ShowMessageBox(MessageBoxType type, String title, String message, IUltravioletWindow parent = null)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
         }
 
         /// <inheritdoc/>
