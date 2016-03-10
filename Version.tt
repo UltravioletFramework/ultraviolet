@@ -3,11 +3,13 @@
 <#
 var buildNumber = System.Environment.GetEnvironmentVariable("BAMBOO_buildNumber");
 var buildConfig = System.Environment.GetEnvironmentVariable("BAMBOO_buildType");
+var buildBranch = System.Environment.GetEnvironmentVariable("BAMBOO_planRepository_branchName");
 var asmVersion = "1.3.0.0";
-var asmFileVersion = "1.3.4.0";
+var asmFileVersion = "1.3.4." + (String.IsNullOrEmpty(buildNumber) ? "0" : buildNumber);
 var asmInfoVersion = String.IsNullOrEmpty(buildNumber) ? 
 	String.Format("{0} dev build", asmFileVersion) : 
-	String.Format("{0} {1} build {2}", asmFileVersion, buildConfig, buildNumber);
+	String.Format("{0} {1} build {2}{3}", asmFileVersion, buildConfig, buildNumber, 
+		String.IsNullOrEmpty(buildBranch) ? String.Empty : String.Format(" ({0})", buildBranch));
 var yearStart = 2014;
 var yearEnd = DateTime.Now.Year;
 #>
