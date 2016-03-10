@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>TwistedLogik.Ultraviolet.SDL2.Native</id>
-    <version>1.3.4.2</version>
+    <version>UV_VERSION</version>
     <authors>Cole Campbell</authors>
     <owners>Cole Campbell</owners>
     <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
@@ -13,7 +13,7 @@
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the SDL2 implementation of the Framework's platform and input subsystems.</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
-    <dependency id="TwistedLogik.Ultraviolet.SDL2" version="1.3.4.1" />
+    <dependency id="TwistedLogik.Ultraviolet.SDL2" version="UV_VERSION" />
   </dependencies>
   </metadata>
   <files>
