@@ -76,6 +76,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowSize")]
         public static extern void SetWindowSize(IntPtr window, Int32 w, Int32 h);
 
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowMinimumSize")]
+        public static extern void GetWindowMinimumSize(IntPtr window, out Int32 w, out Int32 h);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowMinimumSize")]
+        public static extern void SetWindowMinimumSize(IntPtr window, Int32 w, Int32 h);
+
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowMaximumSize")]
         public static extern void GetWindowMaximumSize(IntPtr window, out Int32 w, out Int32 h);
 

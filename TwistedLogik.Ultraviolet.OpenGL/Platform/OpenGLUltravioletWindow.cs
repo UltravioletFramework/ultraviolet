@@ -277,9 +277,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             OnDrawingUI(time);
         }
 
-        /// <summary>
-        /// Gets the window's identifier within its windowing system.
-        /// </summary>
+        /// <inheritdoc/>
         public Int32 ID
         {
             get
@@ -290,9 +288,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets or sets the window's caption.
-        /// </summary>
+        /// <inheritdoc/>
         public String Caption
         {
             get
@@ -309,9 +305,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets or sets the window's position.
-        /// </summary>
+        /// <inheritdoc/>
         public Point2 Position
         {
             get
@@ -331,9 +325,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets or sets the position to which the window will be restored upon entering non-maximized windowed mode.
-        /// </summary>
+        /// <inheritdoc/>
         public Point2 WindowedPosition
         {
             get
@@ -355,9 +347,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the window's client size.
-        /// </summary>
+        /// <inheritdoc/>
         public Size2 ClientSize
         {
             get
@@ -376,10 +366,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 SDL.SetWindowSize(ptr, value.Width, value.Height);
             }
         }
-
-        /// <summary>
-        /// Gets or sets the client size to which the window will be restored upon entering non-maximized windowed mode.
-        /// </summary>
+        
+        /// <inheritdoc/>
         public Size2 WindowedClientSize
         {
             get
@@ -401,9 +389,27 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the window's maximum client size.
-        /// </summary>
+        /// <inheritdoc/>
+        public Size2 MinimumClientSize
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, disposed);
+
+                Int32 w, h;
+                SDL.GetWindowMinimumSize(ptr, out w, out h);
+
+                return new Size2(w, h);
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, disposed);
+
+                SDL.SetWindowMinimumSize(ptr, value.Width, value.Height);
+            }
+        }
+
+        /// <inheritdoc/>
         public Size2 MaximumClientSize
         {
             get
@@ -415,12 +421,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
                 return new Size2(w, h);
             }
+            set
+            {
+                Contract.EnsureNotDisposed(this, disposed);
+
+                SDL.SetWindowMaximumSize(ptr, value.Width, value.Height);
+            }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this window's rendering is synchronized
-        /// with the vertical retrace (i.e, whether vsync is enabled).
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean SynchronizeWithVerticalRetrace
         {
             get
@@ -437,9 +446,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the window is currently active.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean Active
         {
             get
@@ -450,9 +457,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this window is visible.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean Visible
         {
             get
@@ -477,9 +482,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this window is resizable.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean Resizable
         {
             get
@@ -491,9 +494,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this window is borderless.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean Borderless
         {
             get
@@ -505,9 +506,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this window was created from a native window.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean Native
         {
             get
@@ -518,9 +517,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets or sets the window's icon.
-        /// </summary>
+        /// <inheritdoc/>
         public Surface2D Icon
         {
             get

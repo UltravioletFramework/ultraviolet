@@ -129,11 +129,21 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
-        /// Gets the window's maximum client size.
+        /// Gets or sets the window's minimum client size.
+        /// </summary>
+        Size2 MinimumClientSize
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the window's maximum client size.
         /// </summary>
         Size2 MaximumClientSize
         {
             get;
+            set;
         }
 
         /// <summary>
