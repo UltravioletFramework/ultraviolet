@@ -78,10 +78,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 var dcState = dc.GetCurrentState();
                 dc.End();
 
-                var offset = Display.DipsToPixels(clonedElement.UntransformedAbsoluteBounds.Location - clonedElement.UntransformedRelativeBounds.Location);
-                var offsetRounded = dc.IsTransformed ? (Vector2)offset : (Vector2)(Point2)offset;
+                var offsetRaw = Display.DipsToPixels(clonedElement.UntransformedAbsoluteBounds.Location - clonedElement.UntransformedRelativeBounds.Location);
+                var offsetX = dc.IsTransformed ? offsetRaw.X : Math.Round(offsetRaw.X, MidpointRounding.AwayFromZero);
+                var offsetY = dc.IsTransformed ? offsetRaw.Y : Math.Round(offsetRaw.Y, MidpointRounding.AwayFromZero);
+                var offset = new Vector2((Single)offsetX, (Single)offsetY);
                 
-                var mtxTransform = Matrix.CreateTranslation(-offsetRounded.X, -offsetRounded.Y, 0);
+                var mtxTransform = Matrix.CreateTranslation(-offset.X, -offset.Y, 0);
                 var mtxTransformToView = GetTransformToViewMatrix(true);
                 var mtxTransformGlobal = dcState.GlobalTransform;
                 Matrix.Concat(ref mtxTransform, ref mtxTransformToView, out mtxTransform);

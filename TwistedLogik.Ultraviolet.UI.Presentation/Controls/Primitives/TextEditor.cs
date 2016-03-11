@@ -1708,9 +1708,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var owner = TemplatedParent as Control;
             var foreground = (owner == null) ? Color.White : owner.Foreground;
 
-            var position = Display.DipsToPixels(UntransformedAbsolutePosition);
-            var positionRounded = dc.IsTransformed ? (Vector2)position : (Vector2)(Point2)position;
-            View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutStream, positionRounded, foreground * dc.Opacity);
+            var positionRaw = Display.DipsToPixels(UntransformedAbsolutePosition);
+            var positionX = dc.IsTransformed ? positionRaw.X : Math.Round(positionRaw.X, MidpointRounding.AwayFromZero);
+            var positionY = dc.IsTransformed ? positionRaw.Y : Math.Round(positionRaw.Y, MidpointRounding.AwayFromZero);
+            var position = new Vector2((Single)positionX, (Single)positionY);
+            View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutStream, position, foreground * dc.Opacity);
         }
 
         /// <summary>
