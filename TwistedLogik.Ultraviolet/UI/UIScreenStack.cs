@@ -23,8 +23,8 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             public PendingOpening(UIScreen opening, UIScreen closing, TimeSpan duration)
             {
-                this.Opening  = opening;
-                this.Closing  = closing;
+                this.Opening = opening;
+                this.Closing = closing;
                 this.Duration = duration;
             }
             public readonly UIScreen Opening;
@@ -85,8 +85,11 @@ namespace TwistedLogik.Ultraviolet.UI
             for (current = screens.First; current != null; current = next)
             {
                 next = current.Next;
-                current.Value.Update(time);
-                RemoveIfClosed(current);
+
+                var screen = current.Value;
+                screen.Update(time);
+
+                RemoveIfClosed(screen);
             }
             UpdatePendingOpenings();
         }
@@ -274,7 +277,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 {
                     any = true;
                     screen.Close(duration);
-                    RemoveIfClosed(current);
+                    RemoveIfClosed(screen);
                 }
             }
 
@@ -304,7 +307,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 {
                     tasks = tasks ?? new List<Task>();
                     tasks.Add(screen.CloseAsync(duration));
-                    RemoveIfClosed(current);
+                    RemoveIfClosed(screen);
                 }
             }
 
@@ -445,18 +448,6 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
-        /// Removes the specified screen from the screen list, if the screen is closed.
-        /// </summary>
-        private void RemoveIfClosed(LinkedListNode<UIScreen> screen)
-        {
-            if (screen.Value.State == UIPanelState.Closed)
-            {
-                screen.Value.Window = null;
-                screens.Remove(screen);
-            }
-        }
-
-        /// <summary>
         /// Updates the stack's pending openings.
         /// </summary>
         private void UpdatePendingOpenings()
@@ -465,7 +456,7 @@ namespace TwistedLogik.Ultraviolet.UI
                 return;
 
             var current = pendingOpenings.First;
-            var next    = current.Next;
+            var next = current.Next;
 
             while (current != null)
             {
@@ -519,7 +510,7 @@ namespace TwistedLogik.Ultraviolet.UI
         private readonly IUltravioletWindow window;
 
         // The current list of active screens.
-        private readonly PooledLinkedList<UIScreen> screens = 
+        private readonly PooledLinkedList<UIScreen> screens =
             new PooledLinkedList<UIScreen>();
 
         // The list of screens that are waiting to be opened.
