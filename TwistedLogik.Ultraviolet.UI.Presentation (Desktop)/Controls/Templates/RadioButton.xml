@@ -19,8 +19,7 @@
              VerticalAlignment="{{VerticalContentAlignment}}"/>
       <ContentPresenter Class="toggle-content"
                         Grid.Column="1"
-                        Grid.Row="0"
-                        VerticalAlignment="Stretch"/>
+                        Grid.Row="0"/>
       <Image Class="toggle-focus-image"
              Grid.Row="0"
              Grid.Column="1"
