@@ -99,22 +99,28 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Asynchronously performs all of the steps that have been added to the loader.
         /// </summary>
         /// <param name="content">The content manager with which to load content.</param>
-        /// <param name="continuation">An action to invoke when loading is complete.</param>
-        public void Load(ContentManager content, Action continuation = null)
+        /// <param name="onLoaded">An action to invoke when loading is complete.</param>
+        /// <param name="onFaulted">An action to invoke when the loader faults due to an exception.</param>
+        public void Load(ContentManager content, Action onLoaded = null, Action<Exception> onFaulted = null)
         {
             Contract.Ensure(content != null, UltravioletStrings.NoContentManagerSpecified);
             Contract.EnsureNot(IsLoading, UltravioletStrings.ContentLoaderAlreadyLoading);
 
             this.IsLoading = true;
+            this.IsLoaded = false;
+            this.IsFaulted = false;
+            this.Exception = null;
 
             if (steps.Count == 0 || this.IsLoaded)
             {
                 this.IsLoaded = true;
                 this.IsLoading = false;
+                this.IsFaulted = false;
+                this.Exception = null;
 
-                if (continuation != null)
+                if (onLoaded != null)
                 {
-                    continuation();
+                    onLoaded();
                 }
             }
             else
@@ -122,22 +128,59 @@ namespace TwistedLogik.Ultraviolet.Content
                 this.content = content;
                 this.content.Ultraviolet.SpawnTask((ct) =>
                 {
-                    foreach (var step in steps)
+                    try
                     {
-                        step();
-                        ct.ThrowIfCancellationRequested();
+                        foreach (var step in this.steps)
+                        {
+                            step();
+                            ct.ThrowIfCancellationRequested();
+                        }
+
+                        this.IsLoaded = true;
+                        this.IsLoading = false;
+                        this.IsFaulted = false;
+                        this.content = null;
+
+                        if (onLoaded != null)
+                        {
+                            onLoaded();
+                        }
                     }
-
-                    this.IsLoaded = true;
-                    this.IsLoading = false;
-                    this.content = null;
-
-                    if (continuation != null)
+                    catch (Exception e)
                     {
-                        continuation();
+                        this.Exception = e;
+
+                        this.IsLoaded = true;
+                        this.IsLoading = false;
+                        this.IsFaulted = true;
+                        this.content = null;
+
+                        if (onFaulted != null)
+                        {
+                            onFaulted(e);
+                        }
                     }
                 });
             }
+        }
+
+        /// <summary>
+        /// Gets the exception that caused the loader to fault, if the loader has faulted.
+        /// </summary>
+        public Exception Exception
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the content loader has faulted due to an exception
+        /// being thrown in a background thread.
+        /// </summary>
+        public Boolean IsFaulted
+        {
+            get;
+            private set;
         }
 
         /// <summary>
