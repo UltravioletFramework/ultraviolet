@@ -123,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var expressionVerificationResult = 
                 PerformExpressionVerificationCompilationPass(state, models, referencedAssemblies);
 
-			if (expressionVerificationResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
+            if (expressionVerificationResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
             {
                 if (state.WriteErrorsToFile)
                     WriteErrorsToWorkingDirectory(state, models, expressionVerificationResult);
@@ -141,7 +141,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var finalPassResult = 
                 PerformFinalCompilationPass(state, output, models, referencedAssemblies, conversionFixupPassResult);
 
-			if (finalPassResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
+            if (finalPassResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
             {
                 if (state.WriteErrorsToFile)
                     WriteErrorsToWorkingDirectory(state, models, finalPassResult);
@@ -279,7 +279,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             options.GenerateExecutable = false;
             options.GenerateInMemory = true;
             options.IncludeDebugInformation = false;
-			options.TreatWarningsAsErrors = false;
+            options.TreatWarningsAsErrors = false;
             options.ReferencedAssemblies.AddRange(references.Distinct().ToArray());
 
             var files = new List<String>();
@@ -766,18 +766,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         private static void WriteErrorsToWorkingDirectory(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, CompilerResults results)
         {
             var logpath = Path.Combine(GetWorkingDirectory(state), "Compilation Errors.txt");
-			try
-			{
-				File.Delete(logpath);
-			}
-			catch(DirectoryNotFoundException) {	}
+            try
+            {
+                File.Delete(logpath);
+            }
+            catch(DirectoryNotFoundException) {	}
 
-			var logdir = Path.GetDirectoryName(logpath);
-			Directory.CreateDirectory(logdir);
+            var logdir = Path.GetDirectoryName(logpath);
+            Directory.CreateDirectory(logdir);
 
-			// NOTE: Under Mono we seem to get warnings even when "Treat Warnings as Errors" is turned off.
-			var trueErrors = results.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).ToList();
-			if (trueErrors.Count > 0)
+            // NOTE: Under Mono we seem to get warnings even when "Treat Warnings as Errors" is turned off.
+            var trueErrors = results.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).ToList();
+            if (trueErrors.Count > 0)
             {
                 var filesWithErrors = trueErrors.Select(x => x.FileName).Where(x => !String.IsNullOrEmpty(x)).Distinct();
                 var filesWithErrorsPretty = new Dictionary<String, String> { { String.Empty, String.Empty } };
@@ -795,7 +795,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     File.Copy(fileWithErrorsSrc, fileWithErrorsDst, true);
                 }
 
-				var errorStrings = trueErrors.Select(x =>
+                var errorStrings = trueErrors.Select(x =>
                     String.Format("{0}\t{1}\t{2}\t{3}", x.ErrorNumber, x.ErrorText, filesWithErrorsPretty[x.FileName ?? String.Empty], x.Line));
                 
                 File.WriteAllLines(logpath, Enumerable.Union(new[] { "Code\tDescription\tFile\tLine" }, errorStrings));
