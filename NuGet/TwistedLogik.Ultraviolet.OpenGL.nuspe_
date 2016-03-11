@@ -20,8 +20,10 @@
   </metadata>
   <files>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.OpenGL.dll" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.OpenGL.XML" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.OpenGL.pdb" target="lib\net40\"/>
     <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.OpenGL.dll" target="lib\MonoAndroid404\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.OpenGL.XML" target="lib\MonoAndroid404\"/>
     <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.OpenGL.pdb" target="lib\MonoAndroid404\"/>
   </files>  
 </package>

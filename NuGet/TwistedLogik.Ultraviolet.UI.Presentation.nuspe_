@@ -18,8 +18,16 @@
   </metadata>
   <files>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.dll" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.XML" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.pdb" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.XML" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.pdb" target="lib\net40\"/>
     <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.UI.Presentation.dll" target="lib\MonoAndroid404\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.UI.Presentation.XML" target="lib\MonoAndroid404\"/>
     <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.UI.Presentation.pdb" target="lib\MonoAndroid404\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" target="lib\MonoAndroid404\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.XML" target="lib\MonoAndroid404\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.pdb" target="lib\MonoAndroid404\"/>
   </files>  
 </package>

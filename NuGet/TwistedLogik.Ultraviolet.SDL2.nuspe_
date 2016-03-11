@@ -18,8 +18,10 @@
   </metadata>
   <files>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.SDL2.dll" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.SDL2.XML" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.SDL2.pdb" target="lib\net40\"/>
     <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.SDL2.dll" target="lib\MonoAndroid404\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.SDL2.XML" target="lib\MonoAndroid404\"/>
     <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.SDL2.pdb" target="lib\MonoAndroid404\"/>
   </files>  
 </package>

@@ -17,8 +17,10 @@
   </metadata>
   <files>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.dll" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.XML" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.pdb" target="lib\net40\"/>
     <file src="..\Binaries\Android\Signed\TwistedLogik.Nucleus.dll" target="lib\MonoAndroid404\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Nucleus.XML" target="lib\MonoAndroid404\"/>
     <file src="..\Binaries\Android\Signed\TwistedLogik.Nucleus.pdb" target="lib\MonoAndroid404\"/>
   </files>  
 </package>
