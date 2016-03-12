@@ -2,6 +2,7 @@
 using System.Globalization;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
+using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
 {
@@ -21,6 +22,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         {
             Contract.RequireNotEmpty(literal, nameof(literal));
             Contract.Require(type, nameof(type));
+
+            String localizationKey;
+            if (IsLocalizedString(literal, out localizationKey))
+            {
+                literal = Localization.Get(localizationKey);
+            }
 
             this.Literal = literal;
             this.Type = type;
@@ -55,5 +62,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         /// Gets the culture with which the literal value is parsed.
         /// </summary>
         public CultureInfo Culture { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified literal is a localized string.
+        /// </summary>
+        private Boolean IsLocalizedString(String literal, out String key)
+        {
+            if (literal.StartsWith("[[") && literal.EndsWith("]]"))
+            {
+                key = literal.Substring(2, literal.Length - 4);
+                return true;
+            }
+            key = null;
+            return false;
+        }
     }
 }
