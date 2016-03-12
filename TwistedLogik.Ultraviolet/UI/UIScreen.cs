@@ -32,14 +32,14 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="globalContent">The content manager with which to load globally-available assets.</param>
         protected UIScreen(UltravioletContext uv, String rootDirectory, String definitionAsset, ContentManager globalContent)
             : base(uv, rootDirectory, globalContent)
-        {            
+        {
             var definition = LoadPanelDefinition(definitionAsset);
             if (definition != null)
             {
-                DefaultOpenTransitionDuration  = definition.DefaultOpenTransitionDuration;
+                DefaultOpenTransitionDuration = definition.DefaultOpenTransitionDuration;
                 DefaultCloseTransitionDuration = definition.DefaultCloseTransitionDuration;
 
-                LoadView(definition);
+                PrepareView(definition);
             }
         }
 
@@ -47,6 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI
         public override void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
 
             UpdateView(time);
             UpdateTransition(time);
@@ -62,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI
 
             if (!IsOnCurrentWindow)
                 return;
-            
+
             OnDrawingBackground(time, spriteBatch);
 
             Window.Compositor.BeginContext(CompositionContext.Interface);

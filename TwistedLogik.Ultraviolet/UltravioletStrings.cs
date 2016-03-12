@@ -128,6 +128,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource LineInfoIsNotFromSameSource          = new StringResource(StringDatabase, "LINE_INFO_IS_NOT_FROM_SAME_SOURCE");
         public static readonly StringResource CannotChangeCompositorWhileCurrent   = new StringResource(StringDatabase, "CANNOT_CHANGE_COMPOSITOR_WHILE_CURRENT");
         public static readonly StringResource CompositorAssociatedWithWrongWindow  = new StringResource(StringDatabase, "COMPOSITOR_ASSOCIATED_WITH_WRONG_WINDOW");
+        public static readonly StringResource ViewAlreadyLoaded                    = new StringResource(StringDatabase, "VIEW_ALREADY_LOADED");
 #pragma warning restore 1591
     }
 }

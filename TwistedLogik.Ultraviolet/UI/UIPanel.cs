@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI
     /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
     /// <param name="spriteBatch">The sprite batch with which the panel is being drawn.</param>
     public delegate void UIPanelDrawEventHandler(UIPanel panel, UltravioletTime time, SpriteBatch spriteBatch);
-    
+
     /// <summary>
     /// Represents a user interface panel.
     /// </summary>
@@ -58,8 +58,36 @@ namespace TwistedLogik.Ultraviolet.UI
 
             this.vmfactory = new UIViewModelFactory(CreateViewModel);
 
-            this.localContent  = ContentManager.Create(rootDirectory);
+            this.localContent = ContentManager.Create(rootDirectory);
             this.globalContent = globalContent;
+        }
+
+        /// <summary>
+        /// Forces the panel to immediately finish loading its view, if it has
+        /// a view and the view hasn't already been loaded.
+        /// </summary>
+        public void FinishLoadingView()
+        {
+            if (IsViewLoaded)
+                return;
+
+            this.isViewLoaded = true;
+
+            if (definition != null)
+            {
+                var view = UIView.Create(this, definition, vmfactory);
+                if (view != null)
+                {
+                    if (window != null)
+                    {
+                        var area = new Rectangle(X, Y, Width, Height);
+                        view.SetViewPosition(window, area);
+                    }
+                }
+                this.view = view;
+
+                HandleViewLoaded();
+            }
         }
 
         /// <summary>
@@ -74,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the panel.</param>
         public abstract void Draw(UltravioletTime time, SpriteBatch spriteBatch);
-        
+
         /// <summary>
         /// Gets the content manager which is used to load globally-available assets.
         /// </summary>
@@ -100,13 +128,20 @@ namespace TwistedLogik.Ultraviolet.UI
                 return localContent;
             }
         }
-        
+
         /// <summary>
         /// Gets the screen's view, if it has one.
         /// </summary>
         public UIView View
         {
-            get { return view; }
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                FinishLoadingView();
+
+                return view;
+            }
         }
 
         /// <summary>
@@ -171,14 +206,14 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         public UIPanelState State
         {
-            get 
+            get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return state; 
+                return state;
             }
         }
-        
+
         /// <summary>
         /// Gets a value indicating whether the screen is in a transition state.
         /// </summary>
@@ -507,26 +542,20 @@ namespace TwistedLogik.Ultraviolet.UI
                 temp(this);
             }
         }
-        
+
         /// <summary>
-        /// Loads the view from the specified panel definition.
+        /// Prepares the panel to load the view from the specified panel definition.
         /// </summary>
         /// <param name="definition">The panel definition from which to load the view.</param>
-        protected void LoadView(UIPanelDefinition definition)
+        protected void PrepareView(UIPanelDefinition definition)
         {
-            var view = UIView.Create(this, definition, vmfactory);
-            if (view != null)
-            {
-                if (window != null)
-                {
-                    var area = new Rectangle(X, Y, Width, Height);
-                    view.SetViewPosition(window, area);
-                }
-            }
+            Contract.Require(definition, nameof(definition));
+            Contract.EnsureNotDisposed(this, Disposed);
 
-            this.view = view;
+            if (IsViewLoaded)
+                throw new InvalidOperationException(UltravioletStrings.ViewAlreadyLoaded);
 
-            HandleViewLoaded();
+            this.definition = definition;
         }
 
         /// <summary>
@@ -536,6 +565,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
         protected void DrawView(UltravioletTime time, SpriteBatch spriteBatch)
         {
+            FinishLoadingView();
+
             if (view != null)
             {
                 view.Draw(time, spriteBatch);
@@ -548,6 +579,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         protected void UpdateView(UltravioletTime time)
         {
+            FinishLoadingView();
+
             if (view != null && State != UIPanelState.Closed)
             {
                 UpdateViewPosition();
@@ -560,6 +593,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         protected void UpdateViewPosition()
         {
+            FinishLoadingView();
+
             if (view != null && State != UIPanelState.Closed)
             {
                 var area = new Rectangle(X, Y, Width, Height);
@@ -600,6 +635,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         protected void ResetViewModel()
         {
+            FinishLoadingView();
+
             if (View == null)
                 return;
 
@@ -646,6 +683,19 @@ namespace TwistedLogik.Ultraviolet.UI
         protected Boolean IsClosed
         {
             get { return state == UIPanelState.Closed; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the panel has loaded its view.
+        /// </summary>
+        protected Boolean IsViewLoaded
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return isViewLoaded;
+            }
         }
 
         /// <summary>
@@ -858,6 +908,10 @@ namespace TwistedLogik.Ultraviolet.UI
         private TimeSpan defaultOpenTransitionDuration = TimeSpan.Zero;
         private TimeSpan defaultCloseTransitionDuration = TimeSpan.Zero;
         private IUltravioletWindow window;
+
+        // View lazy loading parameters.
+        private UIPanelDefinition definition;
+        private Boolean isViewLoaded;
 
         // Task completion sources which are triggered when the panel is opened or closed.
         private TaskCompletionSource<UIPanel> tcsOpened;

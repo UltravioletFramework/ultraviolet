@@ -530,4 +530,9 @@
       <Variant>The specified compositor is associated with a different window.</Variant>
     </en-US>
   </String>
+  <String Key="VIEW_ALREADY_LOADED">
+    <en-US>
+      <Variant>The panel's view cannot be changed because the view has already been loaded.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
