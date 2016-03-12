@@ -115,7 +115,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
                 }
 
                 if (wrapperType == null)
-                    throw new InvalidOperationException(PresentationStrings.CannotFindViewModelWrapper.Format(wrapperName));
+                {
+                    wrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(TemplatedParent.GetType());
+                    throw new UvmlException(PresentationStrings.CannotFindViewModelWrapper.Format(wrapperName));
+                }
             }
 
             var properties = wrapperType.GetProperties().Where(x => x.Name.StartsWith("__UPF_Expression")).ToList();
