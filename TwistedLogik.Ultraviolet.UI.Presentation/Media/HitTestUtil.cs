@@ -15,6 +15,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns><c>true</c> if the specified point is a potential hit; otherwise, <c>false</c>.</returns>
         public static Boolean IsPotentialHit(UIElement element, Point2D point)
         {
+            if (element.Visibility != Visibility.Visible)
+                return false;
+
             if (!element.IsHitTestVisible)
                 return false;
 
