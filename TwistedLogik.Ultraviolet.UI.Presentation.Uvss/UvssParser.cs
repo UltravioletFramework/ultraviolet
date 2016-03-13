@@ -320,6 +320,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified text is a valid identifier.
+        /// </summary>
+        private static Boolean IsValidIdentifier(String text)
+        {
+            return regexValidIdentifier.IsMatch(text);
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified syntax node has any trailing white space trivia.
         /// </summary>
         /// <param name="node">The syntax node to evaluate.</param>
@@ -1649,44 +1657,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Creates a selector part type from the current position in the specified sequence of lexer tokens.
         /// </summary>
         private static Boolean CreateSelectorPartType(
-            UvssLexerStream input, Int32 start, Int32 end, ref Int32 position, out UvssSelectorPartTypeSyntax partType)
+            UvssLexerStream input, String[] pieces, ref Int32 position, ref Int32 offset, ref Int32 line, ref Int32 column, out UvssSelectorPartTypeSyntax partType)
         {
             partType = null;
 
-            if (position >= end)
+            if (position >= pieces.Length)
                 return true;
+
+            var selectedTypeText = pieces[position];
+            if (!IsValidIdentifier(selectedTypeText) && selectedTypeText != "*")
+                return true;
+            
+            var selectedTypeIdentifierToken =
+                new SyntaxToken(SyntaxKind.IdentifierToken, selectedTypeText);
+            selectedTypeIdentifierToken.Position = offset;
+            selectedTypeIdentifierToken.Line = line;
+            selectedTypeIdentifierToken.Column = column;
 
             var selectedTypeIdentifier = default(UvssIdentifierSyntax);
-            var exclamationMarkToken = default(SyntaxToken);
-
-            var lexerIdentifierToken = input[position];
-            if (lexerIdentifierToken.Type != UvssLexerTokenType.Keyword &&
-                lexerIdentifierToken.Type != UvssLexerTokenType.Identifier && 
-                lexerIdentifierToken.Type != UvssLexerTokenType.Asterisk)
-            {
-                return true;
-            }
-
-            var selectedTypeIdentifierToken = new SyntaxToken(SyntaxKind.IdentifierToken, lexerIdentifierToken.Text);
-            GetNodePositionFromLexerPosition(input, position, selectedTypeIdentifierToken);
-
             selectedTypeIdentifier = WithPosition(
                 new UvssIdentifierSyntax(selectedTypeIdentifierToken));
 
             position++;
 
-            if (position < end)
+            var exclamationMarkToken = default(SyntaxToken);
+
+            if (position < pieces.Length)
             {
-                var lexerExclamationMarkToken = input[position];
-                if (lexerExclamationMarkToken.Type == UvssLexerTokenType.ExclamationMark)
+                var exclamationMarkText = pieces[position];
+                if (exclamationMarkText == "!")
                 {
-                    exclamationMarkToken = ConvertToken(
-                        lexerExclamationMarkToken, null, null);
+                    exclamationMarkToken = new SyntaxToken(
+                        SyntaxKind.ExclamationMarkToken, exclamationMarkText, null, null);
+                    exclamationMarkToken.Position = offset + selectedTypeText.Length;
+                    exclamationMarkToken.Line = line;
+                    exclamationMarkToken.Column = column + selectedTypeText.Length;
 
                     position++;
                 }
             }
-
+            
             partType = WithPosition(new UvssSelectorPartTypeSyntax(
                 selectedTypeIdentifier,
                 exclamationMarkToken));
@@ -1698,34 +1708,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Creates a selector part name from the current position in the specified sequence of lexer tokens.
         /// </summary>
         private static Boolean CreateSelectorPartName(
-            UvssLexerStream input, Int32 start, Int32 end, ref Int32 position, out UvssSelectorPartNameSyntax partName)
+            UvssLexerStream input, String[] pieces, ref Int32 position, ref Int32 offset, ref Int32 line, ref Int32 column, out UvssSelectorPartNameSyntax partName)
         {
             partName = null;
 
-            if (position + 1 >= end)
+            if (position + 1 >= pieces.Length)
                 return true;
 
-            var hashToken = default(SyntaxToken);
-            var selectedNameIdentifier = default(UvssIdentifierSyntax);
-
-            var lexerHashToken = input[position];
-            if (lexerHashToken.Type != UvssLexerTokenType.Hash)
+            var hashText = pieces[position];
+            if (hashText != "#")
                 return true;
 
-            var lexerIdentifierToken = input[position + 1];
-            if (lexerIdentifierToken.Type != UvssLexerTokenType.Identifier &&
-                lexerIdentifierToken.Type != UvssLexerTokenType.Keyword)
-            {
+            var identifierText = pieces[position + 1];
+            if (!IsValidIdentifier(identifierText))
                 return false;
-            }
 
             position += 2;
 
-            hashToken = 
-                ConvertToken(lexerHashToken, null, null);
+            var hashToken =
+                new SyntaxToken(SyntaxKind.HashToken, hashText, null, null);
+            hashToken.Position = offset;
+            hashToken.Line = line;
+            hashToken.Column = column;
 
-            selectedNameIdentifier = WithPosition(new UvssIdentifierSyntax(
-                ConvertToken(lexerIdentifierToken, null, null)));
+            var selectedNameIdentifierToken =
+                new SyntaxToken(SyntaxKind.IdentifierToken, identifierText, null, null);
+            selectedNameIdentifierToken.Position = offset + hashText.Length;
+            selectedNameIdentifierToken.Line = line;
+            selectedNameIdentifierToken.Column = column + hashText.Length;
+
+            var selectedNameIdentifier = WithPosition(new UvssIdentifierSyntax(
+                selectedNameIdentifierToken));
 
             partName = WithPosition(new UvssSelectorPartNameSyntax(
                 hashToken,
@@ -1738,35 +1751,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Creates a selector part class from the current position in the specified sequence of lexer tokens.
         /// </summary>
         private static Boolean CreateSelectorPartClass(
-            UvssLexerStream input, Int32 start, Int32 end, ref Int32 position, out UvssSelectorPartClassSyntax partClass)
+            UvssLexerStream input, String[] pieces, ref Int32 position, ref Int32 offset, ref Int32 line, ref Int32 column, out UvssSelectorPartClassSyntax partClass)
         {
             partClass = null;
 
-            if (position + 1 >= end)
+            if (position + 1 >= pieces.Length)
                 return true;
             
-            var periodToken = default(SyntaxToken);
-            var selectedClassIdentifier = default(UvssIdentifierSyntax);
-
-            var lexerPeriodToken = input[position];
-            if (lexerPeriodToken.Type != UvssLexerTokenType.Period)
+            var periodText = pieces[position];
+            if (periodText != ".")
                 return true;
 
-            var lexerIdentifierToken = input[position + 1];
-            if (lexerIdentifierToken.Type != UvssLexerTokenType.Identifier &&
-                lexerIdentifierToken.Type != UvssLexerTokenType.Keyword)
-            {
+            var identifierText = pieces[position + 1];
+            if (!IsValidIdentifier(identifierText))
                 return false;
-            }
 
             position += 2;
 
-            periodToken =
-                ConvertToken(lexerPeriodToken, null, null);
+            var periodToken =
+                new SyntaxToken(SyntaxKind.PeriodToken, periodText, null, null);
+            periodToken.Position = offset;
+            periodToken.Line = line;
+            periodToken.Column = column;
 
-            selectedClassIdentifier = WithPosition(new UvssIdentifierSyntax(
-                ConvertToken(lexerIdentifierToken, null, null)));
-
+            var selectedClassIdentifier = WithPosition(new UvssIdentifierSyntax(
+                new SyntaxToken(SyntaxKind.IdentifierToken, identifierText, null, null)));
+            selectedClassIdentifier.Position = offset + periodText.Length;
+            selectedClassIdentifier.Line = line;
+            selectedClassIdentifier.Column = column + periodText.Length;
+            
             partClass = WithPosition(new UvssSelectorPartClassSyntax(
                 periodToken,
                 selectedClassIdentifier));
@@ -1778,16 +1791,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Creates a selector part class list from the current position in the specified sequence of lexer tokens.
         /// </summary>
         private static Boolean CreateSelectorPartClasses(
-            UvssLexerStream input, Int32 start, Int32 end, ref Int32 position, out SyntaxList<UvssSelectorPartClassSyntax> partClasses)
+            UvssLexerStream input, String[] pieces, ref Int32 position, ref Int32 offset, ref Int32 line, ref Int32 column, out SyntaxList<UvssSelectorPartClassSyntax> partClasses)
         {
             partClasses = null;
 
             var listStart = position;
             var listBuilder = SyntaxListBuilder<UvssSelectorPartClassSyntax>.Create();
-            while (position < end)
+            while (position < pieces.Length)
             {
                 var listItem = default(UvssSelectorPartClassSyntax);
-                if (!CreateSelectorPartClass(input, start, end, ref position, out listItem))
+                if (!CreateSelectorPartClass(input, pieces, ref position, ref offset, ref line, ref column, out listItem))
                 {
                     position = listStart;
                     return false;
@@ -1809,34 +1822,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// Creates a selector part pseudo-class from the current position in the specified sequence of lexer tokens.
         /// </summary>
         private static Boolean CreateSelectorPartPseudoClass(
-            UvssLexerStream input, Int32 start, Int32 end, ref Int32 position, out UvssPseudoClassSyntax partPseudoClass)
+            UvssLexerStream input, String[] pieces, ref Int32 position, ref Int32 offset, ref Int32 line, ref Int32 column, out UvssPseudoClassSyntax partPseudoClass)
         {
             partPseudoClass = null;
 
-            if (position + 1 >= end)
+            if (position + 1 >= pieces.Length)
                 return true;
 
-            var colonToken = default(SyntaxToken);
-            var classNameIdentifier = default(UvssIdentifierSyntax);
-
-            var lexerColonToken = input[position];
-            if (lexerColonToken.Type != UvssLexerTokenType.Colon)
+            var colonText = pieces[position];
+            if (colonText != ":")
                 return true;
 
-            var lexerIdentifierToken = input[position + 1];
-            if (lexerIdentifierToken.Type != UvssLexerTokenType.Identifier &&
-                lexerIdentifierToken.Type != UvssLexerTokenType.Keyword)
-            {
+            var identifierText = pieces[position + 1];
+            if (!IsValidIdentifier(identifierText))
                 return false;
-            }
 
             position += 2;
 
-            colonToken =
-                ConvertToken(lexerColonToken, null, null);
+            var colonToken =
+                new SyntaxToken(SyntaxKind.ColonToken, colonText, null, null);
+            colonToken.Position = offset;
+            colonToken.Line = line;
+            colonToken.Column = column;
 
-            classNameIdentifier = WithPosition(new UvssIdentifierSyntax(
-                ConvertToken(lexerIdentifierToken, null, null)));
+            var classNameIdentifierToken =
+                new SyntaxToken(SyntaxKind.IdentifierToken, identifierText, null, null);
+            classNameIdentifierToken.Position = offset + colonText.Length;
+            classNameIdentifierToken.Line = line;
+            classNameIdentifierToken.Column = column + colonText.Length;
+
+            var classNameIdentifier = WithPosition(new UvssIdentifierSyntax(
+                classNameIdentifierToken));
 
             partPseudoClass = WithPosition(new UvssPseudoClassSyntax(
                 colonToken,
@@ -1885,34 +1901,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             for (int i = 0; i < partCount; i++)
                 partTextBuilder.Append(input[partStart + i].Text);
 
-            var partPieces = Regex.Split(partTextBuilder.ToString(), @"(#|\.|:)")
+            var partPieces = Regex.Split(partTextBuilder.ToString(), @"(#|\.|:|!)")
                 .Where(x => !String.IsNullOrEmpty(x)).ToArray();
 
             if (partPieces.Length == 0)
                 return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
 
-            var partPosition = partStart;
+            var partPosition = 0;
 
             var partType = default(UvssSelectorPartTypeSyntax);
             var partName = default(UvssSelectorPartNameSyntax);
             var partClasses = default(SyntaxList<UvssSelectorPartClassSyntax>);
             var partPseudoClass = default(UvssPseudoClassSyntax);
 
-            if (!CreateSelectorPartType(input, partStart, partEnd, ref partPosition, out partType))
+            var offset = input[partStart].SourceOffset;
+            var line = input[partStart].SourceLine;
+            var column = input[partStart].SourceColumn;
+
+            if (!CreateSelectorPartType(input, partPieces, ref partPosition, ref offset, ref line, ref column, out partType))
                 return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
 
-            if (!CreateSelectorPartName(input, partStart, partEnd, ref partPosition, out partName))
+            if (!CreateSelectorPartName(input, partPieces, ref partPosition, ref offset, ref line, ref column, out partName))
                 return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
 
-            if (!CreateSelectorPartClasses(input, partStart, partEnd, ref partPosition, out partClasses))
+            if (!CreateSelectorPartClasses(input, partPieces, ref partPosition, ref offset, ref line, ref column, out partClasses))
                 return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
 
-            if (!CreateSelectorPartPseudoClass(input, partStart, partEnd, ref partPosition, out partPseudoClass))
+            if (!CreateSelectorPartPseudoClass(input, partPieces, ref partPosition, ref offset, ref line, ref column, out partPseudoClass))
                 return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
 
-            if (partPosition != partEnd)
+            if (partPosition != partPieces.Length)
                 return CreateInvalidSelectorPart(input, partStart, partCount, leadingTrivia, trailingTrivia);
-
+            
             var selectorPart = new UvssSelectorPartSyntax(
                 partType,
                 partName,
@@ -3927,5 +3947,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 
         // The list of cultures installed on this machine.
         private static readonly IEnumerable<String> recognizedCultures;
+
+        // Regular expression which matches valid identifiers.
+        private static readonly Regex regexValidIdentifier = new Regex(@"\G[_\-a-zA-Z][_\-a-zA-Z0-9]*",
+            RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
     }
 }

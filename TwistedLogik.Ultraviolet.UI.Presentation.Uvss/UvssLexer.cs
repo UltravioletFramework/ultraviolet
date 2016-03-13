@@ -229,8 +229,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 case nameof(UvssLexerTokenType.Pipe):
                     return UvssLexerTokenType.Pipe;
 
-				case nameof(UvssLexerTokenType.Directive):
-					return UvssLexerTokenType.Directive;
+                case nameof(UvssLexerTokenType.Directive):
+                    return UvssLexerTokenType.Directive;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(name));
@@ -327,7 +327,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                     break;
                 }
 
-				if ((source[i] == '\r' && source[i + 1] == '\n') || source[i] == '\n')
+                if ((source[i] == '\r' && source[i + 1] == '\n') || source[i] == '\n')
                 {
                     length = i - offset;
                     break;
@@ -491,8 +491,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 @"\G//"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.WhiteSpace,
                 @"\G[^\S\r\n]+"),
-			new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Directive,
-				@"\G\$([_\-a-zA-Z][_\-a-zA-Z0-9]*)?"),
+            new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Directive,
+                @"\G\$([_\-a-zA-Z][_\-a-zA-Z0-9]*)?"),
             new KeyValuePair<UvssLexerTokenType, String>(UvssLexerTokenType.Keyword,
                 @"\Gplay-storyboard|" +
                 @"\Gset-handled|" +
