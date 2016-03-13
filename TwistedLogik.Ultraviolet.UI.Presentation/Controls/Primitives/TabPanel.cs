@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 rowWidthMax = Math.Max(rowWidthMax, rowWidth);
                 desiredSize = new Size2D(desiredSize.Width, rowHeight * rowCount);
 
-                var sizeToContent = (Double.IsInfinity(desiredSize.Width) || rowWidthMax < desiredSize.Width);
+                var sizeToContent = (Double.IsInfinity(availableSize.Width) || rowWidthMax < availableSize.Width);
                 desiredSize = sizeToContent ? new Size2D(rowWidthMax, desiredSize.Height) : new Size2D(availableSize.Width, desiredSize.Height);
             }
             else

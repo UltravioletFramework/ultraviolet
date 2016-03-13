@@ -94,37 +94,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
-            var sizeLeft   = 0.0;
-            var sizeTop    = 0.0;
-            var sizeRight  = 0.0;
-            var sizeBottom = 0.0;
+            var panelWidth = 0.0;
+            var panelHeight = 0.0;
 
+            var childrenWidth = 0.0;
+            var childrenHeight = 0.0;
+            
             foreach (var child in Children)
             {
                 var availableSizeForChild = new Size2D(
-                    availableSize.Width - (sizeLeft + sizeRight),
-                    availableSize.Height - (sizeTop + sizeBottom));
+                    availableSize.Width - childrenWidth,
+                    availableSize.Height - childrenHeight);
 
                 child.Measure(availableSizeForChild);
 
                 switch (GetDock(child))
                 {
                     case Dock.Left:
-                        sizeLeft += child.DesiredSize.Width;
-                        break;
-                    case Dock.Top:
-                        sizeTop += child.DesiredSize.Height;
-                        break;
                     case Dock.Right:
-                        sizeRight += child.DesiredSize.Width;
+                        panelHeight = Math.Max(panelHeight, childrenHeight + child.DesiredSize.Height);
+                        childrenWidth += child.DesiredSize.Width;
                         break;
+
+                    case Dock.Top:
                     case Dock.Bottom:
-                        sizeBottom += child.DesiredSize.Height;
+                        panelWidth = Math.Max(panelWidth, childrenWidth + child.DesiredSize.Width);
+                        childrenHeight += child.DesiredSize.Height;
                         break;
                 }
             }
 
-            return new Size2D(sizeLeft + sizeRight, sizeTop + sizeBottom);
+            var totalWidth = Math.Max(panelWidth, childrenWidth);
+            var totalHeight = Math.Max(panelHeight, childrenHeight);
+
+            return new Size2D(totalWidth, totalHeight);
         }
 
         /// <inheritdoc/>
