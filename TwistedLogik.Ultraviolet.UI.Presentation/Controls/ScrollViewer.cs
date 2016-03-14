@@ -416,7 +416,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             PART_ContentPresenter.CanScrollHorizontally = (hVisibility != ScrollBarVisibility.Disabled);
             PART_ContentPresenter.CanScrollVertically   = (vVisibility != ScrollBarVisibility.Disabled);
 
-            child.Measure(availableSize);
+            var availableSizeSansMargins = availableSize - Margin;
+            child.Measure(availableSizeSansMargins);
 
             if (hAuto || vAuto)
             {
@@ -435,7 +436,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (hAutoVisible || vAutoVisible)
                 {
                     child.InvalidateMeasure();
-                    child.Measure(availableSize);
+                    child.Measure(availableSizeSansMargins);
                 }
 
                 if (hAuto && vAuto && (hAutoVisible != vAutoVisible))
@@ -455,7 +456,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     if (hAutoVisible || vAutoVisible)
                     {
                         child.InvalidateMeasure();
-                        child.Measure(availableSize);
+                        child.Measure(availableSizeSansMargins);
                     }
                 }
             }
@@ -473,7 +474,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             PART_VScroll.IsEnabled = PART_ContentPresenter.CanScrollVertically && ScrollableHeight > 0;
 
             child.InvalidateMeasure();
-            child.Measure(availableSize);
+            child.Measure(availableSizeSansMargins);
 
             return child.DesiredSize;
         }
