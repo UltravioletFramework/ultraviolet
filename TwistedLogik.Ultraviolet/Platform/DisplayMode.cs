@@ -39,6 +39,35 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Determines whether the specified display mode is equivalent to this display mode by comparing
+        /// their vertical and horizontal resolutions, as well as optionally comparing their bit depths
+        /// and refresh rates.
+        /// </summary>
+        /// <param name="other">The <see cref="DisplayMode"/> instance to compare to this instance.</param>
+        /// <param name="considerBitsPerPixel">A value indicating whether to compare the bit depths of the two display modes.</param>
+        /// <param name="considerRefreshRate">A value indicating whether to compare the refresh rates of the two display modes.</param>
+        /// <returns><see langword="true"/> if the two display modes are equivalent; otherwise, <see langword="false"/>.</returns>
+        public Boolean IsEquivalentTo(DisplayMode other, Boolean considerBitsPerPixel = true, Boolean considerRefreshRate = true)
+        {
+            if (other == null)
+                return false;
+
+            if (other == this)
+                return true;
+
+            if (other.Width != Width || other.Height != Height)
+                return false;
+
+            if (considerBitsPerPixel && other.BitsPerPixel != BitsPerPixel)
+                return false;
+
+            if (considerRefreshRate && other.RefreshRate != RefreshRate)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
         /// Gets the display's width in pixels.
         /// </summary>
         public Int32 Width

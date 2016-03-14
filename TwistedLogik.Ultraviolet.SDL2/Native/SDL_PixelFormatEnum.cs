@@ -2,7 +2,7 @@
 
 namespace TwistedLogik.Ultraviolet.SDL2.Native
 {
-    public enum SDL_PixelFormatEnum
+    public enum SDL_PixelFormatEnum : uint
     {
         UNKNOWN,
         INDEX1LSB = 286261504,

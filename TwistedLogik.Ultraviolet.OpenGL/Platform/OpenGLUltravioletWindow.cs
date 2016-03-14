@@ -665,16 +665,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 sdlMode.refresh_rate = displayMode.RefreshRate;
                 switch (displayMode.BitsPerPixel)
                 {
+                    case 15:
+                        sdlMode.format = SDL_PixelFormatEnum.RGB555;
+                        break;
+
                     case 16:
                         sdlMode.format = SDL_PixelFormatEnum.RGB565;
                         break;
                     
-                    case 24:
-                        sdlMode.format = SDL_PixelFormatEnum.RGB888;
-                        break;
-
                     default:
-                        sdlMode.format = SDL_PixelFormatEnum.ARGB8888;
+                        sdlMode.format = SDL_PixelFormatEnum.RGB888;
                         break;
                 }
 
@@ -684,7 +684,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 if (SDL.GetWindowDisplayMode(ptr, &sdlMode) < 0)
                     throw new SDL2Exception();
 
-                var bpp = SDLMacro.BITSPERPIXEL(sdlMode.format);
+                int bpp;
+                uint Rmask, Gmask, Bmask, Amask;
+                SDL.PixelFormatEnumToMasks((uint)sdlMode.format, &bpp, &Rmask, &Gmask, &Bmask, &Amask);
+
                 displayMode = new DisplayMode(sdlMode.w, sdlMode.h, bpp, sdlMode.refresh_rate);
             }
             this.displayMode = displayMode;
