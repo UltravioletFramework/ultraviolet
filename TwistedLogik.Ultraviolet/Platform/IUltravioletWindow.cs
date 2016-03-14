@@ -76,6 +76,12 @@ namespace TwistedLogik.Ultraviolet.Platform
         void ChangeCompositor(Compositor compositor);
 
         /// <summary>
+        /// Moves the window to the center of the specified display.
+        /// </summary>
+        /// <param name="display">The display to which the window will be moved.</param>
+        void ChangeDisplay(IUltravioletDisplay display);
+
+        /// <summary>
         /// Gets the window's identifier within its windowing system.
         /// </summary>
         Int32 ID
@@ -202,6 +208,14 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// Gets the window's current compositor.
         /// </summary>
         Compositor Compositor
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the display on which this window currently resides.
+        /// </summary>
+        IUltravioletDisplay Display
         {
             get;
         }

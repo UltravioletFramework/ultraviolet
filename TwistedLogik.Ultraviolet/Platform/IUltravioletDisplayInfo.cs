@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.Platform
 {
@@ -8,9 +9,27 @@ namespace TwistedLogik.Ultraviolet.Platform
     public interface IUltravioletDisplayInfo : IEnumerable<IUltravioletDisplay>
     {
         /// <summary>
+        /// Gets the display with the specified index.
+        /// </summary>
+        /// <param name="index">The index of the display to retrieve.</param>
+        /// <returns>The display with the specified index.</returns>
+        IUltravioletDisplay this[Int32 index]
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the application's primary display device.
         /// </summary>
         IUltravioletDisplay PrimaryDisplay
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the number of connected displays.
+        /// </summary>
+        Int32 Count
         {
             get;
         }

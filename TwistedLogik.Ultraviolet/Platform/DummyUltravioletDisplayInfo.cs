@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.Platform
@@ -9,9 +10,21 @@ namespace TwistedLogik.Ultraviolet.Platform
     public sealed class DummyUltravioletDisplayInfo : IUltravioletDisplayInfo
     {
         /// <inheritdoc/>
+        public IUltravioletDisplay this[Int32 ix]
+        {
+            get { throw new IndexOutOfRangeException(nameof(ix)); }
+        }
+
+        /// <inheritdoc/>
         public IUltravioletDisplay PrimaryDisplay
         {
             get { return null; }
+        }
+
+        /// <inheritdoc/>
+        public Int32 Count
+        {
+            get { return 0; }
         }
 
         /// <summary>

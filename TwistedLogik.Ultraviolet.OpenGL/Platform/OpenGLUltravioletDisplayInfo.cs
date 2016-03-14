@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TwistedLogik.Ultraviolet.Platform;
@@ -22,9 +23,21 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <inheritdoc/>
+        public IUltravioletDisplay this[Int32 ix]
+        {
+            get { return displays[ix]; }
+        }
+
+        /// <inheritdoc/>
         public IUltravioletDisplay PrimaryDisplay
         {
             get { return displays.Count == 0 ? null : displays[0]; }
+        }
+
+        /// <inheritdoc/>
+        public Int32 Count
+        {
+            get { return displays.Count; }
         }
 
         /// <inheritdoc/>

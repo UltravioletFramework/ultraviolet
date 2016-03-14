@@ -13,17 +13,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
     /// <summary>
     /// Represents the OpenGL/SDL2 implementation of the IUltravioletWindow interface.
     /// </summary>    
-    public sealed unsafe partial class OpenGLUltravioletWindow :
+    public sealed unsafe partial class OpenGLUltravioletWindow : UltravioletResource,
         IMessageSubscriber<UltravioletMessageID>,
-        IUltravioletWindow,
-        IDisposable
+        IUltravioletWindow        
     {
         /// <summary>
         /// Initializes a new instance of the OpenGLUltravioletWindow class.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="ptr">The SDL2 pointer that represents the window.</param>
         /// <param name="native">A value indicating whether the window was created from a native pointer.</param>
-        internal OpenGLUltravioletWindow(IntPtr ptr, Boolean native = false)
+        internal OpenGLUltravioletWindow(UltravioletContext uv, IntPtr ptr, Boolean native = false)
+            : base(uv)
         {
             this.ptr = ptr;
             this.id = SDL.GetWindowID(ptr);
@@ -110,27 +111,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                     break;
             }
         }
-
-        /// <summary>
-        /// Releases resources associated with the window.
-        /// </summary>
-        public void Dispose()
-        {
-            if (!disposed)
-            {
-                SafeDispose.Dispose(compositor);
-                SDL.DestroyWindow(ptr);
-                disposed = true;
-            }
-        }
-
+        
         /// <summary>
         /// Sets the window's fullscreen display mode.
         /// </summary>
         /// <param name="displayMode">The fullscreen display mode to set, or null to use the desktop display mode.</param>
         public void SetFullscreenDisplayMode(DisplayMode displayMode)
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
 
             SetFullscreenDisplayModeInternal(displayMode);
         }
@@ -144,7 +132,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <param name="refresh">The display mode's refresh rate in hertz.</param>
         public void SetFullscreenDisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh)
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureRange(width > 0, "width");
             Contract.EnsureRange(height > 0, "height");
             Contract.EnsureRange(bpp > 0, "bpp");
@@ -159,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <returns>The window's fullscreen display mode, or null if the window is using the desktop display mode.</returns>
         public DisplayMode GetFullscreenDisplayMode()
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
 
             return displayMode;
         }
@@ -170,7 +158,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <param name="mode">The window mode to set.</param>
         public void SetWindowMode(WindowMode mode)
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
 
             if (windowMode != mode)
             {
@@ -201,7 +189,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <returns>The window's current fullscreen/windowed mode.</returns>
         public WindowMode GetWindowMode()
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
 
             return windowMode;
         }
@@ -237,7 +225,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <returns>The window's current maximization/minimization state.</returns>
         public WindowState GetWindowState()
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
 
             var flags = SDL.GetWindowFlags(ptr);
 
@@ -253,7 +241,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public void ChangeCompositor(Compositor compositor)
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
 
             if (compositor.Window != this)
                 throw new InvalidOperationException(UltravioletStrings.CompositorAssociatedWithWrongWindow);
@@ -265,6 +253,21 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 this.compositor.Dispose();
 
             this.compositor = compositor ?? DefaultCompositor.Create(this);
+        }
+
+        /// <inheritdoc/>
+        public void ChangeDisplay(IUltravioletDisplay display)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(display, nameof(display));
+
+            if (Display == display)
+                return;
+
+            var x = display.Bounds.Center.X - (ClientSize.Width / 2);
+            var y = display.Bounds.Center.Y - (ClientSize.Height / 2);
+
+            Position = new Point2(x, y);
         }
 
         /// <summary>
@@ -282,7 +285,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return (Int32)SDL.GetWindowID(ptr);
             }
@@ -293,13 +296,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return SDL.GetWindowTitle(ptr);
             }
             set
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 SDL.SetWindowTitle(ptr, value ?? String.Empty);
             }
@@ -310,7 +313,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 Int32 x, y;
                 SDL.GetWindowPosition(ptr, out x, out y);
@@ -319,7 +322,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
             set
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 SDL.SetWindowPosition(ptr, value.X, value.Y);
             }
@@ -330,13 +333,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return windowedPosition.GetValueOrDefault();
             }
             set
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 windowedPosition = value;
 
@@ -352,7 +355,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 Int32 w, h;
                 SDL.GetWindowSize(ptr, out w, out h);
@@ -361,7 +364,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
             set
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 SDL.SetWindowSize(ptr, value.Width, value.Height);
             }
@@ -372,13 +375,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return windowedClientSize.GetValueOrDefault();
             }
             set
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 windowedClientSize = value;
 
@@ -394,7 +397,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 Int32 w, h;
                 SDL.GetWindowMinimumSize(ptr, out w, out h);
@@ -403,7 +406,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
             set
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 SDL.SetWindowMinimumSize(ptr, value.Width, value.Height);
             }
@@ -414,7 +417,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 Int32 w, h;
                 SDL.GetWindowMaximumSize(ptr, out w, out h);
@@ -423,7 +426,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
             set
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 SDL.SetWindowMaximumSize(ptr, value.Width, value.Height);
             }
@@ -434,13 +437,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return synchronizeWithVerticalRetrace;
             }
             set
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 synchronizeWithVerticalRetrace = value;
             }
@@ -451,7 +454,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return focused && !minimized;
             }
@@ -462,14 +465,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 var flags = SDL.GetWindowFlags(ptr);
                 return (flags & SDL_WindowFlags.RESIZABLE) == SDL_WindowFlags.RESIZABLE;
             }
             set
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 if (value)
                 {
@@ -487,7 +490,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 var flags = SDL.GetWindowFlags(ptr);
                 return (flags & SDL_WindowFlags.RESIZABLE) == SDL_WindowFlags.RESIZABLE;
@@ -499,7 +502,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 var flags = SDL.GetWindowFlags(ptr);
                 return (flags & SDL_WindowFlags.BORDERLESS) == SDL_WindowFlags.BORDERLESS;
@@ -511,7 +514,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return native; 
             }
@@ -522,13 +525,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return this.icon;
             }
             set
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 SetIcon(value ?? DefaultWindowIcon);
 
@@ -541,9 +544,21 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return compositor;
+            }
+        }
+
+        /// <inheritdoc/>
+        public IUltravioletDisplay Display
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                var index = SDL.GetWindowDisplayIndex(ptr);
+                return Ultraviolet.GetPlatform().Displays[index];
             }
         }
 
@@ -589,6 +604,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             get;
             set;
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                SafeDispose.Dispose(compositor);
+            }
+            SDL.DestroyWindow(ptr);
+            base.Dispose(disposing);
         }
 
         /// <summary>
@@ -832,7 +858,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         private DisplayMode displayMode;
         private Boolean focused;
         private Boolean minimized;
-        private Boolean disposed;
 
         // The default window icon.
         private static readonly UltravioletSingleton<Surface2D> DefaultWindowIcon = new UltravioletSingleton<Surface2D>(

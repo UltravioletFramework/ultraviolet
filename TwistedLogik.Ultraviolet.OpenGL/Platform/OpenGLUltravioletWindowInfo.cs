@@ -221,7 +221,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             if (sdlptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
-            var win = new OpenGLUltravioletWindow(sdlptr);
+            var win = new OpenGLUltravioletWindow(Ultraviolet, sdlptr);
             windows.Add(win);
 
             Ultraviolet.Messages.Subscribe(win, SDL2UltravioletMessages.SDLEvent);
@@ -242,7 +242,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             if (sdlptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
-            var win = new OpenGLUltravioletWindow(sdlptr);
+            var win = new OpenGLUltravioletWindow(Ultraviolet, sdlptr);
             windows.Add(win);
 
             Ultraviolet.Messages.Subscribe(win, SDL2UltravioletMessages.SDLEvent);
@@ -432,7 +432,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 }
             }
 
-            this.master = new OpenGLUltravioletWindow(masterptr);
+            this.master = new OpenGLUltravioletWindow(Ultraviolet, masterptr);
 
             // Set SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT so that enlisted windows
             // will be OpenGL-enabled and set to the correct pixel format.
