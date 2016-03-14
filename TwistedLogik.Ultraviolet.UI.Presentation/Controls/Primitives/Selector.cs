@@ -488,6 +488,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (container != null)
             {
                 selector.selection.Add(container);
+                data.Handled = true;
             }
         }
 
@@ -501,6 +502,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (container != null)
             {
                 selector.selection.Remove(container);
+                data.Handled = true;
             }
         }
 
@@ -512,6 +514,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (data.OriginalSource == dobj)
             {
                 ((Selector)dobj).OnSelectionChanged();
+                data.Handled = true;
             }
         }
 
