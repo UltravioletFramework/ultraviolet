@@ -2658,11 +2658,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var element = (UIElement)dobj;
             element.OnIsEnabledChanged();
-
-            VisualTreeHelper.ForEachChild<UIElement>(dobj, null, (child, state) =>
-            {
-                child.CoerceValue(IsEnabledProperty);
-            });
+            element.CoerceIsEnabledRecursive();
         }
 
         /// <summary>
@@ -2805,6 +2801,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Recursively coerces the value of the <see cref="IsEnabled"/> property for every
+        /// visual descendant of this element.
+        /// </summary>
+        private void CoerceIsEnabledRecursive()
+        {
+            CoerceValue(IsEnabledProperty);
+            VisualTreeHelper.ForEachChild<UIElement>(this, null, (child, state) =>
+            {
+                child.CoerceIsEnabledRecursive();
+            });
         }
 
         /// <summary>

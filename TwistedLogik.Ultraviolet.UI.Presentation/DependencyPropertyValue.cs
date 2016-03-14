@@ -35,8 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     this.defaultValue = (T)(metadata.DefaultValue ?? default(T));
                     if (IsCoerced)
                     {
-                        this.coercedValue = metadata.CoerceValue<T>(owner, this.defaultValue);
-                        this.defaultValue = this.coercedValue;
+                        this.coercedValue = metadata.CoerceValue(owner, this.defaultValue);
                     }
                 }
 
