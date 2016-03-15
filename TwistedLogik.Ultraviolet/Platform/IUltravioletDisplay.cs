@@ -257,6 +257,14 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Gets the display's name.
+        /// </summary>
+        String Name
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the display's bounds.
         /// </summary>
         Rectangle Bounds

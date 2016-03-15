@@ -23,6 +23,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 .Select(modeIndex => CreateDisplayModeFromSDL(displayIndex, modeIndex))
                 .ToList();
 
+            this.name = SDL.GetDisplayName(displayIndex);
+
             SDL_DisplayMode sdlDesktopDisplayMode;
             if (SDL.GetDesktopDisplayMode(displayIndex, &sdlDesktopDisplayMode) < 0)
                 throw new SDL2Exception();
@@ -311,10 +313,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             return new Vector2(x, y);
         }
 
-        /// inheritdoc/>
+        /// <inheritdoc/>
         public Int32 Index
         {
             get { return displayIndex; }
+        }
+
+        /// <inheritdoc/>
+        public String Name
+        {
+            get
+            {
+                return name;
+            }
         }
 
         /// <inheritdoc/>
@@ -408,6 +419,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
         // SDL2 display info.
         private readonly Int32 displayIndex;
+        private readonly String name;
         private readonly List<DisplayMode> displayModes;
         private readonly DisplayMode desktopDisplayMode;
 
