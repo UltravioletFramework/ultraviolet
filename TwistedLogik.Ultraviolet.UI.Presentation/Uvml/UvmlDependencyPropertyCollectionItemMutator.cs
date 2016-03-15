@@ -19,11 +19,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         {
             var dobjMethods = typeof(DependencyObject).GetMethods();
 
-            miSetLocalValue = dobjMethods.Where(x => 
-                String.Equals(x.Name, nameof(DependencyObject.SetLocalValue), StringComparison.Ordinal)).Single();
+            foreach (var dobjMethod in dobjMethods)
+            {
+                if (miSetLocalValue != null && miGetValue != null)
+                    break;
 
-            miGetValue = dobjMethods.Where(x => 
-                String.Equals(x.Name, nameof(DependencyObject.GetValue), StringComparison.Ordinal)).Single();
+                if (miSetLocalValue == null && String.Equals(dobjMethod.Name, nameof(DependencyObject.SetLocalValue), StringComparison.Ordinal))
+                {
+                    if (dobjMethod.GetParameters()[0].ParameterType == typeof(DependencyProperty))
+                    {
+                        miSetLocalValue = dobjMethod;
+                        continue;
+                    }
+                }
+
+                if (miGetValue == null && String.Equals(dobjMethod.Name, nameof(DependencyObject.GetValue), StringComparison.Ordinal))
+                {
+                    if (dobjMethod.GetParameters()[0].ParameterType == typeof(DependencyProperty))
+                    {
+                        miGetValue = dobjMethod;
+                        continue;
+                    }
+                }
+            }
         }
 
         /// <summary>

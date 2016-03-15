@@ -15,8 +15,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         /// </summary>
         static UvmlDependencyPropertyValueMutator()
         {
-            miSetLocalValue = typeof(DependencyObject).GetMethods()
-                .Where(x => String.Equals(x.Name, nameof(DependencyObject.SetLocalValue), StringComparison.Ordinal)).Single();
+            var dobjMethods = typeof(DependencyObject).GetMethods();
+
+            foreach (var dobjMethod in dobjMethods)
+            {
+                if (miSetLocalValue != null)
+                    break;
+
+                if (miSetLocalValue == null && String.Equals(dobjMethod.Name, nameof(DependencyObject.SetLocalValue), StringComparison.Ordinal))
+                {
+                    if (dobjMethod.GetParameters()[0].ParameterType == typeof(DependencyProperty))
+                    {
+                        miSetLocalValue = dobjMethod;
+                        continue;
+                    }
+                }
+            }
         }
 
         /// <summary>

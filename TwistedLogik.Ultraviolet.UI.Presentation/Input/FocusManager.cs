@@ -164,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </remarks>
         /// </AttachedPropertyComments>
         public static readonly DependencyProperty FocusedElementProperty = DependencyProperty.RegisterAttached("FocusedElement", typeof(IInputElement), typeof(FocusManager),
-            new PropertyMetadata<IInputElement>(null, PropertyMetadataOptions.None));
+            new PropertyMetadata<IInputElement>(null, PropertyMetadataOptions.None, HandleFocusedElementChanged));
 
         /// <summary>
         /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.IsFocusScope"/> attached property.
@@ -230,5 +230,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </AttachedEventComments>
         public static readonly RoutedEvent LostFocusEvent = EventManager.RegisterRoutedEvent("LostFocus", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(FocusManager));
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.FocusedElement"/>
+        /// attached property changes.
+        /// </summary>
+        private static void HandleFocusedElementChanged(DependencyObject dobj, IInputElement oldValue, IInputElement newValue)
+        {
+            var elemOld = (UIElement)oldValue;
+            var elemNew = (UIElement)newValue;            
+
+            if (elemOld != null)
+                elemOld.ClearLocalValue(UIElement.IsFocusedPropertyKey);
+
+            if (elemNew != null)
+                elemNew.SetLocalValue(UIElement.IsFocusedPropertyKey, true);
+        }
     }
 }

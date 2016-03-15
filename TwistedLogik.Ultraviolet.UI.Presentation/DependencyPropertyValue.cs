@@ -311,7 +311,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 return GetValue();
             }
-
+            
             /// <summary>
             /// Sets the dependency property's value.
             /// </summary>

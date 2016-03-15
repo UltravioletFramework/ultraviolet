@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -28,8 +29,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         static DependencyProperty()
         {
-            miResolveStyledValue = typeof(DependencyObject).GetMethod("ResolveStyledValue", BindingFlags.NonPublic | BindingFlags.Static);
-            miSetStyledValue     = typeof(DependencyObject).GetMethod("SetStyledValue");
+            var dobjMethods = typeof(DependencyObject).GetMethods(
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+            foreach (var dobjMethod in dobjMethods)
+            {
+                if (miResolveStyledValue != null && miSetStyledValue != null)
+                    break;
+
+                if (miResolveStyledValue == null && String.Equals(dobjMethod.Name, "ResolveStyledValue", StringComparison.Ordinal))
+                {
+                    miResolveStyledValue = dobjMethod;
+                    continue;
+                }
+
+                if (miSetStyledValue == null && string.Equals(dobjMethod.Name, "SetStyledValue", StringComparison.Ordinal))
+                {
+                    if (dobjMethod.GetParameters()[0].ParameterType == typeof(DependencyProperty))
+                    {
+                        miSetStyledValue = dobjMethod;
+                        continue;
+                    }
+                }
+            }
         }
 
         /// <summary>
