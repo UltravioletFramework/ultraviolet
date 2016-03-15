@@ -35,9 +35,9 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <param name="height">The height of the display in pixels when it is in fullscreen mode.</param>
         /// <param name="bpp">The bit depth of the display when it is in fullscreen mode.</param>
         /// <param name="refresh">The refresh rate of the display in hertz when it is in fullscreen mode.</param>
-        /// <param name="display">The display in which to place the window when it enters fullscreen mode,
+        /// <param name="displayIndex">The index of the display in which to place the window when it enters fullscreen mode,
         /// or <see langword="null"/> to keep the window in its current display.</param>
-        void SetFullscreenDisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh, IUltravioletDisplay display = null);
+        void SetFullscreenDisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh, Int32? displayIndex = null);
 
         /// <summary>
         /// Gets the window's fullscreen display mode.

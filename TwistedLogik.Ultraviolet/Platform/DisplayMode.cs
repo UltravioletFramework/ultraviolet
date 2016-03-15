@@ -17,9 +17,9 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <param name="height">The display mode's height in pixels.</param>
         /// <param name="bpp">The display mode's bit depth.</param>
         /// <param name="refresh">The display mode's refresh rate in hertz.</param>
-        /// <param name="display">The display in which to place a window when it enters this display mode,
+        /// <param name="displayIndex">The index of the display in which to place a window when it enters this display mode,
         /// or <see langword="null"/> if the window has no preferred display.</param>
-        public DisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh, IUltravioletDisplay display = null)
+        public DisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh, Int32? displayIndex = null)
         {
             Contract.EnsureRange(width > 0, "width");
             Contract.EnsureRange(height > 0, "height");
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.Platform
             this.Height = height;
             this.BitsPerPixel = bpp;
             this.RefreshRate = refresh;
-            this.Display = display;
+            this.DisplayIndex = displayIndex;
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.Platform
             if (considerRefreshRate && other.RefreshRate != RefreshRate)
                 return false;
 
-            if (considerDisplay && other.Display != Display)
+            if (considerDisplay && other.DisplayIndex != DisplayIndex)
                 return false;
 
             return true;
@@ -112,12 +112,12 @@ namespace TwistedLogik.Ultraviolet.Platform
             get;
             private set;
         }
-
+        
         /// <summary>
-        /// Gets the display in which to place a window when it enters this display mode,
+        /// Gets the index of the display in which to place a window when it enters this display mode,
         /// or <see langword="null"/> if the window has no preferred display.
         /// </summary>
-        public IUltravioletDisplay Display
+        public Int32? DisplayIndex
         {
             get;
             private set;

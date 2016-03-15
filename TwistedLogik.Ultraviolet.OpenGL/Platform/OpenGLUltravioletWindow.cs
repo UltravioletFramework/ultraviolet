@@ -117,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <inheritdoc/>
-        public void SetFullscreenDisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh, IUltravioletDisplay display = null)
+        public void SetFullscreenDisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh, Int32? displayIndex = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureRange(width > 0, "width");
@@ -125,7 +125,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             Contract.EnsureRange(bpp > 0, "bpp");
             Contract.EnsureRange(refresh > 0, "refresh");
 
-            SetFullscreenDisplayModeInternal(new DisplayMode(width, height, bpp, refresh, display));
+            if (displayIndex.HasValue)
+            {
+                var displayIndexValue = displayIndex.Value;
+                if (displayIndexValue < 0 || displayIndexValue >= Ultraviolet.GetPlatform().Displays.Count)
+                    throw new ArgumentOutOfRangeException(nameof(displayIndex));
+            }
+
+            SetFullscreenDisplayModeInternal(new DisplayMode(width, height, bpp, refresh, displayIndex));
         }
 
         /// <inheritdoc/>
@@ -157,8 +164,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                         {
                             if (displayMode != null)
                             {
-                                if (displayMode.Display != null)
-                                    ChangeDisplay(displayMode.Display);
+                                if (displayMode.DisplayIndex.HasValue)
+                                {
+                                    var display = Ultraviolet.GetPlatform().Displays[displayMode.DisplayIndex.Value];
+                                    ChangeDisplay(display);
+                                }
                             }
                             else
                             {
@@ -711,7 +721,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 uint Rmask, Gmask, Bmask, Amask;
                 SDL.PixelFormatEnumToMasks((uint)sdlMode.format, &bpp, &Rmask, &Gmask, &Bmask, &Amask);
 
-                displayMode = new DisplayMode(sdlMode.w, sdlMode.h, bpp, sdlMode.refresh_rate, displayMode.Display);
+                var displayIndex = displayMode.DisplayIndex;
+                if (displayIndex.HasValue)
+                {
+                    if (displayIndex < 0 || displayIndex >= Ultraviolet.GetPlatform().Displays.Count)
+                        displayIndex = null;
+                }
+
+                displayMode = new DisplayMode(sdlMode.w, sdlMode.h, bpp, sdlMode.refresh_rate, displayIndex);
             }
             this.displayMode = displayMode;
         }

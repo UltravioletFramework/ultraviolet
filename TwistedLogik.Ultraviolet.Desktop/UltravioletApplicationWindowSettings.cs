@@ -30,7 +30,8 @@ namespace TwistedLogik.Ultraviolet
                     new XElement("Width", settings.FullscreenDisplayMode.Width),
                     new XElement("Height", settings.FullscreenDisplayMode.Height),
                     new XElement("BitsPerPixel", settings.FullscreenDisplayMode.BitsPerPixel),
-                    new XElement("RefreshRate", settings.FullscreenDisplayMode.RefreshRate)
+                    new XElement("RefreshRate", settings.FullscreenDisplayMode.RefreshRate),
+                    new XElement("DisplayIndex", settings.FullscreenDisplayMode?.DisplayIndex)
                 )
             );
         }
@@ -61,8 +62,9 @@ namespace TwistedLogik.Ultraviolet
                     var height = fullscreenDisplayMode.ElementValue<Int32>("Height");
                     var bitsPerPixel = fullscreenDisplayMode.ElementValue<Int32>("BitsPerPixel");
                     var refreshRate = fullscreenDisplayMode.ElementValue<Int32>("RefreshRate");
+                    var displayIndex = fullscreenDisplayMode.ElementValue<Int32>("DisplayIndex");
 
-                    settings.FullscreenDisplayMode = new DisplayMode(width, height, bitsPerPixel, refreshRate);
+                    settings.FullscreenDisplayMode = new DisplayMode(width, height, bitsPerPixel, refreshRate, displayIndex);
                 }
 
                 return settings;

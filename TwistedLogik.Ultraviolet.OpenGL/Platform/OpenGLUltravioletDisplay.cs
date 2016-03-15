@@ -392,7 +392,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             UInt32 Rmask, Gmask, Bmask, Amask;
             SDL.PixelFormatEnumToMasks((uint)mode.format, &bpp, &Rmask, &Gmask, &Bmask, &Amask);
 
-            return new DisplayMode(mode.w, mode.h, bpp, mode.refresh_rate, this);
+            return new DisplayMode(mode.w, mode.h, bpp, mode.refresh_rate, Index);
         }
 
         /// <summary>
