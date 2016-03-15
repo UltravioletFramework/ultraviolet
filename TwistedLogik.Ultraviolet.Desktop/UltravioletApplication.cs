@@ -381,7 +381,7 @@ namespace TwistedLogik.Ultraviolet
         {
             Contract.Require(configuration, "configuration");
 
-            if (this.settings != null && this.settings.Window != null)
+            if (this.settings?.Window != null)
             {
                 configuration.InitialWindowPosition = this.settings.Window.WindowedPosition;
             }

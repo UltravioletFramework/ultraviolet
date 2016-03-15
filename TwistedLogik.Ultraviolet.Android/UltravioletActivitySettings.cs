@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet
         {
             var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"),
                 new XElement("Settings",
-                    null
+                    UltravioletActivityAudioSettings.Save(settings.Audio)
                 ));
             xml.Save(path);
         }
@@ -42,6 +42,11 @@ namespace TwistedLogik.Ultraviolet
 
             var settings = new UltravioletActivitySettings();
 
+            settings.Audio = UltravioletActivityAudioSettings.Load(xml.Root.Element("Audio"));
+
+            if (settings.Audio == null)
+                return null;
+
             return settings;
         }
 
@@ -56,6 +61,8 @@ namespace TwistedLogik.Ultraviolet
 
             var settings = new UltravioletActivitySettings();
 
+            settings.Audio = UltravioletActivityAudioSettings.FromCurrentSettings(uv);
+
             return settings;
         }
 
@@ -65,7 +72,17 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="uv">The Ultraviolet context.</param>
         public void Apply(UltravioletContext uv)
         {
+            if (Audio != null)
+                Audio.Apply(uv);
+        }
 
+        /// <summary>
+        /// Gets the activity's audio settings.
+        /// </summary>
+        public UltravioletActivityAudioSettings Audio
+        {
+            get;
+            private set;
         }
     }
 }

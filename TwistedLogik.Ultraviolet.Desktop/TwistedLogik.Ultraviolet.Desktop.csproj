@@ -83,6 +83,7 @@
     <Compile Include="DesktopFactoryInitializer.cs" />
     <Compile Include="UltravioletApplication.cs" />
     <Compile Include="UltravioletApplicationSettings.cs" />
+    <Compile Include="UltravioletApplicationAudioSettings.cs" />
     <Compile Include="UltravioletApplicationWindowSettings.cs" />
   </ItemGroup>
   <ItemGroup>

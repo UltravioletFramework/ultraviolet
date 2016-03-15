@@ -47,7 +47,8 @@ namespace TwistedLogik.Ultraviolet
         /// settings could not be loaded correctly.</returns>
         public static UltravioletApplicationWindowSettings Load(XElement xml)
         {
-            Contract.Require(xml, "xml");
+            if (xml == null)
+                return null;
 
             try
             {
