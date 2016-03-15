@@ -444,6 +444,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 if (current == null)
                     break;
 
+                var selectedTab = GetSelectedTab(current as UIElement);
+                if (selectedTab != null)
+                    current = selectedTab;
+
                 if (!IsNavigationStop(current) && !IsNavigationContainer(current, navProp))
                     continue;
 
@@ -682,6 +686,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 }
 
                 current = TraverseVisualTreePrev(navContainer, current, navProp);
+                
+                var selectedTab = GetSelectedTab(current as UIElement);
+                if (selectedTab != null)
+                    current = selectedTab;
             }
 
             return match;
