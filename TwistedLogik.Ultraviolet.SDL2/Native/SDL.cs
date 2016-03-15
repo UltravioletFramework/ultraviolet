@@ -92,7 +92,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         public static extern bool GetWindowGrab(IntPtr window);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowGrab")]
-        public static extern void SetWindowGrab(IntPtr window, bool grabbed);
+        public static extern void SetWindowGrab(IntPtr window, Boolean grabbed);
+
+        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowBordered")]
+        public static extern void SetWindowBordered(IntPtr window, Boolean bordered);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowFullscreen")]
         public static extern Int32 SetWindowFullscreen(IntPtr window, UInt32 flags);

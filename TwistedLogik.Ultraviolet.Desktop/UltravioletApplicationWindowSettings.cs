@@ -25,6 +25,9 @@ namespace TwistedLogik.Ultraviolet
                 new XElement("WindowState", settings.WindowState),
                 new XElement("WindowMode", settings.WindowMode),
                 new XElement("WindowedPosition", settings.WindowedPosition),
+                new XElement("GrabsMouseWhenWindowed", settings.GrabsMouseWhenWindowed),
+                new XElement("GrabsMouseWhenFullscreenWindowed", settings.GrabsMouseWhenFullscreenWindowed),
+                new XElement("GrabsMouseWhenFullscreen", settings.GrabsMouseWhenFullscreen),
                 new XElement("SynchronizeWithVerticalRetrace", settings.SynchronizeWithVerticalRetrace),
                 settings.FullscreenDisplayMode == null ? null : new XElement("FullscreenDisplayMode",
                     new XElement("Width", settings.FullscreenDisplayMode.Width),
@@ -53,6 +56,9 @@ namespace TwistedLogik.Ultraviolet
                 settings.WindowState = xml.ElementValue<WindowState>("WindowState");
                 settings.WindowMode = xml.ElementValue<WindowMode>("WindowMode");
                 settings.WindowedPosition = xml.ElementValue<Rectangle>("WindowedPosition");
+                settings.GrabsMouseWhenWindowed = xml.ElementValue<Boolean>("GrabsMouseWhenWindowed");
+                settings.GrabsMouseWhenFullscreenWindowed = xml.ElementValue<Boolean>("GrabsMouseWhenFullscreenWindowed");
+                settings.GrabsMouseWhenFullscreen = xml.ElementValue<Boolean>("GrabsMouseWhenFullscreen");
                 settings.SynchronizeWithVerticalRetrace = xml.ElementValue<Boolean>("SynchronizeWithVerticalRetrace");
 
                 var fullscreenDisplayMode = xml.Element("FullscreenDisplayMode");
@@ -102,6 +108,9 @@ namespace TwistedLogik.Ultraviolet
             settings.WindowMode = primary.GetWindowMode();
             settings.WindowedPosition = new Rectangle(primary.WindowedPosition, primary.WindowedClientSize);
             settings.FullscreenDisplayMode = primary.GetFullscreenDisplayMode();
+            settings.GrabsMouseWhenWindowed = primary.GrabsMouseWhenWindowed;
+            settings.GrabsMouseWhenFullscreenWindowed = primary.GrabsMouseWhenFullscreenWindowed;
+            settings.GrabsMouseWhenFullscreen = primary.GrabsMouseWhenFullscreen;
             settings.SynchronizeWithVerticalRetrace = primary.SynchronizeWithVerticalRetrace;
 
             return settings;
@@ -121,12 +130,42 @@ namespace TwistedLogik.Ultraviolet
             primary.SetWindowMode(WindowMode);
             primary.WindowedPosition = WindowedPosition.Location;
             primary.WindowedClientSize = WindowedPosition.Size;
+            primary.GrabsMouseWhenWindowed = GrabsMouseWhenWindowed;
+            primary.GrabsMouseWhenFullscreenWindowed = GrabsMouseWhenFullscreenWindowed;
+            primary.GrabsMouseWhenFullscreen = GrabsMouseWhenFullscreen;
             primary.SynchronizeWithVerticalRetrace = SynchronizeWithVerticalRetrace;
 
             if (FullscreenDisplayMode != null)
             {
                 primary.SetFullscreenDisplayMode(FullscreenDisplayMode);
             }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the primary window grabs the mouse when it enters windowed mode.
+        /// </summary>
+        public Boolean GrabsMouseWhenWindowed
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the primary window grabs the mouse when it enters fullscreen windowed mode.
+        /// </summary>
+        public Boolean GrabsMouseWhenFullscreenWindowed
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the primary window grabs the mouse when it enters fullscreen mode.
+        /// </summary>
+        public Boolean GrabsMouseWhenFullscreen
+        {
+            get;
+            private set;
         }
 
         /// <summary>

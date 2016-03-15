@@ -198,6 +198,36 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this window grabs
+        /// the mouse when it enters windowed mode.
+        /// </summary>
+        Boolean GrabsMouseWhenWindowed
+        {
+            get;
+            set;
+        }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether this window grabs
+        /// the mouse when it enters fullscreen windowed mode.
+        /// </summary>
+        Boolean GrabsMouseWhenFullscreenWindowed
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this window grabs 
+        /// the mouse when it enters fullscreen mode.
+        /// </summary>
+        Boolean GrabsMouseWhenFullscreen
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the window's icon.
         /// </summary>
         Surface2D Icon

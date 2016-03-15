@@ -15,7 +15,8 @@ namespace TwistedLogik.Ultraviolet
         {
             WindowIsVisible = true;
             WindowIsResizable = true;
-            InitialWindowPosition = new Rectangle(100, 100, 640, 480);
+            InitialWindowPosition = new Rectangle(DefaultWindowPositionX, DefaultWindowPositionY, 
+                DefaultWindowClientWidth, DefaultWindowClientHeight);
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace TwistedLogik.Ultraviolet
             get;
             set;
         }
-        
+
         /// <summary>
         /// Gets or sets the delegate that is invoked when a debug message is logged.
         /// </summary>
@@ -138,5 +139,25 @@ namespace TwistedLogik.Ultraviolet
             get;
             set;
         }
+
+        /// <summary>
+        /// The default x-position of a new window.
+        /// </summary>
+        public const Int32 DefaultWindowPositionX = 100;
+
+        /// <summary>
+        /// The default y-position of a new window.
+        /// </summary>
+        public const Int32 DefaultWindowPositionY = 100;
+
+        /// <summary>
+        /// The default client width of a new window.
+        /// </summary>
+        public const Int32 DefaultWindowClientWidth = 640;
+
+        /// <summary>
+        /// The default client height of a new window.
+        /// </summary>
+        public const Int32 DefaultWindowClientHeight = 480;
     }
 }

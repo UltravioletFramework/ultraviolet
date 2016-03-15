@@ -148,49 +148,69 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (windowMode != mode)
+            if (windowMode == mode)
+                return;
+
+            UpdateWindowedPosition(Position);
+            UpdateWindowedClientSize(ClientSize);
+
+            switch (mode)
             {
-                windowMode = mode;
-                switch (mode)
-                {
-                    case WindowMode.Windowed:
-                        {
-                            if (SDL.SetWindowFullscreen(ptr, 0) < 0)
-                                throw new SDL2Exception();
-                        }
-                        break;
+                case WindowMode.Windowed:
+                    {
+                        if (SDL.SetWindowFullscreen(ptr, 0) < 0)
+                            throw new SDL2Exception();
 
-                    case WindowMode.Fullscreen:
+                        var x = windowedPosition?.X ?? UltravioletConfiguration.DefaultWindowPositionX;
+                        var y = windowedPosition?.Y ?? UltravioletConfiguration.DefaultWindowPositionY;
+                        var w = windowedClientSize?.Width ?? UltravioletConfiguration.DefaultWindowClientWidth;
+                        var h = windowedClientSize?.Height ?? UltravioletConfiguration.DefaultWindowClientHeight;
+
+                        SDL.SetWindowBordered(ptr, true);
+                        SDL.SetWindowPosition(ptr, x, y);
+                        SDL.SetWindowSize(ptr, w, h);
+                    }
+                    break;
+
+                case WindowMode.Fullscreen:
+                    {
+                        if (displayMode != null)
                         {
-                            if (displayMode != null)
+                            if (displayMode.DisplayIndex.HasValue)
                             {
-                                if (displayMode.DisplayIndex.HasValue)
-                                {
-                                    var display = Ultraviolet.GetPlatform().Displays[displayMode.DisplayIndex.Value];
-                                    ChangeDisplay(display);
-                                }
+                                var display = Ultraviolet.GetPlatform().Displays[displayMode.DisplayIndex.Value];
+                                ChangeDisplay(display);
                             }
-                            else
-                            {
-                                SetDesktopDisplayMode();
-                            }
-
-                            if (SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN) < 0)
-                                throw new SDL2Exception();
                         }
-                        break;
-
-                    case WindowMode.FullscreenWindowed:
+                        else
                         {
-                            if (SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN_DESKTOP) < 0)
-                                throw new SDL2Exception();
+                            SetDesktopDisplayMode();
                         }
-                        break;
 
-                    default:
-                        throw new NotSupportedException("mode");
-                }
+                        if (SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN) < 0)
+                            throw new SDL2Exception();
+                    }
+                    break;
+
+                case WindowMode.FullscreenWindowed:
+                    {
+                        if (SDL.SetWindowFullscreen(ptr, 0) < 0)
+                            throw new SDL2Exception();
+
+                        var displayBounds = Display.Bounds;
+
+                        SDL.SetWindowBordered(ptr, false);
+                        SDL.SetWindowPosition(ptr, displayBounds.X, displayBounds.Y);
+                        SDL.SetWindowSize(ptr, displayBounds.Width, displayBounds.Height);
+                    }
+                    break;
+
+                default:
+                    throw new NotSupportedException(nameof(mode));
             }
+
+            windowMode = mode;
+            UpdateMouseGrab();
         }
 
         /// <inheritdoc/>
@@ -522,6 +542,39 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <inheritdoc/>
+        public Boolean GrabsMouseWhenWindowed
+        {
+            get { return grabsMouseWhenWindowed; }
+            set
+            {
+                grabsMouseWhenWindowed = value;
+                UpdateMouseGrab();
+            }
+        }
+
+        /// <inheritdoc/>
+        public Boolean GrabsMouseWhenFullscreenWindowed
+        {
+            get { return grabsMouseWhenFullscreenWindowed; }
+            set
+            {
+                grabsMouseWhenFullscreenWindowed = value;
+                UpdateMouseGrab();
+            }
+        }
+
+        /// <inheritdoc/>
+        public Boolean GrabsMouseWhenFullscreen
+        {
+            get { return grabsMouseWhenFullscreen; }
+            set
+            {
+                grabsMouseWhenFullscreen = value;
+                UpdateMouseGrab();
+            }
+        }
+
+        /// <inheritdoc/>
         public Surface2D Icon
         {
             get
@@ -559,7 +612,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 var index = SDL.GetWindowDisplayIndex(ptr);
-                return Ultraviolet.GetPlatform().Displays[index];
+                var platform = Ultraviolet.GetPlatform();
+                if (platform != null)
+                    return Ultraviolet.GetPlatform().Displays[index];
+
+                return null;
             }
         }
 
@@ -854,6 +911,27 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <summary>
+        /// Updates the window's mouse grab state.
+        /// </summary>
+        private void UpdateMouseGrab()
+        {
+            switch (windowMode)
+            {
+                case WindowMode.Windowed:
+                    SDL.SetWindowGrab(ptr, grabsMouseWhenWindowed);
+                    break;
+
+                case WindowMode.Fullscreen:
+                    SDL.SetWindowGrab(ptr, grabsMouseWhenFullscreen);
+                    break;
+
+                case WindowMode.FullscreenWindowed:
+                    SDL.SetWindowGrab(ptr, grabsMouseWhenFullscreenWindowed);
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Sets the window to use the desktop display mode for its current display.
         /// </summary>
         private void SetDesktopDisplayMode()
@@ -876,6 +954,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         private Size2? windowedClientSize;
         private Boolean synchronizeWithVerticalRetrace;
         private readonly Boolean native;
+        private Boolean grabsMouseWhenWindowed;
+        private Boolean grabsMouseWhenFullscreenWindowed;
+        private Boolean grabsMouseWhenFullscreen;
         private Surface2D icon;
         private Compositor compositor;
 
