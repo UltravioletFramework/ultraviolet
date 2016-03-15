@@ -152,6 +152,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             containingControl = FindContainingControl();
 
+            DigestDataBoundContentProperties();
+
             base.CacheLayoutParametersOverride();
         }
 

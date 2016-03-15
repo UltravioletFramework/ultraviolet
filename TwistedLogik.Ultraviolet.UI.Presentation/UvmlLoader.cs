@@ -89,21 +89,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var rootGridTemplateInstance = (UvmlTemplateInstance)rootGridTemplate.Instantiate(puv, rootGridContext);
                 var rootGrid = (Grid)rootGridTemplateInstance.Finalize();
 
-                rootAdornerDecorator.Child = rootGrid;
-
-                if (viewModel != null)
-                    rootGridContext.Namescope.PopulateFieldsFromRegisteredElements(viewModel);
-
-                rootAdornerDecorator.EndInit();
-                root.EndInit();
-                root.CacheLayoutParameters();
+                rootAdornerDecorator.Child = rootGrid;                
 
                 return view;
             });
             
             // Instantiate the view template.
             var viewTemplateInstance = (UvmlTemplateInstance)viewTemplate.Instantiate(uv, null);
-            return (PresentationFoundationView)viewTemplateInstance.Finalize();
+            var viewInstance = (PresentationFoundationView)viewTemplateInstance.Finalize();
+
+            var viewRoot = viewInstance.LayoutRoot;
+            var viewRootAdornerDecorator = (AdornerDecorator)viewRoot.Child;
+            viewRootAdornerDecorator.EndInit();
+            viewRoot.EndInit();
+            viewRoot.CacheLayoutParameters();
+
+            var viewInstanceViewModel = viewInstance.ViewModel;
+            if (viewInstanceViewModel != null)
+                viewInstance.Namescope.PopulateFieldsFromRegisteredElements(viewInstanceViewModel);
+
+            return viewInstance;
         }
 
         /// <summary>

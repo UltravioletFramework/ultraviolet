@@ -18,10 +18,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         /// <param name="templatedParent">The templated parent for the instantiated object.</param>
         /// <param name="dataSource">The data source for the instantiated object.</param>
         /// <param name="dataSourceType">The data source type for the instantiated object.</param>
-        internal UvmlInstantiationContext(UltravioletContext uv, Object templatedParent, Object dataSource, Type dataSourceType)
+        /// <param name="namescope">The context's namescope, or <see langword="null"/> to create a new namescope.</param>
+        internal UvmlInstantiationContext(UltravioletContext uv, Object templatedParent, Object dataSource, Type dataSourceType, Namescope namescope = null)
         {
             this.Ultraviolet = uv;
-            this.Namescope = new Namescope();
+            this.Namescope = namescope ?? new Namescope();
             this.TemplatedParent = templatedParent;
             this.DataSource = dataSource;
             this.DataSourceType = dataSourceType;
@@ -37,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         /// <returns>The instantiation context which was created.</returns>
         internal static UvmlInstantiationContext ForView(UltravioletContext uv, PresentationFoundationView view)
         {
-            return new UvmlInstantiationContext(uv, null, view, view.ViewModelType);
+            return new UvmlInstantiationContext(uv, null, view, view.ViewModelType, view.Namescope);
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         internal static UvmlInstantiationContext ForControl(UltravioletContext uv, Control control)
         {
             var wrapper = PresentationFoundation.GetDataSourceWrapper(control);
-            return new UvmlInstantiationContext(uv, control, control, wrapper.GetType());
+            return new UvmlInstantiationContext(uv, control, control, wrapper.GetType(), control.ComponentTemplateNamescope);
         }
 
         /// <summary>

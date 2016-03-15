@@ -230,6 +230,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns><c>true</c> if the specified element is the container for the specified item; otherwise, <c>false</c>.</returns>
         protected abstract Boolean IsItemContainerForItem(Object obj, Object item);
 
+        /// <inheritdoc/>
+        protected override void CacheLayoutParametersOverride()
+        {
+            DigestImmediatelyIfDataBound(ItemsSourceProperty);
+
+            base.CacheLayoutParametersOverride();
+        }
+
         /// <summary>
         /// Called when the <see cref="Items"/> property changes.
         /// </summary>
