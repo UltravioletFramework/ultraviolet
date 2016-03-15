@@ -278,8 +278,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public void ClearTriggeredValue()
             {
-                triggeredValue       = default(T);
+                var oldValue = GetValue();
+
+                triggeredValue = default(T);
                 triggeredValueSource = null;
+
+                UpdateRequiresDigest(oldValue);
             }
 
             /// <inheritdoc/>
