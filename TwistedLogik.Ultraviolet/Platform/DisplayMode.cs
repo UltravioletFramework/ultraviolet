@@ -17,7 +17,9 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <param name="height">The display mode's height in pixels.</param>
         /// <param name="bpp">The display mode's bit depth.</param>
         /// <param name="refresh">The display mode's refresh rate in hertz.</param>
-        public DisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh)
+        /// <param name="display">The display in which to place a window when it enters this display mode,
+        /// or <see langword="null"/> if the window has no preferred display.</param>
+        public DisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh, IUltravioletDisplay display = null)
         {
             Contract.EnsureRange(width > 0, "width");
             Contract.EnsureRange(height > 0, "height");
@@ -27,6 +29,7 @@ namespace TwistedLogik.Ultraviolet.Platform
             this.Height = height;
             this.BitsPerPixel = bpp;
             this.RefreshRate = refresh;
+            this.Display = display;
         }
 
         /// <summary>
@@ -46,8 +49,12 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <param name="other">The <see cref="DisplayMode"/> instance to compare to this instance.</param>
         /// <param name="considerBitsPerPixel">A value indicating whether to compare the bit depths of the two display modes.</param>
         /// <param name="considerRefreshRate">A value indicating whether to compare the refresh rates of the two display modes.</param>
+        /// <param name="considerDisplay">A value indicating whether to compare the preferred displays of the two display modes.</param>
         /// <returns><see langword="true"/> if the two display modes are equivalent; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsEquivalentTo(DisplayMode other, Boolean considerBitsPerPixel = true, Boolean considerRefreshRate = true)
+        public Boolean IsEquivalentTo(DisplayMode other, 
+            Boolean considerBitsPerPixel = true, 
+            Boolean considerRefreshRate = true, 
+            Boolean considerDisplay = false)
         {
             if (other == null)
                 return false;
@@ -62,6 +69,9 @@ namespace TwistedLogik.Ultraviolet.Platform
                 return false;
 
             if (considerRefreshRate && other.RefreshRate != RefreshRate)
+                return false;
+
+            if (considerDisplay && other.Display != Display)
                 return false;
 
             return true;
@@ -98,6 +108,16 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// Gets the display's refresh rate in hertz.
         /// </summary>
         public Int32 RefreshRate
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the display in which to place a window when it enters this display mode,
+        /// or <see langword="null"/> if the window has no preferred display.
+        /// </summary>
+        public IUltravioletDisplay Display
         {
             get;
             private set;

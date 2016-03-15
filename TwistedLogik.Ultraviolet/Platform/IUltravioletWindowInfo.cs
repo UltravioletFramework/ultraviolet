@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// </summary>
         /// <returns>The context's current window.</returns>
         IUltravioletWindow GetCurrent();
-
+        
         /// <summary>
         /// Creates a new window and attaches it to the current context.
         /// </summary>

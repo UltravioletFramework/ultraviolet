@@ -303,5 +303,13 @@ namespace TwistedLogik.Ultraviolet.Platform
         {
             get;
         }
+
+        /// <summary>
+        /// Gets the desktop display mode for this display.
+        /// </summary>
+        DisplayMode DesktopDisplayMode
+        {
+            get;
+        }
     }
 }

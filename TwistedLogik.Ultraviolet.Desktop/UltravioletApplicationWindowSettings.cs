@@ -22,15 +22,15 @@ namespace TwistedLogik.Ultraviolet
             Contract.Require(settings, "settings");
 
             return new XElement("Window",
-                new XElement("WindowState",                    settings.WindowState),
-                new XElement("WindowMode",                     settings.WindowMode),
-                new XElement("WindowedPosition",               settings.WindowedPosition),
+                new XElement("WindowState", settings.WindowState),
+                new XElement("WindowMode", settings.WindowMode),
+                new XElement("WindowedPosition", settings.WindowedPosition),
                 new XElement("SynchronizeWithVerticalRetrace", settings.SynchronizeWithVerticalRetrace),
                 settings.FullscreenDisplayMode == null ? null : new XElement("FullscreenDisplayMode",
-                    new XElement("Width",        settings.FullscreenDisplayMode.Width),
-                    new XElement("Height",       settings.FullscreenDisplayMode.Height),
+                    new XElement("Width", settings.FullscreenDisplayMode.Width),
+                    new XElement("Height", settings.FullscreenDisplayMode.Height),
                     new XElement("BitsPerPixel", settings.FullscreenDisplayMode.BitsPerPixel),
-                    new XElement("RefreshRate",  settings.FullscreenDisplayMode.RefreshRate)
+                    new XElement("RefreshRate", settings.FullscreenDisplayMode.RefreshRate)
                 )
             );
         }
@@ -49,18 +49,18 @@ namespace TwistedLogik.Ultraviolet
             {
                 var settings = new UltravioletApplicationWindowSettings();
 
-                settings.WindowState                    = xml.ElementValue<WindowState>("WindowState");
-                settings.WindowMode                     = xml.ElementValue<WindowMode>("WindowMode");
-                settings.WindowedPosition               = xml.ElementValue<Rectangle>("WindowedPosition");
+                settings.WindowState = xml.ElementValue<WindowState>("WindowState");
+                settings.WindowMode = xml.ElementValue<WindowMode>("WindowMode");
+                settings.WindowedPosition = xml.ElementValue<Rectangle>("WindowedPosition");
                 settings.SynchronizeWithVerticalRetrace = xml.ElementValue<Boolean>("SynchronizeWithVerticalRetrace");
 
                 var fullscreenDisplayMode = xml.Element("FullscreenDisplayMode");
                 if (fullscreenDisplayMode != null)
                 {
-                    var width        = fullscreenDisplayMode.ElementValue<Int32>("Width");
-                    var height       = fullscreenDisplayMode.ElementValue<Int32>("Height");
+                    var width = fullscreenDisplayMode.ElementValue<Int32>("Width");
+                    var height = fullscreenDisplayMode.ElementValue<Int32>("Height");
                     var bitsPerPixel = fullscreenDisplayMode.ElementValue<Int32>("BitsPerPixel");
-                    var refreshRate  = fullscreenDisplayMode.ElementValue<Int32>("RefreshRate");
+                    var refreshRate = fullscreenDisplayMode.ElementValue<Int32>("RefreshRate");
 
                     settings.FullscreenDisplayMode = new DisplayMode(width, height, bitsPerPixel, refreshRate);
                 }
@@ -96,10 +96,10 @@ namespace TwistedLogik.Ultraviolet
 
             var settings = new UltravioletApplicationWindowSettings();
 
-            settings.WindowState                    = primary.GetWindowState();
-            settings.WindowMode                     = primary.GetWindowMode();
-            settings.WindowedPosition               = new Rectangle(primary.WindowedPosition, primary.WindowedClientSize);
-            settings.FullscreenDisplayMode          = primary.GetFullscreenDisplayMode();
+            settings.WindowState = primary.GetWindowState();
+            settings.WindowMode = primary.GetWindowMode();
+            settings.WindowedPosition = new Rectangle(primary.WindowedPosition, primary.WindowedClientSize);
+            settings.FullscreenDisplayMode = primary.GetFullscreenDisplayMode();
             settings.SynchronizeWithVerticalRetrace = primary.SynchronizeWithVerticalRetrace;
 
             return settings;
@@ -117,8 +117,8 @@ namespace TwistedLogik.Ultraviolet
 
             primary.SetWindowState(WindowState);
             primary.SetWindowMode(WindowMode);
-            primary.WindowedPosition               = WindowedPosition.Location;
-            primary.WindowedClientSize             = WindowedPosition.Size;
+            primary.WindowedPosition = WindowedPosition.Location;
+            primary.WindowedClientSize = WindowedPosition.Size;
             primary.SynchronizeWithVerticalRetrace = SynchronizeWithVerticalRetrace;
 
             if (FullscreenDisplayMode != null)
@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet
             get;
             private set;
         }
-        
+
         /// <summary>
         /// Gets the primary window's window mode.
         /// </summary>

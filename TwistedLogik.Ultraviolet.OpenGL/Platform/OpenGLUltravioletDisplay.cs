@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.SDL2;
 using TwistedLogik.Ultraviolet.SDL2.Native;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Platform
@@ -21,6 +22,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             this.displayModes = Enumerable.Range(0, SDL.GetNumDisplayModes(displayIndex))
                 .Select(modeIndex => CreateDisplayModeFromSDL(displayIndex, modeIndex))
                 .ToList();
+
+            SDL_DisplayMode sdlDesktopDisplayMode;
+            if (SDL.GetDesktopDisplayMode(displayIndex, &sdlDesktopDisplayMode) < 0)
+                throw new SDL2Exception();
+
+            this.desktopDisplayMode = CreateDisplayModeFromSDL(sdlDesktopDisplayMode);
 
             this.screenRotationService = ScreenRotationService.Create(this);
             this.screenDensityService  = ScreenDensityService.Create(this);
@@ -367,27 +374,42 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
+        /// <inheritdoc/>
+        public DisplayMode DesktopDisplayMode
+        {
+            get
+            {
+                return desktopDisplayMode;
+            }
+        }
+
         /// <summary>
         /// Creates an Ultraviolet DisplayMode object from the specified SDL2 display mode.
         /// </summary>
-        /// <param name="displayIndex">The display index.</param>
-        /// <param name="modeIndex">The mode index.</param>
-        /// <returns>The Ultraviolet DisplayMode object that was created.</returns>
-        private static DisplayMode CreateDisplayModeFromSDL(Int32 displayIndex, Int32 modeIndex)
+        private DisplayMode CreateDisplayModeFromSDL(SDL_DisplayMode mode)
         {
-            SDL_DisplayMode mode;
-            SDL.GetDisplayMode(displayIndex, modeIndex, &mode);
-
             Int32 bpp;
             UInt32 Rmask, Gmask, Bmask, Amask;
             SDL.PixelFormatEnumToMasks((uint)mode.format, &bpp, &Rmask, &Gmask, &Bmask, &Amask);
 
-            return new DisplayMode(mode.w, mode.h, bpp, mode.refresh_rate);
+            return new DisplayMode(mode.w, mode.h, bpp, mode.refresh_rate, this);
+        }
+
+        /// <summary>
+        /// Creates an Ultraviolet DisplayMode object from the specified SDL2 display mode.
+        /// </summary>
+        private DisplayMode CreateDisplayModeFromSDL(Int32 displayIndex, Int32 modeIndex)
+        {
+            SDL_DisplayMode mode;
+            SDL.GetDisplayMode(displayIndex, modeIndex, &mode);
+
+            return CreateDisplayModeFromSDL(mode);
         }
 
         // SDL2 display info.
         private readonly Int32 displayIndex;
         private readonly List<DisplayMode> displayModes;
+        private readonly DisplayMode desktopDisplayMode;
 
         // Services.
         private readonly ScreenRotationService screenRotationService;

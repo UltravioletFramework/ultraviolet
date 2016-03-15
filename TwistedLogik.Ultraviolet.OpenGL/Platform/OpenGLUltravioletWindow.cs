@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             this.focused = (flags & SDL_WindowFlags.INPUT_FOCUS) == SDL_WindowFlags.INPUT_FOCUS;
             this.minimized = (flags & SDL_WindowFlags.MINIMIZED) == SDL_WindowFlags.MINIMIZED;
 
-            ChangeCompositor(DefaultCompositor.Create(this));
+            ChangeCompositor(DefaultCompositor.Create(this));            
         }
 
         /// <summary>
@@ -55,11 +55,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             return (window == null) ? IntPtr.Zero : window.ptr;
         }
 
-        /// <summary>
-        /// Receives a message that has been published to a queue.
-        /// </summary>
-        /// <param name="type">The type of message that was received.</param>
-        /// <param name="data">The data for the message that was received.</param>
+        /// <inheritdoc/>
         void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
         {
             if (type != SDL2UltravioletMessages.SDLEvent)
@@ -111,11 +107,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                     break;
             }
         }
-        
-        /// <summary>
-        /// Sets the window's fullscreen display mode.
-        /// </summary>
-        /// <param name="displayMode">The fullscreen display mode to set, or null to use the desktop display mode.</param>
+
+        /// <inheritdoc/>
         public void SetFullscreenDisplayMode(DisplayMode displayMode)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -123,14 +116,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             SetFullscreenDisplayModeInternal(displayMode);
         }
 
-        /// <summary>
-        /// Sets the window's fullscreen display mode.
-        /// </summary>
-        /// <param name="width">The display mode's width.</param>
-        /// <param name="height">The display mode's height.</param>
-        /// <param name="bpp">The display mode's bit depth.</param>
-        /// <param name="refresh">The display mode's refresh rate in hertz.</param>
-        public void SetFullscreenDisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh)
+        /// <inheritdoc/>
+        public void SetFullscreenDisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh, IUltravioletDisplay display = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureRange(width > 0, "width");
@@ -138,13 +125,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             Contract.EnsureRange(bpp > 0, "bpp");
             Contract.EnsureRange(refresh > 0, "refresh");
 
-            SetFullscreenDisplayModeInternal(new DisplayMode(width, height, bpp, refresh));
+            SetFullscreenDisplayModeInternal(new DisplayMode(width, height, bpp, refresh, display));
         }
 
-        /// <summary>
-        /// Gets the window's fullscreen display mode.
-        /// </summary>
-        /// <returns>The window's fullscreen display mode, or null if the window is using the desktop display mode.</returns>
+        /// <inheritdoc/>
         public DisplayMode GetFullscreenDisplayMode()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -152,10 +136,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             return displayMode;
         }
 
-        /// <summary>
-        /// Sets the window's fullscreen/windowed mode.
-        /// </summary>
-        /// <param name="mode">The window mode to set.</param>
+        /// <inheritdoc/>
         public void SetWindowMode(WindowMode mode)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -166,15 +147,34 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 switch (mode)
                 {
                     case WindowMode.Windowed:
-                        SDL.SetWindowFullscreen(ptr, 0);
+                        {
+                            if (SDL.SetWindowFullscreen(ptr, 0) < 0)
+                                throw new SDL2Exception();
+                        }
                         break;
 
                     case WindowMode.Fullscreen:
-                        SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN);
+                        {
+                            if (displayMode != null)
+                            {
+                                if (displayMode.Display != null)
+                                    ChangeDisplay(displayMode.Display);
+                            }
+                            else
+                            {
+                                SetDesktopDisplayMode();
+                            }
+
+                            if (SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN) < 0)
+                                throw new SDL2Exception();
+                        }
                         break;
 
                     case WindowMode.FullscreenWindowed:
-                        SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN_DESKTOP);
+                        {
+                            if (SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN_DESKTOP) < 0)
+                                throw new SDL2Exception();
+                        }
                         break;
 
                     default:
@@ -183,10 +183,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the fullscreen/windowed mode for this window.
-        /// </summary>
-        /// <returns>The window's current fullscreen/windowed mode.</returns>
+        /// <inheritdoc/>
         public WindowMode GetWindowMode()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -194,10 +191,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             return windowMode;
         }
 
-        /// <summary>
-        /// Sets the window's maximization/minimization state.
-        /// </summary>
-        /// <param name="state">The window state to set.</param>
+        /// <inheritdoc/>
         public void SetWindowState(WindowState state)
         {
             switch (state)
@@ -219,10 +213,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
         }
 
-        /// <summary>
-        /// Gets the window's maximization/minimization state.
-        /// </summary>
-        /// <returns>The window's current maximization/minimization state.</returns>
+        /// <inheritdoc/>
         public WindowState GetWindowState()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -680,8 +671,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             if (displayMode == null)
             {
-                if (SDL.SetWindowDisplayMode(ptr, null) < 0)
-                    throw new SDL2Exception();
+                SetDesktopDisplayMode();
             }
             else
             {
@@ -704,8 +694,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                         break;
                 }
 
+                var wasFullscreen = windowMode == WindowMode.Fullscreen;
+                if (wasFullscreen)
+                    SetWindowMode(WindowMode.Windowed);
+
                 if (SDL.SetWindowDisplayMode(ptr, &sdlMode) < 0)
                     throw new SDL2Exception();
+
+                if (wasFullscreen)
+                    SetWindowMode(WindowMode.Fullscreen);
 
                 if (SDL.GetWindowDisplayMode(ptr, &sdlMode) < 0)
                     throw new SDL2Exception();
@@ -714,7 +711,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 uint Rmask, Gmask, Bmask, Amask;
                 SDL.PixelFormatEnumToMasks((uint)sdlMode.format, &bpp, &Rmask, &Gmask, &Bmask, &Amask);
 
-                displayMode = new DisplayMode(sdlMode.w, sdlMode.h, bpp, sdlMode.refresh_rate);
+                displayMode = new DisplayMode(sdlMode.w, sdlMode.h, bpp, sdlMode.refresh_rate, displayMode.Display);
             }
             this.displayMode = displayMode;
         }
@@ -837,6 +834,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             {
                 windowedClientSize = size;
             }
+        }
+
+        /// <summary>
+        /// Sets the window to use the desktop display mode for its current display.
+        /// </summary>
+        private void SetDesktopDisplayMode()
+        {
+            SDL_DisplayMode mode;
+            if (SDL.GetDesktopDisplayMode(Display.Index, &mode) < 0)
+                throw new SDL2Exception();
+
+            if (SDL.SetWindowDisplayMode(ptr, &mode) < 0)
+                throw new SDL2Exception();
         }
 
         // A custom Win32 windows procedure used to override SDL2's built-in functionality.
