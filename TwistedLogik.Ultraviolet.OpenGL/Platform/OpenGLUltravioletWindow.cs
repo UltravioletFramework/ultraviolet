@@ -277,6 +277,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <inheritdoc/>
+        public void ChangeDisplay(Int32 displayIndex)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            if (displayIndex < 0 || displayIndex >= Ultraviolet.GetPlatform().Displays.Count)
+                displayIndex = 0;
+
+            var display = Ultraviolet.GetPlatform().Displays[displayIndex];
+            ChangeDisplay(display);
+        }
+
+        /// <inheritdoc/>
         public void ChangeDisplay(IUltravioletDisplay display)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -769,7 +781,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                     throw new SDL2Exception();
 
                 if (wasFullscreen)
+                {
+                    if (displayMode.DisplayIndex.HasValue)
+                    {
+                        ChangeDisplay(displayMode.DisplayIndex.Value);
+                    }
                     SetWindowMode(WindowMode.Fullscreen);
+                }
 
                 if (SDL.GetWindowDisplayMode(ptr, &sdlMode) < 0)
                     throw new SDL2Exception();
