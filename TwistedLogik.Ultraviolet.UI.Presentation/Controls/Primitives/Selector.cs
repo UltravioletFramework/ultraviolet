@@ -507,7 +507,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="SelectionChanged"/> dependency property changes.
+        /// Represents the <see cref="Selector"/> class' class handler for the <see cref="SelectionChanged"/> routed event.
         /// </summary>
         private static void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
         {
