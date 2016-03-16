@@ -23,20 +23,25 @@
                    Visibility="{{HasCaption ? Visibility.Visible : Visibility.Collapsed}}"
                    HorizontalAlignment="Center"/>
 
-        <StackPanel Class="msgbox-text-panel"
-                    Orientation="Horizontal">
-
+        <Grid Class="msgbox-text-panel">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          
           <Image Name="PART_Image" 
                  Visibility="{{HasImage ? Visibility.Visible : Visibility.Collapsed}}"
-                 VerticalAlignment="Center"/>
+                 VerticalAlignment="Center"
+                 Grid.Column="0"/>
           <TextBlock Name="PART_TextBlockText"
                      Class="msgbox-text"
                      Text="{{Text}}"
                      Visibility="{{HasText ? Visibility.Visible : Visibility.Collapsed}}"
                      HorizontalAlignment="Left"
-                     VerticalAlignment="Center"/>
+                     VerticalAlignment="Center"
+                     Grid.Column="1"/>
 
-        </StackPanel>
+        </Grid>
 
         <StackPanel Class="msgbox-btn-panel"
                     Orientation="Horizontal"
