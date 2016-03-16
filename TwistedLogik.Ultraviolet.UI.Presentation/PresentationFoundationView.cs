@@ -1704,18 +1704,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void Cleanup()
         {
-            CleanupMouse();
+            CleanupInput();
             CleanupToolTip();
         }
 
         /// <summary>
         /// Cleans up mouse-related state.
         /// </summary>
-        private void CleanupMouse()
+        private void CleanupInput()
         {
-            var uiElementUnderMouse = elementUnderMouse as UIElement;
-            if (uiElementUnderMouse != null)
-                UpdateIsMouseOver(uiElementUnderMouse, true);
+            if (elementUnderMouse != null)
+                UpdateIsMouseOver(elementUnderMouse as UIElement, true);
+
+            if (elementWithMouseCapture != null)
+                ReleaseMouse();
+
+            if (elementWithFocus != null)
+                BlurElement(elementWithFocus);
 
             elementUnderMousePrev = null;
             elementUnderMouse = null;
