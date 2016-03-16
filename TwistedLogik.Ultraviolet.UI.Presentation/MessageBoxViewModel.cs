@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="MessageBoxViewModel"/> class.
         /// </summary>
         /// <param name="mb">The message box that owns the screen.</param>
-        internal MessageBoxViewModel(MessageBoxModal mb)
+        protected internal MessageBoxViewModel(MessageBoxModal mb)
         {
             Contract.Require(mb, "mb");
 
