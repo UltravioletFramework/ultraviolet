@@ -99,6 +99,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected override void OnMinimumChanged()
         {
             InvalidateMeasure();
+
+            if (PART_Track != null)
+                PART_Track.InvalidateArrange();
+
             base.OnMinimumChanged();
         }
 
@@ -106,6 +110,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected override void OnMaximumChanged()
         {
             InvalidateMeasure();
+
+            if (PART_Track != null)
+                PART_Track.InvalidateArrange();
+
             base.OnMaximumChanged();
         }
 
@@ -113,9 +121,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected override void OnValueChanged()
         {
             if (PART_Track != null)
-            {
                 PART_Track.InvalidateArrange();
-            }
+
             base.OnValueChanged();
         }
 
