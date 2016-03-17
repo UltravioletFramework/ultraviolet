@@ -102,7 +102,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             foreach (var item in control.Items)
             {
-                var container = FindContainer<TContainer>(control, item);
+                var container = FindContainer<TContainer>(control,
+                    control.ItemContainerGenerator.ContainerFromItem(item));
 
                 if (container.UntransformedRelativeBounds.Top < min || container.UntransformedRelativeBounds.Bottom > max)
                     continue;
@@ -173,7 +174,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             foreach (var item in control.Items)
             {
-                var container = FindContainer<TContainer>(control, item);
+                var container = FindContainer<TContainer>(control, 
+                    control.ItemContainerGenerator.ContainerFromItem(item));
 
                 if (container.UntransformedRelativeBounds.Top < min || container.UntransformedRelativeBounds.Bottom > max)
                     continue;
