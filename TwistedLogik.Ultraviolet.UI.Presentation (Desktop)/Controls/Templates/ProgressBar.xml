@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="progressbar-component"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+      <Image Class="progressbar-background"/>
+      <ProgressBarFill Class="progressbar-fill"/>
+      <Image Class="progressbar-overlay"/>
+
+    </Grid>
+  </View>
+</ComponentTemplate>

@@ -442,10 +442,18 @@ HSlider! .slider-focus-image, VSlider! .slider-focus-image
 
 ProgressBar!
 {
-    bar-image: #Global:Textures:DefaultUI 1 794 142 40 20 20 tile-center;
-    fill-image: #Global:Textures:DefaultUI 1 835 142 40 20 20 tile-center;
-    fill-color: #ff5ea0d2;
-    height: 20;
+    min-height: 20;
+}
+
+ProgressBar! >> .progressbar-background
+{
+    source-image: #Global:Textures:DefaultUI 1 794 142 40 20 20 tile-center;
+}
+
+ProgressBarFill!
+{
+    source-image: #Global:Textures:DefaultUI 1 835 142 40 20 20 tile-center;
+    source-color: #ff5ea0d2;
 }
 
 // ============================================================================

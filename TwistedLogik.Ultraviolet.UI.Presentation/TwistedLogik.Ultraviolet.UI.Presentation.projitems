@@ -67,6 +67,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HeaderedContentControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PasswordBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\PasswordEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\ProgressBarFill.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextBoxBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextEditor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ScrollChangedInfo.cs" />

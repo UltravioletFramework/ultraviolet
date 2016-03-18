@@ -136,6 +136,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Controls\Templates\ProgressBar.xml" />
     <Content Include="Resources\Content\Fonts\SegoeUITexture.png" />
     <None Include="packages.config" />
     <None Include="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt">
