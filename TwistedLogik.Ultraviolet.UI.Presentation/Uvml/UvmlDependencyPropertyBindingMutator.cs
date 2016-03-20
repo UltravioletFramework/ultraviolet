@@ -50,7 +50,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
             if (compiled == null)
                 throw new UvmlException(PresentationStrings.CompiledExpressionNotFound.Format(expression));
 
-            dobj.BindValue(dpropID, context.DataSourceType, "{{" + compiled.Name + "}}");
+            var fmtString = BindingExpressions.GetBindingFormatStringPart(expression);
+            if (fmtString != null)
+            {
+                dobj.BindValue(dpropID, context.DataSourceType, "{{" + compiled.Name + "}}[" + fmtString + "]");
+            }
+            else
+            {
+                dobj.BindValue(dpropID, context.DataSourceType, "{{" + compiled.Name + "}}");
+            }
         }
 
         // State values.

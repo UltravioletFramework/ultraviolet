@@ -31,9 +31,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The converted value.</returns>
         public static Object ConvertValue(Object value, Type originalType, Type conversionType, String formatString, Boolean coerceToString)
         {
-            if (conversionType == typeof(String) || (conversionType == typeof(Object) && coerceToString))
+            if (IsStringType(conversionType, coerceToString))
             {
-                return ConvertUsingToString(value, originalType, formatString);
+                var stringValue = ConvertUsingToString(value, originalType, formatString);
+                return (conversionType == typeof(VersionedStringSource)) ? 
+                    new VersionedStringSource((String)stringValue) : stringValue;
             }
             return ConvertUsingTypeConverter(value, originalType, conversionType);
         }
@@ -47,6 +49,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The converted value.</returns>
         private static Object ConvertUsingTypeConverter(Object value, Type originalType, Type conversionType)
         {
+            PrepareStringTypeForTypeConverter(ref originalType, ref value);
+
             var converter = TypeDescriptor.GetConverter(conversionType);
             if (converter != null && converter.CanConvertFrom(originalType))
             {
@@ -86,6 +90,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return String.Format(formatString, value);
             }
             return (value == null) ? null : value.ToString();
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified type should be treated as a string.
+        /// </summary>
+        private static Boolean IsStringType(Type type, Boolean coerceToString)
+        {
+            if (type == typeof(String))
+                return true;
+
+            if (type == typeof(VersionedStringSource))
+                return true;
+
+            if (type == typeof(Object) && coerceToString)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Prepares string-like types to be passed through a type converter.
+        /// </summary>
+        private static Boolean PrepareStringTypeForTypeConverter(ref Type type, ref Object value)
+        {
+            if (IsStringType(type, false))
+            {
+                type = typeof(String);
+                value = value.ToString();
+                return true;
+            }
+            return false;
         }
     }
 }

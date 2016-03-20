@@ -688,7 +688,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                             CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(attr.Name.LocalName));
                     }
 
-                    expressions.Add(new BindingExpressionInfo(attr, attrValue, dprop.PropertyType) { GenerateGetter = true });
+                    var expText = BindingExpressions.GetBindingMemberPathPart(attrValue);
+                    var expProp = GetBindablePropertyOnDataSource(dataSourceWrappedType, expText);
+
+                    expressions.Add(new BindingExpressionInfo(attr, 
+                        attrValue, expProp?.PropertyType ?? dprop.PropertyType) { GenerateGetter = true });
                 }
 
                 if (element.Nodes().Count() == 1)
@@ -713,7 +717,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                                     CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(defaultProperty));
                             }
 
-                            expressions.Add(new BindingExpressionInfo(singleChild, elementValue, dprop.PropertyType) { GenerateGetter = true });
+                            var expText = BindingExpressions.GetBindingMemberPathPart(elementValue);
+                            var expProp = GetBindablePropertyOnDataSource(dataSourceWrappedType, expText);
+
+                            expressions.Add(new BindingExpressionInfo(singleChild, 
+                                elementValue, expProp?.PropertyType ?? dprop.PropertyType) { GenerateGetter = true });
                         }
                     }
                 }
@@ -800,6 +808,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 
                 File.WriteAllLines(logpath, Enumerable.Union(new[] { "Code\tDescription\tFile\tLine" }, errorStrings));
             }
+        }
+
+        /// <summary>
+        /// Gets the bindable property on the specified data source type which has the specified name,
+        /// if such a property exists.
+        /// </summary>
+        private static PropertyInfo GetBindablePropertyOnDataSource(Type dataSourceType, String name)
+        {
+            return dataSourceType?.GetProperty(name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
         }
 
         /// <summary>

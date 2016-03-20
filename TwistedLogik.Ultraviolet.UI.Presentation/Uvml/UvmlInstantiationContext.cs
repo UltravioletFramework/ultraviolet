@@ -64,13 +64,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         {
             PropertyInfo property;
 
-            var key = new CompiledBindingExpressionKey(type, expression);
-            if (compiledBindingExpressions.TryGetValue(key, out property))
+            var specificKey = new CompiledBindingExpressionKey(type, expression);
+            if (compiledBindingExpressions.TryGetValue(specificKey, out property))
+                return property;
+
+            var fallbackKey = new CompiledBindingExpressionKey(null, expression);
+            if (compiledBindingExpressions.TryGetValue(fallbackKey, out property))
                 return property;
 
             return null;
         }
-
+        
         /// <summary>
         /// Gets the Ultraviolet context.
         /// </summary>
@@ -137,10 +141,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
                 var key = new CompiledBindingExpressionKey(prop.Property.PropertyType, prop.Expression);
                 compiledBindingExpressions.Add(key, prop.Property);
             }
+
+            var uniques = compiledBindingExpressions.GroupBy(x => x.Key).Where(x => x.Count() == 1).ToList();
+            foreach (var unique in uniques)
+            {
+                var key = new CompiledBindingExpressionKey(null, unique.Key.Expression);
+                compiledBindingExpressions[key] = unique.Single().Value;
+            }
         }
         
         // Associates expression implementations with their keys.
         private readonly Dictionary<CompiledBindingExpressionKey, PropertyInfo> compiledBindingExpressions =
             new Dictionary<CompiledBindingExpressionKey, PropertyInfo>();
+
+        private readonly Dictionary<String, PropertyInfo> compiledBindingExpressionsFoo =
+            new Dictionary<String, PropertyInfo>();
     }
 }

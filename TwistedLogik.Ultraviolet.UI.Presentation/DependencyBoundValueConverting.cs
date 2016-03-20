@@ -34,15 +34,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public DependencyBoundValueConverting(IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression, Boolean coerceToString)
             : base(value, expressionType, dataSourceType, expression)
         {
-            this.formatString         = BindingExpressions.GetBindingFormatStringPart(expression);
-            this.coerceToString               = coerceToString;
+            var expressionFormatString = BindingExpressions.GetBindingFormatStringPart(expression);
+            SetFormatString(expressionFormatString);
+
+            this.coerceToString = coerceToString;
             this.cachedConvertedValue = GetFresh();
         }
 
         /// <inheritdoc/>
         public override void SetFormatString(String formatString)
         {
-            this.formatString = formatString;
+            this.formatString = (formatString == null) ? null : String.Format("{{0:{0}}}", formatString); ;
 
             if (hasCachedInputValue)
             {
