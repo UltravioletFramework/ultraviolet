@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -535,6 +537,61 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
+            /// Compiles an expression which produces converting bound values for the specified type.
+            /// </summary>
+            private static Delegate CreateDependencyPropertyBoundValueConvertingCtor(Type valueType)
+            {
+                var valueCtor = default(Delegate);
+                var valueTypeCtor = valueType.GetConstructor(
+                    new[] { typeof(IDependencyPropertyValue), typeof(Type), typeof(Type), typeof(String), typeof(Boolean) });
+
+                var expParamValue = Expression.Parameter(typeof(IDependencyPropertyValue), "value");
+                var expParamExpressionType = Expression.Parameter(typeof(Type), "expressionType");
+                var expParamDataSourceType = Expression.Parameter(typeof(Type), "dataSourceType");
+                var expParamExpression = Expression.Parameter(typeof(String), "expression");
+                var expParamCoerceToString = Expression.Parameter(typeof(Boolean), "coerceToString");
+                var expCtor = Expression.New(valueTypeCtor,
+                    expParamValue, expParamExpressionType, expParamDataSourceType, expParamExpression, expParamCoerceToString);
+
+                lock (cachedBoundValueCtors)
+                {
+                    valueCtor = Expression.Lambda<DependencyBoundValueConvertingCtor<T>>(expCtor,
+                        expParamValue, expParamExpressionType, expParamDataSourceType, expParamExpression, expParamCoerceToString).Compile();
+
+                    cachedBoundValueCtors[valueType] = valueCtor;
+                }
+
+                return valueCtor;
+            }
+
+            /// <summary>
+            /// Compiles an expression which produces non-converting bound values for the specified type.
+            /// </summary>
+            private static Delegate CreateDependencyPropertyBoundValueNonConvertingCtor(Type valueType)
+            {
+                var valueCtor = default(Delegate);
+                var valueTypeCtor = valueType.GetConstructor(
+                    new[] { typeof(IDependencyPropertyValue), typeof(Type), typeof(Type), typeof(String) });
+
+                var expParamValue = Expression.Parameter(typeof(IDependencyPropertyValue), "value");
+                var expParamExpressionType = Expression.Parameter(typeof(Type), "expressionType");
+                var expParamDataSourceType = Expression.Parameter(typeof(Type), "dataSourceType");
+                var expParamExpression = Expression.Parameter(typeof(String), "expression");
+                var expCtor = Expression.New(valueTypeCtor,
+                    expParamValue, expParamExpressionType, expParamDataSourceType, expParamExpression);
+
+                lock (cachedBoundValueCtors)
+                {
+                    valueCtor = Expression.Lambda<DependencyBoundValueNonConvertingCtor<T>>(expCtor,
+                        expParamValue, expParamExpressionType, expParamDataSourceType, expParamExpression).Compile();
+
+                    cachedBoundValueCtors[valueType] = valueCtor;
+                }
+
+                return valueCtor;
+            }
+
+            /// <summary>
             /// Gets a value indicating whether the property's coerced value is different from its cached bound value.
             /// </summary>
             private Boolean IsCoercedValueDifferentFromCachedBoundValue()
@@ -657,17 +714,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var expressionType = BindingExpressions.GetExpressionType(dataSourceType, expression);
                 if (expressionType != null && TypesRequireSpecialConversion(expressionType, typeof(T)))
                 {
-                    var coerce          = typeof(T) == typeof(Object) && metadata.CoerceObjectToString;
-                    var valueType       = typeof(DependencyBoundValueConverting<,>).MakeGenericType(typeof(T), expressionType);
-                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, expressionType, dataSourceType, expression, coerce);
+                    var coerce = typeof(T) == typeof(Object) && metadata.CoerceObjectToString;
+                    var valueType = typeof(DependencyBoundValueConverting<,>).MakeGenericType(typeof(T), expressionType);
+                    var valueCtor = default(Delegate);
 
+                    lock (cachedBoundValueCtors)
+                        cachedBoundValueCtors.TryGetValue(valueType, out valueCtor);
+
+                    if (valueCtor == null)
+                        valueCtor = CreateDependencyPropertyBoundValueConvertingCtor(valueType);
+
+                    var valueInstance = ((DependencyBoundValueConvertingCtor<T>)valueCtor)(this, expressionType, dataSourceType, expression, coerce);
                     cachedBoundValue = valueInstance;
                 }
                 else
                 {
-                    var valueType       = typeof(DependencyBoundValueNonConverting<>).MakeGenericType(typeof(T));
-                    var valueInstance   = (IDependencyBoundValue<T>)Activator.CreateInstance(valueType, this, typeof(T), dataSourceType, expression);
+                    var valueType = typeof(DependencyBoundValueNonConverting<>).MakeGenericType(typeof(T));
+                    var valueCtor = default(Delegate);
 
+                    lock (cachedBoundValueCtors)
+                        cachedBoundValueCtors.TryGetValue(valueType, out valueCtor);
+
+                    if (valueCtor == null)
+                        valueCtor = CreateDependencyPropertyBoundValueNonConvertingCtor(valueType);
+                    
+                    var valueInstance = ((DependencyBoundValueNonConvertingCtor<T>)valueCtor)(this, typeof(T), dataSourceType, expression);
                     cachedBoundValue = valueInstance;
                 }
             }
@@ -955,6 +1026,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private T animatedHandOffValue;
             private EasingFunction animationEasing;
             private StoryboardInstance storyboardInstance;
+
+            // Cached constructor delegates for bound values.
+            private static readonly Dictionary<Type, Delegate> cachedBoundValueCtors =
+                new Dictionary<Type, Delegate>();
         }
     }
 }

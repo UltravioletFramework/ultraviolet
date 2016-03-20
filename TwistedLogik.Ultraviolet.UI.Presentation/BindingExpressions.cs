@@ -214,11 +214,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="Delegate"/> that represents the specified model and expression.</returns>
         public static Delegate CreateBindingGetter(Type boundType, Type dataSourceType, String expression)
         {
-            Contract.Require(boundType, "boundType");
-            Contract.Require(dataSourceType, "dataSourceType");
-            Contract.RequireNotEmpty(expression, "expression");
-
-            // Check the cache for an existing delegate.
+            Contract.Require(boundType, nameof(boundType));
+            Contract.Require(dataSourceType, nameof(dataSourceType));
+            Contract.RequireNotEmpty(expression, nameof(expression));
+            
             var key = new BindingExpressionAccessorKey(boundType, dataSourceType, expression);
             lock (cachedExpressionGetters)
             {
@@ -227,32 +226,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return cached;
             }
 
-            /* NOTE:
-             * The special case for simple dependency properties here is an optimization.
-             * Profiling shows that a significant part of our time during loading is spent
-             * compiling our expression trees, so we want to bypass that where possible. */
-
-            var dprop = GetSimpleDependencyProperty(dataSourceType, expression);
-            if (dprop != null && dprop.PropertyType == boundType)
+            var builder = new DataBindingGetterBuilder(boundType, dataSourceType, expression);
+            var result = builder.Compile();
+            lock (cachedExpressionGetters)
             {
-                var result = (Delegate)miCreateSimpleGet.MakeGenericMethod(boundType).Invoke(null, new[] { dprop });
-                lock (cachedExpressionGetters)
-                {
-                    cachedExpressionGetters[key] = result;
-                }
-                return result;
+                cachedExpressionGetters[key] = result;
             }
-            else
-            {
-                var builder = new DataBindingGetterBuilder(boundType, dataSourceType, expression);
-                var result = builder.Compile();
-                lock (cachedExpressionGetters)
-                {
-                    cachedExpressionGetters[key] = result;
-                }
-                return result;
-            }
-        }        
+            return result;
+        }
 
         /// <summary>
         /// Creates a setter for the specified binding expression.
@@ -263,11 +244,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="Delegate"/> that represents the specified model and expression.</returns>
         public static Delegate CreateBindingSetter(Type boundType, Type dataSourceType, String expression)
         {
-            Contract.Require(boundType, "boundType");
-            Contract.Require(dataSourceType, "dataSourceType");
-            Contract.RequireNotEmpty(expression, "expression");
-
-            // Check the cache for an existing delegate.
+            Contract.Require(boundType, nameof(boundType));
+            Contract.Require(dataSourceType, nameof(dataSourceType));
+            Contract.RequireNotEmpty(expression, nameof(expression));
+            
             var key = new BindingExpressionAccessorKey(boundType, dataSourceType, expression);
             lock (cachedExpressionSetters)
             {
@@ -275,32 +255,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (cachedExpressionSetters.TryGetValue(key, out cached))
                     return cached;
             }
-
-            /* NOTE:
-             * The special case for simple dependency properties here is an optimization.
-             * Profiling shows that a significant part of our time during loading is spent
-             * compiling our expression trees, so we want to bypass that where possible. */
-
-            var dprop = GetSimpleDependencyProperty(dataSourceType, expression);
-            if (dprop != null && dprop.PropertyType == boundType)
+            
+            var builder = new DataBindingSetterBuilder(boundType, dataSourceType, expression);
+            var result = builder.Compile();
+            lock (cachedExpressionSetters)
             {
-                var result = (Delegate)miCreateSimpleSet.MakeGenericMethod(boundType).Invoke(null, new[] { dprop });
-                lock (cachedExpressionSetters)
-                {
-                    cachedExpressionSetters[key] = result;
-                }
-                return result;
+                cachedExpressionSetters[key] = result;
             }
-            else
-            {
-                var builder = new DataBindingSetterBuilder(boundType, dataSourceType, expression);
-                var result = builder.Compile();
-                lock (cachedExpressionSetters)
-                {
-                    cachedExpressionSetters[key] = result;
-                }
-                return result;
-            }
+            return result;
         }
 
         /// <summary>

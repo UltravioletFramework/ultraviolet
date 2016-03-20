@@ -3,6 +3,19 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
+    /// Represents a delegate which produces instances of the <see cref="DependencyBoundValueConverting{TDependency, TBound}"/> class.
+    /// </summary>
+    /// <typeparam name="TDependency">The type of the dependency property.</typeparam>
+    /// <param name="value">The dependency property value which created this object.</param>
+    /// <param name="expressionType">The type of the bound expression.</param>
+    /// <param name="dataSourceType">The type of the data source.</param>
+    /// <param name="expression">The binding expression.</param>
+    /// <param name="coerceToString">A value indicating whether to coerce Object values to String values if no valid type conversion exists.</param>
+    /// <returns>The bound value instance which was created.</returns>
+    internal delegate IDependencyBoundValue<TDependency> DependencyBoundValueConvertingCtor<TDependency>(
+        IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression, Boolean coerceToString);
+
+    /// <summary>
     /// Represents a value which is bound to a dependency property and which requires
     /// special conversion logic.
     /// </summary>

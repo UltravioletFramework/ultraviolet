@@ -3,6 +3,18 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
+    /// Represents a delegate which produces instances of the <see cref="DependencyBoundValueNonConverting{TDependency}"/> class.
+    /// </summary>
+    /// <typeparam name="TDependency">The type of the dependency property.</typeparam>
+    /// <param name="value">The dependency property value which created this object.</param>
+    /// <param name="expressionType">The type of the bound expression.</param>
+    /// <param name="dataSourceType">The type of the data source.</param>
+    /// <param name="expression">The binding expression.</param>
+    /// <returns>The bound value instance which was created.</returns>
+    internal delegate IDependencyBoundValue<TDependency> DependencyBoundValueNonConvertingCtor<TDependency>(
+        IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression);
+
+    /// <summary>
     /// Represents a value which is bound to a dependency property and which does not need
     /// to perform any special type conversion logic.
     /// </summary>
@@ -14,10 +26,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="value">The dependency property value which created this object.</param>
         /// <param name="expressionType">The type of the bound expression.</param>
-        /// <param name="viewModelType">The type of the view model.</param>
+        /// <param name="dataSourceType">The type of the data source.</param>
         /// <param name="expression">The binding expression.</param>
-        public DependencyBoundValueNonConverting(IDependencyPropertyValue value, Type expressionType, Type viewModelType, String expression)
-            : base(value, expressionType, viewModelType, expression)
+        public DependencyBoundValueNonConverting(IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression)
+            : base(value, expressionType, dataSourceType, expression)
         {
 
         }

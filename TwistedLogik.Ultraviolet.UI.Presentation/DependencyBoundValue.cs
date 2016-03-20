@@ -18,11 +18,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public DependencyBoundValue(IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression)
         {
             this.dependencyValue = value;
-            this.getter          = (DataBindingGetter<T>)BindingExpressions.CreateBindingGetter(expressionType, dataSourceType, expression);
-            this.setter          = (DataBindingSetter<T>)BindingExpressions.CreateBindingSetter(expressionType, dataSourceType, expression);
-            this.comparer        = (DataBindingComparer<T>)BindingExpressions.GetComparisonFunction(expressionType);
-            this.cachedValue     = GetUnderlyingValue();
-            this.dpropReference  = BindingExpressions.GetSimpleDependencyProperty(dataSourceType, expression);
+            this.getter = (DataBindingGetter<T>)BindingExpressions.CreateBindingGetter(expressionType, dataSourceType, expression);
+            this.setter = (DataBindingSetter<T>)BindingExpressions.CreateBindingSetter(expressionType, dataSourceType, expression);
+            this.comparer = (DataBindingComparer<T>)BindingExpressions.GetComparisonFunction(expressionType);
+            this.cachedValue = GetUnderlyingValue();
+            this.dpropReference = BindingExpressions.GetSimpleDependencyProperty(dataSourceType, expression);
 
             if (dpropReference != null)
             {
