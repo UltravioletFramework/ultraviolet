@@ -1892,8 +1892,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 partLength += input[position++].SourceLength;
             }
 
-            var partEnd = partStart + partCount;
-
             var trailingTriviaList = AccumulateTrivia(input, ref position, isLeading: false);
             var trailingTrivia = ConvertTriviaList(trailingTriviaList);
 
