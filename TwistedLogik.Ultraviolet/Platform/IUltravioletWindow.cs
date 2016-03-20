@@ -155,6 +155,14 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Gets a value indicating whether the window's underlying native resources have been released.
+        /// </summary>
+        Boolean Disposed
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this window's rendering is synchronized
         /// with the vertical retrace (i.e, whether vsync is enabled).
         /// </summary>

@@ -654,7 +654,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             get
             {
-                return window != null && window == Ultraviolet.GetPlatform().Windows.GetPrimary();
+                return !(window?.Disposed ?? true) && window == Ultraviolet.GetPlatform().Windows.GetPrimary();
             }
         }
 
@@ -665,7 +665,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             get
             {
-                return window != null && window == Ultraviolet.GetPlatform().Windows.GetCurrent();
+                return !(window?.Disposed ?? true) && window == Ultraviolet.GetPlatform().Windows.GetCurrent();
             }
         }
 
@@ -705,7 +705,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             get
             {
-                if (window == null)
+                if (window?.Disposed ?? true)
                     return Size2.Zero;
 
                 return window.Compositor.Size;
@@ -719,7 +719,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             get
             {
-                if (window == null)
+                if (window?.Disposed ?? true)
                     return 0;
 
                 return window.Compositor.Width;
@@ -733,7 +733,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             get
             {
-                if (window == null)
+                if (window?.Disposed ?? true)
                     return 0;
 
                 return window.Compositor.Height;
@@ -747,7 +747,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             get
             {
-                if (window == null)
+                if (window?.Disposed ?? true)
                     return null;
 
                 return Ultraviolet.GetUI().GetScreens(window);
