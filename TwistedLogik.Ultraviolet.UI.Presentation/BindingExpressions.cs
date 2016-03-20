@@ -50,6 +50,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Clears the internal cache of binding getters which is built by
+        /// calls to the <see cref="CreateBindingGetter"/> method.
+        /// </summary>
+        public static void ClearCachedBindingGetters()
+        {
+            lock(cachedExpressionGetters)
+                cachedExpressionGetters.Clear();
+        }
+
+        /// <summary>
+        /// Clears the internal cache of binding setters which is built by 
+        /// calls to the the <see cref="CreateBindingSetter"/> method.
+        /// </summary>
+        public static void ClearCachedBindingSetters()
+        {
+            lock (cachedExpressionSetters)
+                cachedExpressionSetters.Clear();
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified string represents a binding expression.
         /// </summary>
         /// <param name="expression">The expression string to evaluate.</param>
@@ -198,6 +218,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(dataSourceType, "dataSourceType");
             Contract.RequireNotEmpty(expression, "expression");
 
+            // Check the cache for an existing delegate.
+            var key = new BindingExpressionAccessorKey(boundType, dataSourceType, expression);
+            lock (cachedExpressionGetters)
+            {
+                var cached = default(Delegate);
+                if (cachedExpressionGetters.TryGetValue(key, out cached))
+                    return cached;
+            }
+
             /* NOTE:
              * The special case for simple dependency properties here is an optimization.
              * Profiling shows that a significant part of our time during loading is spent
@@ -206,14 +235,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dprop = GetSimpleDependencyProperty(dataSourceType, expression);
             if (dprop != null && dprop.PropertyType == boundType)
             {
-                return (Delegate)miCreateSimpleGet.MakeGenericMethod(boundType).Invoke(null, new[] { dprop });
+                var result = (Delegate)miCreateSimpleGet.MakeGenericMethod(boundType).Invoke(null, new[] { dprop });
+                lock (cachedExpressionGetters)
+                {
+                    cachedExpressionGetters[key] = result;
+                }
+                return result;
             }
             else
             {
                 var builder = new DataBindingGetterBuilder(boundType, dataSourceType, expression);
-                return builder.Compile();
+                var result = builder.Compile();
+                lock (cachedExpressionGetters)
+                {
+                    cachedExpressionGetters[key] = result;
+                }
+                return result;
             }
-        }
+        }        
 
         /// <summary>
         /// Creates a setter for the specified binding expression.
@@ -228,6 +267,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(dataSourceType, "dataSourceType");
             Contract.RequireNotEmpty(expression, "expression");
 
+            // Check the cache for an existing delegate.
+            var key = new BindingExpressionAccessorKey(boundType, dataSourceType, expression);
+            lock (cachedExpressionSetters)
+            {
+                var cached = default(Delegate);
+                if (cachedExpressionSetters.TryGetValue(key, out cached))
+                    return cached;
+            }
+
             /* NOTE:
              * The special case for simple dependency properties here is an optimization.
              * Profiling shows that a significant part of our time during loading is spent
@@ -236,12 +284,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dprop = GetSimpleDependencyProperty(dataSourceType, expression);
             if (dprop != null && dprop.PropertyType == boundType)
             {
-                return (Delegate)miCreateSimpleSet.MakeGenericMethod(boundType).Invoke(null, new[] { dprop });
+                var result = (Delegate)miCreateSimpleSet.MakeGenericMethod(boundType).Invoke(null, new[] { dprop });
+                lock (cachedExpressionSetters)
+                {
+                    cachedExpressionSetters[key] = result;
+                }
+                return result;
             }
             else
             {
                 var builder = new DataBindingSetterBuilder(boundType, dataSourceType, expression);
-                return builder.Compile();
+                var result = builder.Compile();
+                lock (cachedExpressionSetters)
+                {
+                    cachedExpressionSetters[key] = result;
+                }
+                return result;
             }
         }
 
@@ -502,5 +560,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // Comparison functions for various types.
         private static readonly Dictionary<Type, Delegate> comparerRegistry = new Dictionary<Type, Delegate>();
+
+        // Cached expression accessors.
+        private static readonly Dictionary<BindingExpressionAccessorKey, Delegate> cachedExpressionGetters =
+            new Dictionary<BindingExpressionAccessorKey, Delegate>();
+        private static readonly Dictionary<BindingExpressionAccessorKey, Delegate> cachedExpressionSetters =
+            new Dictionary<BindingExpressionAccessorKey, Delegate>();
     }
 }

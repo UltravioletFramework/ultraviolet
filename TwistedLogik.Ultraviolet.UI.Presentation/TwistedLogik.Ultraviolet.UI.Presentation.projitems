@@ -40,6 +40,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ArrangeOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssetSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingConversions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionAccessorKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilationError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilationErrorException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionCompilationFailedException.cs" />
