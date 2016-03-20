@@ -372,9 +372,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     getexp = String.Format("{0}{1}", expTarget, expText);
                 }
 
-                expFormatString = String.IsNullOrEmpty(expFormatString) ? "null" : String.Format("\"{{0:{0}}}\"", expFormatString);
-
-                if (expressionInfo.Type == typeof(String) || expressionInfo.Type == typeof(VersionedStringSource))
+                var hasFormatString = !String.IsNullOrEmpty(expFormatString);
+                expFormatString = hasFormatString ? String.Format("\"{{0:{0}}}\"", expFormatString) : "null";
+                
+                if (IsStringType(expressionInfo.Type) || (expressionInfo.Type == typeof(Object) && hasFormatString))
                 {
                     WriteLine("get");
                     WriteLine("{");
@@ -401,7 +402,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 expressionInfo.SetterLineStart = LineCount;
                 if (isDependencyProperty)
                 {
-                    if (expressionInfo.Type == typeof(String) || expressionInfo.Type == typeof(VersionedStringSource))
+                    if (IsStringType(expressionInfo.Type))
                     {
                         WriteLine("set");
                         WriteLine("{");
@@ -589,6 +590,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             expTargetType = dataSourceWrapperInfo.DataSourceType;
 
             return false;
+        }
+
+        private Boolean IsStringType(Type type)
+        {
+            return type == typeof(String) || type == typeof(VersionedStringSource);
         }
 
         // State values.
