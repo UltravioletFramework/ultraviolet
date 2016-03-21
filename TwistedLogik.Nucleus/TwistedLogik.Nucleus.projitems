@@ -93,6 +93,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderExtensions.Numeric.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatterCommandArgument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatterCommandHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatterCommandArguments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatterCommandInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringPtr16.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringPtr8.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringResource.cs" />

@@ -240,10 +240,20 @@
       <Variant>Formatter command '{0}' is invalid for argument type '{1}'</Variant>
     </en-US>
   </String>
+  <String Key="FMT_CMD_INVALID_WITHOUT_ARGUMENT">
+    <en-US>
+      <Variant>Formatter command '{0}' is invalid without an argument index.</Variant>
+    </en-US>
+  </String>
   <String Key="FMT_CMD_INVALID_FOR_GENERATED_STRINGS">
     <en-US>
       <Variant>Generated strings are incompatible with the '{0}' formatter command.</Variant>
     </en-US>
+  </String>
+  <String Key="FMT_CMD_HANDLER_ALREADY_REGISTERED">
+    <en-US>
+        <Variant>The specified command handler has already been registered with this formatter.</Variant>
+    </en-US>      
   </String>
   <String Key="SEGMENT_IS_EMPTY">
     <en-US>

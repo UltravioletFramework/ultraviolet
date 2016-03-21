@@ -14,11 +14,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Represents a method that is used to handle a particular argument type.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument being handled.</param>
-        private delegate void StringFormatterArgumentHandler(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument);
+        private delegate void StringFormatterArgumentHandler(StringFormatter formatter,
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmdInfo);
 
         /// <summary>
         /// Represents an argument that has been added to the formatter.
@@ -46,7 +43,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Initializes the <see cref="StringFormatter"/> type.
         /// </summary>
-        public StringFormatter()
+        static StringFormatter()
         {
             AddArgumentHandler<Boolean>(ArgumentHandler_Boolean);
             AddArgumentHandler<Byte>(ArgumentHandler_Byte);
@@ -65,7 +62,40 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         public void Reset()
         {
-            Arguments.Clear();
+            arguments.Clear();
+        }
+
+        /// <summary>
+        /// Registers the specified command handler with the formatter.
+        /// </summary>
+        /// <param name="handler">The command handler to register.</param>
+        public void RegisterCommandHandler(StringFormatterCommandHandler handler)
+        {
+            Contract.Require(handler, nameof(handler));
+
+            if (commandHandlers.Contains(handler))
+                throw new InvalidOperationException(NucleusStrings.FmtCmdHandlerAlreadyRegistered);
+
+            commandHandlers.Add(handler);
+        }
+
+        /// <summary>
+        /// Unregisters the specified command handler from the formatter.
+        /// </summary>
+        /// <param name="handler">The command handler to unregister.</param>
+        public void UnregisterCommandHandler(StringFormatterCommandHandler handler)
+        {
+            Contract.Require(handler, nameof(handler));
+
+            commandHandlers.Remove(handler);
+        }
+
+        /// <summary>
+        /// Unregisters all of the formatter's command handlers.
+        /// </summary>
+        public void UnregisterAllCommandHandlers()
+        {
+            commandHandlers.Clear();
         }
 
         /// <summary>
@@ -75,7 +105,7 @@ namespace TwistedLogik.Nucleus.Text
         [SecuritySafeCritical]
         public void AddArgument(Boolean value)
         {
-            Arguments.Add(new StringFormatterArgument(typeof(Boolean), *(ulong*)&value));
+            arguments.Add(new StringFormatterArgument(typeof(Boolean), *(ulong*)&value));
         }
 
         /// <summary>
@@ -85,7 +115,7 @@ namespace TwistedLogik.Nucleus.Text
         [SecuritySafeCritical]
         public void AddArgument(Byte value)
         {
-            Arguments.Add(new StringFormatterArgument(typeof(Byte), *(ulong*)&value));
+            arguments.Add(new StringFormatterArgument(typeof(Byte), *(ulong*)&value));
         }
 
         /// <summary>
@@ -95,7 +125,7 @@ namespace TwistedLogik.Nucleus.Text
         [SecuritySafeCritical]
         public void AddArgument(Char value)
         {
-            Arguments.Add(new StringFormatterArgument(typeof(Char), *(ulong*)&value));
+            arguments.Add(new StringFormatterArgument(typeof(Char), *(ulong*)&value));
         }
 
         /// <summary>
@@ -105,7 +135,7 @@ namespace TwistedLogik.Nucleus.Text
         [SecuritySafeCritical]
         public void AddArgument(Int16 value)
         {
-            Arguments.Add(new StringFormatterArgument(typeof(Int16), *(ulong*)&value));
+            arguments.Add(new StringFormatterArgument(typeof(Int16), *(ulong*)&value));
         }
 
         /// <summary>
@@ -115,7 +145,7 @@ namespace TwistedLogik.Nucleus.Text
         [SecuritySafeCritical]
         public void AddArgument(Int32 value)
         {
-            Arguments.Add(new StringFormatterArgument(typeof(Int32), *(ulong*)&value));
+            arguments.Add(new StringFormatterArgument(typeof(Int32), *(ulong*)&value));
         }
 
         /// <summary>
@@ -126,7 +156,7 @@ namespace TwistedLogik.Nucleus.Text
         [SecuritySafeCritical]
         public void AddArgument(UInt16 value)
         {
-            Arguments.Add(new StringFormatterArgument(typeof(UInt16), *(ulong*)&value));
+            arguments.Add(new StringFormatterArgument(typeof(UInt16), *(ulong*)&value));
         }
 
         /// <summary>
@@ -137,7 +167,7 @@ namespace TwistedLogik.Nucleus.Text
         [SecuritySafeCritical]
         public void AddArgument(UInt32 value)
         {
-            Arguments.Add(new StringFormatterArgument(typeof(UInt32), *(ulong*)&value));
+            arguments.Add(new StringFormatterArgument(typeof(UInt32), *(ulong*)&value));
         }
 
         /// <summary>
@@ -147,7 +177,7 @@ namespace TwistedLogik.Nucleus.Text
         [SecuritySafeCritical]
         public void AddArgument(Single value)
         {
-            Arguments.Add(new StringFormatterArgument(typeof(Single), *(ulong*)&value));
+            arguments.Add(new StringFormatterArgument(typeof(Single), *(ulong*)&value));
         }
 
         /// <summary>
@@ -157,7 +187,7 @@ namespace TwistedLogik.Nucleus.Text
         [SecuritySafeCritical]
         public void AddArgument(Double value)
         {
-            Arguments.Add(new StringFormatterArgument(typeof(Double), *(ulong*)&value));
+            arguments.Add(new StringFormatterArgument(typeof(Double), *(ulong*)&value));
         }
 
         /// <summary>
@@ -166,7 +196,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="value">The value to add as an argument.</param>
         public void AddArgument(String value)
         {
-            Arguments.Add(new StringFormatterArgument(value));
+            arguments.Add(new StringFormatterArgument(value));
         }
 
         /// <summary>
@@ -175,7 +205,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="value">The value to add as an argument.</param>
         public void AddArgument(LocalizedString value)
         {
-            Arguments.Add(new StringFormatterArgument(value));
+            arguments.Add(new StringFormatterArgument(value));
         }
 
         /// <summary>
@@ -184,7 +214,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="value">The value to add as an argument.</param>
         public void AddArgument(LocalizedStringVariant value)
         {
-            Arguments.Add(new StringFormatterArgument(value));
+            arguments.Add(new StringFormatterArgument(value));
         }
 
         /// <summary>
@@ -287,9 +317,9 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The formatter argument with the specified index..</returns>
         private StringFormatterArgument GetArgument(Int32 ix)
         {
-            if (ix < 0 || ix >= Arguments.Count)
+            if (ix < 0 || ix >= arguments.Count)
                 throw new FormatException(NucleusStrings.FmtArgumentOutOfRange);
-            return Arguments[ix];
+            return arguments[ix];
         }
 
         /// <summary>
@@ -366,56 +396,98 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="length">The length of the specifier.</param>
         private void ProcessFormatSpecifier(String input, StringBuilder output, Int32 ix, Int32 length)
         {
-            // Find the referenced argument index.
-            StringFormatterArgument argument;
-            var argumentIndex = -1;
-            var argumentStart = 0;
-            var argumentLength = 0;
+            // Parse the command string to pull out its name and arguments.
+            var argument = default(StringFormatterArgument);
+            var cmdStart = ix + 1;
+            var cmdLength = 0;
+
             for (int i = 1; i < length; i++)
             {
                 var c = input[ix + i];
-                if (c == ':' || c == '}')
+                if (c == '}')
                 {
-                    argumentStart = ix + 1;
-                    argumentLength = (ix + i) - argumentStart;
                     break;
                 }
+                cmdLength++;
             }
-            if (argumentLength == 1 && input[argumentStart] == '?')
+
+            var cmdName = default(StringSegment);
+            var cmdArgs = new StringFormatterCommandArguments(input, cmdStart, cmdLength);
+            
+            var arg0 = cmdArgs.GetArgument(0);
+            var arg0Text = arg0.Text;
+            var arg0Value = 0;            
+
+            // If the command starts with a reference to an argument, parse 
+            // that out so we can get at the command name.
+            var referencesArgument = ConvertInteger(arg0Text.SourceString, arg0Text.Start, arg0Text.Length, out arg0Value);
+            if (referencesArgument)
             {
-                // The ? operator is a special case: it's assuming that whatever we output is going
-                // to be generated by a match rule, so treat it like a non-existent localized string.
-                argument = new StringFormatterArgument();
-                ArgumentHandler_LocalizedString(input, output, argumentStart + argumentLength, ref argument);
-                return;
+                if (cmdArgs.Count > 1)
+                {
+                    cmdName = cmdArgs.GetArgument(1).Text;
+                    cmdArgs = cmdArgs.Discard(2);
+                }
             }
             else
             {
-                if (!ConvertInteger(input, argumentStart, argumentLength, out argumentIndex))
+                cmdName = arg0Text;
+                cmdArgs = cmdArgs.Discard(1);
+            }
+
+            // The ? operator is a special case: it's assuming that whatever we output is going
+            // to be generated by a match rule, so treat it like a non-existent localized string.
+            if (cmdName == "?")
+            {
+                var matchCommandInfo = 
+                    new StringFormatterCommandInfo(cmdName, cmdArgs, null);
+
+                argument = new StringFormatterArgument();
+                ArgumentHandler_LocalizedString(this, input, output, arg0Text.Start + arg0Text.Length, ref argument, ref matchCommandInfo);
+                return;
+            }
+
+            // Determine if we have a custom handler for this command.
+            var matchingCommandHandler = default(StringFormatterCommandHandler);
+            for (int i = commandHandlers.Count - 1; i >= 0; i--)
+            {
+                var commandHandler = commandHandlers[i];
+                if (commandHandler.CanHandleCommand(cmdName))
                 {
-                    output.AppendSubstring(input, ix, length);
-                    return;
+                    matchingCommandHandler = commandHandler;
+                    break;
                 }
             }
-            
+
+            // If we can't convert the first argument to an integer, just write out the whole command string.
+            if (!referencesArgument)
+            {
+                if (matchingCommandHandler != null)
+                {
+                    matchingCommandHandler.HandleCommand(this, output, cmdName, cmdArgs);
+                    return;
+                }
+
+                output.AppendSubstring(input, ix, length);
+                return;
+            }
+
             // Append the selected argument to the buffer.
-            argument = GetArgument(argumentIndex);
-            AppendArgument(input, output, argumentStart + argumentLength, ref argument);
+            var cmdInfo = new StringFormatterCommandInfo(cmdName, cmdArgs, matchingCommandHandler);
+            argument = GetArgument(arg0Value);
+            AppendArgument(input, output, arg0Text.Start + arg0Text.Length, ref argument, ref cmdInfo);
         }
 
         /// <summary>
         /// Appends a formatter argument to the specified output buffer.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument to append to the output buffer.</param>
-        private void AppendArgument(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument)
+        private void AppendArgument(String input, StringBuilder output, Int32 position,
+            ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmdInfo)
         {
             StringFormatterArgumentHandler handler;
-            if (ArgumentHandlers.TryGetValue(argument.Type, out handler))
+            if (argumentHandlers.TryGetValue(argument.Type, out handler))
             {
-                handler(input, output, position, ref argument);
+                handler(this, input, output, position, ref argument, ref cmdInfo);
             }
             else
             {
@@ -478,97 +550,123 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Adds an argument handler to the argument handler registry.
         /// </summary>
-        /// <param name="handler">The handler to add to the registry.</param>
         [SecuritySafeCritical]
-        private void AddArgumentHandler<T>(StringFormatterArgumentHandler handler)
+        private static void AddArgumentHandler<T>(StringFormatterArgumentHandler handler)
         {
-            ArgumentHandlers[typeof(T).TypeHandle.Value.ToInt64()] = handler;
+            argumentHandlers[typeof(T).TypeHandle.Value.ToInt64()] = handler;
         }
 
         /// <summary>
-        /// Handles Boolean formatter arguments.
+        /// Handles <see cref="Boolean"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument being handled.</param>
         [SecuritySafeCritical]
-        private void ArgumentHandler_Boolean(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument)
+        private static void ArgumentHandler_Boolean(StringFormatter formatter,
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
             var raw = argument.Value;
             var value = *(bool*)&raw;
-            output.Append(value ? Boolean.TrueString : Boolean.FalseString);
+
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandBoolean(formatter,
+                    output, cmd.CommandName, cmd.CommandArguments, value);
+            }
+            else
+            {
+                output.Append(value ? Boolean.TrueString : Boolean.FalseString);
+            }
         }
 
         /// <summary>
-        /// Handles Byte formatter arguments.
+        /// Handles <see cref="Byte"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument being handled.</param>
         [SecuritySafeCritical]
-        private void ArgumentHandler_Byte(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument)
+        private static void ArgumentHandler_Byte(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
             var raw = argument.Value;
             var value = *(byte*)&raw;
-            output.Concat((int)value);
+
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandByte(formatter, 
+                    output, cmd.CommandName, cmd.CommandArguments, value);
+            }
+            else
+            {
+                output.Concat(value);
+            }
         }
 
         /// <summary>
-        /// Handles Char formatter arguments.
+        /// Handles <see cref="Char"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument being handled.</param>
         [SecuritySafeCritical]
-        private void ArgumentHandler_Char(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument)
+        private static void ArgumentHandler_Char(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
             var raw = argument.Value;
             var value = *(char*)&raw;
-            output.Append(value);
+
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandChar(formatter,
+                    output, cmd.CommandName, cmd.CommandArguments, value);
+            }
+            else
+            {
+                output.Append(value);
+            }
         }
 
         /// <summary>
-        /// Handles Int16 formatter arguments.
+        /// Handles <see cref="Int16"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument being handled.</param>
         [SecuritySafeCritical]
-        private void ArgumentHandler_Int16(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument)
+        private static void ArgumentHandler_Int16(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
             var raw = argument.Value;
             var value = *(Int16*)&raw;
-            ArgumentHandler_SignedInteger<Int16>(input, output, position, value);
+
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandInt16(formatter,
+                    output, cmd.CommandName, cmd.CommandArguments, value);
+            }
+            else
+            {
+                ArgumentHandler_SignedInteger<Int16>(formatter, input, output, position, value);
+            }
         }
 
         /// <summary>
-        /// Handles Int32 formatter arguments.
+        /// Handles <see cref="Int32"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument being handled.</param>
         [SecuritySafeCritical]
-        private void ArgumentHandler_Int32(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument)
+        private static void ArgumentHandler_Int32(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
             var raw = argument.Value;
             var value = *(Int32*)&raw;
-            ArgumentHandler_SignedInteger<Int32>(input, output, position, value);
+
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandInt32(formatter,
+                    output, cmd.CommandName, cmd.CommandArguments, value);
+            }
+            else
+            {
+                ArgumentHandler_SignedInteger<Int32>(formatter, input, output, position, value);
+            }
         }
 
         /// <summary>
-        /// Handles Int16 and Int32 formatter arguments.
+        /// Handles <see cref="Int16"/> and <see cref="Int32"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="value">The value of the argument being handled.</param>
         [SecuritySafeCritical]
-        private void ArgumentHandler_SignedInteger<T>(String input, StringBuilder output, Int32 position, Int32 value)
+        private static void ArgumentHandler_SignedInteger<T>(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, Int32 value)
         {
             Int32 commands = 0;
             StringSegment command;
@@ -591,44 +689,53 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Handles UInt16 formatter arguments.
+        /// Handles <see cref="UInt16"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument being handled.</param>
         [SecuritySafeCritical]
-        private void ArgumentHandler_UInt16(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument)
+        private static void ArgumentHandler_UInt16(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
             var raw = argument.Value;
             var value = *(UInt16*)&raw;
-            ArgumentHandler_UnsignedInteger<UInt16>(input, output, position, value);
+
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandUInt16(formatter,
+                    output, cmd.CommandName, cmd.CommandArguments, value);
+            }
+            else
+            {
+                ArgumentHandler_UnsignedInteger<UInt16>(formatter, input, output, position, value);
+            }
         }
 
         /// <summary>
-        /// Handles UInt32 formatter arguments.
+        /// Handles <see cref="UInt32"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument being handled.</param>
         [SecuritySafeCritical]
-        private void ArgumentHandler_UInt32(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument)
+        private static void ArgumentHandler_UInt32(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
             var raw = argument.Value;
             var value = *(UInt32*)&raw;
-            ArgumentHandler_UnsignedInteger<UInt32>(input, output, position, value);
+            
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandUInt32(formatter,
+                    output, cmd.CommandName, cmd.CommandArguments, value);
+            }
+            else
+            {
+                ArgumentHandler_UnsignedInteger<UInt32>(formatter, input, output, position, value);
+            }
         }
 
         /// <summary>
-        /// Handles UInt16 and UInt32 formatter arguments.
+        /// Handles <see cref="UInt16"/> and <see cref="UInt32"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="value">The value of the argument being handled.</param>
         [SecuritySafeCritical]
-        private void ArgumentHandler_UnsignedInteger<T>(String input, StringBuilder output, Int32 position, UInt32 value)
+        private static void ArgumentHandler_UnsignedInteger<T>(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, UInt32 value)
         {
             Int32 commands = 0;
             StringSegment command;
@@ -651,43 +758,53 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Handles Single formatter arguments.
+        /// Handles <see cref="Single"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument being handled.</param>
         [SecuritySafeCritical]
-        private void ArgumentHandler_Single(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument)
+        private static void ArgumentHandler_Single(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
             var raw = argument.Value;
             var value = *(Single*)&raw;
-            ArgumentHandler_FloatingPoint<Single>(input, output, position, value);
+
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandSingle(formatter,
+                    output, cmd.CommandName, cmd.CommandArguments, value);
+            }
+            else
+            {
+                ArgumentHandler_FloatingPoint<Single>(formatter, input, output, position, value);
+            }
         }
 
         /// <summary>
-        /// Handles Double formatter arguments.
+        /// Handles <see cref="Double"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument being handled.</param>
         [SecuritySafeCritical]
-        private void ArgumentHandler_Double(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument)
+        private static void ArgumentHandler_Double(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
             var raw = argument.Value;
             var value = *(Double*)&raw;
-            ArgumentHandler_FloatingPoint<Double>(input, output, position, (float)value);
+
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandDouble(formatter,
+                    output, cmd.CommandName, cmd.CommandArguments, value);
+            }
+            else
+            {
+                ArgumentHandler_FloatingPoint<Single>(formatter, input, output, position, (float)value);
+            }
         }
 
         /// <summary>
-        /// Handles Single and Double formatter arguments.
+        /// Handles <see cref="Single"/> and <see cref="Double"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="value">The value of the argument being handled.</param>
-        private void ArgumentHandler_FloatingPoint<T>(String input, StringBuilder output, Int32 position, Single value)
+        [SecuritySafeCritical]
+        private static void ArgumentHandler_FloatingPoint<T>(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, Single value)
         {
             Int32 commands = 0;
             StringSegment command;
@@ -710,15 +827,20 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Handles LocalizedString formatter arguments.
+        /// Handles <see cref="LocalizedString"/> formatter arguments.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="output">The output buffer.</param>
-        /// <param name="position">The current position within the input string.</param>
-        /// <param name="argument">The argument being handled.</param>
-        private void ArgumentHandler_LocalizedString(String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument)
+        [SecuritySafeCritical]
+        private static void ArgumentHandler_LocalizedString(StringFormatter formatter, 
+            String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
             var localizedString = (LocalizedString)argument.Reference;
+
+            if (cmd.CommandHandler != null)
+            {
+                cmd.CommandHandler.HandleCommandLocalizedString(formatter,
+                    output, cmd.CommandName, cmd.CommandArguments, localizedString);
+                return;
+            }
 
             Int32 commands = 0;
             StringSegment command;
@@ -747,7 +869,7 @@ namespace TwistedLogik.Nucleus.Text
                     if (ReadCommandInteger(input, ref position, out targetArgumentIndex) && ReadCommandString(input, ref position, out targetMatchRule))
                     {
                         // Make sure our target is a localized string variant.
-                        var target = GetArgument(targetArgumentIndex);
+                        var target = formatter.GetArgument(targetArgumentIndex);
                         if (target.Reference == null || !(target.Reference is LocalizedStringVariant))
                             throw new FormatException(NucleusStrings.FmtCmdInvalidForArgument.Format("match", target.Reference.GetType()));
 
@@ -765,8 +887,14 @@ namespace TwistedLogik.Nucleus.Text
                 output.Append((string)localizedString ?? "???");
         }
 
+        // Registered argument handlers.
+        private static readonly Dictionary<Int64, StringFormatterArgumentHandler> argumentHandlers = 
+            new Dictionary<Int64, StringFormatterArgumentHandler>();
+
         // Formatter state.
-        private readonly Dictionary<Int64, StringFormatterArgumentHandler> ArgumentHandlers = new Dictionary<Int64, StringFormatterArgumentHandler>();
-        private readonly List<StringFormatterArgument> Arguments = new List<StringFormatterArgument>();
+        private readonly List<StringFormatterArgument> arguments =
+            new List<StringFormatterArgument>();
+        private readonly List<StringFormatterCommandHandler> commandHandlers =
+            new List<StringFormatterCommandHandler>();
     }
 }
