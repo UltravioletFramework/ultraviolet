@@ -68,6 +68,7 @@ namespace TwistedLogik.Nucleus
         public static readonly StringResource MessagePoolNotFound                    = new StringResource(StringDatabase, "MESSAGE_POOL_NOT_FOUND");
         public static readonly StringResource MessageMergeTypeConflict               = new StringResource(StringDatabase, "MESSAGE_MERGE_TYPE_CONFLICT");
         public static readonly StringResource FmtArgumentOutOfRange                  = new StringResource(StringDatabase, "FMT_ARGUMENT_OUT_OF_RANGE");
+        public static readonly StringResource FmtCmdUnrecognized                     = new StringResource(StringDatabase, "FMT_CMD_UNRECOGNIZED");
         public static readonly StringResource FmtCmdParseFailure                     = new StringResource(StringDatabase, "FMT_CMD_PARSE_FAILURE");
         public static readonly StringResource FmtCmdInvalidForArgument               = new StringResource(StringDatabase, "FMT_CMD_INVALID_FOR_ARGUMENT");
         public static readonly StringResource FmtCmdInvalidWithoutArgument           = new StringResource(StringDatabase, "FMT_CMD_INVALID_WITHOUT_ARGUMENT");

@@ -92,7 +92,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderExtensions.Numeric.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatter.MatchCommandHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatter.VariantCommandHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatter.DecimalsCommandHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatter.PadCommandHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatterCommandArgument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatterCommandHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatterCommandArguments.cs" />

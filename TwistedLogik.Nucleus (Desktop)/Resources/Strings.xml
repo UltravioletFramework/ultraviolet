@@ -230,6 +230,11 @@
       <Variant>Index (zero based) must be greater than or equal to zero and less than the size of the argument list.</Variant>
     </en-US>
   </String>
+  <String Key="FMT_CMD_UNRECOGNIZED">
+    <en-US>
+      <Variant>The command '{0}' was not recognized and no custom handler is registered which accepts it.</Variant>      
+    </en-US>      
+  </String>
   <String Key="FMT_CMD_PARSE_FAILURE">
     <en-US>
       <Variant>Could not parse arguments for '{0}' formatter command.</Variant>
