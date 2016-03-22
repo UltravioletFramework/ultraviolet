@@ -9,11 +9,106 @@ using TwistedLogik.Nucleus.Text;
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
+    /// Represents a method which is used to evaluate a custom text layout command.
+    /// </summary>
+    /// <param name="state">An arbitrary state object.</param>
+    /// <param name="position">The command's position within the source text.</param>
+    /// <param name="command">The command which is being evaluated.</param>
+    public delegate void TextLayoutCommandEvaluator(Object state, Int32 position, TextLayoutCustomCommand command);
+
+    /// <summary>
     /// Represents a stream of commands produced by the text layout engine.
     /// </summary>
     [SecuritySafeCritical]
     public unsafe class TextLayoutCommandStream
     {
+        /// <summary>
+        /// Searches for custom commands in stream and allows them to be evaluated
+        /// with the specified evaluator function.
+        /// </summary>
+        /// <param name="state">A state object to pass to the evaluator.</param>
+        /// <param name="evaluator">The function with which to evaluate custom commands.</param>
+        public void GetCustomCommands(Object state, TextLayoutCommandEvaluator evaluator)
+        {
+            GetCustomCommands(0, Int32.MaxValue, state, evaluator);
+        }
+
+        /// <summary>
+        /// Searches for custom commands in the specified range of glyphs and allows them to be evaluated
+        /// with the specified evaluator function.
+        /// </summary>
+        /// <param name="startGlyph">The index of the first glyph to consider.</param>
+        /// <param name="glyphCount">The number of glyphs to consider.</param>
+        /// <param name="state">A state object to pass to the evaluator.</param>
+        /// <param name="evaluator">The function with which to evaluate custom commands.</param>
+        /// <remarks>
+        /// This method will return custom commands which fall immediately after the last glyph in the
+        /// specified range, but not commands which fall immediately before that range, unless the range
+        /// starts at the beginning of the text.
+        /// </remarks>
+        public void GetCustomCommands(Int32 startGlyph, Int32 glyphCount, Object state, TextLayoutCommandEvaluator evaluator)
+        {
+            Contract.EnsureRange(startGlyph >= 0, nameof(startGlyph));
+            Contract.Require(evaluator, nameof(evaluator));
+
+            var glyphsSeen = 0;
+            var glyphsMax = (glyphCount == Int32.MaxValue) ? Int32.MaxValue : startGlyph + glyphCount;
+
+            var acquiredPointers = !HasAcquiredPointers;
+            if (acquiredPointers)
+                AcquirePointers();
+
+            Seek(0);
+
+            while (StreamPositionInObjects < Count)
+            {                
+                var cmdType = *(TextLayoutCommandType*)Data;
+                switch (cmdType)
+                {
+                    case TextLayoutCommandType.Text:
+                        {
+                            var cmd = (TextLayoutTextCommand*)Data;
+                            glyphsSeen += cmd->TextLength;                            
+                        }
+                        break;
+                        
+                    case TextLayoutCommandType.Icon:
+                        {
+                            glyphsSeen++;
+                        }
+                        break;
+
+                    case TextLayoutCommandType.LineBreak:
+                        {
+                            var cmd = (TextLayoutLineBreakCommand*)Data;
+                            if (cmd->Length > 0)
+                            {
+                                glyphsSeen += cmd->Length;
+                            }
+                        }
+                        break;
+
+                    case TextLayoutCommandType.Custom:
+                        {
+                            if (glyphsSeen > startGlyph || startGlyph == 0)
+                            {
+                                var cmd = (TextLayoutCustomCommand*)Data;
+                                evaluator(state, glyphsSeen, *cmd);
+                            }
+                        }
+                        break;
+                }
+                
+                if (glyphsSeen > glyphsMax)
+                    break;
+
+                SeekNextCommand();
+            }
+
+            if (acquiredPointers)
+                ReleasePointers();
+        }
+
         /// <summary>
         /// Gets a <see cref="LineInfo"/> structure which describes the specified line of formatted text.
         /// </summary>
@@ -626,6 +721,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.Custom"/> command to the current position in the stream.
+        /// </summary>
+        /// <param name="command">The command to write to the stream.</param>
+        public void WriteCustomCommand(TextLayoutCustomCommand command)
+        {
+            stream.Reserve(sizeof(TextLayoutCustomCommand));
+            *(TextLayoutCustomCommand*)stream.Data = command;
+            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.Custom;
+            stream.FinalizeObject(sizeof(TextLayoutCustomCommand));
+        }
+
+        /// <summary>
         /// Reads a <see cref="TextLayoutCommandType.BlockInfo"/> command from the current position in the command stream.
         /// </summary>
         /// <returns>The command that was read.</returns>
@@ -805,6 +912,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public TextLayoutLineBreakCommand ReadLineBreakCommand()
         {
             var command = *(TextLayoutLineBreakCommand*)stream.Data;
+            stream.RawSeekForward();
+            return command;
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.Custom"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public TextLayoutCustomCommand ReadCustomCommand()
+        {
+            var command = *(TextLayoutCustomCommand*)stream.Data;
             stream.RawSeekForward();
             return command;
         }

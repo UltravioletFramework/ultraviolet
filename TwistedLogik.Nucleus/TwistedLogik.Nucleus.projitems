@@ -105,6 +105,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringPtr8.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentConversion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\Tokenizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xml\NamespaceDoc.cs" />

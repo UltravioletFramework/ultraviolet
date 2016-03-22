@@ -99,5 +99,10 @@
         /// Represents a command to insert a line break character.
         /// </summary>
         LineBreak,
+
+        /// <summary>
+        /// Represents a custom command.
+        /// </summary>
+        Custom,
     }
 }

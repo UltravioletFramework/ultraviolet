@@ -210,9 +210,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     case TextParserTokenType.PopGlyphShader:
                         ProcessPopGlyphShaderToken(output, ref token, ref state, ref index);
                         break;
-
+                        
                     default:
-                        throw new InvalidOperationException(UltravioletStrings.UnrecognizedLayoutCommand.Format(token.TokenType));
+                        if (token.TokenType >= TextParserTokenType.Custom)
+                        {
+                            ProcessCustomCommandToken(output, ref token, ref state, ref index);
+                            break;
+                        }
+                        else throw new InvalidOperationException(UltravioletStrings.UnrecognizedLayoutCommand.Format(token.TokenType));
                 }
             }
 
@@ -232,70 +237,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (text.Length != 8)
                 throw new FormatException();
 
-            var a = (Int32)GetHexNumberValue(text.Substring(0, 2));
-            var r = (Int32)GetHexNumberValue(text.Substring(2, 2));
-            var g = (Int32)GetHexNumberValue(text.Substring(4, 2));
-            var b = (Int32)GetHexNumberValue(text.Substring(6, 2));
+            var a = (Int32)StringSegmentConversion.ParseHexadecimalInt32(text.Substring(0, 2));
+            var r = (Int32)StringSegmentConversion.ParseHexadecimalInt32(text.Substring(2, 2));
+            var g = (Int32)StringSegmentConversion.ParseHexadecimalInt32(text.Substring(4, 2));
+            var b = (Int32)StringSegmentConversion.ParseHexadecimalInt32(text.Substring(6, 2));
 
             return new Color(r, g, b, a);
-        }
-
-        /// <summary>
-        /// Returns the numeric value associated with the specified hex digit.
-        /// </summary>
-        private static UInt32 GetHexDigitValue(Char c)
-        {
-            switch (c)
-            {
-                case '0': return 0;
-                case '1': return 1;
-                case '2': return 2;
-                case '3': return 3;
-                case '4': return 4;
-                case '5': return 5;
-                case '6': return 6;
-                case '7': return 7;
-                case '8': return 8;
-                case '9': return 9;
-                case 'A':
-                case 'a':
-                    return 10;
-                case 'B':
-                case 'b':
-                    return 11;
-                case 'C':
-                case 'c':
-                    return 12;
-                case 'D':
-                case 'd':
-                    return 13;
-                case 'E':
-                case 'e':
-                    return 14;
-                case 'F':
-                case 'f':
-                    return 15;
-
-                default:
-                    throw new ArgumentException("c");
-            }
-        }
-
-        /// <summary>
-        /// Returns the numeric value associated with the specified hex number.
-        /// </summary>
-        private static UInt32 GetHexNumberValue(StringSegment str)
-        {
-            var value = 0u;
-            var factor = 1u;
-            for (int i = str.Length - 1; i >= 0; i--)
-            {
-                var digit = GetHexDigitValue(str[i]);
-                value += digit * factor;
-                factor *= 16;
-            }
-            return value;
-        }
+        }        
 
         /// <summary>
         /// Clears all of the layout engine's layout parameter stacks.
@@ -484,6 +432,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             ref TextParserToken token, ref LayoutState state, ref Int32 index)
         {
             output.WritePopGlyphShader();
+            state.AdvanceLineToNextCommand();
+            index++;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.Custom"/>.
+        /// </summary>
+        private void ProcessCustomCommandToken(TextLayoutCommandStream output,
+            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+        {
+            var commandID = (token.TokenType - TextParserTokenType.Custom);
+            var commandValue = token.Text.IsEmpty ? default(Int32) : StringSegmentConversion.ParseInt32(token.Text);
+            output.WriteCustomCommand(new TextLayoutCustomCommand(commandID, commandValue));
             state.AdvanceLineToNextCommand();
             index++;
         }

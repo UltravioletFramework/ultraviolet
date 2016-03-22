@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
+using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
@@ -11,6 +12,26 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     /// </summary>
     public sealed partial class TextParser
     {
+        /// <summary>
+        /// Registers a new custom command which can be interpreted by the <see cref="TextParser"/> class.
+        /// </summary>
+        /// <param name="name">The name of the command to register.</param>
+        /// <returns>The command's identifier within the text parsing system.</returns>
+        public static Byte RegisterCustomCommand(String name)
+        {
+            const Int32 MaximumCustomCommandCount = Byte.MaxValue - (Int32)TextParserTokenType.Custom;
+            
+            lock (customCommands)
+            {
+                if (customCommands.Count == MaximumCustomCommandCount)
+                    throw new InvalidOperationException("TODO");
+
+                customCommands.Add(name);
+
+                return (Byte)(customCommands.Count - 1);
+            }
+        }
+
         /// <summary>
         /// Lexes and parses the specified string.
         /// </summary>
@@ -518,6 +539,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 return new TextParserToken(TextParserTokenType.Icon, name, sourceOffset, sourceLength);
             }
 
+            // Emit a custom command.
+            lock (customCommands)
+            {
+                for (int i = customCommands.Count - 1; i >= 0; i--)
+                {
+                    var command = customCommands[i];
+                    if (tokenText.Length >= 2 + command.Length && tokenText.Substring(1, command.Length) == command)
+                    {
+                        var id = (Byte)i;
+                        var text = tokenText[1 + command.Length] == ':' ?
+                            tokenText.Substring(2 + command.Length, tokenText.Length - (3 + command.Length)) : StringSegment.Empty;
+                        return new TextParserToken((TextParserTokenType)((Int32)TextParserTokenType.Custom + id),
+                            text, sourceOffset, sourceLength);
+                    }
+                }
+            }
+
             // Unrecognized or invalid command.
             return new TextParserToken(TextParserTokenType.Text, tokenText, sourceOffset, sourceLength);
         }
@@ -560,6 +598,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 position += token.SourceLength;
             }
         }
+
+        // Registered custom commands.
+        private static readonly List<String> customCommands = new List<String>();
 
         // A temporary buffer used by the incremental parser.
         private static readonly ThreadLocal<TextParserTokenStream> incrementalParserBuffer = 

@@ -379,62 +379,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
         public Boolean TryGetValueAsInt32(out Int32 result)
         {
-            var spaceCountLeading = 0;
-            var spaceCountTrailing = 0;
-
-            // Count leading space
-            for (int i = 0; i < Text.Length; i++)
-            {
-                if (!Char.IsWhiteSpace(Text[i]))
-                    break;
-
-                spaceCountLeading++;
-            }
-
-            // Count trailing space
-            for (int i = Text.Length - 1; i >= 0; i--)
-            {
-                if (!Char.IsWhiteSpace(Text[i]))
-                    break;
-
-                spaceCountTrailing++;
-            }
-
-            // Is the number negated?
-            var valueStart = spaceCountLeading;
-            var valueLength = Text.Length - (spaceCountLeading + spaceCountTrailing);
-
-            var sign = 1;
-            if (Text[spaceCountTrailing] == '-')
-            {
-                sign = -1;
-                valueStart++;
-                valueLength--;
-            }
-
-            // Calculate the total value by adding digits.
-            var magnitude = (Int64)Math.Pow(10, valueLength - 1);
-            var digit = 0;
-            var total = 0L;
-            for (int i = 0; i < valueLength; i++)
-            {
-                if (!ConvertDecimalDigit(Text[valueStart + i], out digit))
-                {
-                    result = 0;
-                    return false;
-                }
-
-                total += (magnitude * digit);
-                magnitude /= 10;
-            }
-
-            total *= sign;
-
-            if (total < Int32.MinValue || total > Int32.MaxValue)
-                throw new OverflowException();
-
-            result = (Int32)total;
-            return true;
+            return StringSegmentConversion.TryParseInt32(Text, out result);
         }
 
         /// <summary>
@@ -461,52 +406,7 @@ namespace TwistedLogik.Nucleus.Text
         [CLSCompliant(false)]
         public Boolean TryGetValueAsUInt32(out UInt32 result)
         {
-            var spaceCountLeading = 0;
-            var spaceCountTrailing = 0;
-
-            // Count leading space
-            for (int i = 0; i < Text.Length; i++)
-            {
-                if (!Char.IsWhiteSpace(Text[i]))
-                    break;
-
-                spaceCountLeading++;
-            }
-
-            // Count trailing space
-            for (int i = Text.Length - 1; i >= 0; i--)
-            {
-                if (!Char.IsWhiteSpace(Text[i]))
-                    break;
-
-                spaceCountTrailing++;
-            }
-
-            // Is the number negated?
-            var valueStart = spaceCountLeading;
-            var valueLength = Text.Length - (spaceCountLeading + spaceCountTrailing);
-
-            // Calculate the total value by adding digits.
-            var magnitude = (Int64)Math.Pow(10, valueLength - 1);
-            var digit = 0;
-            var total = 0L;
-            for (int i = 0; i < valueLength; i++)
-            {
-                if (!ConvertDecimalDigit(Text[valueStart + i], out digit))
-                {
-                    result = 0;
-                    return false;
-                }
-
-                total += (magnitude * digit);
-                magnitude /= 10;
-            }
-
-            if (total > UInt32.MaxValue)
-                throw new OverflowException();
-
-            result = (UInt32)total;
-            return true;
+            return StringSegmentConversion.TryParseUInt32(Text, out result);
         }
 
         /// <summary>
@@ -532,28 +432,6 @@ namespace TwistedLogik.Nucleus.Text
         /// <summary>
         /// Gets the length of the argument list that produced this argument.
         /// </summary>
-        public Int32 ArgumentListLength { get; }
-        
-        /// <summary>
-        /// Converts a character that represents a decimal digit into an integer value.
-        /// </summary>
-        private static bool ConvertDecimalDigit(Char digit, out Int32 value)
-        {
-            switch (digit)
-            {
-                case '0': value = 0; return true;
-                case '1': value = 1; return true;
-                case '2': value = 2; return true;
-                case '3': value = 3; return true;
-                case '4': value = 4; return true;
-                case '5': value = 5; return true;
-                case '6': value = 6; return true;
-                case '7': value = 7; return true;
-                case '8': value = 8; return true;
-                case '9': value = 9; return true;
-            }
-            value = 0;
-            return false;
-        }
+        public Int32 ArgumentListLength { get; }        
     }
 }

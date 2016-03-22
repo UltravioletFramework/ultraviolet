@@ -1056,7 +1056,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var cmdText = source.CreateStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
             if (cmdText.Equals("\n"))
             {
-                charsSeen += 1;
+                charsSeen += cmdText.Length;
                 input.SeekNextCommand();
                 return;
             }
@@ -1423,6 +1423,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
                         source = new StringSource(input.GetSourceStringBuilder(cmd->SourceIndex));
                     }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.Custom:
                     return TextRendererStateChange.None;
             }
 

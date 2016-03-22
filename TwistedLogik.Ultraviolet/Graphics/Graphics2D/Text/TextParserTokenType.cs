@@ -64,5 +64,10 @@
         /// The token pops a glyph shader off of the glyph shader stack.
         /// </summary>
         PopGlyphShader,
+
+        /// <summary>
+        /// The token represents a custom command.
+        /// </summary>
+        Custom = 128,
     }
 }
