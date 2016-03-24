@@ -626,7 +626,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         while (ElementNeedsStyle)
                         {
                             var element = styleQueue.Dequeue();
-                            if (element.IsStyleValid)
+                            if (element.IsStyleValid || element.View == null)
                                 continue;
 
                             element.Style(element.View.StyleSheet);
@@ -640,7 +640,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         while (ElementNeedsMeasure && !ElementNeedsStyle)
                         {
                             var element = measureQueue.Dequeue();
-                            if (element.IsMeasureValid)
+                            if (element.IsMeasureValid || element.View == null)
                                 continue;
 
                             element.Measure(element.MostRecentAvailableSize);
@@ -654,7 +654,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         while (ElementNeedsArrange && !ElementNeedsStyle && !ElementNeedsMeasure)
                         {
                             var element = arrangeQueue.Dequeue();
-                            if (element.IsArrangeValid)
+                            if (element.IsArrangeValid || element.View == null)
                                 continue;
 
                             element.Arrange(element.MostRecentFinalRect, element.MostRecentArrangeOptions);
