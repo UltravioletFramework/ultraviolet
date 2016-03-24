@@ -279,7 +279,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         public static extern void GL_SwapWindow(IntPtr window);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_SetSwapInterval")]
-        public static extern Int32 GL_SetSwapInterval(Int32 Int32erval);
+        public static extern Int32 GL_SetSwapInterval(Int32 interval);
 
         [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_NumJoysticks")]
         public static extern Int32 NumJoysticks();
