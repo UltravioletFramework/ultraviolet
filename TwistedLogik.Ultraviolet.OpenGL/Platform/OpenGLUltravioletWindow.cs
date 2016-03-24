@@ -166,9 +166,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                         var w = windowedClientSize?.Width ?? UltravioletConfiguration.DefaultWindowClientWidth;
                         var h = windowedClientSize?.Height ?? UltravioletConfiguration.DefaultWindowClientHeight;
 
-                        SDL.SetWindowBordered(ptr, true);
-                        SDL.SetWindowPosition(ptr, x, y);
+                        if (!ApplyWin32FullscreenWindowedFix_Windowed())
+                            SDL.SetWindowBordered(ptr, true);
+
                         SDL.SetWindowSize(ptr, w, h);
+                        SDL.SetWindowPosition(ptr, x, y);
+                        
+                        if (Ultraviolet.Platform == UltravioletPlatform.Windows)
+                            win32CachedStyle = IntPtr.Zero;
                     }
                     break;
 
@@ -189,6 +194,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
                         if (SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN) < 0)
                             throw new SDL2Exception();
+
+                        if (Ultraviolet.Platform == UltravioletPlatform.Windows)
+                            win32CachedStyle = IntPtr.Zero;
                     }
                     break;
 
@@ -199,9 +207,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
                         var displayBounds = Display.Bounds;
 
-                        SDL.SetWindowBordered(ptr, false);
-                        SDL.SetWindowPosition(ptr, displayBounds.X, displayBounds.Y);
+                        if (!ApplyWin32FullscreenWindowedFix_FullscreenWindowed())
+                            SDL.SetWindowBordered(ptr, false);
+                        
                         SDL.SetWindowSize(ptr, displayBounds.Width, displayBounds.Height);
+                        SDL.SetWindowPosition(ptr, displayBounds.X, displayBounds.Y);
                     }
                     break;
 
@@ -962,6 +972,66 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 throw new SDL2Exception();
         }
 
+        /// <summary>
+        /// Retrieves the HWND value for this window on the Windows platform.
+        /// </summary>
+        private Boolean GetHwnd(out IntPtr hwnd)
+        {
+            if (Ultraviolet.Platform != UltravioletPlatform.Windows)
+                throw new NotSupportedException();
+
+            SDL_SysWMinfo sysInfo;
+            SDLMacro.SDL_VERSION(&sysInfo.version);
+
+            if (!SDL.GetWindowWMInfo(ptr, &sysInfo))
+            {
+                hwnd = IntPtr.Zero;
+                return false;
+            }
+            hwnd = sysInfo.info.win.window;
+            return true;
+        }
+
+        /// <summary>
+        /// Applies a fix to the window's styles on the Windows platform which addresses
+        /// the flickering which has been observed when using ALT+TAB while the application
+        /// is in fullscreen windowed mode.
+        /// </summary>
+        private Boolean ApplyWin32FullscreenWindowedFix_Windowed()
+        {
+            if (Ultraviolet.Platform != UltravioletPlatform.Windows || win32CachedStyle == IntPtr.Zero)
+                return false;
+
+            IntPtr hwnd;
+            if (!GetHwnd(out hwnd))
+                return false;
+
+            Win32Native.SetWindowLongPtr(hwnd, Win32Native.GWL_STYLE, win32CachedStyle);
+            return true;
+        }
+
+        /// <summary>
+        /// Applies a fix to the window's styles on the Windows platform which addresses
+        /// the flickering which has been observed when using ALT+TAB while the application
+        /// is in fullscreen windowed mode.
+        /// </summary>
+        private Boolean ApplyWin32FullscreenWindowedFix_FullscreenWindowed()
+        {
+            if (Ultraviolet.Platform != UltravioletPlatform.Windows)
+                return false;
+
+            IntPtr hwnd;
+            if (!GetHwnd(out hwnd))
+                return false;
+
+            win32CachedStyle = Win32Native.GetWindowLongPtr(hwnd, Win32Native.GWL_STYLE);
+
+            var style = (UInt32)win32CachedStyle & ~(Win32Native.WS_DLGFRAME | Win32Native.WS_BORDER);
+            Win32Native.SetWindowLongPtr(hwnd, Win32Native.GWL_STYLE, (IntPtr)style);
+
+            return true;
+        }
+
         // A custom Win32 windows procedure used to override SDL2's built-in functionality.
         private Win32Native.WndProcDelegate wndProc;
         private IntPtr wndProcPrev;
@@ -984,6 +1054,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         private DisplayMode displayMode;
         private Boolean focused;
         private Boolean minimized;
+
+        // HACK: Cached style from before entering fullscreen windowed mode.
+        private IntPtr win32CachedStyle;
 
         // The default window icon.
         private static readonly UltravioletSingleton<Surface2D> DefaultWindowIcon = new UltravioletSingleton<Surface2D>(
