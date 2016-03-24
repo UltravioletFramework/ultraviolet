@@ -1,7 +1,7 @@
 <#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
 <#
-var buildNumber = System.Environment.GetEnvironmentVariable("BAMBOO_buildNumber");
+var buildNumber = System.Environment.GetEnvironmentVariable("BAMBOO_ultraviolet_buildNumber");
 var buildConfig = System.Environment.GetEnvironmentVariable("BAMBOO_buildType");
 var buildBranch = System.Environment.GetEnvironmentVariable("BAMBOO_planRepository_branchName");
 var asmVersion = "1.3.0.0";
