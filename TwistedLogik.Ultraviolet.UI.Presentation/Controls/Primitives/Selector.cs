@@ -181,7 +181,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <value>The identifier for the <see cref="SelectedItem"/> dependency property.</value>
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(Object), typeof(Selector),
-            new PropertyMetadata<Object>());
+            new PropertyMetadata<Object>(null, HandleSelectedItemChanged));
 
         /// <summary>
         /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelected"/> attached property.
@@ -463,6 +463,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (container == null)
                 return;
 
+            HandleSelectedContainerChanged(selector, container);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="SelectedItem"/> dependency property changes.
+        /// </summary>
+        private static void HandleSelectedItemChanged(DependencyObject dobj, Object oldValue, Object newValue)
+        {
+            var selector = (Selector)dobj;
+            selector.DigestImmediately(ItemsSourceProperty);
+
+            var container = selector.ItemContainerGenerator.ContainerFromItem(newValue);
+            if (container == null)
+                return;
+
+            HandleSelectedContainerChanged(selector, container);
+        }
+
+        /// <summary>
+        /// Called when the value of the <see cref="SelectedIndex"/> or <see cref="SelectedItem"/>
+        /// dependency properties change.
+        /// </summary>
+        private static void HandleSelectedContainerChanged(Selector selector, DependencyObject container)
+        {
             var item = selector.ItemContainerGenerator.ItemFromContainer(container);
             if (item == null)
                 return;
