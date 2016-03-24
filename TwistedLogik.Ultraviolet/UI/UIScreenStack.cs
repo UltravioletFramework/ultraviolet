@@ -81,16 +81,11 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
-            LinkedListNode<UIScreen> current, next;
-            for (current = screens.First; current != null; current = next)
-            {
-                next = current.Next;
+            for (var current = screens.First; current != null; current = current.Next)
+                current.Value.Update(time);
 
-                var screen = current.Value;
-                screen.Update(time);
+            RemoveClosedScreensFromStack();
 
-                RemoveIfClosed(screen);
-            }
             UpdatePendingOpenings();
         }
 
@@ -228,7 +223,6 @@ namespace TwistedLogik.Ultraviolet.UI
             if (screens.Contains(screen))
             {
                 screen.Close(duration);
-                RemoveIfClosed(screen);
                 return true;
             }
             return false;
@@ -247,11 +241,9 @@ namespace TwistedLogik.Ultraviolet.UI
 
             if (screens.Contains(screen))
             {
-                var task = screen.CloseAsync(duration);
-                RemoveIfClosed(screen);
-                return task;
+                return screen.CloseAsync(duration);
             }
-            return TaskUtil.FromResult<Boolean>(false);
+            return TaskUtil.FromResult(false);
         }
 
         /// <summary>
@@ -266,18 +258,14 @@ namespace TwistedLogik.Ultraviolet.UI
             Contract.Require(predicate, "predicate");
 
             var any = false;
-
-            LinkedListNode<UIScreen> current, next;
-            for (current = screens.First; current != null; current = next)
+            
+            for (var current = screens.First; current != null; current = current.Next)
             {
-                next = current.Next;
                 var screen = current.Value;
-
                 if (predicate(screen))
                 {
                     any = true;
                     screen.Close(duration);
-                    RemoveIfClosed(screen);
                 }
             }
 
@@ -296,18 +284,14 @@ namespace TwistedLogik.Ultraviolet.UI
             Contract.Require(predicate, "predicate");
 
             var tasks = default(List<Task>);
-
-            LinkedListNode<UIScreen> current, next;
-            for (current = screens.First; current != null; current = next)
+            
+            for (var current = screens.First; current != null; current = current.Next)
             {
-                next = current.Next;
                 var screen = current.Value;
-
                 if (predicate(screen))
                 {
                     tasks = tasks ?? new List<Task>();
                     tasks.Add(screen.CloseAsync(duration));
-                    RemoveIfClosed(screen);
                 }
             }
 
@@ -434,19 +418,7 @@ namespace TwistedLogik.Ultraviolet.UI
             }
             return screens.First;
         }
-
-        /// <summary>
-        /// Removes the specified screen from the screen list, if the screen is closed.
-        /// </summary>
-        private void RemoveIfClosed(UIScreen screen)
-        {
-            if (screen.State == UIPanelState.Closed)
-            {
-                screen.Window = null;
-                screens.Remove(screen);
-            }
-        }
-
+        
         /// <summary>
         /// Updates the stack's pending openings.
         /// </summary>
@@ -483,6 +455,25 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
+        /// Removes any screens which have been closed from the stack.
+        /// </summary>
+        private void RemoveClosedScreensFromStack()
+        {
+            LinkedListNode<UIScreen> current, next;
+            for (current = screens.First; current != null; current = next)
+            {
+                next = current.Next;
+
+                var screen = current.Value;
+                if (screen.State == UIPanelState.Closed)
+                {
+                    screen.Window = null;
+                    screens.Remove(current);
+                }
+            }
+        }
+
+        /// <summary>
         /// Closes the specified screen, then opens another screen once the first screen has finished closing.
         /// </summary>
         /// <param name="closing">The screen to close.</param>
@@ -510,8 +501,7 @@ namespace TwistedLogik.Ultraviolet.UI
         private readonly IUltravioletWindow window;
 
         // The current list of active screens.
-        private readonly PooledLinkedList<UIScreen> screens =
-            new PooledLinkedList<UIScreen>();
+        private readonly PooledLinkedList<UIScreen> screens = new PooledLinkedList<UIScreen>();
 
         // The list of screens that are waiting to be opened.
         private readonly PooledLinkedList<PendingOpening> pendingOpenings =
