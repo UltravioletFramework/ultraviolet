@@ -235,7 +235,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 if (textParserResult != null && textParserResult.Count > 0)
                 {
-                    UpdateTextLayoutCache(finalSize);
+                    if (textLayoutCommands.ActualWidth != finalSize.Width || textLayoutCommands.ActualHeight != finalSize.Height)
+                        UpdateTextLayoutCache(finalSize);
+
                     return finalSize;
                 }
             }
