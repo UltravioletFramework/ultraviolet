@@ -367,6 +367,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
+                if (GetWindowMode() == WindowMode.Windowed && GetWindowState() == WindowState.Normal)
+                {
+                    windowedPosition = value;
+                }
+
                 SDL.SetWindowPosition(ptr, value.X, value.Y);
             }
         }
@@ -388,7 +393,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
                 if (GetWindowMode() == WindowMode.Windowed && GetWindowState() == WindowState.Normal)
                 {
-                    Position = value;
+                    SDL.SetWindowPosition(ptr, value.X, value.Y);
                 }
             }
         }
@@ -408,6 +413,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
+
+                if (GetWindowMode() == WindowMode.Windowed && GetWindowState() == WindowState.Normal)
+                {
+                    windowedClientSize = value;
+                }
 
                 SDL.SetWindowSize(ptr, value.Width, value.Height);
             }
@@ -430,7 +440,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 
                 if (GetWindowMode() == WindowMode.Windowed && GetWindowState() == WindowState.Normal)
                 {
-                    ClientSize = value;
+                    SDL.SetWindowSize(ptr, value.Width, value.Height);
                 }
             }
         }
