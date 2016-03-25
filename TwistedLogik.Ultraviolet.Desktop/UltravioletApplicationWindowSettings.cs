@@ -129,8 +129,8 @@ namespace TwistedLogik.Ultraviolet
 
             primary.SetWindowState(WindowState);
             primary.SetWindowMode(WindowMode);
-            primary.WindowedPosition = WindowedPosition.Location;
             primary.WindowedClientSize = WindowedPosition.Size;
+            primary.WindowedPosition = WindowedPosition.Location;
             primary.GrabsMouseWhenWindowed = GrabsMouseWhenWindowed;
             primary.GrabsMouseWhenFullscreenWindowed = GrabsMouseWhenFullscreenWindowed;
             primary.GrabsMouseWhenFullscreen = GrabsMouseWhenFullscreen;
