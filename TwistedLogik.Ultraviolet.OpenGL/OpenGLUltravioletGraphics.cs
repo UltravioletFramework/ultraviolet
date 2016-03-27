@@ -414,7 +414,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                     var y = rectValue.Y;
                     ConvertScreenRegionUvToGL(ref x, ref y, rectValue.Width, rectValue.Height);
 
-                    gl.Enable(gl.GL_SCISSOR_TEST);
+                    gl.Enable(gl.GL_SCISSOR_TEST, rasterizerState.ScissorTestEnable);
                     gl.ThrowIfError();
 
                     gl.Scissor(x, y, rectValue.Width, rectValue.Height);
