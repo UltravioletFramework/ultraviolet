@@ -168,3 +168,6 @@ gen/
 # =========================
 *.uvarc
 TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll
+/packages
+/Ultraviolet Framework Samples/packages
+/Ultraviolet Framework Samples/Dependencies
