@@ -83,9 +83,9 @@ namespace TwistedLogik.Nucleus
         /// </summary>
         /// <param name="name">The name of the native library to load.</param>
         private static void Load_Unix(String name)
-		{
-			// Do nothing; let Mono's library mapper handle it.
-		}
+        {
+            // Do nothing; let Mono's library mapper handle it.
+        }
 
         /// <summary>
         /// Throws an exception indicating that the current operating system is not supported.
