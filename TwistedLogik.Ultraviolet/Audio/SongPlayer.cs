@@ -188,37 +188,19 @@ namespace TwistedLogik.Ultraviolet.Audio
         /// <summary>
         /// Raises the <see cref="SongStarted"/> event.
         /// </summary>
-        protected void OnSongStarted()
-        {
-            var temp = SongStarted;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected void OnSongStarted() =>
+            SongStarted?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="SongEnded"/> event.
         /// </summary>
-        protected void OnSongEnded()
-        {
-            var temp = SongEnded;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected void OnSongEnded() =>
+            SongEnded?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="StateChanged"/> event.
         /// </summary>
-        protected void OnStateChanged()
-        {
-            var temp = StateChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected void OnStateChanged() =>
+            StateChanged?.Invoke(this);
     }
 }

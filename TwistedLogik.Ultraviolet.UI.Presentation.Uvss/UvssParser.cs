@@ -3797,10 +3797,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
             if (trivia != null)
             {
                 var diagnostics = default(ICollection<DiagnosticInfo>);
-                if (reporter != null)
-                {
-                    reporter(ref diagnostics, trivia);
-                }
+                reporter?.Invoke(ref diagnostics, trivia);
                 trivia.SetDiagnostics(diagnostics);
             }
             else

@@ -206,28 +206,16 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// </summary>
         /// <param name="device">The device that was connected.</param>
         /// <param name="playerIndex">The player index associated with the game pad.</param>
-        private void OnGamePadConnected(GamePadDevice device, Int32 playerIndex)
-        {
-            var temp = GamePadConnected;
-            if (temp != null)
-            {
-                temp(device, playerIndex);
-            }
-        }
+        private void OnGamePadConnected(GamePadDevice device, Int32 playerIndex) =>
+            GamePadConnected?.Invoke(device, playerIndex);
 
         /// <summary>
         /// Raises the <see cref="GamePadDisconnected"/> event.
         /// </summary>
         /// <param name="device">The device that was disconnected.</param>
         /// <param name="playerIndex">The player index associated with the game pad.</param>
-        private void OnGamePadDisconnected(GamePadDevice device, Int32 playerIndex)
-        {
-            var temp = GamePadDisconnected;
-            if (temp != null)
-            {
-                temp(device, playerIndex);
-            }
-        }
+        private void OnGamePadDisconnected(GamePadDevice device, Int32 playerIndex) =>
+            GamePadDisconnected?.Invoke(device, playerIndex);
 
         /// <summary>
         /// Gets the index of the first player which does not have an associated game pad.

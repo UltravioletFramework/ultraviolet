@@ -154,38 +154,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Raises the <see cref="HeightChanged"/> event.
         /// </summary>
-        protected virtual void OnHeightChanged()
-        {
-            var temp = HeightChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnHeightChanged() =>
+            HeightChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="MinHeightChanged"/> event.
         /// </summary>
-        protected virtual void OnMinHeightChanged()
-        {
-            var temp = MinHeightChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnMinHeightChanged() =>
+            MinHeightChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="MaxHeightChanged"/> event.
         /// </summary>
-        protected virtual void OnMaxHeightChanged()
-        {
-            var temp = MaxHeightChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnMaxHeightChanged() =>
+            MaxHeightChanged?.Invoke(this);
 
         /// <summary>
         /// Occurs when the value of the <see cref="Height"/> dependency property changes.

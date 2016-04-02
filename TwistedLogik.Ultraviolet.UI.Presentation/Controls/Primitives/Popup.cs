@@ -450,26 +450,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Raises the <see cref="Opened"/> event.
         /// </summary>
-        protected virtual void OnOpened()
-        {
-            var temp = Opened;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnOpened() =>
+            Opened?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="Closed"/> event.
         /// </summary>
-        protected virtual void OnClosed()
-        {
-            var temp = Closed;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnClosed() =>
+            Closed?.Invoke(this);
 
         /// <summary>
         /// Coerces the value of the <see cref="IsOpen"/> property in order to allow popup

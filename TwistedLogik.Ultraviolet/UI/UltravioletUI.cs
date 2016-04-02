@@ -86,14 +86,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Raises the Updating event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        private void OnUpdating(UltravioletTime time)
-        {
-            var temp = Updating;
-            if (temp != null)
-            {
-                temp(this, time);
-            }
-        }
+        private void OnUpdating(UltravioletTime time) =>
+            Updating?.Invoke(this, time);
 
         // The collection of screens associated with each window.
         private readonly UIScreenStackCollection screenStacks;

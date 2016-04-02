@@ -154,14 +154,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// Raises the Updating event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to Update.</param>
-        private void OnUpdating(UltravioletTime time)
-        {
-            var temp = Updating;
-            if (temp != null)
-            {
-                temp(this, time);
-            }
-        }
+        private void OnUpdating(UltravioletTime time) =>
+            Updating?.Invoke(this, time);
 
         // Property values.
         private Cursor cursor;

@@ -134,14 +134,8 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="fingerID">A value which identifies the finger which was tapped.</param>
         /// <param name="x">The x-coordinate at which the finger was tapped.</param>
         /// <param name="y">The y-coordinate at which the finger was tapped.</param>
-        protected virtual void OnTap(Int64 fingerID, Single x, Single y)
-        {
-            var temp = Tap;
-            if (temp != null)
-            {
-                temp(this, fingerID, x, y);
-            }
-        }
+        protected virtual void OnTap(Int64 fingerID, Single x, Single y) =>
+            Tap?.Invoke(this, fingerID, x, y);
 
         /// <summary>
         /// Raises the <see cref="FingerDown"/> event.
@@ -150,14 +144,8 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="x">The normalized x-coordinate at which the finger was pressed or removed.</param>
         /// <param name="y">The normalized y-coordinate at which the finger was pressed or removed.</param>
         /// <param name="pressure">The normalized pressure with which the touch was applied.</param>
-        protected virtual void OnFingerDown(Int64 fingerID, Single x, Single y, Single pressure)
-        {
-            var temp = FingerDown;
-            if (temp != null)
-            {
-                temp(this, fingerID, x, y, pressure);
-            }
-        }
+        protected virtual void OnFingerDown(Int64 fingerID, Single x, Single y, Single pressure) =>
+            FingerDown?.Invoke(this, fingerID, x, y, pressure);
 
         /// <summary>
         /// Raises the <see cref="FingerUp"/> event.
@@ -166,14 +154,8 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="x">The normalized x-coordinate at which the finger was pressed or removed.</param>
         /// <param name="y">The normalized y-coordinate at which the finger was pressed or removed.</param>
         /// <param name="pressure">The normalized pressure with which the touch was applied.</param>
-        protected virtual void OnFingerUp(Int64 fingerID, Single x, Single y, Single pressure)
-        {
-            var temp = FingerUp;
-            if (temp != null)
-            {
-                temp(this, fingerID, x, y, pressure);
-            }
-        }
+        protected virtual void OnFingerUp(Int64 fingerID, Single x, Single y, Single pressure) =>
+            FingerUp?.Invoke(this, fingerID, x, y, pressure);
 
         /// <summary>
         /// Raises the <see cref="FingerMotion"/> event.
@@ -184,14 +166,8 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="dx">The change in the finger's x-coordinate.</param>
         /// <param name="dy">The change in the finger's y-coordinate.</param>
         /// <param name="pressure">The normalized pressure of the finger against the device.</param>
-        protected virtual void OnFingerMotion(Int64 fingerID, Single x, Single y, Single dx, Single dy, Single pressure)
-        {
-            var temp = FingerMotion;
-            if (temp != null)
-            {
-                temp(this, fingerID, x, y, dx, dy, pressure);
-            }
-        }
+        protected virtual void OnFingerMotion(Int64 fingerID, Single x, Single y, Single dx, Single dy, Single pressure) =>
+            FingerMotion?.Invoke(this, fingerID, x, y, dx, dy, pressure);
 
         /// <summary>
         /// Raises the <see cref="MultiTouchGesture"/> event.
@@ -201,13 +177,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="theta">The amount that the fingers rotated during the gesture.</param>
         /// <param name="distance">The amount that the fingers pinched during the gesture.</param>
         /// <param name="numfingers">The number of fingers that were used in the gesture.</param>
-        protected virtual void OnMultiTouchGesture(Single x, Single y, Single theta, Single distance, Int32 numfingers)
-        {
-            var temp = MultiTouchGesture;
-            if (temp != null)
-            {
-                temp(this, x, y, theta, distance, numfingers);
-            }
-        }
+        protected virtual void OnMultiTouchGesture(Single x, Single y, Single theta, Single distance, Int32 numfingers) =>
+            MultiTouchGesture?.Invoke(this, x, y, theta, distance, numfingers);
     }
 }

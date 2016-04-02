@@ -1314,14 +1314,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Raises the <see cref="LayoutUpdated"/> event.
         /// </summary>
-        internal void RaiseLayoutUpdated()
-        {
-            var temp = this.layoutUpdated;
-            if (temp != null)
-            {
-                temp(null, EventArgs.Empty);
-            }
-        }
+        internal void RaiseLayoutUpdated() =>
+            this.layoutUpdated?.Invoke(null, EventArgs.Empty);
 
         /// <summary>
         /// Changes the element's logical and visual parents.
@@ -1772,27 +1766,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Raises the <see cref="ClassAdded"/> event.
         /// </summary>
         /// <param name="classname">The name of the class that was added to the element.</param>
-        protected internal virtual void OnClassAdded(String classname)
-        {
-            var temp = ClassAdded;
-            if (temp != null)
-            {
-                temp(this, classname);
-            }
-        }
+        protected internal virtual void OnClassAdded(String classname) =>
+            ClassAdded?.Invoke(this, classname);
 
         /// <summary>
         /// Raises the <see cref="ClassRemoved"/> event.
         /// </summary>
         /// <param name="classname">The name of the class that was removed from the element.</param>
-        protected internal virtual void OnClassRemoved(String classname)
-        {
-            var temp = ClassRemoved;
-            if (temp != null)
-            {
-                temp(this, classname);
-            }
-        }
+        protected internal virtual void OnClassRemoved(String classname) =>
+            ClassRemoved?.Invoke(this, classname);
 
         /// <summary>
         /// Removes the specified child element from this element.
@@ -1820,27 +1802,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        protected virtual void OnDrawing(UltravioletTime time, DrawingContext dc)
-        {
-            var temp = Drawing;
-            if (temp != null)
-            {
-                temp(this, time, dc);
-            }
-        }
+        protected virtual void OnDrawing(UltravioletTime time, DrawingContext dc) =>
+            Drawing?.Invoke(this, time, dc);
 
         /// <summary>
         /// Raises the <see cref="Updating"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        protected virtual void OnUpdating(UltravioletTime time)
-        {
-            var temp = Updating;
-            if (temp != null)
-            {
-                temp(this, time);
-            }
-        }
+        protected virtual void OnUpdating(UltravioletTime time) =>
+            Updating?.Invoke(this, time);
 
         /// <summary>
         /// Occurs when the view to which the element is connected changes.
@@ -2934,50 +2904,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Raises the <see cref="IsVisibleChanged"/> event.
         /// </summary>
-        private void OnIsVisibleChanged()
-        {
-            var temp = IsVisibleChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnIsVisibleChanged() =>
+            IsVisibleChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="IsEnabledChanged"/> event.
         /// </summary>
-        private void OnIsEnabledChanged()
-        {
-            var temp = IsEnabledChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnIsEnabledChanged() =>
+            IsEnabledChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="IsHitTestVisibleChanged"/> event.
         /// </summary>
-        private void OnIsHitTestVisibleChanged()
-        {
-            var temp = IsHitTestVisibleChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnIsHitTestVisibleChanged() =>
+            IsHitTestVisibleChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="FocusableChanged"/> event.
         /// </summary>
-        private void OnFocusableChanged()
-        {
-            var temp = FocusableChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnFocusableChanged() =>
+            FocusableChanged?.Invoke(this);
 
         /// <summary>
         /// Occurs when the element's associated view changes.

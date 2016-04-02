@@ -136,42 +136,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Called when the item collection dramatically changes.
         /// </summary>
-        private void OnCollectionReset()
-        {
-            var temp = CollectionReset;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnCollectionReset() =>
+            CollectionReset?.Invoke(this);
 
         /// <summary>
         /// Called when an item is added to the item collection.
         /// </summary>
         /// <param name="index">The index at which the item was added.</param>
         /// <param name="item">The item that was added to the collection.</param>
-        private void OnCollectionItemAdded(Int32? index, Object item)
-        {
-            var temp = CollectionItemAdded;
-            if (temp != null)
-            {
-                temp(this, index, item);
-            }
-        }
+        private void OnCollectionItemAdded(Int32? index, Object item) =>
+            CollectionItemAdded?.Invoke(this, index, item);
 
         /// <summary>
         /// Called when an item is removed from the item collection.
         /// </summary>
         /// <param name="index">The index at which the item was removed.</param>
         /// <param name="item">The item that was removed from the collection.</param>
-        private void OnCollectionItemRemoved(Int32? index, Object item)
-        {
-            var temp = CollectionItemRemoved;
-            if (temp != null)
-            {
-                temp(this, index, item);
-            }
-        }
+        private void OnCollectionItemRemoved(Int32? index, Object item) =>
+            CollectionItemRemoved?.Invoke(this, index, item);
 
         /// <summary>
         /// Throws an exception if the collection is currently bound to an items source.

@@ -97,66 +97,36 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
         /// Raises the Drawing event.
         /// </summary>
         /// <param name="e">An EventArgs that contains the event data.</param>
-        protected virtual void OnDrawing(EventArgs e)
-        {
-            var temp = Drawing;
-            if (temp != null)
-            {
-                temp(this, e);
-            }
-        }
+        protected virtual void OnDrawing(EventArgs e) =>
+            Drawing?.Invoke(this, e);
 
         /// <summary>
         /// Raises the CreatingUltravioletWindow event.
         /// </summary>
         /// <param name="e">An EventArgs that contains the event data.</param>
-        protected virtual void OnCreatingUltravioletWindow(EventArgs e)
-        {
-            var temp = CreatingUltravioletWindow;
-            if (temp != null)
-            {
-                temp(this, e);
-            }
-        }
+        protected virtual void OnCreatingUltravioletWindow(EventArgs e) =>
+            CreatingUltravioletWindow?.Invoke(this, e);
 
         /// <summary>
         /// Raises the CreatedUltravioletWindow event.
         /// </summary>
         /// <param name="e">An EventArgs that contains the event data.</param>
-        protected virtual void OnCreatedUltravioletWindow(EventArgs e)
-        {
-            var temp = CreatedUltravioletWindow;
-            if (temp != null)
-            {
-                temp(this, e);
-            }
-        }
+        protected virtual void OnCreatedUltravioletWindow(EventArgs e) =>
+            CreatedUltravioletWindow?.Invoke(this, e);
 
         /// <summary>
         /// Raises the DestroyingUltravioletWindow event.
         /// </summary>
         /// <param name="e">An EventArgs that contains the event data.</param>
-        protected virtual void OnDestroyingUltravioletWindow(EventArgs e)
-        {
-            var temp = DestroyingUltravioletWindow;
-            if (temp != null)
-            {
-                temp(this, e);
-            }
-        }
+        protected virtual void OnDestroyingUltravioletWindow(EventArgs e) =>
+            DestroyingUltravioletWindow?.Invoke(this, e);
 
         /// <summary>
         /// Raises the DestroyedUltravioletWindow event.
         /// </summary>
         /// <param name="e">An EventArgs that contains the event data.</param>
-        protected virtual void OnDestroyedUltravioletWindow(EventArgs e)
-        {
-            var temp = DestroyedUltravioletWindow;
-            if (temp != null)
-            {
-                temp(this, e);
-            }
-        }
+        protected virtual void OnDestroyedUltravioletWindow(EventArgs e) =>
+            DestroyedUltravioletWindow?.Invoke(this, e);
 
         /// <summary>
         /// Raises the Paint event.

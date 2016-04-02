@@ -192,28 +192,16 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <param name="window">The window that raised the event.</param>
         /// <param name="scancode">The <see cref="Scancode"/> that represents the button that was pressed.</param>
-        protected virtual void OnButtonPressed(IUltravioletWindow window, Scancode scancode)
-        {
-            var temp = ButtonPressed;
-            if (temp != null)
-            {
-                temp(window, this, scancode);
-            }
-        }
+        protected virtual void OnButtonPressed(IUltravioletWindow window, Scancode scancode) =>
+            ButtonPressed?.Invoke(window, this, scancode);
 
         /// <summary>
         /// Raises the <see cref="ButtonReleased"/> event.
         /// </summary>
         /// <param name="window">The window that raised the event.</param>
         /// <param name="scancode">The <see cref="Scancode"/> that represents the button that was released.</param>
-        protected virtual void OnButtonReleased(IUltravioletWindow window, Scancode scancode)
-        {
-            var temp = ButtonReleased;
-            if (temp != null)
-            {
-                temp(window, this, scancode);
-            }
-        }
+        protected virtual void OnButtonReleased(IUltravioletWindow window, Scancode scancode) =>
+            ButtonReleased?.Invoke(window, this, scancode);
 
         /// <summary>
         /// Raises the <see cref="KeyPressed"/> event.
@@ -228,11 +216,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
         protected virtual void OnKeyPressed(IUltravioletWindow window, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
         {
-            var temp = KeyPressed;
-            if (temp != null)
-            {
-                temp(window, this, key, ctrl, alt, shift, repeat);
-            }
+            KeyPressed?.Invoke(window, this, key, ctrl, alt, shift, repeat);
         }
 
         /// <summary>
@@ -242,11 +226,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="key">The <see cref="Key"/> that was released.</param>
         protected virtual void OnKeyReleased(IUltravioletWindow window, Key key)
         {
-            var temp = KeyReleased;
-            if (temp != null)
-            {
-                temp(window, this, key);
-            }
+            KeyReleased?.Invoke(window, this, key);
         }
 
         /// <summary>
@@ -255,11 +235,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="window">The window that raised the event.</param>
         protected virtual void OnTextInput(IUltravioletWindow window)
         {
-            var temp = TextInput;
-            if (temp != null)
-            {
-                temp(window, this);
-            }
+            TextInput?.Invoke(window, this);
         }
 
         /// <summary>
@@ -268,11 +244,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="window">The window that raised the event.</param>
         protected virtual void OnTextEditing(IUltravioletWindow window)
         {
-            var temp = TextEditing;
-            if (temp != null)
-            {
-                temp(window, this);
-            }
+            TextEditing?.Invoke(window, this);
         }
     }
 }

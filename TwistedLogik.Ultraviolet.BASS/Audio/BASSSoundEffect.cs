@@ -163,14 +163,8 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         /// Raises the Disposed event.
         /// </summary>
         /// <param name="e">An EventArgs that contains the event data.</param>
-        private void OnSampleFreed(EventArgs e)
-        {
-            var temp = SampleFreed;
-            if (temp != null)
-            {
-                temp(this, e);
-            }
-        }
+        private void OnSampleFreed(EventArgs e) =>
+            SampleFreed?.Invoke(this, e);
 
         // The sound effect's sample data.
         private IntPtr data;

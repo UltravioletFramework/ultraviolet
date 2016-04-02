@@ -77,13 +77,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// Raises the <see cref="ContentLost"/> event.
         /// </summary>
         /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
-        protected virtual void OnContentLost(EventArgs e)
-        {
-            var temp = ContentLost;
-            if (temp != null)
-            {
-                temp(this, e);
-            }
-        }
+        protected virtual void OnContentLost(EventArgs e) =>
+            ContentLost?.Invoke(this, e);
     }
 }

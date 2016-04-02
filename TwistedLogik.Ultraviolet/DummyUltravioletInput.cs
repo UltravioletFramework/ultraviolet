@@ -23,11 +23,7 @@ namespace TwistedLogik.Ultraviolet
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var temp = Updating;
-            if (temp != null)
-            {
-                temp(this, time);
-            }
+            Updating?.Invoke(this, time);
         }
 
         /// <inheritdoc/>

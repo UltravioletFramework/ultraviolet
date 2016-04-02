@@ -118,10 +118,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 this.IsFaulted = false;
                 this.Exception = null;
 
-                if (onLoaded != null)
-                {
-                    onLoaded();
-                }
+                onLoaded?.Invoke();
             }
             else
             {
@@ -141,10 +138,7 @@ namespace TwistedLogik.Ultraviolet.Content
                         this.IsFaulted = false;
                         this.content = null;
 
-                        if (onLoaded != null)
-                        {
-                            onLoaded();
-                        }
+                        onLoaded?.Invoke();
                     }
                     catch (Exception e)
                     {
@@ -155,10 +149,7 @@ namespace TwistedLogik.Ultraviolet.Content
                         this.IsFaulted = true;
                         this.content = null;
 
-                        if (onFaulted != null)
-                        {
-                            onFaulted(e);
-                        }
+                        onFaulted?.Invoke(e);
                     }
                 });
             }

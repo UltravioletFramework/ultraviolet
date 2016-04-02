@@ -251,41 +251,23 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <param name="button">The <see cref="GamePadButton"/> value that represents the button that was pressed.</param>
         /// <param name="repeat">A value indicating whether this is a repeated button press.</param>
-        protected virtual void OnButtonPressed(GamePadButton button, Boolean repeat)
-        {
-            var temp = ButtonPressed;
-            if (temp != null)
-            {
-                temp(this, button, repeat);
-            }
-        }
+        protected virtual void OnButtonPressed(GamePadButton button, Boolean repeat) =>
+            ButtonPressed?.Invoke(this, button, repeat);
 
         /// <summary>
         /// Raises the <see cref="ButtonReleased"/> event.
         /// </summary>
         /// <param name="button">The <see cref="GamePadButton"/> value that represents the button that was pressed.</param>
-        protected virtual void OnButtonReleased(GamePadButton button)
-        {
-            var temp = ButtonReleased;
-            if (temp != null)
-            {
-                temp(this, button);
-            }
-        }
+        protected virtual void OnButtonReleased(GamePadButton button) =>
+            ButtonReleased?.Invoke(this, button);
 
         /// <summary>
         /// Raises the AxisChanged event.
         /// </summary>
         /// <param name="axis">The <see cref="GamePadAxis"/> value that represents the axis that changed.</param>
         /// <param name="value">The axis' value.</param>
-        protected virtual void OnAxisChanged(GamePadAxis axis, Single value)
-        {
-            var temp = AxisChanged;
-            if (temp != null)
-            {
-                temp(this, axis, value);
-            }
-        }
+        protected virtual void OnAxisChanged(GamePadAxis axis, Single value) =>
+            AxisChanged?.Invoke(this, axis, value);
 
         /// <summary>
         /// Raises the <see cref="AxisPressed"/> event.
@@ -293,53 +275,29 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="axis">The <see cref="GamePadAxis"/> that was pressed.</param>
         /// <param name="value">The axis' value.</param>
         /// <param name="repeat">A value indicating whether this is a repeated axis press.</param>
-        protected virtual void OnAxisPressed(GamePadAxis axis, Single value, Boolean repeat)
-        {
-            var temp = AxisPressed;
-            if (temp != null)
-            {
-                temp(this, axis, value, repeat);
-            }
-        }
+        protected virtual void OnAxisPressed(GamePadAxis axis, Single value, Boolean repeat) =>
+            AxisPressed?.Invoke(this, axis, value, repeat);
 
         /// <summary>
         /// Raises the <see cref="AxisReleased"/> event.
         /// </summary>
         /// <param name="axis">The <see cref="GamePadAxis"/> that was released.</param>
         /// <param name="value">The axis' value.</param>
-        protected virtual void OnAxisReleased(GamePadAxis axis, Single value)
-        {
-            var temp = AxisReleased;
-            if (temp != null)
-            {
-                temp(this, axis, value);
-            }
-        }
+        protected virtual void OnAxisReleased(GamePadAxis axis, Single value) =>
+            AxisReleased?.Invoke(this, axis, value);
 
         /// <summary>
         /// Raises the LeftJoystickVectorChanged event.
         /// </summary>
         /// <param name="vector">The axis' vector.</param>
-        protected virtual void OnLeftJoystickVectorChanged(Vector2 vector)
-        {
-            var temp = LeftJoystickVectorChanged;
-            if (temp != null)
-            {
-                temp(this, vector);
-            }
-        }
+        protected virtual void OnLeftJoystickVectorChanged(Vector2 vector) =>
+            LeftJoystickVectorChanged?.Invoke(this, vector);
 
         /// <summary>
         /// Raises the RightJoystickVectorChanged event.
         /// </summary>
         /// <param name="vector">The axis' vector.</param>
-        protected virtual void OnRightJoystickVectorChanged(Vector2 vector)
-        {
-            var temp = RightJoystickVectorChanged;
-            if (temp != null)
-            {
-                temp(this, vector);
-            }
-        }
+        protected virtual void OnRightJoystickVectorChanged(Vector2 vector) =>
+            RightJoystickVectorChanged?.Invoke(this, vector);
     }
 }

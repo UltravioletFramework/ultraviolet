@@ -83,26 +83,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Raises the <see cref="HorizontalContentAlignmentChanged"/> event.
         /// </summary>
-        protected virtual void OnHorizontalContentAlignmentChanged()
-        {
-            var temp = HorizontalContentAlignmentChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnHorizontalContentAlignmentChanged() =>
+            HorizontalContentAlignmentChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="VerticalContentAlignmentChanged"/> event.
         /// </summary>
-        protected virtual void OnVerticalContentAlignmentChanged()
-        {
-            var temp = VerticalContentAlignmentChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnVerticalContentAlignmentChanged() =>
+            VerticalContentAlignmentChanged?.Invoke(this);
 
         /// <summary>
         /// Occurs when the value of the <see cref="HorizontalContentAlignment"/> dependency property changes.

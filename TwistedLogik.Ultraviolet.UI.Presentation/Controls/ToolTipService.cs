@@ -717,11 +717,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         internal static void RaiseToolTipOpening(DependencyObject element, RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfToolTipEventHandler>(ToolTipOpeningEvent);
-            if (temp != null)
-            {
-                temp(element, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfToolTipEventHandler>(ToolTipOpeningEvent);
+            evt?.Invoke(element, ref data);
         }
 
         /// <summary>
@@ -730,11 +727,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         internal static void RaiseToolTipClosing(DependencyObject element, RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfToolTipEventHandler>(ToolTipClosingEvent);
-            if (temp != null)
-            {
-                temp(element, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfToolTipEventHandler>(ToolTipClosingEvent);
+            evt?.Invoke(element, ref data);
         }
     }
 }

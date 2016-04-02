@@ -145,11 +145,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached routed event.</value>
         internal static void RaisePreviewGenericInteraction(DependencyObject element, UltravioletResource device, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGenericInteractionEventHandler>(PreviewGenericInteractionEvent);
-            if (temp != null)
-            {
-                temp(element, device, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGenericInteractionEventHandler>(PreviewGenericInteractionEvent);
+            evt?.Invoke(element, device, ref data);
         }
 
         /// <summary>
@@ -158,11 +155,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseGenericInteraction(DependencyObject element, UltravioletResource device, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGenericInteractionEventHandler>(GenericInteractionEvent);
-            if (temp != null)
-            {
-                temp(element, device, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGenericInteractionEventHandler>(GenericInteractionEvent);
+            evt?.Invoke(element, device, ref data);
         }
     }
 }

@@ -872,93 +872,51 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Raises the <see cref="FrameStart"/> event.
         /// </summary>
-        protected virtual void OnFrameStart()
-        {
-            var temp = FrameStart;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnFrameStart() =>
+            FrameStart?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="FrameEnd"/> event.
         /// </summary>
-        protected virtual void OnFrameEnd()
-        {
-            var temp = FrameEnd;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnFrameEnd() =>
+            FrameEnd?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="Drawing"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        protected virtual void OnDrawing(UltravioletTime time)
-        {
-            var temp = Drawing;
-            if (temp != null)
-            {
-                temp(this, time);
-            }
-        }
+        protected virtual void OnDrawing(UltravioletTime time) =>
+            Drawing?.Invoke(this, time);
 
         /// <summary>
         /// Raises the <see cref="WindowDrawing"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="window">The window that is about to be drawn.</param>
-        protected virtual void OnWindowDrawing(UltravioletTime time, IUltravioletWindow window)
-        {
-            var temp = WindowDrawing;
-            if (temp != null)
-            {
-                temp(this, time, window);
-            }
-        }
+        protected virtual void OnWindowDrawing(UltravioletTime time, IUltravioletWindow window) =>
+            WindowDrawing?.Invoke(this, time, window);
 
         /// <summary>
         /// Raises the <see cref="WindowDrawn"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="window">The window that was just drawn.</param>
-        protected virtual void OnWindowDrawn(UltravioletTime time, IUltravioletWindow window)
-        {
-            var temp = WindowDrawn;
-            if (temp != null)
-            {
-                temp(this, time, window);
-            }
-        }
+        protected virtual void OnWindowDrawn(UltravioletTime time, IUltravioletWindow window) =>
+            WindowDrawn?.Invoke(this, time, window);
 
         /// <summary>
         /// Raises the <see cref="UpdatingSubsystems"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="Update(UltravioletTime)"/>.</param>
-        protected virtual void OnUpdatingSubsystems(UltravioletTime time)
-        {
-            var temp = UpdatingSubsystems;
-            if (temp != null)
-            {
-                temp(this, time);
-            }
-        }
+        protected virtual void OnUpdatingSubsystems(UltravioletTime time) =>
+            UpdatingSubsystems?.Invoke(this, time);
 
         /// <summary>
         /// Raises the <see cref="Updating"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="Update(UltravioletTime)"/>.</param>
-        protected virtual void OnUpdating(UltravioletTime time)
-        {
-            var temp = Updating;
-            if (temp != null)
-            {
-                temp(this, time);
-            }
-        }
+        protected virtual void OnUpdating(UltravioletTime time) =>
+            Updating?.Invoke(this, time);
 
         /// <summary>
         /// Occurs when the context receives a message from its queue.
@@ -973,26 +931,14 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Raises the <see cref="Initialized"/> event.
         /// </summary>
-        protected virtual void OnInitialized()
-        {
-            var temp = Initialized;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnInitialized() =>
+            Initialized?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="Shutdown"/> event.
         /// </summary>
-        protected virtual void OnShutdown()
-        {
-            var temp = Shutdown;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnShutdown() =>
+            Shutdown?.Invoke(this);
 
         /// <summary>
         /// Processes the context's message queue.
@@ -1013,26 +959,14 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Raises the <see cref="ContextInitialized"/> event.
         /// </summary>
-        private static void OnContextInitialized()
-        {
-            var temp = ContextInitialized;
-            if (temp != null)
-            {
-                temp(null, EventArgs.Empty);
-            }
-        }
+        private static void OnContextInitialized() =>
+            ContextInitialized?.Invoke(null, EventArgs.Empty);
 
         /// <summary>
         /// Raises the <see cref="ContextInvalidated"/> event.
         /// </summary>
-        private static void OnContextInvalidated()
-        {
-            var temp = ContextInvalidated;
-            if (temp != null)
-            {
-                temp(null, EventArgs.Empty);
-            }
-        }
+        private static void OnContextInvalidated() =>
+            ContextInvalidated?.Invoke(null, EventArgs.Empty);
 
         /// <summary>
         /// Initializes the context's object factory.

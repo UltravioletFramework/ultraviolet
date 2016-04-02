@@ -112,10 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var popup = Parent as Popup;
             if (popup != null && popup.IsOpen)
             {
-                if (resized != null)
-                {
-                    resized();
-                }
+                resized?.Invoke();
             }
             base.OnChildDesiredSizeChanged(child);
         }

@@ -333,20 +333,12 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         protected virtual void OnCollectionReset()
         {
-            var temp1 = CollectionReset;
-            if (temp1 != null)
-            {
-                temp1(this);
-            }
+            CollectionReset?.Invoke(this);
 
             if (suppressUntypedNotifications)
                 return;
 
-            var temp2 = untypedCollectionReset;
-            if (temp2 != null)
-            {
-                temp2(this);
-            }
+            untypedCollectionReset?.Invoke(this);
         }
 
         /// <summary>
@@ -356,20 +348,12 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="value">The item that was added to the list.</param>
         protected virtual void OnCollectionItemAdded(TKey key, TValue value)
         {
-            var temp1 = CollectionItemAdded;
-            if (temp1 != null)
-            {
-                temp1(this, key, value);
-            }
+            CollectionItemAdded?.Invoke(this, key, value);
 
             if (suppressUntypedNotifications)
                 return;
 
-            var temp2 = untypedCollectionItemAdded;
-            if (temp2 != null)
-            {
-                temp2(this, null, value);
-            }
+            untypedCollectionItemAdded?.Invoke(this, null, value);
         }
 
         /// <summary>
@@ -379,20 +363,12 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="value">The item that was added to the list.</param>
         protected virtual void OnCollectionItemRemoved(TKey key, TValue value)
         {
-            var temp = CollectionItemRemoved;
-            if (temp != null)
-            {
-                temp(this, key, value);
-            }
+            CollectionItemRemoved?.Invoke(this, key, value);
 
             if (suppressUntypedNotifications)
                 return;
 
-            var temp2 = untypedCollectionItemRemoved;
-            if (temp2 != null)
-            {
-                temp2(this, null, value);
-            }
+            untypedCollectionItemRemoved?.Invoke(this, null, value);
         }
 
         // The wrapped dictionary which contains our items.

@@ -63,8 +63,7 @@ namespace TwistedLogik.Nucleus.Collections
             if (watermarkAllocations + count == 0)
                 throw new InvalidOperationException(NucleusStrings.PoolImbalance);
 
-            if (deallocator != null)
-                deallocator(instance);
+            deallocator?.Invoke(instance);
 
             if (count == 0)
             {
@@ -82,8 +81,7 @@ namespace TwistedLogik.Nucleus.Collections
             if (watermarkAllocations + count == 0)
                 throw new InvalidOperationException(NucleusStrings.PoolImbalance);
 
-            if (deallocator != null)
-                deallocator(instance);
+            deallocator?.Invoke(instance);
 
             if (count == 0)
             {

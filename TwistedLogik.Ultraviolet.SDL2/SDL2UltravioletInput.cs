@@ -230,42 +230,24 @@ namespace TwistedLogik.Ultraviolet.SDL2
         /// Raises the Updating event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to Update.</param>
-        private void OnUpdating(UltravioletTime time)
-        {
-            var temp = Updating;
-            if (temp != null)
-            {
-                temp(this, time);
-            }
-        }
+        private void OnUpdating(UltravioletTime time) =>
+            Updating?.Invoke(this, time);
 
         /// <summary>
         /// Raises the <see cref="GamePadConnected"/> event.
         /// </summary>
         /// <param name="device">The device that was connected.</param>
         /// <param name="playerIndex">The player index associated with the game pad.</param>
-        private void OnGamePadConnected(GamePadDevice device, Int32 playerIndex)
-        {
-            var temp = GamePadConnected;
-            if (temp != null)
-            {
-                temp(device, playerIndex);
-            }
-        }
+        private void OnGamePadConnected(GamePadDevice device, Int32 playerIndex) =>
+            GamePadConnected?.Invoke(device, playerIndex);
 
         /// <summary>
         /// Raises the <see cref="GamePadDisconnected"/> event.
         /// </summary>
         /// <param name="device">The device that was disconnected.</param>
         /// <param name="playerIndex">The player index associated with the game pad.</param>
-        private void OnGamePadDisconnected(GamePadDevice device, Int32 playerIndex)
-        {
-            var temp = GamePadDisconnected;
-            if (temp != null)
-            {
-                temp(device, playerIndex);
-            }
-        }
+        private void OnGamePadDisconnected(GamePadDevice device, Int32 playerIndex) =>
+            GamePadDisconnected?.Invoke(device, playerIndex);
 
         // Platform services.
         private readonly SoftwareKeyboardService softwareKeyboardService;

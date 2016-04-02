@@ -1079,14 +1079,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Raises the <see cref="GlobalStyleSheetChanged"/> event.
         /// </summary>
-        private void OnGlobalStyleSheetChanged()
-        {
-            var temp = GlobalStyleSheetChanged;
-            if (temp != null)
-            {
-                temp(this, EventArgs.Empty);
-            }
-        }
+        private void OnGlobalStyleSheetChanged() =>
+            GlobalStyleSheetChanged?.Invoke(this, EventArgs.Empty);
         
         /// <summary>
         /// Invalidates the specified element's style.

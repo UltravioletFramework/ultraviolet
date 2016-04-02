@@ -444,104 +444,56 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Raises the <see cref="Updating"/> event.
         /// </summary>
         /// <param name="time">The Ultraviolet time.</param>
-        protected virtual void OnUpdating(UltravioletTime time)
-        {
-            var temp = Updating;
-            if (temp != null)
-            {
-                temp(this, time);
-            }
-        }
+        protected virtual void OnUpdating(UltravioletTime time) =>
+            Updating?.Invoke(this, time);
 
         /// <summary>
         /// Raises the <see cref="DrawingBackground"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
-        protected virtual void OnDrawingBackground(UltravioletTime time, SpriteBatch spriteBatch)
-        {
-            var temp = DrawingBackground;
-            if (temp != null)
-            {
-                temp(this, time, spriteBatch);
-            }
-        }
+        protected virtual void OnDrawingBackground(UltravioletTime time, SpriteBatch spriteBatch) =>
+            DrawingBackground?.Invoke(this, time, spriteBatch);
 
         /// <summary>
         /// Raises the <see cref="DrawingLayout"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
-        protected virtual void OnDrawingLayout(UltravioletTime time, SpriteBatch spriteBatch)
-        {
-            var temp = DrawingLayout;
-            if (temp != null)
-            {
-                temp(this, time, spriteBatch);
-            }
-        }
+        protected virtual void OnDrawingLayout(UltravioletTime time, SpriteBatch spriteBatch) =>
+            DrawingLayout?.Invoke(this, time, spriteBatch);
 
         /// <summary>
         /// Raises the <see cref="DrawingForeground"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
-        protected virtual void OnDrawingForeground(UltravioletTime time, SpriteBatch spriteBatch)
-        {
-            var temp = DrawingForeground;
-            if (temp != null)
-            {
-                temp(this, time, spriteBatch);
-            }
-        }
+        protected virtual void OnDrawingForeground(UltravioletTime time, SpriteBatch spriteBatch) =>
+            DrawingForeground?.Invoke(this, time, spriteBatch);
 
         /// <summary>
         /// Raises the <see cref="Opening"/> event.
         /// </summary>
-        protected virtual void OnOpening()
-        {
-            var temp = Opening;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnOpening() =>
+            Opening?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="Opened"/> event.
         /// </summary>
-        protected virtual void OnOpened()
-        {
-            var temp = Opened;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnOpened() =>
+            Opened?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="Closing"/> event.
         /// </summary>
-        protected virtual void OnClosing()
-        {
-            var temp = Closing;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnClosing() =>
+            Closing?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="Closed"/> event.
         /// </summary>
-        protected virtual void OnClosed()
-        {
-            var temp = Closed;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnClosed() =>
+            Closed?.Invoke(this);
 
         /// <summary>
         /// Prepares the panel to load the view from the specified panel definition.

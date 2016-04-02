@@ -226,11 +226,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             foreach (var subscriber in subscribers)
                 subscriber.ClockStarted();
 
-            var temp = Started;
-            if (temp != null)
-            {
-                temp(this);
-            }
+            Started?.Invoke(this);
         }
 
         /// <summary>
@@ -247,11 +243,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
                 next = current.Next;
             }
 
-            var temp = Stopped;
-            if (temp != null)
-            {
-                temp(this);
-            }
+            Stopped?.Invoke(this);
         }
 
         /// <summary>
@@ -262,11 +254,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             foreach (var subscriber in subscribers)
                 subscriber.ClockPaused();
 
-            var temp = Paused;
-            if (temp != null)
-            {
-                temp(this);
-            }
+            Paused?.Invoke(this);
         }
 
         /// <summary>
@@ -277,11 +265,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
             foreach (var subscriber in subscribers)
                 subscriber.ClockResumed();
 
-            var temp = Resumed;
-            if (temp != null)
-            {
-                temp(this);
-            }
+            Resumed?.Invoke(this);
         }
 
         // Property values.

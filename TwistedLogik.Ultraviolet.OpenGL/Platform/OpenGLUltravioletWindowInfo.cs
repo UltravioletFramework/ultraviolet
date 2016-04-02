@@ -471,75 +471,39 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// Raises the WindowCreated event.
         /// </summary>
         /// <param name="window">The window that was created.</param>
-        private void OnWindowCreated(IUltravioletWindow window)
-        {
-            var temp = WindowCreated;
-            if (temp != null)
-            {
-                temp(window);
-            }
-        }
+        private void OnWindowCreated(IUltravioletWindow window) =>
+            WindowCreated?.Invoke(window);
 
         /// <summary>
         /// Raises the WindowDestroyed event.
         /// </summary>
         /// <param name="window">The window that is being destroyed.</param>
-        private void OnWindowDestroyed(IUltravioletWindow window)
-        {
-            var temp = WindowDestroyed;
-            if (temp != null)
-            {
-                temp(window);
-            }
-        }
+        private void OnWindowDestroyed(IUltravioletWindow window) =>
+            WindowDestroyed?.Invoke(window);
 
         /// <summary>
         /// Raises the PrimaryWindowChanging event.
         /// </summary>
-        private void OnPrimaryWindowChanging()
-        {
-            var temp = PrimaryWindowChanging;
-            if (temp != null)
-            {
-                temp(primary);
-            }
-        }
+        private void OnPrimaryWindowChanging() =>
+            PrimaryWindowChanging?.Invoke(primary);
 
         /// <summary>
         /// Raises the PrimaryWindowChanged event.
         /// </summary>
-        private void OnPrimaryWindowChanged()
-        {
-            var temp = PrimaryWindowChanged;
-            if (temp != null)
-            {
-                temp(primary);
-            }
-        }
+        private void OnPrimaryWindowChanged() =>
+            PrimaryWindowChanged?.Invoke(primary);
 
         /// <summary>
         /// Raises the CurrentWindowChanging event.
         /// </summary>
-        private void OnCurrentWindowChanging()
-        {
-            var temp = CurrentWindowChanging;
-            if (temp != null)
-            {
-                temp(current);
-            }
-        }
+        private void OnCurrentWindowChanging() =>
+            CurrentWindowChanging?.Invoke(current);
 
         /// <summary>
         /// Raises the CurrentWindowChanged event.
         /// </summary>
-        private void OnCurrentWindowChanged()
-        {
-            var temp = CurrentWindowChanged;
-            if (temp != null)
-            {
-                temp(current);
-            }
-        }
+        private void OnCurrentWindowChanged() =>
+            CurrentWindowChanged?.Invoke(current);
 
         /// <summary>
         /// Binds the OpenGL context to the specified window.

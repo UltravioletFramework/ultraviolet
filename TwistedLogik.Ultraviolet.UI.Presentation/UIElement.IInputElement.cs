@@ -461,74 +461,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Raises the <see cref="IsKeyboardFocusedChanged"/> event.
         /// </summary>
-        protected virtual void OnIsKeyboardFocusedChanged()
-        {
-            var temp = IsKeyboardFocusedChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnIsKeyboardFocusedChanged() =>
+            IsKeyboardFocusedChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="IsKeyboardFocusWithinChanged"/> event.
         /// </summary>
-        protected virtual void OnIsKeyboardFocusWithinChanged()
-        {
-            var temp = IsKeyboardFocusWithinChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnIsKeyboardFocusWithinChanged() =>
+            IsKeyboardFocusWithinChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="IsMouseCapturedChanged"/> event.
         /// </summary>
-        protected virtual void OnIsMouseCapturedChanged()
-        {
-            var temp = IsMouseCapturedChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnIsMouseCapturedChanged() =>
+            IsMouseCapturedChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="IsMouseCaptureWithinChanged"/> event.
         /// </summary>
-        protected virtual void OnIsMouseCaptureWithinChanged()
-        {
-            var temp = IsMouseCaptureWithinChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnIsMouseCaptureWithinChanged() =>
+            IsMouseCaptureWithinChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="IsMouseOverChanged"/> event.
         /// </summary>
-        protected virtual void OnIsMouseOverChanged()
-        {
-            var temp = IsMouseOverChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnIsMouseOverChanged() =>
+            IsMouseOverChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="IsMouseDirectlyOverChanged"/> event.
         /// </summary>
-        protected virtual void OnIsMouseDirectlyOverChanged()
-        {
-            var temp = IsMouseDirectlyOverChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnIsMouseDirectlyOverChanged() =>
+            IsMouseDirectlyOverChanged?.Invoke(this);
         
         /// <summary>
         /// Invoked when the <see cref="FocusManager.GotFocusEvent"/> attached routed event occurs.

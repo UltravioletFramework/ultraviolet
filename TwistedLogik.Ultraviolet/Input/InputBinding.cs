@@ -152,26 +152,14 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Raises the <see cref="Pressed"/> event.
         /// </summary>
-        protected virtual void OnPressed()
-        {
-            var temp = Pressed;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnPressed() =>
+            Pressed?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="Released"/> event.
         /// </summary>
-        protected virtual void OnReleased()
-        {
-            var temp = Released;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnReleased() =>
+            Released?.Invoke(this);
 
         // Property values.
         private Int32? priorityAdjustment;

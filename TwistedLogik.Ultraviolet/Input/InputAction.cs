@@ -214,26 +214,14 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Raises the Pressed event.
         /// </summary>
-        private void OnPressed()
-        {
-            var temp = Pressed;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnPressed() =>
+            Pressed?.Invoke(this);
 
         /// <summary>
         /// Raises the Released event.
         /// </summary>
-        private void OnReleased()
-        {
-            var temp = Released;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnReleased() =>
+            Released?.Invoke(this);
 
         // The input action collection that owns this action.
         private readonly InputActionCollection collection;

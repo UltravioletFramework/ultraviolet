@@ -205,56 +205,32 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <param name="window">The window in which the input event took place.</param>
         /// <param name="button">The mouse button that was pressed.</param>
-        protected virtual void OnButtonPressed(IUltravioletWindow window, MouseButton button)
-        {
-            var temp = ButtonPressed;
-            if (temp != null)
-            {
-                temp(window, this, button);
-            }
-        }
+        protected virtual void OnButtonPressed(IUltravioletWindow window, MouseButton button) =>
+            ButtonPressed?.Invoke(window, this, button);
 
         /// <summary>
         /// Raises the <see cref="ButtonReleased"/> event.
         /// </summary>
         /// <param name="window">The window in which the input event took place.</param>
         /// <param name="button">The mouse button that was released.</param>
-        protected virtual void OnButtonReleased(IUltravioletWindow window, MouseButton button)
-        {
-            var temp = ButtonReleased;
-            if (temp != null)
-            {
-                temp(window, this, button);
-            }
-        }
+        protected virtual void OnButtonReleased(IUltravioletWindow window, MouseButton button) =>
+            ButtonReleased?.Invoke(window, this, button);
 
         /// <summary>
         /// Raises the <see cref="Click"/> event.
         /// </summary>
         /// <param name="window">The window in which the input event took place.</param>
         /// <param name="button">The mouse button that was clicked.</param>
-        protected virtual void OnClick(IUltravioletWindow window, MouseButton button)
-        {
-            var temp = Click;
-            if (temp != null)
-            {
-                temp(window, this, button);
-            }
-        }
+        protected virtual void OnClick(IUltravioletWindow window, MouseButton button) =>
+            Click?.Invoke(window, this, button);
 
         /// <summary>
         /// Raises the <see cref="DoubleClick"/> event.
         /// </summary>
         /// <param name="window">The window in which the input event took place.</param>
         /// <param name="button">The mouse button that was clicked.</param>
-        protected virtual void OnDoubleClick(IUltravioletWindow window, MouseButton button)
-        {
-            var temp = DoubleClick;
-            if (temp != null)
-            {
-                temp(window, this, button);
-            }
-        }
+        protected virtual void OnDoubleClick(IUltravioletWindow window, MouseButton button) =>
+            DoubleClick?.Invoke(window, this, button);
 
         /// <summary>
         /// Raises the <see cref="Moved"/> event.
@@ -266,14 +242,8 @@ namespace TwistedLogik.Ultraviolet.Input
         /// current position and the x-coordinate of the mouse's previous position.</param>
         /// <param name="dy">The difference between the y-coordinate of the mouse's 
         /// current position and the y-coordinate of the mouse's previous position.</param>
-        protected virtual void OnMoved(IUltravioletWindow window, Int32 x, Int32 y, Int32 dx, Int32 dy)
-        {
-            var temp = Moved;
-            if (temp != null)
-            {
-                temp(window, this, x, y, dx, dy);
-            }
-        }
+        protected virtual void OnMoved(IUltravioletWindow window, Int32 x, Int32 y, Int32 dx, Int32 dy) =>
+            Moved?.Invoke(window, this, x, y, dx, dy);
 
         /// <summary>
         /// Raises the <see cref="WheelScrolled"/> event.
@@ -281,13 +251,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="window">The window in which the input event took place.</param>
         /// <param name="x">The amount that the wheel was scrolled along the horizontal axis.</param>
         /// <param name="y">The amount that the wheel was scrolled along the vertical axis.</param>
-        protected virtual void OnWheelScrolled(IUltravioletWindow window, Int32 x, Int32 y)
-        {
-            var temp = WheelScrolled;
-            if (temp != null)
-            {
-                temp(window, this, x, y);
-            }
-        }
+        protected virtual void OnWheelScrolled(IUltravioletWindow window, Int32 x, Int32 y) =>
+            WheelScrolled?.Invoke(window, this, x, y);
     }
 }

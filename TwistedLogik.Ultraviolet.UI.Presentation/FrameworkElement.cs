@@ -845,14 +845,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Raises the <see cref="Initialized"/> event.
         /// </summary>
-        protected virtual void OnInitialized()
-        {
-            var temp = Initialized;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnInitialized() =>
+            Initialized?.Invoke(this);
 
         /// <summary>
         /// When overridden in a derived class, draws the element using the 

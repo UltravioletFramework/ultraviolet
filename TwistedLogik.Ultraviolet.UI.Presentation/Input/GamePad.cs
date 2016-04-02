@@ -701,11 +701,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewAxisChanged(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGamePadAxisChangedEventHandler>(PreviewAxisChangedEvent);
-            if (temp != null)
-            {
-                temp(element, device, axis, value, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisChangedEventHandler>(PreviewAxisChangedEvent);
+            evt?.Invoke(element, device, axis, value, ref data);
         }
 
         /// <summary>
@@ -713,11 +710,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewAxisDown(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGamePadAxisDownEventHandler>(PreviewAxisDownEvent);
-            if (temp != null)
-            {
-                temp(element, device, axis, value, repeat, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisDownEventHandler>(PreviewAxisDownEvent);
+            evt?.Invoke(element, device, axis, value, repeat, ref data);
         }
 
         /// <summary>
@@ -725,11 +719,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewAxisUp(DependencyObject element, GamePadDevice device, GamePadAxis axis, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGamePadAxisUpEventHandler>(PreviewAxisUpEvent);
-            if (temp != null)
-            {
-                temp(element, device, axis, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisUpEventHandler>(PreviewAxisUpEvent);
+            evt?.Invoke(element, device, axis, ref data);
         }
 
         /// <summary>
@@ -737,11 +728,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewButtonDown(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGamePadButtonDownEventHandler>(PreviewButtonDownEvent);
-            if (temp != null)
-            {
-                temp(element, device, button, repeat, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGamePadButtonDownEventHandler>(PreviewButtonDownEvent);
+            evt?.Invoke(element, device, button, repeat, ref data);
         }
 
         /// <summary>
@@ -749,11 +737,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaisePreviewButtonUp(DependencyObject element, GamePadDevice device, GamePadButton button, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGamePadButtonUpEventHandler>(PreviewButtonUpEvent);
-            if (temp != null)
-            {
-                temp(element, device, button, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGamePadButtonUpEventHandler>(PreviewButtonUpEvent);
+            evt?.Invoke(element, device, button, ref data);
         }
 
         /// <summary>
@@ -761,11 +746,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseAxisChanged(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGamePadAxisChangedEventHandler>(AxisChangedEvent);
-            if (temp != null)
-            {
-                temp(element, device, axis, value, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisChangedEventHandler>(AxisChangedEvent);
+            evt?.Invoke(element, device, axis, value, ref data);
         }
 
         /// <summary>
@@ -773,11 +755,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseAxisDown(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGamePadAxisDownEventHandler>(AxisDownEvent);
-            if (temp != null)
-            {
-                temp(element, device, axis, value, repeat, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisDownEventHandler>(AxisDownEvent);
+            evt?.Invoke(element, device, axis, value, repeat, ref data);
         }
 
         /// <summary>
@@ -785,11 +764,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseAxisUp(DependencyObject element, GamePadDevice device, GamePadAxis axis, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGamePadAxisUpEventHandler>(AxisUpEvent);
-            if (temp != null)
-            {
-                temp(element, device, axis, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisUpEventHandler>(AxisUpEvent);
+            evt?.Invoke(element, device, axis, ref data);
         }
 
         /// <summary>
@@ -797,11 +773,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseButtonDown(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGamePadButtonDownEventHandler>(ButtonDownEvent);
-            if (temp != null)
-            {
-                temp(element, device, button, repeat, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGamePadButtonDownEventHandler>(ButtonDownEvent);
+            evt?.Invoke(element, device, button, repeat, ref data);
         }
 
         /// <summary>
@@ -809,11 +782,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void RaiseButtonUp(DependencyObject element, GamePadDevice device, GamePadButton button, ref RoutedEventData data)
         {
-            var temp = EventManager.GetInvocationDelegate<UpfGamePadButtonUpEventHandler>(ButtonUpEvent);
-            if (temp != null)
-            {
-                temp(element, device, button, ref data);
-            }
+            var evt = EventManager.GetInvocationDelegate<UpfGamePadButtonUpEventHandler>(ButtonUpEvent);
+            evt?.Invoke(element, device, button, ref data);
         }
     }
 }

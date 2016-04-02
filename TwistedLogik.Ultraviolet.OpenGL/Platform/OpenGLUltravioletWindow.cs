@@ -842,87 +842,45 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// Raises the Drawing event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to Draw.</param>
-        private void OnDrawing(UltravioletTime time)
-        {
-            var temp = Drawing;
-            if (temp != null)
-            {
-                temp(this, time);
-            }
-        }
+        private void OnDrawing(UltravioletTime time) =>
+            Drawing?.Invoke(this, time);
 
         /// <summary>
         /// Raises the DrawingUI event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to Draw.</param>
-        private void OnDrawingUI(UltravioletTime time)
-        {
-            var temp = DrawingUI;
-            if (temp != null)
-            {
-                temp(this, time);
-            }
-        }
+        private void OnDrawingUI(UltravioletTime time) =>
+            DrawingUI?.Invoke(this, time);
 
         /// <summary>
         /// Raises the Shown event.
         /// </summary>
-        private void OnShown()
-        {
-            var temp = Shown;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnShown() =>
+            Shown?.Invoke(this);
 
         /// <summary>
         /// Raises the Hidden event.
         /// </summary>
-        private void OnHidden()
-        {
-            var temp = Hidden;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnHidden() =>
+            Hidden?.Invoke(this);
 
         /// <summary>
         /// Raises the Maximized event.
         /// </summary>
-        private void OnMaximized()
-        {
-            var temp = Maximized;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnMaximized() =>
+            Maximized?.Invoke(this);
 
         /// <summary>
         /// Raises the Minimized event.
         /// </summary>
-        private void OnMinimized()
-        {
-            var temp = Minimized;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnMinimized() =>
+            Minimized?.Invoke(this);
 
         /// <summary>
         /// Raises the Restored event.
         /// </summary>
-        private void OnRestored()
-        {
-            var temp = Restored;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        private void OnRestored() =>
+            Restored?.Invoke(this);
 
         /// <summary>
         /// Updates the window's windowed position, if it is currently in the correct mode and state.

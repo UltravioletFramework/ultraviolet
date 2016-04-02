@@ -154,38 +154,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Raises the <see cref="WidthChanged"/> event.
         /// </summary>
-        protected void OnWidthChanged()
-        {
-            var temp = WidthChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected void OnWidthChanged() =>
+            WidthChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="MinWidthChanged"/> event.
         /// </summary>
-        protected void OnMinWidthChanged()
-        {
-            var temp = MinWidthChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected void OnMinWidthChanged() =>
+            MinWidthChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="MaxWidthChanged"/> event.
         /// </summary>
-        protected void OnMaxWidthChanged()
-        {
-            var temp = MaxWidthChanged;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected void OnMaxWidthChanged() =>
+            MaxWidthChanged?.Invoke(this);
 
         /// <summary>
         /// Occurs when the value of the <see cref="Width"/> dependency property changes.

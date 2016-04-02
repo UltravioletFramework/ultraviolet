@@ -214,10 +214,7 @@ namespace TwistedLogik.Ultraviolet.Testing
             if (!headless)
                 Ultraviolet.GetPlatform().Windows.GetPrimary().ClientSize = new Size2(480, 360);
 
-            if (initializer != null)
-            {
-                initializer(Ultraviolet);
-            }
+            initializer?.Invoke(Ultraviolet);
 
             Ultraviolet.FrameStart += OnFrameStart;
             
@@ -292,8 +289,7 @@ namespace TwistedLogik.Ultraviolet.Testing
                     Ultraviolet.GetGraphics().Clear(Color.Black);
                 }
 
-                if (renderer != null)
-                    renderer(Ultraviolet);
+                renderer?.Invoke(Ultraviolet);
 
                 if (compositor != null)
                 {

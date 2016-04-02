@@ -636,26 +636,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Raises the <see cref="DropDownOpened"/> event.
         /// </summary>
-        protected virtual void OnDropDownOpened()
-        {
-            var temp = DropDownOpened;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnDropDownOpened() =>
+            DropDownOpened?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="DropDownClosed"/> event.
         /// </summary>
-        protected virtual void OnDropDownClosed()
-        {
-            var temp = DropDownClosed;
-            if (temp != null)
-            {
-                temp(this);
-            }
-        }
+        protected virtual void OnDropDownClosed() =>
+            DropDownClosed?.Invoke(this);
 
         /// <summary>
         /// Occurs when the value of the <see cref="UIElement.IsEnabledChanged"/> dependency property changes.
