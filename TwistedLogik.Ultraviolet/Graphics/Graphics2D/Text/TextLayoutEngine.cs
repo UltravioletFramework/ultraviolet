@@ -237,10 +237,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             if (text.Length != 8)
                 throw new FormatException();
 
-            var a = (Int32)StringSegmentConversion.ParseHexadecimalInt32(text.Substring(0, 2));
-            var r = (Int32)StringSegmentConversion.ParseHexadecimalInt32(text.Substring(2, 2));
-            var g = (Int32)StringSegmentConversion.ParseHexadecimalInt32(text.Substring(4, 2));
-            var b = (Int32)StringSegmentConversion.ParseHexadecimalInt32(text.Substring(6, 2));
+            var a = StringSegmentConversion.ParseHexadecimalInt32(text.Substring(0, 2));
+            var r = StringSegmentConversion.ParseHexadecimalInt32(text.Substring(2, 2));
+            var g = StringSegmentConversion.ParseHexadecimalInt32(text.Substring(4, 2));
+            var b = StringSegmentConversion.ParseHexadecimalInt32(text.Substring(6, 2));
 
             return new Color(r, g, b, a);
         }        

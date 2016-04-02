@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Double PixelsToDips(Double pixels)
         {
-            return pixels / (Double)DensityScale;
+            return pixels / DensityScale;
         }
 
         /// <inheritdoc/>

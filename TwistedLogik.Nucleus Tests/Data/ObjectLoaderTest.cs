@@ -523,8 +523,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].Int16Value).ShouldBe((Int16)(-123));
-            TheResultingValue(results[1].Int16Value).ShouldBe((Int16)(+456));
+            TheResultingValue(results[0].Int16Value).ShouldBe(-123);
+            TheResultingValue(results[1].Int16Value).ShouldBe(+456);
         }
 
         [TestMethod]
@@ -541,8 +541,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].Int16Value).ShouldBe((Int16)(-123));
-            TheResultingValue(results[1].Int16Value).ShouldBe((Int16)(+456));
+            TheResultingValue(results[0].Int16Value).ShouldBe(-123);
+            TheResultingValue(results[1].Int16Value).ShouldBe(+456);
         }
 
         [TestMethod]
@@ -589,8 +589,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].Int32Value).ShouldBe((Int32)(-123));
-            TheResultingValue(results[1].Int32Value).ShouldBe((Int32)(+456));
+            TheResultingValue(results[0].Int32Value).ShouldBe(-123);
+            TheResultingValue(results[1].Int32Value).ShouldBe(+456);
         }
 
         [TestMethod]
@@ -607,8 +607,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].Int32Value).ShouldBe((Int32)(-123));
-            TheResultingValue(results[1].Int32Value).ShouldBe((Int32)(+456));
+            TheResultingValue(results[0].Int32Value).ShouldBe(-123);
+            TheResultingValue(results[1].Int32Value).ShouldBe(+456);
 
         }
 
@@ -656,8 +656,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].Int64Value).ShouldBe((Int64)(-123));
-            TheResultingValue(results[1].Int64Value).ShouldBe((Int64)(+456));
+            TheResultingValue(results[0].Int64Value).ShouldBe(-123);
+            TheResultingValue(results[1].Int64Value).ShouldBe(+456);
         }
 
         [TestMethod]
@@ -674,8 +674,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].Int64Value).ShouldBe((Int64)(-123));
-            TheResultingValue(results[1].Int64Value).ShouldBe((Int64)(+456));
+            TheResultingValue(results[0].Int64Value).ShouldBe(-123);
+            TheResultingValue(results[1].Int64Value).ShouldBe(+456);
         }
 
         [TestMethod]
@@ -722,8 +722,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].UInt16Value).ShouldBe((UInt16)123);
-            TheResultingValue(results[1].UInt16Value).ShouldBe((UInt16)456);
+            TheResultingValue(results[0].UInt16Value).ShouldBe(123);
+            TheResultingValue(results[1].UInt16Value).ShouldBe(456);
         }
 
         [TestMethod]
@@ -740,8 +740,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].UInt16Value).ShouldBe((UInt16)123);
-            TheResultingValue(results[1].UInt16Value).ShouldBe((UInt16)456);
+            TheResultingValue(results[0].UInt16Value).ShouldBe(123);
+            TheResultingValue(results[1].UInt16Value).ShouldBe(456);
         }
 
         [TestMethod]
@@ -788,8 +788,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].UInt32Value).ShouldBe((UInt32)123);
-            TheResultingValue(results[1].UInt32Value).ShouldBe((UInt32)456);
+            TheResultingValue(results[0].UInt32Value).ShouldBe(123);
+            TheResultingValue(results[1].UInt32Value).ShouldBe(456);
         }
 
         [TestMethod]
@@ -806,8 +806,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].UInt32Value).ShouldBe((UInt32)123);
-            TheResultingValue(results[1].UInt32Value).ShouldBe((UInt32)456);
+            TheResultingValue(results[0].UInt32Value).ShouldBe(123);
+            TheResultingValue(results[1].UInt32Value).ShouldBe(456);
         }
 
         [TestMethod]
@@ -854,8 +854,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].UInt64Value).ShouldBe((UInt64)123);
-            TheResultingValue(results[1].UInt64Value).ShouldBe((UInt64)456);
+            TheResultingValue(results[0].UInt64Value).ShouldBe(123);
+            TheResultingValue(results[1].UInt64Value).ShouldBe(456);
         }
 
         [TestMethod]
@@ -872,8 +872,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingCollection(results)
                 .ShouldContainTheSpecifiedNumberOfItems(2);
 
-            TheResultingValue(results[0].UInt64Value).ShouldBe((UInt64)123);
-            TheResultingValue(results[1].UInt64Value).ShouldBe((UInt64)456);
+            TheResultingValue(results[0].UInt64Value).ShouldBe(123);
+            TheResultingValue(results[1].UInt64Value).ShouldBe(456);
         }
 
         [TestMethod]

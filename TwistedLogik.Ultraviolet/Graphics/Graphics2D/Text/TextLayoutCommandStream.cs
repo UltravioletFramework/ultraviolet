@@ -1114,7 +1114,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             sources.Add(source);
             sourcesByReference[source] = index;
 
-            return (Int16)index;
+            return index;
         }
 
         // The underlying data stream containing our commands.

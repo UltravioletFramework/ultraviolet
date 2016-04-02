@@ -396,7 +396,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                     throw new InvalidOperationException(OpenGLStrings.CannotCreateHeadlessContextOnAndroid);
                 }
 
-                const Int32 SDL_GL_CONTEXT_PROFILE_ES = (int)0x0004;
+                const Int32 SDL_GL_CONTEXT_PROFILE_ES = 0x0004;
                 if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES) < 0)
                     throw new SDL2Exception();
             }

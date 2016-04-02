@@ -15,17 +15,17 @@ namespace TwistedLogik.Ultraviolet
             /// <summary>
             /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.Color.White"/>.
             /// </summary>
-            public static readonly Object White = (Object)TwistedLogik.Ultraviolet.Color.White;
+            public static readonly Object White = TwistedLogik.Ultraviolet.Color.White;
 
             /// <summary>
             /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.Color.Black"/>.
             /// </summary>
-            public static readonly Object Black = (Object)TwistedLogik.Ultraviolet.Color.Black;
+            public static readonly Object Black = TwistedLogik.Ultraviolet.Color.Black;
 
             /// <summary>
             /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.Color.Transparent"/>.
             /// </summary>
-            public static readonly Object Transparent = (Object)TwistedLogik.Ultraviolet.Color.Transparent;
+            public static readonly Object Transparent = TwistedLogik.Ultraviolet.Color.Transparent;
         }
 
         /// <summary>
@@ -36,26 +36,26 @@ namespace TwistedLogik.Ultraviolet
             /// <summary>
             /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Regular"/>.
             /// </summary>
-            public static readonly Object Regular = 
-                (Object)TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Regular;
+            public static readonly Object Regular =
+                TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Regular;
 
             /// <summary>
             /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Bold"/>.
             /// </summary>
-            public static readonly Object Bold = 
-                (Object)TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Bold;
+            public static readonly Object Bold =
+                TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Bold;
 
             /// <summary>
             /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Italic"/>.
             /// </summary>
-            public static readonly Object Italic = 
-                (Object)TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Italic;
+            public static readonly Object Italic =
+                TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Italic;
 
             /// <summary>
             /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.BoldItalic"/>.
             /// </summary>
-            public static readonly Object BoldItalic = 
-                (Object)TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.BoldItalic;
+            public static readonly Object BoldItalic =
+                TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.BoldItalic;
         }
     }
 }

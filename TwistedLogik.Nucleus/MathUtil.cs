@@ -409,7 +409,7 @@ namespace TwistedLogik.Nucleus
         /// <returns>Interpolated value.</returns>
         public static Single Lerp(Single value1, Single value2, Single amount)
         {
-            return (Single)(value1 + ((value2 - value1) * amount));
+            return value1 + ((value2 - value1) * amount);
         }
 
         /// <summary>
@@ -421,7 +421,7 @@ namespace TwistedLogik.Nucleus
         /// <returns>Interpolated value.</returns>
         public static Double Lerp(Double value1, Double value2, Single amount)
         {
-            return (Double)(value1 + ((value2 - value1) * amount));
+            return value1 + ((value2 - value1) * amount);
         }
     }
 }

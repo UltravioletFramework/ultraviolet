@@ -78,8 +78,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The list that was created.</returns>
         internal static SyntaxList List(ArrayElement<SyntaxNode>[] nodes)
         {
-            return (nodes.Length < 10) ? 
-                (WithManyChildrenBase)new WithManyChildren(nodes) : 
+            return (nodes.Length < 10) ?
+                new WithManyChildren(nodes) :
                 (WithManyChildrenBase)new WithLotsOfChildren(nodes);
         }
 

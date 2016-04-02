@@ -69,7 +69,7 @@ namespace TwistedLogik.Nucleus.Data
             }
             else
             {
-                SetValue(value, (Object[])null);
+                SetValue(value, null);
             }
         }
 
@@ -116,7 +116,7 @@ namespace TwistedLogik.Nucleus.Data
             }
             else
             {
-                return GetValue((Object[])null);
+                return GetValue(null);
             }
         }
 

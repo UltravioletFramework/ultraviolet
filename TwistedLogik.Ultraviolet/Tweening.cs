@@ -382,7 +382,7 @@ namespace TwistedLogik.Ultraviolet
         public static Single Tween(Single tweenStart, Single tweenEnd, EasingFunction fn, Single t)
         {
             var delta = (tweenEnd - tweenStart);
-            return (Single)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
+            return tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t));
         }
 
         /// <summary>
@@ -395,7 +395,7 @@ namespace TwistedLogik.Ultraviolet
         public static Single Lerp(Single lerpStart, Single lerpEnd, Single t)
         {
             var delta = (lerpEnd - lerpStart);
-            return (Single)(lerpStart + (delta * t));
+            return lerpStart + (delta * t);
         }
 
         /// <summary>
@@ -409,7 +409,7 @@ namespace TwistedLogik.Ultraviolet
         public static Double Tween(Double tweenStart, Double tweenEnd, EasingFunction fn, Single t)
         {
             var delta = (tweenEnd - tweenStart);
-            return (Double)(tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t)));
+            return tweenStart + (delta * (fn ?? Easings.EaseInLinear)(t));
         }
 
         /// <summary>
@@ -422,7 +422,7 @@ namespace TwistedLogik.Ultraviolet
         public static Double Lerp(Double lerpStart, Double lerpEnd, Single t)
         {
             var delta = (lerpEnd - lerpStart);
-            return (Double)(lerpStart + (delta * t));
+            return lerpStart + (delta * t);
         }
 
         /// <summary>
@@ -436,7 +436,7 @@ namespace TwistedLogik.Ultraviolet
         public static Decimal Tween(Decimal tweenStart, Decimal tweenEnd, EasingFunction fn, Single t)
         {
             var delta = (tweenEnd - tweenStart);
-            return (Decimal)(tweenStart + (delta * (Decimal)(fn ?? Easings.EaseInLinear)(t)));
+            return tweenStart + (delta * (Decimal)(fn ?? Easings.EaseInLinear)(t));
         }
 
         /// <summary>
@@ -449,7 +449,7 @@ namespace TwistedLogik.Ultraviolet
         public static Decimal Lerp(Decimal lerpStart, Decimal lerpEnd, Single t)
         {
             var delta = (lerpEnd - lerpStart);
-            return (Decimal)(lerpStart + (delta * (Decimal)t));
+            return lerpStart + (delta * (Decimal)t);
         }
 
         /// <summary>
@@ -466,7 +466,7 @@ namespace TwistedLogik.Ultraviolet
             Interpolator<T> interpolator;
             if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
             {
-                return (T)Tween((Object)tweenStart, (Object)tweenEnd, fn, t);
+                return (T)Tween(tweenStart, (Object)tweenEnd, fn, t);
             }
             return interpolator(tweenStart, tweenEnd, fn, t);
         }
@@ -484,7 +484,7 @@ namespace TwistedLogik.Ultraviolet
             Interpolator<T> interpolator;
             if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
             {
-                return (T)Tween((Object)lerpStart, (Object)lerpEnd, Easings.EaseInLinear, t);
+                return (T)Tween(lerpStart, (Object)lerpEnd, Easings.EaseInLinear, t);
             }
             return interpolator(lerpStart, lerpEnd, Easings.EaseInLinear, t);
         }
@@ -503,7 +503,7 @@ namespace TwistedLogik.Ultraviolet
             Interpolator<T> interpolator;
             if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
             {
-                return (T)Tween((Object)tweenStart, (Object)tweenEnd, fn, t);
+                return (T)Tween(tweenStart, (Object)tweenEnd, fn, t);
             }
             return interpolator(tweenStart, tweenEnd, fn, t);
         }
@@ -521,7 +521,7 @@ namespace TwistedLogik.Ultraviolet
             Interpolator<T> interpolator;
             if (!Interpolators.TryGet<T>(out interpolator) || interpolator == null)
             {
-                return (T)Tween((Object)lerpStart, (Object)lerpEnd, Easings.EaseInLinear, t);
+                return (T)Tween(lerpStart, (Object)lerpEnd, Easings.EaseInLinear, t);
             }
             return interpolator(lerpStart, lerpEnd, Easings.EaseInLinear, t);
         }

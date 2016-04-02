@@ -13,7 +13,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
         {
             unsafe
             {
-                var data = new ushort[] { (ushort)'H', (ushort)'e', (ushort)'l', (ushort)'l', (ushort)'o', 0 };
+                var data = new ushort[] { 'H', 'e', 'l', 'l', 'o', 0 };
                 fixed (ushort* pdata = data)
                 {
                     var ptr = new StringPtr16((IntPtr)pdata);

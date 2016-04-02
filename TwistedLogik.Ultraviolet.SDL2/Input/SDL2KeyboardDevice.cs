@@ -297,7 +297,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             var completed = false;
             fixed (char* pTextUtf16 = textUtf16)
             {
-                Encoding.UTF8.GetDecoder().Convert((byte*)input, byteCount, pTextUtf16, textUtf16.Length, true,
+                Encoding.UTF8.GetDecoder().Convert(input, byteCount, pTextUtf16, textUtf16.Length, true,
                     out bytesUsed, out charsUsed, out completed);
                 if (!completed)
                 {

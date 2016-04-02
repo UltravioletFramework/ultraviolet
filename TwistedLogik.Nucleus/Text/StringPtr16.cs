@@ -155,7 +155,7 @@ namespace TwistedLogik.Nucleus.Text
                 Contract.EnsureRange(index >= 0 && index < length, "index");
                 unsafe
                 {
-                    return (Char)(*((char*)ptr + index));
+                    return *((char*)ptr + index);
                 }
             }
         }

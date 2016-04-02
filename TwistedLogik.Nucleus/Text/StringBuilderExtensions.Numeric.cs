@@ -146,7 +146,7 @@ namespace TwistedLogik.Nucleus.Text
             }
             else
             {
-                float_val = (float)Math.Round((double)float_val, (int)decimal_places);
+                float_val = (float)Math.Round(float_val, (int)decimal_places);
                 int int_part = (int)Math.Abs(float_val);
 
                 // First part is easy, just cast to an integer

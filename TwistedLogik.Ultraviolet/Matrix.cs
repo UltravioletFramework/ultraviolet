@@ -399,7 +399,7 @@ namespace TwistedLogik.Ultraviolet
             var m11 = (float)(2.0 / width);
             var m22 = (float)(2.0 / height);
             var m33 = (float)(1.0 / (zNearPlane - zFarPlane));
-            var m34 = (float)(zNearPlane / (zNearPlane - zFarPlane));
+            var m34 = zNearPlane / (zNearPlane - zFarPlane);
 
             return new Matrix(
                 m11, 0, 0, 0,
@@ -422,7 +422,7 @@ namespace TwistedLogik.Ultraviolet
             var m11 = (float)(2.0 / width);
             var m22 = (float)(2.0 / height);
             var m33 = (float)(1.0 / (zNearPlane - zFarPlane));
-            var m34 = (float)(zNearPlane / (zNearPlane - zFarPlane));
+            var m34 = zNearPlane / (zNearPlane - zFarPlane);
 
             result = new Matrix(
                 m11, 0, 0, 0,
@@ -445,11 +445,11 @@ namespace TwistedLogik.Ultraviolet
         public static Matrix CreateOrthographicOffCenter(Single left, Single right, Single bottom, Single top, Single zNearPlane, Single zFarPlane)
         {
             var m11 = (float)(2.0 / (right - left));
-            var m14 = (float)((left + right) / (left - right));
+            var m14 = (left + right) / (left - right);
             var m22 = (float)(2.0 / (top - bottom));
-            var m24 = (float)((top + bottom) / (bottom - top));
+            var m24 = (top + bottom) / (bottom - top);
             var m33 = (float)(1.0 / (zNearPlane - zFarPlane));
-            var m34 = (float)(zNearPlane / (zNearPlane - zFarPlane));
+            var m34 = zNearPlane / (zNearPlane - zFarPlane);
 
             return new Matrix(
                 m11, 0, 0, m14,
@@ -472,11 +472,11 @@ namespace TwistedLogik.Ultraviolet
         public static void CreateOrthographicOffCenter(Single left, Single right, Single bottom, Single top, Single zNearPlane, Single zFarPlane, out Matrix result)
         {
             var m11 = (float)(2.0 / (right - left));
-            var m14 = (float)((left + right) / (left - right));
+            var m14 = (left + right) / (left - right);
             var m22 = (float)(2.0 / (top - bottom));
-            var m24 = (float)((top + bottom) / (bottom - top));
+            var m24 = (top + bottom) / (bottom - top);
             var m33 = (float)(1.0 / (zNearPlane - zFarPlane));
-            var m34 = (float)(zNearPlane / (zNearPlane - zFarPlane));
+            var m34 = zNearPlane / (zNearPlane - zFarPlane);
 
             result = new Matrix(
                 m11, 0, 0, m14,
@@ -567,8 +567,8 @@ namespace TwistedLogik.Ultraviolet
 
             var m11 = (float)xScale;
             var m22 = (float)yScale;
-            var m33 = (float)(farPlaneDistance / nearmfar);
-            var m34 = (float)(nearPlaneDistance * farPlaneDistance / nearmfar);
+            var m33 = farPlaneDistance / nearmfar;
+            var m34 = nearPlaneDistance * farPlaneDistance / nearmfar;
             var m43 = -1f;
 
             return new Matrix(
@@ -600,8 +600,8 @@ namespace TwistedLogik.Ultraviolet
 
             var m11 = (float)xScale;
             var m22 = (float)yScale;
-            var m33 = (float)(farPlaneDistance / nearmfar);
-            var m34 = (float)(nearPlaneDistance * farPlaneDistance / nearmfar);
+            var m33 = farPlaneDistance / nearmfar;
+            var m34 = nearPlaneDistance * farPlaneDistance / nearmfar;
             var m43 = -1f;
 
             result = new Matrix(
@@ -636,11 +636,11 @@ namespace TwistedLogik.Ultraviolet
             var tmb = top - bottom;
 
             var m11 = (float)(2.0 * nearPlaneDistance / rml);
-            var m13 = (float)(rpl / rml);
+            var m13 = rpl / rml;
             var m22 = (float)(2.0 * nearPlaneDistance / tmb);
-            var m23 = (float)(tpb / tmb);            
-            var m33 = (float)(farPlaneDistance / nearmfar);
-            var m34 = (float)(nearPlaneDistance * farPlaneDistance / nearmfar);
+            var m23 = tpb / tmb;            
+            var m33 = farPlaneDistance / nearmfar;
+            var m34 = nearPlaneDistance * farPlaneDistance / nearmfar;
             var m43 = -1f;
 
             return new Matrix(
@@ -675,11 +675,11 @@ namespace TwistedLogik.Ultraviolet
             var tmb = top - bottom;
 
             var m11 = (float)(2.0 * nearPlaneDistance / rml);
-            var m13 = (float)(rpl / rml);
+            var m13 = rpl / rml;
             var m22 = (float)(2.0 * nearPlaneDistance / tmb);
-            var m23 = (float)(tpb / tmb);
-            var m33 = (float)(farPlaneDistance / nearmfar);
-            var m34 = (float)(nearPlaneDistance * farPlaneDistance / nearmfar);
+            var m23 = tpb / tmb;
+            var m33 = farPlaneDistance / nearmfar;
+            var m34 = nearPlaneDistance * farPlaneDistance / nearmfar;
             var m43 = -1f;
 
             result = new Matrix(

@@ -23,8 +23,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.Require(vertexShader, "vertexShader");
             Contract.Require(fragmentShader, "fragmentShader");
 
-            Ultraviolet.ValidateResource((UltravioletResource)vertexShader);
-            Ultraviolet.ValidateResource((UltravioletResource)fragmentShader);
+            Ultraviolet.ValidateResource(vertexShader);
+            Ultraviolet.ValidateResource(fragmentShader);
 
             this.vertexShader = vertexShader;
             this.fragmentShader = fragmentShader;

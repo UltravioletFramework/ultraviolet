@@ -365,10 +365,10 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="result">The axis-aligned bounding box of <paramref name="rectangle"/> after it has been transformed.</param>
         public static void TransformAxisAligned(ref RectangleF rectangle, ref Matrix transform, out RectangleF result)
         {
-            var tl = new Vector2((Single)rectangle.Left, (Single)rectangle.Top);
-            var tr = new Vector2((Single)rectangle.Right, (Single)rectangle.Top);
-            var bl = new Vector2((Single)rectangle.Left, (Single)rectangle.Bottom);
-            var br = new Vector2((Single)rectangle.Right, (Single)rectangle.Bottom);
+            var tl = new Vector2(rectangle.Left, rectangle.Top);
+            var tr = new Vector2(rectangle.Right, rectangle.Top);
+            var bl = new Vector2(rectangle.Left, rectangle.Bottom);
+            var br = new Vector2(rectangle.Right, rectangle.Bottom);
 
             Vector2.Transform(ref tl, ref transform, out tl);
             Vector2.Transform(ref tr, ref transform, out tr);

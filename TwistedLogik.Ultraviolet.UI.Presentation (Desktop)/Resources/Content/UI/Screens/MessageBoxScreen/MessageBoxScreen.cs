@@ -99,12 +99,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{HasCaption ? Visibility.Visible : Visibility.Collapsed}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
         public TwistedLogik.Ultraviolet.UI.Presentation.Visibility __UPF_Expression1
         {
-            get { return (TwistedLogik.Ultraviolet.UI.Presentation.Visibility)(HasCaption ? Visibility.Visible : Visibility.Collapsed); }
+            get { return HasCaption ? Visibility.Visible : Visibility.Collapsed; }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{HasImage ? Visibility.Visible : Visibility.Collapsed}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
         public TwistedLogik.Ultraviolet.UI.Presentation.Visibility __UPF_Expression2
         {
-            get { return (TwistedLogik.Ultraviolet.UI.Presentation.Visibility)(HasImage ? Visibility.Visible : Visibility.Collapsed); }
+            get { return HasImage ? Visibility.Visible : Visibility.Collapsed; }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{Text}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
         public TwistedLogik.Ultraviolet.UI.Presentation.VersionedStringSource __UPF_Expression3
@@ -118,27 +118,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{HasText ? Visibility.Visible : Visibility.Collapsed}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
         public TwistedLogik.Ultraviolet.UI.Presentation.Visibility __UPF_Expression4
         {
-            get { return (TwistedLogik.Ultraviolet.UI.Presentation.Visibility)(HasText ? Visibility.Visible : Visibility.Collapsed); }
+            get { return HasText ? Visibility.Visible : Visibility.Collapsed; }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{Localization.Strings.Get(""MSGBOX_YES"")}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
         public System.Object __UPF_Expression5
         {
-            get { return (System.Object)(Localization.Strings.Get("MSGBOX_YES")); }
+            get { return Localization.Strings.Get("MSGBOX_YES"); }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{Localization.Strings.Get(""MSGBOX_NO"")}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
         public System.Object __UPF_Expression6
         {
-            get { return (System.Object)(Localization.Strings.Get("MSGBOX_NO")); }
+            get { return Localization.Strings.Get("MSGBOX_NO"); }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{Localization.Strings.Get(""MSGBOX_OK"")}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
         public System.Object __UPF_Expression7
         {
-            get { return (System.Object)(Localization.Strings.Get("MSGBOX_OK")); }
+            get { return Localization.Strings.Get("MSGBOX_OK"); }
         }
         [TwistedLogik.Ultraviolet.UI.Presentation.CompiledBindingExpressionAttribute(@"{{Localization.Strings.Get(""MSGBOX_CANCEL"")}}", SimpleDependencyPropertyOwner = null, SimpleDependencyPropertyName = null)]
         public System.Object __UPF_Expression8
         {
-            get { return (System.Object)(Localization.Strings.Get("MSGBOX_CANCEL")); }
+            get { return Localization.Strings.Get("MSGBOX_CANCEL"); }
         }
         #endregion
     }

@@ -27,16 +27,16 @@ namespace TwistedLogik.Nucleus.Tests
         public void MaskedUInt32_CalculatesMasksCorrectly()
         {
             var val1 = (MaskedUInt32)12345;
-            TheResultingValue(val1.GetMask()).ShouldBe((byte)0x03);
+            TheResultingValue(val1.GetMask()).ShouldBe(0x03);
 
             var val2 = (MaskedUInt32)67890;
-            TheResultingValue(val2.GetMask()).ShouldBe((byte)0x07);
+            TheResultingValue(val2.GetMask()).ShouldBe(0x07);
 
             var val3 = (MaskedUInt32)UInt32.MinValue;
-            TheResultingValue(val3.GetMask()).ShouldBe((byte)0x00);
+            TheResultingValue(val3.GetMask()).ShouldBe(0x00);
             
             var val4 = (MaskedUInt32)UInt32.MaxValue;
-            TheResultingValue(val4.GetMask()).ShouldBe((byte)0x0F);
+            TheResultingValue(val4.GetMask()).ShouldBe(0x0F);
         }
     }
 }

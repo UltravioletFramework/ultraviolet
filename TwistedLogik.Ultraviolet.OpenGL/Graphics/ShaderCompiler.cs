@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 try
                 {
-                    gl.ShaderSource(shader, source.Length, (sbyte**)pSource, (int*)pLength);
+                    gl.ShaderSource(shader, source.Length, (sbyte**)pSource, pLength);
                     gl.ThrowIfError();
 
                     gl.CompileShader(shader);

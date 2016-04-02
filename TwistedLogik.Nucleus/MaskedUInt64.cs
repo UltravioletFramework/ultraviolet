@@ -59,7 +59,7 @@ namespace TwistedLogik.Nucleus
         public MaskedUInt64 WithByte(Int32 byteIndex, Byte byteValue)
         {
             var value = Value;
-            value |= (ulong)((ulong)byteValue << (byteIndex * 8));
+            value |= (ulong)byteValue << (byteIndex * 8);
             return new MaskedUInt64(value);
         }
 

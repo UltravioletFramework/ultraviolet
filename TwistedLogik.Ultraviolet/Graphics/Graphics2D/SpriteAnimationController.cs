@@ -126,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public void ResetAnimation()
         {
             this.timer = 0.0;
-            this.frame = (animation == null || animation.Frames.Count == 0) ? (SpriteFrame)null : animation.Frames[0];
+            this.frame = (animation == null || animation.Frames.Count == 0) ? null : animation.Frames[0];
             this.frameIndex = 0;
         }
 

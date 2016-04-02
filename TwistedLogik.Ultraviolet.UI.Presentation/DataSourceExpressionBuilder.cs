@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Expression reference;
             try
             {
-                reference = (Expression)Expression.PropertyOrField(current, component);
+                reference = Expression.PropertyOrField(current, component);
             }
             catch (ArgumentException e) 
             { 

@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
                     var size = cursorElement.AttributeValue<Size2>("Size");
                     var hotspot = cursorElement.AttributeValue<Vector2>("Hotspot");
 
-                    var region = new Rectangle((int)position.X, (int)position.Y, (int)size.Width, (int)size.Height);
+                    var region = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);
                     using (var cursorSurface = surface.CreateSurface(region))
                     {
                         var cursor = Cursor.Create(cursorSurface, (int)hotspot.X, (int)hotspot.Y);

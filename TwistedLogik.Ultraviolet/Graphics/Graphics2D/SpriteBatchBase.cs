@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             this.vertices = new VertexType[batchSize * 4];
             this.vertexBufferPosition = 0;
 
-            this.spriteEffect = (Effect)SpriteBatchEffect.Create();
+            this.spriteEffect = SpriteBatchEffect.Create();
 
             uv.QueueWorkItemAndWait(CreateVertexAndIndexBuffers);
         }
@@ -1592,8 +1592,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="texture">The texture for which to calculate UV factors.</param>
         protected void CalculateUV(Texture2D texture)
         {
-            cachedU = 1f / (float)texture.Width;
-            cachedV = 1f / (float)texture.Height;
+            cachedU = 1f / texture.Width;
+            cachedV = 1f / texture.Height;
         }
 
         /// <summary>
@@ -1620,13 +1620,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             if ((metadata->Effects & SpriteEffects.OriginRelativeToDestination) == SpriteEffects.OriginRelativeToDestination)
             {
-                cachedOriginX = (metadata->DestinationWidth == 0) ? 0 : metadata->OriginX / (float)metadata->DestinationWidth;
-                cachedOriginY = (metadata->DestinationHeight == 0) ? 0 : metadata->OriginY / (float)metadata->DestinationHeight;
+                cachedOriginX = (metadata->DestinationWidth == 0) ? 0 : metadata->OriginX / (metadata->DestinationWidth);
+                cachedOriginY = (metadata->DestinationHeight == 0) ? 0 : metadata->OriginY / (metadata->DestinationHeight);
             }
             else
             {
-                cachedOriginX = (metadata->SourceWidth == 0) ? 0 : metadata->OriginX / (float)metadata->SourceWidth;
-                cachedOriginY = (metadata->SourceHeight == 0) ? 0 : metadata->OriginY / (float)metadata->SourceHeight;
+                cachedOriginX = (metadata->SourceWidth == 0) ? 0 : metadata->OriginX / (metadata->SourceWidth);
+                cachedOriginY = (metadata->SourceHeight == 0) ? 0 : metadata->OriginY / (metadata->SourceHeight);
             }
         }
 

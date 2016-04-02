@@ -110,10 +110,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             var tileVertically   = (mode & TilingMode.Vertical) == TilingMode.Vertical;
 
             var tileCountX = tileHorizontally ?                
-                (Int32)Math.Ceiling(destinationRectangle.Width / (Single)sourceRectangle.Width) : 1;
+                (Int32)Math.Ceiling(destinationRectangle.Width / sourceRectangle.Width) : 1;
 
             var tileCountY = tileVertically ?                
-                (Int32)Math.Ceiling(destinationRectangle.Height / (Single)sourceRectangle.Height) : 1;
+                (Int32)Math.Ceiling(destinationRectangle.Height / sourceRectangle.Height) : 1;
 
             var cx = 0f;
             var cy = 0f;

@@ -655,7 +655,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 return;
 
-            var cliprect = (ClipRectangle == null || display == null) ? (Rectangle?)null : (Rectangle?)display.DipsToPixels(ClipRectangle.Value);
+            var cliprect = (ClipRectangle == null || display == null) ? null : (Rectangle?)display.DipsToPixels(ClipRectangle.Value);
             if (cliprect == currentStencil)
                 return;
 

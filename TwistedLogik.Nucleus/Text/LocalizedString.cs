@@ -132,7 +132,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>A human-readable string that represents the object.</returns>
         public override String ToString()
         {
-            return (String)this;
+            return this;
         }    
 
         /// <summary>
