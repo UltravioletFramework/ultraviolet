@@ -48,8 +48,13 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            FinishLoadingView();
 
-            UpdateView(time);
+            if (View != null && State != UIPanelState.Closed)
+            {
+                UpdateViewPosition();
+                UpdateView(time);
+            }
             UpdateTransition(time);
 
             OnUpdating(time);
@@ -68,7 +73,13 @@ namespace TwistedLogik.Ultraviolet.UI
 
             Window.Compositor.BeginContext(CompositionContext.Interface);
 
-            DrawView(time, spriteBatch);
+            FinishLoadingView();
+
+            if (View != null)
+            {
+                DrawView(time, spriteBatch);
+                OnDrawingView(time, spriteBatch);
+            }
 
             Window.Compositor.BeginContext(CompositionContext.Overlay);
 
@@ -242,7 +253,7 @@ namespace TwistedLogik.Ultraviolet.UI
 
             base.Dispose(disposing);
         }
-
+        
         /// <summary>
         /// Loads the screen's panel definition from the specified asset.
         /// </summary>

@@ -340,9 +340,9 @@ namespace TwistedLogik.Ultraviolet.UI
         public event UIPanelDrawEventHandler DrawingBackground;
 
         /// <summary>
-        /// Occurs when the panel is drawing its layout.
+        /// Occurs when the panel is drawing its view.
         /// </summary>
-        public event UIPanelDrawEventHandler DrawingLayout;
+        public event UIPanelDrawEventHandler DrawingView;
 
         /// <summary>
         /// Occurs when the panel is drawing its foreground.
@@ -456,12 +456,12 @@ namespace TwistedLogik.Ultraviolet.UI
             DrawingBackground?.Invoke(this, time, spriteBatch);
 
         /// <summary>
-        /// Raises the <see cref="DrawingLayout"/> event.
+        /// Raises the <see cref="DrawingView"/> event.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
-        protected virtual void OnDrawingLayout(UltravioletTime time, SpriteBatch spriteBatch) =>
-            DrawingLayout?.Invoke(this, time, spriteBatch);
+        protected virtual void OnDrawingView(UltravioletTime time, SpriteBatch spriteBatch) =>
+            DrawingView?.Invoke(this, time, spriteBatch);
 
         /// <summary>
         /// Raises the <see cref="DrawingForeground"/> event.
@@ -496,6 +496,25 @@ namespace TwistedLogik.Ultraviolet.UI
             Closed?.Invoke(this);
 
         /// <summary>
+        /// Draws the panel's view.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
+        protected virtual void DrawView(UltravioletTime time, SpriteBatch spriteBatch)
+        {
+            view.Draw(time, spriteBatch);
+        }
+
+        /// <summary>
+        /// Updates the panel's view.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        protected virtual void UpdateView(UltravioletTime time)
+        {
+            view.Update(time);
+        }
+
+        /// <summary>
         /// Prepares the panel to load the view from the specified panel definition.
         /// </summary>
         /// <param name="definition">The panel definition from which to load the view.</param>
@@ -508,36 +527,6 @@ namespace TwistedLogik.Ultraviolet.UI
                 throw new InvalidOperationException(UltravioletStrings.ViewAlreadyLoaded);
 
             this.definition = definition;
-        }
-
-        /// <summary>
-        /// Draws the panel's view.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which the panel is being drawn.</param>
-        protected void DrawView(UltravioletTime time, SpriteBatch spriteBatch)
-        {
-            FinishLoadingView();
-
-            if (view != null)
-            {
-                view.Draw(time, spriteBatch);
-            }
-        }
-
-        /// <summary>
-        /// Updates the panel's view.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        protected void UpdateView(UltravioletTime time)
-        {
-            FinishLoadingView();
-
-            if (view != null && State != UIPanelState.Closed)
-            {
-                UpdateViewPosition();
-                view.Update(time);
-            }
         }
 
         /// <summary>

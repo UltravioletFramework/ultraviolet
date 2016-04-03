@@ -55,8 +55,8 @@ namespace TwistedLogik.Ultraviolet.UI
             Contract.Require(uiPanel, "uiPanel");
             Contract.Require(uiPanelDefinition, "uiPanelDefinition");
 
-            var uv       = UltravioletContext.DemandCurrent();
-            var factory  = uv.TryGetFactoryMethod<UIViewFactory>();
+            var uv = UltravioletContext.DemandCurrent();
+            var factory = uv.TryGetFactoryMethod<UIViewFactory>();
             if (factory != null)
             {
                 return factory(uv, uiPanel, uiPanelDefinition, vmfactory);
@@ -70,14 +70,15 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the view.</param>
-        public abstract void Draw(UltravioletTime time, SpriteBatch spriteBatch);
+        /// <param name="opacity">The view's overall opacity.</param>
+        public abstract void Draw(UltravioletTime time, SpriteBatch spriteBatch, Single opacity = 1f);
 
         /// <summary>
         /// Updates the view's state.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public abstract void Update(UltravioletTime time);
-        
+
         /// <summary>
         /// Sets the content managers used to load UI assets.
         /// </summary>
@@ -86,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.UI
         public virtual void SetContentManagers(ContentManager global, ContentManager local)
         {
             this.globalContent = global;
-            this.localContent  = local;
+            this.localContent = local;
 
             OnContentManagersChanged();
         }
@@ -115,10 +116,10 @@ namespace TwistedLogik.Ultraviolet.UI
             Contract.Require(window, "window");
 
             var viewPositionChanged = (this.area.X != area.X || this.area.Y != area.Y);
-            var viewSizeChanged     = (this.area.Width != area.Width || this.area.Height != area.Height);
+            var viewSizeChanged = (this.area.Width != area.Width || this.area.Height != area.Height);
 
             this.window = window;
-            this.area   = area;
+            this.area = area;
 
             if (viewPositionChanged)
                 OnViewPositionChanged();

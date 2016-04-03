@@ -128,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        public override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
+        public override void Draw(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
             Contract.Require(time, "time");
             Contract.Require(spriteBatch, "spriteBatch");
@@ -150,6 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             spriteBatch.End();
 
             drawingContext.Reset(Display);
+            drawingContext.PushOpacity(opacity);
 
             drawingContext.SpriteBatch = spriteBatch;
             drawingContext.Begin();
