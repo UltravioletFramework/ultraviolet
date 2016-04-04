@@ -308,9 +308,8 @@ namespace TwistedLogik.Ultraviolet
             var task = new Task(() => action(token), token);
 
             lock (tasksPending)
-            {
                 tasksPending.Add(task);
-            }
+
             return task;
         }
 
@@ -322,17 +321,15 @@ namespace TwistedLogik.Ultraviolet
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            lock (tasksPending)
+            if (cancel)
+                cancellationTokenSource.Cancel();
+
+            while (true)
             {
-                if (tasksPending.Count == 0)
-                    return;
+                var done = true;
 
-                if (cancel)
-                    cancellationTokenSource.Cancel();
-
-                while (true)
+                lock (tasksPending)
                 {
-                    var done = true;
                     foreach (var task in tasksPending)
                     {
                         if (task.Status != TaskStatus.Created && !task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
@@ -340,13 +337,13 @@ namespace TwistedLogik.Ultraviolet
                             done = false;
                         }
                     }
-                    if (done)
-                    {
-                        break;
-                    }
-                    ProcessWorkItems();
-                    Thread.Yield();
                 }
+
+                if (done)
+                    break;
+
+                ProcessWorkItems();
+                Thread.Yield();
             }
         }
 
@@ -1265,27 +1262,36 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         private void UpdateTasks()
         {
-            lock (tasksPending)
+            try
             {
-                if (tasksPending.Count == 0)
-                    return;
+                lock (tasksPending)
+                {
+                    if (tasksPending.Count == 0)
+                        return;
 
-                foreach (var task in tasksPending)
+                    foreach (var task in tasksPending)
+                        tasksUpdating.Add(task);
+                }
+
+                foreach (var task in tasksUpdating)
                 {
                     if (task.Status == TaskStatus.Created)
-                    {
                         task.Start();
-                    }
+
                     if (task.IsCompleted || task.IsCanceled || task.IsFaulted)
-                    {
                         tasksDead.Add(task);
-                    }
                 }
-                foreach (var task in tasksDead)
+
+                lock (tasksPending)
                 {
-                    tasksPending.Remove(task);
+                    foreach (var task in tasksDead)
+                        tasksPending.Remove(task);
                 }
+            }
+            finally
+            {
                 tasksDead.Clear();
+                tasksUpdating.Clear();
             }
         }
 
@@ -1366,6 +1372,7 @@ namespace TwistedLogik.Ultraviolet
         private UltravioletPlatform platform;
 
         // The context's list of pending tasks.
+        private readonly List<Task> tasksUpdating = new List<Task>();
         private readonly List<Task> tasksPending = new List<Task>();
         private readonly List<Task> tasksDead = new List<Task>();
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
