@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -8,16 +9,47 @@ namespace TwistedLogik.Ultraviolet
     internal static class TaskUtil
     {
         /// <summary>
-        /// Creates a Task object which encapsulates the specified result value.
+        /// Executes the specified action and creates a <see cref="Task"/> which returns
+        /// the Boolean value <see langword="true"/>.
+        /// </summary>
+        /// <param name="action">The action to execute.</param>
+        /// <returns>The <see cref="Task"/> that was created.</returns>
+        public static Task FromAction(Action action)
+        {
+            action();
+
+            var task = new Task<Boolean>(() => true);
+            task.RunSynchronously();
+            return task;
+        }
+
+        /// <summary>
+        /// Executes the specified action and creates a <see cref="Task"/> which returns
+        /// the Boolean value <see langword="true"/>.
+        /// </summary>
+        /// <param name="action">The action to execute.</param>
+        /// <param name="state">A state value to pass to the executed action.</param>
+        /// <returns>The <see cref="Task"/> that was created.</returns>
+        public static Task FromAction(Action<Object> action, Object state)
+        {
+            action(state);
+
+            var task = new Task<Boolean>(() => true);
+            task.RunSynchronously();
+            return task;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Task"/> object which returns the specified result value.
         /// </summary>
         /// <typeparam name="T">The type of value returned from the task.</typeparam>
         /// <param name="value">The result value.</param>
-        /// <returns>The Task that was created.</returns>
+        /// <returns>The <see cref="Task"/> that was created.</returns>
         public static Task<T> FromResult<T>(T value)
         {
             var task = new Task<T>(() => value);
             task.RunSynchronously();
             return task;
-        }
+        }        
     }
 }
