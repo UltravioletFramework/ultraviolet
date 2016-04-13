@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using TwistedLogik.Nucleus;
@@ -104,6 +104,12 @@ namespace TwistedLogik.Ultraviolet
             this.messages = new LocalMessageQueue<UltravioletMessageID>();
             this.messages.Subscribe(this, UltravioletMessages.Quit);
 
+            this.syncContext = new UltravioletSynchronizationContext(this);
+            ChangeSynchronizationContext(syncContext);
+
+            this.taskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            this.taskFactory = new TaskFactory(taskScheduler);
+
             InitializeFactory(configuration);
         }
 
@@ -136,11 +142,9 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNotDisposed(this, disposed);
             Contract.Ensure(thread == Thread.CurrentThread, UltravioletStrings.WorkItemsMustBeProcessedOnMainThread);
 
-            Task workItem;
-            if (queuedWorkItems.TryDequeue(out workItem))
-            {
-                workItem.RunSynchronously();
-            }
+            var syncContext = SynchronizationContext.Current as UltravioletSynchronizationContext;
+            if (syncContext != null)
+                syncContext.ProcessSingleWorkItem();
         }
 
         /// <summary>
@@ -151,7 +155,9 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNotDisposed(this, disposed);
             Contract.Ensure(thread == Thread.CurrentThread, UltravioletStrings.WorkItemsMustBeProcessedOnMainThread);
 
-            ProcessWorkItemsInternal();
+            var syncContext = SynchronizationContext.Current as UltravioletSynchronizationContext;
+            if (syncContext != null)
+                syncContext.ProcessWorkItems();
         }
 
         /// <summary>
@@ -305,7 +311,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotSpawnTasks);
 
             var token = cancellationTokenSource.Token;
-            var task = new Task(() => action(token), token);
+            var task = taskFactory.StartNew(() => action(token), token, TaskCreationOptions.None, TaskScheduler.Default);
 
             lock (tasksPending)
                 tasksPending.Add(task);
@@ -470,7 +476,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromAction(workItem) :
-                EnqueueWorkItemTask(new Task(workItem));
+                taskFactory.StartNew(workItem);
         }
 
         /// <summary>
@@ -490,7 +496,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromAction(workItem, state) :
-                EnqueueWorkItemTask(new Task(workItem, state));
+                taskFactory.StartNew(workItem, state);
         }
 
         /// <summary>
@@ -510,7 +516,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem()) :
-                EnqueueWorkItemTask(new Task<T>(workItem));
+                taskFactory.StartNew(workItem);
         }
 
         /// <summary>
@@ -531,7 +537,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)) :
-                EnqueueWorkItemTask(new Task<T>(workItem, state));
+                taskFactory.StartNew(workItem, state);
         }
 
         /// <summary>
@@ -550,7 +556,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem()).Unwrap() :
-                EnqueueWorkItemTask(new Task<Task>(workItem)).Unwrap();
+                taskFactory.StartNew(workItem).Unwrap();
         }
 
         /// <summary>
@@ -570,7 +576,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)).Unwrap() :
-                EnqueueWorkItemTask(new Task<Task>(workItem, state)).Unwrap();
+                taskFactory.StartNew(workItem, state).Unwrap();
         }
 
         /// <summary>
@@ -590,7 +596,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem()).Unwrap() :
-                EnqueueWorkItemTask(new Task<Task<T>>(workItem)).Unwrap();
+                taskFactory.StartNew(workItem).Unwrap();
         }
 
         /// <summary>
@@ -611,7 +617,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)).Unwrap() :
-                EnqueueWorkItemTask(new Task<Task<T>>(workItem, state)).Unwrap();
+                taskFactory.StartNew(workItem, state).Unwrap();
        }
 
         /// <summary>
@@ -630,7 +636,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem()) :
-                EnqueueWorkItemTask(new Task<Task>(workItem));
+                taskFactory.StartNew(workItem);
         }
 
         /// <summary>
@@ -650,7 +656,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)) :
-                EnqueueWorkItemTask(new Task<Task>(workItem, state));
+                taskFactory.StartNew(workItem, state);
         }
 
         /// <summary>
@@ -672,7 +678,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem()) :
-                EnqueueWorkItemTask(new Task<Task<T>>(workItem));
+                taskFactory.StartNew(workItem);
         }
 
         /// <summary>
@@ -697,7 +703,7 @@ namespace TwistedLogik.Ultraviolet
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)) :
-                EnqueueWorkItemTask(new Task<Task<T>>(workItem, state));
+                taskFactory.StartNew(workItem, state);
         }
 
         /// <summary>
@@ -920,24 +926,7 @@ namespace TwistedLogik.Ultraviolet
 
             return current;
         }
-
-        /// <summary>
-        /// Processes all queued work items.
-        /// </summary>
-        internal void ProcessWorkItemsInternal()
-        {
-            var count = Interlocked.CompareExchange(ref pendingWorkItemCount, 0, 0);
-            if (count == 0)
-                return;
-
-            Task workItem;
-            while (queuedWorkItems.TryDequeue(out workItem))
-            {
-                workItem.RunSynchronously();
-                Interlocked.Decrement(ref pendingWorkItemCount);
-            }
-        }
-
+        
         /// <summary>
         /// Acquires an exclusive context claim, preventing other instances from being instantiated.
         /// </summary>
@@ -1047,6 +1036,8 @@ namespace TwistedLogik.Ultraviolet
 
             ProcessWorkItems();
             OnShutdown();
+
+            ChangeSynchronizationContext(null);
 
             this.disposed = true;
             this.disposing = false;
@@ -1345,13 +1336,12 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Adds the specified task to the queue of work items.
+        /// Changes the current thread's synchronization context.
         /// </summary>
-        private T EnqueueWorkItemTask<T>(T task) where T : Task
+        [SecuritySafeCritical]
+        private void ChangeSynchronizationContext(SynchronizationContext syncContext)
         {
-            queuedWorkItems.Enqueue(task);
-            Interlocked.Increment(ref pendingWorkItemCount);
-            return task;
+            SynchronizationContext.SetSynchronizationContext(syncContext);
         }
 
         // The singleton instance of the Ultraviolet context.
@@ -1360,10 +1350,9 @@ namespace TwistedLogik.Ultraviolet
 
         // State values.
         private readonly IUltravioletHost host;
+        private readonly UltravioletSynchronizationContext syncContext;
         private readonly UltravioletFactory factory = new UltravioletFactory();
-        private readonly ConcurrentQueue<Task> queuedWorkItems = new ConcurrentQueue<Task>();
         private readonly Thread thread;
-        private Int32 pendingWorkItemCount;
         private Boolean isHardwareInputDisabled;
         private Boolean isRunningInServiceMode;
         private Boolean isInitialized;
@@ -1372,6 +1361,8 @@ namespace TwistedLogik.Ultraviolet
         private UltravioletPlatform platform;
 
         // The context's list of pending tasks.
+        private readonly TaskScheduler taskScheduler;
+        private readonly TaskFactory taskFactory;
         private readonly List<Task> tasksUpdating = new List<Task>();
         private readonly List<Task> tasksPending = new List<Task>();
         private readonly List<Task> tasksDead = new List<Task>();

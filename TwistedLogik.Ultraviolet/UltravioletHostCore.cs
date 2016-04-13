@@ -53,8 +53,10 @@ namespace TwistedLogik.Ultraviolet
 
             if (!host.IsActive && InactiveSleepTime.TotalMilliseconds > 0)
                 Thread.Sleep(InactiveSleepTime);
- 
-            uv.ProcessWorkItemsInternal();
+
+            var syncContext = SynchronizationContext.Current as UltravioletSynchronizationContext;
+            if (syncContext != null)
+                syncContext.ProcessWorkItems();
 
             if (IsFixedTimeStep)
             {

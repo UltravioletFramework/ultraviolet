@@ -348,6 +348,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletSingleton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletSingletonFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletStrings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletSynchronizationContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletTime.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletTimeTracker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector2.cs" />
