@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
@@ -62,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> with which to draw the screen stack's screens.</param>
         public void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            Contract.Require(spriteBatch, "spriteBatch");
+            Contract.Require(spriteBatch, nameof(spriteBatch));
 
             if (screens.Count > 0)
             {
@@ -95,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="screen">The <see cref="UIScreen"/> to bring to the front of the stack.</param>
         public void BringToFront(UIScreen screen)
         {
-            Contract.Require(screen, "screen");
+            Contract.Require(screen, nameof(screen));
 
             if (!screens.Remove(screen))
                 throw new ArgumentException(UltravioletStrings.ScreenNotInStack);
@@ -109,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="screen">The <see cref="UIScreen"/> to send to the back of the stack.</param>
         public void SendToBack(UIScreen screen)
         {
-            Contract.Require(screen, "screen");
+            Contract.Require(screen, nameof(screen));
 
             if (!screens.Remove(screen))
                 throw new ArgumentException(UltravioletStrings.ScreenNotInStack);
@@ -122,10 +121,10 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="screen">The <see cref="UIScreen"/> to open.</param>
         /// <param name="duration">The amount of time over which to transition the screen's state, or
-        /// <c>null</c> to use the default transition time.</param>
+        /// <see langword="null"/> to use the default transition time.</param>
         public void Open(UIScreen screen, TimeSpan? duration = null)
         {
-            Contract.Require(screen, "screen");
+            Contract.Require(screen, nameof(screen));
 
             if (screens.Contains(screen))
                 throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
@@ -141,11 +140,11 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="screen">The <see cref="UIScreen"/> to open.</param>
         /// <param name="duration">The amount of time over which to transition the screen's state, or
-        /// <c>null</c> to use the default transition time.</param>
+        /// <see langword="null"/> to use the default transition time.</param>
         /// <returns>A <see cref="Task"/> which represents the asynchronous operation.</returns>
         public Task OpenAsync(UIScreen screen, TimeSpan? duration = null)
         {
-            Contract.Require(screen, "screen");
+            Contract.Require(screen, nameof(screen));
 
             if (screens.Contains(screen))
                 throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
@@ -163,11 +162,11 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="screenToOpen">The <see cref="UIScreen"/> to open.</param>
         /// <param name="screenAbove">The <see cref="UIScreen"/> below which to open <paramref name="screenToOpen"/>.</param>
         /// <param name="duration">The amount of time over which to transition the screen's state, or
-        /// <c>null</c> to use the default transition time.</param>
+        /// <see langword="null"/> to use the default transition time.</param>
         public void OpenBelow(UIScreen screenToOpen, UIScreen screenAbove, TimeSpan? duration = null)
         {
-            Contract.Require(screenToOpen, "screenToOpen");
-            Contract.Require(screenAbove, "screenAbove");
+            Contract.Require(screenToOpen, nameof(screenToOpen));
+            Contract.Require(screenAbove, nameof(screenAbove));
 
             if (screens.Contains(screenToOpen))
                 throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
@@ -189,12 +188,12 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="screenToOpen">The <see cref="UIScreen"/> to open.</param>
         /// <param name="screenAbove">The <see cref="UIScreen"/> below which to open <paramref name="screenToOpen"/>.</param>
         /// <param name="duration">The amount of time over which to transition the screen's state, or
-        /// <c>null</c> to use the default transition time.</param>
+        /// <see langword="null"/> to use the default transition time.</param>
         /// <returns>A <see cref="Task"/> which represents the asynchronous operation.</returns>
         public Task OpenBelowAsync(UIScreen screenToOpen, UIScreen screenAbove, TimeSpan? duration = null)
         {
-            Contract.Require(screenToOpen, "screenToOpen");
-            Contract.Require(screenAbove, "screenAbove");
+            Contract.Require(screenToOpen, nameof(screenToOpen));
+            Contract.Require(screenAbove, nameof(screenAbove));
 
             if (screens.Contains(screenToOpen))
                 throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
@@ -210,12 +209,65 @@ namespace TwistedLogik.Ultraviolet.UI
         }
 
         /// <summary>
+        /// Opens the specified screen and positions it immediately above a second
+        /// screen which is already on the screen stack.
+        /// </summary>
+        /// <param name="screenToOpen">The <see cref="UIScreen"/> to open.</param>
+        /// <param name="screenBelow">The <see cref="UIScreen"/> above which to open <paramref name="screenToOpen"/>.</param>
+        /// <param name="duration">The amount of time over which to transition the screen's state, or
+        /// <see langword="null"/> to use the default transition time.</param>
+        public void OpenAbove(UIScreen screenToOpen, UIScreen screenBelow, TimeSpan? duration = null)
+        {
+            Contract.Require(screenToOpen, nameof(screenToOpen));
+            Contract.Require(screenBelow, nameof(screenBelow));
+
+            if (screens.Contains(screenToOpen))
+                throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
+
+            var node = screens.Find(screenBelow);
+            if (node == null)
+                throw new ArgumentException(UltravioletStrings.ScreenNotInStack);
+
+            screens.AddAfter(node, screenToOpen);
+            screenToOpen.Window = window;
+            screenToOpen.Close(TimeSpan.Zero);
+            screenToOpen.Open(duration);
+        }
+
+        /// <summary>
+        /// Opens the specified screen and positions it immediately beneath a second
+        /// screen which is already on the screen stack.
+        /// </summary>
+        /// <param name="screenToOpen">The <see cref="UIScreen"/> to open.</param>
+        /// <param name="screenBelow">The <see cref="UIScreen"/> above which to open <paramref name="screenToOpen"/>.</param>
+        /// <param name="duration">The amount of time over which to transition the screen's state, or
+        /// <see langword="null"/> to use the default transition time.</param>
+        /// <returns>A <see cref="Task"/> which represents the asynchronous operation.</returns>
+        public Task OpenAboveAsync(UIScreen screenToOpen, UIScreen screenBelow, TimeSpan? duration = null)
+        {
+            Contract.Require(screenToOpen, nameof(screenToOpen));
+            Contract.Require(screenBelow, nameof(screenBelow));
+
+            if (screens.Contains(screenToOpen))
+                throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
+
+            var node = screens.Find(screenBelow);
+            if (node == null)
+                throw new ArgumentException(UltravioletStrings.ScreenNotInStack);
+
+            screens.AddAfter(node, screenToOpen);
+            screenToOpen.Window = window;
+            screenToOpen.Close(TimeSpan.Zero);
+            return screenToOpen.OpenAsync(duration);
+        }
+
+        /// <summary>
         /// Closes the specified screen.
         /// </summary>
         /// <param name="screen">The <see cref="UIScreen"/> to close.</param>
         /// <param name="duration">The amount of time over which to transition the screen's state, or
-        /// <c>null</c> to use the default transition time.</param>
-        /// <returns><c>true</c> if the screen was closed; otherwise, <c>false</c>.</returns>
+        /// <see langword="null"/> to use the default transition time.</param>
+        /// <returns><see langword="true"/> if the screen was closed; otherwise, <see langword="false"/>.</returns>
         public Boolean Close(UIScreen screen, TimeSpan? duration = null)
         {
             Contract.Require(screen, "screen");
@@ -233,7 +285,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="screen">The <see cref="UIScreen"/> to close.</param>
         /// <param name="duration">The amount of time over which to transition the screen's state, or
-        /// <c>null</c> to use the default transition time.</param>
+        /// <see langword="null"/> to use the default transition time.</param>
         /// <returns>A task which represents the asynchronous operation.</returns>
         public Task CloseAsync(UIScreen screen, TimeSpan? duration = null)
         {
@@ -251,11 +303,11 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="predicate">The predicate with which to determine which screens to close.</param>
         /// <param name="duration">The amount of time over which to transition the screens' states, or
-        /// <c>null</c> to use the default transition time.</param>
-        /// <returns><c>true</c> if any screens were closed; otherwise, <c>false</c>.</returns>
-        public Boolean Close(Func<UIScreen, Boolean> predicate, TimeSpan? duration = null)
+        /// <see langword="null"/> to use the default transition time.</param>
+        /// <returns><see langword="true"/> if any screens were closed; otherwise, <see langword="false"/>.</returns>
+        public Boolean CloseMatching(Func<UIScreen, Boolean> predicate, TimeSpan? duration = null)
         {
-            Contract.Require(predicate, "predicate");
+            Contract.Require(predicate, nameof(predicate));
 
             var any = false;
             
@@ -277,11 +329,11 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="predicate">The predicate with which to determine which screens to close.</param>
         /// <param name="duration">The amount of time over which to transition the screens' states, or
-        /// <c>null</c> to use the default transition time.</param>
+        /// <see langword="null"/> to use the default transition time.</param>
         /// <returns>A collection of <see cref="Task"/> objects representing the asynchronous operations.</returns>
-        public IEnumerable<Task> CloseAsync(Func<UIScreen, Boolean> predicate, TimeSpan? duration = null)
+        public Task CloseMatchingAsync(Func<UIScreen, Boolean> predicate, TimeSpan? duration = null)
         {
-            Contract.Require(predicate, "predicate");
+            Contract.Require(predicate, nameof(predicate));
 
             var tasks = default(List<Task>);
             
@@ -295,7 +347,57 @@ namespace TwistedLogik.Ultraviolet.UI
                 }
             }
 
-            return tasks ?? Enumerable.Empty<Task>();
+            return tasks.Count == 0 ? TaskUtil.FromResult(true) :
+                new Task(() => Task.WaitAll(tasks.ToArray()));
+        }
+
+        /// <summary>
+        /// Closes all open screens except for the specified screen.
+        /// </summary>
+        /// <param name="except">The screen which should remain open when all other screens are closed.</param>
+        /// <param name="duration">The amount of time over which to transition the screens' states, or
+        /// <see langword="null"/> to use the default transition time.</param>
+        /// <returns><see langword="true"/> if any screens were closed; otherwise, <see langword="false"/>.</returns>
+        public Boolean CloseAllExcept(UIScreen except, TimeSpan? duration = null)
+        {
+            var any = false;
+
+            for (var current = screens.First; current != null; current = current.Next)
+            {
+                var screen = current.Value;
+                if (screen != except)
+                {
+                    any = true;
+                    screen.Close(duration);
+                }
+            }
+
+            return any;
+        }
+
+        /// <summary>
+        /// Asynchronously closes all open screens except for the specified screen.
+        /// </summary>
+        /// <param name="except">The screen which should remain open when all other screens are closed.</param>
+        /// <param name="duration">The amount of time over which to transition the screens' states, or
+        /// <see langword="null"/> to use the default transition time.</param>
+        /// <returns>A collection of <see cref="Task"/> objects representing the asynchronous operations.</returns>
+        public Task CloseAllExceptAsync(UIScreen except, TimeSpan? duration = null)
+        {
+            var tasks = default(List<Task>);
+
+            for (var current = screens.First; current != null; current = current.Next)
+            {
+                var screen = current.Value;
+                if (screen != except)
+                {
+                    tasks = tasks ?? new List<Task>();
+                    tasks.Add(screen.CloseAsync(duration));
+                }
+            }
+
+            return tasks.Count == 0 ? TaskUtil.FromResult(true) :
+                new Task(() => Task.WaitAll(tasks.ToArray()));
         }
 
         /// <summary>
@@ -303,7 +405,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="closing">The <see cref="UIScreen"/> to close.</param>
         /// <param name="opening">The <see cref="UIScreen"/> to open.</param>
-        /// <returns><c>true</c> if the first screen needed to be closed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the first screen needed to be closed; otherwise, <see langword="false"/>.</returns>
         public Boolean CloseThenOpen(UIScreen closing, UIScreen opening)
         {
             Contract.Require(closing, "closing");
@@ -322,7 +424,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="closingDuration">The amount of time over which to close the screen.</param>
         /// <param name="opening">The <see cref="UIScreen"/> to open.</param>
         /// <param name="openingDuration">The amount of time over which to open the screen.</param>
-        /// <returns><c>true</c> if the first screen needed to be closed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the first screen needed to be closed; otherwise, <see langword="false"/>.</returns>
         public Boolean CloseThenOpen(UIScreen closing, TimeSpan closingDuration, UIScreen opening, TimeSpan openingDuration)
         {
             Contract.Require(closing, "closing");
@@ -338,7 +440,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Gets a value indicating whether the screen stack contains the specified screen.
         /// </summary>
         /// <param name="screen">The <see cref="UIScreen"/> to evaluate.</param>
-        /// <returns><c>true</c> if the screen stack contains the specified screen; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the screen stack contains the specified screen; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(UIScreen screen)
         {
             Contract.Require(screens, "screens");
@@ -480,7 +582,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="closingDuration">The amount of time over which to close the screen.</param>
         /// <param name="opening">The screen to open.</param>
         /// <param name="openingDuration">The amount of time over which to open the screen.</param>
-        /// <returns><c>true</c> if the first screen needed to be closed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the first screen needed to be closed; otherwise, <see langword="false"/>.</returns>
         private Boolean CloseThenOpenInternal(UIScreen closing, TimeSpan closingDuration, UIScreen opening, TimeSpan openingDuration)
         {
             if (closing.State == UIPanelState.Closed)
