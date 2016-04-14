@@ -1,16 +1,16 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class UvssParserTests : UvssTestFramework
     {
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyCalculatesNodeSpan()
         {
             var document = UvssParser.Parse(
@@ -50,7 +50,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveSpan(3, 4); // "foo ";
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyCalculatesNodePosition_ForSelectorComponents()
         {
             var document = UvssParser.Parse(
@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveSpan(8, 4);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyCalculatesNodePosition_ForComments_OnOneLine()
         {
             var document = UvssParser.Parse(
@@ -96,7 +96,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveSpan(3, 20);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyCalculatesNodePosition_ForComments_OnMultipleLines()
         {
             var document = UvssParser.Parse(
@@ -108,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveSpan(5, 20);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesCompleteGarbage()
         {
             var document = UvssParser.Parse(
@@ -118,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveFullString("${}$% 4u95 47698406t26% ^UY(%U^ %(^257 629576%${%$[5p45 }${% 1%($%)!$(%90", includeTrivia: true);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CreatesSkippedTokensTrivia_WhenSymbolCannotBeParsed()
         {
             var document = UvssParser.Parse(
@@ -147,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CreatesSkippedTokensTrivia_WhenSymbolIsUnexpected()
         {
             var document = UvssParser.Parse(
@@ -167,7 +167,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveFullString("#foo {}");
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesEmptyDocument()
         {
             var document = UvssParser.Parse(
@@ -181,7 +181,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 x.EndOfFileToken != null);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesIncompleteRuleSet()
         {
             var document = UvssParser.Parse(
@@ -209,7 +209,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBeMissing();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesIncompleteRuleSet_WithOpenCurlyBrace()
         {
             var document = UvssParser.Parse(
@@ -237,7 +237,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBeMissing();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesIncompleteRuleSet_WithCloseCurlyBrace()
         {
             var document = UvssParser.Parse(
@@ -257,7 +257,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesIncompleteRuleSet_FollowedBySelector()
         {
             var document = UvssParser.Parse(
@@ -287,7 +287,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveFullString("bar");
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesRuleSet_WhenEmpty_WithOneSimpleSelector()
         {
             var document = UvssParser.Parse(
@@ -312,7 +312,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
         }
         
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesRuleSet_WhenEmpty_WithOneSimpleSelector_WithNavigationExpression()
         {
             var document = UvssParser.Parse(
@@ -338,7 +338,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesRuleSet_WhenEmpty_WithOneComplexSelector()
         {
             var document = UvssParser.Parse(
@@ -379,7 +379,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveFullString("*");
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesRuleSet_WhenEmpty_WithMultipleSimpleSelectors()
         {
             var document = UvssParser.Parse(
@@ -405,7 +405,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveFullString("#baz");
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesRuleSet_WhenEmpty_WithOneComplexSelectors()
         {
             var document = UvssParser.Parse(
@@ -466,7 +466,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveFullString(".qux");
         }
         
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleStylingRule()
         {
             var document = UvssParser.Parse(
@@ -507,7 +507,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleStylingRule_WhenImportant()
         {
             var document = UvssParser.Parse(
@@ -549,7 +549,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesMultipleStylingRules()
         {
             var document = UvssParser.Parse(
@@ -574,7 +574,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveFullString("abc: 123 456;");
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesMultipleStylingRules_WhenImportant()
         {
             var document = UvssParser.Parse(
@@ -599,7 +599,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldHaveFullString("abc: 123 456 !important;");
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleVisualTransition()
         {
             var document = UvssParser.Parse(
@@ -657,7 +657,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleVisualTransition_WhenImportant()
         {
             var document = UvssParser.Parse(
@@ -716,7 +716,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSinglePropertyTrigger()
         {
             var document = UvssParser.Parse(
@@ -770,7 +770,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSinglePropertyTrigger_WhenImportant()
         {
             var document = UvssParser.Parse(
@@ -825,7 +825,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSinglePropertyTrigger_WithMultipleConditions()
         {
             var document = UvssParser.Parse(
@@ -894,7 +894,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleEventTrigger()
         {
             var document = UvssParser.Parse(
@@ -938,7 +938,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleEventTrigger_WhenImportant()
         {
             var document = UvssParser.Parse(
@@ -983,7 +983,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleEventTrigger_WithArgumentList()
         {
             var document = UvssParser.Parse(
@@ -1037,7 +1037,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleEventTrigger_WithArgumentList_WhenImportant()
         {
             var document = UvssParser.Parse(
@@ -1092,7 +1092,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesStoryboard_WhenEmpty()
         {
             var document = UvssParser.Parse(
@@ -1116,7 +1116,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesStoryboard_WhenEmpty_WithLoop()
         {
             var document = UvssParser.Parse(
@@ -1141,7 +1141,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesIncompleteStoryboard()
         {
             var document = UvssParser.Parse(
@@ -1173,7 +1173,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBeMissing();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesIncompleteStoryboard_WithOpenCurlyBrace()
         {
             var document = UvssParser.Parse(
@@ -1205,7 +1205,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBeMissing();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesIncompleteStoryboard_WithCloseCurlyBrace()
         {
             var document = UvssParser.Parse(
@@ -1229,7 +1229,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldBePresent();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleStoryboardTarget()
         {
             var document = UvssParser.Parse(
@@ -1257,7 +1257,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleStoryboardTarget_WithType_WithoutSelector()
         {
             var document = UvssParser.Parse(
@@ -1286,7 +1286,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleStoryboardTarget_WithoutType_WithSelector()
         {
             var document = UvssParser.Parse(
@@ -1315,7 +1315,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleStoryboardTarget_WithType_WithSelector()
         {
             var document = UvssParser.Parse(
@@ -1345,7 +1345,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleStoryboardTarget_WithMultipleTypes()
         {
             var document = UvssParser.Parse(
@@ -1385,7 +1385,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_ProducesErrorDiagnostic_ForStoryboardTarget_WithIncompleteFilter()
         {
             var document = UvssParser.Parse(
@@ -1430,7 +1430,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleAnimation()
         {
             var document = UvssParser.Parse(
@@ -1468,7 +1468,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleAnimation_WithNavigationExpression()
         {
             var document = UvssParser.Parse(
@@ -1507,7 +1507,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Content.Count == 0);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleAnimationKeyframe()
         {
             var document = UvssParser.Parse(
@@ -1549,7 +1549,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Value == "baz");
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesSingleAnimationKeyframe_WithEasing()
         {
             var document = UvssParser.Parse(
@@ -1592,7 +1592,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.Value == "baz");
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_CorrectlyParsesNavigationExpression_WithIndexer()
         {
             var document = UvssParser.Parse(
@@ -1617,7 +1617,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.GetValue() == 3);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_ProducesErrorDiagnostic_ForNavigationExpression_WithNonNumericIndexer()
         {
             var document = UvssParser.Parse(
@@ -1647,7 +1647,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.ID == DiagnosticID.IndexMustBeIntegerValue);
         }
 
-        [TestMethod]
+        [Test]
         public void UvssParser_ProducesErrorDiagnostic_ForNavigationExpression_WithNotIntegerIndexer()
         {
             var document = UvssParser.Parse(
@@ -1677,20 +1677,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 .ShouldSatisfyTheCondition(x => x.ID == DiagnosticID.IndexMustBeIntegerValue);
         }
 
-		[TestMethod]
-		public void UvssParser_CorrectlyParsesCultureDirective()
-		{
-			var document = UvssParser.Parse(
-				"$culture { fr-FR }\r\n" +
-				"#foo { }");
+        [Test]
+        public void UvssParser_CorrectlyParsesCultureDirective()
+        {
+            var document = UvssParser.Parse(
+                "$culture { fr-FR }\r\n" +
+                "#foo { }");
 
-			TheResultingNode(document)
-				.ShouldHaveNoDiagnostics();
+            TheResultingNode(document)
+                .ShouldHaveNoDiagnostics();
 
-			var directive = document.Content[0] as UvssCultureDirectiveSyntax;
-			TheResultingNode(directive)
-				.ShouldBePresent()
-				.ShouldSatisfyTheCondition(x => x.CultureValue.Value == "fr-FR");
-		}
+            var directive = document.Content[0] as UvssCultureDirectiveSyntax;
+            TheResultingNode(directive)
+                .ShouldBePresent()
+                .ShouldSatisfyTheCondition(x => x.CultureValue.Value == "fr-FR");
+        }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing
         public SyntaxNodeResult<TType> ShouldBeOfType<TType>()
             where TType : SyntaxNode
         {
-            Assert.IsInstanceOfType(node, typeof(TType));
+            Assert.IsInstanceOf<TType>(node);
             return new SyntaxNodeResult<TType>(node as TType);
         }
 

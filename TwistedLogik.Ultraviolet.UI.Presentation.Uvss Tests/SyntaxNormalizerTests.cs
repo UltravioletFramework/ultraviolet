@@ -1,13 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using TwistedLogik.Nucleus.Testing;
 using static TwistedLogik.Ultraviolet.UI.Presentation.Uvss.SyntaxFactory;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class SyntaxNormalizerTests : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Block_IsCorrectlyNested()
         {
             var node = Block(
@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PropertyName_IsCorrectlyNormalized()
         {
             var node = PropertyName("foo", "bar");
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "foo.bar");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PropertyValueWithBraces_IsCorrectlyNormalized()
         {
             var node = PropertyValueWithBraces("hello world");
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "{ hello world }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_EventName_IsCorrectlyNormalized()
         {
             var node = EventName("foo", "bar");
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "foo.bar");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Selector_IsCorrectlyNormalized()
         {
             var node = Selector(
@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "#foo:pseudoclass .bar.baz > qux");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Selector_IsCorrectlyNormalized_WithNavigationExpression()
         {
             var node = SelectorWithNavigationExpression(
@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "#foo:pseudoclass .bar.baz > qux | some.prop as SomeType");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_SelectorWithParentheses_IsCorrectlyNormalized()
         {
             var node = SelectorWithParentheses(
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "(#foo:pseudoclass .bar.baz > qux)");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_RuleSet_IsCorrectlyNormalized()
         {
             var node = RuleSet(
@@ -122,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_RuleSet_IsCorrectlyNormalized_WhenMultipleSelectorsInList()
         {
             var node = RuleSet(
@@ -143,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_RuleSet_HasTrailingLineBreaks()
         {
             var node = Block(
@@ -167,7 +167,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Rule_IsCorrectlyNormalized()
         {
             var node = Rule(
@@ -180,7 +180,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "foo.bar: baz;");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Rule_IsCorrectlyNormalized_WhenImportant()
         {
             var node = Rule(
@@ -192,7 +192,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "foo.bar: baz !important;");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Rule_HasTrailingLineBreak()
         {
             var node = Block(
@@ -213,7 +213,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Transition_IsCorrectlyNormalized()
         {
             var node = Transition("common", "normal", "test-storyboard", important: false);
@@ -222,7 +222,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "transition (common, normal): test-storyboard;");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Transition_IsCorrectlyNormalized_WhenImportant()
         {
             var node = Transition("common", "normal", "test-storyboard", important: true);
@@ -231,7 +231,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "transition (common, normal): test-storyboard !important;");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Transition_HasTrailingLineBreak()
         {
             var node = Block(
@@ -246,7 +246,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Transition_WithFullArgList_IsCorrectlyNormalized()
         {
             var node = Transition("common", "normal", "pressed", "test-storyboard", important: false);
@@ -255,7 +255,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "transition (common, normal, pressed): test-storyboard;");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Transition_WithFullArgList_IsCorrectlyNormalized_WhenImportant()
         {
             var node = Transition("common", "normal", "pressed", "test-storyboard", important: true);
@@ -264,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "transition (common, normal, pressed): test-storyboard !important;");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PropertyTriggerCondition_IsCorrectlyNormalized_WhenEquals()
         {
             var node = PropertyTriggerCondition(
@@ -277,7 +277,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "some.[property] = { somevalue }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PropertyTriggerCondition_IsCorrectlyNormalized_WhenNotEquals()
         {
             var node = PropertyTriggerCondition(
@@ -290,7 +290,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "some.[property] <> { somevalue }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PropertyTriggerCondition_IsCorrectlyNormalized_WhenLessThan()
         {
             var node = PropertyTriggerCondition(
@@ -303,7 +303,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "some.[property] < { somevalue }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PropertyTriggerCondition_IsCorrectlyNormalized_WhenGreaterThan()
         {
             var node = PropertyTriggerCondition(
@@ -316,7 +316,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "some.[property] > { somevalue }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PropertyTriggerCondition_IsCorrectlyNormalized_WhenLessThanEquals()
         {
             var node = PropertyTriggerCondition(
@@ -329,7 +329,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "some.[property] <= { somevalue }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PropertyTriggerCondition_IsCorrectlyNormalized_WhenGreaterThanEquals()
         {
             var node = PropertyTriggerCondition(
@@ -342,7 +342,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "some.[property] >= { somevalue }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PropertyTrigger_IsCorrectlyNormalized()
         {
             var node = PropertyTrigger(
@@ -360,7 +360,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PropertyTrigger_HasTrailingLineBreak()
         {
             var node = Block(
@@ -384,7 +384,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_EventTriggerArgumentList_IsCorrectlyNormalized_WhenHandled()
         {
             var node = EventTriggerArgumentList(handled: true, sethandled: false);
@@ -393,7 +393,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "(handled)");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_EventTriggerArgumentList_IsCorrectlyNormalized_WhenSetHandled()
         {
             var node = EventTriggerArgumentList(handled: false, sethandled: true);
@@ -402,7 +402,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "(set-handled)");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_EventTriggerArgumentList_IsCorrectlyNormalized_WhenHandledAndSetHandled()
         {
             var node = EventTriggerArgumentList(handled: true, sethandled: true);
@@ -411,7 +411,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "(handled, set-handled)");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_EventTrigger_IsCorrectlyNormalized()
         {
             var node = EventTrigger(
@@ -426,7 +426,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_EventTrigger_HasTrailingLineBreak()
         {
             var node = Block(
@@ -447,7 +447,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PlayStoryboardTriggerAction_IsCorrectlyNormalized()
         {
             var node = PlayStoryboardTriggerAction(
@@ -458,7 +458,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "play-storyboard { some-storyboard }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PlayStoryboardTriggerAction_IsCorrectlyNormalized_WithSelector()
         {
             var node = PlayStoryboardTriggerAction(
@@ -470,7 +470,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "play-storyboard (#foo) { some-storyboard }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_PlaySfxTriggerActionIsCorrectlyNormalized()
         {
             var node = PlaySfxTriggerAction(
@@ -481,7 +481,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "play-sfx { some-sfx }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_SetTriggerAction_IsCorrectlyNormalized()
         {
             var node = SetTriggerAction(
@@ -493,7 +493,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "set some.[property] { hello world }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_SetTriggerAction_IsCorrectlyNormalized_WithSelector()
         {
             var node = SetTriggerAction(
@@ -506,7 +506,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "set some.[property] (#foo) { hello world }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Storyboard_IsCorrectlyNormalized()
         {
             var node = Storyboard("some-storyboard", 
@@ -519,7 +519,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Storyboard_HasTrailingLineBreaks()
         {
             var node = Block(
@@ -543,7 +543,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_StoryboardTarget_IsCorrectlyNormalized()
         {
             var node = StoryboardTarget(
@@ -557,7 +557,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_StoryboardTarget_IsCorrectlyNormalized_WithSelector()
         {
             var node = StoryboardTarget(
@@ -572,7 +572,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_StoryboardTarget_HasTrailingLineBreak()
         {
             var node = Block(
@@ -597,7 +597,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_StoryboardTarget_HasTrailingLineBreak_WithSelector()
         {
             var node = Block(
@@ -624,7 +624,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Animation_IsCorrectlyNormalized()
         {
             var node = Animation(PropertyName("some", "prop"), Block());
@@ -635,7 +635,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
         
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Animation_IsCorrectlyNormalized_WithNavigationProperty()
         {
             var node = Animation(
@@ -653,7 +653,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_Animation_HasTrailingLineBreak()
         {
             var node = Block(
@@ -672,7 +672,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_AnimationKeyframe_IsCorrectlyNormalized()
         {
             var node = AnimationKeyframe(0,
@@ -683,7 +683,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "keyframe 0 { somevalue }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_AnimationKeyframe_IsCorrectlyNormalized_WithEasing()
         {
             var node = AnimationKeyframe(0, "ease-out-linear",
@@ -694,7 +694,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "keyframe 0 ease-out-linear { somevalue }");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_AnimationKeyframe_HasTrailingLineBreak()
         {
             var node = Block(
@@ -709,7 +709,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
                 "}");
         }
 
-        [TestMethod]
+        [Test]
         public void SyntaxNormalizer_EscapedKeyword_IsCorrectlyNormalized()
         {
             var node = Rule(
