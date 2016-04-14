@@ -1,13 +1,13 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MaskedUInt32Test : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void MaskedUInt32_CastsFromUInt32Correctly()
         {
             var val1 = (MaskedUInt32)12345;
@@ -23,7 +23,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(val4.Value).ShouldBe(UInt32.MaxValue);
         }
 
-        [TestMethod]
+        [Test]
         public void MaskedUInt32_CalculatesMasksCorrectly()
         {
             var val1 = (MaskedUInt32)12345;

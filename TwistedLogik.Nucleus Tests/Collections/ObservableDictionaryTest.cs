@@ -1,14 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.NucleusTests.Collections
 {
-    [TestClass]
+    [TestFixture]
     public class ObservableDictionaryTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void ObservableDictionary_RaisesCollectionItemAdded()
         {
             var dict  = new ObservableDictionary<String, Int32>();
@@ -23,7 +23,7 @@ namespace TwistedLogik.NucleusTests.Collections
             TheResultingValue(added).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void ObservableDictionary_RaisesCollectionItemRemoved()
         {
             var dict    = new ObservableDictionary<String, Int32>();
@@ -39,7 +39,7 @@ namespace TwistedLogik.NucleusTests.Collections
             TheResultingValue(removed).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void ObservableDictionary_RaisesCollectionResetOnClear()
         {
             var dict  = new ObservableDictionary<String, Int32>();

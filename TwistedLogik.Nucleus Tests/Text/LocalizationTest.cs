@@ -1,16 +1,16 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.IO;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Testing;
 using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Nucleus.Tests.Text
 {
-    [TestClass]
+    [TestFixture]
     public class LocalizationTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void Localization_CorrectlyTranslatesEnglish()
         {
             LoadTestLocalizationDatabase();
@@ -28,7 +28,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             });
         }
 
-        [TestMethod]
+        [Test]
         public void Localization_CorrectlyTranslatesFrench()
         {
             LoadTestLocalizationDatabase();
@@ -65,7 +65,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             });
         }
 
-        [TestMethod]
+        [Test]
         public void Localization_CorrectlySpecifiesEnglishProperties()
         {
             LoadTestLocalizationDatabase();
@@ -80,7 +80,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             });
         }
 
-        [TestMethod]
+        [Test]
         public void Localization_CorrectlySpecifiesFrenchProperties()
         {
             LoadTestLocalizationDatabase();
@@ -97,7 +97,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             });
         }
 
-        [TestMethod]
+        [Test]
         public void Localization_LocalizedTextFormatting()
         {
             LoadTestLocalizationDatabase();

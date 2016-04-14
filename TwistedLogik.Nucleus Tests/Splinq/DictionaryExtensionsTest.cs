@@ -1,15 +1,15 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Splinq;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.NucleusTests.Splinq
 {
-    [TestClass]
+    [TestFixture]
     public class DictionaryExtensionsTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_Any_ReturnsTrueIfDictionaryContainsItems()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -22,7 +22,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_Any_ReturnsFalseIfDictionaryDoesNotContainItems()
         {
             var dictionary = new Dictionary<Int32, String>();
@@ -32,7 +32,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_AnyWithPredicate_ReturnsTrueIfDictionaryContainsMatchingItems()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -47,7 +47,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_AnyWithPredicate_ReturnsFalseIfDictionaryDoesNotContainMatchingItems()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -61,7 +61,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_All_ReturnsTrueIfAllItemsMatchPredicate()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -76,7 +76,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_All_ReturnsTrueIfDictionaryIsEmpty()
         {
             var dictionary = new Dictionary<Int32, String>();
@@ -86,7 +86,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_All_ReturnsFalseIfOneItemDoesNotMatchPredicate()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -102,7 +102,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_Count_ReturnsCorrectSize()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -117,7 +117,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_CountWithPredicate_ReturnsCorrectSize()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -132,7 +132,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_First_ReturnsFirstItemInDictionary()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -147,16 +147,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(new KeyValuePair<Int32, String>(1, "A"));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void DictionaryExtensions_First_ThrowsExceptionIfDictionaryIsEmpty()
         {
             var dictionary = new Dictionary<Int32, String>();
 
-            dictionary.First();
+            Assert.That(() => dictionary.First(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_Last_ReturnsLastItemInDictionary()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -171,16 +171,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(new KeyValuePair<Int32, String>(3, "C"));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void DictionaryExtensions_Last_ThrowsExceptionIfDictionaryIsEmpty()
         {
             var dictionary = new Dictionary<Int32, String>();
 
-            dictionary.Last();
+            Assert.That(() => dictionary.Last(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_Single_ReturnsSingleItemInDictionary()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -193,17 +193,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(new KeyValuePair<Int32, String>(4, "A"));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void DictionaryExtensions_Single_ThrowsExceptionIfDictionaryIsEmpty()
         {
             var dictionary = new Dictionary<Int32, String>();
 
-            dictionary.Single();
+            Assert.That(() => dictionary.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void DictionaryExtensions_Single_ThrowsExceptionIfDictionaryHasMultipleItems()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -212,10 +211,11 @@ namespace TwistedLogik.NucleusTests.Splinq
                 { 2, "B" },
             };
 
-            dictionary.Single();
+            Assert.That(() => dictionary.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_SingleOrDefault_ReturnsSingleItemInDictionary()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -228,7 +228,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(new KeyValuePair<Int32, String>(4, "A"));
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_SingleOrDefault_ReturnsDefaultValueIfDictionaryIsEmpty()
         {
             var dictionary = new Dictionary<Int32, String>();
@@ -238,8 +238,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(default(KeyValuePair<Int32, String>));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void DictionaryExtensions_SingleOrDefault_ThrowsExceptionIfDictionaryHasMultipleItems()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -248,10 +247,11 @@ namespace TwistedLogik.NucleusTests.Splinq
                 { 2, "B" },
             };
 
-            dictionary.SingleOrDefault();
+            Assert.That(() => dictionary.SingleOrDefault(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_Max_ReturnsMaxValue()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -271,16 +271,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(99);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void DictionaryExtensions_Max_ThrowsExceptionIfDictionaryIsEmpty()
         {
             var dictionary = new Dictionary<Int32, String>();
 
-            dictionary.Max(x => x.Key);
+            Assert.That(() => dictionary.Max(x => x.Key),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void DictionaryExtensions_Min_ReturnsMinValue()
         {
             var dictionary = new Dictionary<Int32, String>()
@@ -300,13 +300,13 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void DictionaryExtensions_Min_ThrowsExceptionIfDictionaryIsEmpty()
         {
             var dictionary = new Dictionary<Int32, String>();
 
-            dictionary.Min(x => x.Key);
+            Assert.That(() => dictionary.Min(x => x.Key),
+                Throws.TypeOf<InvalidOperationException>());
         }
     }
 }

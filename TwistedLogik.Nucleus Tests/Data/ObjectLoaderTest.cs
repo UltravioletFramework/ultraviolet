@@ -1,17 +1,16 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests.Data
 {
-    [TestClass]
+    [TestFixture]
     public class ObjectLoaderTest : NucleusTestFramework
     {
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_MustSpecifyClass()
         {
             var xml = XDocument.Parse(@"
@@ -21,11 +20,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_MustSpecifyKey()
         {
             var xml = XDocument.Parse(@"
@@ -35,11 +34,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_MustSpecifyID()
         {
             var xml = XDocument.Parse(@"
@@ -49,11 +48,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_ClassMustExist()
         {
             var xml = XDocument.Parse(@"
@@ -63,11 +62,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_ClassAlias_MustSpecifyName()
         {
             var xml = XDocument.Parse(@"
@@ -80,11 +79,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_ClassAlias_MustSpecifyValue()
         {
             var xml = XDocument.Parse(@"
@@ -97,10 +96,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_ClassAlias_LoadsSuccessfullyWhenSpecified()
         {
             var xml = XDocument.Parse(@"
@@ -125,7 +125,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[1].StringValue).ShouldBe("Goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_ClassAlias_LoadsSuccessfullyWhenDefault()
         {
             var xml = XDocument.Parse(@"
@@ -150,7 +150,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[1].StringValue).ShouldBe("Goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_GlobalClassAlias_LoadsSuccessfullyWhenSpecified()
         {
             var xml = XDocument.Parse(@"
@@ -175,8 +175,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[1].StringValue).ShouldBe("Goodbye, world!");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(MissingMemberException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnMissingFields()
         {
             var xml = XDocument.Parse(@"
@@ -186,11 +185,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<MissingMemberException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(MissingMemberException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnMissingFields_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -198,10 +197,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel FooValue='Hello, world!' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<MissingMemberException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsStringSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -223,7 +223,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[1].StringValue).ShouldBe("Goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsStringSuccessfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -241,7 +241,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[1].StringValue).ShouldBe("Goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsBooleanSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -263,7 +263,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].BooleanValue).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsBooleanSuccessfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -281,8 +281,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].BooleanValue).ShouldBe(false);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidBoolean()
         {
             var xml = XDocument.Parse(@"
@@ -292,11 +291,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidBoolean_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -304,10 +303,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel BooleanValue='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsSByteSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -329,7 +329,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].SByteValue).ShouldBe(+64);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsSByteSuccessfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -347,8 +347,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].SByteValue).ShouldBe(+64);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidSByte()
         {
             var xml = XDocument.Parse(@"
@@ -358,11 +357,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidSByte_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -370,10 +369,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel SByteValue='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsByteSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -395,7 +395,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].ByteValue).ShouldBe(128);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsByteSuccessfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -413,8 +413,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].ByteValue).ShouldBe(128);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidByte()
         {
             var xml = XDocument.Parse(@"
@@ -424,11 +423,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidByte_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -436,10 +435,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel ByteValue='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsCharSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -461,7 +461,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].CharValue).ShouldBe('F');
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsCharSuccessfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -479,8 +479,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].CharValue).ShouldBe('F');
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidChar()
         {
             var xml = XDocument.Parse(@"
@@ -490,11 +489,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidChar_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -502,10 +501,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel CharValue='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsInt16Successfully()
         {
             var xml = XDocument.Parse(@"
@@ -527,7 +527,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].Int16Value).ShouldBe(+456);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsInt16Successfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -545,8 +545,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].Int16Value).ShouldBe(+456);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidInt16()
         {
             var xml = XDocument.Parse(@"
@@ -556,11 +555,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidInt16_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -568,10 +567,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel Int16Value='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsInt32Successfully()
         {
             var xml = XDocument.Parse(@"
@@ -593,7 +593,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].Int32Value).ShouldBe(+456);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsInt32Successfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -612,8 +612,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
 
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidInt32()
         {
             var xml = XDocument.Parse(@"
@@ -623,11 +622,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidInt32_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -635,10 +634,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel Int32Value='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsInt64Successfully()
         {
             var xml = XDocument.Parse(@"
@@ -660,7 +660,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].Int64Value).ShouldBe(+456);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsInt64Successfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -678,8 +678,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].Int64Value).ShouldBe(+456);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidInt64()
         {
             var xml = XDocument.Parse(@"
@@ -689,11 +688,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidInt64_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -701,10 +700,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel Int64Value='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsUInt16Successfully()
         {
             var xml = XDocument.Parse(@"
@@ -726,7 +726,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].UInt16Value).ShouldBe(456);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsUInt16Successfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -744,8 +744,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].UInt16Value).ShouldBe(456);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidUInt16()
         {
             var xml = XDocument.Parse(@"
@@ -755,11 +754,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidUInt16_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -767,10 +766,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel UInt16Value='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsUInt32Successfully()
         {
             var xml = XDocument.Parse(@"
@@ -792,7 +792,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].UInt32Value).ShouldBe(456);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsUInt32Successfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -810,8 +810,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].UInt32Value).ShouldBe(456);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidUInt32()
         {
             var xml = XDocument.Parse(@"
@@ -821,11 +820,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidUInt32_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -833,10 +832,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel UInt32Value='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsUInt64Successfully()
         {
             var xml = XDocument.Parse(@"
@@ -858,7 +858,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].UInt64Value).ShouldBe(456);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsUInt64Successfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -876,8 +876,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].UInt64Value).ShouldBe(456);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidUInt64()
         {
             var xml = XDocument.Parse(@"
@@ -887,11 +886,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidUInt64_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -899,10 +898,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel UInt64Value='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsSingleSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -924,7 +924,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].SingleValue).ShouldBe(+456.789f);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsSingleSuccessfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -942,8 +942,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].SingleValue).ShouldBe(+456.789f);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidSingle()
         {
             var xml = XDocument.Parse(@"
@@ -953,11 +952,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidSingle_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -965,10 +964,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel SingleValue='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsDoubleSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -990,7 +990,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].DoubleValue).ShouldBe(+456.789);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsDoubleSuccessfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -1008,8 +1008,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].DoubleValue).ShouldBe(+456.789);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidDouble()
         {
             var xml = XDocument.Parse(@"
@@ -1019,11 +1018,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidDouble_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -1031,10 +1030,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel DoubleValue='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsEnumSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -1056,7 +1056,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].EnumValue).ShouldBe(ObjectLoader_SimpleEnum.ValueTwo);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsEnumSuccessfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -1074,8 +1074,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].EnumValue).ShouldBe(ObjectLoader_SimpleEnum.ValueTwo);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidEnum()
         {
             var xml = XDocument.Parse(@"
@@ -1085,11 +1084,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidEnum_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -1097,10 +1096,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel EnumValue='foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsFlagsSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -1122,7 +1122,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].FlagsValue).ShouldBe(ObjectLoader_SimpleFlags.ValueTwo);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsFlagsSuccessfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -1140,8 +1140,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[1].FlagsValue).ShouldBe(ObjectLoader_SimpleFlags.ValueTwo);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidFlags()
         {
             var xml = XDocument.Parse(@"
@@ -1151,11 +1150,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnInvalidFlags_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -1163,10 +1162,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     <SimpleModel FlagsValue='ValueOne, foo' Class='TwistedLogik.Nucleus.Tests.Data.ObjectLoader_SimpleModel, TwistedLogik.Nucleus.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsInheritedValuesSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -1188,7 +1188,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[1].StringValueOnBaseClass).ShouldBe("Goodbye");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_LoadsInheritedValuesSuccessfully_Attribute()
         {
             var xml = XDocument.Parse(@"
@@ -1206,7 +1206,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[1].StringValueOnBaseClass).ShouldBe("Goodbye");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_DefaultsLoadSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -1227,7 +1227,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[0].StringValue).ShouldBe("This is a default!");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_InheritedDefaultsLoadSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -1248,7 +1248,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[0].StringValue).ShouldBe("This is a default!");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_DefaultsLoadInCorrectOrder()
         {
             var xml = XDocument.Parse(@"
@@ -1272,7 +1272,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[0].StringValue).ShouldBe("But this overrides it!");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_HandlesAdditionalConstructorArguments()
         {
             var xml = XDocument.Parse(@"
@@ -1292,8 +1292,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[0].StringValue).ShouldBe("Passed in through constructor!");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_SimpleObject_ThrowsOnSettingReadOnlyProperty()
         {
             var xml = XDocument.Parse(@"
@@ -1303,10 +1302,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_SimpleObject_HandlesReservedKeywordsInElements()
         {
             var xml = XDocument.Parse(@"
@@ -1332,7 +1332,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[0].Type).ShouldBe("Set Type");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_ConstructorArgs_LoadsSimpleValuesSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -1354,7 +1354,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[0].Y).ShouldBe(456);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_ConstructorArgs_LoadsComplexValuesSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -1385,7 +1385,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[0].Arg.Child.Foobar).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_ConstructorArgs_SubstitutesTypesCorrectly()
         {
             var xml = XDocument.Parse(@"
@@ -1413,8 +1413,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(derived.Foobar).ShouldBe("Goodbye, world!");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_ConstructorArgs_ThrowsOnNoMatch()
         {
             var xml = XDocument.Parse(@"
@@ -1427,11 +1426,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </CtorArgModel>
                 </CtorArgModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_CtorArgModelNoMatch>(xml, "CtorArgModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_CtorArgModelNoMatch>(xml, "CtorArgModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_ConstructorArgs_ThrowsOnAmbiguousMatch()
         {
             var xml = XDocument.Parse(@"
@@ -1444,10 +1443,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </CtorArgModel>
                 </CtorArgModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_CtorArgModelNoMatch>(xml, "CtorArgModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_CtorArgModelNoMatch>(xml, "CtorArgModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Indexer_SingleIndexSetsCorrectly()
         {
             var xml = XDocument.Parse(@"
@@ -1470,7 +1470,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[0][3]).ShouldBe(8);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Indexer_MultipleIndexSetsCorrectly()
         {
             var xml = XDocument.Parse(@"
@@ -1493,7 +1493,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[0][3, 3]).ShouldBe(8);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Indexer_SingleIndexArraySetsCorrectly()
         {
             var xml = XDocument.Parse(@"
@@ -1522,7 +1522,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeExactly(5, 6, 7);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Indexer_SingleIndexListSetsCorrectly()
         {
             var xml = XDocument.Parse(@"
@@ -1551,7 +1551,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeExactly(5, 6, 7);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Indexer_ComplexValueSetsCorrectly()
         {
             var xml = XDocument.Parse(@"
@@ -1575,7 +1575,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[0][1].Z).ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Indexer_ComplexValueSubstitutesTypeCorrectly()
         {
             var xml = XDocument.Parse(@"
@@ -1602,8 +1602,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(derived.Foobar).ShouldBe("baz");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_Indexer_ThrowsIfMissingIndexParameter()
         {
             var xml = XDocument.Parse(@"
@@ -1613,11 +1612,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </IndexerModel>
                 </IndexerModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_MultiIndexerModel>(xml, "IndexerModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_MultiIndexerModel>(xml, "IndexerModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_Indexer_ThrowsIfTooManyIndexParameters()
         {
             var xml = XDocument.Parse(@"
@@ -1627,10 +1626,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </IndexerModel>
                 </IndexerModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_MultiIndexerModel>(xml, "IndexerModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_MultiIndexerModel>(xml, "IndexerModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Array_PopulatesValues()
         {
             var xml = XDocument.Parse(@"
@@ -1655,7 +1655,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeExactly(5, 6, 7);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Array_PopulatesEmptyArray()
         {
             var xml = XDocument.Parse(@"
@@ -1675,7 +1675,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Array_OverwritesExistingArray()
         {
             var xml = XDocument.Parse(@"
@@ -1698,7 +1698,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Array_LoadsComplexElements()
         {
             var xml = XDocument.Parse(@"
@@ -1729,8 +1729,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[0].ArrayValue[0].Z).ShouldBe(3);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_Array_ThrowsOnInvalidArrayDefinition()
         {
             var xml = XDocument.Parse(@"
@@ -1745,10 +1744,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </ArrayModel>
                 </ArrayModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_ArrayModel>(xml, "ArrayModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_ArrayModel>(xml, "ArrayModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_List_PopulatesValues()
         {
             var xml = XDocument.Parse(@"
@@ -1773,7 +1773,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeExactly(5, 6, 7);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_List_PopulatesEmptyList()
         {
             var xml = XDocument.Parse(@"
@@ -1793,7 +1793,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_List_OverwritesExistingList()
         {
             var xml = XDocument.Parse(@"
@@ -1816,7 +1816,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_List_LoadsComplexElements()
         {
             var xml = XDocument.Parse(@"
@@ -1847,8 +1847,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[0].ListValue[0].Z).ShouldBe(3);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_List_ThrowsOnInvalidListDefinition()
         {
             var xml = XDocument.Parse(@"
@@ -1863,10 +1862,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </ListModel>
                 </ListModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_ListModel>(xml, "ListModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_ListModel>(xml, "ListModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Enumerable_PopulatesValues()
         {
             var xml = XDocument.Parse(@"
@@ -1891,7 +1891,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeExactly(5, 6, 7);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Enumerable_PopulatesEmptyEnumerable()
         {
             var xml = XDocument.Parse(@"
@@ -1911,7 +1911,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Enumerable_OverwritesExistingEnumerable()
         {
             var xml = XDocument.Parse(@"
@@ -1934,7 +1934,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeEmpty();
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_Enumerable_LoadsComplexElements()
         {
             var xml = XDocument.Parse(@"
@@ -1966,8 +1966,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(first.Z).ShouldBe(3);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_Enumerable_ThrowsOnInvalidListDefinition()
         {
             var xml = XDocument.Parse(@"
@@ -1982,10 +1981,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </ListModel>
                 </ListModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_ListModel>(xml, "ListModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_ListModel>(xml, "ListModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_ComplexObjects_LoadsReferenceTypesSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -2009,7 +2009,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[0].ComplexReference.Z).ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_ComplexObjects_LoadsReferenceTypesSuccessfullyWhenNested()
         {
             var xml = XDocument.Parse(@"
@@ -2042,7 +2042,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[0].ComplexReference.Child.Z).ShouldBe(6);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_ComplexObjects_LoadsDerivedReferenceTypesSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -2072,8 +2072,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(derived.Foobar).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ObjectLoader_ComplexObjects_ThrowsIfLoadingIncompatibleType()
         {
             var xml = XDocument.Parse(@"
@@ -2088,10 +2087,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                     </SimpleModel>
                 </SimpleModels>");
 
-            ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
+            Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_ComplexObjects_LoadsValueTypesSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -2115,7 +2115,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingValue(results[0].ComplexValue.Z).ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_ComplexObjects_LoadsValueTypesSuccessfullyWhenNested()
         {
             var xml = XDocument.Parse(@"
@@ -2144,7 +2144,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
             TheResultingString(results[0].ComplexValue.Child.Foobar).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_ComplexObjects_LoadsComplexListsSuccessfully()
         {
             var xml = XDocument.Parse(@"
@@ -2176,7 +2176,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 .ShouldBeExactly(5, 6, 7);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLoader_UsesCultureSpecifiedInSource()
         {
             UsingCulture("en-US", () =>

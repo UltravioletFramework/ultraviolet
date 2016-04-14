@@ -1,16 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests.IO
 {
-    [TestClass]
+    [TestFixture]
     public class ExpandingPoolRegistryTest : NucleusTestFramework
     {
         private class PoolableObject1 { }
         private class PoolableObject2 { }
 
-        [TestMethod]
+        [Test]
         public void ExpandingPoolRegistry_CanCreatePools()
         {
             var registry = new ExpandingPoolRegistry();
@@ -29,7 +29,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
                 .ShouldSatisfyTheCondition(x => x.Capacity == 64);
         }
 
-        [TestMethod]
+        [Test]
         public void ExpandingPoolRegistry_CanCreatePoolsOnTheFly()
         {
             var registry = new ExpandingPoolRegistry();

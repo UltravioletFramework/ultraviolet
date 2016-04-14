@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MathUtilTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void MathUtil_ClampByte()
         {
             var result1 = MathUtil.Clamp((byte)123, (byte)0, (byte)44);
@@ -16,7 +16,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result2).ShouldBe(22);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_ClampInt16()
         {
             var result1 = MathUtil.Clamp((short)123, (short)0, (short)44);
@@ -32,7 +32,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result4).ShouldBe(-25);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_ClampInt32()
         {
             var result1 = MathUtil.Clamp(123, 0, 44);
@@ -48,7 +48,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result4).ShouldBe(-25);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_ClampInt64()
         {
             var result1 = MathUtil.Clamp(123, 0, (long)44);
@@ -64,7 +64,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result4).ShouldBe(-25);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_ClampUInt16()
         {
             var result1 = MathUtil.Clamp((ushort)123, (ushort)0, (ushort)44);
@@ -74,7 +74,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result2).ShouldBe(22);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_ClampUInt32()
         {
             var result1 = MathUtil.Clamp(123, 0, (uint)44);
@@ -84,7 +84,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result2).ShouldBe(22);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_ClampUInt64()
         {
             var result1 = MathUtil.Clamp(123, 0, (ulong)44);
@@ -94,7 +94,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result2).ShouldBe(22);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_ClampSingle()
         {
             var result1 = MathUtil.Clamp(123f, 0f, 44f);
@@ -110,7 +110,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result4).ShouldBe(-25f);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_ClampDouble()
         {
             var result1 = MathUtil.Clamp(123.0, 0.0, 44.0);
@@ -126,7 +126,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result4).ShouldBe(-25.0);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_LerpByte()
         {
             var result1 = MathUtil.Lerp((byte)0, (byte)100, 0.25f);
@@ -136,7 +136,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result2).ShouldBe(75);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_LerpInt16()
         {
             var result1 = MathUtil.Lerp((short)0, (short)100, 0.25f);
@@ -152,7 +152,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result4).ShouldBe(25);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_LerpInt32()
         {
             var result1 = MathUtil.Lerp(0, 100, 0.25f);
@@ -168,7 +168,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result4).ShouldBe(25);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_LerpInt64()
         {
             var result1 = MathUtil.Lerp(0, (long)100, 0.25f);
@@ -184,7 +184,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result4).ShouldBe(25);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_LerpUInt16()
         {
             var result1 = MathUtil.Lerp((ushort)0, (ushort)100, 0.25f);
@@ -194,7 +194,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result2).ShouldBe(75);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_LerpUInt32()
         {
             var result1 = MathUtil.Lerp(0, (uint)100, 0.25f);
@@ -204,7 +204,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result2).ShouldBe(75);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_LerpUInt64()
         {
             var result1 = MathUtil.Lerp(0, (ulong)100, 0.25f);
@@ -214,7 +214,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result2).ShouldBe(75);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_LerpSingle()
         {
             var result1 = MathUtil.Lerp(0f, 100f, 0.25f);
@@ -230,7 +230,7 @@ namespace TwistedLogik.Nucleus.Tests
             TheResultingValue(result4).ShouldBe(25f);
         }
 
-        [TestMethod]
+        [Test]
         public void MathUtil_LerpDouble()
         {
             var result1 = MathUtil.Lerp(0.0, 100.0, 0.25f);

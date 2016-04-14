@@ -1,14 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests.IO
 {
-    [TestClass]
+    [TestFixture]
     public class PooledLinkedListTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void PooledLinkedList_CanAddItems()
         {
             var list = new PooledLinkedList<Int32>();
@@ -21,7 +21,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
                 .ShouldBeExactly(2, 1, 3);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedList_CanRemoveItems()
         {
             var list = new PooledLinkedList<Int32>();
@@ -35,7 +35,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
                 .ShouldBeExactly(1, 3);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedList_ClearsNodesUponRemoval()
         {
             var list = new PooledLinkedList<Int32>();

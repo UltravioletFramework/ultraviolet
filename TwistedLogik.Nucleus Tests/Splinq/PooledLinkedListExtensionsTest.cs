@@ -1,15 +1,15 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Splinq;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.NucleusTests.Splinq
 {
-    [TestClass]
+    [TestFixture]
     public class PooledLinkedListExtensionsTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_Any_ReturnsTrueIfPooledLinkedListContainsItems()
         {
             var list = new PooledLinkedList<Int32>();
@@ -20,7 +20,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_Any_ReturnsFalseIfPooledLinkedListDoesNotContainItems()
         {
             var list = new PooledLinkedList<Int32>();
@@ -30,7 +30,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_AnyWithPredicate_ReturnsTrueIfPooledLinkedListContainsMatchingItems()
         {
             var list = new PooledLinkedList<Int32>();
@@ -43,7 +43,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_AnyWithPredicate_ReturnsFalseIfPooledLinkedListDoesNotContainMatchingItems()
         {
             var list = new PooledLinkedList<Int32>();
@@ -55,7 +55,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_All_ReturnsTrueIfAllItemsMatchPredicate()
         {
             var list = new PooledLinkedList<Int32>();
@@ -68,7 +68,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_All_ReturnsTrueIfPooledLinkedListIsEmpty()
         {
             var list = new PooledLinkedList<Int32>();
@@ -78,7 +78,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_All_ReturnsFalseIfOneItemDoesNotMatchPredicate()
         {
             var list = new PooledLinkedList<Int32>();
@@ -92,7 +92,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_Count_ReturnsCorrectSize()
         {
             var list = new PooledLinkedList<Int32>();
@@ -105,7 +105,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_CountWithPredicate_ReturnsCorrectSize()
         {
             var list = new PooledLinkedList<Int32>();
@@ -118,7 +118,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_First_ReturnsFirstItemInPooledLinkedList()
         {
             var list = new PooledLinkedList<Int32>();
@@ -131,16 +131,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void PooledLinkedListExtensions_First_ThrowsExceptionIfPooledLinkedListIsEmpty()
         {
             var list = new PooledLinkedList<Int32>();
 
-            list.First();
+            Assert.That(() => list.First(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_Last_ReturnsLastItemInPooledLinkedList()
         {
             var list = new PooledLinkedList<Int32>();
@@ -153,16 +153,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(3);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void PooledLinkedListExtensions_Last_ThrowsExceptionIfPooledLinkedListIsEmpty()
         {
             var list = new PooledLinkedList<Int32>();
 
-            list.Last();
+            Assert.That(() => list.Last(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_Single_ReturnsSingleItemInPooledLinkedList()
         {
             var list = new PooledLinkedList<Int32>();
@@ -173,27 +173,27 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(4);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void PooledLinkedListExtensions_Single_ThrowsExceptionIfPooledLinkedListIsEmpty()
         {
             var list = new PooledLinkedList<Int32>();
 
-            list.Single();
+            Assert.That(() => list.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void PooledLinkedListExtensions_Single_ThrowsExceptionIfPooledLinkedListHasMultipleItems()
         {
             var list = new PooledLinkedList<Int32>();
             list.AddLast(1);
             list.AddLast(2);
 
-            list.Single();
+            Assert.That(() => list.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_SingleOrDefault_ReturnsSingleItemInPooledLinkedList()
         {
             var list = new PooledLinkedList<Int32>();
@@ -204,7 +204,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(4);
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_SingleOrDefault_ReturnsDefaultValueIfPooledLinkedListIsEmpty()
         {
             var list = new PooledLinkedList<Int32>();
@@ -214,18 +214,18 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(default(Int32));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void PooledLinkedListExtensions_SingleOrDefault_ThrowsExceptionIfPooledLinkedListHasMultipleItems()
         {
             var list = new PooledLinkedList<Int32>();
             list.AddLast(1);
             list.AddLast(2);
 
-            list.SingleOrDefault();
+            Assert.That(() => list.SingleOrDefault(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_Max_ReturnsMaxValue()
         {
             var list = new PooledLinkedList<Int32>();
@@ -243,16 +243,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(99);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void PooledLinkedListExtensions_Max_ThrowsExceptionIfPooledLinkedListIsEmpty()
         {
             var list = new PooledLinkedList<Int32>();
 
-            list.Max();
+            Assert.That(() => list.Max(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void PooledLinkedListExtensions_Min_ReturnsMinValue()
         {
             var list = new PooledLinkedList<Int32>();
@@ -270,13 +270,13 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void PooledLinkedListExtensions_Min_ThrowsExceptionIfPooledLinkedListIsEmpty()
         {
             var list = new PooledLinkedList<Int32>();
 
-            list.Min();
+            Assert.That(() => list.Min(),
+                Throws.TypeOf<InvalidOperationException>());
         }
     }
 }

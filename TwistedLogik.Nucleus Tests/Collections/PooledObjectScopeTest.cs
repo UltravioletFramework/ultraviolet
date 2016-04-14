@@ -1,16 +1,16 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests.IO
 {
-    [TestClass]
+    [TestFixture]
     public class PooledObjectScopeTest : NucleusTestFramework
     {
         private class PoolableDataObject { public String Data { get; set; } }
 
-        [TestMethod]
+        [Test]
         public void PooledObjectScope_ScopeRetrievesAndReleasesObject()
         {
             var pool = new ExpandingPool<PoolableDataObject>(1);

@@ -1,15 +1,15 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Testing;
 using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Nucleus.Tests.Text
 {
-    [TestClass]
+    [TestFixture]
     public class StringFormatterTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void StringFormatter_CanFormatStringArgument()
         {
             var formatter = new StringFormatter();
@@ -22,7 +22,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingString(buffer).ShouldBe("hello world");
         }
 
-        [TestMethod]
+        [Test]
         public void StringFormatter_CanFormatBooleanArgument()
         {
             var formatter = new StringFormatter();
@@ -36,7 +36,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingString(buffer).ShouldBe("this is True and this is False");
         }
 
-        [TestMethod]
+        [Test]
         public void StringFormatter_CanFormatByteArgument()
         {
             var formatter = new StringFormatter();
@@ -49,7 +49,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingString(buffer).ShouldBe("this is a Byte value: 123");
         }
 
-        [TestMethod]
+        [Test]
         public void StringFormatter_CanFormatCharArgument()
         {
             var formatter = new StringFormatter();
@@ -62,7 +62,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingString(buffer).ShouldBe("this is a Char value: Z");
         }
 
-        [TestMethod]
+        [Test]
         public void StringFormatter_CanFormatInt32Argument()
         {
             var formatter = new StringFormatter();
@@ -75,7 +75,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingString(buffer).ShouldBe("this is an Int32 value: 12345");
         }
 
-        [TestMethod]
+        [Test]
         public void StringFormatter_CanFormatSingleArgument()
         {
             var formatter = new StringFormatter();
@@ -88,7 +88,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingString(buffer).ShouldBe("this is a Single value: 123.45000");
         }
 
-        [TestMethod]
+        [Test]
         public void StringFormatter_CanFormatSingleArgumentWithDecimalsCommand()
         {
             var formatter = new StringFormatter();
@@ -101,7 +101,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingString(buffer).ShouldBe("this is a Single value: 123.46");
         }
 
-        [TestMethod]
+        [Test]
         public void StringFormatter_CanFormatDoubleArgument()
         {
             var formatter = new StringFormatter();
@@ -114,7 +114,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingString(buffer).ShouldBe("this is a Double value: 123.45000");
         }
 
-        [TestMethod]
+        [Test]
         public void StringFormatter_CanFormatDoubleArgumentWithDecimalsCommand()
         {
             var formatter = new StringFormatter();

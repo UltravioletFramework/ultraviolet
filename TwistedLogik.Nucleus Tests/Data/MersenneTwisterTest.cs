@@ -1,13 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests.Data
 {
-    [TestClass]
+    [TestFixture]
     public class MersenneTwisterTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void MersenneTwister_SettingSeedResultsInSameSequence()
         {
             var rng = new MersenneTwister(12345);

@@ -1,15 +1,15 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Splinq;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.NucleusTests.Splinq
 {
-    [TestClass]
+    [TestFixture]
     public class HashSetExtensionsTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_Any_ReturnsTrueIfHashSetContainsItems()
         {
             var set = new HashSet<Int32>() { 1 };
@@ -19,7 +19,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_Any_ReturnsFalseIfHashSetDoesNotContainItems()
         {
             var set = new HashSet<Int32>();
@@ -29,7 +29,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_AnyWithPredicate_ReturnsTrueIfHashSetContainsMatchingItems()
         {
             var set = new HashSet<Int32>() { 1, 2, 3 };
@@ -39,7 +39,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_AnyWithPredicate_ReturnsFalseIfHashSetDoesNotContainMatchingItems()
         {
             var set = new HashSet<Int32>() { 1, 3 };
@@ -49,7 +49,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_All_ReturnsTrueIfAllItemsMatchPredicate()
         {
             var set = new HashSet<Int32>() { 2, 4, 6 };
@@ -59,7 +59,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_All_ReturnsTrueIfHashSetIsEmpty()
         {
             var set = new HashSet<Int32>();
@@ -69,7 +69,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_All_ReturnsFalseIfOneItemDoesNotMatchPredicate()
         {
             var set = new HashSet<Int32>() { 1, 2, 4, 6 };
@@ -79,7 +79,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_Count_ReturnsCorrectSize()
         {
             var set = new HashSet<Int32>() { 1, 2, 3 };
@@ -89,7 +89,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_CountWithPredicate_ReturnsCorrectSize()
         {
             var set = new HashSet<Int32>() { 1, 2, 3 };
@@ -99,7 +99,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_First_ReturnsFirstItemInHashSet()
         {
             var set = new HashSet<Int32>() { 1, 2, 3 };
@@ -109,16 +109,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void HashSetExtensions_First_ThrowsExceptionIfHashSetIsEmpty()
         {
             var set = new HashSet<Int32>();
 
-            set.First();
+            Assert.That(() => set.First(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_Last_ReturnsLastItemInHashSet()
         {
             var set = new HashSet<Int32>() { 1, 2, 3 };
@@ -128,16 +128,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(3);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void HashSetExtensions_Last_ThrowsExceptionIfHashSetIsEmpty()
         {
             var set = new HashSet<Int32>();
 
-            set.Last();
+            Assert.That(() => set.Last(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_Single_ReturnsSingleItemInHashSet()
         {
             var set = new HashSet<Int32>() { 4 };
@@ -147,25 +147,25 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(4);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void HashSetExtensions_Single_ThrowsExceptionIfHashSetIsEmpty()
         {
             var set = new HashSet<Int32>();
 
-            set.Single();
+            Assert.That(() => set.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void HashSetExtensions_Single_ThrowsExceptionIfHashSetHasMultipleItems()
         {
             var set = new HashSet<Int32>() { 1, 2 };
 
-            set.Single();
+            Assert.That(() => set.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_SingleOrDefault_ReturnsSingleItemInHashSet()
         {
             var set = new HashSet<Int32>() { 4 };
@@ -175,7 +175,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(4);
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_SingleOrDefault_ReturnsDefaultValueIfHashSetIsEmpty()
         {
             var set = new HashSet<Int32>();
@@ -185,16 +185,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(default(Int32));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void HashSetExtensions_SingleOrDefault_ThrowsExceptionIfHashSetHasMultipleItems()
         {
             var set = new HashSet<Int32>() { 1, 2 };
 
-            set.SingleOrDefault();
+            Assert.That(() => set.SingleOrDefault(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_Max_ReturnsMaxValue()
         {
             var set = new HashSet<Int32>() { 4, 5, 6, 99, 10, 1, 12, 45 };
@@ -204,16 +204,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(99);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void HashSetExtensions_Max_ThrowsExceptionIfHashSetIsEmpty()
         {
             var set = new HashSet<Int32>();
 
-            set.Max();
+            Assert.That(() => set.Max(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void HashSetExtensions_Min_ReturnsMinValue()
         {
             var set = new HashSet<Int32>() { 4, 5, 6, 99, 10, 1, 12, 45 };
@@ -223,13 +223,13 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void HashSetExtensions_Min_ThrowsExceptionIfHashSetIsEmpty()
         {
             var set = new HashSet<Int32>();
 
-            set.Min();
+            Assert.That(() => set.Min(),
+                Throws.TypeOf<InvalidOperationException>());
         }
     }
 }

@@ -1,15 +1,15 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Splinq;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.NucleusTests.Splinq
 {
-    [TestClass]
+    [TestFixture]
     public class StackExtensionsTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void StackExtensions_Any_ReturnsTrueIfStackContainsItems()
         {
             var stack = new Stack<Int32>();
@@ -20,7 +20,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_Any_ReturnsFalseIfStackDoesNotContainItems()
         {
             var stack = new Stack<Int32>();
@@ -30,7 +30,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_AnyWithPredicate_ReturnsTrueIfStackContainsMatchingItems()
         {
             var stack = new Stack<Int32>();
@@ -43,7 +43,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_AnyWithPredicate_ReturnsFalseIfStackDoesNotContainMatchingItems()
         {
             var stack = new Stack<Int32>();
@@ -55,7 +55,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_All_ReturnsTrueIfAllItemsMatchPredicate()
         {
             var stack = new Stack<Int32>();
@@ -68,7 +68,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_All_ReturnsTrueIfStackIsEmpty()
         {
             var stack = new Stack<Int32>();
@@ -78,7 +78,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_All_ReturnsFalseIfOneItemDoesNotMatchPredicate()
         {
             var stack = new Stack<Int32>();
@@ -92,7 +92,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_Count_ReturnsCorrectSize()
         {
             var stack = new Stack<Int32>();
@@ -105,7 +105,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_CountWithPredicate_ReturnsCorrectSize()
         {
             var stack = new Stack<Int32>();
@@ -118,7 +118,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_First_ReturnsFirstItemInStack()
         {
             var stack = new Stack<Int32>();
@@ -131,16 +131,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void StackExtensions_First_ThrowsExceptionIfStackIsEmpty()
         {
             var stack = new Stack<Int32>();
 
-            stack.First();
+            Assert.That(() => stack.First(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_Last_ReturnsLastItemInStack()
         {
             var stack = new Stack<Int32>();
@@ -153,16 +153,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(3);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void StackExtensions_Last_ThrowsExceptionIfStackIsEmpty()
         {
             var stack = new Stack<Int32>();
 
-            stack.Last();
+            Assert.That(() => stack.Last(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_Single_ReturnsSingleItemInStack()
         {
             var stack = new Stack<Int32>();
@@ -173,27 +173,27 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(4);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void StackExtensions_Single_ThrowsExceptionIfStackIsEmpty()
         {
             var stack = new Stack<Int32>();
 
-            stack.Single();
+            Assert.That(() => stack.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void StackExtensions_Single_ThrowsExceptionIfStackHasMultipleItems()
         {
             var stack = new Stack<Int32>();
             stack.Push(1);
             stack.Push(2);
 
-            stack.Single();
+            Assert.That(() => stack.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_SingleOrDefault_ReturnsSingleItemInStack()
         {
             var stack = new Stack<Int32>();
@@ -204,7 +204,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(4);
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_SingleOrDefault_ReturnsDefaultValueIfStackIsEmpty()
         {
             var stack = new Stack<Int32>();
@@ -214,18 +214,18 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(default(Int32));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void StackExtensions_SingleOrDefault_ThrowsExceptionIfStackHasMultipleItems()
         {
             var stack = new Stack<Int32>();
             stack.Push(1);
             stack.Push(2);
 
-            stack.SingleOrDefault();
+            Assert.That(() => stack.SingleOrDefault(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_Max_ReturnsMaxValue()
         {
             var stack = new Stack<Int32>();
@@ -243,16 +243,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(99);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void StackExtensions_Max_ThrowsExceptionIfStackIsEmpty()
         {
             var stack = new Stack<Int32>();
 
-            stack.Max();
+            Assert.That(() => stack.Max(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void StackExtensions_Min_ReturnsMinValue()
         {
             var stack = new Stack<Int32>();
@@ -270,13 +270,13 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void StackExtensions_Min_ThrowsExceptionIfStackIsEmpty()
         {
             var stack = new Stack<Int32>();
 
-            stack.Min();
+            Assert.That(() => stack.Min(),
+                Throws.TypeOf<InvalidOperationException>());
         }
     }
 }

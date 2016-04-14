@@ -1,14 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Testing;
 using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Nucleus.Tests.Text
 {
-    [TestClass]
+    [TestFixture]
     public class StringPtr8Test : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void StringPtr8_HandlesNullTerminatedString()
         {
             unsafe

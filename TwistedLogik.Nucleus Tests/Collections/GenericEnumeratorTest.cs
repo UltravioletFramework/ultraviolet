@@ -1,14 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests.IO
 {
-    [TestClass]
+    [TestFixture]
     public class GenericEnumeratorTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void GenericEnumerator_EnumeratesCorrectly()
         {
             var collection = new[] { 5, 7, 9, 11, 13 };
@@ -44,8 +44,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             TheResultingValue(enumerator.MoveNext()).ShouldBe(false);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void GenericEnumerator_ThrowsInvalidOperationExceptionIfSourceIsChanged()
         {
             var collection = new[] { 5, 7, 9, 11, 13 };
@@ -73,7 +72,8 @@ namespace TwistedLogik.Nucleus.Tests.IO
             version++;
             collection[0] = 5;
 
-            enumerator.MoveNext();
+            Assert.That(() => enumerator.MoveNext(),
+                Throws.TypeOf<InvalidOperationException>());
         }
     }
 }

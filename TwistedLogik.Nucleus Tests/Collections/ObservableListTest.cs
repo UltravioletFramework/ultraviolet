@@ -1,14 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.NucleusTests.Collections
 {
-    [TestClass]
+    [TestFixture]
     public partial class ObservableListTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void ObservableList_RaisesCollectionItemAdded()
         {
             var list  = new ObservableList<Int32>();
@@ -23,7 +23,7 @@ namespace TwistedLogik.NucleusTests.Collections
             TheResultingValue(added).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void ObservableList_RaisesCollectionItemRemoved()
         {
             var list    = new ObservableList<Int32>();
@@ -39,7 +39,7 @@ namespace TwistedLogik.NucleusTests.Collections
             TheResultingValue(removed).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void ObservableList_RaisesCollectionResetOnClear()
         {
             var list  = new ObservableList<Int32>();
@@ -55,7 +55,7 @@ namespace TwistedLogik.NucleusTests.Collections
             TheResultingValue(reset).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void ObservableList_RaisesCollectionResetOnSort()
         {
             var list  = new ObservableList<Int32>();
@@ -74,7 +74,7 @@ namespace TwistedLogik.NucleusTests.Collections
             TheResultingValue(reset).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void ObservableList_RaisesCollectionResetOnReverse()
         {
             var list  = new ObservableList<Int32>();

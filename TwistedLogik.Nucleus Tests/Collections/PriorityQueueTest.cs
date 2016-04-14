@@ -1,14 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests.IO
 {
-    [TestClass]
+    [TestFixture]
     public class PriorityQueueTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void PriorityQueue_CanQueueAndDequeueItems()
         {
             var queue = new PriorityQueue<String>();

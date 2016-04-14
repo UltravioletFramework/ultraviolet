@@ -1,15 +1,15 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests.IO
 {
-    [TestClass]
+    [TestFixture]
     public class ExpandingPoolTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void ExpandingPool_ShouldUseSpecifiedObjectInitializers()
         {
             var pool = CreateExpandingPoolWithCapacity(5, () => { return new List<Int32>() { 9, 8, 7, 6, 5, 4, 3, 2, 1 }; });
@@ -20,7 +20,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
                 .ShouldBeExactly(9, 8, 7, 6, 5, 4, 3, 2, 1);
         }
 
-        [TestMethod]
+        [Test]
         public void ExpandingPool_ExpandsWhenCapacityIsExceeded()
         {
             var pool = CreateExpandingPoolWithCapacity(5);
@@ -36,7 +36,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             TheResultingValue(retrieved).ShouldBe(10);
         }
 
-        [TestMethod]
+        [Test]
         public void ExpandingPool_ShouldBeCleanedUpAfterObjectsAreReleased()
         {
             var pool = CreateExpandingPoolWithCapacity(5);
@@ -55,7 +55,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             TheResultingValue(pool.Count).ShouldBe(0);
         }
 
-        [TestMethod]
+        [Test]
         public void ExpandingPool_AllocatesNewObjectsWhenWatermarkIsExceeded()
         {
             var pool = CreateExpandingPoolWithCapacity(5, 10);
@@ -73,7 +73,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             TheResultingValue(pool.WatermarkAllocations).ShouldBe(5);
         }
 
-        [TestMethod]
+        [Test]
         public void ExpandingPool_ShouldBeCleanedUpAfterWatermarkAllocatedObjectsAreReleased()
         {
             var pool = CreateExpandingPoolWithCapacity(5, 10);

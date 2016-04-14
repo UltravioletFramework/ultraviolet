@@ -1,15 +1,15 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Testing;
 using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Nucleus.Tests.IO
 {
-    [TestClass]
+    [TestFixture]
     public class TokenizerTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void Tokenizer_ShouldTokenizeString()
         {
             var tokens = new List<String>();
@@ -21,7 +21,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
                 .ShouldBeExactly("Hello,", "world!", "This", "is", "a", "test", "of", "the", "TwistedLogik Nucleus String Tokenizer.");
         }
 
-        [TestMethod]
+        [Test]
         public void Tokenizer_ShouldReturnLeftoverStringWhenTokenCountIsConstrained()
         {
             var remainder = String.Empty;

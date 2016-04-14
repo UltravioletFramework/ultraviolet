@@ -1,14 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests.IO
 {
-    [TestClass]
+    [TestFixture]
     public class BinaryHeapTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void BinaryHeap_CanAddItems()
         {
             var heap = new BinaryHeap<Int32>();
@@ -26,7 +26,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
                 .ShouldBeExactly(1, 2, 6, 6, 17, 44, 94, 102);
         }
 
-        [TestMethod]
+        [Test]
         public void BinaryHeap_CanRemoveItems()
         {
             var heap = new BinaryHeap<Int32>() { 6, 1, 44, 2, 102, 17, 94, 6 };

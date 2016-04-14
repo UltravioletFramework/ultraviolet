@@ -1,15 +1,15 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Splinq;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.NucleusTests.Splinq
 {
-    [TestClass]
+    [TestFixture]
     public class QueueExtensionsTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void QueueExtensions_Any_ReturnsTrueIfQueueContainsItems()
         {
             var queue = new Queue<Int32>();
@@ -20,7 +20,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_Any_ReturnsFalseIfQueueDoesNotContainItems()
         {
             var queue = new Queue<Int32>();
@@ -30,7 +30,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_AnyWithPredicate_ReturnsTrueIfQueueContainsMatchingItems()
         {
             var queue = new Queue<Int32>();
@@ -43,7 +43,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_AnyWithPredicate_ReturnsFalseIfQueueDoesNotContainMatchingItems()
         {
             var queue = new Queue<Int32>();
@@ -55,7 +55,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_All_ReturnsTrueIfAllItemsMatchPredicate()
         {
             var queue = new Queue<Int32>();
@@ -68,7 +68,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_All_ReturnsTrueIfQueueIsEmpty()
         {
             var queue = new Queue<Int32>();
@@ -78,7 +78,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_All_ReturnsFalseIfOneItemDoesNotMatchPredicate()
         {
             var queue = new Queue<Int32>();
@@ -92,7 +92,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_Count_ReturnsCorrectSize()
         {
             var queue = new Queue<Int32>();
@@ -105,7 +105,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_CountWithPredicate_ReturnsCorrectSize()
         {
             var queue = new Queue<Int32>();
@@ -118,7 +118,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_First_ReturnsFirstItemInQueue()
         {
             var queue = new Queue<Int32>();
@@ -131,16 +131,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void QueueExtensions_First_ThrowsExceptionIfQueueIsEmpty()
         {
             var queue = new Queue<Int32>();
 
-            queue.First();
+            Assert.That(() => queue.First(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_Last_ReturnsLastItemInQueue()
         {
             var queue = new Queue<Int32>();
@@ -153,16 +153,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(3);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void QueueExtensions_Last_ThrowsExceptionIfQueueIsEmpty()
         {
             var queue = new Queue<Int32>();
 
-            queue.Last();
+            Assert.That(() => queue.Last(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_Single_ReturnsSingleItemInQueue()
         {
             var queue = new Queue<Int32>();
@@ -173,27 +173,27 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(4);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void QueueExtensions_Single_ThrowsExceptionIfQueueIsEmpty()
         {
             var queue = new Queue<Int32>();
 
-            queue.Single();
+            Assert.That(() => queue.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void QueueExtensions_Single_ThrowsExceptionIfQueueHasMultipleItems()
         {
             var queue = new Queue<Int32>();
             queue.Enqueue(1);
             queue.Enqueue(2);
 
-            queue.Single();
+            Assert.That(() => queue.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_SingleOrDefault_ReturnsSingleItemInQueue()
         {
             var queue = new Queue<Int32>();
@@ -204,7 +204,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(4);
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_SingleOrDefault_ReturnsDefaultValueIfQueueIsEmpty()
         {
             var queue = new Queue<Int32>();
@@ -214,18 +214,18 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(default(Int32));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void QueueExtensions_SingleOrDefault_ThrowsExceptionIfQueueHasMultipleItems()
         {
             var queue = new Queue<Int32>();
             queue.Enqueue(1);
             queue.Enqueue(2);
 
-            queue.SingleOrDefault();
+            Assert.That(() => queue.SingleOrDefault(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_Max_ReturnsMaxValue()
         {
             var queue = new Queue<Int32>();
@@ -243,16 +243,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(99);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void QueueExtensions_Max_ThrowsExceptionIfQueueIsEmpty()
         {
             var queue = new Queue<Int32>();
 
-            queue.Max();
+            Assert.That(() => queue.Max(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void QueueExtensions_Min_ReturnsMinValue()
         {
             var queue = new Queue<Int32>();
@@ -270,13 +270,13 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void QueueExtensions_Min_ThrowsExceptionIfQueueIsEmpty()
         {
             var queue = new Queue<Int32>();
 
-            queue.Min();
+            Assert.That(() => queue.Min(),
+                Throws.TypeOf<InvalidOperationException>());
         }
     }
 }

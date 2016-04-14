@@ -1,13 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using TwistedLogik.Nucleus.Testing;
 using TwistedLogik.Nucleus.Text;
 
 namespace TwistedLogik.Nucleus.Tests.Text
 {
-    [TestClass]
+    [TestFixture]
     public class StringSegmentTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void StringSegment_CanBeCreatedFromString()
         {
             var source = "Hello, world!";
@@ -17,7 +17,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
                 .ShouldBe("llo,");
         }
 
-        [TestMethod]
+        [Test]
         public void StringSegment_IndexOfCharacter_ReturnsCorrectValueForExistingCharacter()
         {
             var segment = new StringSegment("Hello, world!");
@@ -26,7 +26,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingValue(result).ShouldBe(7);
         }
 
-        [TestMethod]
+        [Test]
         public void StringSegment_IndexOfCharacter_ReturnsNegativeOneForNonExistingCharacter()
         {
             var segment = new StringSegment("Hello, world!");
@@ -35,7 +35,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingValue(result).ShouldBe(-1);
         }
 
-        [TestMethod]
+        [Test]
         public void StringSegment_IndexOfString_ReturnsCorrectValueForExistingCharacter()
         {
             var segment = new StringSegment("Hello, world!");
@@ -44,7 +44,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
             TheResultingValue(result).ShouldBe(7);
         }
 
-        [TestMethod]
+        [Test]
         public void StringSegment_IndexOfString_ReturnsNegativeOneForNonExistingCharacter()
         {
             var segment = new StringSegment("Hello, world!");

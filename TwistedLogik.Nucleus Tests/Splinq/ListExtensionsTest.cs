@@ -1,15 +1,15 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwistedLogik.Nucleus.Splinq;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.NucleusTests.Splinq
 {
-    [TestClass]
+    [TestFixture]
     public class ListExtensionsTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void ListExtensions_Any_ReturnsTrueIfListContainsItems()
         {
             var list = new List<Int32>() { 1 };
@@ -19,7 +19,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_Any_ReturnsFalseIfListDoesNotContainItems()
         {
             var list = new List<Int32>();
@@ -29,7 +29,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_AnyWithPredicate_ReturnsTrueIfListContainsMatchingItems()
         {
             var list = new List<Int32>() { 1, 2, 3 };
@@ -39,7 +39,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_AnyWithPredicate_ReturnsFalseIfListDoesNotContainMatchingItems()
         {
             var list = new List<Int32>() { 1, 3 };
@@ -49,7 +49,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_All_ReturnsTrueIfAllItemsMatchPredicate()
         {
             var list = new List<Int32>() { 2, 4, 6 };
@@ -59,7 +59,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_All_ReturnsTrueIfListIsEmpty()
         {
             var list = new List<Int32>();
@@ -69,7 +69,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_All_ReturnsFalseIfOneItemDoesNotMatchPredicate()
         {
             var list = new List<Int32>() { 1, 2, 4, 6 };
@@ -79,7 +79,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_Count_ReturnsCorrectSize()
         {
             var list = new List<Int32>() { 1, 2, 3 };
@@ -89,7 +89,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(3);
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_CountWithPredicate_ReturnsCorrectSize()
         {
             var list = new List<Int32>() { 1, 2, 3 };
@@ -99,7 +99,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_First_ReturnsFirstItemInList()
         {
             var list = new List<Int32>() { 1, 2, 3 };
@@ -109,16 +109,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ListExtensions_First_ThrowsExceptionIfListIsEmpty()
         {
             var list = new List<Int32>();
 
-            list.First();
+            Assert.That(() => list.First(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_Last_ReturnsLastItemInList()
         {
             var list = new List<Int32>() { 1, 2, 3 };
@@ -128,16 +128,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(3);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ListExtensions_Last_ThrowsExceptionIfListIsEmpty()
         {
             var list = new List<Int32>();
 
-            list.Last();
+            Assert.That(() => list.Last(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_Single_ReturnsSingleItemInList()
         {
             var list = new List<Int32>() { 4 };
@@ -147,25 +147,25 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(4);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ListExtensions_Single_ThrowsExceptionIfListIsEmpty()
         {
             var list = new List<Int32>();
 
-            list.Single();
+            Assert.That(() => list.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ListExtensions_Single_ThrowsExceptionIfListHasMultipleItems()
         {
             var list = new List<Int32>() { 1, 2 };
 
-            list.Single();
+            Assert.That(() => list.Single(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_SingleOrDefault_ReturnsSingleItemInList()
         {
             var list = new List<Int32>() { 4 };
@@ -175,7 +175,7 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(4);
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_SingleOrDefault_ReturnsDefaultValueIfListIsEmpty()
         {
             var list = new List<Int32>();
@@ -185,16 +185,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(default(Int32));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ListExtensions_SingleOrDefault_ThrowsExceptionIfListHasMultipleItems()
         {
             var list = new List<Int32>() { 1, 2 };
 
-            list.SingleOrDefault();
+            Assert.That(() => list.SingleOrDefault(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_Max_ReturnsMaxValue()
         {
             var list = new List<Int32>() { 4, 5, 6, 99, 10, 1, 12, 45 };
@@ -204,16 +204,16 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(99);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ListExtensions_Max_ThrowsExceptionIfListIsEmpty()
         {
             var list = new List<Int32>();
 
-            list.Max();
+            Assert.That(() => list.Max(),
+                Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
+        [Test]
         public void ListExtensions_Min_ReturnsMinValue()
         {
             var list = new List<Int32>() { 4, 5, 6, 99, 10, 1, 12, 45 };
@@ -223,13 +223,13 @@ namespace TwistedLogik.NucleusTests.Splinq
             TheResultingValue(result).ShouldBe(1);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ListExtensions_Min_ThrowsExceptionIfListIsEmpty()
         {
             var list = new List<Int32>();
 
-            list.Min();
+            Assert.That(() => list.Min(),
+                Throws.TypeOf<InvalidOperationException>());
         }
     }
 }

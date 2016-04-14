@@ -1,11 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Messages;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests.IO
 {
-    [TestClass]
+    [TestFixture]
     public class LocalMessageQueueTest : NucleusTestFramework
     {
         private class MockMessageSubscriber : IMessageSubscriber<Int32>
@@ -18,7 +18,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             }
         }
 
-        [TestMethod]
+        [Test]
         public void LocalMessageQueue_SubscriberReceivesMessages()
         {
             var queue = new LocalMessageQueue<Int32>();
@@ -31,7 +31,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             TheResultingValue(subscriber.ReceivedMessage).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void LocalMessageQueue_SubscriberIgnoresMessages()
         {
             var queue = new LocalMessageQueue<Int32>();
@@ -44,7 +44,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             TheResultingValue(subscriber.ReceivedMessage).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void LocalMessageQueue_UnsubscribeRemovesSubscriber()
         {
             var queue = new LocalMessageQueue<Int32>();
@@ -58,7 +58,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             TheResultingValue(subscriber.ReceivedMessage).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void LocalMessageQueue_UnsubscribeAllRemovesSubscriber()
         {
             var queue = new LocalMessageQueue<Int32>();

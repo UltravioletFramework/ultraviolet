@@ -1,14 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Nucleus.Collections.Specialized;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests.IO
 {
-    [TestClass]
+    [TestFixture]
     public partial class UnsafeObjectStreamTest : NucleusTestFramework
     {
-        [TestMethod]
+        [Test]
         public void UnsafeObjectStream_Reserve_ReservesSpaceForObject()
         {
             var stream = new UnsafeObjectStream();
@@ -51,8 +51,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void UnsafeObjectStream_Reserve_ThrowsException_WhenReservingDataBeforeEndOfStream()
         {
             var stream = new UnsafeObjectStream();
@@ -68,7 +67,8 @@ namespace TwistedLogik.Nucleus.Tests.IO
 
                     stream.SeekBeginning();
 
-                    stream.Reserve(sizeof(UnsafeObjectTypeOne));
+                    Assert.That(() => stream.Reserve(sizeof(UnsafeObjectTypeOne)),
+                        Throws.TypeOf<InvalidOperationException>());
                 }
             }
             finally
@@ -77,7 +77,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             }
         }
 
-        [TestMethod]
+        [Test]
         public void UnsafeObjectStream_ReserveMultiple_ReservesSpaceForMultipleObjects()
         {
             var stream = new UnsafeObjectStream();
@@ -120,8 +120,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void UnsafeObjectStream_ReserveMultiple_ThrowsException_WhenReservingDataBeforeEndOfStream()
         {
             var stream = new UnsafeObjectStream();
@@ -137,7 +136,8 @@ namespace TwistedLogik.Nucleus.Tests.IO
 
                     stream.SeekBeginning();
 
-                    stream.ReserveMultiple(2, 2 * sizeof(UnsafeObjectTypeOne));
+                    Assert.That(() => stream.ReserveMultiple(2, 2 * sizeof(UnsafeObjectTypeOne)),
+                        Throws.TypeOf<InvalidOperationException>());
                 }
             }
             finally
@@ -146,7 +146,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             }
         }
 
-        [TestMethod]
+        [Test]
         public void UnsafeObjectStream_ReserveInsert_ReservesSpaceForMultipleObjects()
         {
             var stream = new UnsafeObjectStream();
@@ -200,7 +200,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             }
         }
 
-        [TestMethod]
+        [Test]
         public void UnsafeObjectStream_RawSeekBeginning_SeeksToBeginningOfStream()
         {
             var stream = new UnsafeObjectStream();
@@ -230,7 +230,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             }
         }
 
-        [TestMethod]
+        [Test]
         public void UnsafeObjectStream_RawSeekEnd_SeeksToEndOfStream()
         {
             var stream = new UnsafeObjectStream();
@@ -260,7 +260,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             }
         }
 
-        [TestMethod]
+        [Test]
         public void UnsafeObjectStream_RawSeekForward_SeeksToNextObject_WhenNotAtEndOfStream()
         {
             var stream = new UnsafeObjectStream();
@@ -300,7 +300,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             }
         }
 
-        [TestMethod]
+        [Test]
         public void UnsafeObjectStream_RawSeekForward_DoesNothing_WhenAtEndOfStream()
         {
             var stream = new UnsafeObjectStream();
@@ -335,7 +335,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             }
         }
 
-        [TestMethod]
+        [Test]
         public void UnsafeObjectStream_RawSeekBackward_SeeksToPreviousObject_WhenNotAtBeginningOfStream()
         {
             var stream = new UnsafeObjectStream();
@@ -375,7 +375,7 @@ namespace TwistedLogik.Nucleus.Tests.IO
             }
         }
 
-        [TestMethod]
+        [Test]
         public void UnsafeObjectStream_RawSeekBackward_DoesNothing_WhenAtBeginningOfStream()
         {
             var stream = new UnsafeObjectStream();
