@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class RectangleDTests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void RectangleD_IsConstructedProperly()
         {
             var result = new RectangleD(123.45, 456.78, 789.99, 999.99);
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveDimensions(789.99, 999.99);
         }
 
-        [TestMethod]
+        [Test]
         public void RectangleD_OpEquality()
         {
             var rectangle1 = new RectangleD(123.45, 456.78, 789.99, 999.99);
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             Assert.AreEqual(false, rectangle1 == rectangle6);
         }
 
-        [TestMethod]
+        [Test]
         public void RectangleD_OpInequality()
         {
             var rectangle1 = new RectangleD(123.45, 456.78, 789.99, 999.99);
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             Assert.AreEqual(true, rectangle1 != rectangle6);
         }
 
-        [TestMethod]
+        [Test]
         public void RectangleD_EqualsObject()
         {
             var rectangle1 = new RectangleD(123.45, 456.78, 789.99, 999.99);
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(rectangle1.Equals("This is a test")).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void RectangleD_EqualsRectangleD()
         {
             var rectangle1 = new RectangleD(123.45, 456.78, 789.99, 999.99);
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(rectangle1.Equals(rectangle6)).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void RectangleD_TryParse_SucceedsForValidStrings()
         {
             var str    = "123.45 456.78 789.99 999.99";
@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveDimensions(789.99, 999.99);
         }
 
-        [TestMethod]
+        [Test]
         public void RectangleD_TryParse_FailsForInvalidStrings()
         {
             var result    = default(RectangleD);
@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(succeeded).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void RectangleD_Parse_SucceedsForValidStrings()
         {
             var str    = "123.45 456.78 789.99 999.99";
@@ -111,14 +111,14 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveDimensions(789.99, 999.99);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void RectangleD_Parse_FailsForInvalidStrings()
         {
-            RectangleD.Parse("foo");
+            Assert.That(() => RectangleD.Parse("foo"),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void RectangleD_Parse_CanRoundTrip()
         {
             var rect1 = RectangleD.Parse("123.4 456.7 789.1 234.5");

@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class CircleFTests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void CircleF_IsConstructedProperly()
         {
             var result = new CircleF(123.45f, 456.78f, 100.10f);
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveRadius(100.10f);
         }
 
-        [TestMethod]
+        [Test]
         public void CircleF_OpEquality()
         {
             var circle1 = new CircleF(123.45f, 456.78f, 100.10f);
@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(circle1 == circle5).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void CircleF_OpInequality()
         {
             var circle1 = new CircleF(123.45f, 456.78f, 100.10f);
@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(circle1 != circle5).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void CircleF_EqualsObject()
         {
             var circle1 = new CircleF(123.45f, 456.78f, 100.10f);
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(circle1.Equals("This is a test")).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void CircleF_EqualsCircleF()
         {
             var circle1 = new CircleF(123.45f, 456.78f, 100.10f);
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(circle1.Equals(circle4)).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void CircleF_TryParse_SucceedsForValidStrings()
         {
             var str = "123.45 456.78 100.10";
@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveRadius(100.10f);
         }
 
-        [TestMethod]
+        [Test]
         public void CircleF_TryParse_FailsForInvalidStrings()
         {
             var result    = default(CircleF);
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(succeeded).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void CircleF_Parse_SucceedsForValidStrings()
         {
             var str    = "123.45 456.78 100.10";
@@ -103,14 +103,14 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveRadius(100.10f);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void CircleF_Parse_FailsForInvalidStrings()
         {
-            CircleF.Parse("foo");
+            Assert.That(() => CircleF.Parse("foo"),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void CircleF_Parse_CanRoundTrip()
         {
             var circle1 = CircleF.Parse("123.4 456.7 100");

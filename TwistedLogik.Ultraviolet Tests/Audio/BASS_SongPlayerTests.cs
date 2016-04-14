@@ -1,15 +1,15 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Audio;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests.Audio
 {
-    [TestClass]
+    [TestFixture]
     public class BASS_SongPlayerTests : UltravioletApplicationTestFramework
     {
-        [TestMethod]
-        [TestCategory("Audio")]
+        [Test]
+        [Category("Audio")]
         public void BASS_SongPlayer_PlaySetsVolumePitchAndPan()
         {
             var songPlayer = default(SongPlayer);
@@ -31,8 +31,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
                 .RunForOneFrame();
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
+        [Test]
+        [Category("Audio")]
         public void BASS_SongPlayer_PlayResetsVolumePitchAndPanWhenNotSpecified()
         {
             var songPlayer = default(SongPlayer);
@@ -56,8 +56,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
                 .RunForOneFrame();
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
+        [Test]
+        [Category("Audio")]
         public void BASS_SongPlayer_SlidesVolumeCorrectly()
         {
             var songPlayer = default(SongPlayer);
@@ -81,8 +81,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
             TheResultingValue(songPlayer.Volume).ShouldBe(0f);
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
+        [Test]
+        [Category("Audio")]
         public void BASS_SongPlayer_SlidesPitchCorrectly()
         {
             var songPlayer = default(SongPlayer);
@@ -106,8 +106,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
             TheResultingValue(songPlayer.Pitch).ShouldBe(-1f);
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
+        [Test]
+        [Category("Audio")]
         public void BASS_SongPlayer_SlidesPanCorrectly()
         {
             var songPlayer = default(SongPlayer);
@@ -131,55 +131,64 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
             TheResultingValue(songPlayer.Pan).ShouldBe(-1f);
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
+        [Category("Audio")]
         public void BASS_SongPlayer_ThrowsExceptionIfVolumeSetWhileNotPlaying()
         {
             var songPlayer = default(SongPlayer);
 
-            GivenAnUltravioletApplicationWithNoWindow()
-                .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
-                .WithContent(content =>
-                {
-                    songPlayer = SongPlayer.Create();
-                    songPlayer.Volume = 0f;
-                })
-                .RunFor(TimeSpan.FromSeconds(1));
+            Assert.That(() =>
+            {
+                GivenAnUltravioletApplicationWithNoWindow()
+                    .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
+                    .WithContent(content =>
+                    {
+                        songPlayer = SongPlayer.Create();
+                        songPlayer.Volume = 0f;
+                    })
+                    .RunFor(TimeSpan.FromSeconds(1));
+            },
+            Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
+        [Category("Audio")]
         public void BASS_SongPlayer_ThrowsExceptionIfPitchSetWhileNotPlaying()
         {
             var songPlayer = default(SongPlayer);
 
-            GivenAnUltravioletApplicationWithNoWindow()
-                .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
-                .WithContent(content =>
-                {
-                    songPlayer = SongPlayer.Create();
-                    songPlayer.Pitch = -1f;
-                })
-                .RunFor(TimeSpan.FromSeconds(1));
+            Assert.That(() =>
+            {
+                GivenAnUltravioletApplicationWithNoWindow()
+                    .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
+                    .WithContent(content =>
+                    {
+                        songPlayer = SongPlayer.Create();
+                        songPlayer.Pitch = -1f;
+                    })
+                    .RunFor(TimeSpan.FromSeconds(1));
+            },
+            Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
+        [Category("Audio")]
         public void BASS_SongPlayer_ThrowsExceptionIfPanSetWhileNotPlaying()
         {
             var songPlayer = default(SongPlayer);
 
-            GivenAnUltravioletApplicationWithNoWindow()
-                .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
-                .WithContent(content =>
-                {
-                    songPlayer = SongPlayer.Create();
-                    songPlayer.Pan = 0f;
-                })
-                .RunFor(TimeSpan.FromSeconds(1));
+            Assert.That(() =>
+            {
+                GivenAnUltravioletApplicationWithNoWindow()
+                    .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
+                    .WithContent(content =>
+                    {
+                        songPlayer = SongPlayer.Create();
+                        songPlayer.Pan = 0f;
+                    })
+                    .RunFor(TimeSpan.FromSeconds(1));
+            },
+            Throws.TypeOf<InvalidOperationException>());
         }
     }
 }

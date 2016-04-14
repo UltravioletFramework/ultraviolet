@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ColorTests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void Color_IsConstructedProperly_FromPackedARGB()
         {
             var result = Color.FromArgb(0xFFABCDEF);
@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveArgbComponents(255, 171, 205, 239);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_IsConstructedProperly_FromSingleRGB()
         {
             var result = new Color(0.1f, 0.2f, 0.3f);
@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveArgbComponents(255, 25, 51, 76);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_IsConstructedProperly_FromSingleRGBA()
         {
             var result = new Color(0.1f, 0.2f, 0.3f, 0.4f);
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveArgbComponents(102, 25, 51, 76);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_IsConstructedProperly_FromInt32RGB()
         {
             var result = new Color(12, 34, 56);
@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveArgbComponents(255, 12, 34, 56);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_IsConstructedProperly_FromInt32RGBA()
         {
             var result = new Color(12, 34, 56, 78);
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveArgbComponents(78, 12, 34, 56);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_OpEquality()
         {
             var color1 = Color.White;
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(color1 == color3).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_OpInequality()
         {
             var color1 = Color.White;
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(color1 != color3).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_OpMultiply()
         {
             var colorOriginal = Color.Red;
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveArgbComponents(127, 127, 0, 0);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_EqualsObject()
         {
             var color1 = Color.Red;
@@ -95,7 +95,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(color1.Equals("This is a test")).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_EqualsColor()
         {
             var color1 = Color.White;
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(color1.Equals(color3)).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_ParsesHexString_AARRGGBB()
         {
             var color = Color.Parse("#12345678");
@@ -117,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(color.B).ShouldBe(0x78);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_ParsesHexString_RRGGBB()
         {
             var color = Color.Parse("#123456");
@@ -128,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(color.B).ShouldBe(0x56);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_ParsesHexString_ARGB()
         {
             var color = Color.Parse("#1234");
@@ -139,7 +139,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(color.B).ShouldBe(0x44);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_ParsesHexString_RGB()
         {
             var color = Color.Parse("#123");
@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(color.B).ShouldBe(0x33);
         }
 
-        [TestMethod]
+        [Test]
         public void Color_ParsesNamedColor()
         {
             var color1 = Color.Parse("CornflowerBlue");

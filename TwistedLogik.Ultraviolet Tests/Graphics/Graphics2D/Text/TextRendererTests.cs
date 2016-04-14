@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
@@ -8,11 +8,11 @@ using TwistedLogik.Ultraviolet.Testing.Graphics.Graphics2D.Text;
 
 namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 {
-    [TestClass]
+    [TestFixture]
     public class TextRendererTests : UltravioletApplicationTestFramework
     {
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensure that the TextRenderer class does not render text beyond the vertical extent of its layout area.")]
         public void TextRenderer_CutsOffTextThatExceedsVerticalLayoutSpace()
         {
@@ -46,8 +46,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CutsOffTextThatExceedsVerticalLayoutSpace.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the TextRenderer class renders substrings of formatted text correctly.")]
         public void TextRenderer_CorrectlyRendersSubstrings()
         {
@@ -101,8 +101,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSubstrings.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the text layout engine will not break on a non-breaking space if a breaking space is available on the line.")]
         public void TextRenderer_DoesNotBreakOnNonBreakingSpace_WhenBreakingSpaceIsAvailable()
         {
@@ -136,8 +136,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_DoesNotBreakOnNonBreakingSpace_WhenBreakingSpaceIsAvailable.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the text layout engine WILL break on a non-breaking space if a there is no breaking space available on the line.")]
         public void TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable()
         {
@@ -170,8 +170,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the text layout engine correctly splits very long words across multiple lines.")]
         public void TextRenderer_BreaksVeryLongWordsIntoMultipleLines()
         {
@@ -206,8 +206,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the text layout engine correctly splits very long words across multiple lines when hyphenation is enabled.")]
         public void TextRenderer_BreaksVeryLongWordsIntoMultipleLines_WithHyphens()
         {
@@ -242,8 +242,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines_WithHyphens.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description(
             "Ensures that the text layout engine breaks lines at the last breaking space prior to the token which exceeded the layout area, and " +
             "that drawing the result with left alignment produces the correct image.")]
@@ -296,8 +296,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithLeftAlignment.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description(
             "Ensures that the text layout engine breaks lines at the last breaking space prior to the token which exceeded the layout area, and " +
             "that drawing the result with right alignment produces the correct image.")]
@@ -350,8 +350,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithRightAlignment.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description(
             "Ensures that the text layout engine breaks lines at the last breaking space prior to the token which exceeded the layout area, and " +
             "that drawing the result with center alignment produces the correct image.")]
@@ -404,8 +404,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithCenterAlignment.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions inside of text.")]
         public void TextRenderer_GetCorrectLineAtPosition_ForPositionInsideText()
         {
@@ -456,8 +456,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionInsideText.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions outside of text.")]
         public void TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText()
         {
@@ -509,8 +509,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the GetLineAtPosition() method on TextRenderer returns the correct result for positions outside of text when the 'stretch' parameter is set to true.")]
         public void TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText_Stretch()
         {
@@ -562,8 +562,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText_Stretch.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the GetGlyphAtPosition() method on TextRenderer returns the correct result for positions inside of a glyph.")]
         public void TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph()
         {
@@ -621,8 +621,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
             TheResultingCollection(lines).ShouldBeExactly(0, 0, 1, 2, 3);
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the GetGlyphAtPosition() method on TextRenderer returns the correct result for positions outside of a glyph.")]
         public void TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph()
         {
@@ -677,8 +677,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetLineBounds().")]
         public void TextRenderer_CalculatesCorrectLineBounds()
         {
@@ -719,8 +719,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetLineBounds() when layout commands are disabled.")]
         public void TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled()
         {
@@ -761,8 +761,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetGlyphBounds().")]
         public void TextRenderer_CalculatesCorrectGlyphBounds()
         {
@@ -817,8 +817,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds.png");
         }
         
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetGlyphBounds() when layout commands are disabled.")]
         public void TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled()
         {
@@ -865,8 +865,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the TextRenderer class correctly parses and renders color tags.")]
         public void TextRenderer_CanRenderColoredStrings()
         {
@@ -895,8 +895,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderColoredStrings.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the TextRenderer class correctly parses and renders styling tags.")]
         public void TextRenderer_CanRenderStyledStrings()
         {
@@ -929,8 +929,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderStyledStrings.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the TextRenderer class correctly aligns text in accordance with the TextFlags values specified in TextLayoutSettings.")]
         public void TextRenderer_CanAlignTextWithinAnArea()
         {
@@ -987,8 +987,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanAlignTextWithinAnArea.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the TextRenderer class takes font kerning into account even when crossing the boundaries between layout tokens.")]
         public void TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries()
         {
@@ -1025,8 +1025,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct bounding box from its Draw() method.")]
         public void TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText()
         {

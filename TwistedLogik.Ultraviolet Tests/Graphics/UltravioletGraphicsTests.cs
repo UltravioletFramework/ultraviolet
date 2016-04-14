@@ -1,16 +1,16 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests.Graphics
 {
-    [TestClass]
+    [TestFixture]
     public partial class UltravioletGraphicsTests : UltravioletApplicationTestFramework
     {
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the Graphics subsystem can render a single untextured triangle.")]
         public void UltravioletGraphics_CanRenderAColoredTriangle()
         {
@@ -62,8 +62,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the Graphics subsystem can render a single textured triangle.")]
         public void UltravioletGraphics_CanRenderATexturedTriangle()
         {
@@ -120,8 +120,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the Graphics subsystem can render several triangles using hardware instancing.")]
         public void UltravioletGraphics_CanRenderInstancedTriangles()
         {
@@ -199,8 +199,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderInstancedTriangles.png");
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the Graphics subsystem correctly renders a scene when using a custom compositor.")]
         public void UltravioletGraphics_RendersFrameCorrectly_WithCustomCompositor()
         {

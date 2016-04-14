@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 
 namespace TwistedLogik.Ultraviolet.Testing.Graphics.Graphics2D.Text

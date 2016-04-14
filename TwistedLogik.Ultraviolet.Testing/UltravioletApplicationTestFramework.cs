@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
@@ -9,17 +9,12 @@ namespace TwistedLogik.Ultraviolet.Testing
     /// Represents a unit test framework which hosts an instance of the Ultraviolet Framework.
     /// This framework is intended primarily for unit tests which test rendering.
     /// </summary>
-    [DeploymentItem(@"..\..\..\Dependencies\SDL2\x86\", "x86")]
-    [DeploymentItem(@"..\..\..\Dependencies\BASS\x86\", "x86")]
-    [DeploymentItem(@"Resources\", "Resources")]
-    [DeploymentItem(@"Content\", "Content")]
-    [DeploymentItem(@"TwistedLogik.Ultraviolet.BASS.dll")]
     public abstract class UltravioletApplicationTestFramework : UltravioletTestFramework
     {
         /// <summary>
         /// Cleans up after running an Ultraviolet Application test.
         /// </summary>
-        [TestCleanup]
+        [TearDown]
         public void UltravioletApplicationTestFrameworkCleanup()
         {
             DestroyUltravioletApplication(application);

@@ -1,14 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 {
-    [TestClass]
+    [TestFixture]
     public class VersionedStringSourceTests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void VersionedStringSource_IsInvalid_WhenNoSourceIsSpecified()
         {
             var source = new VersionedStringSource();
@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingValue(source.IsSourcedFromStringBuilder).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringSource_IsValid_WhenStringSourceIsSpecified()
         {
             var data = "Hello, world!";
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingValue(source.IsSourcedFromStringBuilder).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringSource_IsValid_WhenStringBuilderSourceIsSpecified()
         {
             var data = new VersionedStringBuilder("Hello, world!");
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingValue(source.IsSourcedFromStringBuilder).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringSource_ProducesCorrectString_WhenToStringIsCalled_AndSourceIsInvalid()
         {
             var source = new VersionedStringSource();
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(source.ToString()).ShouldBe(null);
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringSource_ProducesCorrectString_WhenToStringIsCalled_AndSourceIsString()
         {
             var data = "Hello, world!";
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(source.ToString()).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringSource_ProducesCorrectString_WhenToStringIsCalled_AndSourceIsStringBuilder()
         {
             var data = new VersionedStringBuilder("Hello, world!");
@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(source.ToString()).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringSource_ExplicitlyConvertsToString_WhenSourceIsString()
         {
             var data = "Hello, world!";
@@ -75,17 +75,17 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString((String)source).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidCastException))]
+        [Test]
         public void VersionedStringSource_CannotConvertToString_WhenSourceIsNotString()
         {
             var data = new VersionedStringBuilder("Hello, world!");
             var source = new VersionedStringSource(data);
 
-            TheResultingString((String)source).ShouldBe("Hello, world!");
+            Assert.That(() => TheResultingString((String)source).ShouldBe("Hello, world!"),
+                Throws.TypeOf<InvalidCastException>());
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringSource_ExplicitlyConvertsToStringBuilder_WhenSourceIsStringBuilder()
         {
             var data = new VersionedStringBuilder("Hello, world!");
@@ -95,15 +95,18 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
                 .ShouldSatisfyTheCondition(x => x.ToString() == "Hello, world!");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidCastException))]
+        [Test]
         public void VersionedStringSource_CannotConvertToStringBuilder_WhenSourceIsNotStringBuilder()
         {
             var data = "Hello, world!";
             var source = new VersionedStringSource(data);
 
-            TheResultingObject((VersionedStringBuilder)source)
-                .ShouldSatisfyTheCondition(x => x.ToString() == "Hello, world!");
+            Assert.That(() =>
+            {
+                TheResultingObject((VersionedStringBuilder)source)
+                    .ShouldSatisfyTheCondition(x => x.ToString() == "Hello, world!");
+            },
+            Throws.TypeOf<InvalidCastException>());
         }
     }
 }

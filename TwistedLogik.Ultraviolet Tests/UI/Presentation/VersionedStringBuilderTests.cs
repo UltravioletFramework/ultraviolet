@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 {
-    [TestClass]
+    [TestFixture]
     public class VersionedStringBuilderTests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_IsInitializedToSpecifiedString()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenClearIsCalled()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe(String.Empty);
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenAppendStringIsCalled()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world! Goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsNotIncremented_WhenAppendStringIsCalled_AndValueIsNull()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenAppendStringBuilderIsCalled()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world! Goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsNotIncremented_WhenAppendStringBuilderIsCalled_AndValueIsNull()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenAppendVersionedStringBuilderIsCalled()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world! Goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsNotIncremented_WhenAppendVersionedStringBuilderIsCalled_AndValueIsNull()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenAppendVersionedStringSourceIsCalled_WithValidStringSource()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -111,7 +111,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world! Goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenAppendVersionedStringSourceIsCalled_WithValidStringBuilderSource()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -124,7 +124,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world! Goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsNotIncremented_WhenAppendVersionedStringSourceIsCalled_WithInvalidSource()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -136,7 +136,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenAppendCharIsCalled()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -148,7 +148,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world!!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenInsertStringIsCalled()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -160,7 +160,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello and goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsNotIncremented_WhenInsertStringIsCalled_AndValueIsNull()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -171,7 +171,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenInsertStringBuilderIsCalled()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -183,7 +183,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello and goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsNotIncremented_WhenInsertStringBuilderIsCalled_AndValueIsNull()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -194,7 +194,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenInsertVersionedStringBuilderIsCalled()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -206,7 +206,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello and goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsNotIncremented_WhenInsertVersionedStringBuilderIsCalled_AndValueIsNull()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -217,7 +217,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenInsertVersionedStringSourceIsCalled_WithValidStringSource()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -230,7 +230,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello and goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenInsertVersionedStringSourceIsCalled_WithValidStringBuilderSource()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -243,7 +243,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello and goodbye, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsNotIncremented_WhenInsertVersionedStringSourceIsCalled_WithInvalidSource()
         {
             var builder = new VersionedStringBuilder("Hello, world!");
@@ -255,7 +255,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingString(builder.ToString()).ShouldBe("Hello, world!");
         }
 
-        [TestMethod]
+        [Test]
         public void VersionedStringBuilder_VersionIsIncremented_WhenInsertCharIsCalled()
         {
             var builder = new VersionedStringBuilder("Hello, world!");

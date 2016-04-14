@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class Point2Tests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void Point2_IsConstructedProperly()
         {
             var result = new Point2(123, 456);
@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123, 456);
         }
 
-        [TestMethod]
+        [Test]
         public void Point2_OpEquality()
         {
             var size1 = new Point2(123, 456);
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(size1 == size4).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Point2_OpInequality()
         {
             var size1 = new Point2(123, 456);
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(size1 != size4).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Point2_EqualsObject()
         {
             var size1 = new Point2(123, 456);
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(size1.Equals("This is a test")).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Point2_EqualsPoint()
         {
             var size1 = new Point2(123, 456);
@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(size1.Equals(size4)).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Point2_TryParse_SucceedsForValidStrings()
         {
             var str    = "123 456";
@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123, 456);
         }
 
-        [TestMethod]
+        [Test]
         public void Point2_TryParse_FailsForInvalidStrings()
         {
             var result    = default(Point2);
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(succeeded).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Point2_Parse_SucceedsForValidStrings()
         {
             var str    = "123 456";
@@ -96,14 +96,14 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123, 456);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void Point2_Parse_FailsForInvalidStrings()
         {
-            Point2.Parse("foo");
+            Assert.That(() => Point2.Parse("foo"),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void Point2_Parse_CanRoundTrip()
         {
             var size1 = Point2.Parse("123 456");

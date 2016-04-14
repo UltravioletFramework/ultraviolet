@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class Size3FTests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void Size3F_IsConstructedProperly()
         {
             var result = new Size3F(123.45f, 456.78f, 789.99f);
@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123.45f, 456.78f, 789.99f);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3F_OpEquality()
         {
             var volume1 = new Size3F(123.45f, 456.78f, 789.99f);
@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(volume1 == volume5).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3F_OpInequality()
         {
             var volume1 = new Size3F(123.45f, 456.78f, 789.99f);
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(volume1 != volume5).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3F_EqualsObject()
         {
             var volume1 = new Size3F(123.45f, 456.78f, 789.99f);
@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(volume1.Equals("This is a test")).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3F_EqualsSize3F()
         {
             var volume1 = new Size3F(123.45f, 456.78f, 789.99f);
@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(volume1.Equals(volume5)).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3F_TryParse_SucceedsForValidStrings()
         {
             var str    = "123.45 456.78 789.99";
@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123.45f, 456.78f, 789.99f);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3F_TryParse_FailsForInvalidStrings()
         {
             var result    = default(Size3F);
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(succeeded).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3F_Parse_SucceedsForValidStrings()
         {
             var str    = "123.45 456.78 789.99";
@@ -102,14 +102,14 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123.45f, 456.78f, 789.99f);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void Size3F_Parse_FailsForInvalidStrings()
         {
-            Size3F.Parse("foo");
+            Assert.That(() => Size3F.Parse("foo"),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void Size3F_Parse_CanRoundTrip()
         {
             var size1 = Size3F.Parse("123.4 456.7 789.1");
@@ -118,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(size1 == size2).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3F_Volume_IsCalculatedCorrectly()
         {
             var volume1width  = 123.45f;

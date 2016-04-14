@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
@@ -7,7 +7,7 @@ using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 {
-    [TestClass]
+    [TestFixture]
     public class TextTableTests : UltravioletApplicationTestFramework
     {
         private class TextTableViewModel
@@ -25,8 +25,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
             { get; set; }
         }
 
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the TextTable class correctly renders based on the values in a view model.")]
         public void TextTable_RendersFromViewModel()
         {

@@ -1,16 +1,16 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class RadiansTest : UltravioletTestFramework
     {
         /// <summary>
         /// Tests the Radians struct' Parse functionality when given raw values in radians.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void RadiansTest_Parse_RawValue()
         {
             var result = Radians.Parse("3.14159");
@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.Tests
         /// <summary>
         /// Tests the Radians struct' Parse functionality when given values relative to pi.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void RadiansTest_Parse_FromPi()
         {
             var value1 = Radians.Parse("1 pi");
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Tests
         /// <summary>
         /// Tests the Radians struct' Parse functionality when given negative values relative to pi.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void RadiansTest_Parse_FromPi_Negative()
         {
             var value1 = Radians.Parse("-1 pi");
@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.Tests
         /// <summary>
         /// Tests the Radians struct' Parse functionality when given values relative to tau.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void RadiansTest_Parse_FromTau()
         {
             var value1 = Radians.Parse("1 tau");
@@ -96,7 +96,7 @@ namespace TwistedLogik.Ultraviolet.Tests
         /// <summary>
         /// Tests the Radians struct' Parse functionality when given negative values relative to tau.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void RadiansTest_Parse_FromTau_Negative()
         {
             var value1 = Radians.Parse("-1 tau");

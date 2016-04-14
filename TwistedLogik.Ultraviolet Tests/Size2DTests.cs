@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class Size2DTests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void Size2D_IsConstructedProperly()
         {
             var result = new Size2D(123.45, 456.78);
@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123.45, 456.78);
         }
 
-        [TestMethod]
+        [Test]
         public void Size2D_OpEquality()
         {
             var size1 = new Size2D(123.45, 456.78);
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(size1 == size4).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size2D_OpInequality()
         {
             var size1 = new Size2D(123.45, 456.78);
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(size1 != size4).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Size2D_EqualsObject()
         {
             var size1 = new Size2D(123.45, 456.78);
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(size1.Equals("This is a test")).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size2D_EqualsSize2D()
         {
             var size1 = new Size2D(123.45, 456.78);
@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(size1.Equals(size4)).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size2D_TryParse_SucceedsForValidStrings()
         {
             var str    = "123.45 456.78";
@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123.45, 456.78);
         }
 
-        [TestMethod]
+        [Test]
         public void Size2D_TryParse_FailsForInvalidStrings()
         {
             var result    = default(Size2D);
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size2D_Parse_SucceedsForValidStrings()
         {
             var str    = "123.45 456.78";
@@ -97,14 +97,14 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123.45, 456.78);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void Size2D_Parse_FailsForInvalidStrings()
         {
-            Size2D.Parse("foo");
+            Assert.That(() => Size2D.Parse("foo"),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void Size2D_Parse_CanRoundTrip()
         {
             var size1 = Size2D.Parse("123.4 456.7");
@@ -113,7 +113,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(size1 == size2).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Size2D_Area_IsCalculatedCorrectly()
         {
             var size1 = new Size2D(123.45, 456.78);

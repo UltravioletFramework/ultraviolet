@@ -1,5 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using NUnit.Framework.Api;
+using System;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
@@ -37,11 +38,11 @@ namespace TwistedLogik.Ultraviolet.Testing
         {
             if (delta.HasValue)
             {
-                Assert.AreEqual(expected, value, delta.Value);
+                Assert.That(expected, Is.EqualTo(value.Value).Within(delta.Value));
             }
             else
             {
-                Assert.AreEqual(expected, value);
+                Assert.That(expected, Is.EqualTo(value.Value));
             }
             return this;
         }

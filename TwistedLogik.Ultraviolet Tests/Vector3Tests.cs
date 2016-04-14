@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class Vector3Tests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void Vector3_ConstructorSetsValues()
         {
             var result = new Vector3(123.4f, 567.8f, 901.2f);
@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123.4f, 567.8f, 901.2f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_EqualsTestsCorrectly()
         {
             var vector1 = new Vector3(123.4f, 567.8f, 901.2f);
@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(vector1.Equals(vector3)).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_OperatorEqualsTestsCorrectly()
         {
             var vector1 = new Vector3(123.4f, 567.8f, 901.2f);
@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(vector1 == vector3).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_OperatorNotEqualsTestsCorrectly()
         {
             var vector1 = new Vector3(123.4f, 567.8f, 901.2f);
@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(vector1 != vector3).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_CalculatesLengthSquaredCorrectly()
         {
             var vectorX = 123.4f;
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe((vectorX * vectorX) + (vectorY * vectorY) + (vectorZ * vectorZ));
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_CalculatesLengthCorrectly()
         {
             var vector = new Vector3(123.4f, 567.8f, 901.2f);
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe((float)Math.Sqrt((123.4f * 123.4f) + (567.8f * 567.8f) + (901.2f * 901.2f)));
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_InterpolatesCorrectly()
         {
             var vector1 = new Vector3(25, 25, 25);
@@ -82,7 +82,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(62.5f, 37.5f, 50.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_AddsCorrectly()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -94,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(125.0f, 70.0f, 80.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_AddsCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -107,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(125.0f, 70.0f, 80.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_OperatorAddsCorrectly()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -119,7 +119,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(125.0f, 70.0f, 80.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_SubtractsCorrectly()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -131,7 +131,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(-75.0f, -30.0f, -60.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_SubtractsCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(-75.0f, -30.0f, -60.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_OperatorSubtractsCorrectly()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -156,7 +156,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(-75.0f, -30.0f, -60.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_MultipliesCorrectly()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -168,7 +168,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(2500.0f, 1000.0f, 700.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_MultipliesCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -181,7 +181,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(2500.0f, 1000.0f, 700.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_OperatorMultipliesCorrectly()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -193,7 +193,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(2500.0f, 1000.0f, 700.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_MultipliesByFactorCorrectly()
         {
             var vector = new Vector3(25, 20, 10);
@@ -204,7 +204,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(25000.0f, 20000.0f, 10000.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_MultipliesByFactorCorrectlyWithOutParam()
         {
             var vector = new Vector3(25, 20, 10);
@@ -216,7 +216,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(25000.0f, 20000.0f, 10000.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_OperatorMultipliesByFactorCorrectly()
         {
             var vector = new Vector3(25, 20, 10);
@@ -227,7 +227,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(25000.0f, 20000.0f, 10000.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_DividesCorrectly()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -239,7 +239,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(0.25f, 0.40f, 0.14f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_DividesCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -252,7 +252,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(0.25f, 0.40f, 0.14f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_OperatorDividesCorrectly()
         {
             var vector1 = new Vector3(25, 20, 10);
@@ -264,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(0.25f, 0.40f, 0.14f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_DividesByFactorCorrectly()
         {
             var vector = new Vector3(25, 20, 10);
@@ -275,7 +275,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(0.025f, 0.020f, 0.010f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_DividesByFactorCorrectlyWithOutParam()
         {
             var vector = new Vector3(25, 20, 10);
@@ -287,7 +287,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(0.025f, 0.020f, 0.010f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_OperatorDividesByFactorCorrectly()
         {
             var vector = new Vector3(25, 20, 10);
@@ -298,7 +298,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(0.025f, 0.020f, 0.010f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_CalculatesDotProductCorrectly()
         {
             var vector1 = new Vector3(123.4f, 567.8f, 901.2f);
@@ -310,7 +310,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(998293.3f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_CalculatesDotProductCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(123.4f, 567.8f, 901.2f);
@@ -323,7 +323,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(998293.3f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_ParseHandlesValidInput()
         {
             var result = Vector3.Parse("123.4 -567.8 901.2");
@@ -332,14 +332,14 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123.4f, -567.8f, 901.2f);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void Vector3_ParseRejectsInvalidInput()
         {
-            var result = Vector3.Parse("sfdjhkfsh");
+            Assert.That(() => Vector3.Parse("sfdjhkfsh"),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_TryParseHandlesValidInput()
         {
             var result    = Vector3.Zero;
@@ -350,7 +350,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123.4f, -567.8f, 901.2f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_TryParseRejectsInvalidInput()
         {
             var result    = Vector3.Zero;
@@ -359,7 +359,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(succeeded).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_ParseCanRoundTrip()
         {
             var vector1 = Vector3.Parse("123.4 456.7 789.1");
@@ -368,7 +368,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(vector1 == vector2).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_LerpCalculatesCorrectly()
         {
             var vector1 = new Vector3(25, 25, 10);
@@ -380,7 +380,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(62.5f, 37.5f, 40.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_LerpCalculatesCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(25, 25, 10);
@@ -393,7 +393,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(62.5f, 37.5f, 40.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_ClampToMin()
         {
             var source = new Vector3(1, 2, 3);
@@ -406,7 +406,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(min.X, min.Y, min.Z);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_ClampToMinWithOutParam()
         {
             var source = new Vector3(1, 2, 3);
@@ -420,7 +420,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(min.X, min.Y, min.Z);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_ClampToMax()
         {
             var source = new Vector3(1000, 2000, 3000);
@@ -433,7 +433,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(max.X, max.Y, max.Z);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_ClampToMaxWithOutParam()
         {
             var source = new Vector3(1000, 2000, 3000);
@@ -447,7 +447,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(max.X, max.Y, max.Z);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_MinCalculatedCorrectly()
         {
             var vector1 = new Vector3(1, 200, 3);
@@ -459,7 +459,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(1.0f, 2.0f, 3.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_MinCalculatedCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(1, 200, 3);
@@ -472,7 +472,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(1.0f, 2.0f, 3.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_MaxCalculatedCorrectly()
         {
             var vector1 = new Vector3(1, 200, 3);
@@ -484,7 +484,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(300.0f, 200.0f, 400.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_MaxCalculatedCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(1, 200, 3);
@@ -497,7 +497,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(300.0f, 200.0f, 400.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_NegateCalculatedCorrectly()
         {
             var vector = new Vector3(123.4f, -567.8f, 901.2f);
@@ -508,7 +508,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(-123.4f, 567.8f, -901.2f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_NegateCalculatedCorrectlyWithOutParam()
         {
             var vector = new Vector3(123.4f, -567.8f, 901.2f);
@@ -520,7 +520,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(-123.4f, 567.8f, -901.2f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_OperatorNegateCalculateCorrectly()
         {
             var vector = new Vector3(123.4f, -567.8f, 901.2f);
@@ -531,7 +531,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(-123.4f, 567.8f, -901.2f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_NormalizeCalculatedCorrectly()
         {
             var vector = new Vector3(123.4f, 567.8f, 901.2f);
@@ -543,7 +543,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(0.1150f, 0.5295f, 0.840f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_NormalizeCalculatedCorrectlyWithOutParam()
         {
             var vector = new Vector3(123.4f, 567.8f, 901.2f);
@@ -556,7 +556,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(0.1150f, 0.5295f, 0.8404f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_DistanceCalculatedCorrectly()
         {
             var vector1 = new Vector3(123.4f, 567.8f, 901.2f);
@@ -568,7 +568,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(959.335f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_DistanceCalculatedCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(123.4f, 567.8f, 901.2f);
@@ -581,7 +581,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(959.335f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_DistanceSquaredCalculatedCorrectly()
         {
             var vector1 = new Vector3(123.4f, 567.8f, 901.2f);
@@ -593,7 +593,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(920323.3f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_DistanceSquaredCalculatedCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(123.4f, 567.8f, 901.2f);
@@ -606,7 +606,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(920323.3f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_ReflectCalculatedCorrectly()
         {
             var vector = new Vector3(123.4f, 567.8f, 901.2f);
@@ -618,7 +618,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123.4f, -567.8f, 901.2f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_ReflectCalculatedCorrectlyWithOutParam()
         {
             var vector = new Vector3(123.4f, 567.8f, 901.2f);
@@ -631,7 +631,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123.4f, -567.8f, 901.2f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_BarycentricCalculatedCorrectly()
         {
             var vector1 = new Vector3(-123, -234, 100);
@@ -644,7 +644,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(272.13f, -92.19f, 219.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_BarycentricCalculatedCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(-123, -234, 100);
@@ -658,7 +658,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(272.13f, -92.19f, 219.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_CatmullRomCalculatedCorrectly()
         {
             var vector1 = new Vector3(-123, -234, 100);
@@ -672,7 +672,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(440.8f, 273.1f, 255.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_CatmullRomCalculatedCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(-123, -234, 100);
@@ -687,7 +687,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(440.8f, 273.1f, 255.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_HermiteCalculatedCorrectly()
         {
             var vector1 = new Vector3(-123, -234, 100);
@@ -701,7 +701,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(138.3f, -315.3f, 173.1f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_HermiteCalculatedCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(-123, -234, 100);
@@ -716,7 +716,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(138.3f, -315.3f, 173.1f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_SmoothStepCalculatedCorrectly()
         {
             var vector1 = new Vector3(-123, -234, 100);
@@ -728,7 +728,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(-366.6f, 658.8f, 173.1f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_SmoothStepCalculatedCorrectlyWithOutParam()
         {
             var vector1 = new Vector3(-123, -234, 100);
@@ -741,7 +741,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(-366.6f, 658.8f, 173.1f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_TransformTranslate()
         {
             var vector1   = new Vector3(123, 456, 789);
@@ -753,7 +753,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(223.0f, 656.0f, 1089.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_TransformTranslateWithOutParam()
         {
             var vector1   = new Vector3(123, 456, 789);
@@ -766,7 +766,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(223.0f, 656.0f, 1089.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_TransformRotateZ()
         {
             var vector1   = new Vector3(123, 456, 768);
@@ -777,7 +777,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(-123.0f, -456.0f, 768.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Vector3_TransformRotateZWithOutParam()
         {
             var vector1 = new Vector3(123, 456, 768);

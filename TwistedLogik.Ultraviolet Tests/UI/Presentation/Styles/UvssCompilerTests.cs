@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
 
 namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
 {
-    [TestClass]
+    [TestFixture]
     public class UvssCompilerTests : UltravioletApplicationTestFramework
     {
-        [TestMethod]
+        [Test]
         public void UvssCompiler_DefaultsToInvariantCulture()
         {
             GivenAnUltravioletApplicationInServiceMode()
@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
                 .RunForOneFrame();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssCompiler_ReadsCultureDirective()
         {
             GivenAnUltravioletApplicationInServiceMode()
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
                .RunForOneFrame();
         }
 
-        [TestMethod]
+        [Test]
         public void UvssCompiler_ReadsCultureDirective_WhenMultipleDirectivesExist()
         {
             GivenAnUltravioletApplicationInServiceMode()

@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Nucleus.Testing;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Testing;
@@ -12,14 +12,12 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
     /// <summary>
     /// Represents the base class for tests which require the Presentation Foundation.
     /// </summary>
-    [DeploymentItem(@"TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll")]
     public class PresentationFoundationTestFramework : UltravioletApplicationTestFramework
     {
         /// <summary>
         /// Performs the standard initialization process for Presentation Foundation tests.
         /// </summary>
-        /// <param name="testContext">The test context which is being initialized.</param>
-        protected static void StandardInitialization(TestContext testContext)
+        protected static void StandardInitialization()
         {
             var application = GivenAThrowawayUltravioletApplicationWithNoWindow()
                .WithPresentationFoundationConfigured()

@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class Size3Tests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void Size3_IsConstructedProperly()
         {
             var result = new Size3(123, 456, 789);
@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123, 456, 789);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3_OpEquality()
         {
             var volume1 = new Size3(123, 456, 789);
@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(volume1 == volume5).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3_OpInequality()
         {
             var volume1 = new Size3(123, 456, 789);
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(volume1 != volume5).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3_EqualsObject()
         {
             var volume1 = new Size3(123, 456, 789);
@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(volume1.Equals("This is a test")).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3_EqualsSize3()
         {
             var volume1 = new Size3(123, 456, 789);
@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(volume1.Equals(volume5)).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3_TryParse_SucceedsForValidStrings()
         {
             var str    = "123 456 789";
@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123, 456, 789);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3_TryParse_FailsForInvalidStrings()
         {
             var result    = default(Size3);
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(succeeded).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3_Parse_SucceedsForValidStrings()
         {
             var str    = "123 456 789";
@@ -102,14 +102,14 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldBe(123, 456, 789);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void Size3_Parse_FailsForInvalidStrings()
         {
-            Size3.Parse("foo");
+            Assert.That(() => Size3.Parse("foo"),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void Size3_Parse_CanRoundTrip()
         {
             var size1 = Size3.Parse("123 456 789");
@@ -118,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(size1 == size2).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Size3_TotalSize3_IsCalculatedCorrectly()
         {
             var volume1 = new Size3(123, 456, 789);

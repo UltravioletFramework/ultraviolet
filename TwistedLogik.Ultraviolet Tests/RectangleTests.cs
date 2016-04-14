@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class RectangleTests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void Rectangle_IsConstructedProperly()
         {
             var result = new Rectangle(123, 456, 789, 999);
@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveDimensions(789, 999);
         }
 
-        [TestMethod]
+        [Test]
         public void Rectangle_OpEquality()
         {
             var rectangle1 = new Rectangle(123, 456, 789, 999);
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(rectangle1 == rectangle6).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Rectangle_OpInequality()
         {
             var rectangle1 = new Rectangle(123, 456, 789, 999);
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(rectangle1 != rectangle6).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Rectangle_EqualsObject()
         {
             var rectangle1 = new Rectangle(123, 456, 789, 999);
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(rectangle1.Equals("This is a test")).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Rectangle_EqualsRectangle()
         {
             var rectangle1 = new Rectangle(123, 456, 789, 999);
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(rectangle1.Equals(rectangle6)).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Rectangle_TryParse_SucceedsForValidStrings()
         {
             var str    = "123 456 789 999";
@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveDimensions(789, 999);
         }
 
-        [TestMethod]
+        [Test]
         public void Rectangle_TryParse_FailsForInvalidStrings()
         {
             var result    = default(Rectangle);
@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(succeeded).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Rectangle_Parse_SucceedsForValidStrings()
         {
             var str    = "123 456 789 999";
@@ -111,14 +111,14 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .ShouldHaveDimensions(789, 999);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void Rectangle_Parse_FailsForInvalidStrings()
         {
-            Rectangle.Parse("foo");
+            Assert.That(() => Rectangle.Parse("foo"),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void Rectangle_Parse_CanRoundTrip()
         {
             var rect1 = Rectangle.Parse("123 456 789 234");

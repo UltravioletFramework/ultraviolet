@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D
 {
-    [TestClass]
+    [TestFixture]
     public class SpriteBatchTests : UltravioletApplicationTestFramework
     {
-        [TestMethod]
-        [TestCategory("Rendering")]
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the SpriteBatch class can render text using the DrawString() method.")]
         public void SpriteBatch_CanRenderSimpleStrings()
         {

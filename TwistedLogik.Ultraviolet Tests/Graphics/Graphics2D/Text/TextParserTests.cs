@@ -1,14 +1,14 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 {
-    [TestClass]
+    [TestFixture]
     public class TextParserTests : UltravioletApplicationTestFramework
     {
-        [TestMethod]
+        [Test]
         public void TextParser_ParseIncremental_CorrectlyHandlesAddedText()
         {
             var textParser = new TextParser();
@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
             TheResultingCollection(textParserResult.Select(x => x.Text)).ShouldBeExactly("lorem", " ", "ipsum", " ", "hello", " ", "world!!", " ", null, "dolor", null, " ", "sit", " ", "amet");
         }
 
-        [TestMethod]
+        [Test]
         public void TextParser_ParseIncremental_CorrectlyHandlesRemovedText()
         {
             var textParser = new TextParser();
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
             TheResultingCollection(textParserResult.Select(x => x.Text)).ShouldBeExactly("lorem", " ", "ipsum", " ", "amet");
         }
 
-        [TestMethod]
+        [Test]
         public void TextParser_ParseIncremental_CorrectlyHandlesReplacedText()
         {
             var textParser = new TextParser();

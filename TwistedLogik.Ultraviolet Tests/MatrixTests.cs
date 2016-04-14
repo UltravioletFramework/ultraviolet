@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MatrixTests : UltravioletTestFramework
     {
-        [TestMethod]
+        [Test]
         public void Matrix_ConstructorSetsValues()
         {
             var matrix = new Matrix(
@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_EqualsTestsCorrectly()
         {
             var matrix1 = new Matrix(
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(matrix1.Equals(matrix3)).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_OperatorEqualsTestsCorrectly()
         {
             var matrix1 = new Matrix(
@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(matrix1 == matrix3).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_OperatorNotEqualsTestsCorrectly()
         {
             var matrix1 = new Matrix(
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(matrix1 != matrix3).ShouldBe(true);
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_DeterminantCalculatedCorrectly()
         {
             var matrix = new Matrix(
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 .WithinDelta(0.1f).ShouldBe(24.0f);
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_InterpolatesCorrectly()
         {
             var matrix1 = new Matrix(
@@ -127,7 +127,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_LerpCalculatesCorrectly()
         {
             var matrix1 = new Matrix(
@@ -152,7 +152,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_LerpCalculatesCorrectlyWithOutParam()
         {
             var matrix1 = new Matrix(
@@ -178,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_ConcatsCorrectly()
         {
             var matrix1 = new Matrix(
@@ -198,7 +198,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(result).ShouldBe(matrix2 * matrix1);
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_ConcatsCorrectlyWithOutParam()
         {
             var matrix1 = new Matrix(
@@ -219,7 +219,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(result).ShouldBe(matrix2 * matrix1);
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_AddsCorrectly()
         {
             var matrix1 = new Matrix(
@@ -244,7 +244,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_AddsCorrectlyWithOutParam()
         {
             var matrix1 = new Matrix(
@@ -270,7 +270,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_OperatorAddsCorrectly()
         {
             var matrix1 = new Matrix(
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_SubtractsCorrectly()
         {
             var matrix1 = new Matrix(
@@ -320,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_SubtractsCorrectlyWithOutParam()
         {
             var matrix1 = new Matrix(
@@ -346,7 +346,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_OperatorSubtractsCorrectly()
         {
             var matrix1 = new Matrix(
@@ -371,7 +371,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_DividesCorrectly()
         {
             var matrix1 = new Matrix(
@@ -396,7 +396,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_DividesCorrectlyWithOutParam()
         {
             var matrix1 = new Matrix(
@@ -422,7 +422,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_OperatorDividesCorrectly()
         {
             var matrix1 = new Matrix(
@@ -447,7 +447,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_DividesByFactorCorrectly()
         {
             var matrix = new Matrix(
@@ -466,7 +466,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_DividesByFactorCorrectlyWithOutParam()
         {
             var matrix = new Matrix(
@@ -486,7 +486,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_OperatorDividesByFactorCorrectly()
         {
             var matrix1 = new Matrix(
@@ -505,7 +505,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_MultipliesCorrectly()
         {
             var matrix1 = new Matrix(
@@ -530,7 +530,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_MultipliesCorrectlyWithOutParam()
         {
             var matrix1 = new Matrix(
@@ -556,7 +556,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_OperatorMultipliesCorrectly()
         {
             var matrix1 = new Matrix(
@@ -581,7 +581,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_MultipliesByFactorCorrectly()
         {
             var matrix = new Matrix(
@@ -600,7 +600,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_MultipliesByFactorCorrectlyWithOutParam()
         {
             var matrix = new Matrix(
@@ -620,7 +620,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_OperatorMultipliesByFactorCorrectly()
         {
             var matrix = new Matrix(
@@ -639,7 +639,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_ParseHandlesValidInput()
         {
             var result = Matrix.Parse("11 12 13 14 21 22 23 24 31 32 33 34 41 42 43 44");
@@ -652,14 +652,14 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [Test]
         public void Matrix_ParseRejectsInvalidInput()
         {
-            var matrix = Matrix.Parse("sfdjhkfsh");
+            Assert.That(() => Matrix.Parse("sfdjhkfsh"),
+                Throws.TypeOf<FormatException>());
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_TryParseHandlesValidInput()
         {
             var result    = Matrix.Identity;
@@ -674,7 +674,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_TryParseRejectsInvalidInput()
         {
             var result    = Matrix.Identity;
@@ -683,7 +683,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(succeeded).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_NegateCalculatedCorrectly()
         {
             var matrix = new Matrix(
@@ -702,7 +702,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_NegateCalculatedCorrectlyWithOutParam()
         {
             var matrix = new Matrix(
@@ -722,7 +722,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_OperatorNegateCalculatedCorrectly()
         {
             var matrix = new Matrix(
@@ -741,7 +741,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_TransposeCalculatedCorrectly()
         {
             var matrix = new Matrix(
@@ -759,7 +759,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 14f, 24f, 34f, 44f);
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_TransposeCalculatedCorrectlyWithOutParam()
         {
             var matrix = new Matrix(
@@ -778,7 +778,7 @@ namespace TwistedLogik.Ultraviolet.Tests
                 14f, 24f, 34f, 44f);
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_InvertCalculatedCorrectly()
         {
             var matrix = new Matrix(
@@ -797,7 +797,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_InvertCalculatedCorrectlyWithOutParam()
         {
             var matrix = new Matrix(
@@ -817,7 +817,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_TryInvertCalculatedCorrectly()
         {
             var matrix = new Matrix(
@@ -838,7 +838,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_TryInvertRefCalculatedCorrectly()
         {
             var matrix = new Matrix(
@@ -859,7 +859,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_TryInvertFailsForSingularMatrix()
         {
             var matrix = new Matrix(
@@ -874,7 +874,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(succeeded).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_TryInvertRefFailsForSingularMatrix()
         {
             var matrix = new Matrix(
@@ -889,7 +889,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(succeeded).ShouldBe(false);
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateFromAxisAngleCalculatedCorrectly()
         {
             var axis  = Vector3.Normalize(new Vector3(5.1f, 3.2f, 7.4f));
@@ -905,7 +905,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateFromAxisAngleCalculatedCorrectlyWithOutParam()
         {
             var axis   = Vector3.Normalize(new Vector3(5.1f, 3.2f, 7.4f));
@@ -922,7 +922,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateLookAtCalculatedCorrectly()
         {
             var cameraPosition = new Vector3(10, 10, 10);
@@ -939,7 +939,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateLookAtCalculatedCorrectlyWithOutParam()
         {
             var cameraPosition = new Vector3(10, 10, 10);
@@ -957,7 +957,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateOrthographicCalculatedCorrectly()
         {
             var result = Matrix.CreateOrthographic(1024f, 768f, 1f, 1000f);
@@ -970,7 +970,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateOrthographicCalculatedCorrectlyWithOutParam()
         {
             var result = Matrix.Identity;
@@ -984,7 +984,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateOrthographicOffCenterCalculatedCorrectly()
         {
             var result = Matrix.CreateOrthographicOffCenter(128f, 1024f, 768f, 64f, 1f, 1000f);
@@ -997,7 +997,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateOrthographicOffCenterCalculatedCorrectlyWithOutParam()
         {
             var result = Matrix.Identity;
@@ -1011,7 +1011,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreatePerspectiveCalculatedCorrectly()
         {
             var result = Matrix.CreatePerspective(1024f, 768f, 1f, 1000f);
@@ -1024,7 +1024,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreatePerspectiveCalculatedCorrectlyWithOutParam()
         {
             var result = Matrix.Identity;
@@ -1038,7 +1038,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreatePerspectiveFieldOfViewCalculatedCorrectly()
         {
             var result = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2f, 1024f / 768f, 1f, 1000f);
@@ -1051,7 +1051,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreatePerspectiveFieldOfViewCalculatedCorrectlyWithOutParam()
         {
             var result = Matrix.Identity;
@@ -1065,7 +1065,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreatePerspectiveOffCenterCalculatedCorrectly()
         {
             var result = Matrix.CreatePerspectiveOffCenter(128f, 1024f, 768f, 64f, 1f, 1000f);
@@ -1078,7 +1078,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreatePerspectiveOffCenterCalculatedCorrectlyWithOutParam()
         {
             var result = Matrix.Identity;
@@ -1092,7 +1092,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateRotationXCalculatedCorrectly()
         {
             var result = Matrix.CreateRotationX(0.1234f);
@@ -1105,7 +1105,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateRotationXCalculatedCorrectlyWithOutParam()
         {
             var result = Matrix.Identity;
@@ -1119,7 +1119,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateRotationYCalculatedCorrectly()
         {
             var result = Matrix.CreateRotationY(0.1234f);
@@ -1132,7 +1132,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateRotationYCalculatedCorrectlyWithOutParam()
         {
             var result = Matrix.Identity;
@@ -1146,7 +1146,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateRotationZCalculatedCorrectly()
         {
             var result = Matrix.CreateRotationZ(0.1234f);
@@ -1159,7 +1159,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateRotationZCalculatedCorrectlyWithOutParam()
         {
             var result = Matrix.Identity;
@@ -1173,7 +1173,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateScaleCalculatedCorrectly()
         {
             var result = Matrix.CreateScale(111f, 222f, 333f);
@@ -1186,7 +1186,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateScaleCalculatedCorrectlyWithOutParam()
         {
             var result = Matrix.Identity;
@@ -1200,7 +1200,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateTranslationCalculatedCorrectly()
         {
             var result = Matrix.CreateTranslation(111f, 222f, 333f);
@@ -1213,7 +1213,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateTranslationCalculatedCorrectlyWithOutParam()
         {
             var result = Matrix.Identity;
@@ -1227,7 +1227,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateWorldCalculatedCorrectly()
         {
             var position = new Vector3(11, 12, 13);
@@ -1244,7 +1244,7 @@ namespace TwistedLogik.Ultraviolet.Tests
             );
         }
 
-        [TestMethod]
+        [Test]
         public void Matrix_CreateWorldCalculatedCorrectlyWithOutParam()
         {
             var position = new Vector3(11, 12, 13);

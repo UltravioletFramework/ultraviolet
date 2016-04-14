@@ -1,21 +1,21 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 
 namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
 {
-    [TestClass]
+    [TestFixture]
     public class KeyboardNavigationTests : PresentationFoundationTestFramework
     {
-        [ClassInitialize]
-        public static void Initialize(TestContext testContext)
+        [OneTimeSetUp]
+        public void SetUp()
         {
-            StandardInitialization(testContext);
+            StandardInitialization();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_TabMovesToNextElement()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_Simple(content))
@@ -33,8 +33,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_TabIsSuppressed_WhenKeyDownIsHandled()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_SuppressTab(content))
@@ -48,8 +48,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_TabNavigatesCorrectly_WhenKeyboardNavigationModeIsCycle()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_Cycle(content))
@@ -67,8 +67,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_TabNavigatesCorrectly_WhenKeyboardNavigationModeIsOnce()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_Once(content))
@@ -82,8 +82,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_TabNavigatesCorrectly_WhenKeyboardNavigationModeIsNone()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_None(content))
@@ -95,8 +95,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_TabNavigatesCorrectly_WhenKeyboardNavigationModeIsContained()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_Contained(content))
@@ -114,8 +114,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_TabNavigatesCorrectly_WithTabIndices()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_TabIndices(content))
@@ -135,8 +135,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_TabNavigatesCorrectly_WithTabIndices_AndKeyboardNavigationModeIsLocal()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_TabIndicesLocal(content))
@@ -156,8 +156,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_ShiftTabMovesToPreviousElement()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_Simple(content))
@@ -175,8 +175,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
         
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_ShiftTabIsSuppressed_WhenKeyDownIsHandled()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_SuppressTab(content))
@@ -192,8 +192,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_ShiftTabNavigatesCorrectly_WhenKeyboardNavigationModeIsCycle()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_Cycle(content))
@@ -211,8 +211,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_ShiftTabNavigatesCorrectly_WhenKeyboardNavigationModeIsOnce()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_Once(content))
@@ -226,8 +226,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_ShiftTabNavigatesCorrectly_WhenKeyboardNavigationModeIsNone()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_None(content))
@@ -239,8 +239,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_ShiftTabNavigatesCorrectly_WhenKeyboardNavigationModeIsContained()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_Contained(content))
@@ -258,8 +258,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_ShiftTabNavigatesCorrectly_WithTabIndices()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_TabIndices(content))
@@ -279,8 +279,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_KeyNav_ShiftTabNavigatesCorrectly_WithTabIndices_AndKeyboardNavigationModeIsLocal()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_KeyNav_TabIndicesLocal(content))
@@ -300,8 +300,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_DirNav_ArrowsNavigateCorrectly_WhenKeyboardNavigationModeIsContinue()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_DirNav_Continue(content))
@@ -325,8 +325,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_DirNav_ArrowsNavigateCorrectly_WhenKeyboardNavigationModeIsCycle()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_DirNav_Cycle(content))
@@ -350,8 +350,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_DirNav_ArrowsNavigateCorrectly_WhenKeyboardNavigationModeIsContained()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_DirNav_Contained(content))
@@ -374,8 +374,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .RunAllFrameActions();
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_DirNav_ArrowsNavigateCorrectly_WhenKeyboardNavigationModeIsOnce()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_DirNav_Once(content))
@@ -390,8 +390,8 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
                 .OnFrame(9, app => TheElementWithFocus<Button>(app).ShouldSatisfyTheCondition(x => x.Name == "btnL"));
         }
 
-        [TestMethod]
-        [TestCategory("UPF")]
+        [Test]
+        [Category("UPF")]
         public void UPF_DirNav_ArrowsNavigateCorrectly_WhenKeyboardNavigationModeIsNone()
         {
             GivenAPresentationFoundationTestFor(content => new UPF_DirNav_None(content))

@@ -1,15 +1,15 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using TwistedLogik.Ultraviolet.Audio;
 using TwistedLogik.Ultraviolet.Testing;
 
 namespace TwistedLogik.Ultraviolet.Tests.Audio
 {
-    [TestClass]
+    [TestFixture]
     public class BASS_SoundEffectPlayerTests : UltravioletApplicationTestFramework
     {
-        [TestMethod]
-        [TestCategory("Audio")]
+        [Test]
+        [Category("Audio")]
         public void BASS_SoundEffectPlayer_PlaySetsVolumePitchAndPan()
         {
             var sfxPlayer = default(SoundEffectPlayer);
@@ -31,8 +31,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
                 .RunForOneFrame();
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
+        [Test]
+        [Category("Audio")]
         public void BASS_SoundEffectPlayer_PlayResetsVolumePitchAndPanWhenNotSpecified()
         {
             var sfxPlayer = default(SoundEffectPlayer);
@@ -56,8 +56,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
                 .RunForOneFrame();
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
+        [Test]
+        [Category("Audio")]
         public void BASS_SoundEffectPlayer_SlidesVolumeCorrectly()
         {
             var sfxPlayer = default(SoundEffectPlayer);
@@ -81,8 +81,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
             TheResultingValue(sfxPlayer.Volume).ShouldBe(0f);
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
+        [Test]
+        [Category("Audio")]
         public void BASS_SoundEffectPlayer_SlidesPitchCorrectly()
         {
             var sfxPlayer = default(SoundEffectPlayer);
@@ -106,8 +106,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
             TheResultingValue(sfxPlayer.Pitch).ShouldBe(-1f);
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
+        [Test]
+        [Category("Audio")]
         public void BASS_SoundEffectPlayer_SlidesPanCorrectly()
         {
             var sfxPlayer = default(SoundEffectPlayer);
@@ -131,55 +131,64 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
             TheResultingValue(sfxPlayer.Pan).ShouldBe(-1f);
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
+        [Category("Audio")]
         public void BASS_SoundEffectPlayer_ThrowsExceptionIfVolumeSetWhileNotPlaying()
         {
             var sfxPlayer = default(SoundEffectPlayer);
 
-            GivenAnUltravioletApplicationWithNoWindow()
-                .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
-                .WithContent(content =>
-                {
-                    sfxPlayer = SoundEffectPlayer.Create();
-                    sfxPlayer.Volume = 0f;
-                })
-                .RunFor(TimeSpan.FromSeconds(1));
+            Assert.That(() =>
+            {
+                GivenAnUltravioletApplicationWithNoWindow()
+                    .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
+                    .WithContent(content =>
+                    {
+                        sfxPlayer = SoundEffectPlayer.Create();
+                        sfxPlayer.Volume = 0f;
+                    })
+                    .RunFor(TimeSpan.FromSeconds(1));
+            },
+            Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
+        [Category("Audio")]
         public void BASS_SoundEffectPlayer_ThrowsExceptionIfPitchSetWhileNotPlaying()
         {
             var sfxPlayer = default(SoundEffectPlayer);
 
-            GivenAnUltravioletApplicationWithNoWindow()
-                .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
-                .WithContent(content =>
-                {
-                    sfxPlayer = SoundEffectPlayer.Create();
-                    sfxPlayer.Pitch = -1f;
-                })
-                .RunFor(TimeSpan.FromSeconds(1));
+            Assert.That(() =>
+            {
+                GivenAnUltravioletApplicationWithNoWindow()
+                    .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
+                    .WithContent(content =>
+                    {
+                        sfxPlayer = SoundEffectPlayer.Create();
+                        sfxPlayer.Pitch = -1f;
+                    })
+                    .RunFor(TimeSpan.FromSeconds(1));
+            },
+            Throws.TypeOf<InvalidOperationException>());
         }
 
-        [TestMethod]
-        [TestCategory("Audio")]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
+        [Category("Audio")]
         public void BASS_SoundEffectPlayer_ThrowsExceptionIfPanSetWhileNotPlaying()
         {
             var sfxPlayer = default(SoundEffectPlayer);
 
-            GivenAnUltravioletApplicationWithNoWindow()
-                .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
-                .WithContent(content =>
-                {
-                    sfxPlayer = SoundEffectPlayer.Create();
-                    sfxPlayer.Pan = 0f;
-                })
-                .RunFor(TimeSpan.FromSeconds(1));
+            Assert.That(() =>
+            {
+                GivenAnUltravioletApplicationWithNoWindow()
+                    .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
+                    .WithContent(content =>
+                    {
+                        sfxPlayer = SoundEffectPlayer.Create();
+                        sfxPlayer.Pan = 0f;
+                    })
+                    .RunFor(TimeSpan.FromSeconds(1));
+            },
+            Throws.TypeOf<InvalidOperationException>());
         }
     }
 }

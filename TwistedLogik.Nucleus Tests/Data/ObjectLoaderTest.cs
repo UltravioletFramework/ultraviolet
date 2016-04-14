@@ -1303,7 +1303,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
-                Throws.TypeOf<FormatException>());
+                Throws.TypeOf<InvalidOperationException>());
         }
 
         [Test]

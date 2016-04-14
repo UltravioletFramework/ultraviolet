@@ -36,7 +36,7 @@ namespace TwistedLogik.Nucleus.Testing
         /// <returns>The result object.</returns>
         public LocalizedStringVariantResult ShouldBe(String expected)
         {
-            Assert.AreEqual(expected, variant);
+            Assert.AreEqual(expected, variant.Value);
             return this;
         }
 

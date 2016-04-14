@@ -55,6 +55,8 @@ namespace TwistedLogik.Nucleus.Tests.IO
         public void UnsafeObjectStream_Reserve_ThrowsException_WhenReservingDataBeforeEndOfStream()
         {
             var stream = new UnsafeObjectStream();
+
+            stream.AcquirePointers();
             try
             {
                 unsafe
@@ -124,6 +126,8 @@ namespace TwistedLogik.Nucleus.Tests.IO
         public void UnsafeObjectStream_ReserveMultiple_ThrowsException_WhenReservingDataBeforeEndOfStream()
         {
             var stream = new UnsafeObjectStream();
+
+            stream.AcquirePointers();
             try
             {
                 unsafe

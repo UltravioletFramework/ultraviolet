@@ -10,8 +10,8 @@ using TwistedLogik.Ultraviolet.OpenGL;
 using TwistedLogik.Ultraviolet.SDL2;
 using TwistedLogik.Ultraviolet.SDL2.Messages;
 using TwistedLogik.Ultraviolet.SDL2.Native;
-using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.Testing.Graphics;
+using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
