@@ -3,6 +3,8 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
@@ -39,15 +41,18 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <param name="filename">The filename of the image to match against the bitmap.</param>
         public void ShouldMatch(String filename)
         {
-            var expected = (Bitmap)Bitmap.FromFile(filename);
+            var machineName = UltravioletTestFramework.GetSanitizedMachineName();
+            Directory.CreateDirectory(machineName);
+
+            var expected = (Bitmap)Image.FromFile(filename);
 
             var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
 
             var filenameExpected = Path.ChangeExtension(filenameNoExtension + "_Expected", "png");
-            SaveBitmap(expected, filenameExpected);
+            SaveBitmap(expected, Path.Combine(machineName, filenameExpected));
 
             var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Actual", "png");
-            SaveBitmap(bitmap, filenameActual);
+            SaveBitmap(bitmap, Path.Combine(machineName, filenameActual));
 
             if (expected.Width != bitmap.Width || expected.Height != bitmap.Height)
             {
@@ -83,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.Testing
                 }
 
                 var filenameDiff = Path.ChangeExtension(filenameNoExtension + "_Diff", "png");
-                diff.Save(filenameDiff, ImageFormat.Png);
+                SaveBitmap(diff, Path.Combine(machineName, filenameDiff));
 
                 if (mismatchesFound > mismatchesRequired)
                 {

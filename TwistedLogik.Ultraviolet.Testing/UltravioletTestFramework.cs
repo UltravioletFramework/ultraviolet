@@ -1,4 +1,8 @@
-﻿using TwistedLogik.Nucleus.Testing;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
@@ -7,6 +11,23 @@ namespace TwistedLogik.Ultraviolet.Testing
     /// </summary>
     public abstract class UltravioletTestFramework : NucleusTestFramework
     {
+        /// <summary>
+        /// Gets the current machine's name, with any path-invalid characters removed.
+        /// </summary>
+        public static String GetSanitizedMachineName()
+        {
+            var invalid = Path.GetInvalidPathChars();
+            var name = new StringBuilder(Environment.MachineName);
+            for (int i = 0; i < name.Length; i++)
+            {
+                if (invalid.Contains(name[i]))
+                {
+                    name[i] = '_';
+                }
+            }
+            return name.ToString();
+        }
+
         /// <summary>
         /// Wraps the specified unit test result for evaluation.
         /// </summary>
