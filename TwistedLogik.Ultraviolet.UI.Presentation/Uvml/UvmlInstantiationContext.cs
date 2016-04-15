@@ -153,8 +153,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         // Associates expression implementations with their keys.
         private readonly Dictionary<CompiledBindingExpressionKey, PropertyInfo> compiledBindingExpressions =
             new Dictionary<CompiledBindingExpressionKey, PropertyInfo>();
-
-        private readonly Dictionary<String, PropertyInfo> compiledBindingExpressionsFoo =
-            new Dictionary<String, PropertyInfo>();
     }
 }

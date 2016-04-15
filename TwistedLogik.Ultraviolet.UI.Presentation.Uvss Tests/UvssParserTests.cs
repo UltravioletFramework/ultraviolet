@@ -155,8 +155,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 
             var emptyStatement = document.Content[0] as UvssEmptyStatementSyntax;
 
-            var trivia = emptyStatement.GetLeadingTrivia();
-
             TheResultingNode(emptyStatement)
                 .ShouldBePresent()
                 .ShouldHaveFullString("} ", includeTrivia: true);
