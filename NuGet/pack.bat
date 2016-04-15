@@ -3,7 +3,7 @@ del *.nupkg
 
 if [%1]==[] ( set UV_BUILD=0 ) else ( set UV_BUILD=%1 )
 
-set UV_VERSION_MAJOR_MINOR=1.3.7
+set UV_VERSION_MAJOR_MINOR=1.3.8
 set UV_VERSION=%UV_VERSION_MAJOR_MINOR%.%UV_BUILD%
 
 powershell -Command "(gc TwistedLogik.Gluon.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Gluon.nuspec"

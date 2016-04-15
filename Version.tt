@@ -5,7 +5,7 @@ var buildNumber = System.Environment.GetEnvironmentVariable("BAMBOO_ultraviolet_
 var buildConfig = System.Environment.GetEnvironmentVariable("BAMBOO_buildType");
 var buildBranch = System.Environment.GetEnvironmentVariable("BAMBOO_planRepository_branchName");
 var asmVersion = "1.3.0.0";
-var asmFileVersion = "1.3.7." + (String.IsNullOrEmpty(buildNumber) ? "0" : buildNumber);
+var asmFileVersion = "1.3.8." + (String.IsNullOrEmpty(buildNumber) ? "0" : buildNumber);
 var asmInfoVersion = String.IsNullOrEmpty(buildNumber) ? 
 	String.Format("{0} dev build", asmFileVersion) : 
 	String.Format("{0} {1} build{2}", asmFileVersion, buildConfig, 
