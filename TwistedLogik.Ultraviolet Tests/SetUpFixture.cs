@@ -13,9 +13,13 @@ public sealed class SetUpFixture
     {
         Environment.CurrentDirectory = TestContext.CurrentContext.WorkDirectory;
 
-        var imageDir = Path.Combine(Environment.CurrentDirectory, UltravioletTestFramework.GetSanitizedMachineName());
-        foreach (var image in Directory.GetFiles(imageDir, "*.png"))
-            File.Delete(image);
+        try
+        {
+            var imageDir = Path.Combine(Environment.CurrentDirectory, UltravioletTestFramework.GetSanitizedMachineName());
+            foreach (var image in Directory.GetFiles(imageDir, "*.png"))
+                File.Delete(image);
+        }
+        catch (DirectoryNotFoundException) { }
 
         Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
     }
