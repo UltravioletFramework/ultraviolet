@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D
                     spriteBatch.End();
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings.png");
         }
     }
 }

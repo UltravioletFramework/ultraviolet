@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRenderAColoredTriangle.png");
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRenderATexturedTriangle.png");
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_CanRenderInstancedTriangles.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRenderInstancedTriangles.png");
         }
 
         [Test]
@@ -254,7 +254,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\UltravioletGraphics_RendersFrameCorrectly_WithCustomCompositor.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_RendersFrameCorrectly_WithCustomCompositor.png");
         }
     }
 }

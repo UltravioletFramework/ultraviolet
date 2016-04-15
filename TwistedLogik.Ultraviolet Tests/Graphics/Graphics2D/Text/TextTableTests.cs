@@ -81,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result).
-                ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png");
+                ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextTable_RendersFromViewModel.png");
         }
     }
 }

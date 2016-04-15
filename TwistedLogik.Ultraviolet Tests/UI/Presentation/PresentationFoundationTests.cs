@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_ArrangesComplexScreenCorrectly(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_ArrangesComplexScreenCorrectly.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_ArrangesComplexScreenCorrectly.png");
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             var result = RunPresentationTestFor(content => new UPF_UIElement_DrawsCorrectly_WithRenderTransform(content));
 
             TheResultingImage(result).WithinThreshold(0.01f)
-                .ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithRenderTransform.png");
+                .ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_UIElement_DrawsCorrectly_WithRenderTransform.png");
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_UIElement_DrawsCorrectly_WithEffect(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithEffect.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_UIElement_DrawsCorrectly_WithEffect.png");
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_UIElement_DrawsCorrectly_WithEffectAndTransform(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_UIElement_DrawsCorrectly_WithEffectAndTransform.png");
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_UIElement_ArrangesCorrectly_WithLayoutTransform(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_UIElement_ArrangesCorrectly_WithLayoutTransform.png");
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform.png");
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Canvas_ArrangesChildrenCorrectly(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Canvas_ArrangesChildrenCorrectly.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Canvas_ArrangesChildrenCorrectly.png");
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Grid_ArrangesChildrenCorrectly(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Grid_ArrangesChildrenCorrectly.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Grid_ArrangesChildrenCorrectly.png");
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.png");
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.png");
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.png");
         }
 
         [Test]
@@ -135,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.png");
         }
 
         [Test]
@@ -145,7 +145,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_DockPanel_ArrangesChildrenCorrectly(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_DockPanel_ArrangesChildrenCorrectly.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_DockPanel_ArrangesChildrenCorrectly.png");
         }
         
         [Test]
@@ -155,7 +155,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_TabControl_ArrangesChildrenCorrectly(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_TabControl_ArrangesChildrenCorrectly.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_TabControl_ArrangesChildrenCorrectly.png");
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_ListBox_ArrangesItemsCorrectly(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_ListBox_ArrangesItemsCorrectly.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_ListBox_ArrangesItemsCorrectly.png");
         }
 
         [Test]
@@ -175,7 +175,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_ComboBox_ArrangesItemsCorrectly(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_ComboBox_ArrangesItemsCorrectly.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_ComboBox_ArrangesItemsCorrectly.png");
         }
 
         [Test]
@@ -185,7 +185,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Adorner_DrawsCorrectly(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Adorner_DrawsCorrectly.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Adorner_DrawsCorrectly.png");
         }
 
         [Test]
@@ -195,7 +195,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup.png");
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithPlacementTarget(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTarget.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Popup_LaidOutCorrectly_WithPlacementTarget.png");
         }
 
         [Test]
@@ -215,7 +215,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform.png");
         }
 
         [Test]
@@ -225,7 +225,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup.png");
         }
 
         [Test]
@@ -235,7 +235,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget.png");
         }
 
         [Test]
@@ -245,7 +245,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup.png");
         }
 
         [Test]
@@ -255,7 +255,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WithPlacementRectangle(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Popup_LaidOutCorrectly_WithPlacementRectangle.png");
         }
 
         [Test]
@@ -265,7 +265,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup.png");
         }
 
         [Test]
@@ -275,7 +275,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect.png");
         }
 
         [Test]
@@ -285,7 +285,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_VisualClone_DrawsCorrectly(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_VisualClone_DrawsCorrectly.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_VisualClone_DrawsCorrectly.png");
         }
 
         [Test]
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_VisualClone_DrawsCorrectly_WithTransformedParent(content));
 
-            TheResultingImage(result).ShouldMatch(@"Resources\Expected\UI\Presentation\UPF_VisualClone_DrawsCorrectly_WhenParentIsTransformed.png");
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_VisualClone_DrawsCorrectly_WhenParentIsTransformed.png");
         }
 
         /// <summary>

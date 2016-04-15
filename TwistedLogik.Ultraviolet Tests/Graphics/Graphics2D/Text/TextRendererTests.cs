@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CutsOffTextThatExceedsVerticalLayoutSpace.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CutsOffTextThatExceedsVerticalLayoutSpace.png");
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSubstrings.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersSubstrings.png");
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_DoesNotBreakOnNonBreakingSpace_WhenBreakingSpaceIsAvailable.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_DoesNotBreakOnNonBreakingSpace_WhenBreakingSpaceIsAvailable.png");
         }
 
         [Test]
@@ -167,7 +167,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
             TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe(content.Text.Length);
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable.png");
         }
 
         [Test]
@@ -203,7 +203,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
             TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe(content.Text.Length);
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksVeryLongWordsIntoMultipleLines.png");
         }
 
         [Test]
@@ -239,7 +239,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
             TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe(content.Text.Length);
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines_WithHyphens.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksVeryLongWordsIntoMultipleLines_WithHyphens.png");
         }
 
         [Test]
@@ -293,7 +293,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldHaveLengthInGlyphs(24);
             
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithLeftAlignment.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksAtLastBreakingSpace_WithLeftAlignment.png");
         }
 
         [Test]
@@ -347,7 +347,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldHaveLengthInGlyphs(24);
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithRightAlignment.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksAtLastBreakingSpace_WithRightAlignment.png");
         }
 
         [Test]
@@ -401,7 +401,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldHaveLengthInGlyphs(24);
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithCenterAlignment.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksAtLastBreakingSpace_WithCenterAlignment.png");
         }
 
         [Test]
@@ -453,7 +453,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionInsideText.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetCorrectLineAtPosition_ForPositionInsideText.png");
         }
 
         [Test]
@@ -506,7 +506,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText.png");
         }
 
         [Test]
@@ -559,7 +559,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText_Stretch.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText_Stretch.png");
         }
 
         [Test]
@@ -615,7 +615,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph.png");
 
             TheResultingCollection(glyphs).ShouldBeExactly(0, 4, 37, 51, 82);
             TheResultingCollection(lines).ShouldBeExactly(0, 0, 1, 2, 3);
@@ -674,7 +674,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph.png");
         }
 
         [Test]
@@ -716,7 +716,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds.png");
         }
 
         [Test]
@@ -758,7 +758,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled.png");
         }
 
         [Test]
@@ -814,7 +814,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds.png");
         }
         
         [Test]
@@ -862,7 +862,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png");
         }
 
         [Test]
@@ -892,7 +892,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderColoredStrings.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CanRenderColoredStrings.png");
         }
 
         [Test]
@@ -926,7 +926,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderStyledStrings.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CanRenderStyledStrings.png");
         }
 
         [Test]
@@ -984,7 +984,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanAlignTextWithinAnArea.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CanAlignTextWithinAnArea.png");
         }
 
         [Test]
@@ -1022,7 +1022,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries.png");
         }
 
         [Test]
@@ -1071,7 +1071,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
             
             TheResultingImage(result)
-                .ShouldMatch(@"Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png");
         }
         
         protected static LineInfoResult TheResultingValue(LineInfo obj)
