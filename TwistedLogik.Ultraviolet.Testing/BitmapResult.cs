@@ -44,10 +44,10 @@ namespace TwistedLogik.Ultraviolet.Testing
             var filenameNoExtension = Path.GetFileNameWithoutExtension(filename);
 
             var filenameExpected = Path.ChangeExtension(filenameNoExtension + "_Expected", "png");
-            expected.Save(filenameExpected);
+            SaveBitmap(expected, filenameExpected);
 
             var filenameActual = Path.ChangeExtension(filenameNoExtension + "_Actual", "png");
-            bitmap.Save(filenameActual, ImageFormat.Png);
+            SaveBitmap(bitmap, filenameActual);
 
             if (expected.Width != bitmap.Width || expected.Height != bitmap.Height)
             {
@@ -98,6 +98,19 @@ namespace TwistedLogik.Ultraviolet.Testing
         public Bitmap Bitmap
         {
             get { return bitmap; }
+        }
+
+        /// <summary>
+        /// Saves a bitmap to thhe specified file.
+        /// </summary>
+        private void SaveBitmap(Bitmap bitmap, String filename)
+        {
+            // NOTE: We first open a FileStream because it gives us potentially more
+            // useful exception information than "A generic error occurred in GDI+".
+            using (var fs = new FileStream(filename, FileMode.Create))
+            {
+                bitmap.Save(fs, ImageFormat.Png);
+            }
         }
 
         // State values.
