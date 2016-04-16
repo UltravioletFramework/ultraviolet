@@ -1,7 +1,7 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Drawing;
 using System.Reflection;
-using NUnit.Framework;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
@@ -17,8 +17,16 @@ namespace TwistedLogik.Ultraviolet.Testing
         [TearDown]
         public void UltravioletApplicationTestFrameworkCleanup()
         {
-            DestroyUltravioletApplication(application);
-            application = null;
+            try
+            {
+                DestroyUltravioletApplication(application);
+                application = null;
+            }
+            catch (AccessViolationException ex)
+            {
+                throw new Exception($"Access violation while tearing down {TestContext.CurrentContext.Test.MethodName}; " +
+                    $"test status was {TestContext.CurrentContext.Result.Outcome.Status}", ex);
+            }
         }
 
         /// <summary>
