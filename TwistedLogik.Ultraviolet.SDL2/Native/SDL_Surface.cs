@@ -92,6 +92,13 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
                     srcB = *pSrcData++;
                     srcA = *pSrcData++;
 
+                    if (source.DataFormat == SurfaceSourceDataFormat.BGRA)
+                    {
+                        var temp = srcR;
+                        srcR = srcB;
+                        srcB = temp;
+                    }
+
                     *pDstData++ = srcB;
                     *pDstData++ = srcG;
                     *pDstData++ = srcR;

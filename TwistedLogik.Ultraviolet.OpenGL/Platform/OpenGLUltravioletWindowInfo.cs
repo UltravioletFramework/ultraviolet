@@ -383,23 +383,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, configuration.MultiSampleSamples) < 0)
                 throw new SDL2Exception();
 
-            /*
-             * If we're running on Android, we need to do a few things differently.
-             *  - Android uses OpenGL ES, so we need to ask for an ES context.
-             *  - Android only supports a single window, so our master and primary are the same window.
-             */
+            // If we're running on Android, we can't create a headless context.
             var isRunningOnAndroid = (Ultraviolet.Platform == UltravioletPlatform.Android);
-            if (isRunningOnAndroid)
-            {
-                if (configuration.Headless)
-                {
-                    throw new InvalidOperationException(OpenGLStrings.CannotCreateHeadlessContextOnAndroid);
-                }
-
-                const Int32 SDL_GL_CONTEXT_PROFILE_ES = 0x0004;
-                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES) < 0)
-                    throw new SDL2Exception();
-            }
+            if (isRunningOnAndroid && configuration.Headless)
+                throw new InvalidOperationException(OpenGLStrings.CannotCreateHeadlessContextOnAndroid);
 
             // Initialize the hidden master window used to create the OpenGL context.
             var masterWidth = 0;

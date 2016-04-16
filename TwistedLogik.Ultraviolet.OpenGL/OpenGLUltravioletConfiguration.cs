@@ -43,6 +43,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <summary>
+        /// Gets or sets the minimum OpenGL ES version that is required by the application.
+        /// This cannot be lower than the minimum version required by Ultraviolet itself.
+        /// </summary>
+        public Version MinimumOpenGLESVersion
+        {
+            get { return minimumOpenGLESVersion; }
+            set { minimumOpenGLESVersion = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the minimum number of bits in the depth buffer.
         /// </summary>
         public Int32 BackBufferDepthSize
@@ -115,6 +125,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         // Property values.
         private String audioSubsystemAssembly;
         private Version minimumOpenGLVersion;
+        private Version minimumOpenGLESVersion;
         private Int32 backBufferDepthSize = 16;
         private Int32 backBufferStencilSize = 1;
         private Int32 multiSampleBuffers = 1;

@@ -22,12 +22,12 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
 
             using (var bmp = BitmapFactory.DecodeStream(stream))
             {
-                this.width  = bmp.Width;
+                this.width = bmp.Width;
                 this.height = bmp.Height;
                 this.stride = bmp.RowBytes;
 
-                this.bmpData       = new Byte[stride * height];
-                this.bmpDataHandle = GCHandle.Alloc(bmpData);
+                this.bmpData = new Byte[stride * height];
+                this.bmpDataHandle = GCHandle.Alloc(bmpData, GCHandleType.Pinned);
 
                 var pixels = bmp.LockPixels();
 
@@ -101,6 +101,9 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
                 return height;
             }
         }
+
+        /// <inheritdoc/>
+        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.BGRA;
 
         /// <summary>
         /// Releases resources associated with the object.
