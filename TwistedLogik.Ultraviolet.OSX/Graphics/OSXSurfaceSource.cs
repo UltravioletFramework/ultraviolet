@@ -95,6 +95,15 @@ namespace TwistedLogik.Ultraviolet.OSX
 			}
 		}
 
+		/// <inheritdoc/>
+		public override SurfaceSourceDataFormat DataFormat
+		{
+			get
+			{
+				return SurfaceSourceDataFormat.BGRA;
+			}
+		}
+
 		/// <summary>
 		/// Releases resources associated with the object.
 		/// </summary>
