@@ -71,5 +71,14 @@ namespace TwistedLogik.Ultraviolet.Graphics
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a <see cref="SurfaceSourceDataFormat"/> value which indicates the format
+        /// in which this surface source's data is stored.
+        /// </summary>
+        public abstract SurfaceSourceDataFormat DataFormat
+        {
+            get;
+        }
     }
 }
