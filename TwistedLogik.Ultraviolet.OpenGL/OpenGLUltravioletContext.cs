@@ -48,8 +48,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (SDL.Init(sdlFlags) != 0)
                 throw new SDL2Exception();
 
-            var versionRequired  = new Version(3, 1);
-            var versionRequested = configuration.MinimumOpenGLVersion;
+            var isGLES = (Platform == UltravioletPlatform.Android);
+
+            var versionRequired = isGLES ? new Version(2, 0) : new Version(3, 1);
+            var versionRequested = isGLES ? configuration.MinimumOpenGLESVersion : configuration.MinimumOpenGLVersion;
             if (versionRequested == null || versionRequested < versionRequired)
             {
                 versionRequested = versionRequired;
@@ -57,7 +59,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             if (!configuration.EnableServiceMode)
             {
-                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, (int)SDL_GLprofile.CORE) < 0)
+                var profile = isGLES ? SDL_GLprofile.ES : SDL_GLprofile.CORE;
+
+                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, (Int32)profile) < 0)
                     throw new SDL2Exception();
 
                 if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, versionRequested.Major) < 0)

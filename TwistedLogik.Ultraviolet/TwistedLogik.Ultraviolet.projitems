@@ -216,6 +216,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Surface2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceSaver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceSourceDataFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAddressMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlas.cs" />

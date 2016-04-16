@@ -105,6 +105,9 @@ namespace TwistedLogik.Ultraviolet.Desktop.Graphics
             }
         }
 
+        /// <inheritdoc/>
+        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.RGBA;
+
         /// <summary>
         /// Releases resources associated with the object.
         /// </summary>

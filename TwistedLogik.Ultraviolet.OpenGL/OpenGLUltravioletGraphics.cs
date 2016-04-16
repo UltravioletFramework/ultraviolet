@@ -25,13 +25,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             : base(uv)
         {
             if (configuration.Debug)
-            {
                 SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, (int)SDL_GLcontextFlag.DEBUG);
-            }
 
-            var masterptr = ((OpenGLUltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();            
+            var masterptr = ((OpenGLUltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();
             if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
-                throw new SDL2Exception();
+            {
+                if (configuration.Debug)
+                {
+                    SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, 0);
+
+                    if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
+                        throw new SDL2Exception();
+                }
+                else throw new SDL2Exception();
+            }
 
             if (SDL.GL_SetSwapInterval(0) < 0)
                 throw new SDL2Exception();
