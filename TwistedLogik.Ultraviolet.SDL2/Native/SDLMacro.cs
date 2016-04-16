@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         {
             version->major = 2;
             version->minor = 0;
-            version->patch = 3;
+            version->patch = 4;
         }
 
         public static Boolean MUSTLOCK(SDL_Surface_Native* surface)
