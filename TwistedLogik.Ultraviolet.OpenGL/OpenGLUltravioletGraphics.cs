@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 else throw new SDL2Exception();
             }
 
-            if (SDL.GL_SetSwapInterval(0) < 0)
+            if (SDL.GL_SetSwapInterval(1) < 0)
                 throw new SDL2Exception();
 
             if (gl.Initialized)
