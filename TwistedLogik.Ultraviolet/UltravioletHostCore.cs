@@ -117,6 +117,17 @@ namespace TwistedLogik.Ultraviolet
 
                     frameElapsed = frameTimer.Elapsed.TotalMilliseconds;
                 }
+                else
+                {
+                    // NOTE: The precision of Sleep() can generally be assumed to be something like 10-15ms, so 
+                    // we only call it if we know we're going to be waiting a long time and there's no point
+                    // in sucking up CPU cycles spinning our loop.
+                    var frameDelay = (int)(targetElapsedTime.TotalMilliseconds - tickTimer.Elapsed.TotalMilliseconds);
+                    if (frameDelay >= 10)
+                    {
+                        Thread.Sleep(frameDelay);
+                    }
+                }
             }
             else
             {
