@@ -1008,7 +1008,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         private readonly UInt32 id;
         private Point2? windowedPosition;
         private Size2? windowedClientSize;
-        private Boolean synchronizeWithVerticalRetrace;
+        private Boolean synchronizeWithVerticalRetrace = true;
         private readonly Boolean native;
         private Boolean grabsMouseWhenWindowed;
         private Boolean grabsMouseWhenFullscreenWindowed;
