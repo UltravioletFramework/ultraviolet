@@ -41,6 +41,16 @@ namespace TwistedLogik.Gluon
             dsaimpl.NamedFramebufferRenderbuffer(framebuffer, target, attachment, renderbuffertarget, renderbuffer);
         }
 
+        public static void NamedFramebufferDrawBuffer(uint framebuffer, uint mode)
+        {
+            dsaimpl.NamedFramebufferDrawBuffer(framebuffer, mode);
+        }
+
+        public static void NamedFramebufferDrawBuffers(uint framebuffer, int n, uint* bufs)
+        {
+            dsaimpl.NamedFramebufferDrawBuffers(framebuffer, n, bufs);
+        }
+
         public static uint CheckNamedFramebufferStatus(uint framebuffer, uint target)
         {
             return dsaimpl.CheckNamedFramebufferStatus(framebuffer, target);

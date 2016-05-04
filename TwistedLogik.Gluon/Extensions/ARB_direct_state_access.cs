@@ -24,6 +24,14 @@ namespace TwistedLogik.Gluon
         [Require(MinVersion = "4.5", Extension = "GL_ARB_direct_state_access")]
         private static readonly glNamedFramebufferRenderbufferDelegate glNamedFramebufferRenderbuffer = null;
 
+        private delegate void glNamedFramebufferDrawBufferDelegate(uint framebuffer, uint mode);
+        [Require(MinVersion = "4.5", Extension = "GL_ARB_direct_state_access")]
+        private static readonly glNamedFramebufferDrawBufferDelegate glNamedFramebufferDrawBuffer = null;
+
+        private delegate void glNamedFramebufferDrawBuffersDelegate(uint framebuffer, int size, uint* bufs);
+        [Require(MinVersion = "4.5", Extension = "GL_ARB_direct_state_access")]
+        private static readonly glNamedFramebufferDrawBuffersDelegate glNamedFramebufferDrawBuffers = null;
+
         private delegate void glTextureParameteriDelegate(uint texture, uint pname, int param);
         [Require(MinVersion = "4.5", Extension = "GL_ARB_direct_state_access")]
         private static readonly glTextureParameteriDelegate glTextureParameteri = null;

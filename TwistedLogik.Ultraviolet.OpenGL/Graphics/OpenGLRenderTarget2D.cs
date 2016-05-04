@@ -358,8 +358,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 default:
                     throw new NotSupportedException();
             }
-        }
 
+            UpdateDrawBuffers();
+        }
+        
         /// <summary>
         /// Attaches a color buffer to the render target.
         /// </summary>
@@ -525,6 +527,25 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
+        /// <summary>
+        /// Updates the set of draw buffers which are enabled for this framebuffer.
+        /// </summary>
+        private unsafe void UpdateDrawBuffers()
+        {
+            if (colorAttachments == 0)
+            {
+                gl.NamedFramebufferDrawBuffer(framebuffer, gl.GL_NONE);
+            }
+            else
+            {
+                var bufs = stackalloc uint[colorAttachments];
+                for (int i = 0; i < colorAttachments; i++)
+                    bufs[i] = (uint)(gl.GL_COLOR_ATTACHMENT0 + i);
+
+                gl.NamedFramebufferDrawBuffers(framebuffer, colorAttachments, bufs);
+            }
+        }
+        
         // Property values.
         private readonly RenderTargetUsage renderTargetUsage;
         private Int32 width;

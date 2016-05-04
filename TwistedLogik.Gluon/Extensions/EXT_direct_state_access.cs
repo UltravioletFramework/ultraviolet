@@ -24,6 +24,14 @@ namespace TwistedLogik.Gluon
         [Require(Extension = "GL_EXT_direct_state_access")]
         private static readonly glNamedFramebufferRenderbufferEXTDelegate glNamedFramebufferRenderbufferEXT = null;
 
+        private delegate void glFramebufferDrawBufferEXTDelegate(uint framebuffer, uint mode);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glFramebufferDrawBufferEXTDelegate glFramebufferDrawBufferEXT = null;
+
+        private delegate void glFramebufferDrawBuffersEXTDelegate(uint framebuffer, int n, uint* bufs);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glFramebufferDrawBuffersEXTDelegate glFramebufferDrawBuffersEXT = null;
+
         private delegate void glTextureParameteriEXTDelegate(uint texture, uint target, uint pname, int param);
         [Require(Extension = "GL_EXT_direct_state_access")]
         private static readonly glTextureParameteriEXTDelegate glTextureParameteriEXT = null;
