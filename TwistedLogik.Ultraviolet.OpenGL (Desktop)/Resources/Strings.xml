@@ -115,6 +115,11 @@
       <Variant>The uniform '{0}' is defined multiple times with different types.</Variant>
     </en-US>
   </String>
+  <String Key="EFFECT_PARAMETER_CANNOT_FIND_UNIFORM">
+    <en-US>
+      <Variant>The expected effect parameter '{0}' does not have a corresponding shader uniform. Has it been optimized out?</Variant>
+    </en-US>
+  </String>
   <String Key="IMMUTABLE_VALUE_ALREADY_SET">
     <en-US>
       <Variant>An immutable value can only be set once.</Variant>

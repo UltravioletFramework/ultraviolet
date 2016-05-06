@@ -116,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 techniques.Add(new OpenGLEffectTechnique(manager.Ultraviolet, techniqueName, passes));
             }
 
-            return new OpenGLEffectImplementation(manager.Ultraviolet, techniques);
+            return new OpenGLEffectImplementation(manager.Ultraviolet, techniques, parameters);
         }
 
         /// <inheritdoc/>
@@ -162,7 +162,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 techniques.Add(new OpenGLEffectTechnique(manager.Ultraviolet, techniqueName, techniquePasses));
             }
 
-            return new OpenGLEffectImplementation(manager.Ultraviolet, techniques);
+            return new OpenGLEffectImplementation(manager.Ultraviolet, techniques, description.Parameters);
         }
 
         /// <inheritdoc/>

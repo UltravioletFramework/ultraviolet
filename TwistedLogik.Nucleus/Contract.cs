@@ -322,6 +322,76 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
+        /// Throws an <see cref="ArgumentNullException"/> if the specified collection is null, 
+        /// or an <see cref="ArgumentException"/> if the collection is empty.
+        /// </summary>
+        /// <param name="collection">The collection to evaluate for nullity or emptiness.</param>
+        /// <param name="message">The exception message.</param>
+        public static void RequireNotEmpty(IEnumerable collection, String message)
+        {
+            if (collection == null)
+                throw new ArgumentNullException(message);
+            foreach (var item in collection)
+            {
+                return;
+            }
+            throw new ArgumentException(message);
+        }
+
+        /// <summary>
+        /// Throws an <see cref="ArgumentNullException"/> if the specified collection is null, 
+        /// or an <see cref="ArgumentException"/> if the collection is empty.
+        /// </summary>
+        /// <param name="collection">The collection to evaluate for nullity or emptiness.</param>
+        /// <param name="message">The exception message.</param>
+        public static void RequireNotEmpty(IEnumerable collection, StringResource message)
+        {
+            if (collection == null)
+                throw new ArgumentNullException(message);
+            foreach (var item in collection)
+            {
+                return;
+            }
+            throw new ArgumentException(message);
+        }
+
+        /// <summary>
+        /// Throws an <see cref="ArgumentNullException"/> if the specified collection is null, 
+        /// or an <see cref="ArgumentException"/> if the collection is empty.
+        /// </summary>
+        /// <typeparam name="T">The type of item contained by the collection.</typeparam>
+        /// <param name="collection">The collection to evaluate for nullity or emptiness.</param>
+        /// <param name="message">The exception message.</param>
+        public static void RequireNotEmpty<T>(IEnumerable<T> collection, String message)
+        {
+            if (collection == null)
+                throw new ArgumentNullException(message);
+            foreach (var item in collection)
+            {
+                return;
+            }
+            throw new ArgumentException(message);
+        }
+
+        /// <summary>
+        /// Throws an <see cref="ArgumentNullException"/> if the specified collection is null, 
+        /// or an <see cref="ArgumentException"/> if the collection is empty.
+        /// </summary>
+        /// <typeparam name="T">The type of item contained by the collection.</typeparam>
+        /// <param name="collection">The collection to evaluate for nullity or emptiness.</param>
+        /// <param name="message">The exception message.</param>
+        public static void RequireNotEmpty<T>(IEnumerable<T> collection, StringResource message)
+        {
+            if (collection == null)
+                throw new ArgumentNullException(message);
+            foreach (var item in collection)
+            {
+                return;
+            }
+            throw new ArgumentException(message);
+        }
+
+        /// <summary>
         /// Creates a new exception object with the specified message as an argument.
         /// </summary>
         /// <param name="message">The message to pass to the exception as an argument.</param>
