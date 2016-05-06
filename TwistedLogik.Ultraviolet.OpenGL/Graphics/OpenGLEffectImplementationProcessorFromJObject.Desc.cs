@@ -1,0 +1,93 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+
+namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
+{
+    partial class OpenGLEffectImplementationProcessorFromJObject
+    {
+        /// <summary>
+        /// Represents a description of an effect.
+        /// </summary>
+        private sealed class EffectDescription
+        {
+            /// <summary>
+            /// Gets the list of parameters exposed by the effect.
+            /// </summary>
+            [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "parameters")]
+            public IEnumerable<String> Parameters { get; private set; }
+
+            /// <summary>
+            /// Gets the list of techniques exposed by the effect.
+            /// </summary>
+            [JsonProperty(Required = Required.Always, NullValueHandling = NullValueHandling.Include, PropertyName = "techniques")]
+            public IEnumerable<EffectTechniqueDescription> Techniques { get; private set; }
+        }
+
+        /// <summary>
+        /// Represents a description of an effect technique.
+        /// </summary>
+        private sealed class EffectTechniqueDescription
+        {
+            /// <summary>
+            /// Gets the effect technique's name.
+            /// </summary>
+            [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "name")]
+            public String Name { get; private set; }
+
+            /// <summary>
+            /// Gets the list of passes exposed by the technique.
+            /// </summary>
+            [JsonProperty(Required = Required.Always, NullValueHandling = NullValueHandling.Include, PropertyName = "passes")]
+            public IEnumerable<EffectPassDescription> Passes { get; private set; }
+        }
+
+        /// <summary>
+        /// Represents a description of an effect pass.
+        /// </summary>
+        private sealed class EffectPassDescription
+        {
+            /// <summary>
+            /// Gets the effect pass' name.
+            /// </summary>
+            [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "name")]
+            public String Name { get; private set; }
+
+            /// <summary>
+            /// Gets the effect stages included in this pass.
+            /// </summary>
+            [JsonProperty(Required = Required.Always, NullValueHandling = NullValueHandling.Include, PropertyName = "stages")]
+            public EffectStagesDescription Stages { get; private set; }
+        }
+
+        /// <summary>
+        /// Represents the stages of an effect pass.
+        /// </summary>
+        private sealed class EffectStagesDescription
+        {
+            /// <summary>
+            /// Gets the asset path of the vertex shader relative to the effect file.
+            /// </summary>
+            [JsonProperty(Required = Required.Always, NullValueHandling = NullValueHandling.Include, PropertyName = "vert")]
+            public String VertexShader { get; private set; }
+            
+            /// <summary>
+            /// Gets the asset path of the ES vertex shader relative to the effect file.
+            /// </summary>
+            [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "gles_vert")]
+            public String VertexShaderES { get; private set; }
+
+            /// <summary>
+            /// Gets the asset path of the fragment shader relative to the effect file.
+            /// </summary>
+            [JsonProperty(Required = Required.Always, NullValueHandling = NullValueHandling.Include, PropertyName = "frag")]
+            public String FragmentShader { get; private set; }
+
+            /// <summary>
+            /// Gets the asset path of the ES fragment shader relative to the effect file.
+            /// </summary>
+            [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "gles_frag")]
+            public String FragmentShaderES { get; private set; }
+        }
+    }
+}

@@ -11,10 +11,10 @@ using TwistedLogik.Ultraviolet.Graphics;
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Loads shader effect assets.
+    /// Loads shader effect assets from XML definition files.
     /// </summary>
     [ContentProcessor]
-    public sealed class OpenGLEffectImplementationProcessor : ContentProcessor<XDocument, EffectImplementation>
+    public sealed class OpenGLEffectImplementationProcessorFromXDocument : ContentProcessor<XDocument, EffectImplementation>
     {
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
@@ -95,6 +95,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 techniques.Add(new OpenGLEffectTechnique(manager.Ultraviolet, techniqueName, passes));
             }
+
             return new OpenGLEffectImplementation(manager.Ultraviolet, techniques);
         }
 
@@ -137,14 +138,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 
                 techniques.Add(new OpenGLEffectTechnique(manager.Ultraviolet, techniqueName, techniquePasses));
             }
+
             return new OpenGLEffectImplementation(manager.Ultraviolet, techniques);
         }
 
         /// <inheritdoc/>
-        public override Boolean SupportsPreprocessing
-        {
-            get { return true; }
-        }
+        public override Boolean SupportsPreprocessing => true;
 
         /// <summary>
         /// Gets the asset path of the specified shader.
