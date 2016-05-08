@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var techniqueName = techniqueElement.AttributeValueString("Name");
                 var techniquePasses = new List<OpenGLEffectPass>();
 
-                var passElements = techniqueElements.Elements("Pass");
+                var passElements = techniqueElement.Elements("Pass");
                 if (!passElements.Any())
                     throw new ContentLoadException(OpenGLStrings.EffectTechniqueMustHavePasses);
 
