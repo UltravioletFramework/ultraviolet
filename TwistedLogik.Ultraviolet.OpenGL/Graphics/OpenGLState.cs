@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -18,6 +19,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private enum OpenGLStateType
         {
             None,
+            ActiveTexture,
             BindTexture2D,
             BindVertexArrayObject,
             BindArrayBuffer,
@@ -54,9 +56,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public static void ResetCache()
         {
             foreach (var glCachedInteger in glCachedIntegers)
-            {
                 glCachedInteger.Reset();
-            }
+
+            glTextureBinding2DByTextureUnit.Clear();
         }
 
         /// <summary>
@@ -70,6 +72,41 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             {
                 value.Verify();
             }
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which sets the active texture unit.
+        /// </summary>
+        /// <param name="texture">The texture unit to activate.</param>
+        public static OpenGLState ScopedActiveTexture(UInt32 texture)
+        {
+            var state = pool.Retrieve();
+            
+            state.stateType                = OpenGLStateType.ActiveTexture;
+            state.disposed                 = false;
+            state.newGL_ACTIVE_TEXTURE     = texture;
+
+            state.Apply();
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately sets the active texture unit and updates the state cache.
+        /// </summary>
+        /// <param name="texture">The texture unit to activate.</param>
+        public static void ActiveTexture(UInt32 texture)
+        {
+            gl.ActiveTexture(texture);
+            gl.ThrowIfError();
+
+            var tb2d = 0u;
+            glTextureBinding2DByTextureUnit.TryGetValue(texture, out tb2d);
+
+            GL_ACTIVE_TEXTURE.Update(texture);
+            GL_TEXTURE_BINDING_2D.Update(tb2d);
+
+            VerifyCache();
         }
 
         /// <summary>
@@ -95,12 +132,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Immediately binds a 2D texture to the OpenGL context and updates the state cache.
         /// </summary>
         /// <param name="texture">The texture to bind to the context.</param>
-        public static void Texture2DImmediate(UInt32 texture)
+        public static void Texture2D(UInt32 texture)
         {
             gl.BindTexture(gl.GL_TEXTURE_2D, texture);
             gl.ThrowIfError();
 
             GL_TEXTURE_BINDING_2D.Update(texture);
+            glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
+
             VerifyCache();
         }
 
@@ -410,6 +449,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
 
                     GL_TEXTURE_BINDING_2D.Update(texture);
+                    glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
+
                     VerifyCache();
                 }
             }
@@ -526,6 +567,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             if (GL_TEXTURE_BINDING_2D == texture)
             {
                 GL_TEXTURE_BINDING_2D.Update(0);
+                glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = 0;
+
                 VerifyCache();
             }
         }
@@ -555,6 +598,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             switch (stateType)
             {
                 case OpenGLStateType.None:
+                    break;
+
+                case OpenGLStateType.ActiveTexture:
+                    Apply_ActiveTexture();
                     break;
 
                 case OpenGLStateType.BindTexture2D:
@@ -592,6 +639,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             OpenGLState.VerifyCache();
         }
 
+        private void Apply_ActiveTexture()
+        {
+            gl.ActiveTexture(newGL_ACTIVE_TEXTURE);
+            gl.ThrowIfError();
+
+            var tb2d = 0u;
+            glTextureBinding2DByTextureUnit.TryGetValue(newGL_ACTIVE_TEXTURE, out tb2d);
+
+            oldGL_ACTIVE_TEXTURE = OpenGLState.GL_ACTIVE_TEXTURE.Update(newGL_ACTIVE_TEXTURE);
+            oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(tb2d);
+        }
+
         private void Apply_BindTexture2D()
         {
             if (forced || !gl.IsDirectStateAccessAvailable)
@@ -599,7 +658,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.BindTexture(gl.GL_TEXTURE_2D, newGL_TEXTURE_BINDING_2D);
                 gl.ThrowIfError();
 
-                oldGL_TEXTURE_BINDING_2D = OpenGLState.GL_TEXTURE_BINDING_2D.Update(newGL_TEXTURE_BINDING_2D);
+                oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(newGL_TEXTURE_BINDING_2D);
+
+                glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = newGL_TEXTURE_BINDING_2D;
             }
         }
 
@@ -656,7 +717,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.BindRenderbuffer(gl.GL_RENDERBUFFER, newGL_RENDERBUFFER_BINDING);
                 gl.ThrowIfError();
 
-                oldGL_RENDERBUFFER_BINDING = OpenGLState.GL_RENDERBUFFER_BINDING.Update(newGL_RENDERBUFFER_BINDING);
+                oldGL_RENDERBUFFER_BINDING = GL_RENDERBUFFER_BINDING.Update(newGL_RENDERBUFFER_BINDING);
             }
         }
 
@@ -732,7 +793,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
 
                     newGL_TEXTURE_BINDING_2D = texture;
-                    oldGL_TEXTURE_BINDING_2D = OpenGLState.GL_TEXTURE_BINDING_2D.Update(texture);
+                    oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(texture);
+                    glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
                 }
             }
         }
@@ -776,7 +838,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
 
                     newGL_RENDERBUFFER_BINDING = renderbuffer;
-                    oldGL_RENDERBUFFER_BINDING = OpenGLState.GL_RENDERBUFFER_BINDING.Update(renderbuffer);
+                    oldGL_RENDERBUFFER_BINDING = GL_RENDERBUFFER_BINDING.Update(renderbuffer);
                 }
             }
         }
@@ -792,6 +854,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             switch (stateType)
             {
                 case OpenGLStateType.None:
+                    break;
+
+                case OpenGLStateType.ActiveTexture:
+                    Dispose_ActiveTexture();
                     break;
 
                 case OpenGLStateType.BindTexture2D:
@@ -852,6 +918,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             pool.Release(this);
         }
 
+        private void Dispose_ActiveTexture()
+        {
+            gl.ActiveTexture(oldGL_ACTIVE_TEXTURE);
+            gl.ThrowIfError();
+
+            var tb2d = 0u;
+            glTextureBinding2DByTextureUnit.TryGetValue(oldGL_ACTIVE_TEXTURE, out tb2d);
+
+            OpenGLState.GL_ACTIVE_TEXTURE.Update(oldGL_ACTIVE_TEXTURE);
+            GL_TEXTURE_BINDING_2D.Update(tb2d);
+        }
+
         private void Dispose_BindTexture2D()
         {
             if (forced || !gl.IsDirectStateAccessAvailable)
@@ -859,7 +937,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.BindTexture(gl.GL_TEXTURE_2D, oldGL_TEXTURE_BINDING_2D);
                 gl.ThrowIfError();
 
-                OpenGLState.GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
+                GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
+                glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
             }
         }
 
@@ -916,7 +995,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.BindRenderbuffer(gl.GL_RENDERBUFFER, oldGL_RENDERBUFFER_BINDING);
                 gl.ThrowIfError();
 
-                OpenGLState.GL_RENDERBUFFER_BINDING.Update(oldGL_RENDERBUFFER_BINDING);
+                GL_RENDERBUFFER_BINDING.Update(oldGL_RENDERBUFFER_BINDING);
             }
         }
 
@@ -957,7 +1036,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.BindTexture(gl.GL_TEXTURE_2D, oldGL_TEXTURE_BINDING_2D);
                 gl.ThrowIfError();
 
-                OpenGLState.GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
+                GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
+                glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
             }
         }
 
@@ -979,9 +1059,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.BindRenderbuffer(gl.GL_RENDER, oldGL_RENDERBUFFER_BINDING);
                 gl.ThrowIfError();
 
-                OpenGLState.GL_RENDERBUFFER_BINDING.Update(oldGL_RENDERBUFFER_BINDING);
+                GL_RENDERBUFFER_BINDING.Update(oldGL_RENDERBUFFER_BINDING);
             }
         }
+
+        /// <summary>
+        /// Gets the cached value of GL_ACTIVE_TEXTURE.
+        /// </summary>
+        public static OpenGLStateInteger GL_ACTIVE_TEXTURE { get { return glActiveTexture; } }
 
         /// <summary>
         /// Gets the cached value of GL_TEXTURE_BINDING_2D.
@@ -1034,6 +1119,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private Boolean disposed;
         private Boolean forced;
 
+        private UInt32 newGL_ACTIVE_TEXTURE;
         private UInt32 newGL_TEXTURE_BINDING_2D;
         private UInt32 newGL_VERTEX_ARRAY_BINDING;
         private UInt32 newGL_ARRAY_BUFFER_BINDING;
@@ -1042,6 +1128,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private UInt32 newGL_RENDERBUFFER_BINDING;
         private UInt32 newGL_CURRENT_PROGRAM;
 
+        private UInt32 oldGL_ACTIVE_TEXTURE;
         private UInt32 oldGL_TEXTURE_BINDING_2D;
         private UInt32 oldGL_VERTEX_ARRAY_BINDING;
         private UInt32 oldGL_ARRAY_BUFFER_BINDING;
@@ -1049,9 +1136,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private UInt32 oldGL_FRAMEBUFFER_BINDING;
         private UInt32 oldGL_RENDERBUFFER_BINDING;
         private UInt32 oldGL_CURRENT_PROGRAM;
-
+        
         // Cached OpenGL state values.
         private static readonly OpenGLStateInteger[] glCachedIntegers;
+        private static readonly OpenGLStateInteger glActiveTexture             = new OpenGLStateInteger("GL_ACTIVE_TEXTURE", gl.GL_ACTIVE_TEXTURE);
         private static readonly OpenGLStateInteger glTextureBinding2D          = new OpenGLStateInteger("GL_TEXTURE_BINDING_2D", gl.GL_TEXTURE_BINDING_2D);
         private static readonly OpenGLStateInteger glVertexArrayBinding        = new OpenGLStateInteger("GL_VERTEX_ARRAY_BINDING", gl.GL_VERTEX_ARRAY_BINDING);
         private static readonly OpenGLStateInteger glArrayBufferBinding        = new OpenGLStateInteger("GL_ARRAY_BUFFER_BINDING", gl.GL_ARRAY_BUFFER_BINDING);
@@ -1059,6 +1147,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private static readonly OpenGLStateInteger glFramebufferBinding        = new OpenGLStateInteger("GL_FRAMEBUFFER_BINDING", gl.GL_FRAMEBUFFER_BINDING);
         private static readonly OpenGLStateInteger glRenderbufferBinding       = new OpenGLStateInteger("GL_RENDERBUFFER_BINDING", gl.GL_RENDERBUFFER_BINDING);
         private static readonly OpenGLStateInteger glCurrentProgram            = new OpenGLStateInteger("GL_CURRENT_PROGRAM", gl.GL_CURRENT_PROGRAM);
+
+        private static readonly Dictionary<UInt32, UInt32> glTextureBinding2DByTextureUnit = 
+            new Dictionary<UInt32, UInt32>();
 
         // The pool of state objects.
         private static readonly IPool<OpenGLState> pool = new ExpandingPool<OpenGLState>(1, () => new OpenGLState());

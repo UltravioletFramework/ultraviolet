@@ -118,8 +118,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            gl.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
-            gl.ThrowIfError();
+            OpenGLState.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
 
             gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, GetTextureAddressModeGL(AddressU));
             gl.ThrowIfError();
