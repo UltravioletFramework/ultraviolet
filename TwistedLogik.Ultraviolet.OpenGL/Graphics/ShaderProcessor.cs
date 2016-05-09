@@ -1,11 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using TwistedLogik.Gluon;
 using TwistedLogik.Ultraviolet.Content;
-using System.IO;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
-{
+{ 
     /// <summary>
     /// Represents the base class for shader content processors.
     /// </summary>

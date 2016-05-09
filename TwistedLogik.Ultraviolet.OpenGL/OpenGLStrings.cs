@@ -50,6 +50,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public static readonly StringResource EffectParameterCannotFindUniform      = new StringResource(StringDatabase, "EFFECT_PARAMETER_CANNOT_FIND_UNIFORM");
         public static readonly StringResource ImmutableValueAlreadySet              = new StringResource(StringDatabase, "IMMUTABLE_VALUE_ALREADY_SET");
         public static readonly StringResource InvalidEffectPass                     = new StringResource(StringDatabase, "INVALID_EFFECT_PASS");
+        public static readonly StringResource DocumentDoesNotContainEffect          = new StringResource(StringDatabase, "DOCUMENT_DOES_NOT_CONTAIN_EFFECT");
         public static readonly StringResource EffectMustHaveVertexAndFragmentShader = new StringResource(StringDatabase, "EFFECT_MUST_HAVE_VERTEX_AND_FRAGMENT_SHADER");
         public static readonly StringResource EffectMustHaveTechniques              = new StringResource(StringDatabase, "EFFECT_MUST_HAVE_TECHNIQUES");
         public static readonly StringResource EffectTechniqueMustHavePasses         = new StringResource(StringDatabase, "EFFECT_TECHNIQUE_MUST_HAVE_PASSES");

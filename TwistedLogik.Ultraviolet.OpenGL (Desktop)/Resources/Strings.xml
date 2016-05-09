@@ -130,6 +130,11 @@
       <Variant>Invalid effect pass.</Variant>
     </en-US>
   </String>
+  <String Key="DOCUMENT_DOES_NOT_CONTAIN_EFFECT">
+    <en-US>
+      <Variant>The specified document does not contain an effect definition.</Variant>
+    </en-US>
+  </String>
   <String Key="EFFECT_MUST_HAVE_VERTEX_AND_FRAGMENT_SHADER">
     <en-US>
       <Variant>An effect must have at least a vertex shader and a fragment shader.</Variant>

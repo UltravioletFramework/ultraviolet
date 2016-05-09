@@ -1,38 +1,39 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TwistedLogik.Gluon;
+using System.Xml.Linq;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Loads shader effect assets from JSON definition files.
+    /// Loads shader effect assets from version 2 XML definition files.
     /// </summary>
-    [ContentProcessor]
-    public sealed partial class OpenGLEffectImplementationProcessorFromJObject : EffectImplementationProcessor<JObject>
+    internal sealed class OpenGLEffectImplementationProcessorFromXDocumentV2 : EffectImplementationProcessor<XDocument>
     {
         /// <inheritdoc/>
-        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, JObject input, Boolean delete)
+        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
         {
-            var description = input.ToObject<EffectDescription>();
+            var desc = DeserializeDescription(input);
 
-            const Byte FileVersion = 0;
-            writer.Write(FileVersion);
+            writer.Write((Byte)255);
+            writer.Write((Byte)255);
+            writer.Write((Byte)255);
+            writer.Write((Byte)2);
 
-            writer.Write(description.Parameters?.Count() ?? 0);
-            foreach (var parameter in description.Parameters)
+            writer.Write(desc.Parameters.Count());
+
+            foreach (var parameter in desc.Parameters)
                 writer.Write(parameter);
 
-            if (!description.Techniques?.Any() ?? false)
+            if (!desc.Techniques?.Any() ?? false)
                 throw new ContentLoadException(OpenGLStrings.EffectMustHaveTechniques);
 
-            writer.Write(description.Techniques.Count());
+            writer.Write(desc.Techniques.Count());
 
-            foreach (var technique in description.Techniques)
+            foreach (var technique in desc.Techniques)
             {
                 writer.Write(technique.Name);
 
@@ -49,13 +50,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
                     writer.Write(pass.Stages.VertexShader);
-                    writer.Write(pass.Stages.VertexShaderES ?? String.Empty);
+                    writer.Write(pass.Stages.VertexShaderES);
 
                     if (String.IsNullOrEmpty(pass.Stages.FragmentShader))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
                     writer.Write(pass.Stages.FragmentShader);
-                    writer.Write(pass.Stages.FragmentShaderES ?? String.Empty);
+                    writer.Write(pass.Stages.FragmentShaderES);
                 }
             }
         }
@@ -63,8 +64,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override EffectImplementation ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
-            var version = reader.ReadByte();
-
             var parameters = new List<String>();
             var parameterCount = reader.ReadInt32();
             for (int i = 0; i < parameterCount; i++)
@@ -95,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     if (String.IsNullOrEmpty(vertPath))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
-                    vertPath = ResolveDependencyAssetPath(metadata, vertPath);
+                    var vert = manager.Load<OpenGLVertexShader>(vertPath);
 
                     var fragPathGL = reader.ReadString();
                     var fragPathES = reader.ReadString();
@@ -104,12 +103,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     if (String.IsNullOrEmpty(fragPath))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
-                    fragPath = ResolveDependencyAssetPath(metadata, fragPath);
+                    var frag = manager.Load<OpenGLFragmentShader>(fragPath);
 
-                    var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
-                    var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
-
-                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, true) };
+                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vert, frag, true) };
                     passes.Add(new OpenGLEffectPass(manager.Ultraviolet, passName, programs));
                 }
 
@@ -120,15 +116,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override EffectImplementation Process(ContentManager manager, IContentProcessorMetadata metadata, JObject input)
+        public override EffectImplementation Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
         {
-            var description = input.ToObject<EffectDescription>();
+            var desc = DeserializeDescription(input);
 
             var techniques = new List<OpenGLEffectTechnique>();
-            if (!description.Techniques?.Any() ?? false)
+            if (!desc.Techniques?.Any() ?? false)
                 throw new ContentLoadException(OpenGLStrings.EffectMustHaveTechniques);
 
-            foreach (var technique in description.Techniques)
+            foreach (var technique in desc.Techniques)
             {
                 var techniqueName = technique.Name;
                 var techniquePasses = new List<OpenGLEffectPass>();
@@ -162,10 +158,66 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 techniques.Add(new OpenGLEffectTechnique(manager.Ultraviolet, techniqueName, techniquePasses));
             }
 
-            return new OpenGLEffectImplementation(manager.Ultraviolet, techniques, description.Parameters);
+            return new OpenGLEffectImplementation(manager.Ultraviolet, techniques, desc.Parameters);
         }
 
         /// <inheritdoc/>
-        public override Boolean SupportsPreprocessing => true;        
+        public override Boolean SupportsPreprocessing => true;
+
+        /// <summary>
+        /// Creates a new <see cref="EffectDescription"/> object from the specified XML document.
+        /// </summary>
+        private static EffectDescription DeserializeDescription(XDocument xml)
+        {
+            var rootXml = xml.Element("Effect");
+            if (rootXml == null)
+                throw new ContentLoadException(OpenGLStrings.DocumentDoesNotContainEffect);
+
+            var effect = new EffectDescription();
+
+            var parametersXml = rootXml.Element("Parameters")?.Elements("Parameter");
+            var parameters = parametersXml?.Select(x => x.Value).ToList() ?? Enumerable.Empty<String>();
+
+            var techniquesXml = rootXml.Element("Techniques")?.Elements("Technique");
+            if (!techniquesXml?.Any() ?? false)
+                throw new ContentLoadException(OpenGLStrings.EffectMustHaveTechniques);
+
+            var techniques = new List<EffectTechniqueDescription>();
+
+            foreach (var techniqueXml in techniquesXml)
+            {
+                var technique = new EffectTechniqueDescription();
+                var passes = new List<EffectPassDescription>();
+
+                var passesXml = techniqueXml.Element("Passes")?.Elements("Pass");
+                if (!passesXml?.Any() ?? false)
+                    throw new ContentLoadException(OpenGLStrings.EffectTechniqueMustHavePasses);
+
+                foreach (var passXml in passesXml)
+                {
+                    var pass = new EffectPassDescription();
+                    pass.Name = passXml.Attribute("Name")?.Value;
+                    pass.Stages = new EffectStagesDescription();
+
+                    var stagesXml = passXml.Element("Stages");
+                    pass.Stages.VertexShader = stagesXml.Element("Vert")?.Value;
+                    pass.Stages.VertexShaderES = stagesXml.Element("VertES")?.Value;
+                    pass.Stages.FragmentShader = stagesXml.Element("Frag")?.Value;
+                    pass.Stages.FragmentShaderES = stagesXml.Element("FragES")?.Value;
+
+                    passes.Add(pass);
+                }
+
+                technique.Name = techniqueXml.Attribute("Name").Value;
+                technique.Passes = passes;
+
+                techniques.Add(technique);
+            }
+
+            effect.Parameters = parameters;
+            effect.Techniques = techniques;
+
+            return effect;
+        }      
     }
 }

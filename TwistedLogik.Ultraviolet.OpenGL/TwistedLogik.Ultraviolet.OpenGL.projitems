@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)GlobalSuppressions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectImplementationProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteBatchEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontProcessor.cs" />
@@ -21,8 +23,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBlurEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLDepthStencilState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementation.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromJObject.Desc.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromXDocument.cs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromXDocumentV2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromXDocumentV1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectParameterCollection.cs" />
