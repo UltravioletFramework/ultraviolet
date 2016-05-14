@@ -226,6 +226,18 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract void SetValue(Color value);
 
         /// <summary>
+        /// Gets the parameter's value as an array of <see cref="Color"/>.
+        /// </summary>
+        /// <returns>The parameter's value.</returns>
+        public abstract Color[] GetValueColorArray();
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public abstract void SetValue(Color[] value);
+
+        /// <summary>
         /// Gets the parameter's value as a <see cref="Matrix"/>.
         /// </summary>
         /// <returns>The parameter's value.</returns>
@@ -236,6 +248,18 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// </summary>
         /// <param name="value">The value to set.</param>
         public abstract void SetValue(Matrix value);
+        
+        /// <summary>
+        /// Gets the parameter's value as an array of <see cref="Matrix"/>.
+        /// </summary>
+        /// <returns>The parameter's value.</returns>
+        public abstract Matrix[] GetValueMatrixArray();
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public abstract void SetValue(Matrix[] value);
 
         /// <summary>
         /// Gets the parameter's value as a <see cref="Texture2D"/>.

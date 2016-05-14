@@ -109,6 +109,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     SetValue(source.GetColor());
                     break;
 
+                case OpenGLEffectParameterDataType.ColorArray:
+                    SetValue(source.GetColorArray());
+                    break;
+
                 case OpenGLEffectParameterDataType.Matrix:
                     SetValue(source.GetMatrix());
                     break;
@@ -386,10 +390,74 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Sets the parameter's value.
         /// </summary>
         /// <param name="value">The value to set.</param>
+        public void SetValue(Color[] value)
+        {
+            if (value == null)
+            {
+                if (type == gl.GL_FLOAT_VEC3)
+                {
+                    gl.Uniform3fv(location, 0, null);
+                    gl.ThrowIfError();
+                }
+                else
+                {
+                    gl.Uniform4fv(location, 0, null);
+                    gl.ThrowIfError();
+                }
+            }
+            else
+            {
+                if (type == gl.GL_FLOAT_VEC3)
+                {
+                    var normalized = stackalloc float[3 * value.Length];
+                    for (int i = 0; i < value.Length; i++)
+                    {
+                        normalized[(i * 3) + 0] = value[i].R / (float)Byte.MaxValue;
+                        normalized[(i * 3) + 1] = value[i].G / (float)Byte.MaxValue;
+                        normalized[(i * 3) + 2] = value[i].B / (float)Byte.MaxValue;
+                    }
+
+                    gl.Uniform3fv(location, value.Length, normalized);
+                    gl.ThrowIfError();
+                }
+                else
+                {
+                    var normalized = stackalloc float[4 * value.Length];
+                    for (int i = 0; i < value.Length; i++)
+                    {
+                        normalized[(i * 4) + 0] = value[i].R / (float)Byte.MaxValue;
+                        normalized[(i * 4) + 1] = value[i].G / (float)Byte.MaxValue;
+                        normalized[(i * 4) + 2] = value[i].B / (float)Byte.MaxValue;
+                        normalized[(i * 4) + 3] = value[i].A / (float)Byte.MaxValue;
+                    }
+
+                    gl.Uniform4fv(location, value.Length, normalized);
+                    gl.ThrowIfError();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
         public void SetValue(Matrix value)
         {
             gl.UniformMatrix4fv(location, 1, false, (float*)&value);
             gl.ThrowIfError();
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetValue(Matrix[] value)
+        {
+            fixed (Matrix* pValue = value)
+            {
+                gl.UniformMatrix4fv(location, value.Length, false, (float*)pValue);
+                gl.ThrowIfError();
+            }
         }
 
         /// <summary>
