@@ -285,8 +285,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 if (this.textures[sampler] != null)
                     ((IBindableResource)this.textures[sampler]).BindRead();
 
-                if (samplerState != null)
-                    samplerState.Apply(sampler);
+                for (int i = 0; i < samplerStates.Length; i++)
+                {
+                    if (this.textures[i] == texture)
+                        samplerState.Apply(sampler);
+                }
             }
         }
 
@@ -407,10 +410,28 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             Ultraviolet.ValidateResource(state);
 
+            var oglstate = (OpenGLSamplerState)state;
+
             if (this.samplerStates[sampler] != state)
             {
-                ((OpenGLSamplerState)state).Apply(sampler);
+                oglstate.Apply(sampler);
                 this.samplerStates[sampler] = state;
+
+                var texture = this.textures[sampler];
+                if (texture != null)
+                {
+                    for (int i = 0; i < samplerStates.Length; i++)
+                    {
+                        if (i == sampler)
+                            continue;
+
+                        if (this.textures[i] == texture && this.samplerStates[i] != oglstate)
+                        {
+                            oglstate.Apply(sampler);
+                            this.samplerStates[sampler] = state;
+                        }
+                    }
+                }
             }
         }
 
