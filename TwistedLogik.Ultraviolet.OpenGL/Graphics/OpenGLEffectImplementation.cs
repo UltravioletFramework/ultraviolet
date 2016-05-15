@@ -114,8 +114,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 from pass in tech.Passes
                 from prog in ((OpenGLEffectPass)pass).Programs
                 from unif in prog.Uniforms
-                where parameters == null || parameters.Contains(unif.Name)
-                group unif by unif.Name into g
+                let name = unif.Name
+                let nameSanitized = name.EndsWith("[0]") ? name.Substring(0, name.Length - "[0]".Length) : name
+                where parameters == null || parameters.Contains(nameSanitized)
+                group unif by nameSanitized into g
                 select g;
 
             var mismatches = uniforms.Where(x => x.Select(y => y.Type).Distinct().Count() > 1);
