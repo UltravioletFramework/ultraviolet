@@ -95,9 +95,14 @@
       <Variant>The size of the specified render buffer does not match the size of this render target.</Variant>
     </en-US>
   </String>
-  <String Key="RESOURCE_ALREADY_BOUND">
+  <String Key="RESOURCE_CANNOT_BE_READ_WHILE_WRITING">
     <en-US>
-      <Variant>The resource is already bound to the device.</Variant>
+      <Variant>The resource cannot be read because it is currently bound for writing.</Variant>
+    </en-US>
+  </String>
+  <String Key="RESOURCE_CANNOT_BE_WRITTEN_WHILE_READING">
+    <en-US>
+      <Variant>The resource cannot be written because it is currently bound for reading.</Variant>
     </en-US>
   </String>
   <String Key="RESOURCE_NOT_BOUND">

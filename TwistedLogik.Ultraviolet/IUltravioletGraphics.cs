@@ -62,6 +62,24 @@ namespace TwistedLogik.Ultraviolet
         Viewport GetViewport();
 
         /// <summary>
+        /// Unbinds the specified texture from the graphics device.
+        /// </summary>
+        /// <param name="texture">The texture to unbind.</param>
+        void UnbindTexture(Texture2D texture);
+
+        /// <summary>
+        /// Unbinds any textures which satisfy the specified predicate from the graphics device.
+        /// </summary>
+        /// <param name="state">A state object to pass to the predicat.e</param>
+        /// <param name="predicate">A predicate which indicates which textures should be unbound.</param>
+        void UnbindTextures(Object state, Func<Texture2D, Object, Boolean> predicate);
+
+        /// <summary>
+        /// Unbinds all textures from the graphics device.
+        /// </summary>
+        void UnbindAllTextures();
+
+        /// <summary>
         /// Binds a texture to the specified sampler.
         /// </summary>
         /// <param name="sampler">The sampler index.</param>

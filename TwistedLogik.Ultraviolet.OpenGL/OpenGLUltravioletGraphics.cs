@@ -221,6 +221,41 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
+        public void UnbindTexture(Texture2D texture)
+        {
+            Contract.Require(texture, nameof(texture));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            for (int i = 0; i < textures.Length; i++)
+            {
+                if (textures[i] == texture)
+                    SetTexture(i, null);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void UnbindTextures(Object state, Func<Texture2D, Object, Boolean> predicate)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(predicate, nameof(predicate));
+
+            for (int i = 0; i < textures.Length; i++)
+            {
+                if (predicate(textures[i], state))
+                    SetTexture(i, null);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void UnbindAllTextures()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            for (int i = 0; i < textures.Length; i++)
+                SetTexture(i, null);
+        }
+
+        /// <inheritdoc/>
         public void SetTexture(Int32 sampler, Texture2D texture)
         {
             Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, "sampler");
@@ -237,9 +272,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (this.textures[sampler] != texture)
             {
                 var textureName = (texture == null) ? 0 : ((IOpenGLResource)texture).OpenGLName;
-
                 OpenGLState.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
                 OpenGLState.Texture2D(textureName);
+
+                var samplerState = (OpenGLSamplerState)(GetSamplerState(sampler) ?? SamplerState.LinearClamp);
 
                 if (this.textures[sampler] != null)
                     ((IBindableResource)this.textures[sampler]).UnbindRead();
@@ -249,11 +285,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 if (this.textures[sampler] != null)
                     ((IBindableResource)this.textures[sampler]).BindRead();
 
-                var samplerState = (OpenGLSamplerState)(GetSamplerState(sampler) ?? SamplerState.LinearClamp);
                 if (samplerState != null)
-                {
                     samplerState.Apply(sampler);
-                }
             }
         }
 
@@ -548,24 +581,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// Occurs when the subsystem is updating its state.
         /// </summary>
         public event UltravioletSubsystemUpdateEventHandler Updating;
-
-        /// <summary>
-        /// Releases any references to the specified texture.
-        /// </summary>
-        /// <param name="texture">The texture to which to release references.</param>
-        internal void ReleaseReferences(Texture2D texture)
-        {
-            Contract.Require(texture, "texture");
-
-            for (int i = 0; i < textures.Length; i++)
-            {
-                if (textures[i] == texture)
-                {
-                    SetTexture(i, null);
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Gets the OpenGL context.
         /// </summary>

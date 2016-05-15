@@ -135,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public void BindRead()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(boundRead, OpenGLStrings.ResourceAlreadyBound);
+            Contract.EnsureNot(boundWrite, OpenGLStrings.ResourceCannotBeReadWhileWriting);
 
             boundRead = true;
         }
@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public void BindWrite()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(boundWrite, OpenGLStrings.ResourceAlreadyBound);
+            Contract.EnsureNot(boundRead, OpenGLStrings.ResourceCannotBeWrittenWhileReading);
 
             boundWrite = true;
         }
@@ -307,7 +307,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             if (disposing)
             {
                 if (!Ultraviolet.Disposed)
-                    ((OpenGLUltravioletGraphics)Ultraviolet.GetGraphics()).ReleaseReferences(this);
+                    ((OpenGLUltravioletGraphics)Ultraviolet.GetGraphics()).UnbindTexture(this);
 
                 if (willNotBeSampled)
                 {
