@@ -19,11 +19,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.GetIntegerv(gl.GL_MAX_VIEWPORT_DIMS, viewportDims);
             gl.ThrowIfError();
 
-            this.maximumViewportWidth  = viewportDims[0];
+            this.maximumViewportWidth = viewportDims[0];
             this.maximumViewportHeight = viewportDims[1];
 
-            this.SupportsNonZeroBaseInstance = SupportsInstancedRendering &&
+            this.SupportsNonZeroBaseInstance = SupportsInstancedRendering && !gl.IsGLES &&
                 (gl.IsVersionAtLeast(4, 2) || gl.IsExtensionSupported("GL_ARB_base_instance"));
+
+            this.SupportsIndependentSamplerState = (gl.IsGLES ? gl.IsVersionAtLeast(3, 0) : gl.IsVersionAtLeast(3, 3)) ||
+                gl.IsExtensionSupported("GL_ARB_sampler_objects");
         }
 
         /// <inheritdoc/>
@@ -51,10 +54,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Boolean SupportsIndependentSamplerState
-        {
-            get { return false; }
-        }
+        public override Boolean SupportsIndependentSamplerState { get; }
 
         /// <inheritdoc/>
         public override Int32 MaximumTextureSize

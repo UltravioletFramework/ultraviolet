@@ -118,6 +118,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            if (Ultraviolet.GetGraphics().Capabilities.SupportsIndependentSamplerState)
+                throw new InvalidOperationException(UltravioletStrings.GenericError);
+
             OpenGLState.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
 
             gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, GetTextureAddressModeGL(AddressU));
@@ -185,7 +188,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="mode">The TextureAddressMode value to convert.</param>
         /// <returns>The converted value.</returns>
-        private static Int32 GetTextureAddressModeGL(TextureAddressMode mode)
+        internal static Int32 GetTextureAddressModeGL(TextureAddressMode mode)
         {
             switch (mode)
             {

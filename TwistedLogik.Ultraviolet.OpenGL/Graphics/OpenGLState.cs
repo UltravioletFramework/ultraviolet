@@ -1119,7 +1119,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private Boolean disposed;
         private Boolean forced;
 
-        private UInt32 newGL_ACTIVE_TEXTURE;
+        private UInt32 newGL_ACTIVE_TEXTURE = gl.GL_TEXTURE0;
         private UInt32 newGL_TEXTURE_BINDING_2D;
         private UInt32 newGL_VERTEX_ARRAY_BINDING;
         private UInt32 newGL_ARRAY_BUFFER_BINDING;
@@ -1128,7 +1128,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private UInt32 newGL_RENDERBUFFER_BINDING;
         private UInt32 newGL_CURRENT_PROGRAM;
 
-        private UInt32 oldGL_ACTIVE_TEXTURE;
+        private UInt32 oldGL_ACTIVE_TEXTURE = gl.GL_TEXTURE0;
         private UInt32 oldGL_TEXTURE_BINDING_2D;
         private UInt32 oldGL_VERTEX_ARRAY_BINDING;
         private UInt32 oldGL_ARRAY_BUFFER_BINDING;
@@ -1139,7 +1139,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         
         // Cached OpenGL state values.
         private static readonly OpenGLStateInteger[] glCachedIntegers;
-        private static readonly OpenGLStateInteger glActiveTexture             = new OpenGLStateInteger("GL_ACTIVE_TEXTURE", gl.GL_ACTIVE_TEXTURE);
+        private static readonly OpenGLStateInteger glActiveTexture             = new OpenGLStateInteger("GL_ACTIVE_TEXTURE", gl.GL_ACTIVE_TEXTURE, (int)gl.GL_TEXTURE0);
         private static readonly OpenGLStateInteger glTextureBinding2D          = new OpenGLStateInteger("GL_TEXTURE_BINDING_2D", gl.GL_TEXTURE_BINDING_2D);
         private static readonly OpenGLStateInteger glVertexArrayBinding        = new OpenGLStateInteger("GL_VERTEX_ARRAY_BINDING", gl.GL_VERTEX_ARRAY_BINDING);
         private static readonly OpenGLStateInteger glArrayBufferBinding        = new OpenGLStateInteger("GL_ARRAY_BUFFER_BINDING", gl.GL_ARRAY_BUFFER_BINDING);

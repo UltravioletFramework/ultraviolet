@@ -47,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLRasterizerState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLRenderBuffer2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLRenderTarget2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSamplerObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSamplerState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderProgram.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderProgramCollection.cs" />

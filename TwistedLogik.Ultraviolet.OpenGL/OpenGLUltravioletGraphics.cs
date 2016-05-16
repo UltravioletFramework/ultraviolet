@@ -58,13 +58,25 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             {
                 InitializeDebugOutput(configuration);
             }
+            
+            this.capabilities = new OpenGLGraphicsCapabilities();
 
-            this.maxTextureStages = Math.Min(16, gl.GetInteger(gl.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
+            this.maxTextureStages = gl.GetInteger(gl.GL_MAX_TEXTURE_IMAGE_UNITS);
             this.textures = new Texture2D[maxTextureStages];
             this.samplerStates = new SamplerState[maxTextureStages];
+            this.samplerObjects = capabilities.SupportsIndependentSamplerState ? new OpenGLSamplerObject[maxTextureStages] : null;
             this.backBufferRenderTargetUsage = configuration.BackBufferRenderTargetUsage;
 
-            this.capabilities = new OpenGLGraphicsCapabilities();
+            if (samplerObjects != null)
+            {
+                for (int i = 0; i < samplerObjects.Length; i++)
+                {
+                    samplerObjects[i] = new OpenGLSamplerObject(Ultraviolet);
+                    samplerObjects[i].Bind((uint)i);
+                }
+            }
+
+            OpenGLState.VerifyCache();
 
             ResetDeviceStates();
         }
@@ -275,8 +287,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 OpenGLState.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
                 OpenGLState.Texture2D(textureName);
 
-                var samplerState = (OpenGLSamplerState)(GetSamplerState(sampler) ?? SamplerState.LinearClamp);
-
                 if (this.textures[sampler] != null)
                     ((IBindableResource)this.textures[sampler]).UnbindRead();
 
@@ -285,10 +295,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 if (this.textures[sampler] != null)
                     ((IBindableResource)this.textures[sampler]).BindRead();
 
-                for (int i = 0; i < samplerStates.Length; i++)
+                if (!capabilities.SupportsIndependentSamplerState)
                 {
-                    if (this.textures[i] == texture)
-                        samplerState.Apply(sampler);
+                    var samplerState = (OpenGLSamplerState)(GetSamplerState(sampler) ?? SamplerState.LinearClamp);
+                    for (int i = 0; i < samplerStates.Length; i++)
+                    {
+                        if (this.textures[i] == texture)
+                            samplerState.Apply(sampler);
+                    }
                 }
             }
         }
@@ -414,21 +428,29 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             if (this.samplerStates[sampler] != state)
             {
-                oglstate.Apply(sampler);
-                this.samplerStates[sampler] = state;
-
-                var texture = this.textures[sampler];
-                if (texture != null)
+                if (capabilities.SupportsIndependentSamplerState)
                 {
-                    for (int i = 0; i < samplerStates.Length; i++)
-                    {
-                        if (i == sampler)
-                            continue;
+                    var samplerObject = this.samplerObjects[sampler];
+                    samplerObject.ApplySamplerState(state);
+                }
+                else
+                {
+                    oglstate.Apply(sampler);
+                    this.samplerStates[sampler] = state;
 
-                        if (this.textures[i] == texture && this.samplerStates[i] != oglstate)
+                    var texture = this.textures[sampler];
+                    if (texture != null)
+                    {
+                        for (int i = 0; i < samplerStates.Length; i++)
                         {
-                            oglstate.Apply(sampler);
-                            this.samplerStates[sampler] = state;
+                            if (i == sampler)
+                                continue;
+
+                            if (this.textures[i] == texture && this.samplerStates[i] != oglstate)
+                            {
+                                oglstate.Apply(sampler);
+                                this.samplerStates[sampler] = state;
+                            }
                         }
                     }
                 }
@@ -624,6 +646,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             if (Disposed)
                 return;
+
+            for (int i = 0; i < samplerObjects.Length; i++)
+                SafeDispose.Dispose(samplerObjects[i]);
 
             if (gl.Initialized)
             {
@@ -888,6 +913,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         private readonly Int32 maxTextureStages;
         private readonly Texture2D[] textures;
         private readonly SamplerState[] samplerStates;
+        private readonly OpenGLSamplerObject[] samplerObjects;
 
         // Debug output callbacks.
         private DebugCallback debugCallback;
