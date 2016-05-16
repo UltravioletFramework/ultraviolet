@@ -129,6 +129,28 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Color"/> structure using the x, y, and z components
+        /// of the specified vector as normalized red, green, and blue values.
+        /// </summary>
+        /// <param name="vector">The vector from which to create the color.</param>
+        public Color(Vector3 vector)
+            : this(vector.X, vector.Y, vector.Z)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Color"/> structure using the x, y, z, and w components
+        /// of the specified vector as normalized red, green, blue, and alpha values.
+        /// </summary>
+        /// <param name="vector">The vector from which to create the color.</param>
+        public Color(Vector4 vector)
+            : this(vector.X, vector.Y, vector.Z, vector.W)
+        {
+
+        }
+
+        /// <summary>
         /// Compares two colors for equality.
         /// </summary>
         /// <param name="c1">The first <see cref="Color"/> to compare.</param>
@@ -367,6 +389,31 @@ namespace TwistedLogik.Ultraviolet
         public UInt32 ToBgra()
         {
             return (uint)((A << 24) | (B << 16) | (G << 8) | (R));
+        }
+
+        /// <summary>
+        /// Converts the <see cref="Color"/> to a normalized 3-vector containing red, green, and blue components.
+        /// </summary>
+        /// <returns>The <see cref="Vector3"/> that corresponds to this <see cref="Color"/>.</returns>
+        public Vector3 ToVector3()
+        {
+            return new Vector3(
+                R / (float)Byte.MaxValue, 
+                G / (float)Byte.MaxValue, 
+                B / (float)Byte.MaxValue);
+        }
+
+        /// <summary>
+        /// Converts the <see cref="Color"/> to a normalized 4-vector containing red, green, blue, and alpha components.
+        /// </summary>
+        /// <returns>The <see cref="Vector4"/> that corresponds to this <see cref="Color"/>.</returns>
+        public Vector4 ToVector4()
+        {
+            return new Vector4(
+                R / (float)Byte.MaxValue, 
+                G / (float)Byte.MaxValue, 
+                B / (float)Byte.MaxValue, 
+                A / (float)Byte.MaxValue);
         }
 
         /// <summary>
