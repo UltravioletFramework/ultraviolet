@@ -7,8 +7,6 @@ if not exist %DIR% goto notexist
 
 if %2 EQU Android (
 
-	copy "..\..\Dependencies\Newtonsoft.Json.dll" %2\Newtonsoft.Json.dll /Y
-	if %errorlevel% GTR 0 goto fail
 	copy "%DIR%\TwistedLogik.Gluon.dll" %2\TwistedLogik.Gluon.dll /Y
 	if %errorlevel% GTR 0 goto fail
 	copy "%DIR%\TwistedLogik.Nucleus.dll" %2\TwistedLogik.Nucleus.dll /Y
@@ -40,8 +38,6 @@ if %2 EQU Android (
 	
 ) ELSE (
 
-	copy "..\..\Dependencies\Newtonsoft.Json.dll" Newtonsoft.Json.dll /Y
-	if %errorlevel% GTR 0 goto fail
 	copy "%DIR%\TwistedLogik.Gluon.dll" TwistedLogik.Gluon.dll /Y
 	if %errorlevel% GTR 0 goto fail
 	copy "%DIR%\TwistedLogik.Nucleus.dll" TwistedLogik.Nucleus.dll /Y

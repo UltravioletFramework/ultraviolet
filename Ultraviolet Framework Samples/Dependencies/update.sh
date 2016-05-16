@@ -3,7 +3,6 @@
 
 cp "../../Version.cs" "../Version.cs"
 
-cp "../../Binaries/AnyCPU/Release/Newtonsoft.Json.dll" Newtonsoft.Json.dll
 cp "../../Binaries/AnyCPU/Release/TwistedLogik.Gluon.dll" TwistedLogik.Gluon.dll
 cp "../../Binaries/AnyCPU/Release/TwistedLogik.Nucleus.dll" TwistedLogik.Nucleus.dll
 cp "../../Binaries/AnyCPU/Release/TwistedLogik.Nucleus.xml" TwistedLogik.Nucleus.xml 2>/dev/null
@@ -18,7 +17,6 @@ cp "../../Binaries/AnyCPU/Release/TwistedLogik.Ultraviolet.UI.Presentation.dll" 
 cp "../../Binaries/AnyCPU/Release/TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll
 cp "../../Binaries/AnyCPU/Release/TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll" TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll
 
-cp "../../Binaries/AnyCPU/Release/Newtonsoft.Json.dll" Android/Newtonsoft.Json.dll
 cp "../../Binaries/Android/Release/TwistedLogik.Gluon.dll" Android/TwistedLogik.Gluon.dll
 cp "../../Binaries/Android/Release/TwistedLogik.Nucleus.dll" Android/TwistedLogik.Nucleus.dll
 cp "../../Binaries/Android/Release/TwistedLogik.Nucleus.xml" Android/TwistedLogik.Nucleus.xml 2>/dev/null
