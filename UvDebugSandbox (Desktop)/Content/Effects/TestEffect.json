@@ -1,0 +1,17 @@
+﻿{
+  "parameters": [ "textureSampler", "MatrixTransform", "colors" ],
+  "techniques": [
+    {
+      "name": "Technique0",
+      "passes": [
+        {
+          "name": "Pass0",
+          "stages": {
+            "vert": "Test.vert",
+            "frag": "Test.frag"
+          }
+        }
+      ]
+    }
+  ]
+}
