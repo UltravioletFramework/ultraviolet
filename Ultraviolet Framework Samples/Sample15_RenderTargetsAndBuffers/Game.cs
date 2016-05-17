@@ -66,7 +66,7 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
         protected override void OnUpdating(UltravioletTime time)
         {
             // ACTION: Save Image
-            if (Ultraviolet.GetInput().GetActions().SaveImage.IsPressed())
+            if (Ultraviolet.GetInput().GetActions().SaveImage.IsPressed() || (Ultraviolet.GetInput().GetTouchDevice()?.WasTapped() ?? false))
             {
                 content.Load<SoundEffect>(GlobalSoundEffectID.Shutter).Play();
 
@@ -74,13 +74,27 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
                 // data to files. We can pass a render target directly to the SaveAsPng() or SaveAsJpg() methods.
                 var saver = SurfaceSaver.Create();
                 var filename = $"output-{DateTime.Now:yyyyMMdd-HHmmss}.png";
-                using (var stream = File.OpenWrite(filename))
-                {
-                    saver.SaveAsPng(rtarget, stream);
-                }
+                var path = filename;
 
+#if ANDROID
+                var dir = Android.OS.Environment.GetExternalStoragePublicDirectory(
+                    Android.OS.Environment.DirectoryPictures).AbsolutePath;
+                path = Path.Combine(dir, filename);
+#endif
+
+                using (var stream = File.OpenWrite(path))
+                    saver.SaveAsPng(rtarget, stream);
+
+#if ANDROID
+                Android.Media.MediaScannerConnection.ScanFile(ApplicationContext, new String[] { path }, 
+                    new String[] { Android.Webkit.MimeTypeMap.Singleton.GetMimeTypeFromExtension("png") }, null);
+
+                confirmMsgText = $"Image saved to photo gallery";
+                confirmMsgOpacity = 1;
+#else
                 confirmMsgText = $"Image saved to {filename}";
                 confirmMsgOpacity = 1;
+#endif
 
                 // Alternatively, we could populate an array with the target's data using the GetData() method...
                 //     var data = new Color[rtarget.Width * rtarget.Height];
@@ -132,20 +146,23 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
             var compWidth = compositor.Width;
             var compHeight = compositor.Height;
 
-            if (Ultraviolet.Platform != UltravioletPlatform.Android)
-            {
-                var font = content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+            var font = content.Load<SpriteFont>(GlobalFontID.SegoeUI);
 
-                spriteBatch.Begin(SpriteSortMode.Deferred, null);
-                spriteBatch.Draw(rbufferColor, new Vector2(
-                    (compWidth - rbufferColor.Width) / 2,
-                    (compHeight - rbufferColor.Height) / 2), Color.White);
-                spriteBatch.DrawString(font, $"Press F1 to save the image to a file.",
-                    new Vector2(8f, 8f), Color.White);
-                spriteBatch.DrawString(font, confirmMsgText ?? String.Empty, 
-                    new Vector2(8f, 8f + font.Regular.LineSpacing), Color.White * (Single)confirmMsgOpacity);
-                spriteBatch.End();
-            }
+            spriteBatch.Begin(SpriteSortMode.Deferred, null);
+            spriteBatch.Draw(rbufferColor, new Vector2(
+                (compWidth - rbufferColor.Width) / 2,
+                (compHeight - rbufferColor.Height) / 2), Color.White);
+
+            var instruction = Ultraviolet.Platform == UltravioletPlatform.Android ?
+                "Tap to save the image to the gallery" :
+                "Press F1 to save the image to a file";
+
+            spriteBatch.DrawString(font, instruction,
+                new Vector2(8f, 8f), Color.White);
+            spriteBatch.DrawString(font, confirmMsgText ?? String.Empty,
+                new Vector2(8f, 8f + font.Regular.LineSpacing), Color.White * (Single)confirmMsgOpacity);
+
+            spriteBatch.End();
 
             // IMPORTANT NOTE!
             // Remember, we can't be bound for both reading and writing. We're currently bound for reading,

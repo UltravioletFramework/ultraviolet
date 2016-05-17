@@ -1,12 +1,27 @@
-﻿#version 140
+﻿#ifver_gte "1.0" { #version 140 }
+#if GL_ES
+    precision mediump float;
+    precision mediump int;
+    #define SHADER_UNIFORM uniform
+    #define SHADER_INPUT varying
+#else
+    #define SHADER_UNIFORM uniform
+    #define SHADER_INPUT in
+    #define SHADER_OUTPUT out
+#endif
 
 // The following code (slightly modified) is taken from:
 // http://www.kamend.com/2012/06/perlin-noise-and-glsl/
 
-uniform float time;
+SHADER_UNIFORM float time;
 
-in vec4 vColor;
-out vec4 fColor;
+SHADER_INPUT vec4 vColor;
+
+#ifdef GL_ES 
+    #define fColor gl_FragColor
+#else
+    SHADER_OUTPUT vec4 fColor;
+#endif
 
 vec4 mod289(vec4 x)
 {
@@ -162,6 +177,6 @@ void main()
      
     vec4 c = vec4(color, color, color, color);
     c *= 3.5;
-     
+    
     fColor = c;
 }
