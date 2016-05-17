@@ -1,8 +1,8 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Audio;
 using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
+using TwistedLogik.Ultraviolet.Audio;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
@@ -17,43 +17,34 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase1
     {
         public Game()
-            : base("TwistedLogik", "Sample 15 - Render Targets and Buffers")
+            : base("TwistedLogik", "Sample 15 - Render Targets and Buffers", uv => uv.GetInput().GetActions())
         {
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
                 game.Run();
             }
         }
-
+        
+        /// <inheritdoc/>
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             return new OpenGLUltravioletContext(this);
         }
 
-        protected override void OnInitialized()
-        {
-            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
-
-            base.OnInitialized();
-        }
-
+        /// <inheritdoc/>
         protected override void OnLoadingContent()
         {
-            this.content = ContentManager.Create("Content");
-
-            LoadInputBindings();
-            LoadContentManifests();
+            this.content = ContentManager.Create("Content");            
+            LoadContentManifests(this.content);
 
             this.spriteBatch = SpriteBatch.Create();
 
@@ -70,18 +61,13 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
             base.OnLoadingContent();
         }
 
-        protected override void OnShutdown()
-        {
-            SaveInputBindings();
-
-            base.OnShutdown();
-        }
-
+        /// <inheritdoc/>
         protected override void OnUpdating(UltravioletTime time)
         {
+            // ACTION: Save Image
             if (Ultraviolet.GetInput().GetActions().SaveImage.IsPressed())
             {
-                content.Load<SoundEffect>("SoundEffects/Shutter").Play();
+                content.Load<SoundEffect>(GlobalSoundEffectID.Shutter).Play();
 
                 // The SurfaceSaver class contains platform-specific functionality needed to write image
                 // data to files. We can pass a render target directly to the SaveAsPng() or SaveAsJpg() methods.
@@ -100,17 +86,20 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
                 //     rtarget.GetData(data);
             }
 
+            // ACTION: Exit Application
             if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
             {
                 Exit();
             }
 
+            // Fade out save confirmation message
             if (confirmMsgOpacity > 0)
                 confirmMsgOpacity -= (1.0 / 4.0) * time.ElapsedTime.TotalSeconds;
 
             base.OnUpdating(time);
         }
 
+        /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time)
         {
             // We specify that we want to start drawing to a render target with the SetRenderTarget() method.
@@ -167,6 +156,7 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
             base.OnDrawing(time);
         }
 
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -179,41 +169,26 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
             }
             base.Dispose(disposing);
         }
-
-        private String GetInputBindingsPath()
+        
+        /// <inheritdoc/>
+        protected override void LoadContentManifests(ContentManager content)
         {
-            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
+            base.LoadContentManifests(content);
+            
+            Ultraviolet.GetContent().Manifests["Global"]["Textures"].PopulateAssetLibrary(typeof(GlobalTextureID));
+            Ultraviolet.GetContent().Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
+            Ultraviolet.GetContent().Manifests["Global"]["Effects"].PopulateAssetLibrary(typeof(GlobalEffectID));
+            Ultraviolet.GetContent().Manifests["Global"]["SoundEffects"].PopulateAssetLibrary(typeof(GlobalSoundEffectID));
         }
 
-        private void LoadInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
-        }
-
-        private void SaveInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
-        }
-
-        private void LoadContentManifests()
-        {
-            var uvContent = Ultraviolet.GetContent();
-
-            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
-            uvContent.Manifests.Load(contentManifestFiles);
-
-            uvContent.Manifests["Global"]["Textures"].PopulateAssetLibrary(typeof(GlobalTextureID));
-            uvContent.Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
-            uvContent.Manifests["Global"]["Effects"].PopulateAssetLibrary(typeof(GlobalEffectID));
-            uvContent.Manifests["Global"]["SoundEffects"].PopulateAssetLibrary(typeof(GlobalSoundEffectID));
-        }
-
+        // Application resources
         private ContentManager content;
         private SpriteBatch spriteBatch;
         private RenderTarget2D rtarget;
         private RenderBuffer2D rbufferColor;
         private RenderBuffer2D rbufferDepth;
 
+        // Save confirmation message state
         private Double confirmMsgOpacity;
         private String confirmMsgText;
     }

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.OpenGL;
 using UltravioletSample.Sample14_LoadingImageDataWithSurfaces.Assets;
 using UltravioletSample.Sample14_LoadingImageDataWithSurfaces.Input;
@@ -17,13 +15,11 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase1
     {
         public Game()
-            : base("TwistedLogik", "Sample 14 - Loading Image Data with Surfaces")
+            : base("TwistedLogik", "Sample 14 - Loading Image Data with Surfaces", uv => uv.GetInput().GetActions())
         {
 
         }
@@ -36,18 +32,13 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
             }
         }
 
+        /// <inheritdoc/>
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             return new OpenGLUltravioletContext(this);
         }
 
-        protected override void OnInitialized()
-        {
-            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
-
-            base.OnInitialized();
-        }
-
+        /// <inheritdoc/>
         protected override void OnUpdating(UltravioletTime time)
         {
             if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
@@ -57,6 +48,7 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
             base.OnUpdating(time);
         }
 
+        /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time)
         {
             // We've loaded our surface data into the 'data' array, and we'll use it now to draw an image to the screen.
@@ -77,6 +69,8 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
             var cx = origX;
             var cy = origY;
 
+            var font = content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+
             for (int y = 0; y < surface.Width; y++)
             {
                 for (int x = 0; x < surface.Height; x++)
@@ -85,7 +79,7 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
                     var cellText = $"{cellColor:x}";
                     var cellPosition = new Vector2(cx, cy);
 
-                    spriteBatch.DrawString(spriteFontSegoe, cellText, cellPosition, cellColor);
+                    spriteBatch.DrawString(font, cellText, cellPosition, cellColor);
 
                     cx = cx + CellWidth;
                 }
@@ -98,16 +92,13 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
             base.OnDrawing(time);
         }
 
+        /// <inheritdoc/>
         protected override void OnLoadingContent()
         {
             this.content = ContentManager.Create("Content");
+            LoadContentManifests(this.content);
 
-            LoadInputBindings();
-            LoadContentManifests();
-
-            this.spriteFontSegoe = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
             this.spriteBatch = SpriteBatch.Create();
-            this.textRenderer = new TextRenderer();
 
             // Texture2D lives in GPU memory, so we can't read data out of it once it's been uploaded to the device.
             // Surface2D lives in CPU memory, so we can directly manipulate it without involving the graphics driver.
@@ -120,13 +111,7 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
             base.OnLoadingContent();
         }
 
-        protected override void OnShutdown()
-        {
-            SaveInputBindings();
-
-            base.OnShutdown();
-        }
-
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -139,39 +124,19 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
             base.Dispose(disposing);
         }
 
-        private String GetInputBindingsPath()
+        /// <inheritdoc/>
+        protected override void LoadContentManifests(ContentManager content)
         {
-            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
+            base.LoadContentManifests(content);
+
+            Ultraviolet.GetContent().Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
         }
 
-        private void LoadInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
-        }
-
-        private void SaveInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
-        }
-
-        private void LoadContentManifests()
-        {
-            var uvContent = Ultraviolet.GetContent();
-
-            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
-            uvContent.Manifests.Load(contentManifestFiles);
-
-            uvContent.Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
-        }
-
+        // Application resources
+        private ContentManager content;
+        private SpriteBatch spriteBatch;
         private Surface2D surface;
         private Texture2D texture;
         private Color[] data;
-
-        private ContentManager content;
-        private SpriteFont spriteFontSegoe;
-        private SpriteBatch spriteBatch;
-        private TextRenderer textRenderer;
-        private readonly TextLayoutCommandStream textLayoutCommands = new TextLayoutCommandStream();
     }
 }

@@ -132,14 +132,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBuffers (Desktop)", "Sample15_RenderTargetsAndBuffers (Desktop)\Sample15_RenderTargetsAndBuffers (Desktop).csproj", "{03638242-3ADB-4881-88C7-63519F4A377B}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SampleSharedLib", "SampleSharedLib\SampleSharedLib.shproj", "{F07C30F1-B571-4516-9019-D9F5F8EFA15B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSharedLib (Desktop)", "SampleSharedLib (Desktop)\SampleSharedLib (Desktop).csproj", "{9F505C43-6E37-425F-B348-BE4DE7AB2F0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSharedLib (Android)", "SampleSharedLib (Android)\SampleSharedLib (Android).csproj", "{B238A15B-E99B-45F5-99FC-DA32CE11EF4D}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SampleSharedLib\SampleSharedLib.projitems*{b238a15b-e99b-45f5-99fc-da32ce11ef4d}*SharedItemsImports = 4
 		Sample5_RenderingSprites\Sample5_RenderingSprites.projitems*{0ecfaa60-2d08-4330-8533-a2262447dd1f}*SharedItemsImports = 13
 		Sample7_PlayingMusic\Sample7_PlayingMusic.projitems*{e02e7f67-af9f-480d-94da-cbc6d1d53019}*SharedItemsImports = 4
 		Sample11_GamePads\Sample11_GamePads.projitems*{10f3b9d4-df14-457a-8012-4697522a181a}*SharedItemsImports = 13
 		Sample14_LoadingImageDataWithSurfaces\Sample14_LoadingImageDataWithSurfaces.projitems*{067ae3a0-bbf6-47b1-8371-3710f199da65}*SharedItemsImports = 4
 		Sample11_GamePads\Sample11_GamePads.projitems*{5cc7c3f8-d523-4ed2-a2b1-1957699c7907}*SharedItemsImports = 4
 		Sample4_ContentManagement\Sample4_ContentManagement.projitems*{2c6b942e-3d19-4211-af85-82402fd31a73}*SharedItemsImports = 4
+		SampleSharedLib\SampleSharedLib.projitems*{f07c30f1-b571-4516-9019-d9f5f8efa15b}*SharedItemsImports = 13
 		Sample1_CreatingAnApplication\Sample1_CreatingAnApplication.projitems*{677767f0-c665-4a84-a1d2-3ffba90d25b7}*SharedItemsImports = 4
 		Sample3_RenderingGeometry\Sample3_RenderingGeometry.projitems*{a4ec586b-92e6-4980-aa87-958bf9e45e8f}*SharedItemsImports = 13
 		Sample1_CreatingAnApplication\Sample1_CreatingAnApplication.projitems*{fd1ac1b5-c403-4c80-8169-9dfa1277e81a}*SharedItemsImports = 13
@@ -168,6 +176,7 @@ Global
 		Sample3_RenderingGeometry\Sample3_RenderingGeometry.projitems*{7ccfa0d4-f43d-4c66-8de1-b23fa1afe41e}*SharedItemsImports = 4
 		Sample9_ManagingStateWithUIScreens\Sample9_ManagingStateWithUIScreens.projitems*{dbd61736-8eb2-4d5c-bbb2-110fc9a10c7d}*SharedItemsImports = 4
 		Sample12_UPF\Sample12_UPF.projitems*{3dfdef78-d6c3-4be4-9f99-a62294c72a1f}*SharedItemsImports = 4
+		SampleSharedLib\SampleSharedLib.projitems*{9f505c43-6e37-425f-b348-be4de7ab2f0b}*SharedItemsImports = 4
 		Sample14_LoadingImageDataWithSurfaces\Sample14_LoadingImageDataWithSurfaces.projitems*{013ee98f-8de7-48e9-8f2b-c39f056c0615}*SharedItemsImports = 13
 		Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.projitems*{03638242-3adb-4881-88c7-63519f4a377b}*SharedItemsImports = 4
 		Sample9_ManagingStateWithUIScreens\Sample9_ManagingStateWithUIScreens.projitems*{0a93613c-b14a-41d8-bab5-e01aa6d33d89}*SharedItemsImports = 13
@@ -411,6 +420,18 @@ Global
 		{03638242-3ADB-4881-88C7-63519F4A377B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{03638242-3ADB-4881-88C7-63519F4A377B}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{03638242-3ADB-4881-88C7-63519F4A377B}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{9F505C43-6E37-425F-B348-BE4DE7AB2F0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F505C43-6E37-425F-B348-BE4DE7AB2F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F505C43-6E37-425F-B348-BE4DE7AB2F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F505C43-6E37-425F-B348-BE4DE7AB2F0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F505C43-6E37-425F-B348-BE4DE7AB2F0B}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{9F505C43-6E37-425F-B348-BE4DE7AB2F0B}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{B238A15B-E99B-45F5-99FC-DA32CE11EF4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B238A15B-E99B-45F5-99FC-DA32CE11EF4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B238A15B-E99B-45F5-99FC-DA32CE11EF4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B238A15B-E99B-45F5-99FC-DA32CE11EF4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B238A15B-E99B-45F5-99FC-DA32CE11EF4D}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{B238A15B-E99B-45F5-99FC-DA32CE11EF4D}.Signed|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
