@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Nucleus.Xml;
 
 namespace TwistedLogik.Ultraviolet.Input
@@ -24,7 +26,9 @@ namespace TwistedLogik.Ultraviolet.Input
             this.button = element.ElementValueEnum<MouseButton>("Button") ?? MouseButton.None;
             this.control = element.ElementValueBoolean("Control") ?? false;
             this.alt = element.ElementValueBoolean("Alt") ?? false;
-            this.shift = element.ElementValueBoolean("Shift") ?? false; 
+            this.shift = element.ElementValueBoolean("Shift") ?? false;
+
+            this.stringRepresentation = BuildStringRepresentation();
         }
 
         /// <summary>
@@ -41,10 +45,12 @@ namespace TwistedLogik.Ultraviolet.Input
                 throw new NotSupportedException();
             }
 
-            this.mouse  = uv.GetInput().GetMouse();
+            this.mouse = uv.GetInput().GetMouse();
             this.button = button;
+
+            this.stringRepresentation = BuildStringRepresentation();
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseInputBinding"/> class.
         /// </summary>
@@ -60,16 +66,22 @@ namespace TwistedLogik.Ultraviolet.Input
                 throw new NotSupportedException();
             }
 
-            this.mouse   = uv.GetInput().GetMouse();
-            this.button  = button;
+            this.mouse = uv.GetInput().GetMouse();
+            this.button = button;
             this.control = control;
-            this.alt     = alt;
-            this.shift   = shift;
+            this.alt = alt;
+            this.shift = shift;
+
+            this.stringRepresentation = BuildStringRepresentation();
         }
 
-        /// <summary>
-        /// Updates the binding's state.
-        /// </summary>
+        /// <inheritdoc/>
+        public override String ToString()
+        {
+            return stringRepresentation;
+        }
+
+        /// <inheritdoc/>
         public override void Update()
         {
             released = false;
@@ -92,13 +104,7 @@ namespace TwistedLogik.Ultraviolet.Input
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the input binding uses the same device 
-        /// and the same button configuration as the specified input binding.
-        /// </summary>
-        /// <param name="binding">The <see cref="InputBinding"/> to compare against this input binding.</param>
-        /// <returns><c>true</c> if the specified input binding uses the same device and the same button 
-        /// configuration as this input binding; otherwise, <c>false</c>.</returns>
+        /// <inheritdoc/>
         public override Boolean UsesSameButtons(InputBinding binding)
         {
             if (ReferenceEquals(binding, null)) return false;
@@ -118,13 +124,7 @@ namespace TwistedLogik.Ultraviolet.Input
             return false;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the input binding uses the same device 
-        /// and the same primary buttons as the specified input binding.
-        /// </summary>
-        /// <param name="binding">The <see cref="InputBinding"/> to compare against this input binding.</param>
-        /// <returns><c>true</c> if the specified input binding uses the same device and the same primary 
-        /// buttons as this input binding; otherwise, <c>false</c>.</returns>
+        /// <inheritdoc/>
         public override Boolean UsesSamePrimaryButtons(InputBinding binding)
         {
             if (ReferenceEquals(binding, null)) return false;
@@ -141,38 +141,25 @@ namespace TwistedLogik.Ultraviolet.Input
             return false;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the binding is down.
-        /// </summary>
-        /// <returns><c>true</c> if the binding is down; otherwise, <c>false</c>.</returns>
+        /// <inheritdoc/>
         public override Boolean IsDown()
         {
             return pressed;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the binding is up.
-        /// </summary>
-        /// <returns><c>true</c> if the binding is up; otherwise, <c>false</c>.</returns>
+        /// <inheritdoc/>
         public override Boolean IsUp()
         {
             return !pressed;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the binding was pressed this frame.
-        /// </summary>
-        /// <param name="ignoreRepeats">A value indicating whether to ignore repeated button press events on devices which support them.</param>
-        /// <returns><c>true</c> if the binding was pressed this frame; otherwise, <c>false</c>.</returns>
+        /// <inheritdoc/>
         public override Boolean IsPressed(Boolean ignoreRepeats = true)
         {
             return pressed && mouse.IsButtonPressed(button, ignoreRepeats: ignoreRepeats);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the binding was released this frame.
-        /// </summary>
-        /// <returns><c>true</c> if the binding was released this frame; otherwise, <c>false</c>.</returns>
+        /// <inheritdoc/>
         public override Boolean IsReleased()
         {
             return released;
@@ -218,11 +205,7 @@ namespace TwistedLogik.Ultraviolet.Input
             get { return shift; }
         }
 
-        /// <summary>
-        /// Creates an XML element that represents the binding.
-        /// </summary>
-        /// <param name="name">The name to give to the created XML element.</param>
-        /// <returns>An XML element that represents the binding.</returns>
+        /// <inheritdoc/>
         internal override XElement ToXml(String name = null)
         {
             return new XElement(name ?? "Binding", new XAttribute("Type", GetType().FullName),
@@ -233,10 +216,7 @@ namespace TwistedLogik.Ultraviolet.Input
             );
         }
 
-        /// <summary>
-        /// Calculates the binding's priority relative to other bindings with the same primary buttons.
-        /// </summary>
-        /// <returns>The binding's priority relative to other bindings with the same primary buttons.</returns>
+        /// <inheritdoc/>
         protected override Int32 CalculatePriority()
         {
             return
@@ -257,12 +237,57 @@ namespace TwistedLogik.Ultraviolet.Input
                 (!shift   || mouse.IsShiftDown);
         }
 
+        /// <summary>
+        /// Appends a separator to the specified string builder if the builder already contains text.
+        /// </summary>
+        private Boolean AppendSeparatorIfNecessary(StringBuilder builder, String separator)
+        {
+            if (builder.Length == 0)
+                return false;
+
+            builder.Append(separator);
+            return true;
+        }
+
+        /// <summary>
+        /// Builds a string representation of the mouse binding.
+        /// </summary>
+        private String BuildStringRepresentation()
+        {
+            var separator = Localization.Get("INPUT_BINDING_SEPARATOR");
+            var builder = new StringBuilder();
+
+            if (IsControlRequired)
+            {
+                AppendSeparatorIfNecessary(builder, separator);
+                builder.Append(Localization.Get("KEY_MODIFIER_CONTROL"));
+            }
+
+            if (IsAltRequired)
+            {
+                AppendSeparatorIfNecessary(builder, separator);
+                builder.Append(Localization.Get("KEY_MODIFIER_ALT"));
+            }
+
+            if (IsShiftRequired)
+            {
+                AppendSeparatorIfNecessary(builder, separator);
+                builder.Append(Localization.Get("KEY_MODIFIER_SHIFT"));
+            }
+
+            AppendSeparatorIfNecessary(builder, separator);
+            builder.Append(Localization.Get("MOUSE_BUTTON_" + Button));
+
+            return builder.ToString();
+        }
+
         // Property values.
         private readonly MouseDevice mouse;
         private readonly MouseButton button;
         private readonly Boolean control;
         private readonly Boolean alt;
         private readonly Boolean shift;
+        private readonly String stringRepresentation;
 
         // State values.
         private Boolean pressed;

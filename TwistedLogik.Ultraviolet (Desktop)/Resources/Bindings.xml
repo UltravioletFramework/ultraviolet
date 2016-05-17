@@ -1,0 +1,1283 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="INPUT_BINDING_SEPARATOR">
+    <en-US>
+      <Variant>+</Variant>
+    </en-US>
+  </String>
+  <String Key="MOUSE_BUTTON_Left">
+    <en-US>
+      <Variant>LMB</Variant>
+    </en-US>
+  </String>
+  <String Key="MOUSE_BUTTON_Right">
+    <en-US>
+      <Variant>RMB</Variant>
+    </en-US>
+  </String>
+  <String Key="MOUSE_BUTTON_Middle">
+    <en-US>
+      <Variant>Mouse3</Variant>
+    </en-US>
+  </String>
+  <String Key="MOUSE_BUTTON_XButton1">
+    <en-US>
+      <Variant>Mouse4</Variant>
+    </en-US>
+  </String>
+  <String Key="MOUSE_BUTTON_XButton2">
+    <en-US>
+      <Variant>Mouse5</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_A">
+    <en-US>
+      <Variant>A</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_B">
+    <en-US>
+      <Variant>B</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_X">
+    <en-US>
+      <Variant>X</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_Y">
+    <en-US>
+      <Variant>Y</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_Back">
+    <en-US>
+      <Variant>Back</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_Guide">
+    <en-US>
+      <Variant>Guide</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_Start">
+    <en-US>
+      <Variant>Start</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_LeftStick">
+    <en-US>
+      <Variant>LeftStick</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_RightStick">
+    <en-US>
+      <Variant>RightStick</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_LeftShoulder">
+    <en-US>
+      <Variant>LeftShoulder</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_RightShoulder">
+    <en-US>
+      <Variant>RightShoulder</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_DPadUp">
+    <en-US>
+      <Variant>DPadUp</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_DPadDown">
+    <en-US>
+      <Variant>DPadDown</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_DPadLeft">
+    <en-US>
+      <Variant>DPadLeft</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_DPadRight">
+    <en-US>
+      <Variant>DPadRight</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_MODIFIER_CONTROL">
+    <en-US>
+      <Variant>Ctrl</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_MODIFIER_ALT">
+    <en-US>
+      <Variant>Alt</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_MODIFIER_SHIFT">
+    <en-US>
+      <Variant>Shift</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Return">
+    <en-US>
+      <Variant>Enter</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Escape">
+    <en-US>
+      <Variant>Esc</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Backspace">
+    <en-US>
+      <Variant>Backspace</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Tab">
+    <en-US>
+      <Variant>Tab</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Space">
+    <en-US>
+      <Variant>Space</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Exclamation">
+    <en-US>
+      <Variant>Exclamation</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_DoubleQuote">
+    <en-US>
+      <Variant>DoubleQuote</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Hash">
+    <en-US>
+      <Variant>Hash</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Percent">
+    <en-US>
+      <Variant>Percent</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Dollar">
+    <en-US>
+      <Variant>Dollar</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Ampersand">
+    <en-US>
+      <Variant>Ampersand</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_SingleQuote">
+    <en-US>
+      <Variant>SingleQuote</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_LeftParentheses">
+    <en-US>
+      <Variant>LeftParentheses</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_RightParentheses">
+    <en-US>
+      <Variant>RightParentheses</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Asterisk">
+    <en-US>
+      <Variant>Asterisk</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Plus">
+    <en-US>
+      <Variant>Plus</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Comma">
+    <en-US>
+      <Variant>Comma</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Minus">
+    <en-US>
+      <Variant>Minus</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Period">
+    <en-US>
+      <Variant>Period</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Slash">
+    <en-US>
+      <Variant>Slash</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_D0">
+    <en-US>
+      <Variant>0</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_D1">
+    <en-US>
+      <Variant>1</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_D2">
+    <en-US>
+      <Variant>2</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_D3">
+    <en-US>
+      <Variant>3</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_D4">
+    <en-US>
+      <Variant>4</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_D5">
+    <en-US>
+      <Variant>5</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_D6">
+    <en-US>
+      <Variant>6</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_D7">
+    <en-US>
+      <Variant>7</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_D8">
+    <en-US>
+      <Variant>8</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_D9">
+    <en-US>
+      <Variant>9</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Colon">
+    <en-US>
+      <Variant>Colon</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Semicolon">
+    <en-US>
+      <Variant>Semicolon</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Less">
+    <en-US>
+      <Variant>Less</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Equals">
+    <en-US>
+      <Variant>Equals</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Greater">
+    <en-US>
+      <Variant>Greater</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Question">
+    <en-US>
+      <Variant>Question</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_At">
+    <en-US>
+      <Variant>At</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_LeftBracket">
+    <en-US>
+      <Variant>LeftBracket</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Backslash">
+    <en-US>
+      <Variant>Backslash</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_RightBracket">
+    <en-US>
+      <Variant>RightBracket</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Caret">
+    <en-US>
+      <Variant>Caret</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Underscore">
+    <en-US>
+      <Variant>Underscore</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_BackQuote">
+    <en-US>
+      <Variant>BackQuote</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_A">
+    <en-US>
+      <Variant>A</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_B">
+    <en-US>
+      <Variant>B</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_C">
+    <en-US>
+      <Variant>C</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_D">
+    <en-US>
+      <Variant>D</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_E">
+    <en-US>
+      <Variant>E</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F">
+    <en-US>
+      <Variant>F</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_G">
+    <en-US>
+      <Variant>G</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_H">
+    <en-US>
+      <Variant>H</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_I">
+    <en-US>
+      <Variant>I</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_J">
+    <en-US>
+      <Variant>J</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_J">
+    <en-US>
+      <Variant>J</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_K">
+    <en-US>
+      <Variant>K</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_L">
+    <en-US>
+      <Variant>L</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_M">
+    <en-US>
+      <Variant>M</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_N">
+    <en-US>
+      <Variant>N</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_O">
+    <en-US>
+      <Variant>O</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_P">
+    <en-US>
+      <Variant>P</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Q">
+    <en-US>
+      <Variant>Q</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_R">
+    <en-US>
+      <Variant>R</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_S">
+    <en-US>
+      <Variant>S</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_T">
+    <en-US>
+      <Variant>T</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_U">
+    <en-US>
+      <Variant>U</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_V">
+    <en-US>
+      <Variant>V</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_W">
+    <en-US>
+      <Variant>W</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_X">
+    <en-US>
+      <Variant>X</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Y">
+    <en-US>
+      <Variant>Y</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Z">
+    <en-US>
+      <Variant>Z</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_CapsLock">
+    <en-US>
+      <Variant>CapsLock</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F1">
+    <en-US>
+      <Variant>F1</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F2">
+    <en-US>
+      <Variant>F2</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F3">
+    <en-US>
+      <Variant>F3</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F4">
+    <en-US>
+      <Variant>F4</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F5">
+    <en-US>
+      <Variant>F5</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F6">
+    <en-US>
+      <Variant>F6</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F7">
+    <en-US>
+      <Variant>F7</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F8">
+    <en-US>
+      <Variant>F8</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F9">
+    <en-US>
+      <Variant>F9</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F10">
+    <en-US>
+      <Variant>F10</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F11">
+    <en-US>
+      <Variant>F11</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F12">
+    <en-US>
+      <Variant>F12</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_PrintScreen">
+    <en-US>
+      <Variant>PrintScreen</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_ScrollLock">
+    <en-US>
+      <Variant>ScrollLock</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Pause">
+    <en-US>
+      <Variant>Pause</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Insert">
+    <en-US>
+      <Variant>Insert</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Home">
+    <en-US>
+      <Variant>Home</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_PageUp">
+    <en-US>
+      <Variant>PageUp</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Delete">
+    <en-US>
+      <Variant>Delete</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_End">
+    <en-US>
+      <Variant>End</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_PageDown">
+    <en-US>
+      <Variant>PageDown</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Right">
+    <en-US>
+      <Variant>Right</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Left">
+    <en-US>
+      <Variant>Left</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Down">
+    <en-US>
+      <Variant>Down</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Up">
+    <en-US>
+      <Variant>Up</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_NumLockClear">
+    <en-US>
+      <Variant>NumLockClear</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadDivide">
+    <en-US>
+      <Variant>KeypadDivide</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadMultiply">
+    <en-US>
+      <Variant>KeypadMultiply</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadMinus">
+    <en-US>
+      <Variant>Minus</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Plus">
+    <en-US>
+      <Variant>Plus</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Enter">
+    <en-US>
+      <Variant>Enter</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadD1">
+    <en-US>
+      <Variant>Keypad1</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadD2">
+    <en-US>
+      <Variant>Keypad2</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadD3">
+    <en-US>
+      <Variant>Keypad3</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadD4">
+    <en-US>
+      <Variant>Keypad4</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadD5">
+    <en-US>
+      <Variant>Keypad5</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadD6">
+    <en-US>
+      <Variant>Keypad6</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadD7">
+    <en-US>
+      <Variant>Keypad7</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadD8">
+    <en-US>
+      <Variant>Keypad8</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadD9">
+    <en-US>
+      <Variant>Keypad9</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadD0">
+    <en-US>
+      <Variant>Keypad0</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F13">
+    <en-US>
+      <Variant>F13</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F14">
+    <en-US>
+      <Variant>F14</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F15">
+    <en-US>
+      <Variant>F15</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F16">
+    <en-US>
+      <Variant>F16</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F17">
+    <en-US>
+      <Variant>F17</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F18">
+    <en-US>
+      <Variant>F18</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F19">
+    <en-US>
+      <Variant>F19</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F20">
+    <en-US>
+      <Variant>F20</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F21">
+    <en-US>
+      <Variant>F21</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F22">
+    <en-US>
+      <Variant>F22</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F23">
+    <en-US>
+      <Variant>F23</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_F24">
+    <en-US>
+      <Variant>F24</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Execute">
+    <en-US>
+      <Variant>Execute</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Help">
+    <en-US>
+      <Variant>Help</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Menu">
+    <en-US>
+      <Variant>Menu</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Select">
+    <en-US>
+      <Variant>Select</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Stop">
+    <en-US>
+      <Variant>Stop</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Again">
+    <en-US>
+      <Variant>Again</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Undo">
+    <en-US>
+      <Variant>Undo</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Cut">
+    <en-US>
+      <Variant>Cut</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Copy">
+    <en-US>
+      <Variant>Copy</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Paste">
+    <en-US>
+      <Variant>Paste</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Find">
+    <en-US>
+      <Variant>Find</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Mute">
+    <en-US>
+      <Variant>Mute</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_VolumeUp">
+    <en-US>
+      <Variant>VolumeUp</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_VolumeDown">
+    <en-US>
+      <Variant>VolumeDown</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadComma">
+    <en-US>
+      <Variant>KeypadComma</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadEqualsAS400">
+    <en-US>
+      <Variant>KeypadEqualsAS400</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AltErase">
+    <en-US>
+      <Variant>AltErase</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_SysReq">
+    <en-US>
+      <Variant>SysReq</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Cancel">
+    <en-US>
+      <Variant>Cancel</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Clear">
+    <en-US>
+      <Variant>Clear</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Prior">
+    <en-US>
+      <Variant>Prior</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Return2">
+    <en-US>
+      <Variant>Return2</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Separator">
+    <en-US>
+      <Variant>Separator</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Out">
+    <en-US>
+      <Variant>Out</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Oper">
+    <en-US>
+      <Variant>Oper</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_ClearAgain">
+    <en-US>
+      <Variant>ClearAgain</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_CrSel">
+    <en-US>
+      <Variant>CrSel</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_ExSel">
+    <en-US>
+      <Variant>ExSel</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Keypad00">
+    <en-US>
+      <Variant>Keypad00</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Keypad000">
+    <en-US>
+      <Variant>Keypad000</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_ThousandsSeparator">
+    <en-US>
+      <Variant>ThousandsSeparator</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_DecimalSeparator">
+    <en-US>
+      <Variant>DecimalSeparator</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_CurrencyUnit">
+    <en-US>
+      <Variant>CurrencyUnit</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_CurrencySubUnit">
+    <en-US>
+      <Variant>CurrencySubUnit</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadLeftParentheses">
+    <en-US>
+      <Variant>KeypadLeftParentheses</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadRightParentheses">
+    <en-US>
+      <Variant>KeypadRightParentheses</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadLeftBrace">
+    <en-US>
+      <Variant>KeypadLeftBrace</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadRightBrace">
+    <en-US>
+      <Variant>KeypadRightBrace</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadTab">
+    <en-US>
+      <Variant>KeypadTab</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadBackspace">
+    <en-US>
+      <Variant>KeypadBackspace</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadA">
+    <en-US>
+      <Variant>KeypadA</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadB">
+    <en-US>
+      <Variant>KeypadB</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadC">
+    <en-US>
+      <Variant>KeypadC</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadD">
+    <en-US>
+      <Variant>KeypadD</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadE">
+    <en-US>
+      <Variant>KeypadE</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadF">
+    <en-US>
+      <Variant>KeypadF</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadXor">
+    <en-US>
+      <Variant>KeypadXor</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadPower">
+    <en-US>
+      <Variant>KeypadPower</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadPercent">
+    <en-US>
+      <Variant>KeypadPercent</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadLess">
+    <en-US>
+      <Variant>KeypadLess</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadGreater">
+    <en-US>
+      <Variant>KeypadGreater</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadAmpersand">
+    <en-US>
+      <Variant>KeypadAmpersand</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadDoubleAmpersand">
+    <en-US>
+      <Variant>KeypadDoubleAmpersand</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadVerticalBar">
+    <en-US>
+      <Variant>KeypadVerticalBar</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadDoubleVerticalBar">
+    <en-US>
+      <Variant>KeypadDoubleVerticalBar</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadColon">
+    <en-US>
+      <Variant>KeypadColon</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadHash">
+    <en-US>
+      <Variant>KeypadHash</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadSpace">
+    <en-US>
+      <Variant>KeypadSpace</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadAt">
+    <en-US>
+      <Variant>KeypadAt</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadExclamation">
+    <en-US>
+      <Variant>KeypadExclamation</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadMemStore">
+    <en-US>
+      <Variant>KeypadMemStore</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadMemRecall">
+    <en-US>
+      <Variant>KeypadMemRecall</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadMemClear">
+    <en-US>
+      <Variant>KeypadMemClear</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadMemAdd">
+    <en-US>
+      <Variant>KeypadMemAdd</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadMemSubtract">
+    <en-US>
+      <Variant>KeypadMemSubtract</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadMemMultiply">
+    <en-US>
+      <Variant>KeypadMemMultiply</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadMemDivide">
+    <en-US>
+      <Variant>KeypadMemDivide</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadPlusMinus">
+    <en-US>
+      <Variant>KeypadPlusMinus</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadClear">
+    <en-US>
+      <Variant>KeypadClear</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadClearEntry">
+    <en-US>
+      <Variant>KeypadClearEntry</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadBinary">
+    <en-US>
+      <Variant>KeypadBinary</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadOctal">
+    <en-US>
+      <Variant>KeypadOctal</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadDecimal">
+    <en-US>
+      <Variant>KeypadDecimal</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_KeypadHexadecimal">
+    <en-US>
+      <Variant>KeypadHexadecimal</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_LeftControl">
+    <en-US>
+      <Variant>LeftControl</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_LeftShift">
+    <en-US>
+      <Variant>LeftShift</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_LeftAlt">
+    <en-US>
+      <Variant>LeftAlt</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_LeftGui">
+    <en-US>
+      <Variant>LeftGui</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_RightControl">
+    <en-US>
+      <Variant>RightControl</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_RightShift">
+    <en-US>
+      <Variant>RightShift</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_RightAlt">
+    <en-US>
+      <Variant>RightAlt</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_RightGui">
+    <en-US>
+      <Variant>RightGui</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Mode">
+    <en-US>
+      <Variant>Mode</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AudioNext">
+    <en-US>
+      <Variant>AudioNext</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AudioPrev">
+    <en-US>
+      <Variant>AudioPrev</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AudioStop">
+    <en-US>
+      <Variant>AudioStop</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AudioPlay">
+    <en-US>
+      <Variant>AudioPlay</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AudioMute">
+    <en-US>
+      <Variant>AudioMute</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_MediaSelect">
+    <en-US>
+      <Variant>MediaSelect</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_WorldWideWeb">
+    <en-US>
+      <Variant>WWW</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Mail">
+    <en-US>
+      <Variant>Mail</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Calculator">
+    <en-US>
+      <Variant>Calculator</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Computer">
+    <en-US>
+      <Variant>Computer</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AppControlSearch">
+    <en-US>
+      <Variant>AppControlSearch</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AppControlHome">
+    <en-US>
+      <Variant>AppControlHome</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AppControlBack">
+    <en-US>
+      <Variant>AppControlBack</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AppControlForward">
+    <en-US>
+      <Variant>AppControlForward</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AppControlStop">
+    <en-US>
+      <Variant>AppControlStop</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AppControlRefresh">
+    <en-US>
+      <Variant>AppControlRefresh</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_AppControlBookmarks">
+    <en-US>
+      <Variant>AppControlBookmarks</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_BrightnessDown">
+    <en-US>
+      <Variant>BrightnessDown</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_BrightnessUp">
+    <en-US>
+      <Variant>BrightnenssUp</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_DisplaySwitch">
+    <en-US>
+      <Variant>DisplaySwitch</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_IlluminationToggle">
+    <en-US>
+      <Variant>IlluminationToggle</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_IlluminationDown">
+    <en-US>
+      <Variant>IlluminationDown</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_IlluminationUp">
+    <en-US>
+      <Variant>IlluminationUp</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Eject">
+    <en-US>
+      <Variant>Eject</Variant>
+    </en-US>
+  </String>
+  <String Key="KEY_Sleep">
+    <en-US>
+      <Variant>Sleep</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

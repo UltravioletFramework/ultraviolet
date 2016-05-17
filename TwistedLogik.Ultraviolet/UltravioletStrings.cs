@@ -18,6 +18,10 @@ namespace TwistedLogik.Ultraviolet
             {
                 StringDatabase.LoadFromStream(stream);
             }
+            using (var stream = asm.GetManifestResourceStream("TwistedLogik.Ultraviolet.Resources.Bindings.xml"))
+            {
+                Localization.Strings.LoadFromStream(stream);
+            }
         }
 
         private static readonly LocalizationDatabase StringDatabase = new LocalizationDatabase();

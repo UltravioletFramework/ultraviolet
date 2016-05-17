@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Nucleus.Xml;
 
 namespace TwistedLogik.Ultraviolet.Input
@@ -20,9 +21,11 @@ namespace TwistedLogik.Ultraviolet.Input
             Contract.Require(uv, "uv");
             Contract.Require(element, "element");
 
-            this.uv          = uv;
+            this.uv = uv;
             this.playerIndex = element.ElementValueInt32("Player") ?? 0;
-            this.button      = element.ElementValueEnum<GamePadButton>("Button") ?? GamePadButton.None;
+            this.button = element.ElementValueEnum<GamePadButton>("Button") ?? GamePadButton.None;
+
+            this.stringRepresentation = BuildStringRepresentation();
         }
 
         /// <summary>
@@ -39,7 +42,15 @@ namespace TwistedLogik.Ultraviolet.Input
 
             this.uv = uv;
             this.playerIndex = playerIndex;
-            this.button  = button;
+            this.button = button;
+
+            this.stringRepresentation = BuildStringRepresentation();
+        }
+
+        /// <inheritdoc/>
+        public override String ToString()
+        {
+            return stringRepresentation;
         }
 
         /// <inheritdoc/>
@@ -157,10 +168,19 @@ namespace TwistedLogik.Ultraviolet.Input
         {
             return 0;
         }
+        
+        /// <summary>
+        /// Builds a string representation of the game pad binding.
+        /// </summary>
+        private String BuildStringRepresentation()
+        {
+            return Localization.Get("GAME_PAD_BUTTON_" + Button);
+        }
 
         // Property values.
         private readonly Int32 playerIndex;
         private readonly GamePadButton button;
+        private readonly String stringRepresentation;
 
         // State values.
         private readonly UltravioletContext uv;
