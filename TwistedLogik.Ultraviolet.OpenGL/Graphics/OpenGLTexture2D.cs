@@ -400,6 +400,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 case gl.GL_RGBA32UI:
                     return gl.GL_RGBA;
 
+                case gl.GL_DEPTH_COMPONENT16:
+                case gl.GL_DEPTH_COMPONENT24:
+                case gl.GL_DEPTH_COMPONENT32:
+                    return gl.GL_DEPTH_COMPONENT;
+
+                case gl.GL_DEPTH24_STENCIL8:
+                    return gl.GL_DEPTH_STENCIL;
+
+                case gl.GL_STENCIL_INDEX8:
+                    return gl.GL_STENCIL_INDEX;
+
                 default:
                     throw new ArgumentOutOfRangeException("internalformat");
             }
