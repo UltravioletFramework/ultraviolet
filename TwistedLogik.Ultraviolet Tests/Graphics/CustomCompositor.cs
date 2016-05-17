@@ -150,6 +150,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
             spriteBatch.Draw(rtInterfaceColor, area, Color.Lime);
             spriteBatch.End();
 
+            gfx.UnbindTexture(rtSceneColor);
+            gfx.UnbindTexture(rtInterfaceColor);
+
             base.Compose();
         }
 
@@ -166,6 +169,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
             spriteBatch.Draw(rtCompositionColor, area, Color.White);
             spriteBatch.End();
+
+            gfx.UnbindTexture(rtCompositionColor);
 
             base.Present();
         }

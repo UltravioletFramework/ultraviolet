@@ -5,6 +5,11 @@
       <Variant>Ultraviolet Framework Application</Variant>
     </en-US>
   </String>
+  <String Key="GENERIC_ERROR">
+    <en-US>
+      <Variant>A generic error occurred.</Variant>
+    </en-US>
+  </String>
   <String Key="MISSING_COMPATIBILITY_SHIM">
     <en-US>
       <Variant>Cannot find the compatibility shim for the current platform ({0})</Variant>

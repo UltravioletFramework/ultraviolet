@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)GlobalSuppressions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectImplementationProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteBatchEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontProcessor.cs" />
@@ -21,14 +23,18 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBlurEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLDepthStencilState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementation.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessor.cs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromXDocumentV2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromXDocumentV1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromXDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectParameterCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectParameterData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectParameterDataType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectPass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectPassCollection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectTechnique.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectTechniqueCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLFragmentShader.cs.cs" />
@@ -41,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLRasterizerState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLRenderBuffer2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLRenderTarget2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSamplerObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSamplerState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderProgram.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderProgramCollection.cs" />
@@ -58,6 +65,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexShaderImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexShaderProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderCompiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLCursor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLCursorProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLInitializer.cs" />

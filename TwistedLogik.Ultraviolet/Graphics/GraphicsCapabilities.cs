@@ -28,6 +28,13 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// preserving the content of a render target after it has been unbound for rendering.
         /// </summary>
         public abstract Boolean SupportsPreservingRenderTargetContentInHardware { get; }
+        
+        /// <summary>
+        /// Gets a value indicating whether the current device provides support for sampler state
+        /// which is independent from texture state. If this value is false, every sampler to which
+        /// a particular texture is bound must have the same sampler state.
+        /// </summary>
+        public abstract Boolean SupportsIndependentSamplerState { get; }
 
         /// <summary>
         /// Gets the maximum texture size supported by the device.

@@ -177,7 +177,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public void BindRead()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(BoundForReading, OpenGLStrings.ResourceAlreadyBound);
+            Contract.EnsureNot(BoundForWriting, OpenGLStrings.ResourceCannotBeReadWhileWriting);
 
             foreach (var buffer in buffers)
                 buffer.BindRead();
@@ -189,7 +189,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public void BindWrite()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(BoundForWriting, OpenGLStrings.ResourceAlreadyBound);
+            Contract.EnsureNot(BoundForReading, OpenGLStrings.ResourceCannotBeWrittenWhileReading);
 
             foreach (var buffer in buffers)
                 buffer.BindWrite();

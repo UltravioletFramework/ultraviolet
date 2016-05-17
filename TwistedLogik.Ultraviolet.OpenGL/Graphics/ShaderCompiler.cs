@@ -6,9 +6,9 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the base class for shaders.
+    /// Contains methods for parsing and compiling shaders.
     /// </summary>
-    public static class ShaderCompiler
+    internal static class ShaderCompiler
     {
         /// <summary>
         /// Compiles the specified shader.

@@ -24,6 +24,7 @@ namespace TwistedLogik.Ultraviolet
 
 #pragma warning disable 1591
         public static readonly StringResource DefaultWindowCaption                 = new StringResource(StringDatabase, "DEFAULT_WINDOW_CAPTION");
+        public static readonly StringResource GenericError                         = new StringResource(StringDatabase, "GENERIC_ERROR");
         public static readonly StringResource MissingCompatibilityShim             = new StringResource(StringDatabase, "MISSING_COMPATIBILITY_SHIM");
         public static readonly StringResource InvalidDependency                    = new StringResource(StringDatabase, "INVALID_DEPENDENCY");
         public static readonly StringResource InvalidResource                      = new StringResource(StringDatabase, "INVALID_RESOURCE");

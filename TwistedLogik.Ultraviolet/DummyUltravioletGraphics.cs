@@ -80,6 +80,24 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
+        public void UnbindTexture(Texture2D texture)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
+        public void UnbindTextures(Object state, Func<Texture2D, Object, Boolean> predicate)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
+        public void UnbindAllTextures()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
         public void SetTexture(Int32 sampler, Texture2D texture)
         {
             Contract.EnsureNotDisposed(this, Disposed);

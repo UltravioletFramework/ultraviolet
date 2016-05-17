@@ -1,4 +1,4 @@
-﻿using System.Xml.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
@@ -6,10 +6,10 @@ namespace TwistedLogik.Ultraviolet.Content
     /// Represents a content processor which loads XML documents.
     /// </summary>
     [ContentProcessor]
-    public sealed class XmlContentProcessor : ContentProcessor<XDocument, XDocument>
+    public sealed class JsonContentProcessor : ContentProcessor<JObject, JObject>
     {
         /// <inheritdoc/>
-        public override XDocument Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
+        public override JObject Process(ContentManager manager, IContentProcessorMetadata metadata, JObject input)
         {
             return input;
         }

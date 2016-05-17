@@ -16,15 +16,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="techniques">The effect's techniques.</param>
-        public OpenGLEffectImplementation(UltravioletContext uv, ICollection<OpenGLEffectTechnique> techniques)
+        /// <param name="parameters">The effect's list of expected parameters, or <see langword="null"/> to
+        /// determine the parameters by querying shader uniforms.</param>
+        public OpenGLEffectImplementation(UltravioletContext uv,
+            IEnumerable<OpenGLEffectTechnique> techniques, IEnumerable<String> parameters = null)
             : base(uv)
         {
-            Contract.RequireNotEmpty(techniques, "techniques");
+            Contract.RequireNotEmpty(techniques, nameof(techniques));
 
             this.techniques = new OpenGLEffectTechniqueCollection(techniques);
-            this.currentTechnique = this.techniques[0];
+            this.currentTechnique = this.techniques.First();
 
-            this.parameters = CreateEffectParameters(techniques);
+            this.parameters = CreateEffectParameters(techniques, parameters);
         }
 
         /// <summary>
@@ -32,11 +35,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public override EffectParameterCollection Parameters
         {
-            get 
+            get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return parameters; 
+                return parameters;
             }
         }
 
@@ -98,17 +101,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Creates an effect parameter collection from the specified collection of techniques.
         /// </summary>
         /// <param name="techniques">The collection of techniques from which to create an effect parameter collection.</param>
+        /// <param name="parameters">The collection of expected parameter names, or <see langword="null"/> to query
+        /// effect parameters from shader uniforms.</param>
         /// <returns>The effect parameter collection that was created.</returns>
-        private OpenGLEffectParameterCollection CreateEffectParameters(IEnumerable<OpenGLEffectTechnique> techniques)
+        private OpenGLEffectParameterCollection CreateEffectParameters(
+            IEnumerable<OpenGLEffectTechnique> techniques, IEnumerable<String> parameters)
         {
-            var parameters = new Dictionary<String, OpenGLEffectParameter>();
+            var paramlist = new Dictionary<String, OpenGLEffectParameter>();
 
             var uniforms =
                 from tech in techniques
                 from pass in tech.Passes
                 from prog in ((OpenGLEffectPass)pass).Programs
                 from unif in prog.Uniforms
-                group unif by unif.Name into g
+                let name = unif.Name
+                let nameSanitized = name.EndsWith("[0]") ? name.Substring(0, name.Length - "[0]".Length) : name
+                where parameters == null || parameters.Contains(nameSanitized)
+                group unif by nameSanitized into g
                 select g;
 
             var mismatches = uniforms.Where(x => x.Select(y => y.Type).Distinct().Count() > 1);
@@ -120,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var name = kvp.Key;
                 var type = kvp.Select(x => x.Type).First();
                 var parameter = new OpenGLEffectParameter(Ultraviolet, name, type);
-                parameters[name] = parameter;
+                paramlist[name] = parameter;
 
                 foreach (var uniform in kvp)
                 {
@@ -128,7 +137,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 }
             }
 
-            return new OpenGLEffectParameterCollection(parameters.Values);
+            if (parameters != null)
+            {
+                foreach (var p in parameters)
+                {
+                    if (!paramlist.ContainsKey(p))
+                        throw new InvalidOperationException(OpenGLStrings.EffectParameterCannotFindUniform.Format(p));        
+                }
+            }
+
+            return new OpenGLEffectParameterCollection(paramlist.Values);
         }
 
         // Property values.

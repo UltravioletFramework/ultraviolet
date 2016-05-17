@@ -43,12 +43,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public static readonly StringResource RenderBufferWillNotBeSampled          = new StringResource(StringDatabase, "RENDER_BUFFER_WILL_NOT_BE_SAMPLED");
         public static readonly StringResource RenderBufferIsWrongSize               = new StringResource(StringDatabase, "RENDER_BUFFER_IS_WRONG_SIZE");
         public static readonly StringResource RenderBufferExceedsTargetCapacity     = new StringResource(StringDatabase, "RENDER_BUFFER_EXCEEDS_TARGET_CAPACITY");
-        public static readonly StringResource ResourceAlreadyBound                  = new StringResource(StringDatabase, "RESOURCE_ALREADY_BOUND");
+        public static readonly StringResource ResourceCannotBeReadWhileWriting      = new StringResource(StringDatabase, "RESOURCE_CANNOT_BE_READ_WHILE_WRITING");
+        public static readonly StringResource ResourceCannotBeWrittenWhileReading   = new StringResource(StringDatabase, "RESOURCE_CANNOT_BE_WRITTEN_WHILE_READING");
         public static readonly StringResource ResourceNotBound                      = new StringResource(StringDatabase, "RESOURCE_NOT_BOUND");
         public static readonly StringResource StaleOpenGLCache                      = new StringResource(StringDatabase, "STALE_OPENGL_CACHE");
         public static readonly StringResource EffectUniformTypeMismatch             = new StringResource(StringDatabase, "EFFECT_UNIFORM_TYPE_MISMATCH");
+        public static readonly StringResource EffectParameterCannotFindUniform      = new StringResource(StringDatabase, "EFFECT_PARAMETER_CANNOT_FIND_UNIFORM");
         public static readonly StringResource ImmutableValueAlreadySet              = new StringResource(StringDatabase, "IMMUTABLE_VALUE_ALREADY_SET");
         public static readonly StringResource InvalidEffectPass                     = new StringResource(StringDatabase, "INVALID_EFFECT_PASS");
+        public static readonly StringResource DocumentDoesNotContainEffect          = new StringResource(StringDatabase, "DOCUMENT_DOES_NOT_CONTAIN_EFFECT");
         public static readonly StringResource EffectMustHaveVertexAndFragmentShader = new StringResource(StringDatabase, "EFFECT_MUST_HAVE_VERTEX_AND_FRAGMENT_SHADER");
         public static readonly StringResource EffectMustHaveTechniques              = new StringResource(StringDatabase, "EFFECT_MUST_HAVE_TECHNIQUES");
         public static readonly StringResource EffectTechniqueMustHavePasses         = new StringResource(StringDatabase, "EFFECT_TECHNIQUE_MUST_HAVE_PASSES");

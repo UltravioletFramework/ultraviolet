@@ -49,6 +49,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\IContentImporterMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\IContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\IContentProcessorMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\JsonContentImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\JsonContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\TextContentImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\TextContentProcessor.cs" />

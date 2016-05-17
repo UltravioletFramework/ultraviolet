@@ -15,10 +15,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="name">The human-readable name of this value.</param>
         /// <param name="pname">The property name of this value when retrieved via glGet().</param>
-        public OpenGLStateInteger(String name, UInt32 pname)
+        /// <param name="initial">The initial value of the integer.</param>
+        public OpenGLStateInteger(String name, UInt32 pname, Int32 initial = 0)
         {
             this.name  = name;
             this.pname = pname;
+            this.initial = initial;
+            this.value = initial;
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public void Reset()
         {
-            this.value = 0;
+            this.value = initial;
         }
 
         /// <summary>
@@ -108,5 +111,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private readonly String name;
         private readonly UInt32 pname;
         private Int32 value;
+        private Int32 initial;
     }
 }

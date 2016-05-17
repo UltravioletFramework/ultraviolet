@@ -7,18 +7,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// Loads vertex shader assets.
     /// </summary>
     [ContentProcessor]
-    public sealed class OpenGLVertexShaderProcessor : ContentProcessor<String, OpenGLVertexShader>
+    public sealed class OpenGLVertexShaderProcessor : ShaderProcessor<OpenGLVertexShader>
     {
-        /// <summary>
-        /// Processes the specified data structure into a game asset.
-        /// </summary>
-        /// <param name="manager">The content manager with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="input">The input data structure to process.</param>
-        /// <returns>The game asset that was created.</returns>
+        /// <inheritdoc/>
         public override OpenGLVertexShader Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
         {
-            return new OpenGLVertexShader(manager.Ultraviolet, new[] { input });
+            var source = ReplaceIncludes(manager, metadata, input);
+            return new OpenGLVertexShader(manager.Ultraviolet, new[] { source });
         }
     }
 }

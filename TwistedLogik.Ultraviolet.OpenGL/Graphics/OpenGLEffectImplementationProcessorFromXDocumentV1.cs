@@ -4,41 +4,44 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using TwistedLogik.Gluon;
-using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Loads shader effect assets.
+    /// Loads shader effect assets from version 1 XML definition files.
     /// </summary>
-    [ContentProcessor]
-    public sealed class OpenGLEffectImplementationProcessor : ContentProcessor<XDocument, EffectImplementation>
+    internal sealed class OpenGLEffectImplementationProcessorFromXDocumentV1 : ContentProcessor<XDocument, EffectImplementation>
     {
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
         {
+            writer.Write((Byte)255);
+            writer.Write((Byte)255);
+            writer.Write((Byte)255);
+            writer.Write((Byte)1);
+
             var techniqueElements = input.Root.Elements("Technique");
             if (!techniqueElements.Any())
                 throw new ContentLoadException(OpenGLStrings.EffectMustHaveTechniques);
 
             writer.Write(techniqueElements.Count());
-            
+
             foreach (var techniqueElement in techniqueElements)
             {
-                var techniqueName = techniqueElement.AttributeValueString("Name");
+                var techniqueName = (String)techniqueElement.Attribute("Name");
                 writer.Write(techniqueName);
 
                 var passElements = techniqueElements.Elements("Pass");
                 if (!passElements.Any())
                     throw new ContentLoadException(OpenGLStrings.EffectTechniqueMustHavePasses);
-                
+
                 writer.Write(passElements.Count());
 
                 foreach (var passElement in passElements)
                 {
-                    var passName = passElement.AttributeValueString("Name");
+                    var passName = (String)passElement.Attribute("Name");
                     writer.Write(passName);
 
                     var vertexShaderAsset = GetShader(passElement, "VertexShader");
@@ -85,8 +88,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                     var fragmentShaderAsset = reader.ReadString();
                     if (String.IsNullOrEmpty(fragmentShaderAsset))
-                        throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader); 
-                    
+                        throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
+
                     var fragmentShader = manager.Load<OpenGLFragmentShader>(fragmentShaderAsset);
 
                     var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertexShader, fragmentShader, true) };
@@ -95,6 +98,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 techniques.Add(new OpenGLEffectTechnique(manager.Ultraviolet, techniqueName, passes));
             }
+
             return new OpenGLEffectImplementation(manager.Ultraviolet, techniques);
         }
 
@@ -105,10 +109,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var techniqueElements = input.Root.Elements("Technique");
             if (!techniqueElements.Any())
                 throw new ContentLoadException(OpenGLStrings.EffectMustHaveTechniques);
-            
+
             foreach (var techniqueElement in techniqueElements)
             {
-                var techniqueName = techniqueElement.AttributeValueString("Name");
+                var techniqueName = (String)techniqueElement.Attribute("Name");
                 var techniquePasses = new List<OpenGLEffectPass>();
 
                 var passElements = techniqueElements.Elements("Pass");
@@ -117,7 +121,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 foreach (var passElement in passElements)
                 {
-                    var passName = passElement.AttributeValueString("Name");
+                    var passName = (String)passElement.Attribute("Name");
 
                     var vertexShaderAsset = GetShader(passElement, "VertexShader");
                     if (String.IsNullOrEmpty(vertexShaderAsset))
@@ -134,17 +138,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertexShader, fragmentShader, true) };
                     techniquePasses.Add(new OpenGLEffectPass(manager.Ultraviolet, passName, programs));
                 }
-                
+
                 techniques.Add(new OpenGLEffectTechnique(manager.Ultraviolet, techniqueName, techniquePasses));
             }
+
             return new OpenGLEffectImplementation(manager.Ultraviolet, techniques);
         }
 
         /// <inheritdoc/>
-        public override Boolean SupportsPreprocessing
-        {
-            get { return true; }
-        }
+        public override Boolean SupportsPreprocessing => true;
 
         /// <summary>
         /// Gets the asset path of the specified shader.
@@ -152,14 +154,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="element">The XML element that defines the shaders for an effect pass.</param>
         /// <param name="shader">The name of the shader to retrieve.</param>
         /// <returns>The asset path of the specified shader.</returns>
-        private String GetShader(XElement element, String shader)
+        internal static String GetShader(XElement element, String shader)
         {
             if (gl.IsGLES)
             {
-                var vert = element.ElementValueString(shader + "ES");
+                var vert = (String)element.Element(shader + "ES");
                 if (vert == null)
                 {
-                    vert = element.ElementValueString(shader);
+                    vert = (String)element.Element(shader);
                     if (vert == null)
                     {
                         return null;
@@ -169,7 +171,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 }
                 return vert;
             }
-            return element.ElementValueString(shader);
+            return (String)element.Element(shader);
         }
     }
 }

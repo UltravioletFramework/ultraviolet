@@ -216,6 +216,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Sets a value into the buffer.
         /// </summary>
         /// <param name="value">The value to set.</param>
+        public void Set(Color[] value)
+        {
+            dataType = OpenGLEffectParameterDataType.ColorArray;
+            refData = value;
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
         public void Set(Matrix value)
         {
             dataType = OpenGLEffectParameterDataType.Matrix;
@@ -223,6 +233,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             {
                 *((Matrix*)pValData) = value;
             }
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void Set(Matrix[] value)
+        {
+            dataType = OpenGLEffectParameterDataType.MatrixArray;
+            refData = value;
         }
 
         /// <summary>
@@ -524,6 +544,21 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Gets the value that is set into the buffer.
         /// </summary>
         /// <returns>The value that is set into the buffer.</returns>
+        public Color[] GetColorArray()
+        {
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return null;
+
+            if (dataType == OpenGLEffectParameterDataType.ColorArray)
+                return (Color[])refData;
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <returns>The value that is set into the buffer.</returns>
         public Matrix GetMatrix()
         {
             if (dataType == OpenGLEffectParameterDataType.None)
@@ -536,6 +571,21 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     return *((Matrix*)pValData);
                 }
             }
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <returns>The value that is set into the buffer.</returns>
+        public Matrix[] GetMatrixArray()
+        {
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return null;
+
+            if (dataType == OpenGLEffectParameterDataType.MatrixArray)
+                return (Matrix[])refData;
 
             throw new InvalidCastException();
         }

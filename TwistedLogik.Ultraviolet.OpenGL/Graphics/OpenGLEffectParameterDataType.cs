@@ -92,9 +92,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         Color,
 
         /// <summary>
+        /// An array of Color values is set on the effect.
+        /// </summary>
+        ColorArray,
+
+        /// <summary>
         /// A Matrix value is set on the effect.
         /// </summary>
         Matrix,
+
+        /// <summary>
+        /// An array of Matrix values is set on the effect.
+        /// </summary>
+        MatrixArray,
 
         /// <summary>
         /// A Texture2D value is set on the effect.
