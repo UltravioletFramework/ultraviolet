@@ -137,7 +137,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
-            if (textLayoutCommands.ActualWidth != finalSize.Width || textLayoutCommands.ActualHeight != finalSize.Height)
+            if (textLayoutCommands.Settings.Width != finalSize.Width || textLayoutCommands.Settings.Height != finalSize.Height)
                 UpdateTextLayoutResult(finalSize);
 
             return finalSize;

@@ -2433,7 +2433,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected void DrawBlank(DrawingContext dc, Color color)
         {
             DrawBlank(dc, null, Point2D.Zero, color);
-
         }
 
         /// <summary>
