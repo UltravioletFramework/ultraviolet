@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet
         internal void ProcessWorkItems()
         {
             var count = Interlocked.CompareExchange(ref pendingWorkItemCount, 0, 0);
-            if (count >= 0)
+            if (count == 0)
                 return;
 
             Task workItem;
