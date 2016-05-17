@@ -30,10 +30,29 @@ namespace UltravioletSample.Sample7_PlayingMusic.Input
             /// <inheritdoc/>
             protected override void OnResetting()
             {
-                this.ExitApplication
-                    .Primary = CreateKeyboardBinding(Key.F4, alt: true);
+                switch (Ultraviolet.Platform)
+                {
+                    case UltravioletPlatform.Android:
+                        Reset_Android();
+                        break;
 
+                    default:
+                        Reset_Desktop();
+                        break;
+                }
                 base.OnResetting();
+            }
+
+            private void Reset_Desktop()
+            {
+                this.ExitApplication
+                    .Primary = CreateKeyboardBinding(Key.Escape);
+            }
+
+            private void Reset_Android()
+            {
+                this.ExitApplication
+                    .Primary = CreateKeyboardBinding(Key.AppControlBack);
             }
         }
     }
