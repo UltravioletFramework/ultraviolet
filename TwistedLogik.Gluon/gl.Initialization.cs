@@ -222,6 +222,22 @@ namespace TwistedLogik.Gluon
         }
 
         /// <summary>
+        /// Gets the major version of the OpenGL driver.
+        /// </summary>
+        public static Int32 MajorVersion
+        {
+            get { return majorVersion; }
+        }
+
+        /// <summary>
+        /// Gets the minor version of the OpenGL driver.
+        /// </summary>
+        public static Int32 MinorVersion
+        {
+            get { return minorVersion; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether OpenGL has been initialized.
         /// </summary>
         public static Boolean Initialized
