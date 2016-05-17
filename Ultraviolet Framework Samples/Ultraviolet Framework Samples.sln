@@ -126,6 +126,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample14_LoadingImageDataWi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample14_LoadingImageDataWithSurfaces (Desktop)", "Sample14_LoadingImageDataWithSurfaces (Desktop)\Sample14_LoadingImageDataWithSurfaces (Desktop).csproj", "{067AE3A0-BBF6-47B1-8371-3710F199DA65}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample15_RenderTargetsAndBuffers", "Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.shproj", "{06B65153-1D88-4805-B2FD-A5B3BCAB3587}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBuffers (Android)", "Sample15_RenderTargetsAndBuffers (Android)\Sample15_RenderTargetsAndBuffers (Android).csproj", "{7377B092-0887-4180-A7DC-83EB29C48825}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBuffers (Desktop)", "Sample15_RenderTargetsAndBuffers (Desktop)\Sample15_RenderTargetsAndBuffers (Desktop).csproj", "{03638242-3ADB-4881-88C7-63519F4A377B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Sample5_RenderingSprites\Sample5_RenderingSprites.projitems*{0ecfaa60-2d08-4330-8533-a2262447dd1f}*SharedItemsImports = 13
@@ -139,6 +145,7 @@ Global
 		Sample1_CreatingAnApplication\Sample1_CreatingAnApplication.projitems*{fd1ac1b5-c403-4c80-8169-9dfa1277e81a}*SharedItemsImports = 13
 		Sample6_RenderingText\Sample6_RenderingText.projitems*{b689c7be-e5e6-49af-a594-f7771a74c7d4}*SharedItemsImports = 4
 		Sample2_HandlingInput\Sample2_HandlingInput.projitems*{b13372ad-66ea-4829-a5de-6032bb60af7c}*SharedItemsImports = 4
+		Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.projitems*{06b65153-1d88-4805-b2fd-a5b3bcab3587}*SharedItemsImports = 13
 		Sample10_AsynchronousContentLoading\Sample10_AsynchronousContentLoading.projitems*{9491b997-483c-4f11-8a96-13b122e5419a}*SharedItemsImports = 13
 		Sample12_UPF\Sample12_UPF.projitems*{ae5864b1-81fa-49c6-b0b6-f70f68175054}*SharedItemsImports = 4
 		Sample12_UPF\Sample12_UPF.projitems*{6be6da33-0089-41c0-a4e1-b51f145a22ef}*SharedItemsImports = 13
@@ -146,6 +153,7 @@ Global
 		Sample6_RenderingText\Sample6_RenderingText.projitems*{df1de1b8-4ff9-4001-9541-73b4f7858bc3}*SharedItemsImports = 4
 		Sample6_RenderingText\Sample6_RenderingText.projitems*{92c3587d-b6d3-493c-98c0-c0983e622a80}*SharedItemsImports = 13
 		Sample13_UPFAdvanced\Sample13_UPFAdvanced.projitems*{e7a444cb-f7ab-46d9-8406-e21e5db850f9}*SharedItemsImports = 4
+		Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.projitems*{7377b092-0887-4180-a7dc-83eb29c48825}*SharedItemsImports = 4
 		Sample10_AsynchronousContentLoading\Sample10_AsynchronousContentLoading.projitems*{156c7e00-6ff0-4a2b-aa84-844f4e7acdf2}*SharedItemsImports = 4
 		Sample10_AsynchronousContentLoading\Sample10_AsynchronousContentLoading.projitems*{573824f0-2acc-46f4-95ee-79b78b0e36d6}*SharedItemsImports = 4
 		Sample8_PlayingSoundEffects\Sample8_PlayingSoundEffects.projitems*{658a523e-fda7-4e1f-a3f2-932b401a50d9}*SharedItemsImports = 13
@@ -161,6 +169,7 @@ Global
 		Sample9_ManagingStateWithUIScreens\Sample9_ManagingStateWithUIScreens.projitems*{dbd61736-8eb2-4d5c-bbb2-110fc9a10c7d}*SharedItemsImports = 4
 		Sample12_UPF\Sample12_UPF.projitems*{3dfdef78-d6c3-4be4-9f99-a62294c72a1f}*SharedItemsImports = 4
 		Sample14_LoadingImageDataWithSurfaces\Sample14_LoadingImageDataWithSurfaces.projitems*{013ee98f-8de7-48e9-8f2b-c39f056c0615}*SharedItemsImports = 13
+		Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.projitems*{03638242-3adb-4881-88c7-63519f4a377b}*SharedItemsImports = 4
 		Sample9_ManagingStateWithUIScreens\Sample9_ManagingStateWithUIScreens.projitems*{0a93613c-b14a-41d8-bab5-e01aa6d33d89}*SharedItemsImports = 13
 		Sample3_RenderingGeometry\Sample3_RenderingGeometry.projitems*{3e90954a-0bd4-4855-ae3d-698761d95e5e}*SharedItemsImports = 4
 		Sample13_UPFAdvanced\Sample13_UPFAdvanced.projitems*{2dcb1219-e0ee-44f0-a4c2-ac120d0ca386}*SharedItemsImports = 4
@@ -387,6 +396,21 @@ Global
 		{067AE3A0-BBF6-47B1-8371-3710F199DA65}.Release|Any CPU.Build.0 = Release|Any CPU
 		{067AE3A0-BBF6-47B1-8371-3710F199DA65}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{067AE3A0-BBF6-47B1-8371-3710F199DA65}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{7377B092-0887-4180-A7DC-83EB29C48825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7377B092-0887-4180-A7DC-83EB29C48825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7377B092-0887-4180-A7DC-83EB29C48825}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7377B092-0887-4180-A7DC-83EB29C48825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7377B092-0887-4180-A7DC-83EB29C48825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7377B092-0887-4180-A7DC-83EB29C48825}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7377B092-0887-4180-A7DC-83EB29C48825}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{7377B092-0887-4180-A7DC-83EB29C48825}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{7377B092-0887-4180-A7DC-83EB29C48825}.Signed|Any CPU.Deploy.0 = Signed|Any CPU
+		{03638242-3ADB-4881-88C7-63519F4A377B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03638242-3ADB-4881-88C7-63519F4A377B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03638242-3ADB-4881-88C7-63519F4A377B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03638242-3ADB-4881-88C7-63519F4A377B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03638242-3ADB-4881-88C7-63519F4A377B}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{03638242-3ADB-4881-88C7-63519F4A377B}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -165,6 +165,7 @@ namespace UltravioletSample.Sample6_RenderingText
         {
             if (disposing)
             {
+                SafeDispose.Dispose(spriteBatch);
                 SafeDispose.Dispose(content);
             }
             base.Dispose(disposing);

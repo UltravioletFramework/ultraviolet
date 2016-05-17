@@ -1,6 +1,6 @@
 ﻿using TwistedLogik.Ultraviolet.Content;
 
-namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces.Assets
+namespace UltravioletSample.Sample15_RenderTargetsAndBuffers.Assets
 {
     public static class GlobalFontID
     {

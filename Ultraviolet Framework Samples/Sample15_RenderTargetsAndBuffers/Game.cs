@@ -1,0 +1,220 @@
+﻿using System;
+using TwistedLogik.Ultraviolet.Audio;
+using System.IO;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet;
+using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Graphics;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.OpenGL;
+using UltravioletSample.Sample15_RenderTargetsAndBuffers.Assets;
+using UltravioletSample.Sample15_RenderTargetsAndBuffers.Input;
+
+namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
+{
+#if ANDROID
+    [Android.App.Activity(Label = "Sample 15 - Render Targets and Buffers", MainLauncher = true, ConfigurationChanges = 
+        Android.Content.PM.ConfigChanges.Orientation | 
+        Android.Content.PM.ConfigChanges.ScreenSize | 
+        Android.Content.PM.ConfigChanges.KeyboardHidden)]
+    public class Game : UltravioletActivity
+#else
+    public class Game : UltravioletApplication
+#endif
+    {
+        public Game()
+            : base("TwistedLogik", "Sample 15 - Render Targets and Buffers")
+        {
+
+        }
+
+        public static void Main(string[] args)
+        {
+            using (var game = new Game())
+            {
+                game.Run();
+            }
+        }
+
+        protected override UltravioletContext OnCreatingUltravioletContext()
+        {
+            return new OpenGLUltravioletContext(this);
+        }
+
+        protected override void OnInitialized()
+        {
+            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
+
+            base.OnInitialized();
+        }
+
+        protected override void OnLoadingContent()
+        {
+            this.content = ContentManager.Create("Content");
+
+            LoadInputBindings();
+            LoadContentManifests();
+
+            this.spriteBatch = SpriteBatch.Create();
+
+            // A render target is composed of one or more render buffers. Each render buffer represents a particular
+            // output channel from a pixel shader, such as color or depth.
+            this.rbufferColor = RenderBuffer2D.Create(RenderBufferFormat.Color, 256, 256);
+            this.rbufferDepth = RenderBuffer2D.Create(RenderBufferFormat.Depth16, 256, 256);
+            this.rtarget = RenderTarget2D.Create(256, 256);
+
+            // Render buffers must be explicitly attached to a render target before they can be used.
+            this.rtarget.Attach(this.rbufferColor);
+            this.rtarget.Attach(this.rbufferDepth);
+
+            base.OnLoadingContent();
+        }
+
+        protected override void OnShutdown()
+        {
+            SaveInputBindings();
+
+            base.OnShutdown();
+        }
+
+        protected override void OnUpdating(UltravioletTime time)
+        {
+            if (Ultraviolet.GetInput().GetActions().SaveImage.IsPressed())
+            {
+                content.Load<SoundEffect>("SoundEffects/Shutter").Play();
+
+                // The SurfaceSaver class contains platform-specific functionality needed to write image
+                // data to files. We can pass a render target directly to the SaveAsPng() or SaveAsJpg() methods.
+                var saver = SurfaceSaver.Create();
+                var filename = $"output-{DateTime.Now:yyyyMMdd-HHmmss}.png";
+                using (var stream = File.OpenWrite(filename))
+                {
+                    saver.SaveAsPng(rtarget, stream);
+                }
+
+                confirmMsgText = $"Image saved to {filename}";
+                confirmMsgOpacity = 1;
+
+                // Alternatively, we could populate an array with the target's data using the GetData() method...
+                //     var data = new Color[rtarget.Width * rtarget.Height];
+                //     rtarget.GetData(data);
+            }
+
+            if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
+            {
+                Exit();
+            }
+
+            if (confirmMsgOpacity > 0)
+                confirmMsgOpacity -= (1.0 / 4.0) * time.ElapsedTime.TotalSeconds;
+
+            base.OnUpdating(time);
+        }
+
+        protected override void OnDrawing(UltravioletTime time)
+        {
+            // We specify that we want to start drawing to a render target with the SetRenderTarget() method.
+            Ultraviolet.GetGraphics().SetRenderTarget(rtarget);
+
+            // IMPORTANT NOTE! 
+            // When a render target is set for rendering, Ultraviolet will automatically clear it to a lovely shade of dark purple.
+            // You can change this behavior by passing RenderTargetUsage.PreserveContents to the render target constructor.
+            Ultraviolet.GetGraphics().Clear(Color.Black);
+
+            var effect = content.Load<Effect>(GlobalEffectID.Noise);
+            var effectTime = (Single)time.TotalTime.TotalSeconds * 0.1f;
+            effect.Parameters["time"].SetValue(effectTime);
+
+            var blank = content.Load<Texture2D>(GlobalTextureID.Blank);
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, effect);
+            spriteBatch.Draw(blank, new RectangleF(0, 0, rtarget.Width, rtarget.Height), Color.White);
+            spriteBatch.End();
+
+            // When we finish drawing to a render target, we can revert to the compositor target by passing
+            // null to the SetRenderTarget() method.
+            Ultraviolet.GetGraphics().SetRenderTarget(null);
+            Ultraviolet.GetGraphics().Clear(Color.CornflowerBlue);
+
+            // IMPORTANT NOTE!
+            // A render target (including its buffers) CANNOT BE BOUND FOR READING AND WRITING SIMULTANEOUSLY.
+            // You MUST revert to a different render target before trying to draw your buffers!
+            var compositor = Ultraviolet.GetPlatform().Windows.GetPrimary().Compositor;
+            var compWidth = compositor.Width;
+            var compHeight = compositor.Height;
+
+            if (Ultraviolet.Platform != UltravioletPlatform.Android)
+            {
+                var font = content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+
+                spriteBatch.Begin(SpriteSortMode.Deferred, null);
+                spriteBatch.Draw(rbufferColor, new Vector2(
+                    (compWidth - rbufferColor.Width) / 2,
+                    (compHeight - rbufferColor.Height) / 2), Color.White);
+                spriteBatch.DrawString(font, $"Press F1 to save the image to a file.",
+                    new Vector2(8f, 8f), Color.White);
+                spriteBatch.DrawString(font, confirmMsgText ?? String.Empty, 
+                    new Vector2(8f, 8f + font.Regular.LineSpacing), Color.White * (Single)confirmMsgOpacity);
+                spriteBatch.End();
+            }
+
+            // IMPORTANT NOTE!
+            // Remember, we can't be bound for both reading and writing. We're currently bound for reading,
+            // so we need to remember to unbind our buffers before we write to them again in the next frame.
+            // The UnbindTexture() method is provided for convenience; if you know which sampler your texture
+            // is bound to, you can either unbind the sampler manually, or bind another texture to it using SetTexture().
+            Ultraviolet.GetGraphics().UnbindTexture(rbufferColor);
+
+            base.OnDrawing(time);
+        }
+
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                SafeDispose.Dispose(rbufferDepth);
+                SafeDispose.Dispose(rbufferColor);
+                SafeDispose.Dispose(rtarget);
+                SafeDispose.Dispose(spriteBatch);
+                SafeDispose.Dispose(content);
+            }
+            base.Dispose(disposing);
+        }
+
+        private String GetInputBindingsPath()
+        {
+            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
+        }
+
+        private void LoadInputBindings()
+        {
+            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
+        }
+
+        private void SaveInputBindings()
+        {
+            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
+        }
+
+        private void LoadContentManifests()
+        {
+            var uvContent = Ultraviolet.GetContent();
+
+            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
+            uvContent.Manifests.Load(contentManifestFiles);
+
+            uvContent.Manifests["Global"]["Textures"].PopulateAssetLibrary(typeof(GlobalTextureID));
+            uvContent.Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
+            uvContent.Manifests["Global"]["Effects"].PopulateAssetLibrary(typeof(GlobalEffectID));
+            uvContent.Manifests["Global"]["SoundEffects"].PopulateAssetLibrary(typeof(GlobalSoundEffectID));
+        }
+
+        private ContentManager content;
+        private SpriteBatch spriteBatch;
+        private RenderTarget2D rtarget;
+        private RenderBuffer2D rbufferColor;
+        private RenderBuffer2D rbufferDepth;
+
+        private Double confirmMsgOpacity;
+        private String confirmMsgText;
+    }
+}

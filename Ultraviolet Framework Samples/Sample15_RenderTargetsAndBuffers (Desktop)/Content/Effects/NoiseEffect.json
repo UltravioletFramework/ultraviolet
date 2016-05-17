@@ -1,0 +1,17 @@
+﻿{
+  "parameters": [ "time", "MatrixTransform" ],
+  "techniques": [
+    {
+      "name": "Technique0",
+      "passes": [
+        {
+          "name": "Pass0",
+          "stages": {
+            "vert": "Noise.vert",
+            "frag": "Noise.frag"
+          }
+        }
+      ]
+    }
+  ]
+}

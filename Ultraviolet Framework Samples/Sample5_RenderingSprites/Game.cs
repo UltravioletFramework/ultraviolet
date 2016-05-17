@@ -124,6 +124,7 @@ namespace UltravioletSample.Sample5_RenderingSprites
         {
             if (disposing)
             {
+                SafeDispose.Dispose(spriteBatch);
                 SafeDispose.Dispose(content);
             }
             base.Dispose(disposing);

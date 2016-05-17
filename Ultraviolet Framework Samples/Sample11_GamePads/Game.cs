@@ -113,6 +113,7 @@ namespace UltravioletSample.Sample11_GamePads
         {
             if (disposing)
             {
+                SafeDispose.DisposeRef(ref spriteBatch);
                 SafeDispose.DisposeRef(ref content);
             }
             base.Dispose(disposing);

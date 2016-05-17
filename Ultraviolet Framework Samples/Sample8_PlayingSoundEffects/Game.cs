@@ -149,6 +149,7 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
         {
             if (disposing)
             {
+                SafeDispose.Dispose(spriteBatch);
                 SafeDispose.Dispose(content);
             }
             base.Dispose(disposing);
