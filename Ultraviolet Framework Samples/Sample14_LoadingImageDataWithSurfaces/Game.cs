@@ -16,7 +16,7 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
 #endif
-    public class Game : SampleApplicationBase1
+    public class Game : SampleApplicationBase2
     {
         public Game()
             : base("TwistedLogik", "Sample 14 - Loading Image Data with Surfaces", uv => uv.GetInput().GetActions())
@@ -24,7 +24,7 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
@@ -97,6 +97,7 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
         {
             this.content = ContentManager.Create("Content");
             LoadContentManifests(this.content);
+            LoadLocalizationDatabases(this.content);
 
             this.spriteBatch = SpriteBatch.Create();
 

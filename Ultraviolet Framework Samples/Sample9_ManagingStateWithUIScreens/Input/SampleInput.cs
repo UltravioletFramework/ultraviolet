@@ -1,7 +1,7 @@
 ﻿using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Input;
 
-namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces.Input
+namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.Input
 {
     public static class SampleInput
     {
@@ -23,7 +23,7 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces.Input
             {
                 this.ExitApplication =
                     CreateAction("EXIT_APPLICATION");
-                
+
                 base.OnCreatingActions();
             }
 

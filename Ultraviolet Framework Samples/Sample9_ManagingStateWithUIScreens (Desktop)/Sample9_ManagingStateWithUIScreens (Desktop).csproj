@@ -182,7 +182,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SampleSharedLib %28Desktop%29\SampleSharedLib %28Desktop%29.csproj">
+      <Project>{9f505c43-6e37-425f-b348-be4de7ab2f0b}</Project>
+      <Name>SampleSharedLib %28Desktop%29</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

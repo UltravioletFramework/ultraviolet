@@ -12,18 +12,16 @@ namespace UltravioletSample.Sample3_RenderingGeometry
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase1
     {
         public Game()
-            : base("TwistedLogik", "Sample 3 - Rendering Geometry")
+            : base("TwistedLogik", "Sample 3 - Rendering Geometry", uv => uv.GetInput().GetActions())
         {
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
@@ -34,6 +32,24 @@ namespace UltravioletSample.Sample3_RenderingGeometry
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             return new OpenGLUltravioletContext(this);
+        }
+        
+        protected override void OnLoadingContent()
+        {
+            this.effect = BasicEffect.Create();
+
+            this.vbuffer = VertexBuffer.Create<VertexPositionColor>(3);
+            this.vbuffer.SetData<VertexPositionColor>(new[]
+            {
+                new VertexPositionColor(new Vector3(0, 1, 0), Color.Red),
+                new VertexPositionColor(new Vector3(1, -1, 0), Color.Lime),
+                new VertexPositionColor(new Vector3(-1, -1, 0), Color.Blue),
+            });
+
+            this.geometryStream = GeometryStream.Create();
+            this.geometryStream.Attach(this.vbuffer);
+
+            base.OnLoadingContent();
         }
 
         protected override void OnUpdating(UltravioletTime time)
@@ -66,48 +82,6 @@ namespace UltravioletSample.Sample3_RenderingGeometry
             }
 
             base.OnDrawing(time);
-        }
-
-        protected override void OnLoadingContent()
-        {
-            LoadInputBindings();
-
-            this.effect = BasicEffect.Create();
-            
-            this.vbuffer = VertexBuffer.Create<VertexPositionColor>(3);
-            this.vbuffer.SetData<VertexPositionColor>(new []
-            {
-                new VertexPositionColor(new Vector3(0, 1, 0), Color.Red),
-                new VertexPositionColor(new Vector3(1, -1, 0), Color.Lime),
-                new VertexPositionColor(new Vector3(-1, -1, 0), Color.Blue),
-            });
-
-            this.geometryStream = GeometryStream.Create();
-            this.geometryStream.Attach(this.vbuffer);
-
-            base.OnLoadingContent();
-        }
-
-        protected override void OnShutdown()
-        {
-            SaveInputBindings();
-
-            base.OnShutdown();
-        }
-
-        private String GetInputBindingsPath()
-        {
-            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
-        }
-
-        private void LoadInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
-        }
-
-        private void SaveInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
         }
 
         private BasicEffect effect;

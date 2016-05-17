@@ -1,4 +1,5 @@
-﻿using TwistedLogik.Ultraviolet;
+﻿using System;
+using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.OpenGL;
 
 namespace UltravioletSample.Sample1_CreatingAnApplication
@@ -19,7 +20,7 @@ namespace UltravioletSample.Sample1_CreatingAnApplication
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {

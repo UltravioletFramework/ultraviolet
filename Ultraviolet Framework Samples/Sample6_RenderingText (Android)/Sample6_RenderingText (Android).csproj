@@ -184,11 +184,17 @@
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SampleSharedLib %28Android%29\SampleSharedLib %28Android%29.csproj">
+      <Project>{b238a15b-e99b-45f5-99fc-da32ce11ef4d}</Project>
+      <Name>SampleSharedLib %28Android%29</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\Sample6_RenderingText\Sample6_RenderingText.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="b689c7be-e5e6-49af-a594-f7771a74c7d4" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="b689c7be-e5e6-49af-a594-f7771a74c7d4" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -12,7 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Assets\GlobalFontID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Assets\GlobalSoundEffectID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Game.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\GameInputActions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\IUltravioletInputExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\SampleInput.cs" />
   </ItemGroup>
 </Project>

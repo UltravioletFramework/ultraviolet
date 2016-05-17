@@ -18,7 +18,7 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
 #endif
-    public class Game : SampleApplicationBase1
+    public class Game : SampleApplicationBase2
     {
         public Game()
             : base("TwistedLogik", "Sample 15 - Render Targets and Buffers", uv => uv.GetInput().GetActions())
@@ -45,6 +45,7 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
         {
             this.content = ContentManager.Create("Content");            
             LoadContentManifests(this.content);
+            LoadLocalizationDatabases(this.content);
 
             this.spriteBatch = SpriteBatch.Create();
 

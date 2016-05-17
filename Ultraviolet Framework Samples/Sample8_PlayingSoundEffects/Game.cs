@@ -1,18 +1,15 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Audio;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.OpenGL;
 using UltravioletSample.Sample8_PlayingSoundEffects.Assets;
 using UltravioletSample.Sample8_PlayingSoundEffects.Input;
-using TwistedLogik.Ultraviolet.Input;
 
 namespace UltravioletSample.Sample8_PlayingSoundEffects
 {
@@ -21,18 +18,16 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 8 - Playing Sound Effects")
+            : base("TwistedLogik", "Sample 8 - Playing Sound Effects", uv => uv.GetInput().GetActions())
         {
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
@@ -45,11 +40,23 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
             return new OpenGLUltravioletContext(this);
         }
 
-        protected override void OnInitialized()
+        protected override void OnLoadingContent()
         {
-            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
+            this.content = ContentManager.Create("Content");            
+            LoadContentManifests(this.content);
+            LoadLocalizationDatabases(this.content);
 
-            base.OnInitialized();
+            this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+            this.spriteBatch = SpriteBatch.Create();
+            this.textRenderer = new TextRenderer();
+            this.textLayoutCommands = new TextLayoutCommandStream();
+
+            for (int i = 0; i < this.soundEffectPlayers.Length; i++)
+                this.soundEffectPlayers[i] = SoundEffectPlayer.Create();
+
+            this.soundEffect = this.content.Load<SoundEffect>(GlobalSoundEffectID.Explosion);
+
+            base.OnLoadingContent();
         }
 
         protected override void OnUpdating(UltravioletTime time)
@@ -97,13 +104,12 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
             var height = window.ClientSize.Height;
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            
+
+            var instruction = Ultraviolet.Platform == UltravioletPlatform.Android ?
+                "|c:FFFFFF00|Tap the screen|c| to activate one of the sound effect players." :
+                "Press the |c:FFFFFF00|1-8 number keys|c| to activate one of the sound effect players.";
             var attribution = 
-#if ANDROID
-                "|c:FFFFFF00|Tap the screen|c| to activate one of the sound effect players.\n\n" +
-#else
-                "Press the |c:FFFFFF00|1-8 number keys|c| to activate one of the sound effect players.\n\n" +
-#endif
+                instruction + "\n\n" +
                 "\"|c:FFFFFF00|grenade.wav|c|\" by ljudman (http://freesound.org/people/ljudman)\n" +
                 "Licensed under Creative Commons: Sampling+\n" +
                 "|c:FF808080|http://creativecommons.org/licenses/sampling+/1.0/|c|";
@@ -117,34 +123,6 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
             base.OnDrawing(time);
         }
 
-        protected override void OnLoadingContent()
-        {
-            this.content = ContentManager.Create("Content");
-
-            LoadInputBindings();
-            LoadContentManifests();
-
-            this.spriteFont         = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
-            this.spriteBatch        = SpriteBatch.Create();
-            this.textRenderer       = new TextRenderer();
-            this.textLayoutCommands = new TextLayoutCommandStream();
-
-            for (int i = 0; i < this.soundEffectPlayers.Length; i++)
-            {
-                this.soundEffectPlayers[i] = SoundEffectPlayer.Create();
-            }
-            this.soundEffect = this.content.Load<SoundEffect>(GlobalSoundEffectID.Explosion);
-
-            base.OnLoadingContent();
-        }
-
-        protected override void OnShutdown()
-        {
-            SaveInputBindings();
-
-            base.OnShutdown();
-        }
-
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -154,31 +132,13 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
             }
             base.Dispose(disposing);
         }
-
-        private String GetInputBindingsPath()
+        
+        protected override void LoadContentManifests(ContentManager content)
         {
-            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
-        }
+            base.LoadContentManifests(content);
 
-        private void LoadInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
-        }
-
-        private void SaveInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
-        }
-
-        private void LoadContentManifests()
-        {
-            var uvContent = Ultraviolet.GetContent();
-
-            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
-            uvContent.Manifests.Load(contentManifestFiles);
-
-            uvContent.Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
-            uvContent.Manifests["Global"]["SoundEffects"].PopulateAssetLibrary(typeof(GlobalSoundEffectID));
+            Ultraviolet.GetContent().Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
+            Ultraviolet.GetContent().Manifests["Global"]["SoundEffects"].PopulateAssetLibrary(typeof(GlobalSoundEffectID));
         }
 
         private ContentManager content;

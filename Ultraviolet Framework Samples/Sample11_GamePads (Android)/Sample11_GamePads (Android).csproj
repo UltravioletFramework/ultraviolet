@@ -199,11 +199,17 @@
     </None>
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SampleSharedLib %28Android%29\SampleSharedLib %28Android%29.csproj">
+      <Project>{b238a15b-e99b-45f5-99fc-da32ce11ef4d}</Project>
+      <Name>SampleSharedLib %28Android%29</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\Sample11_GamePads\Sample11_GamePads.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="844f907a-e757-4d55-8b66-13a2ca51467d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="844f907a-e757-4d55-8b66-13a2ca51467d" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

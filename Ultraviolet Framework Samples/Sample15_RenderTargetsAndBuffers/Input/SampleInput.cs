@@ -12,9 +12,7 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers.Input
         {
             public Actions(UltravioletContext uv) 
                 : base(uv)
-            {
-
-            }
+            { }
 
             public static Actions Instance { get; } = CreateSingleton<Actions>();
 

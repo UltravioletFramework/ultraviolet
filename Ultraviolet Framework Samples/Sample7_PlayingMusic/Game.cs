@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
@@ -20,18 +19,16 @@ namespace UltravioletSample.Sample7_PlayingMusic
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 7 - Playing Music")
+            : base("TwistedLogik", "Sample 7 - Playing Music", uv => uv.GetInput().GetActions())
         {
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
@@ -44,11 +41,24 @@ namespace UltravioletSample.Sample7_PlayingMusic
             return new OpenGLUltravioletContext(this);
         }
 
-        protected override void OnInitialized()
+        protected override void OnLoadingContent()
         {
-            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
+            this.content = ContentManager.Create("Content");            
+            LoadContentManifests(content);
+            LoadLocalizationDatabases(content);
 
-            base.OnInitialized();
+            this.spriteFont = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+            this.spriteBatch = SpriteBatch.Create();
+            this.stringBuffer = new StringBuilder();
+            this.stringFormatter = new StringFormatter();
+            this.textRenderer = new TextRenderer();
+            this.textLayoutCommands = new TextLayoutCommandStream();
+
+            this.song = this.content.Load<Song>(GlobalSongID.DeepHaze);
+            this.songPlayer = SongPlayer.Create();
+            this.songPlayer.Play(this.song);
+
+            base.OnLoadingContent();
         }
 
         protected override void OnUpdating(UltravioletTime time)
@@ -97,34 +107,6 @@ namespace UltravioletSample.Sample7_PlayingMusic
             base.OnDrawing(time);
         }
 
-        protected override void OnLoadingContent()
-        {
-            this.content = ContentManager.Create("Content");
-
-            LoadInputBindings();
-            LoadContentManifests();
-
-            this.spriteFont         = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
-            this.spriteBatch        = SpriteBatch.Create();
-            this.stringBuffer       = new StringBuilder();
-            this.stringFormatter    = new StringFormatter();
-            this.textRenderer       = new TextRenderer();
-            this.textLayoutCommands = new TextLayoutCommandStream();
-
-            this.song       = this.content.Load<Song>(GlobalSongID.DeepHaze);
-            this.songPlayer = SongPlayer.Create();
-            this.songPlayer.Play(this.song);
-            
-            base.OnLoadingContent();
-        }
-
-        protected override void OnShutdown()
-        {
-            SaveInputBindings();
-
-            base.OnShutdown();
-        }
-
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -135,30 +117,12 @@ namespace UltravioletSample.Sample7_PlayingMusic
             base.Dispose(disposing);
         }
 
-        private String GetInputBindingsPath()
+        protected override void LoadContentManifests(ContentManager content)
         {
-            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
-        }
+            base.LoadContentManifests(content);
 
-        private void LoadInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
-        }
-
-        private void SaveInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
-        }
-
-        private void LoadContentManifests()
-        {
-            var uvContent = Ultraviolet.GetContent();
-
-            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
-            uvContent.Manifests.Load(contentManifestFiles);
-
-            uvContent.Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
-            uvContent.Manifests["Global"]["Songs"].PopulateAssetLibrary(typeof(GlobalSongID));
+            Ultraviolet.GetContent().Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
+            Ultraviolet.GetContent().Manifests["Global"]["Songs"].PopulateAssetLibrary(typeof(GlobalSongID));
         }
 
         private ContentManager content;

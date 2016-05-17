@@ -2,11 +2,9 @@
 using System.IO;
 using System.Linq;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.OpenGL;
-using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 using UltravioletSample.Sample13_UPFAdvanced.Input;
@@ -23,15 +21,15 @@ namespace UltravioletSample.Sample13_UPFAdvanced
         Android.Content.PM.ConfigChanges.Orientation |
         Android.Content.PM.ConfigChanges.ScreenSize |
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase2
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
         /// </summary>
-        public Game() : base("TwistedLogik", "Sample 13 - UPF Advanced") { }
+        public Game() 
+            : base("TwistedLogik", "Sample 13 - UPF Advanced", uv => uv.GetInput().GetActions())
+        { }
 
         /// <summary>
         /// The application's entry point.
@@ -71,17 +69,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
 #endif
             return new OpenGLUltravioletContext(this, configuration);
         }
-
-        /// <summary>
-        /// Called after the application has been initialized.
-        /// </summary>
-        protected override void OnInitialized()
-        {
-            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
-
-            base.OnInitialized();
-        }
-
+        
         /// <summary>
         /// Called when the application is loading content.
         /// </summary>
@@ -98,9 +86,8 @@ namespace UltravioletSample.Sample13_UPFAdvanced
             }
             else
             {
-                LoadLocalizationDatabases();
-                LoadInputBindings();
-                LoadContentManifests();
+                LoadLocalizationDatabases(content);
+                LoadContentManifests(content);
                 LoadPresentation();
                 
                 GC.Collect(2);
@@ -113,74 +100,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
 
             base.OnLoadingContent();
         }
-
-        /// <summary>
-        /// Loads the application's localization databases.
-        /// </summary>
-        protected void LoadLocalizationDatabases()
-        {
-            var fss = FileSystemService.Create();
-            var databases = content.GetAssetFilePathsInDirectory("Localization", "*.xml");
-            foreach (var database in databases)
-            {
-                using (var stream = fss.OpenRead(database))
-                {
-                    Localization.Strings.LoadFromStream(stream);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Loads the game's input bindings.
-        /// </summary>
-        protected void LoadInputBindings()
-        {
-            var inputBindingsPath = Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
-            Ultraviolet.GetInput().GetActions().Load(inputBindingsPath, throwIfNotFound: false);
-        }
-
-        /// <summary>
-        /// Saves the game's input bindings.
-        /// </summary>
-        protected void SaveInputBindings()
-        {
-            var inputBindingsPath = Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
-            Ultraviolet.GetInput().GetActions().Save(inputBindingsPath);
-        }
-
-        /// <summary>
-        /// Loads the game's content manifest files.
-        /// </summary>
-        protected void LoadContentManifests()
-        {
-            var uvContent = Ultraviolet.GetContent();
-
-            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
-            uvContent.Manifests.Load(contentManifestFiles);
-        }
-
-        /// <summary>
-        /// Loads files necessary for the Presentation Foundation.
-        /// </summary>
-        protected void LoadPresentation()
-        {
-            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            upf.RegisterKnownTypes(GetType().Assembly);
-
-            if (!ShouldRunInServiceMode())
-            {
-                var globalStyleSheet = new UvssDocument(Ultraviolet);
-                globalStyleSheet.Append(content.Load<UvssDocument>("UI/DefaultUIStyles"));
-                globalStyleSheet.Append(content.Load<UvssDocument>("UI/GameStyles"));
-                upf.SetGlobalStyleSheet(globalStyleSheet);
-
-                CompileBindingExpressions();
-                upf.LoadCompiledExpressions();
-
-                Diagnostics.DrawDiagnosticsVisuals = true;
-            }
-        }
-
+        
         /// <summary>
         /// Called when the application state is being updated.
         /// </summary>
@@ -194,17 +114,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
             }
             base.OnUpdating(time);
         }
-
-        /// <summary>
-        /// Called when the application is being shut down.
-        /// </summary>
-        protected override void OnShutdown()
-        {
-            SaveInputBindings();
-
-            base.OnShutdown();
-        }
-
+        
         /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
@@ -289,8 +199,30 @@ namespace UltravioletSample.Sample13_UPFAdvanced
 
                 upf.CompileExpressionsIfSupported("Content", flags);
             }
-        }        
-        
+        }
+
+        /// <summary>
+        /// Loads files necessary for the Presentation Foundation.
+        /// </summary>
+        private void LoadPresentation()
+        {
+            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
+            upf.RegisterKnownTypes(GetType().Assembly);
+
+            if (!ShouldRunInServiceMode())
+            {
+                var globalStyleSheet = new UvssDocument(Ultraviolet);
+                globalStyleSheet.Append(content.Load<UvssDocument>("UI/DefaultUIStyles"));
+                globalStyleSheet.Append(content.Load<UvssDocument>("UI/GameStyles"));
+                upf.SetGlobalStyleSheet(globalStyleSheet);
+
+                CompileBindingExpressions();
+                upf.LoadCompiledExpressions();
+
+                Diagnostics.DrawDiagnosticsVisuals = true;
+            }
+        }
+
         // The global content manager.  Manages any content that should remain loaded for the duration of the game's execution.
         private ContentManager content;
 

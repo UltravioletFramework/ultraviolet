@@ -12,8 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Assets\GlobalFontID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Assets\GlobalTextureID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Game.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\GameInputActions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\IUltravioletInputExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\SampleInput.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GameplayScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\LoadingScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIScreenService.cs" />

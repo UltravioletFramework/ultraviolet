@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
@@ -20,18 +19,16 @@ namespace UltravioletSample.Sample11_GamePads
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 11 - Game Pads")
+            : base("TwistedLogik", "Sample 11 - Game Pads", uv => uv.GetInput().GetActions())
         {
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
@@ -43,12 +40,28 @@ namespace UltravioletSample.Sample11_GamePads
         {
             return new OpenGLUltravioletContext(this);
         }
-
-        protected override void OnInitialized()
+        
+        protected override void OnLoadingContent()
         {
-            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
+            this.content = ContentManager.Create("Content");
+            LoadContentManifests(this.content);
+            LoadLocalizationDatabases(this.content);
 
-            base.OnInitialized();
+            this.spriteBatch = SpriteBatch.Create();
+            this.textRenderer = new TextRenderer();
+            this.textFormatter = new StringFormatter();
+            this.textBuffer = new StringBuilder();
+
+            var xbox360ControllerIcons = content.Load<Sprite>(GlobalSpriteID.Xbox360Controller);
+
+            for (int i = 0; i < xbox360ControllerIcons.AnimationCount; i++)
+            {
+                this.textRenderer.RegisterIcon(
+                    xbox360ControllerIcons[i].Name, 
+                    xbox360ControllerIcons[i], 32, 32);
+            }
+
+            base.OnLoadingContent();
         }
 
         protected override void OnUpdating(UltravioletTime time)
@@ -59,38 +72,7 @@ namespace UltravioletSample.Sample11_GamePads
             }
             base.OnUpdating(time);
         }
-
-        protected override void OnLoadingContent()
-        {
-            this.content = ContentManager.Create("Content");
-
-            LoadInputBindings();
-            LoadContentManifests();
-
-            this.spriteBatch   = SpriteBatch.Create();
-            this.textRenderer  = new TextRenderer();
-            this.textFormatter = new StringFormatter();
-            this.textBuffer    = new StringBuilder();
-
-            var xbox360ControllerIcons = content.Load<Sprite>(GlobalSpriteID.Xbox360Controller);
-
-            for (int i = 0; i < xbox360ControllerIcons.AnimationCount; i++)
-            {
-                var animation = xbox360ControllerIcons[i];
-                
-                this.textRenderer.RegisterIcon(animation.Name, animation, 32, 32);
-            }
-
-            base.OnLoadingContent();
-        }
-
-        protected override void OnShutdown()
-        {
-            SaveInputBindings();
-
-            base.OnShutdown();
-        }
-
+        
         protected override void OnDrawing(UltravioletTime time)
         {
             var winSize = Ultraviolet.GetPlatform().Windows.GetPrimary().ClientSize;
@@ -118,41 +100,23 @@ namespace UltravioletSample.Sample11_GamePads
             }
             base.Dispose(disposing);
         }
-
-        private String GetInputBindingsPath()
+        
+        protected override void LoadContentManifests(ContentManager content)
         {
-            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
-        }
+            base.LoadContentManifests(content);
 
-        private void LoadInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
-        }
-
-        private void SaveInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
-        }
-
-        private void LoadContentManifests()
-        {
-            var uvContent = Ultraviolet.GetContent();
-
-            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
-            uvContent.Manifests.Load(contentManifestFiles);
-
-            uvContent.Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
-            uvContent.Manifests["Global"]["Sprites"].PopulateAssetLibrary(typeof(GlobalSpriteID));
+            Ultraviolet.GetContent().Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
+            Ultraviolet.GetContent().Manifests["Global"]["Sprites"].PopulateAssetLibrary(typeof(GlobalSpriteID));
         }
 
         private void DrawGamePadState(Int32 playerIndex, Rectangle area)
         {
-            var input  = Ultraviolet.GetInput();
+            var input = Ultraviolet.GetInput();
             var device = input.GetGamePadForPlayer(playerIndex);
-            var font   = content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+            var font = content.Load<SpriteFont>(GlobalFontID.SegoeUI);
 
-            var x        = area.X;
-            var y        = area.Y;
+            var x = area.X;
+            var y = area.Y;
             var textArea = RectangleF.Empty;
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
@@ -187,11 +151,11 @@ namespace UltravioletSample.Sample11_GamePads
                 textFormatter.AddArgument(device.IsButtonDown(GamePadButton.RightStick) ? "RightJoystick" : "RightJoystickDisabled");
                 textFormatter.Format(
                     "|c:FFFFFF00|Buttons|c|\n\n" +
-                    "|icon:{0}| |icon:{1}|\n" + 
-                    "|icon:{2}| |icon:{3}| |icon:{4}| |icon:{5}|\n" + 
-                    "|icon:{6}| |icon:{7}|\n" + 
+                    "|icon:{0}| |icon:{1}|\n" +
+                    "|icon:{2}| |icon:{3}| |icon:{4}| |icon:{5}|\n" +
+                    "|icon:{6}| |icon:{7}|\n" +
                     "|icon:{8}| |icon:{9}| |icon:{10}| |icon:{11}|\n" +
-                    "|icon:{12}| |icon:{13}|\n\n" + 
+                    "|icon:{12}| |icon:{13}|\n\n" +
                     "|c:FFFFFF00|Axes|c|", textBuffer);
 
                 var buttonSettings = new TextLayoutSettings(font, area.Width, area.Height, TextFlags.AlignCenter | TextFlags.AlignTop);

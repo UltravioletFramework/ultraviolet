@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.Platform;
 
 namespace UltravioletSample
 {
@@ -22,7 +24,7 @@ namespace UltravioletSample
         public SampleApplicationBase1(String company, String application, Func<UltravioletContext, InputActionCollection> getInputActions) 
             : base(company, application)
         {
-
+            this.getInputActions = getInputActions;
         }
 
         /// <inheritdoc/>
@@ -72,21 +74,7 @@ namespace UltravioletSample
                 actions.Save(GetInputBindingsPath());
             }
         }
-
-        /// <summary>
-        /// Loads the application's content manifests.
-        /// </summary>
-        /// <param name="content"></param>
-        protected virtual void LoadContentManifests(ContentManager content)
-        {
-            Contract.Require(content, nameof(content));
-
-            var uvContent = Ultraviolet.GetContent();
-
-            var contentManifestFiles = content.GetAssetFilePathsInDirectory("Manifests");
-            uvContent.Manifests.Load(contentManifestFiles);
-        }
-
+        
         /// <summary>
         /// Gets the path to the file where the application's input bindings are saved.
         /// </summary>

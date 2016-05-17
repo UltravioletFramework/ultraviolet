@@ -138,7 +138,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SampleSharedLib %28Desktop%29\SampleSharedLib %28Desktop%29.csproj">
+      <Project>{9f505c43-6e37-425f-b348-be4de7ab2f0b}</Project>
+      <Name>SampleSharedLib %28Desktop%29</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\Dependencies\x64\win32nt\bass.dll">
       <Link>x64\win32nt\bass.dll</Link>

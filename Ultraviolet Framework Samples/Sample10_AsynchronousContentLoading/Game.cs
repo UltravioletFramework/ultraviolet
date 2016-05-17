@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
@@ -16,18 +15,16 @@ namespace UltravioletSample.Sample10_AsynchronousContentLoading
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 10 - Asynchronous Content Loading")
+            : base("TwistedLogik", "Sample 10 - Asynchronous Content Loading", uv => uv.GetInput().GetActions())
         {
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
@@ -40,36 +37,14 @@ namespace UltravioletSample.Sample10_AsynchronousContentLoading
             return new OpenGLUltravioletContext(this);
         }
 
-        protected override void OnInitialized()
-        {
-            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
-
-            base.OnInitialized();
-        }
-
-        protected override void OnUpdating(UltravioletTime time)
-        {
-            if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
-            {
-                Exit();
-            }
-            base.OnUpdating(time);
-        }
-
-        protected override void OnDrawing(UltravioletTime time)
-        {
-            base.OnDrawing(time);
-        }
-
         protected override void OnLoadingContent()
         {
             this.content = ContentManager.Create("Content");
-
-            LoadInputBindings();
-            LoadContentManifests();
+            LoadContentManifests(content);
+            LoadLocalizationDatabases(content);
 
             var screenService = new UIScreenService(content);
-            var screen        = screenService.Get<LoadingScreen>();
+            var screen = screenService.Get<LoadingScreen>();
 
             screen.SetContentManager(this.content);
             screen.AddLoadingStep("Loading, please wait...");
@@ -86,11 +61,18 @@ namespace UltravioletSample.Sample10_AsynchronousContentLoading
             base.OnLoadingContent();
         }
 
-        protected override void OnShutdown()
+        protected override void OnUpdating(UltravioletTime time)
         {
-            SaveInputBindings();
+            if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
+            {
+                Exit();
+            }
+            base.OnUpdating(time);
+        }
 
-            base.OnShutdown();
+        protected override void OnDrawing(UltravioletTime time)
+        {
+            base.OnDrawing(time);
         }
 
         protected override void Dispose(Boolean disposing)
@@ -101,31 +83,13 @@ namespace UltravioletSample.Sample10_AsynchronousContentLoading
             }
             base.Dispose(disposing);
         }
-
-        private String GetInputBindingsPath()
+        
+        protected override void LoadContentManifests(ContentManager content)
         {
-            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
-        }
+            base.LoadContentManifests(content);
 
-        private void LoadInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
-        }
-
-        private void SaveInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
-        }
-
-        private void LoadContentManifests()
-        {
-            var uvContent = Ultraviolet.GetContent();
-
-            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
-            uvContent.Manifests.Load(contentManifestFiles);
-
-            uvContent.Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
-            uvContent.Manifests["Global"]["Textures"].PopulateAssetLibrary(typeof(GlobalTextureID));
+            Ultraviolet.GetContent().Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
+            Ultraviolet.GetContent().Manifests["Global"]["Textures"].PopulateAssetLibrary(typeof(GlobalTextureID));
         }
 
         private ContentManager content;

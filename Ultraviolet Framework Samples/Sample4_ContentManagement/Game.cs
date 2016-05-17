@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
@@ -15,18 +14,16 @@ namespace UltravioletSample.Sample4_ContentManagement
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase1
     {
         public Game()
-            : base("TwistedLogik", "Sample 4 - Content Management")
+            : base("TwistedLogik", "Sample 4 - Content Management", uv => uv.GetInput().GetActions())
         {
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
@@ -44,6 +41,31 @@ namespace UltravioletSample.Sample4_ContentManagement
             SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
 
             base.OnInitialized();
+        }
+
+        protected override void OnLoadingContent()
+        {
+            this.content = ContentManager.Create("Content");
+
+            LoadInputBindings();
+            LoadContentManifests();
+
+            this.texture = this.content.Load<Texture2D>(GlobalTextureID.Triangle);
+
+            this.effect = BasicEffect.Create();
+
+            this.vbuffer = VertexBuffer.Create<VertexPositionColorTexture>(3);
+            this.vbuffer.SetData(new[]
+            {
+                new VertexPositionColorTexture(new Vector3(0, 1, 0), Color.Lime, new Vector2(0, 1)),
+                new VertexPositionColorTexture(new Vector3(1, -1, 0), Color.Blue, new Vector2(1, 1)),
+                new VertexPositionColorTexture(new Vector3(-1, -1, 0), Color.Red, new Vector2(0, 0))
+            });
+
+            this.geometryStream = GeometryStream.Create();
+            this.geometryStream.Attach(this.vbuffer);
+
+            base.OnLoadingContent();
         }
 
         protected override void OnUpdating(UltravioletTime time)
@@ -80,38 +102,6 @@ namespace UltravioletSample.Sample4_ContentManagement
             base.OnDrawing(time);
         }
 
-        protected override void OnLoadingContent()
-        {
-            this.content = ContentManager.Create("Content");
-
-            LoadInputBindings();
-            LoadContentManifests();
-
-            this.texture = this.content.Load<Texture2D>(GlobalTextureID.Triangle);
-
-            this.effect = BasicEffect.Create();
-
-            this.vbuffer = VertexBuffer.Create<VertexPositionColorTexture>(3);
-            this.vbuffer.SetData<VertexPositionColorTexture>(new[]
-            {
-                new VertexPositionColorTexture(new Vector3(0, 1, 0), Color.Lime, new Vector2(0, 1)),
-                new VertexPositionColorTexture(new Vector3(1, -1, 0), Color.Blue, new Vector2(1, 1)),
-                new VertexPositionColorTexture(new Vector3(-1, -1, 0), Color.Red, new Vector2(0, 0))
-            });
-
-            this.geometryStream = GeometryStream.Create();
-            this.geometryStream.Attach(this.vbuffer);
-
-            base.OnLoadingContent();
-        }
-
-        protected override void OnShutdown()
-        {
-            SaveInputBindings();
-
-            base.OnShutdown();
-        }
-
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -119,21 +109,6 @@ namespace UltravioletSample.Sample4_ContentManagement
                 SafeDispose.Dispose(content);
             }
             base.Dispose(disposing);
-        }
-
-        private String GetInputBindingsPath()
-        {
-            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
-        }
-
-        private void LoadInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
-        }
-
-        private void SaveInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
         }
 
         private void LoadContentManifests()

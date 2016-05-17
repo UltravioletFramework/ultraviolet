@@ -196,5 +196,11 @@
   <ItemGroup>
     <Folder Include="x64\osx\osx\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SampleSharedLib %28Desktop%29\SampleSharedLib %28Desktop%29.csproj">
+      <Project>{9f505c43-6e37-425f-b348-be4de7ab2f0b}</Project>
+      <Name>SampleSharedLib %28Desktop%29</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\Sample10_AsynchronousContentLoading\Sample10_AsynchronousContentLoading.projitems" Label="Shared" />
 </Project>

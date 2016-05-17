@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
@@ -16,18 +15,16 @@ namespace UltravioletSample.Sample5_RenderingSprites
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 5 - Rendering Sprites")
+            : base("TwistedLogik", "Sample 5 - Rendering Sprites", uv => uv.GetInput().GetActions())
         {
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
@@ -40,11 +37,22 @@ namespace UltravioletSample.Sample5_RenderingSprites
             return new OpenGLUltravioletContext(this);
         }
 
-        protected override void OnInitialized()
-        {
-            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
 
-            base.OnInitialized();
+        protected override void OnLoadingContent()
+        {
+            this.content = ContentManager.Create("Content");            
+            LoadContentManifests(this.content);
+            LoadLocalizationDatabases(this.content);
+
+            this.sprite = this.content.Load<Sprite>(GlobalSpriteID.Explosion);
+            this.spriteBatch = SpriteBatch.Create();
+
+            this.controller1 = new SpriteAnimationController();
+            this.controller2 = new SpriteAnimationController();
+            this.controller3 = new SpriteAnimationController();
+            this.controller4 = new SpriteAnimationController();
+
+            base.OnLoadingContent();
         }
 
         protected override void OnUpdating(UltravioletTime time)
@@ -95,31 +103,6 @@ namespace UltravioletSample.Sample5_RenderingSprites
             base.OnDrawing(time);
         }
 
-        protected override void OnLoadingContent()
-        {
-            this.content = ContentManager.Create("Content");
-
-            LoadInputBindings();
-            LoadContentManifests();
-
-            this.sprite = this.content.Load<Sprite>(GlobalSpriteID.Explosion);
-            this.spriteBatch = SpriteBatch.Create();
-
-            this.controller1 = new SpriteAnimationController();
-            this.controller2 = new SpriteAnimationController();
-            this.controller3 = new SpriteAnimationController();
-            this.controller4 = new SpriteAnimationController();
-
-            base.OnLoadingContent();
-        }
-
-        protected override void OnShutdown()
-        {
-            SaveInputBindings();
-
-            base.OnShutdown();
-        }
-
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -129,30 +112,12 @@ namespace UltravioletSample.Sample5_RenderingSprites
             }
             base.Dispose(disposing);
         }
-
-        private String GetInputBindingsPath()
+        
+        protected override void LoadContentManifests(ContentManager content)
         {
-            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
-        }
+            base.LoadContentManifests(content);
 
-        private void LoadInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
-        }
-
-        private void SaveInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
-        }
-
-        private void LoadContentManifests()
-        {
-            var uvContent = Ultraviolet.GetContent();
-
-            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
-            uvContent.Manifests.Load(contentManifestFiles);
-
-            uvContent.Manifests["Global"]["Sprites"].PopulateAssetLibrary(typeof(GlobalSpriteID));
+            Ultraviolet.GetContent().Manifests["Global"]["Sprites"].PopulateAssetLibrary(typeof(GlobalSpriteID));
         }
 
         private ContentManager content;

@@ -22,7 +22,7 @@ namespace UltravioletSample.Sample2_HandlingInput
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
@@ -33,15 +33,6 @@ namespace UltravioletSample.Sample2_HandlingInput
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             return new OpenGLUltravioletContext(this);
-        }
-
-        protected override void OnUpdating(UltravioletTime time)
-        {
-            if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
-            {
-                Exit();
-            }
-            base.OnUpdating(time);
         }
 
         protected override void OnLoadingContent()
@@ -56,6 +47,15 @@ namespace UltravioletSample.Sample2_HandlingInput
             SaveInputBindings();
 
             base.OnShutdown();
+        }
+
+        protected override void OnUpdating(UltravioletTime time)
+        {
+            if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())
+            {
+                Exit();
+            }
+            base.OnUpdating(time);
         }
 
         private String GetInputBindingsPath()

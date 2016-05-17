@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
@@ -17,18 +16,16 @@ namespace UltravioletSample.Sample12_UPF
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 12 - UPF")
+            : base("TwistedLogik", "Sample 12 - UPF", uv => uv.GetInput().GetActions())
         {
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
@@ -44,19 +41,11 @@ namespace UltravioletSample.Sample12_UPF
             return new OpenGLUltravioletContext(this, configuration);
         }
 
-        protected override void OnInitialized()
-        {
-            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
-
-            base.OnInitialized();
-        }
-
         protected override void OnLoadingContent()
         {
             this.content = ContentManager.Create("Content");
-
-            LoadInputBindings();
-            LoadContentManifests();
+            LoadContentManifests(this.content);
+            LoadLocalizationDatabases(this.content);
             LoadPresentation();
 
             GC.Collect(2);
@@ -82,14 +71,7 @@ namespace UltravioletSample.Sample12_UPF
         {
             base.OnDrawing(time);
         }
-
-        protected override void OnShutdown()
-        {
-            SaveInputBindings();
-
-            base.OnShutdown();
-        }
-
+        
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -97,21 +79,6 @@ namespace UltravioletSample.Sample12_UPF
                 SafeDispose.DisposeRef(ref content);
             }
             base.Dispose(disposing);
-        }
-
-        private String GetInputBindingsPath()
-        {
-            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
-        }
-
-        private void LoadInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
-        }
-
-        private void SaveInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
         }
 
         private void LoadPresentation()
@@ -124,15 +91,7 @@ namespace UltravioletSample.Sample12_UPF
             upf.CompileExpressionsIfSupported("Content");
             upf.LoadCompiledExpressions();
         }
-
-        private void LoadContentManifests()
-        {
-            var uvContent = Ultraviolet.GetContent();
-
-            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
-            uvContent.Manifests.Load(contentManifestFiles);
-        }
-
+        
         private ContentManager content;
     }
 }

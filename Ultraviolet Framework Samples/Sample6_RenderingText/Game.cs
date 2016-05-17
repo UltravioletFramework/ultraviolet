@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
@@ -17,18 +16,16 @@ namespace UltravioletSample.Sample6_RenderingText
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
-#else
-    public class Game : UltravioletApplication
 #endif
+    public class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 6 - Rendering Text")
+            : base("TwistedLogik", "Sample 6 - Rendering Text", uv => uv.GetInput().GetActions())
         {
 
         }
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             using (var game = new Game())
             {
@@ -41,11 +38,30 @@ namespace UltravioletSample.Sample6_RenderingText
             return new OpenGLUltravioletContext(this);
         }
 
-        protected override void OnInitialized()
+        protected override void OnLoadingContent()
         {
-            SetFileSourceFromManifestIfExists("UltravioletSample.Content.uvarc");
+            this.content = ContentManager.Create("Content");
+            LoadContentManifests(this.content);
+            LoadLocalizationDatabases(this.content);
 
-            base.OnInitialized();
+            this.spriteFontGaramond = this.content.Load<SpriteFont>(GlobalFontID.Garamond);
+            this.spriteFontSegoe = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
+            this.spriteBatch = SpriteBatch.Create();
+            this.textRenderer = new TextRenderer();
+
+            this.textRenderer.RegisterFont("segoe", this.spriteFontSegoe);
+            this.textRenderer.RegisterFont("garamond", this.spriteFontGaramond);
+
+            this.textRenderer.RegisterStyle("preset1", new TextStyle(spriteFontGaramond, true, null, Color.Lime));
+            this.textRenderer.RegisterStyle("preset2", new TextStyle(spriteFontSegoe, null, true, Color.Red));
+
+            var spriteOK = this.content.Load<Sprite>(GlobalSpriteID.OK);
+            var spriteCancel = this.content.Load<Sprite>(GlobalSpriteID.Cancel);
+
+            this.textRenderer.RegisterIcon("ok", spriteOK[0]);
+            this.textRenderer.RegisterIcon("cancel", spriteCancel[0]);
+
+            base.OnLoadingContent();
         }
 
         protected override void OnUpdating(UltravioletTime time)
@@ -72,7 +88,7 @@ namespace UltravioletSample.Sample6_RenderingText
         private void DrawAlignedText()
         {
             var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            var width  = window.ClientSize.Width;
+            var width = window.ClientSize.Width;
             var height = window.ClientSize.Height;
 
             var settingsTopLeft = new TextLayoutSettings(spriteFontSegoe, width, height, TextFlags.AlignTop | TextFlags.AlignLeft);
@@ -97,15 +113,15 @@ namespace UltravioletSample.Sample6_RenderingText
         private void DrawColoredAndStyledText()
         {
             var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            var width  = window.ClientSize.Width;
+            var width = window.ClientSize.Width;
             var height = window.ClientSize.Height;
 
             if (textLayoutCommands.Settings.Width != width || textLayoutCommands.Settings.Height != height)
             {
-                const string text = 
+                const string text =
                     "Ultraviolet Formatting Commands\n" +
                     "\n" +
-                    "||c:AARRGGBB| - Changes the color of text.\n" + 
+                    "||c:AARRGGBB| - Changes the color of text.\n" +
                     "|c:FFFF0000|red|c| |c:FFFF8000|orange|c| |c:FFFFFF00|yellow|c| |c:FF00FF00|green|c| |c:FF0000FF|blue|c| |c:FF6F00FF|indigo|c| |c:FFFF00FF|magenta|c|\n" +
                     "\n" +
                     "||font:name| - Changes the current font.\n" +
@@ -127,40 +143,6 @@ namespace UltravioletSample.Sample6_RenderingText
             textRenderer.Draw(spriteBatch, textLayoutCommands, Vector2.Zero, Color.White);
         }
 
-        protected override void OnLoadingContent()
-        {
-            this.content = ContentManager.Create("Content");
-
-            LoadInputBindings();
-            LoadContentManifests();
-
-            this.spriteFontGaramond = this.content.Load<SpriteFont>(GlobalFontID.Garamond);
-            this.spriteFontSegoe    = this.content.Load<SpriteFont>(GlobalFontID.SegoeUI);
-            this.spriteBatch        = SpriteBatch.Create();
-            this.textRenderer       = new TextRenderer();
-            
-            this.textRenderer.RegisterFont("segoe", this.spriteFontSegoe);
-            this.textRenderer.RegisterFont("garamond", this.spriteFontGaramond);
-
-            this.textRenderer.RegisterStyle("preset1", new TextStyle(spriteFontGaramond, true, null, Color.Lime));
-            this.textRenderer.RegisterStyle("preset2", new TextStyle(spriteFontSegoe, null, true, Color.Red));
-            
-            var spriteOK     = this.content.Load<Sprite>(GlobalSpriteID.OK);
-            var spriteCancel = this.content.Load<Sprite>(GlobalSpriteID.Cancel);
-
-            this.textRenderer.RegisterIcon("ok", spriteOK[0]);
-            this.textRenderer.RegisterIcon("cancel", spriteCancel[0]);
-
-            base.OnLoadingContent();
-        }
-
-        protected override void OnShutdown()
-        {
-            SaveInputBindings();
-
-            base.OnShutdown();
-        }
-
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -171,30 +153,12 @@ namespace UltravioletSample.Sample6_RenderingText
             base.Dispose(disposing);
         }
 
-        private String GetInputBindingsPath()
+        protected override void LoadContentManifests(ContentManager content)
         {
-            return Path.Combine(GetRoamingApplicationSettingsDirectory(), "InputBindings.xml");
-        }
+            base.LoadContentManifests(content);
 
-        private void LoadInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Load(GetInputBindingsPath(), throwIfNotFound: false);
-        }
-
-        private void SaveInputBindings()
-        {
-            Ultraviolet.GetInput().GetActions().Save(GetInputBindingsPath());
-        }
-
-        private void LoadContentManifests()
-        {
-            var uvContent = Ultraviolet.GetContent();
-
-            var contentManifestFiles = this.content.GetAssetFilePathsInDirectory("Manifests");
-            uvContent.Manifests.Load(contentManifestFiles);
-
-            uvContent.Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
-            uvContent.Manifests["Global"]["Sprites"].PopulateAssetLibrary(typeof(GlobalSpriteID));
+            Ultraviolet.GetContent().Manifests["Global"]["Fonts"].PopulateAssetLibrary(typeof(GlobalFontID));
+            Ultraviolet.GetContent().Manifests["Global"]["Sprites"].PopulateAssetLibrary(typeof(GlobalSpriteID));
         }
 
         private ContentManager content;
