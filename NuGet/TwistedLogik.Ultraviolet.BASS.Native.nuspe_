@@ -31,11 +31,11 @@
     <file src="..\Dependencies\BASS\x64\osx\libbass_fx.dylib" target="build\net40\x64\osx\libbass_fx.dylib"/>
   
     <file src="TwistedLogik.Ultraviolet.BASS.Native\build\MonoAndroid404\TwistedLogik.Ultraviolet.BASS.Native.targets" target="build\MonoAndroid404\TwistedLogik.Ultraviolet.BASS.Native.targets"/>
-    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\MonoAndroid404\lib\armeabi-v7a\bass.dll"/>
-    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so" target="build\MonoAndroid404\lib\armeabi-v7a\bass_fx.dll"/>	
-    <file src="..\Dependencies\BASS\Android\armeabi\libbass.so" target="build\MonoAndroid404\lib\armeabi\bass.dll"/>
-    <file src="..\Dependencies\BASS\Android\armeabi\libbass_fx.so" target="build\MonoAndroid404\lib\armeabi\bass_fx.dll"/>
-    <file src="..\Dependencies\BASS\Android\x86\libbass.so" target="build\MonoAndroid404\lib\x86\bass.dll"/>
-    <file src="..\Dependencies\BASS\Android\x86\libbass_fx.so" target="build\MonoAndroid404\lib\x86\bass_fx.dll"/>
+    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\MonoAndroid404\lib\armeabi-v7a\libbass.so"/>
+    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so" target="build\MonoAndroid404\lib\armeabi-v7a\libbass_fx.so"/>	
+    <file src="..\Dependencies\BASS\Android\armeabi\libbass.so" target="build\MonoAndroid404\lib\armeabi\libbass.so"/>
+    <file src="..\Dependencies\BASS\Android\armeabi\libbass_fx.so" target="build\MonoAndroid404\lib\armeabi\libbass_fx.so"/>
+    <file src="..\Dependencies\BASS\Android\x86\libbass.so" target="build\MonoAndroid404\lib\x86\libbass.so"/>
+    <file src="..\Dependencies\BASS\Android\x86\libbass_fx.so" target="build\MonoAndroid404\lib\x86\libbass_fx.so"/>
   </files>  
 </package>
