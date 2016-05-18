@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>TwistedLogik.Ultraviolet.Tools</id>
+    <version>UV_VERSION</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains Ultraviolet's command line tools, uvarchive and uvfont.</description>
+    <tags>ultraviolet gamedev</tags>	
+    <dependencies/>
+  </metadata>
+  <files>
+	<file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.dll" target="tools\TwistedLogik.Nucleus.dll"/>
+	<file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.Tooling.dll" target="tools\TwistedLogik.Ultraviolet.Tooling.dll"/>
+    <file src="..\Binaries\AnyCPU\Signed\uvarchive.exe" target="tools\uvarchive.exe"/>
+    <file src="..\Binaries\AnyCPU\Signed\uvfont.exe" target="tools\uvfont.exe"/>
+  </files>  
+</package>
