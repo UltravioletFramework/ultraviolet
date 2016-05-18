@@ -15,13 +15,7 @@ namespace $RootNamespace$
         public Game() 
             : base("YOUR_ORGANIZATION", "PROJECT_NAME") 
         { 
-            // NOTE:
-            // To start the game, create a new instance and invoke the Run() method:
-            // 
-            // using (var game = new Game()) 
-            // {
-            //     game.Run();
-            // }
+
         }
 
         protected override UltravioletContext OnCreatingUltravioletContext()
