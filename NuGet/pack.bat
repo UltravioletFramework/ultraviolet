@@ -44,3 +44,9 @@ nuget pack TwistedLogik.Ultraviolet.UI.Presentation.Compiler.nuspec -Symbols
 
 powershell -Command "(gc TwistedLogik.Ultraviolet.UI.Presentation.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.UI.Presentation.nuspec"
 nuget pack TwistedLogik.Ultraviolet.UI.Presentation.nuspec -Symbols
+
+powershell -Command "(gc TwistedLogik.Ultraviolet.Tools.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Tools.nuspec"
+nuget pack TwistedLogik.Ultraviolet.Tools.nuspec
+
+powershell -Command "(gc TwistedLogik.Ultraviolet.Game.Desktop.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Game.Desktop.nuspec"
+nuget pack TwistedLogik.Ultraviolet.Game.Desktop.nuspec
