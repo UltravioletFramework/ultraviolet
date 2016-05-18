@@ -6,7 +6,11 @@ using TwistedLogik.Ultraviolet.OpenGL;
 
 namespace $RootNamespace$
 {
-    public class Game : UltravioletApplication
+    [Android.App.Activity(Label = "GameActivity", MainLauncher = true, ConfigurationChanges = 
+        Android.Content.PM.ConfigChanges.Orientation | 
+        Android.Content.PM.ConfigChanges.ScreenSize | 
+        Android.Content.PM.ConfigChanges.KeyboardHidden)]
+    public class Game : UltravioletActivity
     {
         public Game() 
             : base("YOUR_ORGANIZATION", "PROJECT_NAME") 

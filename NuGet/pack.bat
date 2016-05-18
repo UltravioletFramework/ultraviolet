@@ -50,3 +50,6 @@ nuget pack TwistedLogik.Ultraviolet.Tools.nuspec
 
 powershell -Command "(gc TwistedLogik.Ultraviolet.Game.Desktop.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Game.Desktop.nuspec"
 nuget pack TwistedLogik.Ultraviolet.Game.Desktop.nuspec
+
+powershell -Command "(gc TwistedLogik.Ultraviolet.Game.Android.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Game.Android.nuspec"
+nuget pack TwistedLogik.Ultraviolet.Game.Android.nuspec
