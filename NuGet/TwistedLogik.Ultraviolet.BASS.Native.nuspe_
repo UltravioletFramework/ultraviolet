@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
     <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-	<title>TwistedLogik.Ultraviolet.BASS Native Dependencies</title>
+    <title>TwistedLogik.Ultraviolet.BASS Native Dependencies</title>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the BASS implementation of the Framework's audio subsystem.</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
@@ -18,7 +18,7 @@
   </metadata>
   <files>
     <file src="TwistedLogik.Ultraviolet.BASS.Native\build\net40\TwistedLogik.Ultraviolet.BASS.Native.targets" target="build\net40\TwistedLogik.Ultraviolet.BASS.Native.targets"/>
-	<file src="..\TwistedLogik.Ultraviolet.BASS (Desktop)\TwistedLogik.Ultraviolet.BASS.dll.config" target="build\net40\TwistedLogik.Ultraviolet.BASS.dll.config"/>
+  <file src="..\TwistedLogik.Ultraviolet.BASS (Desktop)\TwistedLogik.Ultraviolet.BASS.dll.config" target="build\net40\TwistedLogik.Ultraviolet.BASS.dll.config"/>
     <file src="..\Dependencies\BASS\x86\unix\libbass.so" target="build\net40\x86\unix\libbass.so"/>
     <file src="..\Dependencies\BASS\x86\unix\libbass_fx.so" target="build\net40\x86\unix\libbass_fx.so"/>
     <file src="..\Dependencies\BASS\x64\unix\libbass.so" target="build\net40\x64\unix\libbass.so"/>

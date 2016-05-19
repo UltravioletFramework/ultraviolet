@@ -9,6 +9,7 @@
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
     <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <title>Ultraviolet Framework Game (Desktop)</title>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains all of the components needed to create a simple game for desktop platforms.</description>
     <tags>ultraviolet gamedev</tags>	
     <dependencies>
