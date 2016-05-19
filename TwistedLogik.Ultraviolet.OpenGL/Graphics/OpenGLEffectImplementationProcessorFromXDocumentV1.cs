@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var techniqueName = (String)techniqueElement.Attribute("Name");
                 writer.Write(techniqueName);
 
-                var passElements = techniqueElements.Elements("Pass");
+                var passElements = techniqueElement.Elements("Pass");
                 if (!passElements.Any())
                     throw new ContentLoadException(OpenGLStrings.EffectTechniqueMustHavePasses);
 
@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var techniqueName = (String)techniqueElement.Attribute("Name");
                 var techniquePasses = new List<OpenGLEffectPass>();
 
-                var passElements = techniqueElements.Elements("Pass");
+                var passElements = techniqueElement.Elements("Pass");
                 if (!passElements.Any())
                     throw new ContentLoadException(OpenGLStrings.EffectTechniqueMustHavePasses);
 
