@@ -366,11 +366,14 @@ namespace TwistedLogik.Ultraviolet.Input
             foreach (var kvp in this)
             {
                 var element = xml.Root.Elements("Action").Where(x => x.AttributeValueString("Name") == kvp.Key).SingleOrDefault();
-                var primary = (element == null) ? null : element.Element("Primary");
-                var secondary = (element == null) ? null : element.Element("Secondary");
+                if (element != null)
+                {
+                    var primary = (element == null) ? null : element.Element("Primary");
+                    var secondary = (element == null) ? null : element.Element("Secondary");
 
-                kvp.Value.Primary = CreateBindingFromXml(primary);
-                kvp.Value.Secondary = CreateBindingFromXml(secondary);
+                    kvp.Value.Primary = CreateBindingFromXml(primary);
+                    kvp.Value.Secondary = CreateBindingFromXml(secondary);
+                }
             }
 
             OnLoaded();
