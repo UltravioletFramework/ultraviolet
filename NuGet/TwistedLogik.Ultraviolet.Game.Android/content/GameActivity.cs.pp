@@ -10,9 +10,9 @@ namespace $RootNamespace$
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
+    public class GameActivity : UltravioletActivity
     {
-        public Game() 
+        public GameActivity() 
             : base("YOUR_ORGANIZATION", "PROJECT_NAME") 
         { 
 

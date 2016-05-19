@@ -26,6 +26,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="TwistedLogik.Ultraviolet.Game.Android\content\Game.cs.pp" target="content"/>
+    <file src="TwistedLogik.Ultraviolet.Game.Android\content\GameActivity.cs.pp" target="content"/>
   </files>  
 </package>
