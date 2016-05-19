@@ -135,36 +135,36 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public void BindRead()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(boundWrite, OpenGLStrings.ResourceCannotBeReadWhileWriting);
+            Contract.Ensure(boundWrite == 0, OpenGLStrings.ResourceCannotBeReadWhileWriting);
 
-            boundRead = true;
+            boundRead++;
         }
 
         /// <inheritdoc/>
         public void BindWrite()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(boundRead, OpenGLStrings.ResourceCannotBeWrittenWhileReading);
+            Contract.Ensure(boundRead == 0, OpenGLStrings.ResourceCannotBeWrittenWhileReading);
 
-            boundWrite = true;
+            boundWrite++;
         }
 
         /// <inheritdoc/>
         public void UnbindRead()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Ensure(boundRead, OpenGLStrings.ResourceNotBound);
+            Contract.Ensure(boundRead > 0, OpenGLStrings.ResourceNotBound);
 
-            boundRead = false;
+            boundRead--;
         }
 
         /// <inheritdoc/>
         public void UnbindWrite()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Ensure(boundWrite, OpenGLStrings.ResourceNotBound);
+            Contract.Ensure(boundWrite > 0, OpenGLStrings.ResourceNotBound);
 
-            boundWrite = false;
+            boundWrite--;
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return boundRead;
+                return boundRead > 0;
             }
         }
 
@@ -240,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return boundWrite;
+                return boundWrite > 0;
             }
         }
 
@@ -374,8 +374,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private readonly RenderBufferFormat format;
         private Int32 width;
         private Int32 height;
-        private Boolean boundRead;
-        private Boolean boundWrite;
+        private Int32 boundRead;
+        private Int32 boundWrite;
         private Boolean attached;
         private readonly Boolean immutable;
         private readonly Boolean willNotBeSampled;
