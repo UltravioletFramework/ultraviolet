@@ -202,7 +202,12 @@
   </String>
   <String Key="TEXTURE_IS_IMMUTABLE">
     <en-US>
-      <Variant>The specified operation is invalid for this texture because it is using immutable storage.</Variant>
+      <Variant>The specified operation is invalid for this texture because it is using immutable storage. You can disable immutable storage for this texture in Texture2D.Create().</Variant>
+    </en-US>
+  </String>
+  <String Key="RENDER_BUFFER_IS_IMMUTABLE">
+    <en-US>
+      <Variant>The specified operation is invalid for this render buffer because it is using immutable storage. You can disable immutable storage for this buffer by passing the appropriate RenderBufferOptions flags to RenderBuffer2D.Create().</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

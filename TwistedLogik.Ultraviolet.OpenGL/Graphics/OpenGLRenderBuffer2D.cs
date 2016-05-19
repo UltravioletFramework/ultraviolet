@@ -21,8 +21,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public OpenGLRenderBuffer2D(UltravioletContext uv, RenderBufferFormat format, Int32 width, Int32 height, RenderBufferOptions options)
             : base(uv)
         {
-            Contract.EnsureRange(width > 0, "width");
-            Contract.EnsureRange(height > 0, "height");
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
 
             this.format           = format;
             this.width            = width;
@@ -40,23 +40,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 switch (format)
                 {
                     case RenderBufferFormat.Color:
-                        this.texture = new OpenGLTexture2D(uv, gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable);
+                        this.texture = new OpenGLTexture2D(uv, gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable, true);
                         break;
 
                     case RenderBufferFormat.Depth24Stencil8:
-                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH24_STENCIL8, width, height, gl.GL_DEPTH_STENCIL, gl.GL_UNSIGNED_INT_24_8, IntPtr.Zero, immutable);
+                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH24_STENCIL8, width, height, gl.GL_DEPTH_STENCIL, gl.GL_UNSIGNED_INT_24_8, IntPtr.Zero, immutable, true);
                         break;
 
                     case RenderBufferFormat.Depth32:
-                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT32, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_INT, IntPtr.Zero, immutable);
+                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT32, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_INT, IntPtr.Zero, immutable, true);
                         break;
 
                     case RenderBufferFormat.Depth16:
-                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT16, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_SHORT, IntPtr.Zero, immutable);
+                        this.texture = new OpenGLTexture2D(uv, gl.GL_DEPTH_COMPONENT16, width, height, gl.GL_DEPTH_COMPONENT, gl.GL_UNSIGNED_SHORT, IntPtr.Zero, immutable, true);
                         break;
 
                     case RenderBufferFormat.Stencil8:
-                        this.texture = new OpenGLTexture2D(uv, gl.GL_STENCIL_INDEX8, width, height, gl.GL_STENCIL, gl.GL_UNSIGNED_INT, IntPtr.Zero, immutable);
+                        this.texture = new OpenGLTexture2D(uv, gl.GL_STENCIL_INDEX8, width, height, gl.GL_STENCIL, gl.GL_UNSIGNED_INT, IntPtr.Zero, immutable, true);
                         break;
 
                     default:

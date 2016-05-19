@@ -65,6 +65,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public static readonly StringResource InvalidOperationWhileBound            = new StringResource(StringDatabase, "INVALID_OPERATION_WHILE_BOUND");
         public static readonly StringResource CannotResizeAttachedRenderBuffer      = new StringResource(StringDatabase, "CANNOT_RESIZE_ATTACHED_RENDER_BUFFER");
         public static readonly StringResource TextureIsImmutable                    = new StringResource(StringDatabase, "TEXTURE_IS_IMMUTABLE");
+        public static readonly StringResource RenderBufferIsImmutable               = new StringResource(StringDatabase, "RENDER_BUFFER_IS_IMMUTABLE");
 #pragma warning restore 1591
     }
 }

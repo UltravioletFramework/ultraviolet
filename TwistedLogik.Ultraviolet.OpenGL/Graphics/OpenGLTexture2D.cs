@@ -74,6 +74,26 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             CreateNativeTexture(uv, internalformat, width, height, format, type, (void*)data, immutable);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the OpenGLTexture2D class.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="internalformat">The texture's internal format.</param>
+        /// <param name="width">The texture's width in pixels.</param>
+        /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="format">The texture's texel format.</param>
+        /// <param name="type">The texture's texel type.</param>
+        /// <param name="data">The texture's data.</param>
+        /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
+        /// <param name="rbuffer">A value indicating whether this texture is being used as a render buffer.</param>
+        /// <returns>The instance of Texture2D that was created.</returns>
+        internal OpenGLTexture2D(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, UInt32 format, UInt32 type, IntPtr data, Boolean immutable, Boolean rbuffer)
+            : base(uv)
+        {
+            this.rbuffer = rbuffer;
+            CreateNativeTexture(uv, internalformat, width, height, format, type, (void*)data, immutable);
+        }
+
         /// <inheritdoc/>
         public override Int32 CompareTo(Texture2D other)
         {
@@ -86,8 +106,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override void Resize(Int32 width, Int32 height)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureRange(width >= 1, "width");
-            Contract.EnsureRange(height >= 1, "height");
+            Contract.EnsureRange(width >= 1, nameof(width));
+            Contract.EnsureRange(height >= 1, nameof(height));
 
             if (BoundForReading || BoundForWriting)
                 throw new InvalidOperationException(OpenGLStrings.InvalidOperationWhileBound);
@@ -96,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             this.height = height;
 
             if (immutable)
-                throw new InvalidOperationException(OpenGLStrings.TextureIsImmutable);
+                throw new InvalidOperationException(rbuffer ? OpenGLStrings.RenderBufferIsImmutable : OpenGLStrings.TextureIsImmutable);
 
             if (Ultraviolet.IsExecutingOnCurrentThread)
             {
@@ -568,6 +588,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private UInt32 format;
         private UInt32 type;
         private Boolean immutable;
+        private Boolean rbuffer;
         private Boolean boundRead;
         private Boolean boundWrite;
     }
