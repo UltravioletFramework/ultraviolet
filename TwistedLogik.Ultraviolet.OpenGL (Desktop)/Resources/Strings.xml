@@ -210,4 +210,9 @@
       <Variant>The specified operation is invalid for this render buffer because it is using immutable storage. You can disable immutable storage for this buffer by passing the appropriate RenderBufferOptions flags to RenderBuffer2D.Create().</Variant>
     </en-US>
   </String>
+  <String Key="RENDER_BUFFER_ALREADY_ATTACHED">
+    <en-US>
+      <Variant>The specified operation is invalid because the render buffer is already attached to a render target.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

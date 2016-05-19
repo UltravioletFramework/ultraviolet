@@ -173,7 +173,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public void MarkAttached()
         {
             if (attached)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(OpenGLStrings.RenderBufferAlreadyAttached);
 
             attached = true;
         }
