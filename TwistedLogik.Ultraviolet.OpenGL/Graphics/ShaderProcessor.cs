@@ -110,6 +110,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             new Regex(@"^\s*#include ""(?<file>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
 
         private static readonly Regex regexIfVerDirective =
-            new Regex(@"^\s*#(?<op>ifver(_gt|_gte|_lt|_lte)?) \""(?<gles>gles)?(?<version_maj>\d+).(?<version_min>\d+)\"" \{\s+(?<source>.+)\s+\}\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+            new Regex(@"^\s*#(?<op>ifver(_gt|_gte|_lt|_lte)?) \""(?<gles>es)?(?<version_maj>\d+).(?<version_min>\d+)\"" \{\s+(?<source>.+)\s+\}\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
     }
 }
