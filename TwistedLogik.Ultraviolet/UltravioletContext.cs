@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -895,12 +896,34 @@ namespace TwistedLogik.Ultraviolet
                 }
                 return context;
             }
-            catch
+            catch (Exception e1)
             {
-                var current = RequestCurrent();
-                if (current != null)
+                try
                 {
-                    current.Dispose();
+                    var current = RequestCurrent();
+                    if (current != null)
+                    {
+                        current.Dispose();
+                    }
+                }
+                catch (Exception e2)
+                {
+                    var error = new StringBuilder();
+                    error.AppendLine($"An exception occurred while creating the Ultraviolet context, and Ultraviolet failed to cleanly shut down.");
+                    error.AppendLine();
+                    error.AppendLine($"Exception which occurred during context creation:");
+                    error.AppendLine();
+                    error.AppendLine(e1.ToString());
+                    error.AppendLine();
+                    error.AppendLine($"Exception which occurred during shutdown:");
+                    error.AppendLine();
+                    error.AppendLine(e2.ToString());
+
+                    try
+                    {
+                        File.WriteAllText($"uv-error-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt", error.ToString());
+                    }
+                    catch (IOException) { }
                 }
                 throw;
             }
