@@ -921,7 +921,7 @@ namespace TwistedLogik.Ultraviolet
 
                     try
                     {
-                        File.WriteAllText($"uv-error-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt", error.ToString());
+                        File.WriteAllText($"uv-error-{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.txt", error.ToString());
                     }
                     catch (IOException) { }
                 }
