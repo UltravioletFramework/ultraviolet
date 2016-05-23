@@ -1,7 +1,9 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Reflection;
+using System.Text;
+using NUnit.Framework;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
@@ -22,9 +24,9 @@ namespace TwistedLogik.Ultraviolet.Testing
                 DestroyUltravioletApplication(application);
                 application = null;
             }
-            catch (AccessViolationException ex)
+            catch (Exception ex)
             {
-                throw new Exception($"Access violation while tearing down {TestContext.CurrentContext.Test.MethodName}; " +
+                throw new Exception($"Exception while tearing down {TestContext.CurrentContext.Test.MethodName}; " +
                     $"test status was {TestContext.CurrentContext.Result.Outcome.Status}", ex);
             }
         }
@@ -42,13 +44,35 @@ namespace TwistedLogik.Ultraviolet.Testing
                     application.Dispose();
                 }
             }
-            catch
+            catch (Exception e1)
             {
-                var context = (UltravioletContext)typeof(UltravioletContext).GetField("current",
-                    BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-                if (context != null)
+                try
                 {
-                    context.Dispose();
+                    var context = (UltravioletContext)typeof(UltravioletContext).GetField("current",
+                        BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+                    if (context != null)
+                    {
+                        context.Dispose();
+                    }
+                }
+                catch (Exception e2)
+                {
+                    var error = new StringBuilder();
+                    error.AppendLine($"An exception occurred while destroying the Ultraviolet application, and test framework failed to perform a clean teardown.");
+                    error.AppendLine();
+                    error.AppendLine($"Exception which occurred during cleanup:");
+                    error.AppendLine();
+                    error.AppendLine(e1.ToString());
+                    error.AppendLine();
+                    error.AppendLine($"Exception which occurred during teardown:");
+                    error.AppendLine();
+                    error.AppendLine(e2.ToString());
+
+                    try
+                    {
+                        File.WriteAllText($"uv-error-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt", error.ToString());
+                    }
+                    catch (IOException) { }
                 }
                 throw;
             }

@@ -289,7 +289,7 @@ namespace TwistedLogik.Gluon
                     typeof(Delegate).IsAssignableFrom(field.FieldType) && !field.FieldType.IsGenericType && field.Name.StartsWith("gl")
                 select field;
 
-            return functions;
+            return functions.ToList();
         }
 
         /// <summary>
