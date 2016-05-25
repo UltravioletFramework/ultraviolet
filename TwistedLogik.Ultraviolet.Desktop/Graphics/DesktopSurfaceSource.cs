@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.Desktop.Graphics
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSource"/> class for desktop platforms.
     /// </summary>
-    public sealed unsafe class DesktopSurfaceSource : SurfaceSource
+    public sealed class DesktopSurfaceSource : SurfaceSource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DesktopSurfaceSource"/> class.
@@ -56,8 +56,11 @@ namespace TwistedLogik.Ultraviolet.Desktop.Graphics
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                var pixel = ((byte*)bmpData.Scan0) + (bmpData.Stride * y) + (x * sizeof(UInt32));
-                return Color.FromRgba(*(uint*)pixel);
+                unsafe
+                {
+                    var pixel = ((byte*)bmpData.Scan0) + (bmpData.Stride * y) + (x * sizeof(UInt32));
+                    return Color.FromRgba(*(uint*)pixel);
+                }
             }
         }
 

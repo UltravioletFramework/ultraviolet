@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="input">The input data structure to process.</param>
         /// <returns>The game asset that was created.</returns>
-        public unsafe override Cursor Process(ContentManager manager, IContentProcessorMetadata metadata, SDL_Surface input)
+        public override Cursor Process(ContentManager manager, IContentProcessorMetadata metadata, SDL_Surface input)
         {
             using (var surface = new OpenGLSurface2D(manager.Ultraviolet, input.CreateCopy()))
             {

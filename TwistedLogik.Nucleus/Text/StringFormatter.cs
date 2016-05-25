@@ -21,7 +21,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Represents an argument that has been added to the formatter.
         /// </summary>
         [SecuritySafeCritical]
-        private unsafe struct StringFormatterArgument
+        private struct StringFormatterArgument
         {
             public StringFormatterArgument(Object obj)
             {

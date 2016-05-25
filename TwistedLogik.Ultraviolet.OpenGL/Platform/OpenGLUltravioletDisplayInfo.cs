@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
     /// <summary>
     /// Represents the OpenGL/SDL2 implementation of the IUltravioletDisplayInfo interface.
     /// </summary>
-    public sealed unsafe class OpenGLUltravioletDisplayInfo : IUltravioletDisplayInfo
+    public sealed class OpenGLUltravioletDisplayInfo : IUltravioletDisplayInfo
     {
         /// <summary>
         /// Initializes a new instance of the OpenGLUltravioletDisplayInfo class.

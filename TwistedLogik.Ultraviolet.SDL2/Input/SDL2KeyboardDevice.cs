@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
     /// <summary>
     /// Represents the SDL2 implementation of the KeyboardDevice class.
     /// </summary>
-    public sealed unsafe class SDL2KeyboardDevice : KeyboardDevice,
+    public sealed class SDL2KeyboardDevice : KeyboardDevice,
         IMessageSubscriber<UltravioletMessageID>
     {
         /// <summary>
@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
-        unsafe void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
+        void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
         {
             if (type == SDL2UltravioletMessages.SDLEvent)
             {
@@ -246,7 +246,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <summary>
         /// Handles SDL2's TEXTEDITING event.
         /// </summary>
-        private void OnTextEditing(ref SDL_TextEditingEvent evt)
+        private unsafe void OnTextEditing(ref SDL_TextEditingEvent evt)
         {
             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
             fixed (byte* input = evt.text)
@@ -261,7 +261,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <summary>
         /// Handles SDL2's TEXTINPUT event.
         /// </summary>
-        private void OnTextInput(ref SDL_TextInputEvent evt)
+        private unsafe void OnTextInput(ref SDL_TextInputEvent evt)
         {
             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
             fixed (byte* input = evt.text)

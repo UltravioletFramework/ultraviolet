@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
     /// <summary>
     /// Represents the OpenGL/SDL2 implementation of the Ultraviolet Graphics subsystem.
     /// </summary>
-    public sealed unsafe class OpenGLUltravioletGraphics : UltravioletResource, IUltravioletGraphics
+    public sealed class OpenGLUltravioletGraphics : UltravioletResource, IUltravioletGraphics
     {
         /// <summary>
         /// Initializes a new instance of the OpenGLUltravioletGraphics class.
@@ -548,14 +548,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM);
 
-            var glVerts = 0;
-            var glPrimitiveType = GetPrimitiveTypeGL(type, count, out glVerts);
-            var glIndexSize = sizeof(short);
-            var glIndexType = GetIndexFormatGL(geometryStream.IndexBufferElementType, out glIndexSize);
-            var glOffset = (void*)(start * glIndexSize);
+            unsafe
+            {
+                var glVerts = 0;
+                var glPrimitiveType = GetPrimitiveTypeGL(type, count, out glVerts);
+                var glIndexSize = sizeof(short);
+                var glIndexType = GetIndexFormatGL(geometryStream.IndexBufferElementType, out glIndexSize);
+                var glOffset = (void*)(start * glIndexSize);
 
-            gl.DrawElements(glPrimitiveType, glVerts, glIndexType, glOffset);
-            gl.ThrowIfError();
+                gl.DrawElements(glPrimitiveType, glVerts, glIndexType, glOffset);
+                gl.ThrowIfError();
+            }
         }
         
         /// <inheritdoc/>
@@ -574,24 +577,27 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM);
 
-            var glVerts = 0;
-            var glPrimitiveType = GetPrimitiveTypeGL(type, count, out glVerts);
-            var glIndexSize = sizeof(short);
-            var glIndexType = GetIndexFormatGL(geometryStream.IndexBufferElementType, out glIndexSize);
-            var glOffset = (void*)(start * glIndexSize);
-
-            if (baseInstance == 0)
+            unsafe
             {
-                gl.DrawElementsInstanced(glPrimitiveType, glVerts, glIndexType, glOffset, instances);
-                gl.ThrowIfError();
-            }
-            else
-            {
-                if (!Capabilities.SupportsNonZeroBaseInstance)
-                    throw new NotSupportedException();
+                var glVerts = 0;
+                var glPrimitiveType = GetPrimitiveTypeGL(type, count, out glVerts);
+                var glIndexSize = sizeof(short);
+                var glIndexType = GetIndexFormatGL(geometryStream.IndexBufferElementType, out glIndexSize);
+                var glOffset = (void*)(start * glIndexSize);
 
-                gl.DrawElementsInstancedBaseInstance(glPrimitiveType, glVerts, glIndexType, glOffset, instances, (uint)baseInstance);
-                gl.ThrowIfError();
+                if (baseInstance == 0)
+                {
+                    gl.DrawElementsInstanced(glPrimitiveType, glVerts, glIndexType, glOffset, instances);
+                    gl.ThrowIfError();
+                }
+                else
+                {
+                    if (!Capabilities.SupportsNonZeroBaseInstance)
+                        throw new NotSupportedException();
+
+                    gl.DrawElementsInstancedBaseInstance(glPrimitiveType, glVerts, glIndexType, glOffset, instances, (uint)baseInstance);
+                    gl.ThrowIfError();
+                }
             }
         }
 

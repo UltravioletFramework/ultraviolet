@@ -8,12 +8,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Platform
     /// <summary>
     /// Represents the SDL2 implementation of the <see cref="PowerManagementService"/> class.
     /// </summary>
-    public sealed unsafe class SDL2PowerManagementService : PowerManagementService
+    public sealed class SDL2PowerManagementService : PowerManagementService
     {
         /// <inheritdoc/>
         public override Single PercentBatteryRemaining
         {
-            get 
+            get
             {
                 UpdateCache();
                 return MathUtil.Clamp(pct / 100.0f, 0f, 1f);
@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Platform
         /// <inheritdoc/>
         public override Boolean IsBatteryPowered
         {
-            get 
+            get
             {
                 UpdateCache();
                 return isBatteryPowered;
@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Platform
         /// <inheritdoc/>
         public override Boolean IsPluggedIn
         {
-            get 
+            get
             {
                 UpdateCache();
                 return isPluggedIn;
@@ -43,33 +43,33 @@ namespace TwistedLogik.Ultraviolet.SDL2.Platform
         /// <summary>
         /// Updates the service's cached state values.
         /// </summary>
-        private void UpdateCache()
+        private unsafe void UpdateCache()
         {
             var now = DateTime.UtcNow;
             if ((now - lastCacheUpdate).TotalSeconds > 1.0)
             {
                 int sdlPct;
 
-				this.sdlPowerState = SDL.GetPowerInfo(null, &sdlPct);
-                this.pct           = sdlPct;
+                this.sdlPowerState = SDL.GetPowerInfo(null, &sdlPct);
+                this.pct = sdlPct;
 
                 switch (sdlPowerState)
                 {
                     case SDL_PowerState.UNKNOWN:
                     case SDL_PowerState.NO_BATTERY:
                         this.isBatteryPowered = false;
-                        this.isPluggedIn      = false;
+                        this.isPluggedIn = false;
                         break;
 
                     case SDL_PowerState.ON_BATTERY:
                         this.isBatteryPowered = true;
-                        this.isPluggedIn      = false;
+                        this.isPluggedIn = false;
                         break;
 
                     case SDL_PowerState.CHARGING:
                     case SDL_PowerState.CHARGED:
                         this.isBatteryPowered = true;
-                        this.isPluggedIn      = true;
+                        this.isPluggedIn = true;
                         break;
                 }
 

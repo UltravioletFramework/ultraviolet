@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         /// <summary>
         /// Manages stream instances for the <see cref="BASSSong"/> class.
         /// </summary>
-        private unsafe class BASSSongInstanceManager : IDisposable
+        private class BASSSongInstanceManager : IDisposable
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="BASSSongInstanceManager"/> class.
@@ -21,10 +21,10 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             public BASSSongInstanceManager(String file)
             {
                 this.file = file;
-                this.fnClose  = StreamClose;
+                this.fnClose = StreamClose;
                 this.fnLength = StreamLength;
-                this.fnRead   = StreamRead;
-                this.fnSeek   = StreamSeek;
+                this.fnRead = StreamRead;
+                this.fnSeek = StreamSeek;
             }
 
             /// <summary>
@@ -54,9 +54,12 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
                 {
                     var procs = new BASS_FILEPROCS(fnClose, fnLength, fnRead, fnSeek);
 
-                    stream = BASSNative.StreamCreateFileUser(1, BASSNative.BASS_STREAM_DECODE, &procs, new IntPtr((int)instanceID));
-                    if (!BASSUtil.IsValidHandle(stream))
-                        throw new BASSException();
+                    unsafe
+                    {
+                        stream = BASSNative.StreamCreateFileUser(1, BASSNative.BASS_STREAM_DECODE, &procs, new IntPtr((int)instanceID));
+                        if (!BASSUtil.IsValidHandle(stream))
+                            throw new BASSException();
+                    }
                 }
                 catch
                 {
@@ -119,27 +122,29 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
                 var totalRead = 0u;
                 var remaining = length;
 
-                var output = (Byte*)buffer;
-
-                while (remaining > 0)
+                unsafe
                 {
-                    var requested = (Int32)Math.Min(remaining, this.copyBuffer.Length);
-                    var read      = instance.Read(this.copyBuffer, 0, requested);
+                    var output = (Byte*)buffer;
 
-                    if (read > 0)
+                    while (remaining > 0)
                     {
-                        Marshal.Copy(this.copyBuffer, 0, (IntPtr)output, read);
-                        output += read;
+                        var requested = (Int32)Math.Min(remaining, this.copyBuffer.Length);
+                        var read = instance.Read(this.copyBuffer, 0, requested);
 
-                        totalRead += (UInt32)read;
-                        remaining -= (UInt32)read;
-                    }
-                    else
-                    {
-                        break;
+                        if (read > 0)
+                        {
+                            Marshal.Copy(this.copyBuffer, 0, (IntPtr)output, read);
+                            output += read;
+
+                            totalRead += (UInt32)read;
+                            remaining -= (UInt32)read;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
-
                 return totalRead;
             }
 
@@ -161,14 +166,14 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
 
             // File proc delegates used by BASS to access the instance streams.
             private readonly FileCloseProc fnClose;
-            private readonly FileLenProc   fnLength;
-            private readonly FileReadProc  fnRead;
-            private readonly FileSeekProc  fnSeek;
+            private readonly FileLenProc fnLength;
+            private readonly FileReadProc fnRead;
+            private readonly FileSeekProc fnSeek;
 
             // State values.
             private readonly String file;
             private UInt32 nextInstanceID;
-            private readonly Dictionary<UInt32, Stream> instances = 
+            private readonly Dictionary<UInt32, Stream> instances =
                 new Dictionary<UInt32, Stream>();
         }
     }

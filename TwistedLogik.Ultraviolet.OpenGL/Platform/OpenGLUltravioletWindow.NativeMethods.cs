@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Platform
 {
-    public unsafe partial class OpenGLUltravioletWindow
+    public partial class OpenGLUltravioletWindow
     {
         /// <summary>
         /// Contains Win32 p/invoke functions.

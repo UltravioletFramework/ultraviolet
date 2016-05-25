@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="input">The input data structure to process.</param>
         /// <returns>The game asset that was created.</returns>
-        public unsafe override CursorCollection Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
+        public override CursorCollection Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
         {
             var image = input.Root.AttributeValueString("Image");
             if (String.IsNullOrEmpty(image))

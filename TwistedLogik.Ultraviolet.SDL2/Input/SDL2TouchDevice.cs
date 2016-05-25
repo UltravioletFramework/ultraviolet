@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
     /// <summary>
     /// Represents the SDL2 implementation of the <see cref="TouchDevice"/> class.
     /// </summary>
-    public sealed unsafe class SDL2TouchDevice : TouchDevice,
+    public sealed class SDL2TouchDevice : TouchDevice,
         IMessageSubscriber<UltravioletMessageID>
     {
         /// <summary>

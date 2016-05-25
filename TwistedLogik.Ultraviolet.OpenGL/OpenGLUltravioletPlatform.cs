@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
     /// <summary>
     /// Represents the OpenGL/SDL2 implementation of the IUltravioletPlatform interface.
     /// </summary>
-    public sealed unsafe class OpenGLUltravioletPlatform : UltravioletResource, IUltravioletPlatform
+    public sealed class OpenGLUltravioletPlatform : UltravioletResource, IUltravioletPlatform
     {
         /// <summary>
         /// Initializes a new instance of the OpenGLUltravioletPlatform class.
@@ -63,14 +63,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
                 if (OpenGLCursor.AreCursorsSupported(Ultraviolet))
                 {
-                    var oglcursor = (OpenGLCursor)value;
-                    if (oglcursor != null)
+                    unsafe
                     {
-                        SDL.SetCursor(oglcursor.Native);
-                    }
-                    else
-                    {
-                        SDL.SetCursor(SDL.GetDefaultCursor());
+                        var oglcursor = (OpenGLCursor)value;
+                        if (oglcursor != null)
+                        {
+                            SDL.SetCursor(oglcursor.Native);
+                        }
+                        else
+                        {
+                            SDL.SetCursor(SDL.GetDefaultCursor());
+                        }
                     }
                 }
             }

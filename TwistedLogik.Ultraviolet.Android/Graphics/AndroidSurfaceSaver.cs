@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSaver"/> class for the Android platform.
     /// </summary>
-    public sealed unsafe class AndroidSurfaceSaver : SurfaceSaver
+    public sealed class AndroidSurfaceSaver : SurfaceSaver
     {
         /// <inheritdoc/>
         public override void SaveAsPng(Surface2D surface, Stream stream)
@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
         /// <param name="height">The height of the image in pixels.</param>
         /// <param name="stream">The stream to which to save the image data.</param>
         /// <param name="format">The format with which to save the image.</param>
-        private void Save(Color[] data, Int32 width, Int32 height, Stream stream, Bitmap.CompressFormat format)
+        private unsafe void Save(Color[] data, Int32 width, Int32 height, Stream stream, Bitmap.CompressFormat format)
         {
             using (var bmp = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888))
             {

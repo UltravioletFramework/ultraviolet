@@ -6,7 +6,7 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
     /// <summary>
     /// Represents an implementation of the <see cref="ScreenDensityService"/> class for desktop platforms.
     /// </summary>
-    public sealed unsafe partial class DesktopScreenDensityService : ScreenDensityService
+    public sealed partial class DesktopScreenDensityService : ScreenDensityService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DesktopScreenDensityService"/> class.
@@ -42,11 +42,14 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
 
             var hmonitor = IntPtr.Zero;
 
-            Win32.EnumDisplayMonitors(IntPtr.Zero, &rect, (hdc, lprcClip, lprcMonitor, dwData) =>
+            unsafe
             {
-                hmonitor = hdc;
-                return false;
-            }, IntPtr.Zero);
+                Win32.EnumDisplayMonitors(IntPtr.Zero, &rect, (hdc, lprcClip, lprcMonitor, dwData) =>
+                {
+                    hmonitor = hdc;
+                    return false;
+                }, IntPtr.Zero);
+            }
 
             if (hmonitor == IntPtr.Zero)
                 return false;

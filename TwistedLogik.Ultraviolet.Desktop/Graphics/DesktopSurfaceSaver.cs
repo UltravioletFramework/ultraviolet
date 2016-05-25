@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Desktop.Graphics
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSaver"/> class for desktop platforms.
     /// </summary>
-    public sealed unsafe class DesktopSurfaceSaver : SurfaceSaver
+    public sealed class DesktopSurfaceSaver : SurfaceSaver
     {
         /// <inheritdoc/>
         public override void SaveAsPng(Surface2D surface, Stream stream)
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.Desktop.Graphics
         /// <param name="height">The height of the image in pixels.</param>
         /// <param name="stream">The stream to which to save the image data.</param>
         /// <param name="format">The format with which to save the image.</param>
-        private void Save(Color[] data, Int32 width, Int32 height, Stream stream, ImageFormat format)
+        private unsafe void Save(Color[] data, Int32 width, Int32 height, Stream stream, ImageFormat format)
         {
             using (var bmp = new Bitmap(width, height))
             {

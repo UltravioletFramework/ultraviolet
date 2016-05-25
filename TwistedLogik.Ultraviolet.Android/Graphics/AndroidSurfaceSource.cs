@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSource"/> class for the Android platform.
     /// </summary>
-    public sealed unsafe class AndroidSurfaceSource : SurfaceSource
+    public sealed class AndroidSurfaceSource : SurfaceSource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AndroidSurfaceSource"/> class.
@@ -51,9 +51,10 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                fixed (Byte* pixel = &bmpData[y * stride + (x * sizeof(UInt32))])
+                unsafe
                 {
-                    return Color.FromArgb(*(UInt32*)pixel);
+                    fixed (Byte* pixel = &bmpData[y * stride + (x * sizeof(UInt32))])
+                        return Color.FromArgb(*(UInt32*)pixel);
                 }
             }
         }

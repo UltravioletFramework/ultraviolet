@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public unsafe override Texture2D Process(ContentManager manager, IContentProcessorMetadata metadata, SDL_Surface input)
+        public override Texture2D Process(ContentManager manager, IContentProcessorMetadata metadata, SDL_Surface input)
         {
             var mdat = metadata.As<OpenGLTexture2DProcessorMetadata>();
 

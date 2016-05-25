@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet
             }
 
             [DllImport("libc")]
-            public static extern unsafe int uname(IntPtr buf);
+            public static extern int uname(IntPtr buf);
 
             #endregion
         }

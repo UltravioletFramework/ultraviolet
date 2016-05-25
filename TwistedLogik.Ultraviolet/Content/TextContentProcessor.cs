@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="input">The input data structure to process.</param>
         /// <returns>The game asset that was created.</returns>
-        public unsafe override IEnumerable<String> Process(ContentManager manager, IContentProcessorMetadata metadata, String[] input)
+        public override IEnumerable<String> Process(ContentManager manager, IContentProcessorMetadata metadata, String[] input)
         {
             return input;
         }

@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override unsafe void GetData(Color[] data)
+        public override void GetData(Color[] data)
         {
             Contract.Require(data, "data");
 
@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override unsafe void GetData(Color[] data, Rectangle region)
+        public override void GetData(Color[] data, Rectangle region)
         {
             Contract.Require(data, "data");
             Contract.EnsureRange(region.X >= 0 && region.X < Width, "region");

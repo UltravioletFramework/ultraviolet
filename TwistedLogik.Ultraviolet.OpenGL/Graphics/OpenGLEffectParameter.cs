@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents the OpenGL/SDL2 implementation of the EffectParameter class.
     /// </summary>
-    public unsafe sealed class OpenGLEffectParameter : EffectParameter
+    public sealed class OpenGLEffectParameter : EffectParameter
     {
         /// <summary>
         /// Initializes a new instance of the OpenGLEffectParameter class.
