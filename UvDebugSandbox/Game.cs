@@ -40,6 +40,7 @@ namespace UvDebugSandbox
         public static void Main(String[] args)
         {
             // Hello, world!
+            // This is a test
 
             using (var game = new Game())
             {
