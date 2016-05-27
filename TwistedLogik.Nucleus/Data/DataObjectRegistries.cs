@@ -157,7 +157,7 @@ namespace TwistedLogik.Nucleus.Data
                     {
                         throw new InvalidDataException(NucleusStrings.InvalidDataObjectReference.Format(reference));
                     }
-                    return new ResolvedDataObjectReference(globalID.Value, reference.Substring(0, ix + 1) + key);
+                    return new ResolvedDataObjectReference(globalID.Value, reference);
                 }
             }
             return new ResolvedDataObjectReference(new Guid(reference), null);

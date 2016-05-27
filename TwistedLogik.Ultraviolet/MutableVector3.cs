@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -11,16 +12,19 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// The vector's x-coordinate.
         /// </summary>
+        [JsonProperty(PropertyName = "x", Required = Required.Always)]
         public Single X;
 
         /// <summary>
         /// The vector's y-coordinate.
         /// </summary>
+        [JsonProperty(PropertyName = "y", Required = Required.Always)]
         public Single Y;
 
         /// <summary>
         /// The vector's z-coordinate.
         /// </summary>
+        [JsonProperty(PropertyName = "z", Required = Required.Always)]
         public Single Z;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -16,6 +17,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="width">The size's width.</param>
         /// <param name="height">The size's height.</param>
+        [JsonConstructor]
         public Size2(Int32 width, Int32 height)
         {
             this.width = width;
@@ -223,6 +225,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the size's width.
         /// </summary>
+        [JsonProperty(PropertyName = "width", Required = Required.Always)]
         public Int32 Width
         {
             get { return width; }
@@ -231,6 +234,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the size's height.
         /// </summary>
+        [JsonProperty(PropertyName = "height", Required = Required.Always)]
         public Int32 Height
         {
             get { return height; }
@@ -239,6 +243,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the size's total area (width times height).
         /// </summary>
+        [JsonIgnore]
         public Int32 Area
         {
             get { return width * height; }

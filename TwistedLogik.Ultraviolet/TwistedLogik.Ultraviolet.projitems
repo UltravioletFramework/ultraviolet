@@ -339,6 +339,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletHostCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletMessageID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletMessages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletNamedCollection.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -16,6 +17,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="x">The point's x-coordinate.</param>
         /// <param name="y">The point's y-coordinate.</param>
+        [JsonConstructor]
         public Point2F(Single x, Single y)
         {
             this.x = x;
@@ -305,6 +307,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the point's x-coordinate.
         /// </summary>
+        [JsonProperty(PropertyName = "x", Required = Required.Always)]
         public Single X
         {
             get { return x; }
@@ -313,6 +316,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the point's y-coordinate.
         /// </summary>
+        [JsonProperty(PropertyName = "y", Required = Required.Always)]
         public Single Y
         {
             get { return y; }

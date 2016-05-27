@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -17,6 +18,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="x">The x-coordinate of the circle's center.</param>
         /// <param name="y">The y-coordinate of the circle's center.</param>
         /// <param name="radius">The circle's radius.</param>
+        [JsonConstructor]
         public Circle(Int32 x, Int32 y, Int32 radius)
         {
             this.x = x;
@@ -220,6 +222,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the circle's position.
         /// </summary>
+        [JsonIgnore]
         public Point2 Position
         {
             get { return new Point2(x, y); }
@@ -228,6 +231,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the x-coordinate of the circle's center.
         /// </summary>
+        [JsonProperty(PropertyName = "x", Required = Required.Always)]
         public Int32 X
         {
             get { return x; }
@@ -236,6 +240,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the y-coordinate of the circle's center.
         /// </summary>
+        [JsonProperty(PropertyName = "y", Required = Required.Always)]
         public Int32 Y
         {
             get { return y; } 
@@ -244,6 +249,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the circle's radius.
         /// </summary>
+        [JsonProperty(PropertyName = "radius", Required = Required.Always)]
         public Int32 Radius
         {
             get { return radius; }
