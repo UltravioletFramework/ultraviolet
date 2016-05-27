@@ -138,6 +138,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
+    <Compile Include="Content\AssetIDTests.cs" />
     <Compile Include="SetUpFixture.cs" />
     <Compile Include="Audio\BASS_SoundEffectPlayerTests.cs" />
     <Compile Include="Audio\BASS_SongPlayerTests.cs" />
@@ -323,6 +324,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Fonts\SegoeUITexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Manifests\Test.manifest">
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Manifests\Global.manifest">

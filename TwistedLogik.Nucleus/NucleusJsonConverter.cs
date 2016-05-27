@@ -157,7 +157,7 @@ namespace TwistedLogik.Nucleus
         private static void WriteJson_StringResource(JsonWriter writer, Object value, JsonSerializer serializer)
         {
             var s = (StringResource)value;
-            if (s.Database != null)
+            if (s.Database != Localization.Strings)
                 throw new JsonWriterException(NucleusStrings.JsonCannotWriteNonGlobalStringResource);
 
             serializer.Serialize(writer, s.Key);

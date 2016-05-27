@@ -1,9 +1,10 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
+using NUnit.Framework;
 using TwistedLogik.Nucleus.Testing;
 using TwistedLogik.Nucleus.Text;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Nucleus.Tests.Text
 {
@@ -125,8 +126,41 @@ namespace TwistedLogik.Nucleus.Tests.Text
             });
         }
 
+        [Test]
+        public void StringResource_SerializesToJson()
+        {
+            LoadTestLocalizationDatabase();
+
+            UsingCulture("fr-FR", () =>
+            {
+                var converter = new NucleusJsonConverter();
+                var resource = new StringResource("LOCALIZED_RESOURCE");
+                var json = JsonConvert.SerializeObject(resource, converter);
+
+                TheResultingString(json).ShouldBe($"\"{resource.Key}\"");
+            });
+        }
+
+        [Test]
+        public void StringResource_DeserializesFromJson()
+        {
+            LoadTestLocalizationDatabase();
+
+            UsingCulture("fr-FR", () =>
+            {
+                const String json = "\"LOCALIZED_RESOURCE\"";
+
+                var converter = new NucleusJsonConverter();
+                var resource = JsonConvert.DeserializeObject<StringResource>(json, converter);
+
+                TheResultingString(resource.Value).ShouldBe("C'est un test");
+            });
+        }
+
         private void LoadTestLocalizationDatabase()
         {
+            Localization.Strings.Unload();
+
             using (var stream = new MemoryStream())
             using (var writer = new StreamWriter(stream))
             {
@@ -140,6 +174,14 @@ namespace TwistedLogik.Nucleus.Tests.Text
         private const String LocalizationDatabaseXml =
             @"<?xml version='1.0' encoding='utf-8' ?>
             <LocalizedStrings>
+              <String Key='LOCALIZED_RESOURCE'>
+                <en-US>
+                  <Variant>This is a test</Variant>
+                </en-US>
+                <fr-FR>
+                  <Variant>C'est un test</Variant>
+                </fr-FR>
+              </String>
               <String Key='SWORD'>
                 <en-US>
                   <Variant Group='singular'>sword</Variant>

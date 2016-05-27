@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
@@ -117,6 +118,29 @@ namespace TwistedLogik.Ultraviolet.Tests
             var circle2 = CircleF.Parse(circle1.ToString());
 
             TheResultingValue(circle1 == circle2).ShouldBe(true);
+        }
+
+        [Test]
+        public void CircleF_SerializesToJson()
+        {
+            var converter = new UltravioletJsonConverter();
+            var circle = new CircleF(1.2f, 2.3f, 3.4f);
+            var json = JsonConvert.SerializeObject(circle, converter);
+
+            TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""radius"":3.4}");
+        }
+
+        [Test]
+        public void CircleF_DeserializesFromJson()
+        {
+            const String json = @"{ ""x"":1.2,""y"":2.3,""radius"":3.4 }";
+
+            var converter = new UltravioletJsonConverter();
+            var circle = JsonConvert.DeserializeObject<CircleF>(json, converter);
+
+            TheResultingValue(circle)
+                .ShouldHavePosition(1.2f, 2.3f)
+                .ShouldHaveRadius(3.4f);
         }
     }
 }

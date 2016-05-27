@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
@@ -120,6 +121,28 @@ namespace TwistedLogik.Ultraviolet.Tests
 
             var size2 = new Size2(222, 55555);
             TheResultingValue(size2.Area).ShouldBe(222 * 55555);
+        }
+
+        [Test]
+        public void Size2_SerializesToJson()
+        {
+            var converter = new UltravioletJsonConverter();
+            var size = new Size2(1, 2);
+            var json = JsonConvert.SerializeObject(size, converter);
+
+            TheResultingString(json).ShouldBe(@"{""width"":1,""height"":2}");
+        }
+
+        [Test]
+        public void Size2_DeserializesFromJson()
+        {
+            const String json = @"{""width"":1,""height"":2}";
+
+            var converter = new UltravioletJsonConverter();
+            var size = JsonConvert.DeserializeObject<Size2>(json, converter);
+
+            TheResultingValue(size)
+                .ShouldBe(1, 2);
         }
     }
 }

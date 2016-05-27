@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TestDataObjects>
+  <TestDataObject ID="32758c5b-0a91-4c25-a092-c4e65754346d" Key="TEST_OBJECT_1">
+    <Foo>Hello</Foo>
+    <Bar>World</Bar>
+  </TestDataObject>
+</TestDataObjects>

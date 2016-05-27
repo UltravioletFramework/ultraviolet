@@ -81,6 +81,15 @@ namespace TwistedLogik.Nucleus.Data
         }
 
         /// <summary>
+        /// Unregisters all object registries and completely resets the registry manager.
+        /// </summary>
+        public static void Reset()
+        {
+            registries.Clear();
+            registriesByName.Clear();
+        }
+
+        /// <summary>
         /// Removes all objects from all of the application's data object registries 
         /// and returns them to their default states.
         /// </summary>

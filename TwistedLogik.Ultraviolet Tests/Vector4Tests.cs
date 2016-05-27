@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
@@ -788,6 +789,28 @@ namespace TwistedLogik.Ultraviolet.Tests
 
             TheResultingValue(result).WithinDelta(0.1f)
                 .ShouldBe(-123.0f, -456.0f, 768.0f, 321.0f);
+        }
+
+        [Test]
+        public void Vector4_SerializesToJson()
+        {
+            var converter = new UltravioletJsonConverter();
+            var vector = new Vector4(1.2f, 2.3f, 3.4f, 4.5f);
+            var json = JsonConvert.SerializeObject(vector, converter);
+
+            TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""z"":3.4,""w"":4.5}");
+        }
+
+        [Test]
+        public void Vector4_DeserializesFromJson()
+        {
+            const String json = @"{""width"":1.2,""height"":2.3,""depth"":3.4}";
+
+            var converter = new UltravioletJsonConverter();
+            var size = JsonConvert.DeserializeObject<Size3D>(json, converter);
+
+            TheResultingValue(size)
+                .ShouldBe(1.2, 2.3, 3.4);
         }
     }
 }
