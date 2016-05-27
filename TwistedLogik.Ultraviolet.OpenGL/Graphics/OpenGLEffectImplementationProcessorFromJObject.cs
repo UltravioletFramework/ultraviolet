@@ -63,7 +63,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override EffectImplementation ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
-            var version = reader.ReadByte();
+			// version
+            reader.ReadByte();
 
             var parameters = new List<String>();
             var parameterCount = reader.ReadInt32();
