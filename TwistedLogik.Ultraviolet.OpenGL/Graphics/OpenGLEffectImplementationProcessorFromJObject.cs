@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TwistedLogik.Gluon;
+using Newtonsoft.Json.Linq;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 
@@ -63,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override EffectImplementation ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
-			// version
+            // version
             reader.ReadByte();
 
             var parameters = new List<String>();
