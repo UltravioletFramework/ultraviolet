@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 using sspack;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
@@ -10,21 +9,20 @@ using TwistedLogik.Ultraviolet.Content;
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
-    /// Represents a content processor which loads XML definition files as texture atlases.
+    /// Represents a content processor which loads texture atlases.
     /// </summary>
     /// <remarks>This class is based on code taken from the Sprite Sheet Packer library (see TwistedLogik.Ultraviolet.Licenses.txt).</remarks>
-    [ContentProcessor]
-    public sealed partial class TextureAtlasProcessor : ContentProcessor<XDocument, TextureAtlas>
+    internal sealed partial class TextureAtlasProcessor : ContentProcessor<TextureAtlasDescription, TextureAtlas>
     {
         /// <inheritdoc/>
-        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
+        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, TextureAtlasDescription input, Boolean delete)
         {
             // Pack the texture atlas.
-            var definition = new TextureAtlasDefinition(input, manager, metadata.AssetPath);
+            var atlasImages = LoadAndSortImages(manager, metadata, input);
 
             var outputWidth = 0;
             var outputHeight = 0;
-            var outputPlacement = PackImageRectangles(definition, out outputWidth, out outputHeight);
+            var outputPlacement = PackImageRectangles(input, atlasImages, out outputWidth, out outputHeight);
 
             if (outputPlacement == null)
                 throw new InvalidOperationException(UltravioletStrings.FailedToPackTextureAtlas);
@@ -33,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
                 throw new InvalidOperationException(UltravioletStrings.TextureAtlasContainsNoImages);
 
             // Write out the texture as a PNG file.
-            using (var outputSurface = CreateOutputSurface(definition, manager, outputWidth, outputHeight, outputPlacement))
+            using (var outputSurface = CreateOutputSurface(input, atlasImages, manager, outputWidth, outputHeight, outputPlacement))
             {
                 using (var surfaceStream = new MemoryStream())
                 {
@@ -51,8 +49,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
                 writer.Write(cell.Key);
                 writer.Write(cell.Value.X);
                 writer.Write(cell.Value.Y);
-                writer.Write(cell.Value.Width - definition.Padding);
-                writer.Write(cell.Value.Height - definition.Padding);
+                writer.Write(cell.Value.Width - input.Metadata.Padding);
+                writer.Write(cell.Value.Height - input.Metadata.Padding);
             }
         }
 
@@ -86,31 +84,168 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <inheritdoc/>
-        public override TextureAtlas Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
+        public override TextureAtlas Process(ContentManager manager, IContentProcessorMetadata metadata, TextureAtlasDescription input)
         {
-            var definition = new TextureAtlasDefinition(input, manager, metadata.AssetPath);
+            var atlasImages = LoadAndSortImages(manager, metadata, input);
 
             var outputWidth = 0;
             var outputHeight = 0;
 
-            var outputPlacement = PackImageRectangles(definition, out outputWidth, out outputHeight);
+            var outputPlacement = PackImageRectangles(input, atlasImages, out outputWidth, out outputHeight);
             if (outputPlacement == null)
                 throw new InvalidOperationException(UltravioletStrings.FailedToPackTextureAtlas);
 
-            return CreateTextureAtlas(definition, manager, outputWidth, outputHeight, outputPlacement);
+            return CreateTextureAtlas(input, atlasImages, manager, outputWidth, outputHeight, outputPlacement);
         }
 
         /// <inheritdoc/>
-        public override Boolean SupportsPreprocessing
+        public override Boolean SupportsPreprocessing => true;
+
+        /// <summary>
+        /// Gets the size of the specified image.
+        /// </summary>
+        private static Size2 GetImageSize(ContentManager content, String path)
         {
-            get { return true; }
+            using (var image = content.Load<Surface2D>(path, false))
+                return new Size2(image.Width, image.Height);
         }
 
+        /// <summary>
+        /// Loads the images specified by an atlas description and sorts them according to size.
+        /// </summary>
+        private static IEnumerable<TextureAtlasImage> LoadAndSortImages(ContentManager content, IContentProcessorMetadata metadata, TextureAtlasDescription atlasDesc)
+        {
+            var images = LoadImages(content, metadata, atlasDesc);
+            if (images == null)
+                throw new InvalidOperationException(UltravioletStrings.TextureAtlasContainsNoImages);
+
+            return SortImages(images);
+        }
+
+        /// <summary>
+        /// Loads the images specified by an atlas description.
+        /// </summary>
+        private static IEnumerable<TextureAtlasImage> LoadImages(ContentManager content, IContentProcessorMetadata metadata, TextureAtlasDescription atlasDesc)
+        {
+            var result = new Dictionary<String, TextureAtlasImage>();
+
+            if (atlasDesc.Images != null)
+            {
+                foreach (var imageDesc in atlasDesc.Images)
+                {
+                    var path = imageDesc.Path;
+                    if (String.IsNullOrEmpty(path) || path.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
+                        throw new InvalidDataException(UltravioletStrings.InvalidTextureAtlasImagePath);
+
+                    var name = imageDesc.Name;
+
+                    if (path.Contains("*"))
+                    {
+                        if (name != null)
+                            throw new InvalidDataException(UltravioletStrings.TextureAtlasWildcardsCannotBeNamed);
+
+                        var files = ExpandFileExpression(content, ResolveDependencyAssetPath(metadata, Path.Combine(atlasDesc.Metadata.RootDirectory, path)));
+                        foreach (var file in files)
+                        {
+                            var nameFile = Path.GetFileNameWithoutExtension(file);
+                            var nameRoot = String.IsNullOrEmpty(Path.GetDirectoryName(path)) ? null : Path.GetDirectoryName(file)
+                                .Replace(Path.DirectorySeparatorChar, '\\')
+                                .Replace(Path.AltDirectorySeparatorChar, '\\');
+
+                            name = String.IsNullOrEmpty(nameRoot) ? nameFile : nameRoot + "\\" + nameFile;
+
+                            if (result.ContainsKey(name))
+                                throw new InvalidOperationException(UltravioletStrings.TextureAtlasAlreadyContainsCell.Format(name));
+
+                            var size = GetImageSize(content, file);
+                            result[name] = new TextureAtlasImage(name, file, size);
+                        }
+                    }
+                    else
+                    {
+                        name = name ?? path;
+                        path = ResolveDependencyAssetPath(metadata, Path.Combine(atlasDesc.Metadata.RootDirectory, path));
+
+                        if (result.ContainsKey(name))
+                            throw new InvalidOperationException(UltravioletStrings.TextureAtlasAlreadyContainsCell.Format(name));
+
+                        var size = GetImageSize(content, path);
+                        result[name] = new TextureAtlasImage(name, path, size);
+                    }
+                }
+            }
+
+            return result.Any() ? result.Values.ToList() : null;
+        }
+
+        /// <summary>
+        /// Sorts the specified list of images according to their size.
+        /// </summary>
+        private static IEnumerable<TextureAtlasImage> SortImages(IEnumerable<TextureAtlasImage> images)
+        {
+            return images.OrderBy(x => x, new FunctorComparer<TextureAtlasImage>((f1, f2) =>
+            {
+                var b1 = f1.Size;
+                var b2 = f2.Size;
+
+                var c = -b1.Width.CompareTo(b2.Width);
+                if (c != 0)
+                    return c;
+
+                c = -b1.Height.CompareTo(b2.Height);
+                if (c != 0)
+                    return c;
+
+                return f1.Path.CompareTo(f2.Path);
+            })).ToList();
+        }
+
+        /// <summary>
+        /// Expands a file expression potentially containing wildcard (*) characters.
+        /// </summary>
+        private static IEnumerable<String> ExpandFileExpression(ContentManager manager, String expression)
+        {
+            var root = Path.GetDirectoryName(expression);
+            var filter = Path.GetFileName(expression);
+
+            var directories = new List<String>();
+            ExpandDirectoryExpression(manager, String.Empty, root, directories);
+
+            var files = new List<String>();
+            foreach (var directory in directories)
+            {
+                files.AddRange(manager.GetAssetsInDirectory(directory, filter));
+            }
+            return files;
+        }
+
+        /// <summary>
+        /// Expands a directory expression potentially containing wildcard (*) characters.
+        /// </summary>
+        private static void ExpandDirectoryExpression(ContentManager manager, String root, String expression, List<String> result)
+        {
+            if (String.IsNullOrWhiteSpace(expression))
+            {
+                result.Add(root);
+            }
+            else
+            {
+                var parts = expression.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                var newexp = String.Join(Path.DirectorySeparatorChar.ToString(), parts, 1, parts.Length - 1);
+                var matches = manager.GetSubdirectories(root, parts[0]);
+                foreach (var match in matches)
+                {
+                    ExpandDirectoryExpression(manager, match, newexp, result);
+                }
+            }
+        }
+        
         /// <summary>
         /// This method does some trickery type stuff where we perform the TestPackingImages method over and over,
         /// trying to reduce the image size until we have found the smallest possible image we can fit.
         /// </summary>
-        private Dictionary<String, Rectangle> PackImageRectangles(TextureAtlasDefinition definition, out Int32 outputWidth, out Int32 outputHeight)
+        private static Dictionary<String, Rectangle> PackImageRectangles(TextureAtlasDescription atlasDesc, IEnumerable<TextureAtlasImage> atlasImages,
+            out Int32 outputWidth, out Int32 outputHeight)
         {
             // create a dictionary for our test image placements
             var testImagePlacement = new Dictionary<String, Rectangle>();
@@ -119,18 +254,18 @@ namespace TwistedLogik.Ultraviolet.Graphics
             // get the size of our smallest image
             var smallestWidth = Int32.MaxValue;
             var smallestHeight = Int32.MaxValue;
-            foreach (var image in definition.ImageList)
+            foreach (var image in atlasImages)
             {
                 smallestWidth = Math.Min(smallestWidth, image.Size.Width);
                 smallestHeight = Math.Min(smallestHeight, image.Size.Height);
             }
 
             // we need a couple values for testing
-            outputWidth = definition.MaximumWidth;
-            outputHeight = definition.MaximumHeight;
+            outputWidth = atlasDesc.Metadata.MaximumWidth;
+            outputHeight = atlasDesc.Metadata.MaximumHeight;
 
-            var testWidth = definition.MaximumWidth;
-            var testHeight = definition.MaximumHeight;
+            var testWidth = atlasDesc.Metadata.MaximumWidth;
+            var testHeight = atlasDesc.Metadata.MaximumHeight;
 
             var shrinkVertical = false;
 
@@ -141,7 +276,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
                 testImagePlacement.Clear();
 
                 // try to pack the images into our current test size
-                if (!TestPackingImages(definition, testWidth, testHeight, testImagePlacement))
+                if (!TestPackingImages(atlasDesc, atlasImages, testWidth, testHeight, testImagePlacement))
                 {
                     // if that failed...
 
@@ -155,9 +290,11 @@ namespace TwistedLogik.Ultraviolet.Graphics
                     if (shrinkVertical)
                         return imagePlacement;
 
+                    var padding = atlasDesc.Metadata.Padding;
+
                     shrinkVertical = true;
-                    testWidth += smallestWidth + definition.Padding + definition.Padding;
-                    testHeight += smallestHeight + definition.Padding + definition.Padding;
+                    testWidth += smallestWidth + padding + padding;
+                    testHeight += smallestHeight + padding + padding;
                     continue;
                 }
 
@@ -177,19 +314,19 @@ namespace TwistedLogik.Ultraviolet.Graphics
                 // subtract the extra padding on the right and bottom
                 if (!shrinkVertical)
                 {
-                    testWidth -= definition.Padding;
+                    testWidth -= atlasDesc.Metadata.Padding;
                 }
-                testHeight -= definition.Padding;
+                testHeight -= atlasDesc.Metadata.Padding;
 
                 // if we require a power of two texture, find the next power of two that can fit this image
-                if (definition.RequirePowerOfTwo)
+                if (atlasDesc.Metadata.RequirePowerOfTwo)
                 {
                     testWidth  = MathUtil.FindNextPowerOfTwo(testWidth);
                     testHeight = MathUtil.FindNextPowerOfTwo(testHeight);
                 }
 
                 // if we require a square texture, set the width and height to the larger of the two
-                if (definition.RequireSquare)
+                if (atlasDesc.Metadata.RequireSquare)
                 {
                     var max = Math.Max(testWidth, testHeight);
                     testWidth = testHeight = max;
@@ -221,19 +358,21 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Determines whether the atlas' images can fit on a texture of the specified size.
         /// </summary>
-        private Boolean TestPackingImages(TextureAtlasDefinition definition, Int32 testWidth, Int32 testHeight, Dictionary<String, Rectangle> testImagePlacement)
+        private static Boolean TestPackingImages(TextureAtlasDescription atlasDesc, IEnumerable<TextureAtlasImage> atlasImages,
+            Int32 testWidth, Int32 testHeight, Dictionary<String, Rectangle> testImagePlacement)
         {
             var rectanglePacker = new ArevaloRectanglePacker(testWidth, testHeight);
-            foreach (var image in definition.ImageList)
+            foreach (var image in atlasImages)
             {
                 var size = image.Size;
                 var origin = Vector2.Zero;
-                if (!rectanglePacker.TryPack(size.Width + definition.Padding, size.Height + definition.Padding, out origin))
+                var padding = atlasDesc.Metadata.Padding;
+                if (!rectanglePacker.TryPack(size.Width + padding, size.Height + padding, out origin))
                 {
                     return false;
                 }
                 testImagePlacement.Add(image.Name, new Rectangle((int)origin.X, (int)origin.Y, 
-                    size.Width + definition.Padding, size.Height + definition.Padding));
+                    size.Width + padding, size.Height + padding));
             }
             return true;
         }
@@ -241,17 +380,12 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Creates the output surface for a texture atlas.
         /// </summary>
-        /// <param name="definition">The texture atlas definition.</param>
-        /// <param name="content">The content manager with which to load images.</param>
-        /// <param name="width">The width of the output texture.</param>
-        /// <param name="height">The height of the output texture.</param>
-        /// <param name="images">The table of image locations on the texture atlas.</param>
-        /// <returns>The output surface that was created.</returns>
-        private Surface2D CreateOutputSurface(TextureAtlasDefinition definition, ContentManager content, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
+        private static Surface2D CreateOutputSurface(TextureAtlasDescription atlasDesc, IEnumerable<TextureAtlasImage> atlasImages,
+            ContentManager content, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
         {
             var output = Surface2D.Create(width, height);
-
-            foreach (var image in definition.ImageList)
+            
+            foreach (var image in atlasImages)
             {
                 var imageArea = images[image.Name];
                 using (var imageSurface = content.Load<Surface2D>(image.Path, false))
@@ -259,8 +393,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
                     var areaWithoutPadding = new Rectangle(
                         imageArea.X, 
                         imageArea.Y, 
-                        imageArea.Width - definition.Padding, 
-                        imageArea.Height - definition.Padding);
+                        imageArea.Width - atlasDesc.Metadata.Padding, 
+                        imageArea.Height - atlasDesc.Metadata.Padding);
                     imageSurface.Blit(output, areaWithoutPadding);
                 }
             }
@@ -271,15 +405,10 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Creates the output texture for a texture atlas.
         /// </summary>
-        /// <param name="definition">The texture atlas definition.</param>
-        /// <param name="content">The content manager with which to load images.</param>
-        /// <param name="width">The width of the output texture.</param>
-        /// <param name="height">The height of the output texture.</param>
-        /// <param name="images">The table of image locations on the texture atlas.</param>
-        /// <returns>The output texture that was created.</returns>
-        private Texture2D CreateOutputTexture(TextureAtlasDefinition definition, ContentManager content, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
+        private static Texture2D CreateOutputTexture(TextureAtlasDescription atlasDesc, IEnumerable<TextureAtlasImage> atlasImages,
+            ContentManager content, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
         {
-            using (var output = CreateOutputSurface(definition, content, width, height, images))
+            using (var output = CreateOutputSurface(atlasDesc, atlasImages, content, width, height, images))
             {
                 return output.CreateTexture();
             }
@@ -288,17 +417,13 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// Creates a texture atlas from the specified collection of images.
         /// </summary>
-        /// <param name="definition">The texture atlas definition.</param>
-        /// <param name="content">The content manager with which to load images.</param>
-        /// <param name="width">The width of the output texture.</param>
-        /// <param name="height">The height of the output texture.</param>
-        /// <param name="images">The table of image locations on the texture atlas.</param>
-        /// <returns>The texture atlas that was created.</returns>
-        private TextureAtlas CreateTextureAtlas(TextureAtlasDefinition definition, ContentManager content, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
+        private static TextureAtlas CreateTextureAtlas(TextureAtlasDescription atlasDesc, IEnumerable<TextureAtlasImage> atlasImages,
+            ContentManager content, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
         {
-            var texture = CreateOutputTexture(definition, content, width, height, images);
+            var padding = atlasDesc.Metadata.Padding;
+            var texture = CreateOutputTexture(atlasDesc, atlasImages, content, width, height, images);
             var atlas = new TextureAtlas(texture, images.ToDictionary(x => x.Key, 
-                x => new Rectangle(x.Value.X, x.Value.Y, x.Value.Width - definition.Padding, x.Value.Height - definition.Padding)));
+                x => new Rectangle(x.Value.X, x.Value.Y, x.Value.Width - padding, x.Value.Height - padding)));
             return atlas;
         }
     }

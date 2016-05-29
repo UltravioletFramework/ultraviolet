@@ -233,8 +233,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAddressMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlas.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasImage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasImageDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasMetadataDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureDataFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureFilter.cs" />
