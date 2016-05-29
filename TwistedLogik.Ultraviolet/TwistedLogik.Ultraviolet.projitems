@@ -146,7 +146,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameGroupDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteHeader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteImporter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteSortMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\sspack\OutOfSpaceException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\sspack\Packing\ArevaloRectanglePacker.cs" />
