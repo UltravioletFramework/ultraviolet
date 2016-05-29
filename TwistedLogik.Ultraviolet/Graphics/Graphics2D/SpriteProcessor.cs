@@ -15,9 +15,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, SpriteDescription input, Boolean delete)
         {
-            Contract.Require(writer, "writer");
-            Contract.Require(input, "obj");
-
             writer.Write((input.Animations == null) ? 0 : input.Animations.Length);
             if (input.Animations != null)
             {
@@ -171,7 +168,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                     var frame = new SpriteFrameDescription();
                     frame.Atlas = frameDesc.Atlas;
                     frame.AtlasCell = frameDesc.AtlasCell;
-                    if (frame.Atlas != null)
+                    if (!String.IsNullOrWhiteSpace(frame.Atlas))
                     {
                         var atlas = manager.Load<TextureAtlas>(frame.Atlas);
                         if (!atlas.ContainsCell(frame.AtlasCell))
@@ -208,9 +205,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Boolean SupportsPreprocessing
-        {
-            get { return true; }
-        }
+        public override Boolean SupportsPreprocessing => true;
     }
 }
