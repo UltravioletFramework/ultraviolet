@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Xml.Linq;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Data;
-using TwistedLogik.Nucleus.Xml;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
@@ -14,12 +11,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Initializes a new instance of the <see cref="TextTableLayout"/> class.
         /// </summary>
-        /// <param name="xml">The XML document that contains the table layout.</param>
-        internal TextTableLayout(XDocument xml)
+        /// <param name="description">The table layout description.</param>
+        internal TextTableLayout(TextTableLayoutDescription description)
         {
-            Contract.Require(xml, "xml");
+            Contract.Require(description, nameof(description));
 
-            this.xml = xml;
+            this.description = description;
         }
 
         /// <summary>
@@ -31,39 +28,40 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The <see cref="TextTable{ViewModelType}"/> that was created.</returns>
         public TextTable<ViewModelType> Create<ViewModelType>(TextRenderer renderer, SpriteFont font)
         {
-            Contract.Require(renderer, "renderer");
-            Contract.Require(font, "font");
+            Contract.Require(renderer, nameof(renderer));
+            Contract.Require(font, nameof(font));
+            
+            var table = new TextTable<ViewModelType>(renderer, description.Width ?? 0, description.Height ?? 0, font);
 
-            var width = xml.Root.AttributeValueInt32("Width") ?? 0;
-            var height = xml.Root.AttributeValueInt32("Height") ?? 0;
-            var table = new TextTable<ViewModelType>(renderer, width, height, font);
-
-            var rowElements = xml.Root.Elements("Row");
-            foreach (var rowElement in rowElements)
+            if (description.Rows != null)
             {
-                var row = table.Rows.Add();
-                var cellElements = rowElement.Elements("Cell");
-                foreach (var cellElement in cellElements)
+                foreach (var rowDesc in description.Rows)
                 {
-                    var cell = row.Cells.Add();
-                    cell.Format = cellElement.AttributeValueString("Format");
-                    cell.Text = cellElement.Value;
-                    cell.TextFlags = (TextFlags)ObjectResolver.FromString(cellElement.AttributeValueString("TextFlags") ?? String.Empty, typeof(TextFlags));
-                    cell.Width = cellElement.AttributeValueInt32("Width");
-                    cell.Height = cellElement.AttributeValueInt32("Height");
-
-                    var binding = cellElement.AttributeValueString("Binding");
-                    if (!String.IsNullOrWhiteSpace(binding))
+                    var row = table.Rows.Add();
+                    if (rowDesc.Cells != null)
                     {
-                        cell.Bind(binding);
+                        foreach (var cellDesc in rowDesc.Cells)
+                        {
+                            var cell = row.Cells.Add();
+                            cell.TextFlags = cellDesc.TextFlags;
+                            cell.Text = cellDesc.Text;
+                            cell.Format = cellDesc.Format;
+                            cell.Width = cellDesc.Width;
+                            cell.Height = cellDesc.Height;
+
+                            if (!String.IsNullOrEmpty(cellDesc.Binding))
+                            {
+                                cell.Bind(cellDesc.Binding);
+                            }
+                        }
                     }
                 }
             }
-
+            
             return table;
         }
 
         // State values.
-        private readonly XDocument xml;
+        private readonly TextTableLayoutDescription description;
     }
 }

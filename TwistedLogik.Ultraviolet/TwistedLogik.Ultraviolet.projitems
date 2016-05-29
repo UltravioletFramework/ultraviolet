@@ -201,7 +201,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableCellCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayout.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutCellDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutRowDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableRow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableRowCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\GraphicsCapabilities.cs" />
