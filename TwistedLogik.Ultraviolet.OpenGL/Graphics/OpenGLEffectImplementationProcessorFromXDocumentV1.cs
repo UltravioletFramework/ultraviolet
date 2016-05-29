@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads shader effect assets from version 1 XML definition files.
     /// </summary>
-    internal sealed class OpenGLEffectImplementationProcessorFromXDocumentV1 : ContentProcessor<XDocument, EffectImplementation>
+    internal sealed class OpenGLEffectImplementationProcessorFromXDocumentV1 : EffectImplementationProcessor<XDocument>
     {
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
@@ -44,17 +44,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     var passName = (String)passElement.Attribute("Name");
                     writer.Write(passName);
 
-                    var vertexShaderAsset = GetShader(passElement, "VertexShader");
-                    if (String.IsNullOrEmpty(vertexShaderAsset))
+                    var vertexShader = (String)passElement.Element("VertexShader");
+                    var vertexShaderES = (String)passElement.Element("VertexShaderES");
+
+                    if (String.IsNullOrEmpty(vertexShader))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
-                    writer.Write(vertexShaderAsset);
+                    writer.Write(vertexShader);
+                    writer.Write(vertexShaderES);
 
-                    var fragmentShaderAsset = GetShader(passElement, "FragmentShader");
-                    if (String.IsNullOrEmpty(fragmentShaderAsset))
+                    var fragShader = (String)passElement.Element("VertexShader");
+                    var fragShaderES = (String)passElement.Element("VertexShaderES");
+
+                    if (String.IsNullOrEmpty(fragShader))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
-                    writer.Write(fragmentShaderAsset);
+                    writer.Write(fragShader);
+                    writer.Write(fragShaderES);
                 }
             }
         }
@@ -80,19 +86,28 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 {
                     var passName = reader.ReadString();
 
-                    var vertexShaderAsset = reader.ReadString();
-                    if (String.IsNullOrEmpty(vertexShaderAsset))
+                    var vertPathGL = reader.ReadString();
+                    var vertPathES = reader.ReadString();
+                    var vertPath = GetShaderForCurrentPlatform(vertPathGL, vertPathES);
+
+                    if (String.IsNullOrEmpty(vertPath))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
-                    var vertexShader = manager.Load<OpenGLVertexShader>(vertexShaderAsset);
+                    vertPath = ResolveDependencyAssetPath(metadata, vertPath);
 
-                    var fragmentShaderAsset = reader.ReadString();
-                    if (String.IsNullOrEmpty(fragmentShaderAsset))
+                    var fragPathGL = reader.ReadString();
+                    var fragPathES = reader.ReadString();
+                    var fragPath = GetShaderForCurrentPlatform(fragPathGL, fragPathES);
+
+                    if (String.IsNullOrEmpty(fragPath))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
-                    var fragmentShader = manager.Load<OpenGLFragmentShader>(fragmentShaderAsset);
+                    fragPath = ResolveDependencyAssetPath(metadata, fragPath);
 
-                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertexShader, fragmentShader, true) };
+                    var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
+                    var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
+
+                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, true) };
                     passes.Add(new OpenGLEffectPass(manager.Ultraviolet, passName, programs));
                 }
 
@@ -123,19 +138,22 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 {
                     var passName = (String)passElement.Attribute("Name");
 
-                    var vertexShaderAsset = GetShader(passElement, "VertexShader");
-                    if (String.IsNullOrEmpty(vertexShaderAsset))
+                    var vertPath = GetShader(passElement, "VertexShader");
+                    if (String.IsNullOrEmpty(vertPath))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
-                    var vertexShader = manager.Load<OpenGLVertexShader>(vertexShaderAsset, false);
+                    vertPath = ResolveDependencyAssetPath(metadata, vertPath);
 
-                    var fragmentShaderAsset = GetShader(passElement, "FragmentShader");
-                    if (String.IsNullOrEmpty(fragmentShaderAsset))
+                    var fragPath = GetShader(passElement, "FragmentShader");
+                    if (String.IsNullOrEmpty(fragPath))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
-                    var fragmentShader = manager.Load<OpenGLFragmentShader>(fragmentShaderAsset, false);
+                    fragPath = ResolveDependencyAssetPath(metadata, fragPath);
 
-                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertexShader, fragmentShader, true) };
+                    var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
+                    var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
+
+                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, true) };
                     techniquePasses.Add(new OpenGLEffectPass(manager.Ultraviolet, passName, programs));
                 }
 
