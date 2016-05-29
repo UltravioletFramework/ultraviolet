@@ -589,7 +589,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\TextureAtlas_LoadsAndRendersCorrectly.png">
+    <None Include="Resources\Expected\Graphics\TextureAtlas_LoadsAndRendersCorrectly_FromJson.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\TextureAtlas_LoadsAndRendersCorrectly_FromXml.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderNonPremultipliedTexture.png">
@@ -758,7 +761,7 @@
     <None Include="Content\Textures\Face.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Sprites\Textures\Explosion.xml">
+    <None Include="Content\Sprites\Textures\ExplosionXml.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Sprites\Textures\Explosion_01.png">
@@ -846,6 +849,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Sprites\Textures\Explosion_29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\ExplosionJson.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">

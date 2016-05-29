@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
         [Test]
         [Category("Rendering")]
         [Description("Ensures that texture atlases can be loaded and rendered correctly.")]
-        public void TextureAtlas_LoadsAndRendersCorrectly()
+        public void TextureAtlas_LoadsAndRendersCorrectly_FromXml()
         {
             var sbatch = default(SpriteBatch);
             var atlas = default(TextureAtlas);
@@ -20,70 +20,74 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 .WithContent(content =>
                 {
                     sbatch = SpriteBatch.Create();
-                    atlas = content.Load<TextureAtlas>("Sprites/Textures/Explosion");
+                    atlas = content.Load<TextureAtlas>("Sprites/Textures/ExplosionXml");
                 })
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
+                    sbatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
                     var cx = 0;
                     var cy = 0;
 
-                    sbatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_01"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_02"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_03"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_04"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_05"], Color.White);
-                    cx = 0;
-                    cy = cy + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_06"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_07"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_08"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_09"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_10"], Color.White);
-                    cx = 0;
-                    cy = cy + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_11"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_12"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_13"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_14"], Color.White);
-                    cx = cx + 100;
-
-                    sbatch.Draw(atlas, new Vector2(cx, cy), atlas["Explosion_15"], Color.White);
-                    cx = 0;
-                    cy = cy + 100;
+                    for (int y = 0; y < 3; y++)
+                    {
+                        for (int x = 0; x < 5; x++)
+                        {
+                            sbatch.Draw(atlas, new Vector2(cx, cy), atlas[$"Explosion_{(y * 5) + x + 1:D2}"], Color.White);
+                            cx = cx + 100;
+                        }
+                        cx = 0;
+                        cy = cy + 100;
+                    }
 
                     sbatch.End();
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources/Expected/Graphics/TextureAtlas_LoadsAndRendersCorrectly.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/TextureAtlas_LoadsAndRendersCorrectly_FromXml.png");
+        }
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that texture atlases can be loaded and rendered correctly.")]
+        public void TextureAtlas_LoadsAndRendersCorrectly_FromJson()
+        {
+            var sbatch = default(SpriteBatch);
+            var atlas = default(TextureAtlas);
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    sbatch = SpriteBatch.Create();
+                    atlas = content.Load<TextureAtlas>("Sprites/Textures/ExplosionJson");
+                })
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    sbatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+                    var cx = 0;
+                    var cy = 0;
+
+                    for (int y = 0; y < 3; y++)
+                    {
+                        for (int x = 0; x < 5; x++)
+                        {
+                            sbatch.Draw(atlas, new Vector2(cx, cy), atlas[$"Explosion_{(y * 5) + x + 1:D2}"], Color.White);
+                            cx = cx + 100;
+                        }
+                        cx = 0;
+                        cy = cy + 100;
+                    }
+
+                    sbatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/TextureAtlas_LoadsAndRendersCorrectly_FromJson.png");
         }
     }
 }
