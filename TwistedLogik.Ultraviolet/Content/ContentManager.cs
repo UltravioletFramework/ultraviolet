@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.Platform;
@@ -820,10 +822,14 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets a value indicating whether the specified file contains asset metadata.
         /// </summary>
         /// <param name="filename">The filename to evaluate.</param>
+        /// <param name="extension">The file extension of the metadata file.</param>
         /// <returns><c>true</c> if the specified file contains asset metadata; otherwise, <c>false</c>.</returns>
-        private Boolean IsMetadataFile(String filename)
+        private Boolean IsMetadataFile(String filename, out String extension)
         {
-            return Path.GetExtension(filename) == MetadataFileExtension;
+            extension = Path.GetExtension(filename);
+            return
+                extension == MetadataFileExtensionXml ||
+                extension == MetadataFileExtensionJson;
         }
 
         /// <summary>
@@ -950,7 +956,7 @@ namespace TwistedLogik.Ultraviolet.Content
             }
 
             // Find the highest-ranking metadata file, if one exists.
-            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtension, out assetDirectory, AssetResolutionFlags.PerformSubstitution);
+            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtensionXml, out assetDirectory, AssetResolutionFlags.PerformSubstitution);
             if (assetPathMetadata != null)
                 return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory);
 
@@ -972,30 +978,52 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The asset metadata for the specified asset file.</returns>
         private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir)
         {
-            if (IsMetadataFile(filename))
+            String extension;
+            if (IsMetadataFile(filename, out extension))
             {
-                var xml = XDocument.Load(filename);
-                var wrappedFilename = xml.Root.ElementValueString("Asset");
-                if (String.IsNullOrWhiteSpace(wrappedFilename) || String.IsNullOrWhiteSpace(Path.GetExtension(wrappedFilename)))
+                var isJson = false;
+
+                var wrappedFilename = default(String);
+                var wrappedAssetPath = default(String);
+
+                var importerMetadata = default(Object);
+                var processorMetadata = default(Object);
+
+                if (extension == MetadataFileExtensionXml)
                 {
-                    throw new InvalidDataException(UltravioletStrings.AssetMetadataHasInvalidFilename);
+                    var xml = XDocument.Load(filename);
+
+                    wrappedFilename = xml.Root.ElementValueString("Asset");
+                    importerMetadata = xml.Root.Element("ImporterMetadata");
+                    processorMetadata = xml.Root.Element("ProcessorMetadata");
                 }
+                else
+                {
+                    using (var sreader = File.OpenText(filename))
+                    using (var jreader = new JsonTextReader(sreader))
+                    {
+                        var json = (JObject)JToken.ReadFrom(jreader);
+                        isJson = true;
+
+                        wrappedFilename = json["asset"].Value<String>();
+                        importerMetadata = (JObject)json["importerMetadata"];
+                        processorMetadata = (JObject)json["processorMetadata"];
+                    }
+                }
+
+                if (String.IsNullOrWhiteSpace(wrappedFilename) || String.IsNullOrWhiteSpace(Path.GetExtension(wrappedFilename)))
+                    throw new InvalidDataException(UltravioletStrings.AssetMetadataHasInvalidFilename);
 
                 var directory = Path.GetDirectoryName(filename);
-                var relative = GetRelativePath(directory, Path.Combine(directory, wrappedFilename));
+                var relative = GetRelativePath(rootDirectory, Path.Combine(directory, wrappedFilename));
 
                 var wrappedAssetDirectory = String.Empty;
-                var wrappedAssetPath = GetAssetPath(relative, Path.GetExtension(relative), out wrappedAssetDirectory);
+                wrappedAssetPath = GetAssetPath(relative, Path.GetExtension(relative), out wrappedAssetDirectory);
 
                 if (!fileSystemService.FileExists(wrappedAssetPath))
-                {
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataFileNotFound);
-                }
 
-                var importerMetadata = xml.Root.Element("ImporterMetadata");
-                var processorMetadata = xml.Root.Element("ProcessorMetadata");
-
-                return new AssetMetadata(asset, wrappedAssetPath, importerMetadata, processorMetadata, true, false);
+                return new AssetMetadata(asset, wrappedAssetPath, importerMetadata, processorMetadata, true, false, isJson);
             }
             return new AssetMetadata(asset, filename, null, null, true, false);
         }
@@ -1150,7 +1178,8 @@ namespace TwistedLogik.Ultraviolet.Content
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
         private const String PreprocessedFileExtension = ".uvc";
-        private const String MetadataFileExtension = ".uvmeta";
+        private const String MetadataFileExtensionXml = ".uvmeta";
+        private const String MetadataFileExtensionJson = ".jsmeta";
 
         // Files waiting to be deleted as part of a batch.
         private readonly List<String> filesPendingDeletion = new List<String>();

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Ultraviolet.Content
@@ -18,7 +20,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="processorMetadata">The asset's processor metadata.</param>
         /// <param name="isFile">A value indicating whether the asset was loaded from a file.</param>
         /// <param name="isStream">A value indicating whether the asset was loaded from a stream.</param>
-        public AssetMetadata(String assetPath, String assetFilePath, XElement importerMetadata, XElement processorMetadata, Boolean isFile, Boolean isStream)
+        /// <param name="isJson">A value indicating whether the asset metadata is JSON.</param>
+        public AssetMetadata(String assetPath, String assetFilePath, Object importerMetadata, Object processorMetadata, Boolean isFile, Boolean isStream, Boolean isJson = false)
         {
             this.AssetPath = assetPath;
             this.AssetFilePath = assetFilePath;
@@ -28,6 +31,7 @@ namespace TwistedLogik.Ultraviolet.Content
             this.ProcessorMetadata = processorMetadata;
             this.IsFile = isFile;
             this.IsStream = isStream;
+            this.IsJson = isJson;
         }
 
         /// <summary>
@@ -39,7 +43,17 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             if (ImporterMetadata != null)
             {
-                return ObjectLoader.LoadObject<T>(ImporterMetadata, true);
+                if (IsJson)
+                {
+                    var serializer = new JsonSerializer();
+                    serializer.Converters.Add(new UltravioletJsonConverter());
+
+                    return ((JObject)ImporterMetadata).ToObject<T>(serializer);
+                }
+                else
+                {
+                    return ObjectLoader.LoadObject<T>((XElement)ImporterMetadata, true);
+                }
             }
             return new T();
         }
@@ -53,7 +67,17 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             if (ProcessorMetadata != null)
             {
-                return ObjectLoader.LoadObject<T>(ProcessorMetadata, true);
+                if (IsJson)
+                {
+                    var serializer = new JsonSerializer();
+                    serializer.Converters.Add(new UltravioletJsonConverter());
+
+                    return ((JObject)ProcessorMetadata).ToObject<T>(serializer);
+                }
+                else
+                {
+                    return ObjectLoader.LoadObject<T>((XElement)ProcessorMetadata, true);
+                }
             }
             return new T();
         }
@@ -97,7 +121,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Gets the asset's importer metadata.
         /// </summary>
-        public XElement ImporterMetadata
+        public Object ImporterMetadata
         {
             get;
             private set;
@@ -106,7 +130,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Gets the asset's processor metadata.
         /// </summary>
-        public XElement ProcessorMetadata
+        public Object ProcessorMetadata
         {
             get;
             private set;
@@ -125,6 +149,15 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets a value indicating whether the asset was loaded from a stream.
         /// </summary>
         public Boolean IsStream
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the asset metadata is defined as JSON.
+        /// </summary>
+        public Boolean IsJson
         {
             get;
             private set;

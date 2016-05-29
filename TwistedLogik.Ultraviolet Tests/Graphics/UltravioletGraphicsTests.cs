@@ -201,6 +201,46 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
 
         [Test]
         [Category("Rendering")]
+        [Description("Ensures that the Graphics subsystem can render a texture with premultiplied alpha disabled.")]
+        public void UltravioletGraphics_CanRenderNonPremultipliedTexture()
+        {
+            var sbatch = default(SpriteBatch);
+            var texture = default(Texture2D);
+            var textureNonPremultiplied = default(Texture2D);
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    sbatch = SpriteBatch.Create();
+                    texture = content.Load<Texture2D>("Textures/Face");
+                    textureNonPremultiplied = content.Load<Texture2D>("Textures/FaceNonPremultiplied");
+                })
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    sbatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+
+                    sbatch.Draw(texture, new RectangleF(0, 0, 128, 128), Color.White);
+                    sbatch.Draw(textureNonPremultiplied, new RectangleF(128, 0, 128, 128), Color.White);
+
+                    sbatch.End();
+
+                    sbatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+
+                    sbatch.Draw(texture, new RectangleF(0, 128, 128, 128), Color.White);
+                    sbatch.Draw(textureNonPremultiplied, new RectangleF(128, 128, 128, 128), Color.White);
+
+                    sbatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRenderNonPremultipliedTexture.png");
+        }
+
+
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that the Graphics subsystem correctly renders a scene when using a custom compositor.")]
         public void UltravioletGraphics_RendersFrameCorrectly_WithCustomCompositor()
         {
