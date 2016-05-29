@@ -62,7 +62,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Cursor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CursorCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorCollectionDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CursorCollectionProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorCollectionProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorCollectionProcessorFromXDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Curve.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveContinuity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.cs" />
