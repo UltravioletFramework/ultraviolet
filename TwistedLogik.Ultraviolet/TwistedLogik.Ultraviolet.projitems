@@ -38,6 +38,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestAsset.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestAssetDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestGroupDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestRegistry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentOverrideDirectoryCollection.cs" />

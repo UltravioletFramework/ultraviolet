@@ -19,8 +19,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="element">The XML element that defines the content manifest group.</param>
         internal ContentManifestGroup(ContentManifest manifest, XElement element)
         {
-            Contract.Require(manifest, "manifest");
-            Contract.Require(element, "element");
+            Contract.Require(manifest, nameof(manifest));
+            Contract.Require(element, nameof(element));
 
             var name = element.AttributeValueString("Name");
             if (String.IsNullOrEmpty(name))
@@ -38,15 +38,48 @@ namespace TwistedLogik.Ultraviolet.Content
 
             this.Manifest = manifest;
             this.Name = name;
-            this.Directory = directory;
             this.Type = type;
+            this.Directory = directory;
 
             var assets = element.Elements("Asset");
             foreach (var asset in assets)
             {
                 AddInternal(new ContentManifestAsset(this, asset));
             }
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentManifestGroup"/> class.
+        /// </summary>
+        /// <param name="manifest">The content manifest that owns the group.</param>
+        /// <param name="desc">The manifest group description.</param>
+        internal ContentManifestGroup(ContentManifest manifest, ContentManifestGroupDescription desc)
+        {
+            Contract.Require(manifest, nameof(manifest));
+            Contract.Require(desc, nameof(desc));
+
+            if (String.IsNullOrEmpty(desc.Name))
+                throw new InvalidDataException(UltravioletStrings.InvalidContentManifestGroupName);
+
+            if (String.IsNullOrEmpty(desc.Type))
+                throw new InvalidDataException(UltravioletStrings.InvalidContentManifestGroupType.Format(desc.Name));
+
+            var type = Type.GetType(desc.Type, false);
+            if (type == null)
+                throw new InvalidDataException(UltravioletStrings.InvalidContentManifestGroupType.Format(desc.Name));
+
+            this.Manifest = manifest;
+            this.Name = desc.Name;
+            this.Type = type;
+            this.Directory = desc.Directory;
+
+            if (desc.Assets != null)
+            {
+                foreach (var asset in desc.Assets)
+                {
+                    AddInternal(new ContentManifestAsset(this, asset));
+                }
+            }
         }
 
         /// <summary>

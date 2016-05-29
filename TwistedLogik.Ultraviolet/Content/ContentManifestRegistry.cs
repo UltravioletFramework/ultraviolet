@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.Require(stream, "stream");
 
-            var manifest = ContentManifest.Load(stream);
+            var manifest = ContentManifest.LoadXml(stream);
             Add(manifest);
         }
 

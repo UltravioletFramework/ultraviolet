@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.Platform;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
@@ -21,8 +22,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="groups">The content manifest's group definitions.</param>
         private ContentManifest(String name, IEnumerable<XElement> groups)
         {
-            Contract.Require(name, "name");
-            Contract.Require(groups, "groups");
+            Contract.Require(name, nameof(name));
+            Contract.Require(groups, nameof(groups));
 
             this.Name = name;
 
@@ -33,29 +34,92 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Loads a content manifest from the file at the specified path.
+        /// Initializes a new instance of the <see cref="ContentManifest"/> class.
         /// </summary>
-        /// <param name="path">The path to the file to load.</param>
-        /// <returns>The <see cref="ContentManifest"/> that was loaded from the specified file.</returns>
-        public static ContentManifest Load(String path)
+        /// <param name="desc">The content manifest description.</param>
+        private ContentManifest(ContentManifestDescription desc)
         {
-            Contract.RequireNotEmpty(path, "path");
+            Contract.Require(desc, nameof(desc));
 
-            var fss = FileSystemService.Create();
-            using (var stream = fss.OpenRead(path))
+            this.Name = desc.Name;
+
+            if (desc.Groups != null)
             {
-                return Load(stream);
+                foreach (var group in desc.Groups)
+                {
+                    AddInternal(new ContentManifestGroup(this, group));
+                }
             }
         }
 
         /// <summary>
-        /// Loads a content manifst from the specified stream.
+        /// Loads a content manifest from the XML file at the specified path.
+        /// </summary>
+        /// <param name="path">The path to the XML file to load.</param>
+        /// <returns>The <see cref="ContentManifest"/> that was loaded from the specified XML file.</returns>
+        public static ContentManifest Load(String path)
+        {
+            var extension = Path.GetExtension(path);
+            switch (extension?.ToLower() ?? String.Empty)
+            {
+                case ".js":
+                case ".json":
+                case ".jmanifest":
+                    return LoadJson(path);
+
+                default:
+                    return LoadXml(path);
+            }
+        }
+
+        /// <summary>
+        /// Loads a content manifest from the XML file at the specified path.
+        /// </summary>
+        /// <param name="path">The path to the XML file to load.</param>
+        /// <returns>The <see cref="ContentManifest"/> that was loaded from the specified XML file.</returns>
+        public static ContentManifest LoadXml(String path)
+        {
+            Contract.RequireNotEmpty(path, nameof(path));
+
+            var fss = FileSystemService.Create();
+            using (var stream = fss.OpenRead(path))
+            {
+                return LoadXml(stream);
+            }
+        }
+
+        /// <summary>
+        /// Loads a content manifest from the JSON file at the specified path.
+        /// </summary>
+        /// <param name="path">The path to the JSON file to load.</param>
+        /// <returns>The <see cref="ContentManifest"/> that was loaded from the specified JSON file.</returns>
+        public static ContentManifest LoadJson(String path)
+        {
+            Contract.RequireNotEmpty(path, nameof(path));
+
+            var fss = FileSystemService.Create();
+            using (var stream = fss.OpenRead(path))
+            {
+                return LoadJson(stream);
+            }
+        }
+
+        /// <summary>
+        /// Loads a content manifst from the specified XML stream.
         /// </summary>
         /// <param name="stream">The <see cref="Stream"/> that contains the content manifest to load.</param>
-        /// <returns>The <see cref="ContentManifest"/> that was loaded from the specified stream.</returns>
-        public static ContentManifest Load(Stream stream)
+        /// <returns>The <see cref="ContentManifest"/> that was loaded from the specified XML stream.</returns>
+        public static ContentManifest Load(Stream stream) =>
+            LoadXml(stream);
+
+        /// <summary>
+        /// Loads a content manifst from the specified XML stream.
+        /// </summary>
+        /// <param name="stream">The <see cref="Stream"/> that contains the content manifest to load.</param>
+        /// <returns>The <see cref="ContentManifest"/> that was loaded from the specified XML stream.</returns>
+        public static ContentManifest LoadXml(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
 
             var xml = XDocument.Load(stream);
 
@@ -65,6 +129,28 @@ namespace TwistedLogik.Ultraviolet.Content
 
             var groups = xml.Root.Elements("ContentGroup") ?? Enumerable.Empty<XElement>();
             return new ContentManifest(name, groups);
+        }
+
+        /// <summary>
+        /// Loads a content manifst from the specified JSON stream.
+        /// </summary>
+        /// <param name="stream">The <see cref="Stream"/> that contains the content manifest to load.</param>
+        /// <returns>The <see cref="ContentManifest"/> that was loaded from the specified JSON stream.</returns>
+        public static ContentManifest LoadJson(Stream stream)
+        {
+            Contract.Require(stream, nameof(stream));
+
+            using (var sreader = new StreamReader(stream))
+            {
+                using (var jreader = new JsonTextReader(sreader))
+                {
+                    var serializer = new JsonSerializer();
+                    serializer.Converters.Add(new UltravioletJsonConverter());
+
+                    var desc = serializer.Deserialize<ContentManifestDescription>(jreader);
+                    return new ContentManifest(desc);
+                }
+            }
         }
 
         /// <summary>
