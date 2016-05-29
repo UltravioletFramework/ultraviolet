@@ -564,7 +564,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>A collection containing the specified asset's possible substitution assets.</returns>
         private IEnumerable<String> ListPossibleSubstitutions(String path, ScreenDensityBucket maxDensityBucket)
         {
-            var directory = Path.GetDirectoryName(path);
+            var directory = Path.GetDirectoryName(path) ?? String.Empty;
             var filename  = Path.GetFileNameWithoutExtension(path);
             var extension = Path.GetExtension(path);
 
