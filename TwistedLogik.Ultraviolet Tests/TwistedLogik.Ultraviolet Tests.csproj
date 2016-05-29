@@ -139,6 +139,8 @@
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="Content\AssetIDTests.cs" />
+    <Compile Include="Graphics\Graphics2D\SpriteTests.cs" />
+    <Compile Include="Graphics\Texture2DTests.cs" />
     <Compile Include="Graphics\TextureAtlasTests.cs" />
     <Compile Include="SetUpFixture.cs" />
     <Compile Include="Audio\BASS_SoundEffectPlayerTests.cs" />
@@ -366,6 +368,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Sprites\ExplosionXml_Preprocessed.sprite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Sprites\InterfaceIcons.sprite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -589,6 +594,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Sprite_LoadsAndRendersCorrectly_FromPreprocessedAsset.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Sprite_LoadsAndRendersCorrectly_FromXml.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\TextureAtlas_LoadsAndRendersCorrectly_FromPreprocessedAsset.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -764,7 +775,7 @@
     <None Include="Content\Textures\Face.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Sprites\Textures\ExplosionXml.xml">
+    <None Include="Content\Sprites\Textures\ExplosionAtlasXml.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Sprites\Textures\Explosion_01.png">
@@ -854,10 +865,16 @@
     <None Include="Content\Sprites\Textures\Explosion_29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Sprites\Textures\ExplosionJson.json">
+    <None Include="Content\Sprites\Textures\ExplosionAtlasJson.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Sprites\Textures\ExplosionPreprocessed.xml">
+    <None Include="Content\Sprites\Textures\ExplosionAtlasXml_Preprocessed.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\ExplosionXml.sprite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">

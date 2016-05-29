@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
     {
         [Test]
         [Category("Rendering")]
-        [Description("Ensures that texture atlases can be loaded and rendered correctly.")]
+        [Description("Ensures that texture atlases can be loaded and rendered correctly from XML files.")]
         public void TextureAtlas_LoadsAndRendersCorrectly_FromXml()
         {
             var sbatch = default(SpriteBatch);
@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 .WithContent(content =>
                 {
                     sbatch = SpriteBatch.Create();
-                    atlas = content.Load<TextureAtlas>("Sprites/Textures/ExplosionXml");
+                    atlas = content.Load<TextureAtlas>("Sprites/Textures/ExplosionAtlasXml");
                 })
                 .Render(uv =>
                 {
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
 
         [Test]
         [Category("Rendering")]
-        [Description("Ensures that texture atlases can be loaded and rendered correctly.")]
+        [Description("Ensures that texture atlases can be loaded and rendered correctly from JSON files.")]
         public void TextureAtlas_LoadsAndRendersCorrectly_FromJson()
         {
             var sbatch = default(SpriteBatch);
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 .WithContent(content =>
                 {
                     sbatch = SpriteBatch.Create();
-                    atlas = content.Load<TextureAtlas>("Sprites/Textures/ExplosionJson");
+                    atlas = content.Load<TextureAtlas>("Sprites/Textures/ExplosionAtlasJson");
                 })
                 .Render(uv =>
                 {
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
 
         [Test]
         [Category("Rendering")]
-        [Description("Ensures that texture atlases can be loaded and rendered correctly.")]
+        [Description("Ensures that texture atlases can be loaded and rendered correctly when using content preprocessing.")]
         public void TextureAtlas_LoadsAndRendersCorrectly_FromPreprocessedAsset()
         {
             var sbatch = default(SpriteBatch);
@@ -103,10 +103,10 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 {
                     sbatch = SpriteBatch.Create();
 
-                    if (!content.Preprocess<TextureAtlas>("Sprites/Textures/ExplosionPreprocessed", false))
+                    if (!content.Preprocess<TextureAtlas>("Sprites/Textures/ExplosionAtlasXml_Preprocessed", false))
                         Assert.Fail("Failed to preprocess asset.");
 
-                    atlas = content.Load<TextureAtlas>("Sprites/Textures/ExplosionPreprocessed.uvc");
+                    atlas = content.Load<TextureAtlas>("Sprites/Textures/ExplosionAtlasXml_Preprocessed.uvc");
                 })
                 .Render(uv =>
                 {

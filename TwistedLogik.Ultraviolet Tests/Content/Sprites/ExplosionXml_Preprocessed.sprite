@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Sprite>
+  <Animations>
+    <Animation Name="Explosion">
+      <Frames Texture="Textures/Explosion" Duration="50" OriginX="50" OriginY="50" Width="100" Height="100">
+      
+        <Frame X="0" Y="0"/>
+        <Frame X="100" Y="0"/>
+        <Frame X="200" Y="0"/>
+        <Frame X="300" Y="0"/>
+        <Frame X="400" Y="0"/>
+
+        <Frame X="0" Y="100"/>
+        <Frame X="100" Y="100"/>
+        <Frame X="200" Y="100"/>
+        <Frame X="300" Y="100"/>
+        <Frame X="400" Y="100"/>
+
+        <Frame X="0" Y="200"/>
+        <Frame X="100" Y="200"/>
+        <Frame X="200" Y="200"/>
+        <Frame X="300" Y="200"/>
+        <Frame X="400" Y="200"/>
+
+        <Frame X="0" Y="300"/>
+        <Frame X="100" Y="300"/>
+        <Frame X="200" Y="300"/>
+        <Frame X="300" Y="300"/>
+        <Frame X="400" Y="300"/>
+
+        <Frame X="0" Y="400"/>
+        <Frame X="100" Y="400"/>
+        <Frame X="200" Y="400"/>
+        <Frame X="300" Y="400"/>
+        <Frame X="400" Y="400"/>
+
+        <Frame X="0" Y="500"/>
+        <Frame X="100" Y="500"/>
+        <Frame X="200" Y="500"/>
+        <Frame X="300" Y="500"/>
+
+      </Frames>
+    </Animation>
+  </Animations>
+</Sprite>
