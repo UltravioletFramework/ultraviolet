@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
@@ -10,58 +11,43 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Gets or sets the name of the texture on which the group's frames are defined.
         /// </summary>
+        [JsonProperty(PropertyName = "texture", Required = Required.DisallowNull)]
         public String Texture { get; set; }
 
         /// <summary>
-        /// Gets or sets the x-coordinate of the area in which the group's frames are defined.
+        /// Gets or sets the frame group's area on its texture.
         /// </summary>
-        public Int32 AreaX { get; set; }
+        [JsonProperty(PropertyName = "area", Required = Required.DisallowNull)]
+        public Rectangle? Area { get; set; }
 
         /// <summary>
-        /// Gets or sets the y-coordinate of the area in which the group's frames are defined.
+        /// Gets or sets the point of origin for the frame group's frames.
         /// </summary>
-        public Int32 AreaY { get; set; }
-
-        /// <summary>
-        /// Gets or sets the width of the area in which the group's frames are defined.
-        /// </summary>
-        public Int32 AreaWidth { get; set; }
-
-        /// <summary>
-        /// Gets or sets the height of the area in which the group's frames are defined.
-        /// </summary>
-        public Int32 AreaHeight { get; set; }
+        [JsonProperty(PropertyName = "origin", Required = Required.DisallowNull)]
+        public Point2? Origin { get; set; }
 
         /// <summary>
         /// Gets or sets the number of frames in this group.
         /// </summary>
-        public Int32 FrameCount { get; set; }
+        [JsonProperty(PropertyName = "frameCount", Required = Required.DisallowNull)]
+        public Int32? FrameCount { get; set; }
 
         /// <summary>
         /// Gets or sets the width of frames in this group.
         /// </summary>
-        public Int32 FrameWidth { get; set; }
+        [JsonProperty(PropertyName = "frameWidth", Required = Required.DisallowNull)]
+        public Int32? FrameWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the height of frames in this group.
         /// </summary>
-        public Int32 FrameHeight { get; set; }
-
-        /// <summary>
-        /// Gets or sets the distance, in pixels, between the left edge of the frames
-        /// in this group and their center points.
-        /// </summary>
-        public Int32 OriginX { get; set; }
-
-        /// <summary>
-        /// Gets or sets the distance, in pixels, between the top edge of the frames
-        /// in this group and their center points.
-        /// </summary>
-        public Int32 OriginY { get; set; }
+        [JsonProperty(PropertyName = "frameHeight", Required = Required.DisallowNull)]
+        public Int32? FrameHeight { get; set; }
 
         /// <summary>
         /// Gets or sets duration of frames in this group.
         /// </summary>
-        public Int32 Duration { get; set; }
+        [JsonProperty(PropertyName = "duration", Required = Required.DisallowNull)]
+        public Int32? Duration { get; set; }
     }
 }

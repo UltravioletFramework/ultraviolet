@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
@@ -19,21 +20,25 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Retrieves the animation's name.
         /// </summary>
+        [JsonProperty(PropertyName = "name")]
         public String Name { get; set; }
 
         /// <summary>
         /// Retrieves the animation's repeat value.
         /// </summary>
+        [JsonProperty(PropertyName = "repeat")]
         public String Repeat { get; set; }
 
         /// <summary>
         /// Gets an array containing the animation's frames.
         /// </summary>
-        public IList<SpriteFrameDescription> Frames { get; set; }
+        [JsonProperty(PropertyName = "frames")]
+        public IList<SpriteFrameBatchDescription> Frames { get; set; }
 
         /// <summary>
         /// Gets an array of frame groups describing the animation's frames.
         /// </summary>
-        public IList<SpriteFrameGroupDescription> FrameGroups { get; set; }
+        [JsonProperty(PropertyName = "frameGroups")]
+        public IList<SpriteFrameGroupBatchDescription> FrameGroups { get; set; }
     }
 }

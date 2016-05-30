@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
@@ -8,8 +9,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     internal sealed class SpriteDescription
     {
         /// <summary>
+        /// Gets or sets the sprite's default values for frames.
+        /// </summary>
+        [JsonProperty(PropertyName = "frameDefaults")]
+        public SpriteFrameDefaultsDescription FrameDefaults { get; set; }
+
+        /// <summary>
+        /// Gets or sets the sprite's default values for frame groups.
+        /// </summary>
+        [JsonProperty(PropertyName = "frameGroupDefaults")]
+        public SpriteFrameGroupDefaultsDescription FrameGroupDefaults { get; set; }
+
+        /// <summary>
         /// Retrieves an array containing the sprite's list of animations.
         /// </summary>
-        public IList<SpriteAnimationDescription> Animations { get; set; }
+        [JsonProperty(PropertyName = "animations")]
+        public IList<SpriteAnimationBatchDescription> Animations { get; set; }
     }
 }
