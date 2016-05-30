@@ -65,10 +65,11 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D
                 {
                     spriteBatch = SpriteBatch.Create();
 
-                    if (!content.Preprocess<Sprite>("Sprites/ExplosionXml_Preprocessed"))
+                    var atlasAssetPath = CreateMachineSpecificAssetCopy(content, "Sprites/ExplosionXml_Preprocessed.sprite");
+                    if (!content.Preprocess<Sprite>(atlasAssetPath))
                         Assert.Fail("Failed to preprocess asset.");
 
-                    sprite = content.Load<Sprite>("Sprites/ExplosionXml_Preprocessed.uvc");
+                    sprite = content.Load<Sprite>(atlasAssetPath + ".uvc");
                 })
                 .Render(uv =>
                 {

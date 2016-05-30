@@ -867,9 +867,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 select assetMatch;
 
             if (filteredMatches.Count() > 1)
-            {
                 throw new FileNotFoundException(UltravioletStrings.FileAmbiguous.Format(asset));
-            }
             
             var singleMatch = filteredMatches.SingleOrDefault();
             if (singleMatch != null)
@@ -890,6 +888,10 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The path of the specified asset.</returns>
         private String GetAssetPath(String asset, String extension, out String directory, AssetResolutionFlags flags = AssetResolutionFlags.Default)
         {
+            var specifiedExtension = Path.GetExtension(asset);
+            if (extension == null && !String.IsNullOrWhiteSpace(specifiedExtension))
+                extension = specifiedExtension;
+
             var path = GetAssetPathFromDirectory(RootDirectory, asset, ref extension, flags);
             directory = RootDirectory;
 

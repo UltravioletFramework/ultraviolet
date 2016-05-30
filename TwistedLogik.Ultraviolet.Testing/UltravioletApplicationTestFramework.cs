@@ -4,6 +4,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using NUnit.Framework;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
@@ -148,6 +150,32 @@ namespace TwistedLogik.Ultraviolet.Testing
         protected BitmapResult TheResultingImage(Bitmap bitmap)
         {
             return new BitmapResult(bitmap);
+        }
+
+        /// <summary>
+        /// Creates a copy of the specified asset which is specific to the machine that is currently
+        /// executing the test.
+        /// </summary>
+        /// <param name="content">The content manager.</param>
+        /// <param name="asset">The asset to copy.</param>
+        /// <returns>The asset path of the new asset file which was created.</returns>
+        protected String CreateMachineSpecificAssetCopy(ContentManager content, String asset)
+        {
+            Contract.Require(content, nameof(content));
+            Contract.Require(asset, nameof(asset));
+
+            var resolvedSourceFile = content.ResolveAssetFilePath(asset);
+            var resolvedSourceExtension = Path.GetExtension(resolvedSourceFile);
+
+            var copiedFileName = $"{Path.GetFileNameWithoutExtension(resolvedSourceFile)}-{Environment.MachineName}{resolvedSourceExtension}";
+            var copiedFilePath = Path.Combine(Path.GetDirectoryName(resolvedSourceFile), copiedFileName);
+
+            var copiedAssetName = Path.GetFileNameWithoutExtension(copiedFileName);
+            var copiedAssetPath = Path.Combine(Path.GetDirectoryName(asset), copiedAssetName);
+
+            File.Copy(resolvedSourceFile, copiedFilePath, true);
+
+            return copiedAssetPath;
         }
 
         // State values.
