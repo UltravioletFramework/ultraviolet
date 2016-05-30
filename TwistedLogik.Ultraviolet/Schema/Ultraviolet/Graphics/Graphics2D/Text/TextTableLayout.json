@@ -21,7 +21,19 @@
             "items": {
               "type": "object",
               "properties": {
-                "textFlags": { "type": "string" },
+                "textFlags": {
+                  "oneOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
                 "text": { "type": "string" },
                 "format": { "type": "string" },
                 "binding": { "type": "string" },
