@@ -1,0 +1,11 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet Framework Content Metadata Schema",
+  "type": "object",
+  "properties": {
+    "asset": { "type": "string" },
+    "importerMetadata": { "type": "object" },
+    "processorMetadata": { "type": "object" }
+  },
+  "required": [ "asset" ]
+}

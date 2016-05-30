@@ -50,11 +50,22 @@ namespace TwistedLogik.Nucleus.Tests
 
             TheResultingString(json).ShouldBe(@"987654");
         }
-
+        
         [Test]
         public void MaskedUInt32_DeserializesFromJson()
         {
-            const string json = @"123456";
+            const String json = @"123456";
+
+            var converter = new NucleusJsonConverter();
+            var value = JsonConvert.DeserializeObject<MaskedUInt32>(json, converter);
+
+            TheResultingValue(value.Value).ShouldBe(123456);
+        }
+
+        [Test]
+        public void MaskedUInt32_DeserializesFromJson_String()
+        {
+            const String json = @"""123456""";
 
             var converter = new NucleusJsonConverter();
             var value = JsonConvert.DeserializeObject<MaskedUInt32>(json, converter);

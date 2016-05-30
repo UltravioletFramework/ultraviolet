@@ -113,6 +113,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xml\XElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\MaskedUInt32.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\MaskedUInt64.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\Text\StringResource.json" />
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Nucleus.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

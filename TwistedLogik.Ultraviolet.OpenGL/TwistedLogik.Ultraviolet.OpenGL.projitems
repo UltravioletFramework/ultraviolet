@@ -88,4 +88,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Schema\Graphics\Effect.json" />
+  </ItemGroup>
 </Project>

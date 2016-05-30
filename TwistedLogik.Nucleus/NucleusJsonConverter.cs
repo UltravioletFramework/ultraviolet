@@ -79,7 +79,15 @@ namespace TwistedLogik.Nucleus
         /// </summary>
         private static Object ReadJson_MaskedUInt32(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
         {
-            return new MaskedUInt32((UInt32)serializer.Deserialize(reader, typeof(UInt32)));
+            if (reader.TokenType == JsonToken.String)
+            {
+                var value = UInt32.Parse((String)reader.Value);
+                return new MaskedUInt32(value);
+            }
+            else
+            {
+                return new MaskedUInt32((UInt32)serializer.Deserialize(reader, typeof(UInt32)));
+            }
         }
 
         /// <summary>
@@ -87,7 +95,15 @@ namespace TwistedLogik.Nucleus
         /// </summary>
         private static Object ReadJson_MaskedUInt64(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
         {
-            return new MaskedUInt64((UInt64)serializer.Deserialize(reader, typeof(UInt64)));
+            if (reader.TokenType == JsonToken.String)
+            {
+                var value = UInt64.Parse((String)reader.Value);
+                return new MaskedUInt64(value);
+            }
+            else
+            {
+                return new MaskedUInt64((UInt64)serializer.Deserialize(reader, typeof(UInt64)));
+            }
         }
         
         /// <summary>

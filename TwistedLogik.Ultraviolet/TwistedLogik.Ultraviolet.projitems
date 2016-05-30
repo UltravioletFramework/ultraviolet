@@ -375,9 +375,39 @@
     <Compile Include="$(MSBuildThisFileDirectory)Vector4.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Content\ContentManifest.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Content\ContentMetadata.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CursorCollection.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\Text\TextTableLayout.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\TextureAtlas.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Vector4.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Vector3.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Vector2.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size3D.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size3F.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size3.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size2D.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size2F.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size2.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\RectangleD.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\RectangleF.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Rectangle.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Radians.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CircleD.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Point2F.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Point2D.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Point2.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\MutableVector3.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\MutableVector2.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CircleF.json" />
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)uv.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Circle.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Matrix.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Color.json" />
   </ItemGroup>
 </Project>
