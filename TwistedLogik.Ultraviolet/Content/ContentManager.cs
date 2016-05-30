@@ -380,16 +380,14 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The full path to the file that represents the specified asset.</returns>
         public String ResolveAssetFilePath(String asset)
         {
-            Contract.RequireNotEmpty(asset, "asset");
+            Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
-
-            String directory;
-
-            var normalizedPath = GetAssetPath(NormalizeAssetPath(asset), null, out directory);
-            if (normalizedPath == null)
+            
+            var metadata = GetAssetMetadata(NormalizeAssetPath(asset), true, false);
+            if (metadata == null)
                 throw new FileNotFoundException(asset);
-
-            return Path.GetFullPath(normalizedPath);
+            
+            return Path.GetFullPath(metadata.AssetFilePath);
         }
 
         /// <summary>
@@ -399,11 +397,16 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The full path to the file that represents the specified asset.</returns>
         public String ResolveAssetFilePath(AssetID asset)
         {
-            Contract.Ensure<ArgumentException>(asset.IsValid, "asset");
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            String directory;
-            return Path.GetFullPath(GetAssetPath(NormalizeAssetPath(AssetID.GetAssetPath(asset)), null, out directory));
+            var assetPath = AssetID.GetAssetPath(asset);
+
+            var metadata = GetAssetMetadata(NormalizeAssetPath(assetPath), true, false);
+            if (metadata == null)
+                throw new FileNotFoundException(assetPath);
+
+            return Path.GetFullPath(metadata.AssetFilePath);
         }
 
         /// <summary>
@@ -930,8 +933,9 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="asset">The asset for which to find metadata.</param>
         /// <param name="includePreprocessedFiles">A value indicating whether to include preprocessed files in the search.</param>
+        /// <param name="includeDetailedMetadata">A value indicating whether to include detailed metadata loaded from .uvmeta files.</param>
         /// <returns>The metadata for the specified asset.</returns>
-        private AssetMetadata GetAssetMetadata(String asset, Boolean includePreprocessedFiles)
+        private AssetMetadata GetAssetMetadata(String asset, Boolean includePreprocessedFiles, Boolean includeDetailedMetadata = true)
         {
             // If we're given a full filename with extension, return that.
             var assetDirectory = String.Empty;
@@ -943,7 +947,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 {
                     if (includePreprocessedFiles || !IsPreprocessedFile(asset))
                     {
-                        return CreateMetadataFromFile(asset, assetPath, assetDirectory);
+                        return CreateMetadataFromFile(asset, assetPath, assetDirectory, includeDetailedMetadata);
                     }
                 }
                 throw new FileNotFoundException(UltravioletStrings.FileNotFound.Format(asset));
@@ -954,18 +958,18 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 var assetPathPreprocessed = GetAssetPath(asset, PreprocessedFileExtension, out assetDirectory);
                 if (assetPathPreprocessed != null)
-                    return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory);
+                    return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory, includeDetailedMetadata);
             }
 
             // Find the highest-ranking metadata file, if one exists.
             var assetPathMetadata = GetAssetPath(asset, MetadataFileExtensionXml, out assetDirectory, AssetResolutionFlags.PerformSubstitution);
             if (assetPathMetadata != null)
-                return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory);
+                return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory, includeDetailedMetadata);
 
             // Find the highest-ranking raw file.
             var assetPathRaw = GetAssetPath(asset, null, out assetDirectory, AssetResolutionFlags.PerformSubstitution);
             if (assetPathRaw != null)
-                return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory);
+                return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory, includeDetailedMetadata);
 
             // If we still have no matches, we can't find the file.
             throw new FileNotFoundException(UltravioletStrings.FileNotFound.Format(asset));
@@ -977,11 +981,12 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="asset">The normalized asset path.</param>
         /// <param name="filename">The filename of the file from which to create asset metadata.</param>
         /// <param name="rootdir">The root directory from which the file is being loaded.</param>
+        /// <param name="includeDetailedMetadata">A value indicating whether to include detailed metadata loaded from .uvmeta files.</param>
         /// <returns>The asset metadata for the specified asset file.</returns>
-        private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir)
+        private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir, Boolean includeDetailedMetadata)
         {
             String extension;
-            if (IsMetadataFile(filename, out extension))
+            if (IsMetadataFile(filename, out extension) && includeDetailedMetadata)
             {
                 var isJson = false;
 
