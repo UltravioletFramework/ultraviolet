@@ -84,11 +84,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)ResourceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\OpenGL\Graphics\Effect.json" />
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.OpenGL.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)Schema\Graphics\Effect.json" />
   </ItemGroup>
 </Project>
