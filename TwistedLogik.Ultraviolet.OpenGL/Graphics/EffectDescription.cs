@@ -72,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the asset path of the ES vertex shader relative to the effect file.
         /// </summary>
-        [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "gles_vert")]
+        [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "es_vert")]
         public String VertexShaderES { get; set; }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the asset path of the ES fragment shader relative to the effect file.
         /// </summary>
-        [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "gles_frag")]
+        [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "es_frag")]
         public String FragmentShaderES { get; set; }
     }
 }
