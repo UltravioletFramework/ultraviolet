@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace TwistedLogik.Nucleus
 {
     /// <summary>
-    /// Represents a custom JSON converter which supports Nucleus's core types.
+    /// Represents a custom JSON converter which supports enums and flags.
     /// </summary>
     public class NucleusEnumJsonConverter : JsonConverter
     {
