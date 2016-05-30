@@ -150,7 +150,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameGroupDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteHeader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteImporterToJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteImporterToXDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteSortMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\sspack\OutOfSpaceException.cs" />
@@ -383,6 +386,7 @@
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Content\ContentManifest.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Content\ContentMetadata.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CursorCollection.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\Sprite.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\Text\TextTableLayout.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\TextureAtlas.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Vector4.json" />

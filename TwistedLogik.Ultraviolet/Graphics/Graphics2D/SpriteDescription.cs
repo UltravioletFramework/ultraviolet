@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
@@ -24,6 +25,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Retrieves an array containing the sprite's list of animations.
         /// </summary>
         [JsonProperty(PropertyName = "animations")]
+        [JsonConverter(typeof(NucleusEnumerableJsonConverter<SpriteAnimationBatchDescription>))]
         public IList<SpriteAnimationBatchDescription> Animations { get; set; }
     }
 }

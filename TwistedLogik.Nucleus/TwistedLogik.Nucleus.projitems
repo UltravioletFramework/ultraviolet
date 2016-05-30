@@ -68,6 +68,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\SubscriberCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NucleusEnumJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NucleusEnumerableJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NucleusJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NucleusStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Performance\GCDebug.cs" />

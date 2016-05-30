@@ -18,10 +18,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             this.atlasCell = description.AtlasCell;
             this.texture = description.Texture;
             this.textureResource = texture;
-            this.x = description.Area?.X ?? 0;
-            this.y = description.Area?.Y ?? 0;
-            this.width = description.Area?.Width ?? 0;
-            this.height = description.Area?.Height ?? 0;
+            this.x = description.X ?? 0;
+            this.y = description.Y ?? 0;
+            this.width = description.Width ?? 0;
+            this.height = description.Height ?? 0;
             this.originX = description.Origin?.X ?? 0;
             this.originY = description.Origin?.Y ?? 0;
             this.duration = description.Duration ?? 0;

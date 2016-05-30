@@ -368,6 +368,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Sprites\ExplosionJson.jssprite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Sprites\ExplosionXml_Preprocessed.sprite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -594,6 +597,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Sprite_LoadsAndRendersCorrectly_FromJson.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Sprite_LoadsAndRendersCorrectly_FromPreprocessedAsset.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

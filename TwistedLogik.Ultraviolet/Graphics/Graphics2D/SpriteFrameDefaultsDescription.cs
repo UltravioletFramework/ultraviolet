@@ -23,25 +23,45 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Gets or sets the asset path of the frame's texture.
         /// </summary>
-        [JsonProperty(PropertyName = "textures")]
+        [JsonProperty(PropertyName = "texture")]
         public String Texture { get; set; }
         
         /// <summary>
-        /// Gets or sets the frame's area on its texture.
+        /// Gets or sets the frame's duration in milliseconds.
         /// </summary>
-        [JsonProperty(PropertyName = "area")]
-        public Rectangle? Area { get; set; }
+        [JsonProperty(PropertyName = "duration")]
+        public Int32? Duration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance between the left edge of the frame's texture
+        /// and the left edge of the frame, in pixels.
+        /// </summary>
+        [JsonProperty(PropertyName = "x")]
+        public Int32? X { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance between the top edge of the frame's texture
+        /// and the top edge of the frame, in pixels.
+        /// </summary>
+        [JsonProperty(PropertyName = "y")]
+        public Int32? Y { get; set; }
+
+        /// <summary>
+        /// Gets or sets the frame's width in pixels.
+        /// </summary>
+        [JsonProperty(PropertyName = "width")]
+        public Int32? Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the frame's height in pixels.
+        /// </summary>
+        [JsonProperty(PropertyName = "height")]
+        public Int32? Height { get; set; }
 
         /// <summary>
         /// Gets or sets the frame's point of origin.
         /// </summary>
         [JsonProperty(PropertyName = "origin")]
         public Point2? Origin { get; set; }
-
-        /// <summary>
-        /// Gets or sets the frame's duration in milliseconds.
-        /// </summary>
-        [JsonProperty(PropertyName = "duration")]
-        public Int32? Duration { get; set; }
     }
 }
