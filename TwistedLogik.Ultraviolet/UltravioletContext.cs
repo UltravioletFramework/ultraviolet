@@ -115,6 +115,27 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Retrieves the current Ultraviolet context, throwing an exception if it does not exist.
+        /// </summary>
+        /// <returns>The current Ultraviolet context, or <c>null</c> if no contex exists.</returns>
+        public static UltravioletContext RequestCurrent()
+        {
+            return current;
+        }
+
+        /// <summary>
+        /// Retrieves the current Ultraviolet context, throwing an exception if it does not exist.
+        /// </summary>
+        /// <returns>The current Ultraviolet context.</returns>
+        public static UltravioletContext DemandCurrent()
+        {
+            if (current == null)
+                throw new InvalidOperationException(UltravioletStrings.ContextMissing);
+
+            return current;
+        }
+
+        /// <summary>
         /// Receives a message that has been published to a queue.
         /// </summary>
         /// <param name="type">The type of message that was received.</param>
@@ -927,27 +948,6 @@ namespace TwistedLogik.Ultraviolet
                 }
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Retrieves the current Ultraviolet context, throwing an exception if it does not exist.
-        /// </summary>
-        /// <returns>The current Ultraviolet context, or <c>null</c> if no contex exists.</returns>
-        internal static UltravioletContext RequestCurrent()
-        {
-            return current;
-        }
-
-        /// <summary>
-        /// Retrieves the current Ultraviolet context, throwing an exception if it does not exist.
-        /// </summary>
-        /// <returns>The current Ultraviolet context.</returns>
-        internal static UltravioletContext DemandCurrent()
-        {
-            if (current == null)
-                throw new InvalidOperationException(UltravioletStrings.ContextMissing);
-
-            return current;
         }
         
         /// <summary>
