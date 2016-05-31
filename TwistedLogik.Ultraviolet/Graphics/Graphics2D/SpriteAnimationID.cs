@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents a value which identifies a particular sprite animation.
     /// </summary>
+    [JsonConverter(typeof(UltravioletJsonConverter))]
     public struct SpriteAnimationID : IEquatable<SpriteAnimationID>
     {
         /// <summary>

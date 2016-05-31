@@ -107,9 +107,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         [Test]
         public void Radians_SerializesToJson()
         {
-            var converter = new UltravioletJsonConverter();
             var radians = 1.234f;
-            var json = JsonConvert.SerializeObject(radians, converter);
+            var json = JsonConvert.SerializeObject(radians);
 
             TheResultingString(json).ShouldBe(@"1.234");
         }
@@ -118,9 +117,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         public void Radians_DeserializesFromJson()
         {
             const String json = @"1.234";
-
-            var converter = new UltravioletJsonConverter();
-            var radians = JsonConvert.DeserializeObject<Radians>(json, converter);
+            
+            var radians = JsonConvert.DeserializeObject<Radians>(json);
 
             TheResultingValue(radians)
                 .ShouldBe(1.234f);

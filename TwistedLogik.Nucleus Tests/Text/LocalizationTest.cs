@@ -133,9 +133,8 @@ namespace TwistedLogik.Nucleus.Tests.Text
 
             UsingCulture("fr-FR", () =>
             {
-                var converter = new NucleusJsonConverter();
                 var resource = new StringResource("LOCALIZED_RESOURCE");
-                var json = JsonConvert.SerializeObject(resource, converter);
+                var json = JsonConvert.SerializeObject(resource);
 
                 TheResultingString(json).ShouldBe($"\"{resource.Key}\"");
             });
@@ -149,9 +148,8 @@ namespace TwistedLogik.Nucleus.Tests.Text
             UsingCulture("fr-FR", () =>
             {
                 const String json = "\"LOCALIZED_RESOURCE\"";
-
-                var converter = new NucleusJsonConverter();
-                var resource = JsonConvert.DeserializeObject<StringResource>(json, converter);
+                
+                var resource = JsonConvert.DeserializeObject<StringResource>(json);
 
                 TheResultingString(resource.Value).ShouldBe("C'est un test");
             });

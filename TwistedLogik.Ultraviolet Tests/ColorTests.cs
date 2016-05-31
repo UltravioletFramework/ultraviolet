@@ -168,9 +168,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         public void Color_SerializesToJson()
         {
             var color = Color.CornflowerBlue;
-
-            var converter = new UltravioletJsonConverter();
-            var json = JsonConvert.SerializeObject(color, converter);
+            
+            var json = JsonConvert.SerializeObject(color);
 
             TheResultingString(json).ShouldBe($"[{color.R},{color.G},{color.B},{color.A}]");
         }
@@ -179,9 +178,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         public void Color_DeserializesFromJson()
         {
             const String json = "[255,0,255,255]";
-
-            var converter = new UltravioletJsonConverter();
-            var color = JsonConvert.DeserializeObject<Color>(json, converter);
+            
+            var color = JsonConvert.DeserializeObject<Color>(json);
 
             TheResultingValue(color).ShouldHavePackedValue(Color.Magenta.PackedValue);
         }

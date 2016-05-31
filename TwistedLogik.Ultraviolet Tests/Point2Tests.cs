@@ -116,9 +116,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         [Test]
         public void Point2_SerializesToJson()
         {
-            var converter = new UltravioletJsonConverter();
             var point = new Point2(1, 2);
-            var json = JsonConvert.SerializeObject(point, converter);
+            var json = JsonConvert.SerializeObject(point);
 
             TheResultingString(json).ShouldBe(@"{""x"":1,""y"":2}");
         }
@@ -127,9 +126,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         public void Point2_DeserializesFromJson()
         {
             const String json = @"{""x"":1,""y"":2}";
-
-            var converter = new UltravioletJsonConverter();
-            var point = JsonConvert.DeserializeObject<Point2>(json, converter);
+            
+            var point = JsonConvert.DeserializeObject<Point2>(json);
 
             TheResultingValue(point)
                 .ShouldBe(1, 2);

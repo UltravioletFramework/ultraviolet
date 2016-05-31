@@ -794,9 +794,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         [Test]
         public void Vector2_SerializesToJson()
         {
-            var converter = new UltravioletJsonConverter();
             var vector = new Vector2(1.2f, 2.3f);
-            var json = JsonConvert.SerializeObject(vector, converter);
+            var json = JsonConvert.SerializeObject(vector);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3}");
         }
@@ -805,9 +804,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         public void Vector2_DeserializesFromJson()
         {
             const String json = @"{""x"":1.2,""y"":2.3}";
-
-            var converter = new UltravioletJsonConverter();
-            var vector = JsonConvert.DeserializeObject<Vector2>(json, converter);
+            
+            var vector = JsonConvert.DeserializeObject<Vector2>(json);
 
             TheResultingValue(vector)
                 .ShouldBe(1.2f, 2.3f);

@@ -117,9 +117,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         [Test]
         public void Point2F_SerializesToJson()
         {
-            var converter = new UltravioletJsonConverter();
             var point = new Point2F(1.2f, 2.3f);
-            var json = JsonConvert.SerializeObject(point, converter);
+            var json = JsonConvert.SerializeObject(point);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3}");
         }
@@ -128,9 +127,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         public void Point2F_DeserializesFromJson()
         {
             const String json = @"{""x"":1.2,""y"":2.3}";
-
-            var converter = new UltravioletJsonConverter();
-            var point = JsonConvert.DeserializeObject<Point2F>(json, converter);
+            
+            var point = JsonConvert.DeserializeObject<Point2F>(json);
 
             TheResultingValue(point)
                 .ShouldBe(1.2f, 2.3f);

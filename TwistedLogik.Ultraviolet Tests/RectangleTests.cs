@@ -131,9 +131,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         [Test]
         public void Rectangle_SerializesToJson()
         {
-            var converter = new UltravioletJsonConverter();
             var rect = new Rectangle(1, 2, 3, 4);
-            var json = JsonConvert.SerializeObject(rect, converter);
+            var json = JsonConvert.SerializeObject(rect);
 
             TheResultingString(json).ShouldBe(@"{""x"":1,""y"":2,""width"":3,""height"":4}");
         }
@@ -142,9 +141,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         public void Rectangle_DeserializesFromJson()
         {
             const String json = @"{""x"":1,""y"":2,""width"":3,""height"":4}";
-
-            var converter = new UltravioletJsonConverter();
-            var rect = JsonConvert.DeserializeObject<Rectangle>(json, converter);
+            
+            var rect = JsonConvert.DeserializeObject<Rectangle>(json);
 
             TheResultingValue(rect)
                 .ShouldHavePosition(1, 2)

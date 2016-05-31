@@ -138,9 +138,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         [Test]
         public void Size3F_SerializesToJson()
         {
-            var converter = new UltravioletJsonConverter();
             var size = new Size3F(1.2f, 2.3f, 3.4f);
-            var json = JsonConvert.SerializeObject(size, converter);
+            var json = JsonConvert.SerializeObject(size);
 
             TheResultingString(json).ShouldBe(@"{""width"":1.2,""height"":2.3,""depth"":3.4}");
         }
@@ -149,9 +148,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         public void Size3F_DeserializesFromJson()
         {
             const String json = @"{""width"":1.2,""height"":2.3,""depth"":3.4}";
-
-            var converter = new UltravioletJsonConverter();
-            var size = JsonConvert.DeserializeObject<Size3F>(json, converter);
+            
+            var size = JsonConvert.DeserializeObject<Size3F>(json);
 
             TheResultingValue(size)
                 .ShouldBe(1.2f, 2.3f, 3.4f);

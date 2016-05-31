@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -12,6 +13,7 @@ namespace TwistedLogik.Ultraviolet
     /// </summary>
     [Serializable]
     [DebuggerDisplay(@"\{A:{A} R:{R} G:{G} B:{B}\}")]
+    [JsonConverter(typeof(UltravioletJsonConverter))]
     public struct Color : IEquatable<Color>, IInterpolatable<Color>
     {
         /// <summary>

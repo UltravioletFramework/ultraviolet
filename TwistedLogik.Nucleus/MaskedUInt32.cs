@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Nucleus
 {
@@ -10,6 +11,7 @@ namespace TwistedLogik.Nucleus
     /// the integer value to be prepended with an additional byte of data, the masking byte, which tracks which integer bytes have non-zero
     /// values; this means that the size of a masked 32-bit integer is 2 bytes in the best case and 5 bytes in the worst case.</remarks>
     [CLSCompliant(false)]
+    [JsonConverter(typeof(NucleusJsonConverter))]
     public struct MaskedUInt32
     {
         /// <summary>

@@ -123,9 +123,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         [Test]
         public void Circle_SerializesToJson()
         {
-            var converter = new UltravioletJsonConverter();
             var circle = new Circle(1, 2, 3);
-            var json = JsonConvert.SerializeObject(circle, converter);
+            var json = JsonConvert.SerializeObject(circle);
 
             TheResultingString(json).ShouldBe(@"{""x"":1,""y"":2,""radius"":3}");
         }
@@ -134,9 +133,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         public void CircleF_DeserializesFromJson()
         {
             const String json = @"{ ""x"":1,""y"":2,""radius"":3 }";
-
-            var converter = new UltravioletJsonConverter();
-            var circle = JsonConvert.DeserializeObject<Circle>(json, converter);
+            
+            var circle = JsonConvert.DeserializeObject<Circle>(json);
 
             TheResultingValue(circle)
                 .ShouldHavePosition(1, 2)

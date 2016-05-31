@@ -22,8 +22,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 DataObjectRegistries.Load();
 
                 var reference = DataObjectRegistries.ResolveReference("@test:TEST_OBJECT_1");
-                var converter = new NucleusJsonConverter();
-                var json = JsonConvert.SerializeObject(reference, converter);
+                var json = JsonConvert.SerializeObject(reference);
 
                 TheResultingString(json)
                     .ShouldBe(@"""@test:TEST_OBJECT_1""");
@@ -46,8 +45,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 DataObjectRegistries.Load();
 
                 var reference = new ResolvedDataObjectReference(Guid.Parse("32758c5b-0a91-4c25-a092-c4e65754346d"));
-                var converter = new NucleusJsonConverter();
-                var json = JsonConvert.SerializeObject(reference, converter);
+                var json = JsonConvert.SerializeObject(reference);
 
                 TheResultingString(json)
                     .ShouldBe(@"""32758c5b-0a91-4c25-a092-c4e65754346d""");
@@ -70,9 +68,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 DataObjectRegistries.Load();
 
                 const String json = @"""@test:TEST_OBJECT_1""";
-
-                var converter = new NucleusJsonConverter();
-                var reference = JsonConvert.DeserializeObject<ResolvedDataObjectReference>(json, converter);
+                
+                var reference = JsonConvert.DeserializeObject<ResolvedDataObjectReference>(json);
 
                 TheResultingValue(reference)
                     .ShouldSatisfyTheCondition(x => x.Value.Equals(Guid.Parse("32758c5b-0a91-4c25-a092-c4e65754346d")));
@@ -95,9 +92,8 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 DataObjectRegistries.Load();
 
                 const String json = @"""32758c5b-0a91-4c25-a092-c4e65754346d""";
-
-                var converter = new NucleusJsonConverter();
-                var reference = JsonConvert.DeserializeObject<ResolvedDataObjectReference>(json, converter);
+                
+                var reference = JsonConvert.DeserializeObject<ResolvedDataObjectReference>(json);
 
                 TheResultingValue(reference)
                     .ShouldSatisfyTheCondition(x => x.Value.Equals(Guid.Parse("32758c5b-0a91-4c25-a092-c4e65754346d")));

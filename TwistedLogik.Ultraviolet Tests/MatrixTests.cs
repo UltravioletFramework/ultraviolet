@@ -1266,9 +1266,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         [Test]
         public void Matrix_SerializesToJson()
         {
-            var converter = new UltravioletJsonConverter();
             var matrix = Matrix.Identity;
-            var json = JsonConvert.SerializeObject(matrix, converter);
+            var json = JsonConvert.SerializeObject(matrix);
 
             TheResultingString(json).ShouldBe(@"[1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0]");
         }
@@ -1277,9 +1276,8 @@ namespace TwistedLogik.Ultraviolet.Tests
         public void Matrix_DeserializesFromJson()
         {
             const String json = @"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]";
-
-            var converter = new UltravioletJsonConverter();
-            var matrix = JsonConvert.DeserializeObject<Matrix>(json, converter);
+            
+            var matrix = JsonConvert.DeserializeObject<Matrix>(json);
 
             TheResultingValue(matrix)
                 .ShouldBe(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);

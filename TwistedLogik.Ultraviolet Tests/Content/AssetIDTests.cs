@@ -18,9 +18,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Content
                 {
                     content.Ultraviolet.GetContent().Manifests.Load(Path.Combine("Content", "Manifests", "Test.manifest"));
                     
-                    var converter = new UltravioletJsonConverter();
                     var id = content.Ultraviolet.GetContent().Manifests["Test"]["Textures"]["Triangle"].CreateAssetID();
-                    var json = JsonConvert.SerializeObject(id, converter);
+                    var json = JsonConvert.SerializeObject(id);
 
                     TheResultingString(json)
                         .ShouldBe(@"""#Test:Textures:Triangle""");
@@ -36,9 +35,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Content
                 .WithContent(content =>
                 {
                     content.Ultraviolet.GetContent().Manifests.Load(Path.Combine("Content", "Manifests", "Test.manifest"));
-
-                    var converter = new UltravioletJsonConverter();
-                    var id = JsonConvert.DeserializeObject<AssetID>(@"""#Test:Textures:Triangle""", converter);
+                    
+                    var id = JsonConvert.DeserializeObject<AssetID>(@"""#Test:Textures:Triangle""");
 
                     TheResultingValue(id)
                         .ShouldBe(AssetID.Parse("#Test:Textures:Triangle"));

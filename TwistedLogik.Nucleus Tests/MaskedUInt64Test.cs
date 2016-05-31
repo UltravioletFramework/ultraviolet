@@ -41,23 +41,21 @@ namespace TwistedLogik.Nucleus.Tests
         }
 
         [Test]
-        public void MaskedUInt32_SerializesToJson()
+        public void MaskedUInt64_SerializesToJson()
         {
             var value = (MaskedUInt64)987654;
-
-            var converter = new NucleusJsonConverter();
-            var json = JsonConvert.SerializeObject(value, converter);
+            
+            var json = JsonConvert.SerializeObject(value);
 
             TheResultingString(json).ShouldBe(@"987654");
         }
 
         [Test]
-        public void MaskedUInt32_DeserializesFromJson()
+        public void MaskedUInt64_DeserializesFromJson()
         {
             const String json = @"123456";
-
-            var converter = new NucleusJsonConverter();
-            var value = JsonConvert.DeserializeObject<MaskedUInt64>(json, converter);
+            
+            var value = JsonConvert.DeserializeObject<MaskedUInt64>(json);
 
             TheResultingValue(value.Value).ShouldBe(123456);
         }
@@ -66,9 +64,8 @@ namespace TwistedLogik.Nucleus.Tests
         public void MaskedUInt64_DeserializesFromJson_String()
         {
             const String json = @"""18446744073709551615""";
-
-            var converter = new NucleusJsonConverter();
-            var value = JsonConvert.DeserializeObject<MaskedUInt64>(json, converter);
+            
+            var value = JsonConvert.DeserializeObject<MaskedUInt64>(json);
 
             TheResultingValue(value.Value).ShouldBe(18446744073709551615u);
         }
