@@ -667,7 +667,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 var importer = default(IContentImporter);
                 var processor = default(IContentProcessor);
                 var instance = preprocessed ? 
-                    LoadInternalPreprocessed(normalizedAsset, metadata.AssetFilePath, out importer, out processor) : 
+                    LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, out importer, out processor) : 
                     LoadInternalRaw(type, normalizedAsset, metadata, out importer, out processor);
 
                 if (cache)
@@ -754,12 +754,13 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Loads a preprocessed asset.
         /// </summary>
+        /// <param name="type">The type of asset to load.</param>
         /// <param name="asset">The name of the asset being loaded.</param>
         /// <param name="path">The path to the asset file.</param>
         /// <param name="importer">The content importer for the asset.</param>
         /// <param name="processor">The content processor for the asset.</param>
         /// <returns>The asset that was loaded.</returns>
-        private Object LoadInternalPreprocessed(String asset, String path, out IContentImporter importer, out IContentProcessor processor)
+        private Object LoadInternalPreprocessed(Type type, String asset, String path, out IContentImporter importer, out IContentProcessor processor)
         {
             importer = null;
             using (var stream = fileSystemService.OpenRead(path))
@@ -773,8 +774,27 @@ namespace TwistedLogik.Ultraviolet.Content
                     var uvcProcessorTypeName = reader.ReadString();
                     var uvcProcessorType = Type.GetType(uvcProcessorTypeName);
 
-                    processor = (IContentProcessor)Activator.CreateInstance(uvcProcessorType);
+                    for (var currentType = uvcProcessorType; currentType != null; currentType = currentType.BaseType)
+                    {
+                        if (currentType.IsGenericType)
+                        {
+                            var genericTypeDef = currentType.GetGenericTypeDefinition();
+                            if (genericTypeDef == typeof(ContentProcessor<,>))
+                            {
+                                if (!type.IsAssignableFrom(currentType.GetGenericArguments()[1]))
+                                    throw new InvalidOperationException(UltravioletStrings.PreprocessedAssetTypeMismatch.Format(path, type.Name));
 
+                                break;
+                            }
+                        }
+
+                        if (currentType.BaseType == null)
+                            throw new InvalidOperationException(UltravioletStrings.ProcessorInvalidBaseClass.Format(uvcProcessorType.FullName));
+                    }
+
+
+                    processor = (IContentProcessor)Activator.CreateInstance(uvcProcessorType);
+                    
                     var metadata = new AssetMetadata(asset, Path.GetFullPath(path), null, null, true, false);
                     return processor.ImportPreprocessed(this, metadata, reader);
                 }

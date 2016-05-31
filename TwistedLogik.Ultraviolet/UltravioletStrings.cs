@@ -134,6 +134,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource CannotChangeCompositorWhileCurrent   = new StringResource(StringDatabase, "CANNOT_CHANGE_COMPOSITOR_WHILE_CURRENT");
         public static readonly StringResource CompositorAssociatedWithWrongWindow  = new StringResource(StringDatabase, "COMPOSITOR_ASSOCIATED_WITH_WRONG_WINDOW");
         public static readonly StringResource ViewAlreadyLoaded                    = new StringResource(StringDatabase, "VIEW_ALREADY_LOADED");
+        public static readonly StringResource PreprocessedAssetTypeMismatch        = new StringResource(StringDatabase, "PREPROCESSED_ASSET_TYPE_MISMATCH");
 #pragma warning restore 1591
     }
 }
