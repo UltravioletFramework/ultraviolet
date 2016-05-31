@@ -98,7 +98,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             writer.Write(true);
 
             var textureName = ResolveDependencyAssetPath(metadata, description.Texture);
+            writer.Write(textureName ?? String.Empty);
+
             var textureRegion = description.TextureRegion;
+            writer.Write(textureRegion.HasValue);
+            if (textureRegion.HasValue)
+            {
+                writer.Write(textureRegion.Value.X);
+                writer.Write(textureRegion.Value.Y);
+                writer.Write(textureRegion.Value.Width);
+                writer.Write(textureRegion.Value.Height);
+            }
 
             if (String.IsNullOrEmpty(textureName))
                 throw new ContentLoadException(OpenGLStrings.InvalidSpriteFontTexture);
@@ -107,8 +117,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             using (var surface = manager.Import<SDL_Surface>(textureName))
                 glyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(surface, textureRegion);
 
-            var substitution = description.Glyphs?.Substitution ?? '?';
-            
+            var substitution = description.Glyphs?.Substitution ?? '?';            
             writer.Write(substitution);
 
             writer.Write(glyphs.Count());
@@ -149,6 +158,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             }
 
             var texture = manager.Load<Texture2D>(reader.ReadString());
+            var textureRegion = default(Rectangle?);
+            var textureRegionSpecified = reader.ReadBoolean();
+            if (textureRegionSpecified)
+            {
+                textureRegion = new Rectangle(
+                    reader.ReadInt32(),
+                    reader.ReadInt32(),
+                    reader.ReadInt32(),
+                    reader.ReadInt32());
+            }
+
             var substitution = reader.ReadChar();
 
             var glyphPositions = new List<Rectangle>();
