@@ -386,6 +386,7 @@
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Content\ContentManifest.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Content\ContentMetadata.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CursorCollection.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\SpriteFont.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\Sprite.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\Text\TextTableLayout.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\TextureAtlas.json" />
