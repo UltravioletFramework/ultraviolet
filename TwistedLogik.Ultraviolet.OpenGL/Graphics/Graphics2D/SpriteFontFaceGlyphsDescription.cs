@@ -10,12 +10,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
     internal sealed class SpriteFontFaceGlyphDescription
     {
         /// <summary>
-        /// Gets or sets the first glyph in the face's texture.
-        /// </summary>
-        [JsonProperty(PropertyName = "first")]
-        public Char? First { get; set; }
-
-        /// <summary>
         /// Gets or sets the face's substitution glyph.
         /// </summary>
         [JsonProperty(PropertyName = "substitution")]

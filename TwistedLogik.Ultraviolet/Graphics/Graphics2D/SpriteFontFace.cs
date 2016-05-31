@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="glyphs">A collection containing the positions of the font's glyphs.</param>
         /// <param name="ownsTexture">A value indicating whether this font face is responsible for disposing of its texture.</param>
         public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, Boolean ownsTexture = false)
-            : this(uv, texture, regions, glyphs, ' ', '?', ownsTexture)
+            : this(uv, texture, regions, glyphs, '?', ownsTexture)
         {
 
         }
@@ -32,10 +32,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="texture">The texture that contains the font face's glyphs.</param>
         /// <param name="regions">A collection containing the font face's character regions.</param>
         /// <param name="glyphs">A collection containing the positions of the font face's glyphs on its texture.</param>
-        /// <param name="firstCharacter">The character that corresponds to font face's first glyph.</param>
         /// <param name="substitutionCharacter">The character that corresponds to the font face's substitution glyph.</param>
         /// <param name="ownsTexture">A value indicating whether this font face is responsible for disposing of its texture.</param>
-        public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, Char firstCharacter, Char substitutionCharacter, Boolean ownsTexture = false)
+        public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, Char substitutionCharacter, Boolean ownsTexture = false)
             : base(uv)
         {
             Contract.Require(texture, "texture");
@@ -44,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             this.texture = texture;
             this.ownsTexture = ownsTexture;
 
-            this.glyphs = new SpriteFontGlyphIndex(regions ?? new[] { CharacterRegion.Default }, glyphs, firstCharacter, substitutionCharacter);
+            this.glyphs = new SpriteFontGlyphIndex(regions ?? new[] { CharacterRegion.Default }, glyphs, substitutionCharacter);
             this.kerning = new SpriteFontKerning();           
         }
 
@@ -192,14 +191,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public Texture2D Texture
         {
             get { return texture; }
-        }
-
-        /// <summary>
-        /// Gets the character that corresponds to the font face's first glyph.
-        /// </summary>
-        public Char FirstCharacter
-        {
-            get { return glyphs.FirstCharacter; }
         }
 
         /// <summary>

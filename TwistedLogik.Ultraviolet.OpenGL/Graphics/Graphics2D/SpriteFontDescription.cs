@@ -10,28 +10,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
     internal sealed class SpriteFontDescription
     {
         /// <summary>
-        /// Gets or sets a description of the font's regular face.
+        /// Gets or sets the font's set of faces.
         /// </summary>
-        [JsonProperty(PropertyName = "regular")]
-        public SpriteFontFaceDescription Regular { get; set; }
-
-        /// <summary>
-        /// Gets or sets a description of the font's bold face.
-        /// </summary>
-        [JsonProperty(PropertyName = "bold")]
-        public SpriteFontFaceDescription Bold { get; set; }
-
-        /// <summary>
-        /// Gets or sets a description of the font's italic face.
-        /// </summary>
-        [JsonProperty(PropertyName = "italic")]
-        public SpriteFontFaceDescription Italic { get; set; }
-
-        /// <summary>
-        /// Gets or sets a description of the font's bold-italic face.
-        /// </summary>
-        [JsonProperty(PropertyName = "boldItalic")]
-        public SpriteFontFaceDescription BoldItalic { get; set; }
+        [JsonProperty(PropertyName = "faces")]
+        public SpriteFontFacesDescription Faces { get; set; }
 
         /// <summary>
         /// Gets or sets the font's collection of character regions.

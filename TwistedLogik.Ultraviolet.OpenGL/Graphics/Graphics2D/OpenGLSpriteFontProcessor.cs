@@ -27,10 +27,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 }
             }
 
-            ExportPreprocessedFace(manager, metadata, writer, input.Regular, "Regular", delete);
-            ExportPreprocessedFace(manager, metadata, writer, input.Bold, "Bold", delete);
-            ExportPreprocessedFace(manager, metadata, writer, input.Italic, "Italic", delete);
-            ExportPreprocessedFace(manager, metadata, writer, input.BoldItalic, "BoldItalic", delete);
+            ExportPreprocessedFace(manager, metadata, writer, input.Faces?.Regular, "Regular", delete);
+            ExportPreprocessedFace(manager, metadata, writer, input.Faces?.Bold, "Bold", delete);
+            ExportPreprocessedFace(manager, metadata, writer, input.Faces?.Italic, "Italic", delete);
+            ExportPreprocessedFace(manager, metadata, writer, input.Faces?.BoldItalic, "BoldItalic", delete);
         }
 
         /// <inheritdoc/>
@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <inheritdoc/>
         public override SpriteFont Process(ContentManager manager, IContentProcessorMetadata metadata, SpriteFontDescription input)
         {
-            var textures = (new[] { input.Regular?.Texture, input.Bold?.Texture, input.Italic?.Texture, input.BoldItalic?.Texture })
+            var textures = (new[] { input.Faces?.Regular?.Texture, input.Faces?.Bold?.Texture, input.Faces?.Italic?.Texture, input.Faces?.BoldItalic?.Texture })
                 .Where(x => x != null).Distinct()
                 .Select(x => ResolveDependencyAssetPath(metadata, x))
                 .ToDictionary(x => x, x => manager.Import<SDL_Surface>(x));
@@ -65,10 +65,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             {
                 var characterRegions = input.CharacterRegions?.Select(x => new CharacterRegion(x.Start, x.End)).ToList();
 
-                var faceRegular = ProcessFace(textures, manager, metadata, input.Regular, "Regular", characterRegions);
-                var faceBold = ProcessFace(textures, manager, metadata, input.Bold, "Bold", characterRegions);
-                var faceItalic = ProcessFace(textures, manager, metadata, input.Italic, "Italic", characterRegions);
-                var faceBoldItalic = ProcessFace(textures, manager, metadata, input.BoldItalic, "BoldItalic", characterRegions);
+                var faceRegular = ProcessFace(textures, manager, metadata, input.Faces?.Regular, "Regular", characterRegions);
+                var faceBold = ProcessFace(textures, manager, metadata, input.Faces?.Bold, "Bold", characterRegions);
+                var faceItalic = ProcessFace(textures, manager, metadata, input.Faces?.Italic, "Italic", characterRegions);
+                var faceBoldItalic = ProcessFace(textures, manager, metadata, input.Faces?.BoldItalic, "BoldItalic", characterRegions);
 
                 return new SpriteFont(manager.Ultraviolet, faceRegular, faceBold, faceItalic, faceBoldItalic);
             }
@@ -107,10 +107,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             using (var surface = manager.Import<SDL_Surface>(textureName))
                 glyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(surface, textureRegion);
 
-            var first = description.Glyphs?.First ?? ' ';
             var substitution = description.Glyphs?.Substitution ?? '?';
-
-            writer.Write(first);
+            
             writer.Write(substitution);
 
             writer.Write(glyphs.Count());
@@ -151,8 +149,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             }
 
             var texture = manager.Load<Texture2D>(reader.ReadString());
-            var firstCharacter = reader.ReadChar();
-            var substitutionCharacter = reader.ReadChar();
+            var substitution = reader.ReadChar();
 
             var glyphPositions = new List<Rectangle>();
             var glyphCount = reader.ReadInt32();
@@ -166,7 +163,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 glyphPositions.Add(new Rectangle(glyphX, glyphY, glyphWidth, glyphHeight));
             }
 
-            var face = new SpriteFontFace(manager.Ultraviolet, texture, characterRegions, glyphPositions, firstCharacter, substitutionCharacter);
+            var face = new SpriteFontFace(manager.Ultraviolet, texture, characterRegions, glyphPositions, substitution);
             var kerning = new Dictionary<SpriteFontKerningPair, Int32>();
             var kerningDefaultAdjustment = reader.ReadInt32();
             var kerningCount = reader.ReadInt32();

@@ -33,11 +33,7 @@
         "textureRegion": { "$ref": "http://schema.twistedlogik.net/Ultraviolet/Rectangle.json" },
         "glyphs": {
           "type": "object",
-          "properties": {
-            "first": {
-              "type": "string",
-              "pattern": "^.$"
-            },
+          "properties": {            
             "substitution": {
               "type": "string",
               "pattern": "^.$"

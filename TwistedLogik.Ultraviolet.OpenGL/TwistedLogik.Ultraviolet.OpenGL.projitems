@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontTextureProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\CharacterRegionDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontFacesDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontFaceGlyphsDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontFaceDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontDescription.cs" />

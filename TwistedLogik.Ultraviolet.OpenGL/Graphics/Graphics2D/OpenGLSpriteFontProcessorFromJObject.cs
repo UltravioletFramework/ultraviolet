@@ -33,8 +33,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         private static SpriteFontDescription CreateSpriteFontDescription(ContentManager manager, IContentProcessorMetadata metadata, JObject input)
         {
             var serializer = new JsonSerializer();
-            serializer.Converters.Add(new UltravioletJsonConverter());
-
             return input.ToObject<SpriteFontDescription>(serializer);
         }
         

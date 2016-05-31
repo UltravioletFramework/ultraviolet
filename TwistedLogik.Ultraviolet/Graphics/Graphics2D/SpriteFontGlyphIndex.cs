@@ -14,12 +14,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="regions">A collection containing the font face's character regions.</param>
         /// <param name="glyphs">A collection containing the positions of the font face's glyphs on its texture.</param>
-        /// <param name="firstCharacter">The character that corresponds to font face's first glyph.</param>
         /// <param name="substitutionCharacter">The character that corresponds to the font face's substitution glyph.</param>
-        public SpriteFontGlyphIndex(IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, Char firstCharacter, Char substitutionCharacter)
+        public SpriteFontGlyphIndex(IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, Char substitutionCharacter)
         {
             this.glyphs = glyphs.ToArray();
-            this.firstCharacter = firstCharacter;
             this.substitutionCharacter = substitutionCharacter;
             this.lineSpacing = glyphs.Max(x => x.Height);
 
@@ -94,15 +92,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 return glyphs[substitutionCharacterIndex];
             }
         }
-
-        /// <summary>
-        /// Gets the first character in the index.
-        /// </summary>
-        public Char FirstCharacter
-        {
-            get { return firstCharacter; }
-        }
-
+        
         /// <summary>
         /// Gets the character which is substituted for missing characters.
         /// </summary>
@@ -128,7 +118,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         // Property values.
-        private readonly Char firstCharacter;
         private readonly Char substitutionCharacter;
         private readonly Int32 substitutionCharacterIndex;
         private readonly Int32 lineSpacing;

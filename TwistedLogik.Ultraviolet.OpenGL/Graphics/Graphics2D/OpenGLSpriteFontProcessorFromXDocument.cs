@@ -58,16 +58,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 }
             }
 
-            spriteFontDesc.Regular = CreateSpriteFontFaceDescription(manager, metadata, 
+            var spriteFontFacesDesc = new SpriteFontFacesDescription();
+            spriteFontDesc.Faces = spriteFontFacesDesc;
+
+            spriteFontFacesDesc.Regular = CreateSpriteFontFaceDescription(manager, metadata, 
                 input.Root.Elements("Face").Where(x => String.Equals((String)x.Attribute("Style"), "Regular", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
 
-            spriteFontDesc.Bold = CreateSpriteFontFaceDescription(manager, metadata,
+            spriteFontFacesDesc.Bold = CreateSpriteFontFaceDescription(manager, metadata,
                 input.Root.Elements("Face").Where(x => String.Equals((String)x.Attribute("Style"), "Bold", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
 
-            spriteFontDesc.Italic = CreateSpriteFontFaceDescription(manager, metadata,
+            spriteFontFacesDesc.Italic = CreateSpriteFontFaceDescription(manager, metadata,
                 input.Root.Elements("Face").Where(x => String.Equals((String)x.Attribute("Style"), "Italic", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
 
-            spriteFontDesc.BoldItalic = CreateSpriteFontFaceDescription(manager, metadata,
+            spriteFontFacesDesc.BoldItalic = CreateSpriteFontFaceDescription(manager, metadata,
                 input.Root.Elements("Face").Where(x => String.Equals((String)x.Attribute("Style"), "BoldItalic", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
 
             return spriteFontDesc;
@@ -95,11 +98,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             {
                 var glyphsDesc = new SpriteFontFaceGlyphDescription();
                 spriteFontFaceDesc.Glyphs = glyphsDesc;
-
-                var firstElement = glyphsElement.Element("First");
-                glyphsDesc.First = (firstElement == null) ? (Char?)null :
-                    Char.Parse((String)firstElement);
-
+                
                 var substitutionElement = glyphsElement.Element("Substitution");
                 glyphsDesc.Substitution = (substitutionElement == null) ? (Char?)null :
                     Char.Parse((String)substitutionElement);
