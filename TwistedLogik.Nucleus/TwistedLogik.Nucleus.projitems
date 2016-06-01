@@ -88,10 +88,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\ILocalizationPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\Localization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizationDatabase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedStringDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedString.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedStringMatchEvaluatorData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedStringVariant.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedStringVariantCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedStringVariantCollectionDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizationDatabaseDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedStringVariantDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedStringVariantCollectionJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderExtensions.Numeric.cs" />
@@ -117,6 +122,10 @@
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\MaskedUInt32.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\MaskedUInt64.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\Text\LocalizationDatabase.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\Text\LocalizedString.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\Text\LocalizedStringVariantCollection.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\Text\LocalizedStringVariant.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\Text\StringResource.json" />
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Nucleus.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
