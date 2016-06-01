@@ -1,0 +1,306 @@
+{
+  "faces": {
+    "regular": {
+      "texture": "MSGothic16Texture",
+      "textureRegion": {
+        "x": 0,
+        "y": 0,
+        "width": 247,
+        "height": 242
+      },
+      "kernings": {
+        "default": -10
+      }
+    },
+    "bold": {
+      "texture": "MSGothic16Texture",
+      "textureRegion": {
+        "x": 0,
+        "y": 242,
+        "width": 247,
+        "height": 242
+      },
+      "kernings": {
+        "default": -10
+      }
+    },
+    "italic": {
+      "texture": "MSGothic16Texture",
+      "textureRegion": {
+        "x": 0,
+        "y": 484,
+        "width": 247,
+        "height": 242
+      },
+      "kernings": {
+        "default": -10
+      }
+    },
+    "boldItalic": {
+      "texture": "MSGothic16Texture",
+      "textureRegion": {
+        "x": 0,
+        "y": 726,
+        "width": 247,
+        "height": 242
+      },
+      "kernings": {
+        "default": -10
+      }
+    }
+  },
+  "characterRegions": [
+    {
+      "start": "?",
+      "end": "?"
+    },
+    {
+      "start": "、",
+      "end": "。"
+    },
+    {
+      "start": "々",
+      "end": "々"
+    },
+    {
+      "start": "あ",
+      "end": "あ"
+    },
+    {
+      "start": "い",
+      "end": "い"
+    },
+    {
+      "start": "お",
+      "end": "が"
+    },
+    {
+      "start": "く",
+      "end": "く"
+    },
+    {
+      "start": "こ",
+      "end": "こ"
+    },
+    {
+      "start": "さ",
+      "end": "さ"
+    },
+    {
+      "start": "し",
+      "end": "し"
+    },
+    {
+      "start": "す",
+      "end": "す"
+    },
+    {
+      "start": "そ",
+      "end": "そ"
+    },
+    {
+      "start": "た",
+      "end": "た"
+    },
+    {
+      "start": "っ",
+      "end": "っ"
+    },
+    {
+      "start": "て",
+      "end": "に"
+    },
+    {
+      "start": "の",
+      "end": "は"
+    },
+    {
+      "start": "び",
+      "end": "び"
+    },
+    {
+      "start": "ほ",
+      "end": "ほ"
+    },
+    {
+      "start": "ぽ",
+      "end": "ま"
+    },
+    {
+      "start": "よ",
+      "end": "ら"
+    },
+    {
+      "start": "る",
+      "end": "れ"
+    },
+    {
+      "start": "ん",
+      "end": "ん"
+    },
+    {
+      "start": "ア",
+      "end": "ア"
+    },
+    {
+      "start": "ジ",
+      "end": "ジ"
+    },
+    {
+      "start": "・",
+      "end": "・"
+    },
+    {
+      "start": "上",
+      "end": "上"
+    },
+    {
+      "start": "主",
+      "end": "主"
+    },
+    {
+      "start": "九",
+      "end": "九"
+    },
+    {
+      "start": "事",
+      "end": "事"
+    },
+    {
+      "start": "京",
+      "end": "京"
+    },
+    {
+      "start": "付",
+      "end": "付"
+    },
+    {
+      "start": "位",
+      "end": "位"
+    },
+    {
+      "start": "使",
+      "end": "使"
+    },
+    {
+      "start": "公",
+      "end": "公"
+    },
+    {
+      "start": "列",
+      "end": "列"
+    },
+    {
+      "start": "北",
+      "end": "北"
+    },
+    {
+      "start": "南",
+      "end": "南"
+    },
+    {
+      "start": "原",
+      "end": "原"
+    },
+    {
+      "start": "及",
+      "end": "及"
+    },
+    {
+      "start": "四",
+      "end": "四"
+    },
+    {
+      "start": "国",
+      "end": "国"
+    },
+    {
+      "start": "実",
+      "end": "実"
+    },
+    {
+      "start": "小",
+      "end": "小"
+    },
+    {
+      "start": "島",
+      "end": "島"
+    },
+    {
+      "start": "嶼",
+      "end": "嶼"
+    },
+    {
+      "start": "州",
+      "end": "州"
+    },
+    {
+      "start": "成",
+      "end": "成"
+    },
+    {
+      "start": "日",
+      "end": "日"
+    },
+    {
+      "start": "本",
+      "end": "本"
+    },
+    {
+      "start": "東",
+      "end": "東"
+    },
+    {
+      "start": "海",
+      "end": "海"
+    },
+    {
+      "start": "用",
+      "end": "用"
+    },
+    {
+      "start": "笠",
+      "end": "笠"
+    },
+    {
+      "start": "置",
+      "end": "置"
+    },
+    {
+      "start": "西",
+      "end": "西"
+    },
+    {
+      "start": "要",
+      "end": "要"
+    },
+    {
+      "start": "語",
+      "end": "語"
+    },
+    {
+      "start": "諸",
+      "end": "諸"
+    },
+    {
+      "start": "道",
+      "end": "道"
+    },
+    {
+      "start": "都",
+      "end": "都"
+    },
+    {
+      "start": "随",
+      "end": "随"
+    },
+    {
+      "start": "首",
+      "end": "首"
+    },
+    {
+      "start": "（",
+      "end": "）"
+    }
+  ]
+}
