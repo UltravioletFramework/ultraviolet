@@ -604,7 +604,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteFont_CorrectlyRendersEastAsianCharacters.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\SpriteFont_LoadsAndRendersCorrectly_FromJson.png">
