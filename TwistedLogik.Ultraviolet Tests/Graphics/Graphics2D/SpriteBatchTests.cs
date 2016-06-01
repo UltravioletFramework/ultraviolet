@@ -66,5 +66,61 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CorrectlyRendersEastAsianCharacters.png");
         }
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that SpriteBatch correctly renders a sprite font's default substitution glyph.")]
+        public void SpriteBatch_RendersDefaultSubstitutionGlyphForSpriteFont()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(SpriteFont);
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<SpriteFont>("Fonts/Arial16Json");
+                })
+                .Render(uv =>
+                {
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+                    spriteBatch.DrawString(spriteFont.Regular, 
+                        "plus ça change, plus c'est la même chose", Vector2.Zero, Color.White);
+
+                    spriteBatch.End();
+                });
+            
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_RendersDefaultSubstitutionGlyphForSpriteFont.png");
+        }
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that SpriteBatch correctly renders a sprite font's non-default substitution glyph.")]
+        public void SpriteBatch_RendersSpecifiedSubstitutionGlyphForSpriteFont()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(SpriteFont);
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<SpriteFont>("Fonts/Arial16JsonSubstitution");
+                })
+                .Render(uv =>
+                {
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+                    spriteBatch.DrawString(spriteFont.Regular,
+                        "plus ça change, plus c'est la même chose", Vector2.Zero, Color.White);
+
+                    spriteBatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_RendersSpecifiedSubstitutionGlyphForSpriteFont.png");
+        }
     }
 }
