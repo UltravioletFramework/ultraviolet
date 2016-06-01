@@ -25,6 +25,27 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
+        /// Enumerates all of the strings belonging to the current culture.
+        /// </summary>
+        /// <returns>A collection of strings belonging to the current culture.</returns>
+        public IEnumerable<KeyValuePair<String, LocalizedString>> EnumerateStrings()
+        {
+            return EnumerateCultureStrings(Localization.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Enumerates all of the strings belonging to the specified culture.
+        /// </summary>
+        /// <param name="culture">The culture for which to enumerate strings.</param>
+        /// <returns>A collection of strings belonging to the specified culture.</returns>
+        public IEnumerable<KeyValuePair<String, LocalizedString>> EnumerateCultureStrings(String culture)
+        {
+            Contract.RequireNotEmpty(culture, nameof(culture));
+
+            return GetCultureStrings(culture);
+        }
+
+        /// <summary>
         /// Loads localization data from the specified XML stream. Loaded strings
         /// will overwrite any previously loaded strings that share the same key.
         /// </summary>
@@ -268,6 +289,14 @@ namespace TwistedLogik.Nucleus.Text
         public LocalizedString Get(String key)
         {
             return Get(Localization.CurrentCulture, key);
+        }
+
+        /// <summary>
+        /// Gets the number of strings defined in this database.
+        /// </summary>
+        public Int32 StringCount
+        {
+            get { return strings.Count; }
         }
 
         /// <summary>

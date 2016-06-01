@@ -13,6 +13,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Tooling;
 
@@ -246,7 +247,7 @@ namespace UvFont
 
         private static IEnumerable<CharacterRegion> CreateCharacterRegionsFromSourceFile(FontGenerationParameters parameters)
         {
-            var culture = parameters.SourceCulture ?? "en-US";
+            var culture = parameters.SourceCulture ?? CultureInfo.CurrentCulture.ToString();
             var files = parameters.SourceFile.Split(',');
             var filesText = new StringBuilder();
 
@@ -254,25 +255,30 @@ namespace UvFont
             {
                 try
                 {
-                    var ext = Path.GetExtension(file);
-                    if (ext == ".xml")
+                    var ext = Path.GetExtension(file)?.ToLowerInvariant();
+                    if (ext == ".xml" || ext == ".json")
                     {
-                        var xml = XDocument.Load(file);
-                        if (xml.Root.Name.LocalName == "LocalizedStrings")
-                        {
-                            var variants = xml.Root.Descendants(culture).SelectMany(x => x.Elements("Variant"));
-                            Console.WriteLine("Reading source file '{0}'... (found {1} string variants)", Path.GetFileName(file), variants.Count());
+                        var db = new LocalizationDatabase();
+                        db.LoadFromFile(file);
 
-                            foreach (var variant in variants)
+                        Console.Write("Reading source file '{0}'... ", Path.GetFileName(file));
+                        var count = 0;
+
+                        foreach (var lstring in db.EnumerateCultureStrings(culture))
+                        {
+                            foreach (var variant in lstring.Value)
                             {
                                 filesText.Append(variant.Value);
+                                count++;
                             }
-                            continue;
                         }
+                        Console.WriteLine("(found {0} string variants)", count);
                     }
-
-                    Console.WriteLine("Reading source file '{0}'...", Path.GetFileName(file));
-                    filesText.Append(File.ReadAllText(file));
+                    else
+                    {
+                        Console.WriteLine("Reading source file '{0}'...", Path.GetFileName(file));
+                        filesText.Append(File.ReadAllText(file));
+                    }
                 }
                 catch (FileNotFoundException)
                 {

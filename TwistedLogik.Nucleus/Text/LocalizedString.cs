@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace TwistedLogik.Nucleus.Text
     /// <summary>
     /// Represents a localized string.
     /// </summary>
-    public partial class LocalizedString
+    public partial class LocalizedString : IEnumerable<KeyValuePair<String, LocalizedStringVariant>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalizedString"/> class.
@@ -45,6 +46,33 @@ namespace TwistedLogik.Nucleus.Text
                 return str.Key;
             }
             return defaultVariant.Value;
+        }
+
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>An enumerator for the collection.</returns>
+        public Dictionary<String, LocalizedStringVariant>.Enumerator GetEnumerator()
+        {
+            return variants.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>An enumerator for the collection.</returns>
+        IEnumerator<KeyValuePair<String, LocalizedStringVariant>> IEnumerable<KeyValuePair<String, LocalizedStringVariant>>.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>An enumerator for the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -169,6 +197,14 @@ namespace TwistedLogik.Nucleus.Text
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// Gets the number of variants defined by this string.
+        /// </summary>
+        public Int32 VariantCount
+        {
+            get { return variants.Count; }
         }
 
         /// <summary>
