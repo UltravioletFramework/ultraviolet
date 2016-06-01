@@ -315,9 +315,9 @@ namespace UvFont
             return $"{GetFontSafeName(parameters)}.{extension}";
         }
 
-        private static String GetFontTexture(FontGenerationParameters parameters)
+        private static String GetFontTexture(FontGenerationParameters parameters, Boolean extension = true)
         {
-            return $"{GetFontSafeName(parameters)}Texture.png";
+            return $"{GetFontSafeName(parameters)}Texture" + (extension ? ".png" : String.Empty);
         }
 
         private static Int32 MeasureKerning(FontGenerationParameters parameters, Graphics gfx, Font font, Char c1, Char c2)
@@ -536,7 +536,7 @@ namespace UvFont
                     }
 
                     var faceDefinition = new XElement("Face", new XAttribute("Style", face.Name),
-                        new XElement("Texture", GetFontTexture(parameters)),
+                        new XElement("Texture", GetFontTexture(parameters, false)),
                         new XElement("TextureRegion", String.Format("{0} {1} {2} {3}", x, y, face.Texture.Width, face.Texture.Height)),
                         new XElement("Kernings", new XAttribute("DefaultAdjustment", kerningDefaultAdjustment), kerningElements),
                         glyphsElement
@@ -610,7 +610,7 @@ namespace UvFont
                     var faceDefinition = new JProperty(faceName, 
                         new JObject(new[]
                         {
-                            new JProperty("texture", GetFontTexture(parameters)),
+                            new JProperty("texture", GetFontTexture(parameters, false)),
                             new JProperty("textureRegion", new JObject(
                                 new JProperty("x", x),
                                 new JProperty("y", y),
