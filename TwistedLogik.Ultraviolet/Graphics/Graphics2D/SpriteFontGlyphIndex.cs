@@ -38,7 +38,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                     if (isExtendedAscii)
                     {
                         if (ascii == null)
+                        {
                             ascii = new Int32[SpriteFont.ExtendedAsciiCount];
+                            for (int i = 0; i < ascii.Length; i++)
+                                ascii[i] = Int32.MinValue;
+                        }
 
                         if (character == substitutionCharacter)
                             substitutionCharacterIndex = count;
@@ -66,10 +70,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             if (isNonBreakingSpaceRequired)
             {
                 if (ascii == null)
+                {
                     ascii = new Int32[SpriteFont.ExtendedAsciiCount];
+                    for (int i = 0; i < ascii.Length; i++)
+                        ascii[i] = Int32.MinValue;
+                }
 
                 ascii['\u00A0'] = ascii[' '];
                 count++;
+            }
+
+            if (ascii != null)
+            {
+                for (int i = 0; i < ascii.Length; i++)
+                {
+                    if (ascii[i] < 0)
+                        ascii[i] = substitutionCharacterIndex;
+                }
             }
         }
 

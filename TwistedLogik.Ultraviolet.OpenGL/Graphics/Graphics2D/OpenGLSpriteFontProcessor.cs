@@ -223,7 +223,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             var faceGlyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(faceSurface, textureRegion);
 
             var faceTexture = manager.Load<Texture2D>(textureName);
-            var face = new SpriteFontFace(manager.Ultraviolet, faceTexture, characterRegions, faceGlyphs);
+            var face = new SpriteFontFace(manager.Ultraviolet, 
+                faceTexture, characterRegions, faceGlyphs, description.Glyphs?.Substitution ?? '?');
 
             var kerningDefaultAdjustment = description.Kernings?["default"] ?? 0;
             var kerning = description.Kernings?.Where(x => !String.Equals(x.Key, "default", StringComparison.InvariantCulture))

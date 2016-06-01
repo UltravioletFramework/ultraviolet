@@ -326,11 +326,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
         // State values.
         private readonly SpriteFontGlyphIndex glyphs;
-        private readonly SpriteFontKerning kerning;
-
-
-        //private readonly Rectangle[] glyphs;
-        //private readonly Int32[] asciiCache;
-        //private readonly Dictionary<Char, Int32> glyphIndices;            
+        private readonly SpriteFontKerning kerning;        
     }
 }
