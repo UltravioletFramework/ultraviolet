@@ -141,8 +141,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 writer.Write(kvp.Key.SecondCharacter);
                 writer.Write(kvp.Value);
             }
-
-            manager.Preprocess<Texture2D>(textureName, delete);
         }
 
         /// <summary>
@@ -157,7 +155,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 return null;
             }
 
-            var texture = manager.Load<Texture2D>(reader.ReadString());
+            var texturePath = reader.ReadString();
+            var texture = manager.Load<Texture2D>(texturePath);
             var textureRegion = default(Rectangle?);
             var textureRegionSpecified = reader.ReadBoolean();
             if (textureRegionSpecified)

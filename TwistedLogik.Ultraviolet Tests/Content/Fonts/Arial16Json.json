@@ -1,7 +1,7 @@
 {
   "faces": {
     "regular": {
-      "texture": "Arial16Texture.png",
+      "texture": "Arial16Texture",
       "textureRegion": {
         "x": 0,
         "y": 0,
@@ -13,7 +13,7 @@
       }
     },
     "bold": {
-      "texture": "Arial16Texture.png",
+      "texture": "Arial16Texture",
       "textureRegion": {
         "x": 0,
         "y": 135,
@@ -25,7 +25,7 @@
       }
     },
     "italic": {
-      "texture": "Arial16Texture.png",
+      "texture": "Arial16Texture",
       "textureRegion": {
         "x": 0,
         "y": 270,
@@ -37,7 +37,7 @@
       }
     },
     "boldItalic": {
-      "texture": "Arial16Texture.png",
+      "texture": "Arial16Texture",
       "textureRegion": {
         "x": 0,
         "y": 405,
