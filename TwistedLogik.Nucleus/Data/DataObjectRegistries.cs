@@ -33,7 +33,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="asm">The assembly that contains the registries to register.</param>
         public static void Register(Assembly asm)
         {
-            Contract.Require(asm, "asm");
+            Contract.Require(asm, nameof(asm));
 
             var types = asm.GetTypes();
             var typesOfRegistry = from t in types
@@ -49,16 +49,13 @@ namespace TwistedLogik.Nucleus.Data
                     continue;
 
                 if (registries.ContainsKey(elementType))
-                {
                     throw new InvalidOperationException(NucleusStrings.DataObjectRegistryAlreadyExists.Format(elementType.Name));
-                }
+
                 registries[elementType] = instance;
 
                 var rrname = instance.ReferenceResolutionName;
                 if (!String.IsNullOrEmpty(rrname))
-                {
                     registriesByName[rrname.ToLower()] = instance;
-                }
 
                 instance.Register();
             }
@@ -139,15 +136,12 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The resolved object reference.</returns>
         public static ResolvedDataObjectReference ResolveReference(String reference)
         {
-            if (reference == null)
-                throw new ArgumentNullException("reference");
+            Contract.Require(reference, nameof(reference));
 
             if (reference.StartsWith("@"))
             {
-                if (reference == "@INVALID")
-                {
+                if (String.Equals(reference, "@INVALID", StringComparison.InvariantCultureIgnoreCase))
                     return ResolvedDataObjectReference.Invalid;
-                }
 
                 var ix = reference.IndexOf(":");
                 if (ix > 0)
@@ -175,8 +169,6 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Gets the element type of the specified registry.
         /// </summary>
-        /// <param name="registry">The registry to evaluate.</param>
-        /// <returns>The element type of the specified registry.</returns>
         private static Type GetRegistryElementType(IDataObjectRegistry registry)
         {
             var ancestor = registry.GetType().BaseType;

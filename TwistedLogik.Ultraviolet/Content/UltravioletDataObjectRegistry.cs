@@ -5,6 +5,7 @@ using System.Security;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.Platform;
 
@@ -32,31 +33,13 @@ namespace TwistedLogik.Ultraviolet.Content
 
             base.OnUnregistered();
         }
-
-        /// <inheritdoc/>
-        [SecuritySafeCritical]
-        protected override DataElement LoadDataElementFromFile(String file)
-        {
-            var fss = FileSystemService.Create();
-
-            using (var stream = fss.OpenRead(file))
-            {
-                if (Path.GetExtension(file) == ".json")
-                {
-                    using (var sreader = new StreamReader(stream))
-                    using (var jreader = new JsonTextReader(sreader))
-                    {
-                        return DataElement.CreateFromJson(JObject.Load(jreader));
-                    }
-                }
-                return DataElement.CreateFromXml(XDocument.Load(stream));
-            }
-        }
-
+        
         /// <inheritdoc/>
         [SecuritySafeCritical]
         protected override IEnumerable<T> LoadDefinitionsFromXml(String file)
         {
+            Contract.RequireNotEmpty(file, nameof(file));
+
             var fss = FileSystemService.Create();
 
             using (var stream = fss.OpenRead(file))
@@ -69,6 +52,8 @@ namespace TwistedLogik.Ultraviolet.Content
         [SecuritySafeCritical]
         protected override IEnumerable<T> LoadDefinitionsFromJson(String file)
         {
+            Contract.RequireNotEmpty(file, nameof(file));
+
             var fss = FileSystemService.Create();
 
             using (var stream = fss.OpenRead(file))
