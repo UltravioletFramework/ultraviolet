@@ -18,6 +18,12 @@ namespace TwistedLogik.Ultraviolet.Content
     [CLSCompliant(false)]
     public abstract class UltravioletDataObjectRegistry<T> : DataObjectRegistry<T> where T : UltravioletDataObject
     {
+        /// <summary>
+        /// Gets the Ultraviolet context.
+        /// </summary>
+        public UltravioletContext Ultraviolet =>
+            UltravioletContext.DemandCurrent();
+
         /// <inheritdoc/>
         protected override void OnRegistered()
         {

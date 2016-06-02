@@ -20,5 +20,11 @@ namespace TwistedLogik.Ultraviolet.Content
         {
 
         }
+
+        /// <summary>
+        /// Gets the Ultraviolet context.
+        /// </summary>
+        public UltravioletContext Ultraviolet =>
+            UltravioletContext.DemandCurrent();
     }
 }
