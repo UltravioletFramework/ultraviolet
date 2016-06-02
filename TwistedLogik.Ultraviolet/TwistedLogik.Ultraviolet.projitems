@@ -59,6 +59,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\TextContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObjectRegistries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObjectRegistry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlContentImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlContentProcessor.cs" />
