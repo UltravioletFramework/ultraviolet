@@ -109,7 +109,9 @@ namespace TwistedLogik.Nucleus.Data
             Contract.Require(json, nameof(json));
 
             var serializer = new JsonSerializer();
-            return json.ToObject<List<T>>(serializer);
+            var description = json.ToObject<DataObjectRegistryDescription<T>>(serializer);
+
+            return description.Items;
         }
 
         /// <summary>

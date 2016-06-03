@@ -207,6 +207,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
+    <None Include="Data\DataObjectRegistryData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <EmbeddedResource Include="Resources\LocalizedStrings.json" />
     <EmbeddedResource Include="Resources\LocalizedStrings.xml" />
     <None Include="Data\DataObjectRegistryData.xml">

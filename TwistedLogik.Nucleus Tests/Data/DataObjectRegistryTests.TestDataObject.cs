@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus.Data;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Nucleus.Tests.Data
 {
@@ -7,11 +8,14 @@ namespace TwistedLogik.Nucleus.Tests.Data
     {
         public class TestDataObject : DataObject
         {
-            public TestDataObject(String key, Guid globalID)
-                : base(key, globalID)
+            [JsonConstructor]
+            public TestDataObject(String key, Guid id)
+                : base(key, id)
             { }
 
+            [JsonProperty(PropertyName = "foo")]
             public String Foo { get; protected set; }
+            [JsonProperty(PropertyName = "bar")]
             public String Bar { get; protected set; }
         }
     }

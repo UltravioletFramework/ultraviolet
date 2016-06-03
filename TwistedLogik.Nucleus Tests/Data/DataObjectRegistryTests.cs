@@ -11,6 +11,68 @@ namespace TwistedLogik.Nucleus.Tests.Data
     public partial class DataObjectRegistryTests : NucleusTestFramework
     {
         [Test]
+        public void DataObjectRegistry_LoadsFromXml()
+        {
+            try
+            {
+                DataObjectRegistries.Reset();
+                DataObjectRegistries.Register(GetType().Assembly);
+
+                DataObjectRegistries.Get<TestDataObject>().SetSourceFiles(new[] { Path.Combine("Data", "DataObjectRegistryData.xml") });
+                DataObjectRegistries.Load();
+
+                var dobj1 = DataObjectRegistries.Get<TestDataObject>().GetObjectByKey("TEST_OBJECT_1");
+                TheResultingObject(dobj1)
+                    .ShouldSatisfyTheCondition(x => x.Key == "TEST_OBJECT_1")
+                    .ShouldSatisfyTheCondition(x => x.GlobalID == new Guid("3bd956ab-24cc-49e7-a178-99111c69d24f"))
+                    .ShouldSatisfyTheCondition(x => x.Foo == "Hello")
+                    .ShouldSatisfyTheCondition(x => x.Bar == "World");
+
+                var dobj2 = DataObjectRegistries.Get<TestDataObject>().GetObjectByKey("TEST_OBJECT_2");
+                TheResultingObject(dobj2)
+                    .ShouldSatisfyTheCondition(x => x.Key == "TEST_OBJECT_2")
+                    .ShouldSatisfyTheCondition(x => x.GlobalID == new Guid("285c472e-a184-49a6-9639-d5b127ebc74a"))
+                    .ShouldSatisfyTheCondition(x => x.Foo == "Goodbye")
+                    .ShouldSatisfyTheCondition(x => x.Bar == "Universe");
+            }
+            finally
+            {
+                DataObjectRegistries.Reset();
+            }
+        }
+
+        [Test]
+        public void DataObjectRegistry_LoadsFromJson()
+        {
+            try
+            {
+                DataObjectRegistries.Reset();
+                DataObjectRegistries.Register(GetType().Assembly);
+
+                DataObjectRegistries.Get<TestDataObject>().SetSourceFiles(new[] { Path.Combine("Data", "DataObjectRegistryData.json") });
+                DataObjectRegistries.Load();
+
+                var dobj1 = DataObjectRegistries.Get<TestDataObject>().GetObjectByKey("TEST_OBJECT_1");
+                TheResultingObject(dobj1)
+                    .ShouldSatisfyTheCondition(x => x.Key == "TEST_OBJECT_1")
+                    .ShouldSatisfyTheCondition(x => x.GlobalID == new Guid("3bd956ab-24cc-49e7-a178-99111c69d24f"))
+                    .ShouldSatisfyTheCondition(x => x.Foo == "Hello")
+                    .ShouldSatisfyTheCondition(x => x.Bar == "World");
+
+                var dobj2 = DataObjectRegistries.Get<TestDataObject>().GetObjectByKey("TEST_OBJECT_2");
+                TheResultingObject(dobj2)
+                    .ShouldSatisfyTheCondition(x => x.Key == "TEST_OBJECT_2")
+                    .ShouldSatisfyTheCondition(x => x.GlobalID == new Guid("285c472e-a184-49a6-9639-d5b127ebc74a"))
+                    .ShouldSatisfyTheCondition(x => x.Foo == "Goodbye")
+                    .ShouldSatisfyTheCondition(x => x.Bar == "Universe");
+            }
+            finally
+            {
+                DataObjectRegistries.Reset();
+            }
+        }
+
+        [Test]
         public void ResolvedDataObjectReference_SerializesToJson()
         {
             try
@@ -44,11 +106,11 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 DataObjectRegistries.Get<TestDataObject>().SetSourceFiles(new[] { Path.Combine("Data", "DataObjectRegistryData.xml") });
                 DataObjectRegistries.Load();
 
-                var reference = new ResolvedDataObjectReference(Guid.Parse("32758c5b-0a91-4c25-a092-c4e65754346d"));
+                var reference = new ResolvedDataObjectReference(Guid.Parse("3bd956ab-24cc-49e7-a178-99111c69d24f"));
                 var json = JsonConvert.SerializeObject(reference);
 
                 TheResultingString(json)
-                    .ShouldBe(@"""32758c5b-0a91-4c25-a092-c4e65754346d""");
+                    .ShouldBe(@"""3bd956ab-24cc-49e7-a178-99111c69d24f""");
             }
             finally
             {
@@ -72,7 +134,7 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 var reference = JsonConvert.DeserializeObject<ResolvedDataObjectReference>(json);
 
                 TheResultingValue(reference)
-                    .ShouldSatisfyTheCondition(x => x.Value.Equals(Guid.Parse("32758c5b-0a91-4c25-a092-c4e65754346d")));
+                    .ShouldSatisfyTheCondition(x => x.Value.Equals(Guid.Parse("3bd956ab-24cc-49e7-a178-99111c69d24f")));
             }
             finally
             {
@@ -91,12 +153,12 @@ namespace TwistedLogik.Nucleus.Tests.Data
                 DataObjectRegistries.Get<TestDataObject>().SetSourceFiles(new[] { Path.Combine("Data", "DataObjectRegistryData.xml") });
                 DataObjectRegistries.Load();
 
-                const String json = @"""32758c5b-0a91-4c25-a092-c4e65754346d""";
+                const String json = @"""3bd956ab-24cc-49e7-a178-99111c69d24f""";
                 
                 var reference = JsonConvert.DeserializeObject<ResolvedDataObjectReference>(json);
 
                 TheResultingValue(reference)
-                    .ShouldSatisfyTheCondition(x => x.Value.Equals(Guid.Parse("32758c5b-0a91-4c25-a092-c4e65754346d")));
+                    .ShouldSatisfyTheCondition(x => x.Value.Equals(Guid.Parse("3bd956ab-24cc-49e7-a178-99111c69d24f")));
             }
             finally
             {
