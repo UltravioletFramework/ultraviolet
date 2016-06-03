@@ -77,7 +77,7 @@ namespace TwistedLogik.Nucleus.Data
                 var defaultValuesForClass = defaultValues[defaultClass] = new Dictionary<String, XElement>();
                 foreach (var value in child.Elements())
                 {
-                    if (ObjectLoader.IsReservedKeyword(value.Name.LocalName))
+                    if (ObjectLoaderXmlSerializer.IsReservedKeyword(value.Name.LocalName))
                         throw new InvalidOperationException(NucleusStrings.DataObjectDefaultHasReservedKeyword.Format(value.Name));
                     
                     defaultValuesForClass[value.Name.LocalName] = value;

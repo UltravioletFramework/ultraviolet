@@ -33,6 +33,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectRegistries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectRegistry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectRegistry.IEnumerable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectKeysDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectRegistryKeysDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectRegistryDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectTranslationTable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\IDataObjectRegistry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\IGloballyIdentified.cs" />

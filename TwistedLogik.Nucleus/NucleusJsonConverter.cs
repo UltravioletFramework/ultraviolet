@@ -62,7 +62,7 @@ namespace TwistedLogik.Nucleus
             {
                 return fn(reader, objectType, existingValue, serializer);
             }
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace TwistedLogik.Nucleus
                     return;
                 }
             }       
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>

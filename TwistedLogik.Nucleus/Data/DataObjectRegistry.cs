@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace TwistedLogik.Nucleus.Data
 {
@@ -172,6 +172,18 @@ namespace TwistedLogik.Nucleus.Data
         }
 
         /// <summary>
+        /// Opens the specified file for reading.
+        /// </summary>
+        /// <param name="path">The path to the file to open.</param>
+        /// <returns>The stream that represents the specified file.</returns>
+        protected virtual Stream OpenFileStream(String path)
+        {
+            Contract.RequireNotEmpty(path, nameof(path));
+
+            return File.OpenRead(path);
+        }
+
+        /// <summary>
         /// Called when the registry is added to the global collection of registries.
         /// </summary>
         protected virtual void OnRegistered()
@@ -205,12 +217,21 @@ namespace TwistedLogik.Nucleus.Data
                 var extension = Path.GetExtension(registrySourceFile)?.ToLower();
                 if (extension == ".json")
                 {
-                    throw new NotImplementedException();
+                    using (var stream = OpenFileStream(registrySourceFile))
+                    using (var sreader = new StreamReader(stream))
+                    using (var jreader = new JsonTextReader(sreader))
+                    {
+                        var json = JObject.Load(jreader);
+                        LoadKeysFromData(json);
+                    }
                 }
                 else
                 {
-                    var xml = XDocument.Load(registrySourceFile).Root;
-                    LoadKeysFromData(DataElementName, xml);
+                    using (var stream = OpenFileStream(registrySourceFile))
+                    {
+                        var xml = XDocument.Load(stream);
+                        LoadKeysFromData(xml.Root);
+                    }
                 }
             }
         }
@@ -262,7 +283,11 @@ namespace TwistedLogik.Nucleus.Data
         {
             Contract.RequireNotEmpty(file, nameof(file));
 
-            return ObjectLoader.LoadDefinitions<T>(XDocument.Load(file), DataElementName, DefaultObjectClass);
+            using (var stream = OpenFileStream(file))
+            {
+                var xml = XDocument.Load(stream);
+                return ObjectLoader.LoadDefinitions<T>(xml, DataElementName, DefaultObjectClass);
+            }
         }
 
         /// <summary>
@@ -274,33 +299,33 @@ namespace TwistedLogik.Nucleus.Data
         {
             Contract.RequireNotEmpty(file, nameof(file));
 
-            using (var sreader = new StreamReader(file))
+            using (var stream = OpenFileStream(file))
+            using (var sreader = new StreamReader(stream))
             using (var jreader = new JsonTextReader(sreader))
             {
-                return ObjectLoader.LoadDefinitions<T>(JObject.Load(jreader), DataElementName, DefaultObjectClass);
+                var json = JObject.Load(jreader);
+                return ObjectLoader.LoadDefinitions<T>(json);
             }
         }
 
         /// <summary>
         /// Loads a set of object keys from the specified data definition file into the specified key registry.
         /// </summary>
-        /// <param name="element">The name of the element from which to load keys.</param>
         /// <param name="data">The root element of the data definition file from which to load keys.</param>
-        protected void LoadKeysFromData(String element, XElement data) =>
-            LoadKeysFromData(element, data, keys);
+        protected void LoadKeysFromData(XElement data) =>
+            LoadKeysFromData(data, keys);
 
         /// <summary>
         /// Loads a set of object keys from the specified data definition file into the specified key registry.
         /// </summary>
-        /// <param name="element">The name of the element from which to load keys.</param>
         /// <param name="data">The root element of the data definition file from which to load keys.</param>
         /// <param name="keys">The key registry into which to load keys.</param>
-        protected void LoadKeysFromData(String element, XElement data, Dictionary<String, Guid> keys)
+        protected void LoadKeysFromData(XElement data, Dictionary<String, Guid> keys)
         {
             Contract.Require(data, nameof(data));
             Contract.Require(keys, nameof(keys));
 
-            var items = from item in data.Elements(element)
+            var items = from item in data.Elements(DataElementName)
                         let itemID = (String)item.Attribute("ID")
                         let itemKey = (String)item.Attribute("Key")
                         select new
@@ -321,20 +346,33 @@ namespace TwistedLogik.Nucleus.Data
         /// <summary>
         /// Loads a set of object keys from the specified data definition file into the specified key registry.
         /// </summary>
-        /// <param name="element">The name of the element from which to load keys.</param>
         /// <param name="data">The root element of the data definition file from which to load keys.</param>
-        protected void LoadKeysFromData(String element, JObject data) =>
-            LoadKeysFromData(element, data, keys);
+        protected void LoadKeysFromData(JObject data) =>
+            LoadKeysFromData(data, keys);
 
         /// <summary>
         /// Loads a set of object keys from the specified data definition file into the specified key registry.
         /// </summary>
-        /// <param name="element">The name of the element from which to load keys.</param>
         /// <param name="data">The root element of the data definition file from which to load keys.</param>
         /// <param name="keys">The key registry into which to load keys.</param>
-        protected void LoadKeysFromData(String element, JObject data, Dictionary<String, Guid> keys)
+        protected void LoadKeysFromData(JObject data, Dictionary<String, Guid> keys)
         {
-            throw new NotImplementedException();
+            Contract.Require(data, nameof(data));
+            Contract.Require(keys, nameof(keys));
+
+            var serializer = new JsonSerializer();
+            var description = data.ToObject<DataObjectRegistryKeysDescription>(serializer);
+
+            if (description.Items != null)
+            {
+                foreach (var item in description.Items)
+                {
+                    if (item.Key == null || keys.ContainsKey(item.Key))
+                        throw new InvalidOperationException(NucleusStrings.DataObjectInvalidKey.Format(item.Key ?? "(null)", item.ID));
+
+                    keys[item.Key] = item.ID;
+                }
+            }
         }
 
         /// <summary>

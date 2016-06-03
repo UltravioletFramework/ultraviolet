@@ -26,46 +26,6 @@ namespace TwistedLogik.Nucleus.Data
     public static class ObjectLoader
     {
         /// <summary>
-        /// Gets a value indicating whether the specified name is a reserved keyword used by the object loading system.
-        /// </summary>
-        /// <param name="name">The name to evaluate.</param>
-        /// <returns><see langword="true"/> if the name is reserved; otherwise, <see langword="false"/>.</returns>
-        public static Boolean IsReservedKeyword(String name)
-        {
-            Contract.Require(name, nameof(name));
-
-            if (String.Equals(name, "Class", StringComparison.InvariantCulture) ||
-                String.Equals(name, "Key", StringComparison.InvariantCulture) ||
-                String.Equals(name, "ID", StringComparison.InvariantCulture) ||
-                String.Equals(name, "Type", StringComparison.InvariantCulture) ||
-                String.Equals(name, "Constructor", StringComparison.InvariantCulture))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified name is a forbidden keyword which cannot be used in an object
-        /// definition under any circumstance.
-        /// </summary>
-        /// <param name="name">The name to evaluate.</param>
-        /// <returns><see langword="true"/> if the name is forbidden; otherwise, <see langword="false"/>.</returns>
-        public static Boolean IsForbiddenKeyword(String name)
-        {
-            Contract.Require(name, nameof(name));
-
-            if (String.Equals(name, "Key", StringComparison.InvariantCulture) ||
-                String.Equals(name, "Constructor", StringComparison.InvariantCulture))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Loads the objects defined in the specified file.
         /// </summary>
         /// <typeparam name="T">The type of object to load.</typeparam>
@@ -91,7 +51,8 @@ namespace TwistedLogik.Nucleus.Data
 
                     case ".json":
                     case ".js":
-                        throw new NotImplementedException();
+                        dataType = ObjectLoaderDataType.Json;
+                        break;
 
                     default:
                         throw new InvalidOperationException(NucleusStrings.UnableToDetectDataTypeFromExt);
@@ -110,7 +71,8 @@ namespace TwistedLogik.Nucleus.Data
                         using (var sreader = new StreamReader(stream))
                         using (var jreader = new JsonTextReader(sreader))
                         {
-                            return LoadDefinitions<T>(JObject.Load(jreader), name, defaultClass);
+                            var json = JObject.Load(jreader);
+                            return LoadDefinitions<T>(json);
                         }
                 }
             }
@@ -123,13 +85,13 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <typeparam name="T">The type of object to load.</typeparam>
         /// <param name="xml">The XML document that contains the object definitions to load.</param>
-        /// <param name="name">The name of the type of object to load.  Corresponds to the names of the elements in the data file.</param>
+        /// <param name="name">The name of the type of object to load, which corresponds to the names of the elements in the data file.</param>
         /// <param name="defaultClass">The default class if no default is specified in the file.</param>
         /// <returns>A collection containing the objects that were loaded.</returns>
         public static IEnumerable<T> LoadDefinitions<T>(XDocument xml, String name, Type defaultClass = null) where T : DataObject
         {
             Contract.Require(xml, nameof(xml));
-            Contract.Require(name, nameof(name));
+            Contract.RequireNotEmpty(name, nameof(name));
             
             return xmlSerializer.LoadDefinitions<T>(xml.Root, 
                 xml.Root.Element("Aliases")?.Elements("Alias") ?? Enumerable.Empty<XElement>(),
@@ -141,12 +103,13 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <typeparam name="T">The type of object to load.</typeparam>
         /// <param name="json">The JSON document that contains the object definitions to load.</param>
-        /// <param name="name">The name of the type of object to load.  Corresponds to the names of the elements in the data file.</param>
-        /// <param name="defaultClass">The default class if no default is specified in the file.</param>
         /// <returns>A collection containing the objects that were loaded.</returns>
-        public static IEnumerable<T> LoadDefinitions<T>(JObject json, String name, Type defaultClass = null) where T : DataObject
+        public static IEnumerable<T> LoadDefinitions<T>(JObject json) where T : DataObject
         {
-            throw new NotImplementedException();
+            Contract.Require(json, nameof(json));
+
+            var serializer = new JsonSerializer();
+            return json.ToObject<List<T>>(serializer);
         }
 
         /// <summary>
@@ -256,38 +219,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="json">The JSON object that contains the object data.</param>
         /// <returns>The object that was loaded.</returns>
         public static T LoadObject<T>(JObject json) =>
-            (T)LoadObject(null, typeof(T), json, CultureInfo.InvariantCulture);
-
-        /// <summary>
-        /// Loads an object from the specified JSON object.
-        /// </summary>
-        /// <typeparam name="T">The type of object to load.</typeparam>
-        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
-        /// code to optionally resolve deserialized member values.</param>
-        /// <param name="json">The JSON object that contains the object data.</param>
-        /// <returns>The object that was loaded.</returns>
-        public static T LoadObject<T>(ObjectLoaderMemberResolutionHandler resolver, JObject json) =>
-            (T)LoadObject(resolver, typeof(T), json, CultureInfo.InvariantCulture);
-
-        /// <summary>
-        /// Loads an object from the specified JSON object.
-        /// </summary>
-        /// <param name="type">The type of object to load.</param>
-        /// <param name="json">The JSON object that contains the object data.</param>
-        /// <returns>The object that was loaded.</returns>
-        public static Object LoadObject(Type type, JObject json) =>
-            LoadObject(null, type, json, CultureInfo.InvariantCulture);
-
-        /// <summary>
-        /// Loads an object from the specified JSON object.
-        /// </summary>
-        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
-        /// code to optionally resolve deserialized member values.</param>
-        /// <param name="type">The type of object to load.</param>
-        /// <param name="json">The JSON object that contains the object data.</param>
-        /// <returns>The object that was loaded.</returns>
-        public static Object LoadObject(ObjectLoaderMemberResolutionHandler resolver, Type type, JObject json) =>
-            LoadObject(resolver, type, json, CultureInfo.InvariantCulture);
+            (T)LoadObject(typeof(T), json, CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Loads an object from the specified JSON object.
@@ -297,20 +229,17 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="culture">The culture information to use when parsing values.</param>
         /// <returns>The object that was loaded.</returns>
         public static T LoadObject<T>(JObject json, CultureInfo culture) =>
-            (T)LoadObject(null, typeof(T), json, culture);
+            (T)LoadObject(typeof(T), json, culture);
 
         /// <summary>
         /// Loads an object from the specified JSON object.
         /// </summary>
-        /// <typeparam name="T">The type of object to load.</typeparam>
-        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
-        /// code to optionally resolve deserialized member values.</param>
+        /// <param name="type">The type of object to load.</param>
         /// <param name="json">The JSON object that contains the object data.</param>
-        /// <param name="culture">The culture information to use when parsing values.</param>
         /// <returns>The object that was loaded.</returns>
-        public static T LoadObject<T>(ObjectLoaderMemberResolutionHandler resolver, JObject json, CultureInfo culture) =>
-            (T)LoadObject(resolver, typeof(T), json, culture);
-
+        public static Object LoadObject(Type type, JObject json) =>
+            LoadObject(type, json, CultureInfo.InvariantCulture);
+                
         /// <summary>
         /// Loads an object from the specified JSON object.
         /// </summary>
@@ -318,21 +247,32 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="json">The JSON object that contains the object data.</param>
         /// <param name="culture">The culture information to use when parsing values.</param>
         /// <returns>The object that was loaded.</returns>
-        public static Object LoadObject(Type type, JObject json, CultureInfo culture) =>
-            LoadObject(null, type, json, culture);
-
-        /// <summary>
-        /// Loads an object from the specified JSON object.
-        /// </summary>
-        /// <param name="resolver">A custom <see cref="ObjectLoaderMemberResolutionHandler"/> which allows external
-        /// code to optionally resolve deserialized member values.</param>
-        /// <param name="type">The type of object to load.</param>
-        /// <param name="json">The JSON object that contains the object data.</param>
-        /// <param name="culture">The culture information to use when parsing values.</param>
-        /// <returns>The object that was loaded.</returns>
-        public static Object LoadObject(ObjectLoaderMemberResolutionHandler resolver, Type type, JObject json, CultureInfo culture)
+        public static Object LoadObject(Type type, JObject json, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            Contract.Require(type, nameof(type));
+            Contract.Require(json, nameof(json));
+            Contract.Require(culture, nameof(culture));
+
+            var serializer = new JsonSerializer();
+            serializer.Culture = culture;
+            
+            return json.ToObject(type, serializer);
+        }
+
+        /// <summary>
+        /// Loads an object from the specified JSON object.
+        /// </summary>
+        /// <param name="type">The type of object to load.</param>
+        /// <param name="json">The JSON object that contains the object data.</param>
+        /// <param name="serializer">The JSON serializer with which to deserialize the object data.</param>
+        /// <returns>The object that was loaded.</returns>
+        public static Object LoadObject(Type type, JObject json, JsonSerializer serializer)
+        {
+            Contract.Require(type, nameof(type));
+            Contract.Require(json, nameof(json));
+            Contract.Require(serializer, nameof(serializer));
+
+            return json.ToObject(type, serializer);
         }
 
         /// <summary>

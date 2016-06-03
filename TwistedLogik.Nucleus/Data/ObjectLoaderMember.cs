@@ -197,7 +197,7 @@ namespace TwistedLogik.Nucleus.Data
                 indexParameterValues[i] = ObjectResolver.FromString(attr.Value, indexParameter.ParameterType);
             }
 
-            if (element.Attributes().Where(x => !ObjectLoader.IsReservedKeyword(x.Name.LocalName)).Count() > indexParameterValues.Length)
+            if (element.Attributes().Where(x => !ObjectLoaderXmlSerializer.IsReservedKeyword(x.Name.LocalName)).Count() > indexParameterValues.Length)
                 throw new InvalidOperationException(NucleusStrings.DataObjectHasTooManyIndexParams);
 
             return indexParameterValues;
