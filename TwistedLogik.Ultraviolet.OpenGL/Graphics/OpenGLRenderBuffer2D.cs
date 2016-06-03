@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                         break;
 
                     default:
-                        throw new NotSupportedException("format");
+                        throw new NotSupportedException(nameof(format));
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.EnsureNot(attached, OpenGLStrings.CannotResizeAttachedRenderBuffer);
 
             if (willNotBeSampled)
-                throw new NotImplementedException(OpenGLStrings.RenderBufferWillNotBeSampled);
+                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
 
             this.texture.Resize(width, height);
             

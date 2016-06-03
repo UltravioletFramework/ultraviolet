@@ -1,7 +1,4 @@
-﻿using System;
-using System.Xml.Linq;
-using TwistedLogik.Nucleus.Xml;
-using TwistedLogik.Ultraviolet.Content;
+﻿using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.SDL2
@@ -9,40 +6,24 @@ namespace TwistedLogik.Ultraviolet.SDL2
     /// <summary>
     /// Represents a content processor that loads cursor collections.
     /// </summary>
-    [ContentProcessor]
-    internal sealed class CursorCollectionProcessor : ContentProcessor<XDocument, CursorCollection>
+    internal class CursorCollectionProcessor : ContentProcessor<CursorCollectionDescription, CursorCollection>
     {
-        /// <summary>
-        /// Processes the specified data structure into a game asset.
-        /// </summary>
-        /// <param name="manager">The <see cref="ContentManager"/> with which the asset is being processed.</param>
-        /// <param name="metadata">The asset's metadata.</param>
-        /// <param name="input">The input data structure to process.</param>
-        /// <returns>The game asset that was created.</returns>
-        public override CursorCollection Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
+        /// <inheritdoc/>
+        public override CursorCollection Process(ContentManager manager, IContentProcessorMetadata metadata, CursorCollectionDescription input)
         {
-            var image = input.Root.AttributeValueString("Image");
-            if (String.IsNullOrEmpty(image))
-                throw new InvalidOperationException(UltravioletStrings.InvalidCursorImage);
-
             var collection = new CursorCollection(manager.Ultraviolet);
-            using (var surface = manager.Load<Surface2D>(image, false))
+            var texture = ResolveDependencyAssetPath(metadata, input.Texture);
+            using (var textureSurface = manager.Load<Surface2D>(texture, false))
             {
-                foreach (var cursorElement in input.Root.Elements("Cursor"))
+                if (input.Cursors != null)
                 {
-                    var name = cursorElement.AttributeValueString("Name");
-                    if (String.IsNullOrEmpty(name))
-                        throw new InvalidOperationException(UltravioletStrings.InvalidCursorName);
-
-                    var position = cursorElement.AttributeValue<Vector2>("Position");
-                    var size = cursorElement.AttributeValue<Size2>("Size");
-                    var hotspot = cursorElement.AttributeValue<Vector2>("Hotspot");
-
-                    var region = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);
-                    using (var cursorSurface = surface.CreateSurface(region))
+                    foreach (var cursorDesc in input.Cursors)
                     {
-                        var cursor = Cursor.Create(cursorSurface, (int)hotspot.X, (int)hotspot.Y);
-                        collection[name] = cursor;
+                        using (var cursorSurface = textureSurface.CreateSurface(cursorDesc.Area))
+                        {
+                            var cursor = Cursor.Create(cursorSurface, cursorDesc.Hotspot.X, cursorDesc.Hotspot.Y);
+                            collection[cursorDesc.Name] = cursor;
+                        }
                     }
                 }
             }

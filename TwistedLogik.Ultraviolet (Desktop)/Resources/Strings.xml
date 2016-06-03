@@ -540,4 +540,9 @@
       <Variant>The panel's view cannot be changed because the view has already been loaded.</Variant>
     </en-US>
   </String>
+  <String Key="PREPROCESSED_ASSET_TYPE_MISMATCH">
+    <en-US>
+      <Variant>The preprocessed asset being loaded ('{0}') is not of the requested type ('{1}')</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

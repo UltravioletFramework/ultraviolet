@@ -1,0 +1,11 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "TwistedLogik.Nucleus.Text.LocalizedStringVariantCollection Schema",
+  "properties": {
+    "properties": { "type": "string" },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "http://schema.twistedlogik.net/Nucleus/Text/LocalizedStringVariant.json" }
+    }
+  }
+}

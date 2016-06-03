@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Nucleus.Data
 {
@@ -9,6 +10,7 @@ namespace TwistedLogik.Nucleus.Data
     /// <remarks>A resolved reference is one in which the string value of the reference has been associated with
     /// the globally-unique identifier of the referenced object.</remarks>
     [TypeConverter(typeof(ObjectResolverTypeConverter<ResolvedDataObjectReference>))]
+    [JsonConverter(typeof(NucleusJsonConverter))]
     public struct ResolvedDataObjectReference : IComparable<ResolvedDataObjectReference>, IEquatable<ResolvedDataObjectReference>
     {
         /// <summary>

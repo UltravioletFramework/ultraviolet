@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -29,6 +30,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="y">The y-coordinate of the rectangle's top-right corner.</param>
         /// <param name="width">The rectangle's width.</param>
         /// <param name="height">The rectangle's height.</param>
+        [JsonConstructor]
         public Rectangle(Int32 x, Int32 y, Int32 width, Int32 height)
         {
             this.x = x;
@@ -499,6 +501,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the rectangle is empty.
         /// </summary>
+        [JsonIgnore]
         public Boolean IsEmpty
         {
             get { return width == 0 || height == 0; }
@@ -507,6 +510,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the x-coordinate of the rectangle's top-left corner.
         /// </summary>
+        [JsonProperty(PropertyName = "x", Required = Required.Always)]
         public Int32 X
         {
             get { return x; }
@@ -515,6 +519,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the y-coordinate of the rectangle's top-left corner.
         /// </summary>
+        [JsonProperty(PropertyName = "y", Required = Required.Always)]
         public Int32 Y
         {
             get { return y; }
@@ -523,6 +528,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the rectangle's width.
         /// </summary>
+        [JsonProperty(PropertyName = "width", Required = Required.Always)]
         public Int32 Width
         {
             get { return width; }
@@ -531,6 +537,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the rectangle's height.
         /// </summary>
+        [JsonProperty(PropertyName = "height", Required = Required.Always)]
         public Int32 Height
         {
             get { return height; }
@@ -539,6 +546,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the y-coordinate of the top edge of the rectangle.
         /// </summary>
+        [JsonIgnore]
         public Int32 Top
         {
             get { return y; }
@@ -547,6 +555,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the x-coordinate of the left edge of the rectangle.
         /// </summary>
+        [JsonIgnore]
         public Int32 Left
         {
             get { return x; }
@@ -555,6 +564,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the y-coordinate of the bottom edge of the rectangle.
         /// </summary>
+        [JsonIgnore]
         public Int32 Bottom
         {
             get { return y + height; }
@@ -563,6 +573,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the x-coordinate of the right edge of the rectangle.
         /// </summary>
+        [JsonIgnore]
         public Int32 Right
         {
             get { return x + width; }
@@ -571,6 +582,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the position of the rectangle's top-left corner.
         /// </summary>
+        [JsonIgnore]
         public Point2 Location
         {
             get { return new Point2(x, y); }
@@ -579,6 +591,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the position of the rectangle's center.
         /// </summary>
+        [JsonIgnore]
         public Point2 Center
         {
             get { return new Point2(x + (width / 2), y + (height / 2)); }
@@ -587,6 +600,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the rectangle's size.
         /// </summary>
+        [JsonIgnore]
         public Size2 Size
         {
             get { return new Size2(width, height); }

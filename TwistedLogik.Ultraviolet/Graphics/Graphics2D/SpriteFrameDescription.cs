@@ -1,126 +1,67 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Describes a <see cref="SpriteFrame"/> object during deserialization.
     /// </summary>
-    public struct SpriteFrameDescription
+    internal sealed class SpriteFrameDescription
     {
         /// <summary>
-        /// Retrieves the content resource path to the frame's texture atlas.
+        /// Gets or sets the content resource path to the frame's texture atlas.
         /// </summary>
-        public String Atlas
-        {
-            get { return atlas; }
-            set { atlas = value; }
-        }
+        [JsonProperty(PropertyName = "atlas")]
+        public String Atlas { get; set; }
 
         /// <summary>
-        /// Retreives the name of the frame's texture atlas cell.
+        /// Gets or sets the name of the frame's texture atlas cell.
         /// </summary>
-        public String AtlasCell
-        {
-            get { return atlasCell; }
-            set { atlasCell = value; }
-        }
+        [JsonProperty(PropertyName = "atlasCell")]
+        public String AtlasCell { get; set; }
 
         /// <summary>
-        /// Retrieves the content resource path to the frame's texture.
+        /// Gets or sets the content resource path to the frame's texture.
         /// </summary>
-        public String Texture
-        {
-            get { return texture; }
-            set { texture = value; }
-        }
+        [JsonProperty(PropertyName = "texture")]
+        public String Texture { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the frame's duration in milliseconds.
+        /// </summary>
+        [JsonProperty(PropertyName = "duration")]
+        public Int32? Duration { get; set; }
 
         /// <summary>
-        /// Retrieves the frame's texture resource.
+        /// Gets or sets the distance between the left edge of the frame's texture
+        /// and the left edge of the frame, in pixels.
         /// </summary>
-        public Texture2D TextureResource
-        {
-            get { return textureResource; }
-            set { textureResource = value; }
-        }
+        [JsonProperty(PropertyName = "x")]
+        public Int32? X { get; set; }
 
         /// <summary>
-        /// Retrieves the distance, in pixels, between the left edge of the frame's texture
-        /// and the left edge of the frame.
+        /// Gets or sets the distance between the top edge of the frame's texture
+        /// and the top edge of the frame, in pixels.
         /// </summary>
-        public Int32 X
-        {
-            get { return x; }
-            set { x = value; }
-        }
+        [JsonProperty(PropertyName = "y")]
+        public Int32? Y { get; set; }
 
         /// <summary>
-        /// Retrieves the distance, in pixels, between the top edge of the frame's texture
-        /// and the top edge of the frame.
+        /// Gets or sets the frame's width in pixels.
         /// </summary>
-        public Int32 Y
-        {
-            get { return y; }
-            set { y = value; }
-        }
+        [JsonProperty(PropertyName = "width")]
+        public Int32? Width { get; set; }
 
         /// <summary>
-        /// Retrieves the width of the frame in pixels.
+        /// Gets or sets the frame's height in pixels.
         /// </summary>
-        public Int32 Width
-        {
-            get { return width; }
-            set { width = value; }
-        }
+        [JsonProperty(PropertyName = "height")]
+        public Int32? Height { get; set; }
 
         /// <summary>
-        /// Retrieves the height of the frame in pixels.
+        /// Gets or sets the frame's point of origin.
         /// </summary>
-        public Int32 Height
-        {
-            get { return height; }
-            set { height = value; }
-        }
-
-        /// <summary>
-        /// Retrieves the distance, in pixels, between the top left corner of the frame
-        /// and its origin point.
-        /// </summary>
-        public Int32 OriginX
-        {
-            get { return originX; }
-            set { originX = value; }
-        }
-
-        /// <summary>
-        /// Retrieves the distance, in pixels, between the top left corner of the frame
-        /// and its origin point.
-        /// </summary>
-        public Int32 OriginY
-        {
-            get { return originY; }
-            set { originY = value; }
-        }
-
-        /// <summary>
-        /// Retrieves the frame's duration in milliseconds.
-        /// </summary>
-        public Int32 Duration
-        {
-            get { return duration; }
-            set { duration = value; }
-        }
-
-        // Property values.
-        private String atlas;
-        private String atlasCell;
-        private String texture;
-        private Texture2D textureResource;
-        private Int32 x;
-        private Int32 y;
-        private Int32 width;
-        private Int32 height;
-        private Int32 originX;
-        private Int32 originY;
-        private Int32 duration;
+        [JsonProperty(PropertyName = "origin")]
+        public Point2? Origin { get; set; }
     }
 }

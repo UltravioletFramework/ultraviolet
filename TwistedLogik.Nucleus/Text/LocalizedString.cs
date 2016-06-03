@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace TwistedLogik.Nucleus.Text
     /// <summary>
     /// Represents a localized string.
     /// </summary>
-    public partial class LocalizedString
+    public partial class LocalizedString : IEnumerable<KeyValuePair<String, LocalizedStringVariant>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalizedString"/> class.
@@ -45,6 +46,33 @@ namespace TwistedLogik.Nucleus.Text
                 return str.Key;
             }
             return defaultVariant.Value;
+        }
+
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>An enumerator for the collection.</returns>
+        public Dictionary<String, LocalizedStringVariant>.Enumerator GetEnumerator()
+        {
+            return variants.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>An enumerator for the collection.</returns>
+        IEnumerator<KeyValuePair<String, LocalizedStringVariant>> IEnumerable<KeyValuePair<String, LocalizedStringVariant>>.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>An enumerator for the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -172,6 +200,14 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
+        /// Gets the number of variants defined by this string.
+        /// </summary>
+        public Int32 VariantCount
+        {
+            get { return variants.Count; }
+        }
+
+        /// <summary>
         /// Creates a set of localized strings from the specified XML element.
         /// </summary>
         /// <param name="xml">The XML element that contains the string definition.</param>
@@ -179,8 +215,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The localization key for the created strings.</returns>
         internal static String CreateFromXml(XElement xml, Dictionary<String, LocalizedString> strings)
         {
-            Contract.Require(xml, "xml");
-            Contract.Require(strings, "strings");
+            Contract.Require(xml, nameof(xml));
+            Contract.Require(strings, nameof(strings));
 
             strings.Clear();
 
@@ -224,6 +260,55 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
+        /// Creates a set of localized strings from the specified string description.
+        /// </summary>
+        /// <param name="description">The string description from which to create the strings.</param>
+        /// <param name="strings">The dictionary to populate with strings for each loaded culture.</param>
+        /// <returns>The localization key for the created strings.</returns>
+        internal static String CreateFromDescription(LocalizedStringDescription description, Dictionary<String, LocalizedString> strings)
+        {
+            Contract.Require(description, nameof(description));
+            Contract.Require(strings, nameof(strings));
+
+            strings.Clear();
+
+            if (description.Variants != null)
+            {
+                foreach (var culture in description.Variants)
+                {
+                    var cultureName = culture.Key;
+                    var cultureString = new LocalizedString(cultureName, description.Key, description.Html, !description.Pseudo);
+
+                    if (culture.Value != null)
+                    {
+                        var cultureProperties = culture.Value.Properties?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+                        if (cultureProperties != null)
+                        {
+                            foreach (var cultureProperty in cultureProperties)
+                                cultureString.properties.Add(cultureProperty, true);
+                        }
+
+                        if (culture.Value.Items != null)
+                        {
+                            foreach (var variant in culture.Value.Items)
+                            {
+                                var variantGroup = variant.Group ?? "none";
+                                var variantValue = variant.Text;
+                                var variantProps = variant.Properties?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+
+                                cultureString.variants[variantGroup] = new LocalizedStringVariant(cultureString, variantGroup, variantValue, variantProps);
+                            }
+                        }
+
+                        strings[cultureName] = cultureString;
+                    }
+                }
+            }            
+
+            return description.Key;
+        }
+
+        /// <summary>
         /// Creates a fallback string in the event that the specified key does not exist for a culture.
         /// </summary>
         /// <param name="culture">The string's associated culture.</param>
@@ -231,10 +316,10 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The fallback string that was created.</returns>
         internal static LocalizedString CreateFallback(String culture, String key)
         {
-            Contract.RequireNotEmpty(key, "key");
-            Contract.RequireNotEmpty(culture, "culture");
+            Contract.RequireNotEmpty(culture, nameof(culture));
+            Contract.RequireNotEmpty(key, nameof(key));
 
-            var fallback = new LocalizedString(key, culture, true, false);
+            var fallback = new LocalizedString(culture, key, false, false);
             fallback.variants["singular"] = new LocalizedStringVariant(fallback, "singular", key);
             return fallback;
         }

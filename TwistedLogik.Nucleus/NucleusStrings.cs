@@ -85,6 +85,9 @@ namespace TwistedLogik.Nucleus
         public static readonly StringResource UnsafeStreamHasAlreadyAcquiredPointers = new StringResource(StringDatabase, "UNSAFE_STREAM_HAS_ALREADY_ACQUIRED_POINTERS");
         public static readonly StringResource UnsafeStreamCanOnlyReserveAtStreamEnd  = new StringResource(StringDatabase, "UNSAFE_STREAM_CAN_ONLY_RESERVE_AT_STREAM_END");
         public static readonly StringResource UnsafeStreamWouldOverwriteObject       = new StringResource(StringDatabase, "UNSAFE_STREAM_WOULD_OVERWRITE_OBJECT");
+        public static readonly StringResource JsonIncorrectArrayLengthForType        = new StringResource(StringDatabase, "JSON_INCORRECT_ARRAY_LENGTH_FOR_TYPE");
+        public static readonly StringResource JsonCannotWriteNonGlobalStringResource = new StringResource(StringDatabase, "JSON_CANNOT_WRITE_NON_GLOBAL_STRING_RESOURCE");
+        public static readonly StringResource JsonCannotReadStringVariantCollection  = new StringResource(StringDatabase, "JSON_CANNOT_READ_STRING_VARIANT_COLLECTION");
 #pragma warning restore 1591
     }
 }

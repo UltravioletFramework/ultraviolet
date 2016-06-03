@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Nucleus.Text
 {
@@ -23,13 +25,44 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Loads localization data from the specified stream. Loaded strings
+        /// Enumerates all of the strings belonging to the current culture.
+        /// </summary>
+        /// <returns>A collection of strings belonging to the current culture.</returns>
+        public IEnumerable<KeyValuePair<String, LocalizedString>> EnumerateStrings()
+        {
+            return EnumerateCultureStrings(Localization.CurrentCulture);
+        }
+
+        /// <summary>
+        /// Enumerates all of the strings belonging to the specified culture.
+        /// </summary>
+        /// <param name="culture">The culture for which to enumerate strings.</param>
+        /// <returns>A collection of strings belonging to the specified culture.</returns>
+        public IEnumerable<KeyValuePair<String, LocalizedString>> EnumerateCultureStrings(String culture)
+        {
+            Contract.RequireNotEmpty(culture, nameof(culture));
+
+            return GetCultureStrings(culture);
+        }
+
+        /// <summary>
+        /// Loads localization data from the specified XML stream. Loaded strings
         /// will overwrite any previously loaded strings that share the same key.
         /// </summary>
         /// <param name="stream">The <see cref="Stream"/> from which to load localization data.</param>
         public void LoadFromStream(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            LoadFromXmlStream(stream);
+        }
+
+        /// <summary>
+        /// Loads localization data from the specified XML stream. Loaded strings
+        /// will overwrite any previously loaded strings that share the same key.
+        /// </summary>
+        /// <param name="stream">The <see cref="Stream"/> from which to load localization data.</param>
+        public void LoadFromXmlStream(Stream stream)
+        {
+            Contract.Require(stream, nameof(stream));
 
             var xml = XDocument.Load(stream);
             var elements = xml.Element("LocalizedStrings").Elements("String");
@@ -45,6 +78,38 @@ namespace TwistedLogik.Nucleus.Text
                         strings[result.Key] = new Dictionary<String, LocalizedString>();
                     }
                     strings[result.Key][key] = result.Value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Loads localization data from the specified JSON stream. Loaded strings
+        /// will overwrite any previously loaded strings that share the same key.
+        /// </summary>
+        /// <param name="stream">The <see cref="Stream"/> from which to load localization data.</param>
+        public void LoadFromJsonStream(Stream stream)
+        {
+            Contract.Require(stream, nameof(stream));
+
+            using (var sreader = new StreamReader(stream))
+            using (var jreader = new JsonTextReader(sreader))
+            {
+                var serializer = new JsonSerializer();
+                var description = serializer.Deserialize<LocalizationDatabaseDescription>(jreader);
+
+                var results = new Dictionary<String, LocalizedString>();
+
+                foreach (var lstring in description.Strings ?? Enumerable.Empty<LocalizedStringDescription>())
+                {
+                    var key = LocalizedString.CreateFromDescription(lstring, results);
+                    foreach (var result in results)
+                    {
+                        if (!strings.ContainsKey(result.Key))
+                        {
+                            strings[result.Key] = new Dictionary<String, LocalizedString>();
+                        }
+                        strings[result.Key][key] = result.Value;
+                    }
                 }
             }
         }
@@ -71,9 +136,23 @@ namespace TwistedLogik.Nucleus.Text
         {
             Contract.RequireNotEmpty(path, "path");
 
-            using (var stream = File.OpenRead(path))
+            var extension = Path.GetExtension(path)?.ToLowerInvariant();
+
+            switch (extension)
             {
-                LoadFromStream(stream);
+                case ".json":
+                    using (var stream = File.OpenRead(path))
+                    {
+                        LoadFromJsonStream(stream);
+                    }
+                    break;
+
+                default:
+                    using (var stream = File.OpenRead(path))
+                    {
+                        LoadFromXmlStream(stream);
+                    }
+                    break;
             }
         }
 
@@ -99,13 +178,20 @@ namespace TwistedLogik.Nucleus.Text
         {
             Contract.Require(path, "path");
 
-            var files = Directory.GetFiles(path, "*.xml");
+            var files = default(String[]);
+
+            files = Directory.GetFiles(path, "*.xml");
             foreach (var file in files)
             {
                 using (var stream = File.OpenRead(file))
-                {
-                    LoadFromStream(stream);
-                }
+                    LoadFromXmlStream(stream);
+            }
+
+            files = Directory.GetFiles(path, ".json");
+            foreach (var file in files)
+            {
+                using (var stream = File.OpenRead(file))
+                    LoadFromJsonStream(stream);
             }
         }
 
@@ -203,6 +289,14 @@ namespace TwistedLogik.Nucleus.Text
         public LocalizedString Get(String key)
         {
             return Get(Localization.CurrentCulture, key);
+        }
+
+        /// <summary>
+        /// Gets the number of strings defined in this database.
+        /// </summary>
+        public Int32 StringCount
+        {
+            get { return strings.Count; }
         }
 
         /// <summary>

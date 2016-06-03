@@ -14,8 +14,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectImplementationProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteBatchEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontTextureProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\CharacterRegionDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontFacesDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontFaceGlyphsDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontFaceDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IBindableResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IOpenGLResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBasicEffect.cs" />
@@ -84,6 +91,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ResourceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\OpenGL\Graphics\Effect.json" />
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.OpenGL.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

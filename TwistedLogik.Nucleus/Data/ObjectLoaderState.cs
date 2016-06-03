@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Xml.Linq;
 
 namespace TwistedLogik.Nucleus.Data
 {
@@ -27,7 +28,7 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <param name="elements">The elements to parse.</param>
         /// <param name="defaultClass">The default class if no default is specified in the file.</param>
-        public void ParseClassAliases(IEnumerable<DataElement> elements, Type defaultClass)
+        public void ParseClassAliases(IEnumerable<XElement> elements, Type defaultClass)
         {
             if (defaultClass != null)
                 classAliasDefault = defaultClass.AssemblyQualifiedName;
@@ -36,11 +37,11 @@ namespace TwistedLogik.Nucleus.Data
             {
                 foreach (var child in elements)
                 {
-                    var aliasName = child.AttributeValue<String>("Name");
+                    var aliasName = (String)child.Attribute("Name");
                     if (String.IsNullOrEmpty(aliasName))
                         throw new InvalidOperationException(NucleusStrings.DataObjectInvalidClassAlias);
 
-                    var aliasDefault = child.AttributeValue<Boolean>("Default");
+                    var aliasDefault = (Boolean?)child.Attribute("Default") ?? false;
                     var aliasValue = child.Value;
 
                     localClassAliases[aliasName] = aliasValue;
@@ -60,11 +61,11 @@ namespace TwistedLogik.Nucleus.Data
         /// Parses the class defaults element.
         /// </summary>
         /// <param name="elements">The elements to parse.</param>
-        public void ParseClassDefaults(IEnumerable<DataElement> elements)
+        public void ParseClassDefaults(IEnumerable<XElement> elements)
         {
             foreach (var child in elements)
             {
-                var defaultClassRaw = child.AttributeValue<String>("Class");
+                var defaultClassRaw = (String)child.Attribute("Class");
                 var defaultClassResolved = ResolveClass(defaultClassRaw);
                 if (String.IsNullOrEmpty(defaultClassResolved))
                     throw new InvalidOperationException(NucleusStrings.DataObjectDefaultMissingClassName);
@@ -73,13 +74,13 @@ namespace TwistedLogik.Nucleus.Data
                 if (defaultClass == null)
                     throw new InvalidOperationException(NucleusStrings.DataObjectDefaultHasInvalidClass.Format(defaultClass));
                 
-                var defaultValuesForClass = defaultValues[defaultClass] = new Dictionary<String, DataElement>();
+                var defaultValuesForClass = defaultValues[defaultClass] = new Dictionary<String, XElement>();
                 foreach (var value in child.Elements())
                 {
-                    if (ObjectLoader.IsReservedKeyword(value.Name))
+                    if (ObjectLoaderXmlSerializer.IsReservedKeyword(value.Name.LocalName))
                         throw new InvalidOperationException(NucleusStrings.DataObjectDefaultHasReservedKeyword.Format(value.Name));
                     
-                    defaultValuesForClass[value.Name] = value;
+                    defaultValuesForClass[value.Name.LocalName] = value;
                 }
             }
         }
@@ -109,9 +110,9 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <param name="type">The type for which to retrieve default values.</param>
         /// <returns>The default values for the specified type, or <c>null</c> if there are no default values for that type.</returns>
-        public IEnumerable<KeyValuePair<String, DataElement>> GetDefaultValues(Type type)
+        public IEnumerable<KeyValuePair<String, XElement>> GetDefaultValues(Type type)
         {
-            Dictionary<String, DataElement> values;
+            Dictionary<String, XElement> values;
             if (!defaultValues.TryGetValue(type, out values))
                 return null;
 
@@ -156,7 +157,7 @@ namespace TwistedLogik.Nucleus.Data
         private String classAliasDefault;
 
         // Loaded defaults.
-        private readonly Dictionary<Type, Dictionary<String, DataElement>> defaultValues =
-            new Dictionary<Type, Dictionary<String, DataElement>>();
+        private readonly Dictionary<Type, Dictionary<String, XElement>> defaultValues =
+            new Dictionary<Type, Dictionary<String, XElement>>();
     }
 }

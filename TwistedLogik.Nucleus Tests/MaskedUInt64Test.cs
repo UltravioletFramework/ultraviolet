@@ -1,5 +1,6 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
+using Newtonsoft.Json;
+using NUnit.Framework;
 using TwistedLogik.Nucleus.Testing;
 
 namespace TwistedLogik.Nucleus.Tests
@@ -37,6 +38,36 @@ namespace TwistedLogik.Nucleus.Tests
 
             var val4 = (MaskedUInt64)UInt64.MaxValue;
             TheResultingValue(val4.GetMask()).ShouldBe(0xFF);
+        }
+
+        [Test]
+        public void MaskedUInt64_SerializesToJson()
+        {
+            var value = (MaskedUInt64)987654;
+            
+            var json = JsonConvert.SerializeObject(value);
+
+            TheResultingString(json).ShouldBe(@"987654");
+        }
+
+        [Test]
+        public void MaskedUInt64_DeserializesFromJson()
+        {
+            const String json = @"123456";
+            
+            var value = JsonConvert.DeserializeObject<MaskedUInt64>(json);
+
+            TheResultingValue(value.Value).ShouldBe(123456);
+        }
+
+        [Test]
+        public void MaskedUInt64_DeserializesFromJson_String()
+        {
+            const String json = @"""18446744073709551615""";
+            
+            var value = JsonConvert.DeserializeObject<MaskedUInt64>(json);
+
+            TheResultingValue(value.Value).ShouldBe(18446744073709551615u);
         }
     }
 }

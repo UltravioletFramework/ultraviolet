@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
@@ -111,6 +112,26 @@ namespace TwistedLogik.Ultraviolet.Tests
             var size2 = Point2F.Parse(size1.ToString());
 
             TheResultingValue(size1 == size2).ShouldBe(true);
+        }
+
+        [Test]
+        public void Point2F_SerializesToJson()
+        {
+            var point = new Point2F(1.2f, 2.3f);
+            var json = JsonConvert.SerializeObject(point);
+
+            TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3}");
+        }
+
+        [Test]
+        public void Point2F_DeserializesFromJson()
+        {
+            const String json = @"{""x"":1.2,""y"":2.3}";
+            
+            var point = JsonConvert.DeserializeObject<Point2F>(json);
+
+            TheResultingValue(point)
+                .ShouldBe(1.2f, 2.3f);
         }
     }
 }

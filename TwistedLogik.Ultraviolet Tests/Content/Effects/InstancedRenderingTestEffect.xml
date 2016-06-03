@@ -2,8 +2,8 @@
 <Effect>
   <Technique Name="Technique0">
     <Pass Name="Pass0">
-      <VertexShader>Effects\InstancedRenderingTestShader.vert</VertexShader>
-      <FragmentShader>Effects\InstancedRenderingTestShader.frag</FragmentShader>
+      <VertexShader>InstancedRenderingTestShader.vert</VertexShader>
+      <FragmentShader>InstancedRenderingTestShader.frag</FragmentShader>
     </Pass>
   </Technique>
 </Effect>

@@ -14,11 +14,17 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Initializes a new instance of the <see cref="UltravioletDataObject"/> class.
         /// </summary>
         /// <param name="key">The object's uniquely identifying key.</param>
-        /// <param name="globalID">The object's globally-unique identifier.</param>
-        public UltravioletDataObject(String key, Guid globalID)
-            : base(key, globalID)
+        /// <param name="id">The object's globally-unique identifier.</param>
+        public UltravioletDataObject(String key, Guid id)
+            : base(key, id)
         {
 
         }
+
+        /// <summary>
+        /// Gets the Ultraviolet context.
+        /// </summary>
+        public UltravioletContext Ultraviolet =>
+            UltravioletContext.DemandCurrent();
     }
 }

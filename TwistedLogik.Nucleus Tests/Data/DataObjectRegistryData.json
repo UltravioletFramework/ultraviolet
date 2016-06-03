@@ -1,0 +1,16 @@
+﻿{
+  "items": [
+    {
+      "key": "TEST_OBJECT_1",
+      "id": "3bd956ab-24cc-49e7-a178-99111c69d24f",
+      "foo": "Hello",
+      "bar": "World"
+    },
+    {
+      "key": "TEST_OBJECT_2",
+      "id": "285c472e-a184-49a6-9639-d5b127ebc74a",
+      "foo": "Goodbye",
+      "bar": "Universe"
+    }
+  ]
+}

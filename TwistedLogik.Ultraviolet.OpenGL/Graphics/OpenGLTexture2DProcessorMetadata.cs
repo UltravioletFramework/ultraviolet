@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
@@ -8,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     internal sealed class OpenGLTexture2DProcessorMetadata
     {
         /// <summary>
-        /// Initializes a new instance of the OpenGLTexture2DProcessorMetadata class.
+        /// Initializes a new instance of the <see cref="OpenGLTexture2DProcessorMetadata"/> class.
         /// </summary>
         public OpenGLTexture2DProcessorMetadata()
         {
@@ -16,8 +17,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="OpenGLTexture2DProcessorMetadata"/> class.
+        /// </summary>
+        /// <param name="premultiplyAlpha">A value indicating whether to premultiply the texture's alpha.</param>
+        [JsonConstructor]
+        public OpenGLTexture2DProcessorMetadata(Boolean premultiplyAlpha)
+        {
+            PremultiplyAlpha = premultiplyAlpha;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to premultiply the texture's alpha.
         /// </summary>
+        [JsonProperty(PropertyName = "premultiplyAlpha")]
         public Boolean PremultiplyAlpha { get; private set; }
     }
 }

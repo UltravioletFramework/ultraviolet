@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
@@ -161,6 +162,26 @@ namespace TwistedLogik.Ultraviolet.Tests
 
             var color3 = Color.Parse("BlanchedAlmond");
             TheResultingValue(color3.PackedValue).ShouldBe(Color.BlanchedAlmond.PackedValue);
+        }
+
+        [Test]
+        public void Color_SerializesToJson()
+        {
+            var color = Color.CornflowerBlue;
+            
+            var json = JsonConvert.SerializeObject(color);
+
+            TheResultingString(json).ShouldBe($"[{color.R},{color.G},{color.B},{color.A}]");
+        }
+
+        [Test]
+        public void Color_DeserializesFromJson()
+        {
+            const String json = "[255,0,255,255]";
+            
+            var color = JsonConvert.DeserializeObject<Color>(json);
+
+            TheResultingValue(color).ShouldHavePackedValue(Color.Magenta.PackedValue);
         }
     }
 }

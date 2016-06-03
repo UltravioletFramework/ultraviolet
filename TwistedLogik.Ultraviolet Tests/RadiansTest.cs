@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
 
@@ -7,22 +8,16 @@ namespace TwistedLogik.Ultraviolet.Tests
     [TestFixture]
     public class RadiansTest : UltravioletTestFramework
     {
-        /// <summary>
-        /// Tests the Radians struct' Parse functionality when given raw values in radians.
-        /// </summary>
         [Test]
-        public void RadiansTest_Parse_RawValue()
+        public void Radians_Parse_RawValue()
         {
             var result = Radians.Parse("3.14159");
 
             TheResultingValue(result).ShouldBe(3.14159f);
         }
 
-        /// <summary>
-        /// Tests the Radians struct' Parse functionality when given values relative to pi.
-        /// </summary>
         [Test]
-        public void RadiansTest_Parse_FromPi()
+        public void Radians_Parse_FromPi()
         {
             var value1 = Radians.Parse("1 pi");
             TheResultingValue(value1).ShouldBe((float)Math.PI);
@@ -43,11 +38,8 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(value3sym).ShouldBe((float)(0.5 * Math.PI));
         }
 
-        /// <summary>
-        /// Tests the Radians struct' Parse functionality when given negative values relative to pi.
-        /// </summary>
         [Test]
-        public void RadiansTest_Parse_FromPi_Negative()
+        public void Radians_Parse_FromPi_Negative()
         {
             var value1 = Radians.Parse("-1 pi");
             TheResultingValue(value1).ShouldBe(-(float)Math.PI);
@@ -68,11 +60,8 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(value3sym).ShouldBe(-(float)(0.5 * Math.PI));
         }
 
-        /// <summary>
-        /// Tests the Radians struct' Parse functionality when given values relative to tau.
-        /// </summary>
         [Test]
-        public void RadiansTest_Parse_FromTau()
+        public void Radians_Parse_FromTau()
         {
             var value1 = Radians.Parse("1 tau");
             TheResultingValue(value1).ShouldBe((float)(2.0 * Math.PI));
@@ -92,12 +81,9 @@ namespace TwistedLogik.Ultraviolet.Tests
             var value3sym = Radians.Parse("1/2τ");
             TheResultingValue(value3sym).ShouldBe((float)Math.PI);
         }
-
-        /// <summary>
-        /// Tests the Radians struct' Parse functionality when given negative values relative to tau.
-        /// </summary>
+        
         [Test]
-        public void RadiansTest_Parse_FromTau_Negative()
+        public void Radians_Parse_FromTau_Negative()
         {
             var value1 = Radians.Parse("-1 tau");
             TheResultingValue(value1).ShouldBe(-(float)(2.0 * Math.PI));
@@ -116,6 +102,26 @@ namespace TwistedLogik.Ultraviolet.Tests
 
             var value3sym = Radians.Parse("-1/2τ");
             TheResultingValue(value3sym).ShouldBe(-(float)Math.PI);
+        }
+        
+        [Test]
+        public void Radians_SerializesToJson()
+        {
+            var radians = 1.234f;
+            var json = JsonConvert.SerializeObject(radians);
+
+            TheResultingString(json).ShouldBe(@"1.234");
+        }
+
+        [Test]
+        public void Radians_DeserializesFromJson()
+        {
+            const String json = @"1.234";
+            
+            var radians = JsonConvert.DeserializeObject<Radians>(json);
+
+            TheResultingValue(radians)
+                .ShouldBe(1.234f);
         }
     }
 }

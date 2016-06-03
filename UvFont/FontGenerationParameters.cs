@@ -24,28 +24,35 @@ namespace UvFont
                 throw new InvalidCommandLineException();
             }
 
-            NoBold   = parser.HasArgument("nobold");
+            OutputJson = parser.HasArgument("json");
+            NoBold = parser.HasArgument("nobold");
             NoItalic = parser.HasArgument("noitalic");
 
-            FontName = args.First();
-            FontSize = parser.GetArgumentOrDefault<Single>("fontsize", 16f);
-            Overhang = parser.GetArgumentOrDefault<Int32>("overhang", 0);
-            PadLeft = parser.GetArgumentOrDefault<Int32>("pad-left", 0);
-            PadRight = parser.GetArgumentOrDefault<Int32>("pad-right", 0);
-            SuperSamplingFactor = parser.GetArgumentOrDefault<Int32>("supersample", 2);
+            Overhang = parser.GetArgumentOrDefault("overhang", 0);
+            PadLeft = parser.GetArgumentOrDefault("pad-left", 0);
+            PadRight = parser.GetArgumentOrDefault("pad-right", 0);
+            SuperSamplingFactor = parser.GetArgumentOrDefault("supersample", 2);
 
             if (SuperSamplingFactor < 1)
                 SuperSamplingFactor = 1;
 
-            SourceText    = parser.GetArgumentOrDefault<String>("sourcetext");
-            SourceFile    = parser.GetArgumentOrDefault<String>("sourcefile");
+            SourceText = parser.GetArgumentOrDefault<String>("sourcetext");
+            SourceFile = parser.GetArgumentOrDefault<String>("sourcefile");
             SourceCulture = parser.GetArgumentOrDefault<String>("sourceculture");
 
             if (SourceText != null && SourceFile != null)
                 throw new InvalidCommandLineException("Both a source text and a source file were specified. Pick one!");
 
-            SubstitutionCharacter = parser.GetArgumentOrDefault<Char>("sub", '?');
+            FontName = args.First();
+            FontSize = parser.GetArgumentOrDefault("fontsize", 16f);
+
+            SubstitutionCharacter = parser.GetArgumentOrDefault("sub", '?');
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the output should be in JSON format.
+        /// </summary>
+        public Boolean OutputJson { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the bold font faces are exluded.
@@ -56,16 +63,6 @@ namespace UvFont
         /// Gets or sets a value indicating whether the italic font faces are excluded.
         /// </summary>
         public Boolean NoItalic { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the font family for which a font definition is being generated.
-        /// </summary>
-        public String FontName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the point size of the font being generated.
-        /// </summary>
-        public Single FontSize { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of additional overhang space to include when generating glyphs.
@@ -101,6 +98,16 @@ namespace UvFont
         /// Gets or sets the culture to use when extracting source text from a localization database.
         /// </summary>
         public String SourceCulture { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the font family for which a font definition is being generated.
+        /// </summary>
+        public String FontName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the point size of the font being generated.
+        /// </summary>
+        public Single FontSize { get; set; }
 
         /// <summary>
         /// Gets or sets the font's substitution character.

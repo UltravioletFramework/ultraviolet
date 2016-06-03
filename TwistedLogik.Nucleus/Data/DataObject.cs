@@ -12,13 +12,13 @@ namespace TwistedLogik.Nucleus.Data
         /// Initializes a new instance of the <see cref="DataObject"/> class.
         /// </summary>
         /// <param name="key">The object's uniquely identifying key.</param>
-        /// <param name="globalID">The object's globally-unique identifier.</param>
-        public DataObject(String key, Guid globalID)
+        /// <param name="id">The object's globally-unique identifier.</param>
+        public DataObject(String key, Guid id)
         {
-            Contract.RequireNotEmpty(key, "key");
+            Contract.RequireNotEmpty(key, nameof(key));
 
-            Key      = key;
-            GlobalID = globalID;
+            Key = key;
+            GlobalID = id;
         }
 
         /// <summary>

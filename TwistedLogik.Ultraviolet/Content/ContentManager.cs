@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.Platform;
@@ -378,16 +380,14 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The full path to the file that represents the specified asset.</returns>
         public String ResolveAssetFilePath(String asset)
         {
-            Contract.RequireNotEmpty(asset, "asset");
+            Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
-
-            String directory;
-
-            var normalizedPath = GetAssetPath(NormalizeAssetPath(asset), null, out directory);
-            if (normalizedPath == null)
+            
+            var metadata = GetAssetMetadata(NormalizeAssetPath(asset), true, false);
+            if (metadata == null)
                 throw new FileNotFoundException(asset);
-
-            return Path.GetFullPath(normalizedPath);
+            
+            return Path.GetFullPath(metadata.AssetFilePath);
         }
 
         /// <summary>
@@ -397,11 +397,16 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The full path to the file that represents the specified asset.</returns>
         public String ResolveAssetFilePath(AssetID asset)
         {
-            Contract.Ensure<ArgumentException>(asset.IsValid, "asset");
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            String directory;
-            return Path.GetFullPath(GetAssetPath(NormalizeAssetPath(AssetID.GetAssetPath(asset)), null, out directory));
+            var assetPath = AssetID.GetAssetPath(asset);
+
+            var metadata = GetAssetMetadata(NormalizeAssetPath(assetPath), true, false);
+            if (metadata == null)
+                throw new FileNotFoundException(assetPath);
+
+            return Path.GetFullPath(metadata.AssetFilePath);
         }
 
         /// <summary>
@@ -562,7 +567,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>A collection containing the specified asset's possible substitution assets.</returns>
         private IEnumerable<String> ListPossibleSubstitutions(String path, ScreenDensityBucket maxDensityBucket)
         {
-            var directory = Path.GetDirectoryName(path);
+            var directory = Path.GetDirectoryName(path) ?? String.Empty;
             var filename  = Path.GetFileNameWithoutExtension(path);
             var extension = Path.GetExtension(path);
 
@@ -662,7 +667,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 var importer = default(IContentImporter);
                 var processor = default(IContentProcessor);
                 var instance = preprocessed ? 
-                    LoadInternalPreprocessed(normalizedAsset, metadata.AssetFilePath, out importer, out processor) : 
+                    LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, out importer, out processor) : 
                     LoadInternalRaw(type, normalizedAsset, metadata, out importer, out processor);
 
                 if (cache)
@@ -749,12 +754,13 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Loads a preprocessed asset.
         /// </summary>
+        /// <param name="type">The type of asset to load.</param>
         /// <param name="asset">The name of the asset being loaded.</param>
         /// <param name="path">The path to the asset file.</param>
         /// <param name="importer">The content importer for the asset.</param>
         /// <param name="processor">The content processor for the asset.</param>
         /// <returns>The asset that was loaded.</returns>
-        private Object LoadInternalPreprocessed(String asset, String path, out IContentImporter importer, out IContentProcessor processor)
+        private Object LoadInternalPreprocessed(Type type, String asset, String path, out IContentImporter importer, out IContentProcessor processor)
         {
             importer = null;
             using (var stream = fileSystemService.OpenRead(path))
@@ -768,8 +774,27 @@ namespace TwistedLogik.Ultraviolet.Content
                     var uvcProcessorTypeName = reader.ReadString();
                     var uvcProcessorType = Type.GetType(uvcProcessorTypeName);
 
-                    processor = (IContentProcessor)Activator.CreateInstance(uvcProcessorType);
+                    for (var currentType = uvcProcessorType; currentType != null; currentType = currentType.BaseType)
+                    {
+                        if (currentType.IsGenericType)
+                        {
+                            var genericTypeDef = currentType.GetGenericTypeDefinition();
+                            if (genericTypeDef == typeof(ContentProcessor<,>))
+                            {
+                                if (!type.IsAssignableFrom(currentType.GetGenericArguments()[1]))
+                                    throw new InvalidOperationException(UltravioletStrings.PreprocessedAssetTypeMismatch.Format(path, type.Name));
 
+                                break;
+                            }
+                        }
+
+                        if (currentType.BaseType == null)
+                            throw new InvalidOperationException(UltravioletStrings.ProcessorInvalidBaseClass.Format(uvcProcessorType.FullName));
+                    }
+
+
+                    processor = (IContentProcessor)Activator.CreateInstance(uvcProcessorType);
+                    
                     var metadata = new AssetMetadata(asset, Path.GetFullPath(path), null, null, true, false);
                     return processor.ImportPreprocessed(this, metadata, reader);
                 }
@@ -820,10 +845,14 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets a value indicating whether the specified file contains asset metadata.
         /// </summary>
         /// <param name="filename">The filename to evaluate.</param>
+        /// <param name="extension">The file extension of the metadata file.</param>
         /// <returns><c>true</c> if the specified file contains asset metadata; otherwise, <c>false</c>.</returns>
-        private Boolean IsMetadataFile(String filename)
+        private Boolean IsMetadataFile(String filename, out String extension)
         {
-            return Path.GetExtension(filename) == MetadataFileExtension;
+            extension = Path.GetExtension(filename);
+            return
+                extension == MetadataFileExtensionXml ||
+                extension == MetadataFileExtensionJson;
         }
 
         /// <summary>
@@ -861,9 +890,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 select assetMatch;
 
             if (filteredMatches.Count() > 1)
-            {
                 throw new FileNotFoundException(UltravioletStrings.FileAmbiguous.Format(asset));
-            }
             
             var singleMatch = filteredMatches.SingleOrDefault();
             if (singleMatch != null)
@@ -884,6 +911,10 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The path of the specified asset.</returns>
         private String GetAssetPath(String asset, String extension, out String directory, AssetResolutionFlags flags = AssetResolutionFlags.Default)
         {
+            var specifiedExtension = Path.GetExtension(asset);
+            if (extension == null && !String.IsNullOrWhiteSpace(specifiedExtension))
+                extension = specifiedExtension;
+
             var path = GetAssetPathFromDirectory(RootDirectory, asset, ref extension, flags);
             directory = RootDirectory;
 
@@ -922,8 +953,9 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="asset">The asset for which to find metadata.</param>
         /// <param name="includePreprocessedFiles">A value indicating whether to include preprocessed files in the search.</param>
+        /// <param name="includeDetailedMetadata">A value indicating whether to include detailed metadata loaded from .uvmeta files.</param>
         /// <returns>The metadata for the specified asset.</returns>
-        private AssetMetadata GetAssetMetadata(String asset, Boolean includePreprocessedFiles)
+        private AssetMetadata GetAssetMetadata(String asset, Boolean includePreprocessedFiles, Boolean includeDetailedMetadata = true)
         {
             // If we're given a full filename with extension, return that.
             var assetDirectory = String.Empty;
@@ -935,7 +967,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 {
                     if (includePreprocessedFiles || !IsPreprocessedFile(asset))
                     {
-                        return CreateMetadataFromFile(asset, assetPath, assetDirectory);
+                        return CreateMetadataFromFile(asset, assetPath, assetDirectory, includeDetailedMetadata);
                     }
                 }
                 throw new FileNotFoundException(UltravioletStrings.FileNotFound.Format(asset));
@@ -946,18 +978,18 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 var assetPathPreprocessed = GetAssetPath(asset, PreprocessedFileExtension, out assetDirectory);
                 if (assetPathPreprocessed != null)
-                    return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory);
+                    return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory, includeDetailedMetadata);
             }
 
             // Find the highest-ranking metadata file, if one exists.
-            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtension, out assetDirectory, AssetResolutionFlags.PerformSubstitution);
+            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtensionXml, out assetDirectory, AssetResolutionFlags.PerformSubstitution);
             if (assetPathMetadata != null)
-                return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory);
+                return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory, includeDetailedMetadata);
 
             // Find the highest-ranking raw file.
             var assetPathRaw = GetAssetPath(asset, null, out assetDirectory, AssetResolutionFlags.PerformSubstitution);
             if (assetPathRaw != null)
-                return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory);
+                return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory, includeDetailedMetadata);
 
             // If we still have no matches, we can't find the file.
             throw new FileNotFoundException(UltravioletStrings.FileNotFound.Format(asset));
@@ -969,33 +1001,56 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="asset">The normalized asset path.</param>
         /// <param name="filename">The filename of the file from which to create asset metadata.</param>
         /// <param name="rootdir">The root directory from which the file is being loaded.</param>
+        /// <param name="includeDetailedMetadata">A value indicating whether to include detailed metadata loaded from .uvmeta files.</param>
         /// <returns>The asset metadata for the specified asset file.</returns>
-        private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir)
+        private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir, Boolean includeDetailedMetadata)
         {
-            if (IsMetadataFile(filename))
+            String extension;
+            if (IsMetadataFile(filename, out extension) && includeDetailedMetadata)
             {
-                var xml = XDocument.Load(filename);
-                var wrappedFilename = xml.Root.ElementValueString("Asset");
-                if (String.IsNullOrWhiteSpace(wrappedFilename) || String.IsNullOrWhiteSpace(Path.GetExtension(wrappedFilename)))
+                var isJson = false;
+
+                var wrappedFilename = default(String);
+                var wrappedAssetPath = default(String);
+
+                var importerMetadata = default(Object);
+                var processorMetadata = default(Object);
+
+                if (extension == MetadataFileExtensionXml)
                 {
-                    throw new InvalidDataException(UltravioletStrings.AssetMetadataHasInvalidFilename);
+                    var xml = XDocument.Load(filename);
+
+                    wrappedFilename = xml.Root.ElementValueString("Asset");
+                    importerMetadata = xml.Root.Element("ImporterMetadata");
+                    processorMetadata = xml.Root.Element("ProcessorMetadata");
                 }
+                else
+                {
+                    using (var sreader = File.OpenText(filename))
+                    using (var jreader = new JsonTextReader(sreader))
+                    {
+                        var json = (JObject)JToken.ReadFrom(jreader);
+                        isJson = true;
+
+                        wrappedFilename = json["asset"].Value<String>();
+                        importerMetadata = (JObject)json["importerMetadata"];
+                        processorMetadata = (JObject)json["processorMetadata"];
+                    }
+                }
+
+                if (String.IsNullOrWhiteSpace(wrappedFilename) || String.IsNullOrWhiteSpace(Path.GetExtension(wrappedFilename)))
+                    throw new InvalidDataException(UltravioletStrings.AssetMetadataHasInvalidFilename);
 
                 var directory = Path.GetDirectoryName(filename);
-                var relative = GetRelativePath(directory, Path.Combine(directory, wrappedFilename));
+                var relative = GetRelativePath(rootDirectory, Path.Combine(directory, wrappedFilename));
 
                 var wrappedAssetDirectory = String.Empty;
-                var wrappedAssetPath = GetAssetPath(relative, Path.GetExtension(relative), out wrappedAssetDirectory);
+                wrappedAssetPath = GetAssetPath(relative, Path.GetExtension(relative), out wrappedAssetDirectory);
 
                 if (!fileSystemService.FileExists(wrappedAssetPath))
-                {
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataFileNotFound);
-                }
 
-                var importerMetadata = xml.Root.Element("ImporterMetadata");
-                var processorMetadata = xml.Root.Element("ProcessorMetadata");
-
-                return new AssetMetadata(asset, wrappedAssetPath, importerMetadata, processorMetadata, true, false);
+                return new AssetMetadata(asset, wrappedAssetPath, importerMetadata, processorMetadata, true, false, isJson);
             }
             return new AssetMetadata(asset, filename, null, null, true, false);
         }
@@ -1150,7 +1205,8 @@ namespace TwistedLogik.Ultraviolet.Content
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
         private const String PreprocessedFileExtension = ".uvc";
-        private const String MetadataFileExtension = ".uvmeta";
+        private const String MetadataFileExtensionXml = ".uvmeta";
+        private const String MetadataFileExtensionJson = ".jsmeta";
 
         // Files waiting to be deleted as part of a batch.
         private readonly List<String> filesPendingDeletion = new List<String>();

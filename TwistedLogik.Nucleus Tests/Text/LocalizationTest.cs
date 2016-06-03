@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using System;
-using System.IO;
+﻿using System;
 using System.Text;
+using Newtonsoft.Json;
+using NUnit.Framework;
 using TwistedLogik.Nucleus.Testing;
 using TwistedLogik.Nucleus.Text;
 
@@ -11,9 +11,9 @@ namespace TwistedLogik.Nucleus.Tests.Text
     public class LocalizationTest : NucleusTestFramework
     {
         [Test]
-        public void Localization_CorrectlyTranslatesEnglish()
+        public void Localization_CorrectlyTranslatesEnglish_FromXml()
         {
-            LoadTestLocalizationDatabase();
+            LoadTestLocalizationDatabaseFromXml();
 
             UsingCulture("en-US", () =>
             {
@@ -29,9 +29,9 @@ namespace TwistedLogik.Nucleus.Tests.Text
         }
 
         [Test]
-        public void Localization_CorrectlyTranslatesFrench()
+        public void Localization_CorrectlyTranslatesFrench_FromXml()
         {
-            LoadTestLocalizationDatabase();
+            LoadTestLocalizationDatabaseFromXml();
 
             UsingCulture("fr-FR", () =>
             {
@@ -66,9 +66,9 @@ namespace TwistedLogik.Nucleus.Tests.Text
         }
 
         [Test]
-        public void Localization_CorrectlySpecifiesEnglishProperties()
+        public void Localization_CorrectlySpecifiesEnglishProperties_FromXml()
         {
-            LoadTestLocalizationDatabase();
+            LoadTestLocalizationDatabaseFromXml();
 
             UsingCulture("en-US", () =>
             {
@@ -81,9 +81,96 @@ namespace TwistedLogik.Nucleus.Tests.Text
         }
 
         [Test]
-        public void Localization_CorrectlySpecifiesFrenchProperties()
+        public void Localization_CorrectlySpecifiesFrenchProperties_FromXml()
         {
-            LoadTestLocalizationDatabase();
+            LoadTestLocalizationDatabaseFromXml();
+
+            UsingCulture("fr-FR", () =>
+            {
+                var frFR_sword_sing = Localization.Get("SWORD").GetPluralVariant(1);
+                TheResultingString(frFR_sword_sing)
+                    .ShouldHaveProperty("singular")
+                    .ShouldHaveProperty("feminine")
+                    .ShouldHaveProperty("vowel")
+                    .ShouldNotHaveProperty("plural")
+                    .ShouldNotHaveProperty("masculine");
+            });
+        }
+
+        [Test]
+        public void Localization_CorrectlyTranslatesEnglish_FromJson()
+        {
+            LoadTestLocalizationDatabaseFromJson();
+
+            UsingCulture("en-US", () =>
+            {
+                var enUS_sword_sing = Localization.Get("SWORD").GetPluralVariant(1);
+                TheResultingString(enUS_sword_sing).ShouldBe("sword");
+
+                var enUS_sword_plur = Localization.Get("SWORD").GetPluralVariant(5);
+                TheResultingString(enUS_sword_plur).ShouldBe("swords");
+
+                var enUS_glowing = Localization.Get("GLOWING");
+                TheResultingString(enUS_glowing).ShouldBe("glowing");
+            });
+        }
+
+        [Test]
+        public void Localization_CorrectlyTranslatesFrench_FromJson()
+        {
+            LoadTestLocalizationDatabaseFromJson();
+
+            UsingCulture("fr-FR", () =>
+            {
+                var frFR_sword_sing = Localization.Get("SWORD").GetPluralVariant(1);
+                TheResultingString(frFR_sword_sing)
+                    .ShouldBe("epée")
+                    .ShouldHaveProperty("singular")
+                    .ShouldHaveProperty("feminine")
+                    .ShouldHaveProperty("vowel")
+                    .ShouldNotHaveProperty("masculine");
+
+                var frFR_sword_plur = Localization.Get("SWORD").GetPluralVariant(5);
+                TheResultingString(frFR_sword_plur)
+                    .ShouldBe("epées");
+
+                var frFR_glowing_sing_masc = Localization.Get("GLOWING").GetVariant("sing_masculine");
+                TheResultingString(frFR_glowing_sing_masc)
+                    .ShouldBe("rougeoyant");
+
+                var frFR_glowing_plur_masc = Localization.Get("GLOWING").GetVariant("plur_masculine");
+                TheResultingString(frFR_glowing_plur_masc)
+                    .ShouldBe("rougeoyants");
+
+                var frFR_glowing_sing_feminine = Localization.Get("GLOWING").GetVariant("sing_feminine");
+                TheResultingString(frFR_glowing_sing_feminine)
+                    .ShouldBe("rougeoyante");
+
+                var frFR_glowing_plur_feminine = Localization.Get("GLOWING").GetVariant("plur_feminine");
+                TheResultingString(frFR_glowing_plur_feminine)
+                    .ShouldBe("rougeoyantes");
+            });
+        }
+
+        [Test]
+        public void Localization_CorrectlySpecifiesEnglishProperties_FromJson()
+        {
+            LoadTestLocalizationDatabaseFromJson();
+
+            UsingCulture("en-US", () =>
+            {
+                var enUS_sword_sing = Localization.Get("SWORD").GetPluralVariant(1);
+                TheResultingString(enUS_sword_sing)
+                    .ShouldBe("sword")
+                    .ShouldHaveProperty("singular")
+                    .ShouldNotHaveProperty("plural");
+            });
+        }
+
+        [Test]
+        public void Localization_CorrectlySpecifiesFrenchProperties_FromJson()
+        {
+            LoadTestLocalizationDatabaseFromJson();
 
             UsingCulture("fr-FR", () =>
             {
@@ -100,7 +187,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
         [Test]
         public void Localization_LocalizedTextFormatting()
         {
-            LoadTestLocalizationDatabase();
+            LoadTestLocalizationDatabaseFromXml();
 
             UsingCulture("fr-FR", () =>
             {
@@ -125,42 +212,49 @@ namespace TwistedLogik.Nucleus.Tests.Text
             });
         }
 
-        private void LoadTestLocalizationDatabase()
+        [Test]
+        public void StringResource_SerializesToJson()
         {
-            using (var stream = new MemoryStream())
-            using (var writer = new StreamWriter(stream))
+            LoadTestLocalizationDatabaseFromXml();
+
+            UsingCulture("fr-FR", () =>
             {
-                writer.Write(LocalizationDatabaseXml);
-                writer.Flush();
-                stream.Seek(0, SeekOrigin.Begin);
-                Localization.Strings.LoadFromStream(stream);
-            }
+                var resource = new StringResource("LOCALIZED_RESOURCE");
+                var json = JsonConvert.SerializeObject(resource);
+
+                TheResultingString(json).ShouldBe($"\"{resource.Key}\"");
+            });
         }
 
-        private const String LocalizationDatabaseXml =
-            @"<?xml version='1.0' encoding='utf-8' ?>
-            <LocalizedStrings>
-              <String Key='SWORD'>
-                <en-US>
-                  <Variant Group='singular'>sword</Variant>
-                  <Variant Group='plural'>swords</Variant>
-                </en-US>
-                <fr-FR>
-                  <Variant Group='singular' Properties='vowel, feminine'>epée</Variant>
-                  <Variant Group='plural' Properties='vowel, feminine'>epées</Variant>
-                </fr-FR>
-              </String>
-              <String Key='GLOWING'>
-                <en-US>
-                  <Variant>glowing</Variant>
-                </en-US>
-                <fr-FR>
-                  <Variant Group='sing_masculine'>rougeoyant</Variant>
-                  <Variant Group='plur_masculine'>rougeoyants</Variant>
-                  <Variant Group='sing_feminine'>rougeoyante</Variant>
-                  <Variant Group='plur_feminine'>rougeoyantes</Variant>
-                </fr-FR>
-              </String>
-            </LocalizedStrings>";
+        [Test]
+        public void StringResource_DeserializesFromJson()
+        {
+            LoadTestLocalizationDatabaseFromXml();
+
+            UsingCulture("fr-FR", () =>
+            {
+                const String json = "\"LOCALIZED_RESOURCE\"";
+
+                var resource = JsonConvert.DeserializeObject<StringResource>(json);
+
+                TheResultingString(resource.Value).ShouldBe("C'est un test");
+            });
+        }
+
+        private void LoadTestLocalizationDatabaseFromXml()
+        {
+            Localization.Strings.Unload();
+
+            using (var manifestResourceStream = GetType().Assembly.GetManifestResourceStream("TwistedLogik.Nucleus.Tests.Resources.LocalizedStrings.xml"))
+                Localization.Strings.LoadFromXmlStream(manifestResourceStream);
+        }
+
+        private void LoadTestLocalizationDatabaseFromJson()
+        {
+            Localization.Strings.Unload();
+
+            using (var manifestResourceStream = GetType().Assembly.GetManifestResourceStream("TwistedLogik.Nucleus.Tests.Resources.LocalizedStrings.json"))
+                Localization.Strings.LoadFromJsonStream(manifestResourceStream);
+        }
     }
 }

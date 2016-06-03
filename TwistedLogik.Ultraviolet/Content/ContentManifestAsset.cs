@@ -18,7 +18,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="element">The XML element that defines the asset.</param>
         internal ContentManifestAsset(ContentManifestGroup group, XElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(group, nameof(group));
+            Contract.Require(element, nameof(element));
 
             var name = element.AttributeValueString("Name");
             if (String.IsNullOrEmpty(name))
@@ -32,6 +33,29 @@ namespace TwistedLogik.Ultraviolet.Content
             this.Name = name;
             this.RelativePath = path;
             this.AbsolutePath = Path.Combine(group.Directory, path);
+            this.Type = group.Type;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentManifestAsset"/> class.
+        /// </summary>
+        /// <param name="group">The <see cref="ContentManifestGroup"/> that owns the asset.</param>
+        /// <param name="desc">The manifest asset description.</param>
+        internal ContentManifestAsset(ContentManifestGroup group, ContentManifestAssetDescription desc)
+        {
+            Contract.Require(group, nameof(group));
+            Contract.Require(desc, nameof(desc));
+
+            if (String.IsNullOrEmpty(desc.Name))
+                throw new InvalidDataException(UltravioletStrings.InvalidContentManifestAssetName);
+
+            if (String.IsNullOrEmpty(desc.Path))
+                throw new InvalidDataException(UltravioletStrings.InvalidContentManifestAssetPath.Format(desc.Name));
+
+            this.ManifestGroup = group;
+            this.Name = desc.Name;
+            this.RelativePath = desc.Path;
+            this.AbsolutePath = Path.Combine(group.Directory, desc.Path);
             this.Type = group.Type;
         }
 

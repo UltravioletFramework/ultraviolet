@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TestDataObjects>
+  <TestDataObject ID="3bd956ab-24cc-49e7-a178-99111c69d24f" Key="TEST_OBJECT_1">
+    <Foo>Hello</Foo>
+    <Bar>World</Bar>
+  </TestDataObject>
+  <TestDataObject ID="285c472e-a184-49a6-9639-d5b127ebc74a" Key="TEST_OBJECT_2">
+    <Foo>Goodbye</Foo>
+    <Bar>Universe</Bar>
+  </TestDataObject>
+</TestDataObjects>

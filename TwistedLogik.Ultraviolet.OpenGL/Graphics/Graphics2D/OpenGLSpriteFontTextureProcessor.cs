@@ -26,7 +26,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             var glyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(input);
 
             writer.Write(glyphs.Count());
-            writer.Write(' ');
             writer.Write('?');
 
             foreach (var glyph in glyphs)
@@ -50,7 +49,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 texture = manager.LoadFromStream<Texture2D>(stream, imgDataExtension);            
 
             var glyphCount = reader.ReadInt32();
-            var glyphFirst = reader.ReadChar();
             var glyphSubst = reader.ReadChar();
 
             var glyphPositions = new Rectangle[glyphCount];
@@ -63,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 glyphPositions[i] = new Rectangle(glyphX, glyphY, glyphWidth, glyphHeight);
             }
 
-            var fontFace = new SpriteFontFace(manager.Ultraviolet, texture, null, glyphPositions, glyphFirst, glyphSubst, true);
+            var fontFace = new SpriteFontFace(manager.Ultraviolet, texture, null, glyphPositions, glyphSubst, true);
             var font = new SpriteFont(manager.Ultraviolet, fontFace);
 
             return font;

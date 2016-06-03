@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -8,6 +9,7 @@ namespace TwistedLogik.Ultraviolet
     /// Represents an angle in radians.
     /// </summary>
     [DebuggerDisplay(@"\{Value:{Value}\}")]
+    [JsonConverter(typeof(UltravioletJsonConverter))]
     public struct Radians : IEquatable<Radians>, IComparable<Radians>, IComparable<Single>, IInterpolatable<Radians>
     {
         /// <summary>

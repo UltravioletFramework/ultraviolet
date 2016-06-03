@@ -94,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     if (String.IsNullOrEmpty(vertPath))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
-                    var vert = manager.Load<OpenGLVertexShader>(vertPath);
+                    vertPath = ResolveDependencyAssetPath(metadata, vertPath);
 
                     var fragPathGL = reader.ReadString();
                     var fragPathES = reader.ReadString();
@@ -103,9 +103,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     if (String.IsNullOrEmpty(fragPath))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
-                    var frag = manager.Load<OpenGLFragmentShader>(fragPath);
+                    fragPath = ResolveDependencyAssetPath(metadata, fragPath);
 
-                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vert, frag, true) };
+                    var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
+                    var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
+
+                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, true) };
                     passes.Add(new OpenGLEffectPass(manager.Ultraviolet, passName, programs));
                 }
 

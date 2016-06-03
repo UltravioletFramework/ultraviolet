@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace TwistedLogik.Nucleus.Data
 {
     /// <summary>
-    /// Represents a field or property which can be populated by the object loader.
+    /// Represents a field or property which can be populated by the object loader's XML serializer.
     /// </summary>
     internal class ObjectLoaderMember
     {
@@ -33,8 +34,8 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The member that was found.</returns>
         public static ObjectLoaderMember Find(Object obj, String name, Boolean ignoreMissingMembers = false)
         {
-            Contract.Require(obj, "obj");
-            Contract.Require(name, "name");
+            Contract.Require(obj, nameof(obj));
+            Contract.Require(name, nameof(name));
 
             var member = obj.GetType().GetMember(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault();
             if (member == null)
@@ -60,7 +61,7 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <param name="value">The value to set.</param>
         /// <param name="element">The data element that defined the value.</param>
-        public void SetValueFromData(Object value, DataElement element)
+        public void SetValueFromData(Object value, XElement element)
         {
             if (IsIndexer)
             {
@@ -107,11 +108,12 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <param name="element">The data element that defined the value.</param>
         /// <returns>The member's current value.</returns>
-        public Object GetValueFromData(DataElement element)
+        public Object GetValueFromData(XElement element)
         {
             if (IsIndexer)
             {
-                Contract.Require(element, "element");
+                Contract.Require(element, nameof(element));
+
                 return GetValue(GetIndexParameters(element));
             }
             else
@@ -180,7 +182,7 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <param name="element">The data element from which to retrieve index parameters.</param>
         /// <returns>The index parameters that were retrieved.</returns>
-        private Object[] GetIndexParameters(DataElement element)
+        private Object[] GetIndexParameters(XElement element)
         {
             var indexParameterValues = new Object[indexParameters.Length];
 
@@ -191,13 +193,13 @@ namespace TwistedLogik.Nucleus.Data
                 var attr = element.Attribute(indexParameter.Name);
                 if (attr == null)
                     throw new InvalidOperationException(NucleusStrings.DataObjectMissingIndexParam.Format(indexParameter.Name));
-                
+
                 indexParameterValues[i] = ObjectResolver.FromString(attr.Value, indexParameter.ParameterType);
             }
 
-            if (element.Attributes().Where(x => !ObjectLoader.IsReservedKeyword(x.Name)).Count() > indexParameterValues.Length)
+            if (element.Attributes().Where(x => !ObjectLoaderXmlSerializer.IsReservedKeyword(x.Name.LocalName)).Count() > indexParameterValues.Length)
                 throw new InvalidOperationException(NucleusStrings.DataObjectHasTooManyIndexParams);
-            
+
             return indexParameterValues;
         }
 

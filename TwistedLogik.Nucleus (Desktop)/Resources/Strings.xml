@@ -315,4 +315,19 @@
       <Variant>The operation is invalid because an attempt was made to overwrite an existing object.</Variant>
     </en-US>
   </String>
+  <String Key="JSON_INCORRECT_ARRAY_LENGTH_FOR_TYPE">
+    <en-US>
+      <Variant>Array does not have the correct number of elements to represent an object of type '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="JSON_CANNOT_WRITE_NON_GLOBAL_STRING_RESOURCE">
+    <en-US>
+      <Variant>Cannot serialize StringResource because it does not reference the global string database.</Variant>
+    </en-US>
+  </String>
+  <String Key="JSON_CANNOT_READ_STRING_VARIANT_COLLECTION">
+    <en-US>
+      <Variant>Cannot read LocalizedStringVariantCollectionDescription. JSON data is not in the correct format.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

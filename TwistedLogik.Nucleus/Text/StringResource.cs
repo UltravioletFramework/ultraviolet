@@ -1,10 +1,12 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Nucleus.Text
 {
     /// <summary>
     /// Represents a localizable string resource.
     /// </summary>
+    [JsonConverter(typeof(NucleusJsonConverter))]
     public sealed class StringResource
     {
         /// <summary>

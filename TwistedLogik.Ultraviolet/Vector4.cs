@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -30,6 +31,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="y">The vector's y component.</param>
         /// <param name="z">The vector's z component.</param>
         /// <param name="w">The vector's w component.</param>
+        [JsonConstructor]
         public Vector4(Single x, Single y, Single z, Single w)
         {
             this.x = x;
@@ -1088,6 +1090,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the vector's x-coordinate.
         /// </summary>
+        [JsonProperty(PropertyName = "x", Required = Required.Always)]
         public Single X
         {
             get { return x; }
@@ -1096,6 +1099,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the vector's y-coordinate.
         /// </summary>
+        [JsonProperty(PropertyName = "y", Required = Required.Always)]
         public Single Y
         {
             get { return y; }
@@ -1104,6 +1108,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the vector's z-coordinate.
         /// </summary>
+        [JsonProperty(PropertyName = "z", Required = Required.Always)]
         public Single Z
         {
             get { return z; }
@@ -1112,6 +1117,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the vector's w-coordinate.
         /// </summary>
+        [JsonProperty(PropertyName = "w", Required = Required.Always)]
         public Single W
         {
             get { return w; }

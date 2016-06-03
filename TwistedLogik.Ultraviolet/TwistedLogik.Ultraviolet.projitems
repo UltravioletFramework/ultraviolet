@@ -38,6 +38,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestAsset.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestAssetDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestGroupDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestRegistry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentOverrideDirectoryCollection.cs" />
@@ -56,13 +59,18 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\TextContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObjectRegistries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObjectRegistry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlContentImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Cursor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CursorCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorCollectionDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CursorCollectionProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorCollectionProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorCollectionProcessorFromXDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Curve.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveContinuity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.cs" />
@@ -114,6 +122,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameGroupBatchDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameBatchDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationFrameCollection.cs" />
@@ -135,11 +145,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontKerningPair.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontStyle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationBatchDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameGroupDefaultsDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameDefaultsDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameGroupDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteHeader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteImporterToJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteImporterToXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteSortMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\sspack\OutOfSpaceException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\sspack\Packing\ArevaloRectanglePacker.cs" />
@@ -194,7 +210,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableCell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableCellCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayout.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutCellDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutRowDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableLayoutProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableRow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextTableRowCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\GraphicsCapabilities.cs" />
@@ -222,8 +242,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAddressMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlas.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasImage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasImageDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasMetadataDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureDataFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureFilter.cs" />
@@ -339,6 +363,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletHostCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletMessageID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletMessages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletNamedCollection.cs" />
@@ -359,9 +384,41 @@
     <Compile Include="$(MSBuildThisFileDirectory)Vector4.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Content\ContentManifest.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Content\ContentMetadata.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CursorCollection.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\SpriteFont.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\Sprite.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\Text\TextTableLayout.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\TextureAtlas.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Vector4.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Vector3.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Vector2.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size3D.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size3F.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size3.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size2D.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size2F.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Size2.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\RectangleD.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\RectangleF.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Rectangle.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Radians.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CircleD.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Point2F.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Point2D.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Point2.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\MutableVector3.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\MutableVector2.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CircleF.json" />
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)uv.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Circle.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Matrix.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Color.json" />
   </ItemGroup>
 </Project>

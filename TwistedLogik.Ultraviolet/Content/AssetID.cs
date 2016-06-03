@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Content
@@ -6,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.Content
     /// <summary>
     /// Represents a value which identifies an asset within one of the application's content manifests.
     /// </summary>
+    [JsonConverter(typeof(UltravioletJsonConverter))]
     public struct AssetID : IEquatable<AssetID>
     {
         /// <summary>

@@ -11,19 +11,20 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Initializes a new instance of the <see cref="SpriteFrame"/> class.
         /// </summary>
         /// <param name="description">The frame description.</param>
-        public SpriteFrame(SpriteFrameDescription description)
+        /// <param name="texture">The texture that contains the frame.</param>
+        internal SpriteFrame(SpriteFrameDescription description, Texture2D texture)
         {
             this.atlas = description.Atlas;
             this.atlasCell = description.AtlasCell;
             this.texture = description.Texture;
-            this.textureResource = description.TextureResource;
-            this.x = description.X;
-            this.y = description.Y;
-            this.width = description.Width;
-            this.height = description.Height;
-            this.originX = description.OriginX;
-            this.originY = description.OriginY;
-            this.duration = description.Duration;
+            this.textureResource = texture;
+            this.x = description.X ?? 0;
+            this.y = description.Y ?? 0;
+            this.width = description.Width ?? 0;
+            this.height = description.Height ?? 0;
+            this.originX = description.Origin?.X ?? 0;
+            this.originY = description.Origin?.Y ?? 0;
+            this.duration = description.Duration ?? 0;
         }
 
         /// <summary>
