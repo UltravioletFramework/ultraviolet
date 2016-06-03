@@ -135,6 +135,9 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource CompositorAssociatedWithWrongWindow  = new StringResource(StringDatabase, "COMPOSITOR_ASSOCIATED_WITH_WRONG_WINDOW");
         public static readonly StringResource ViewAlreadyLoaded                    = new StringResource(StringDatabase, "VIEW_ALREADY_LOADED");
         public static readonly StringResource PreprocessedAssetTypeMismatch        = new StringResource(StringDatabase, "PREPROCESSED_ASSET_TYPE_MISMATCH");
+        public static readonly StringResource LayoutEngineHasTooManyResources      = new StringResource(StringDatabase, "LAYOUT_ENGINE_HAS_TOO_MANY_RESOURCES");
+        public static readonly StringResource LayoutEngineHasTooManyStringSources  = new StringResource(StringDatabase, "LAYOUT_ENGINE_HAS_TOO_MANY_STRING_SOURCES");
+        public static readonly StringResource TextParserHasTooManyCommands         = new StringResource(StringDatabase, "TEXT_ENGINE_HAS_TOO_MANY_COMMANDS");
 #pragma warning restore 1591
     }
 }

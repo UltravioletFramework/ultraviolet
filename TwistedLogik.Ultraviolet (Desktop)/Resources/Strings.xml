@@ -545,4 +545,19 @@
       <Variant>The preprocessed asset being loaded ('{0}') is not of the requested type ('{1}')</Variant>
     </en-US>
   </String>
+  <String Key="LAYOUT_ENGINE_HAS_TOO_MANY_RESOURCES">
+    <en-US>
+      <Variant>The text layout engine has too many registered resources. The maximum number of resources which can be registered is 32,767.</Variant>
+    </en-US>
+  </String>
+  <String Key="LAYOUT_ENGINE_HAS_TOO_MANY_STRING_SOURCES">
+    <en-US>
+      <Variant>The text layout engine has too many registered string sources. The maximum number of string sources which can be registered is 32,767.</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_ENGINE_HAS_TOO_MANY_COMMANDS">
+    <en-US>
+      <Variant>The text parser has too many custom commands. The maximum number of custom commands which can be registered is 128.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

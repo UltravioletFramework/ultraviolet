@@ -1089,7 +1089,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             index = (Int16)resourcesList.Count;
 
             if (index > Int16.MaxValue)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.LayoutEngineHasTooManyResources);
 
             resourcesList.Add(resource);
             resourcesByName[name] = index;
@@ -1109,7 +1109,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             index = (Int16)sources.Count;
 
             if (index > Int16.MaxValue)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(UltravioletStrings.LayoutEngineHasTooManyStringSources);
 
             sources.Add(source);
             sourcesByReference[source] = index;

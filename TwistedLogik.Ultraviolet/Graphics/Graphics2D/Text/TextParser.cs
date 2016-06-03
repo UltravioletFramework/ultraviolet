@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             lock (customCommands)
             {
                 if (customCommands.Count == MaximumCustomCommandCount)
-                    throw new InvalidOperationException("TODO");
+                    throw new InvalidOperationException(UltravioletStrings.TextParserHasTooManyCommands);
 
                 customCommands.Add(name);
 
