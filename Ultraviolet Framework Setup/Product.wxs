@@ -285,7 +285,7 @@
                   <File Id="Android_TwistedLogik.Ultraviolet.UI.Presentation.Uvss" Source="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" />
                 </Component>
                 <Component Id="Android_Newtonsoft.Json">
-                  <File Id="Android_Newtonsoft.Json" Source="..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll" />
+                  <File Id="Android_Newtonsoft.Json" Source="..\packages\Newtonsoft.Json.8.0.3\lib\net40\Newtonsoft.Json.dll" />
                 </Component>
               </Directory>
             </Directory>
