@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="current">The current expression in the chain.</param>
         /// <param name="value">The value parameter expression.</param>
         /// <param name="component">The next component in the chain.</param>
-        /// <returns><c>true</c> if the assignment was added; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the assignment was added; otherwise, <see langword="false"/>.</returns>
         private Boolean AddValueAssignment(Expression current, Expression value, String component)
         {
             var memberExpression = Expression.PropertyOrField(current, component);

@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <typeparam name="T">The type of the property which was bound.</typeparam>
     /// <param name="value1">The first value to compare.</param>
     /// <param name="value2">The second value to compare.</param>
-    /// <returns><c>true</c> if the specified values are equal; otherwise, <c>false</c>.</returns>
+    /// <returns><see langword="true"/> if the specified values are equal; otherwise, <see langword="false"/>.</returns>
     internal delegate Boolean DataBindingComparer<T>(T value1, T value2);
 
     /// <summary>
@@ -72,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="expression">The expression string to evaluate.</param>
         /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
-        /// <returns><c>true</c> if the specified string represents a binding expression; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified string represents a binding expression; otherwise, <see langword="false"/>.</returns>
         public static Boolean IsBindingExpression(String expression, Boolean braces = true)
         {
             if (String.IsNullOrEmpty(expression))
@@ -105,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// the special representation of a null reference (i.e. the {{null}} expression).
         /// </summary>
         /// <param name="expression">The expression to evaluate.</param>
-        /// <returns><c>true</c> if the specified expression represents <c>null</c>; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified expression represents <see langword="null"/>; otherwise, <see langword="false"/>.</returns>
         public static Boolean IsNullBindingExpression(String expression)
         {
             return expression == "{{null}}";
@@ -118,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dataSourceType">The type of the data source to evaluate.</param>
         /// <param name="expression">The binding expression to evaluate.</param>
         /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
-        /// <returns><c>true</c> if the specified expression is a simple reference to a dependency property; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified expression is a simple reference to a dependency property; otherwise, <see langword="false"/>.</returns>
         public static Boolean IsSimpleDependencyProperty(Type dataSourceType, String expression, Boolean braces = true)
         {
             if (!IsBindingExpression(expression, braces))
@@ -132,7 +132,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="expression">The expression string to evaluate.</param>
         /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
-        /// <returns>The part of the binding expression which represents the member navigation path, or <c>null</c> if no such part exists.</returns>
+        /// <returns>The part of the binding expression which represents the member navigation path, or <see langword="null"/> if no such part exists.</returns>
         public static String GetBindingMemberPathPart(String expression, Boolean braces = true)
         {
             Contract.RequireNotEmpty(expression, "expression");
@@ -148,7 +148,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="expression">The expression string to evaluate.</param>
         /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
-        /// <returns>The part of the binding expression which represents the format string, or <c>null</c> if no such part exists.</returns>
+        /// <returns>The part of the binding expression which represents the format string, or <see langword="null"/> if no such part exists.</returns>
         public static String GetBindingFormatStringPart(String expression, Boolean braces = true)
         {
             Contract.RequireNotEmpty(expression, "expression");
@@ -310,7 +310,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dataSourceType">The type of the data source to evaluate.</param>
         /// <param name="expression">The binding expression to evaluate.</param>
         /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
-        /// <returns>The dependency property referenced by the specified expression, or <c>null</c> if the specified
+        /// <returns>The dependency property referenced by the specified expression, or <see langword="null"/> if the specified
         /// expression is not a simple dependency property reference.</returns>
         public static DependencyProperty GetSimpleDependencyProperty(Type dataSourceType, String expression, Boolean braces = true)
         {
@@ -435,7 +435,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="expression">The expression string to evaluate.</param>
         /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
-        /// <returns>The part of the binding expression which represents the member navigation path, or <c>null</c> if no such part exists.</returns>
+        /// <returns>The part of the binding expression which represents the member navigation path, or <see langword="null"/> if no such part exists.</returns>
         private static String GetBindingMemberPathPartInternal(String expression, Boolean braces = true)
         {
             if (!braces)
@@ -452,7 +452,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="expression">The expression string to evaluate.</param>
         /// <param name="braces">A value indicating whether the binding expression includes its enclosing braces.</param>
-        /// <returns>The part of the binding expression which represents the format string, or <c>null</c> if no such part exists.</returns>
+        /// <returns>The part of the binding expression which represents the format string, or <see langword="null"/> if no such part exists.</returns>
         private static String GetBindingFormatStringPartInternal(String expression, Boolean braces = true)
         {
             if (!braces)

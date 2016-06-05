@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="element">The element for which to resize the render target.</param>
         /// <param name="bounds">The visual bounds of the element in absolute screen coordinates.</param>
-        /// <returns><c>true</c> if the element was resized; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the element was resized; otherwise, <see langword="false"/>.</returns>
         public Boolean ResizeForElement(UIElement element, out RectangleD bounds)
         {
             Contract.Require(element, "element");

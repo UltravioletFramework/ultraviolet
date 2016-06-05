@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Removes the specified content manifest from the registry.
         /// </summary>
         /// <param name="name">The name of the content manifest to remove from the registry.</param>
-        /// <returns><c>true</c> if the content manifest was removed from the registry; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the content manifest was removed from the registry; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(String name)
         {
             Contract.RequireNotEmpty(name, "name");
@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets a value indicating whether the content manifest registry contains a manifest with the specified name.
         /// </summary>
         /// <param name="name">The manifest name to evaluate.</param>
-        /// <returns><c>true</c> if the content manifest registry contains a manifest with the specified name; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the content manifest registry contains a manifest with the specified name; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(String name)
         {
             Contract.RequireNotEmpty(name, "name");
@@ -103,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets a value indicating whether the content manifest registry contains the specified manifest.
         /// </summary>
         /// <param name="manifest">The manifest to evaluate.</param>
-        /// <returns><c>true</c> if the content manifest registry contains the specified manifest; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the content manifest registry contains the specified manifest; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(ContentManifest manifest)
         {
             Contract.Require(manifest, "manifest");

@@ -61,14 +61,14 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets a value indicating whether the specified button was clicked this frame.
         /// </summary>
         /// <param name="button">The <see cref="MouseButton"/> value that represents the button to evaluate.</param>
-        /// <returns><c>true</c> if the button was clicked this frame; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the button was clicked this frame; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsButtonClicked(MouseButton button);
 
         /// <summary>
         /// Gets a value indicating whether the specified button was double clicked this frame.
         /// </summary>
         /// <param name="button">The <see cref="MouseButton"/> value that represents the button to evaluate.</param>
-        /// <returns><c>true</c> if the button was double clicked this frame; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the button was double clicked this frame; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsButtonDoubleClicked(MouseButton button);
 
         /// <summary>

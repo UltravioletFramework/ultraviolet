@@ -328,7 +328,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Attempts to associate this geometry stream with the specified OpenGL program.
         /// </summary>
         /// <param name="program">The OpenGL name of the program with which to associate this stream.</param>
-        /// <returns><c>true</c> if the stream's cached program was changed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the stream's cached program was changed; otherwise, <see langword="false"/>.</returns>
         private Boolean SwitchCachedProgram(UInt32 program)
         {
             if (IsUsingVertexArrayObject && this.program == program)

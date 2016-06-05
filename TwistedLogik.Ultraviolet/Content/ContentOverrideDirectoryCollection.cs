@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Removes a directory from the collection.
         /// </summary>
         /// <param name="directory">The directory to remove from the collection.</param>
-        /// <returns><c>true</c> if the directory was removed from the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the directory was removed from the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(String directory)
         {
             return RemoveInternal(directory);
@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets a value indicating whether the collection contains the specified directory.
         /// </summary>
         /// <param name="directory">The directory to evaluate.</param>
-        /// <returns><c>true</c> if the collection contains the specified directory; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the collection contains the specified directory; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(String directory)
         {
             return ContainsInternal(directory);

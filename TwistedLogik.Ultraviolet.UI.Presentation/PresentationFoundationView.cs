@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiPanel">The <see cref="UIPanel"/> that is creating the view.</param>
         /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view's containing panel.</param>
-        /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <c>null</c> to skip view model creation.</param>
+        /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <see langword="null"/> to skip view model creation.</param>
         /// <returns>The <see cref="PresentationFoundationView"/> that was loaded from the specified XML document.</returns>
         public static PresentationFoundationView Load(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory)
         {
@@ -221,7 +221,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Performs the specified action on all objects within the view's visual tree
         /// which match the specified UVSS selector.
         /// </summary>
-        /// <param name="root">The root element at which to begin evaluation, or <c>null</c> to begin at the layout root.</param>
+        /// <param name="root">The root element at which to begin evaluation, or <see langword="null"/> to begin at the layout root.</param>
         /// <param name="selector">The UVSS selector that specifies which objects should be targeted by the action.</param>
         /// <param name="state">A state value which is passed to the specified action.</param>
         /// <param name="action">The action to perform on the selected objects.</param>
@@ -282,7 +282,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Grants input focus within this view to the specified element.
         /// </summary>
         /// <param name="element">The element to which to grant input focus.</param>
-        /// <returns><c>true</c> if the element was successfully focused; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the element was successfully focused; otherwise, <see langword="false"/>.</returns>
         public Boolean FocusElement(IInputElement element)
         {
             Contract.Require(element, "element");
@@ -412,7 +412,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="element">The element to which to assign mouse capture.</param>
         /// <param name="mode">The mouse capture mode to apply.</param>
-        /// <returns><c>true</c> if the mouse was successfully captured; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the mouse was successfully captured; otherwise, <see langword="false"/>.</returns>
         public Boolean CaptureMouse(IInputElement element, CaptureMode mode)
         {
             Contract.Require(element, "element");
@@ -459,7 +459,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the element within the view which has the specified identifying name.
         /// </summary>
         /// <param name="name">The identifying name of the element to retrieve.</param>
-        /// <returns>The element with the specified identifying name, or <c>null</c> if no such element exists.</returns>
+        /// <returns>The element with the specified identifying name, or <see langword="null"/> if no such element exists.</returns>
         public UIElement GetElementByName(String name)
         {
             Contract.RequireNotEmpty(name, "id");
@@ -472,7 +472,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The x-coordinate in screen space to evaluate.</param>
         /// <param name="y">The y-coordinate in screen space to evaluate.</param>
-        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <see langword="null"/>.</returns>
         public Visual HitTestScreenPixel(Int32 x, Int32 y)
         {
             var dipsX = Display.PixelsToDips(x - Area.X);
@@ -487,7 +487,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Performs a hit test against the view at the specified point in screen space.
         /// </summary>
         /// <param name="point">The point in screen space to evaluate.</param>
-        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <see langword="null"/>.</returns>
         public Visual HitTestScreenPixel(Point2 point)
         {
             var dipsPoint = Display.PixelsToDips(point - Area.Location);
@@ -502,7 +502,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The x-coordinate in view-relative screen space to evaluate.</param>
         /// <param name="y">The y-coordinate in view-relative screen space to evaluate.</param>
-        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <see langword="null"/>.</returns>
         public Visual HitTestPixel(Int32 x, Int32 y)
         {
             var dipsX = Display.PixelsToDips(x);
@@ -517,7 +517,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Performs a hit test against the view at the specified point in view-relative screen space.
         /// </summary>
         /// <param name="point">The point in view-relative screen space to evaluate.</param>
-        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <see langword="null"/>.</returns>
         public Visual HitTestPixel(Point2 point)
         {
             var dipsPoint = Display.PixelsToDips(point - Area.Location);
@@ -532,7 +532,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="x">The x-coordinate in device-independent view space to evaluate.</param>
         /// <param name="y">The y-coordinate in device-independent view space to evaluate.</param>
-        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <see langword="null"/>.</returns>
         public Visual HitTest(Double x, Double y)
         {
             var popup = default(Popup);
@@ -544,7 +544,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Performs a hit test against the view at the specified point in device-independent view space.
         /// </summary>
         /// <param name="point">The point in device-independent view space to evaluate.</param>
-        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <c>null</c>.</returns>
+        /// <returns>The topmost <see cref="Visual"/> in the view which contains the specified point, or <see langword="null"/>.</returns>
         public Visual HitTest(Point2D point)
         {
             var popup = default(Popup);
@@ -707,7 +707,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Searches the view's associated style sheet for a storyboard with the specified name.
         /// </summary>
         /// <param name="name">The name of the storyboard to retrieve.</param>
-        /// <returns>The <see cref="Storyboard"/> with the specified name, or <c>null</c> if the specified storyboard does not exist.</returns>
+        /// <returns>The <see cref="Storyboard"/> with the specified name, or <see langword="null"/> if the specified storyboard does not exist.</returns>
         public Storyboard FindStoryboard(String name)
         {
             Contract.RequireNotEmpty(name, "name");
@@ -1049,7 +1049,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="point">The point in device-independent screen space to test.</param>
         /// <param name="popup">The popup that contains the resulting visual.</param>
         /// <returns>The topmost <see cref="Visual"/> that contains the specified point, 
-        /// or <c>null</c> if none of the items in the layout contain the point.</returns>
+        /// or <see langword="null"/> if none of the items in the layout contain the point.</returns>
         private Visual HitTestInternal(Point2D point, out Popup popup)
         {
             var popupMatch = popupQueue.HitTest(point, out popup);
@@ -1790,7 +1790,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the specified element is valid for receiving input.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is valid for input; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element is valid for input; otherwise, <see langword="false"/>.</returns>
         private Boolean IsElementValidForInput(IInputElement element)
         {
             var uiElement = element as UIElement;
@@ -1805,7 +1805,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// or is within the capture subtree.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element has captured the mouse; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element has captured the mouse; otherwise, <see langword="false"/>.</returns>
         private Boolean IsMouseCapturedByElement(IInputElement element)
         {
             var uiElement = element as UIElement;
@@ -1833,7 +1833,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Displays the specified element's tooltip.
         /// </summary>
         /// <param name="uiToolTipElement">The element for which to display a tooltip.</param>
-        /// <returns><c>true</c> if the element's tooltip was displayed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the element's tooltip was displayed; otherwise, <see langword="false"/>.</returns>
         private Boolean ShowToolTipForElement(UIElement uiToolTipElement)
         {
             if (Ultraviolet.Platform == UltravioletPlatform.Android)
@@ -1870,7 +1870,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// the nearest ancestor which is focusable.
         /// </summary>
         /// <param name="start">The element at which to begin searching.</param>
-        /// <returns>The nearest focusable element, or <c>null</c> if no focusable element was found.</returns>
+        /// <returns>The nearest focusable element, or <see langword="null"/> if no focusable element was found.</returns>
         private IInputElement GetNearestFocusableElement(IInputElement start)
         {
             var current = start as DependencyObject;

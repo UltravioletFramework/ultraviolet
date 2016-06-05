@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the specified type is a primitive numeric type.
         /// </summary>
         /// <param name="type">The type to evaluate.</param>
-        /// <returns><c>true</c> if the specified type is a primitive numeric type; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified type is a primitive numeric type; otherwise, <see langword="false"/>.</returns>
         public static Boolean IsNumericType(this Type type)
         {
             return numericTypes.Contains(type);
@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="typeFrom">The type from which to convert.</param>
         /// <param name="typeTo">The type to which to convert.</param>
-        /// <returns><c>true</c> if the specified conversion is defined; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified conversion is defined; otherwise, <see langword="false"/>.</returns>
         public static Boolean IsConvertibleTo(this Type typeFrom, Type typeTo)
         {
             if (typeTo.IsAssignableFrom(typeFrom))
@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="typeFrom">The type from which to convert.</param>
         /// <param name="typeTo">The type to which to convert.</param>
-        /// <returns><c>true</c> if the specified conversions are defined; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified conversions are defined; otherwise, <see langword="false"/>.</returns>
         public static Boolean IsMutuallyConvertibleTo(this Type typeFrom, Type typeTo)
         {
             return typeFrom.IsConvertibleTo(typeTo) && typeTo.IsConvertibleTo(typeFrom);

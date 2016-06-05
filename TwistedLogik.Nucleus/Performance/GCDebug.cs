@@ -79,7 +79,7 @@ namespace TwistedLogik.Nucleus.Performance
         /// <summary>
         /// Gets a value indicating whether allocation logging is currently active.
         /// </summary>
-        /// <returns><c>true</c> if allocation logging is currently active; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if allocation logging is currently active; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetAllocationLoggingActive()
         {
             if (!isProfilerAttached)
@@ -104,7 +104,7 @@ namespace TwistedLogik.Nucleus.Performance
         /// <summary>
         /// Gets a value indicating whether call logging is currently active.
         /// </summary>
-        /// <returns><c>true</c> if call logging is currently active; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if call logging is currently active; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetCallLoggingActive()
         {
             if (!isProfilerAttached)

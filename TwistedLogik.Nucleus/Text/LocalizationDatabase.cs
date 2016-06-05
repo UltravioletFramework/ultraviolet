@@ -16,7 +16,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the database contains entries for the specified culture.
         /// </summary>
         /// <param name="culture">The culture to evaluate.</param>
-        /// <returns><c>true</c> if the database contains entries for the specified culture; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the database contains entries for the specified culture; otherwise, <see langword="false"/>.</returns>
         public Boolean IsCultureLoaded(String culture)
         {
             Contract.RequireNotEmpty(culture, "culture");
@@ -234,7 +234,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the database contains a string with the specified key for the current culture.
         /// </summary>
         /// <param name="key">The localization key for which to search.</param>
-        /// <returns><c>true</c> if the database contains a string with the specified key for the current culture; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the database contains a string with the specified key for the current culture; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(String key)
         {
             Contract.RequireNotEmpty(key, "key");
@@ -248,7 +248,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="culture">The culture to evaluate.</param>
         /// <param name="key">The localization key for which to search.</param>
-        /// <returns><c>true</c> if the database contains a string with the specified key for the specified culture; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the database contains a string with the specified key for the specified culture; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(String culture, String key)
         {
             Contract.RequireNotEmpty(key, "key");

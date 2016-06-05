@@ -167,13 +167,13 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Sets the device's scissor rectangle.
         /// </summary>
-        /// <param name="rect">The scissor rectangle, or <c>null</c> to disable the scissor test.</param>
+        /// <param name="rect">The scissor rectangle, or <see langword="null"/> to disable the scissor test.</param>
         void SetScissorRectangle(Rectangle? rect);
 
         /// <summary>
         /// Gets the device's scissor rectangle.
         /// </summary>
-        /// <returns>The device's scissor rectangle, or <c>null</c> if the scissor test is disabled.</returns>
+        /// <returns>The device's scissor rectangle, or <see langword="null"/> if the scissor test is disabled.</returns>
         Rectangle? GetScissorRectangle();
 
         /// <summary>

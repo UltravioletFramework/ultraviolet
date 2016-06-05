@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the diagnostics renderer should draw the visual bounds of the specified element.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the diagnostics renderer should draw the visual bounds of the specified element; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the diagnostics renderer should draw the visual bounds of the specified element; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetDrawVisualBounds(DependencyObject element)
         {
             Contract.Require(element, "element");

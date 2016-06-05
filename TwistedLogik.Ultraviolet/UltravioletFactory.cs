@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet
         /// Attempts to retrieve the default factory method of the specified delegate type.
         /// </summary>
         /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
-        /// <returns>The default factory method of the specified type, or <c>null</c> if no such factory method is registered..</returns>
+        /// <returns>The default factory method of the specified type, or <see langword="null"/> if no such factory method is registered..</returns>
         public T TryGetFactoryMethod<T>() where T : class
         {
             var value = default(Delegate);
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <typeparam name="T">The delegate type of the factory method to retrieve.</typeparam>
         /// <param name="name">The name of the factory method to retrieve.</param>
-        /// <returns>The specified named factory method, or <c>null</c> if no such factory method is registered.</returns>
+        /// <returns>The specified named factory method, or <see langword="null"/> if no such factory method is registered.</returns>
         public T TryGetFactoryMethod<T>(String name) where T : class
         {
             Contract.RequireNotEmpty(name, "name");
@@ -155,7 +155,7 @@ namespace TwistedLogik.Ultraviolet
         /// Unregisters the default factory method of the specified delegate type.
         /// </summary>
         /// <typeparam name="T">The delegate type of the factory method to remove.</typeparam>
-        /// <returns><c>true</c> if the factory method was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the factory method was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean RemoveFactoryMethod<T>() where T : class
         {
             return defaultFactoryMethods.Remove(typeof(T));
@@ -166,7 +166,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <typeparam name="T">The delegate type of the factory method to remove.</typeparam>
         /// <param name="name">The name of the factory method to unregister.</param>
-        /// <returns><c>true</c> if the factory method was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the factory method was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean RemoveFactoryMethod<T>(String name) where T : class
         {
             Contract.RequireNotEmpty(name, "name");

@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// Gets a value indicating whether cursors are supported on the current platform.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <returns><c>true</c> if cursors are supported; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if cursors are supported; otherwise, <see langword="false"/>.</returns>
         public static Boolean AreCursorsSupported(UltravioletContext uv)
         {
             Contract.Require(uv, "uv");

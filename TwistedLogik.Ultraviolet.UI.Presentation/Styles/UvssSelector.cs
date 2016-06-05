@@ -131,7 +131,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets a value indicating whether this selector matches the view's resource manager.
         /// </summary>
-        /// <returns><c>true</c> if this selector matches the view's resource manager; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this selector matches the view's resource manager; otherwise, <see langword="false"/>.</returns>
         public Boolean IsViewResourceSelector
         {
             get
@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="element">The UI element to evaluate.</param>
         /// <param name="root">The topmost root element to consider when tracing ancestors.</param>
-        /// <returns><c>true</c> if the selector matches the specified UI element; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the selector matches the specified UI element; otherwise, <see langword="false"/>.</returns>
         public Boolean MatchesElement(UIElement element, UIElement root = null)
         {
             if (parts.Count == 0)
@@ -180,7 +180,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="root">The root element being animated.</param>
         /// <param name="element">The UI element to evaluate.</param>
         /// <param name="part">The selector part to evaluate.</param>
-        /// <returns><c>true</c> if the element matches the selector part; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the element matches the selector part; otherwise, <see langword="false"/>.</returns>
         private static Boolean ElementMatchesSelectorPart(UIElement root, UIElement element, UvssSelectorPart part)
         {
             if (element.Parent == null && String.Equals(part.Type, "document", StringComparison.OrdinalIgnoreCase))
@@ -246,7 +246,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="part">The selector part to evaluate.</param>
         /// <param name="root">The topmost root element to consider when tracing ancestors.</param>
         /// <param name="qualifier">A qualifier which specifies the relationship between the element and its ancestor.</param>
-        /// <returns><c>true</c> if the element matches the selector part; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the element matches the selector part; otherwise, <see langword="false"/>.</returns>
         private static Boolean AncestorMatchesSelectorPart(ref UIElement element, UvssSelectorPart part, UIElement root, UvssSelectorPartQualifier qualifier)
         {
             if (qualifier == UvssSelectorPartQualifier.TemplatedChild)

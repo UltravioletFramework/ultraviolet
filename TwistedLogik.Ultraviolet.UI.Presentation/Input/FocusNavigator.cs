@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="alt">A value indicating whether the Alt modifier is active.</param>
         /// <param name="shift">A value indicating whether the Shift modifier is active.</param>
         /// <param name="repeat">A value indicating whether this is a repeated key press.</param>
-        /// <returns><c>true</c> if navigation was performed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if navigation was performed; otherwise, <see langword="false"/>.</returns>
         public static Boolean PerformNavigation(PresentationFoundationView view, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
         {
             Contract.Require(view, "view");
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="view">The view for which to perform navigation.</param>
         /// <param name="device">The game pad device that raised the button press event.</param>
         /// <param name="button">The button that was pressed.</param>
-        /// <returns><c>true</c> if navigation was performed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if navigation was performed; otherwise, <see langword="false"/>.</returns>
         public static Boolean PerformNavigation(PresentationFoundationView view, GamePadDevice device, GamePadButton button)
         {
             Contract.Require(view, "view");
@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="view">The view for which to perform navigation.</param>
         /// <param name="device">The game pad device that raised the button press event.</param>
         /// <param name="axis">The axis that was pressed.</param>
-        /// <returns><c>true</c> if navigation was performed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if navigation was performed; otherwise, <see langword="false"/>.</returns>
         public static Boolean PerformNavigation(PresentationFoundationView view, GamePadDevice device, GamePadAxis axis)
         {
             Contract.Require(view, "view");
@@ -139,7 +139,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="element">The element at which to begin navigation.</param>
         /// <param name="direction">The direction in which to navigate focus.</param>
         /// <param name="ctrl">A value indicating whether the Ctrl modifier is active.</param>
-        /// <returns><c>true</c> if navigation was performed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if navigation was performed; otherwise, <see langword="false"/>.</returns>
         public static Boolean PerformNavigation(PresentationFoundationView view, UIElement element, FocusNavigationDirection direction, Boolean ctrl)
         {
             if (!PrepareNavigation(view, ref element, ref direction))
@@ -195,7 +195,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="view">The view for which to perform navigation.</param>
         /// <param name="element">The element at which to begin navigation.</param>
         /// <param name="direction">The direction in which to navigate focus.</param>
-        /// <returns><c>true</c> if navigation can be performed; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if navigation can be performed; otherwise, false.</returns>
         private static Boolean PrepareNavigation(PresentationFoundationView view, ref UIElement element, ref FocusNavigationDirection direction)
         {
             if (element != null)
@@ -212,7 +212,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Gets a value indicating whether the specified <see cref="FocusNavigationDirection"/> value represents tab navigation.
         /// </summary>
         /// <param name="direction">The <see cref="FocusNavigationDirection"/> value to evaluate.</param>
-        /// <returns><c>true</c> if <paramref name="direction"/> represents tab navigation; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="direction"/> represents tab navigation; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsTabNavigation(FocusNavigationDirection direction)
         {
             return
@@ -226,7 +226,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Gets a value indicating whether the specified <see cref="FocusNavigationDirection"/> value represents directional navigation.
         /// </summary>
         /// <param name="direction">The <see cref="FocusNavigationDirection"/> value to evaluate.</param>
-        /// <returns><c>true</c> if <paramref name="direction"/> represents directional navigation; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="direction"/> represents directional navigation; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsDirectionalNavigation(FocusNavigationDirection direction)
         {
             return
@@ -241,7 +241,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// the element must be a tab stop, and it must also be focusable, enabled, and visible.
         /// </summary>
         /// <param name="navElement">The object to evaluate.</param>
-        /// <returns><c>true</c> if the specified object is a navigation stop; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified object is a navigation stop; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsNavigationStop(DependencyObject navElement)
         {
             if (!KeyboardNavigation.GetIsTabStop(navElement))
@@ -263,7 +263,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="navElement">The object to evaluate.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
-        /// <returns><c>true</c> if the specified object is a navigation container; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified object is a navigation container; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsNavigationContainer(DependencyObject navElement, DependencyProperty navProp)
         {
             return navElement.GetValue<KeyboardNavigationMode>(navProp) != KeyboardNavigationMode.Continue;
@@ -275,7 +275,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElementBounds">The bounds of the element from which navigation is being moved.</param>
         /// <param name="navCandidate">The candidate to which navigation might be moved.</param>
         /// <param name="direction">The direction in which focus is moving.</param>
-        /// <returns><c>true</c> if the candidate is in the specified direction; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the candidate is in the specified direction; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsInDirection(RectangleD navElementBounds, DependencyObject navCandidate, FocusNavigationDirection direction)
         {
             var uiCandidate = navCandidate as UIElement;
@@ -306,7 +306,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElementBounds">The bounds of the element from which focus is being moved.</param>
         /// <param name="navCurrentBest">The current best match for directional navigation.</param>
         /// <param name="navCandidate">The candidate match for directional navigation.</param>
-        /// <returns><c>true</c> if the specified candidate is a better match than the current best match; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified candidate is a better match than the current best match; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsBetterDirectionalMatch(RectangleD navElementBounds, DependencyObject navCurrentBest, DependencyObject navCandidate)
         {
             var uiCurrentBest = navCurrentBest as UIElement;
@@ -336,7 +336,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElementBounds">The bounding rectangle to move outside of the container.</param>
         /// <param name="navContainer">The container out of which to move the bounding rectangle.</param>
         /// <param name="direction">The direction in which navigation is moving.</param>
-        /// <returns><c>true</c> if the bounds were moved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the bounds were moved; otherwise, <see langword="false"/>.</returns>
         private static Boolean MoveBoundsOutsideOfContainer(ref RectangleD navElementBounds, DependencyObject navContainer, FocusNavigationDirection direction)
         {
             var uiContainer = navContainer as UIElement;
@@ -393,7 +393,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElement">The element which represents the current position in the visual tree.</param>
         /// <param name="navContainer">The navigation container that contains <paramref name="navElement"/>.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
-        /// <returns>The next element in the visual tree after <paramref name="navElement"/>, or <c>null</c>.</returns>
+        /// <returns>The next element in the visual tree after <paramref name="navElement"/>, or <see langword="null"/>.</returns>
         private static DependencyObject TraverseVisualTreeNext(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp)
         {
             if (!IsNavigationContainer(navElement, navProp) || navElement == navContainer)
@@ -430,7 +430,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="navContainer">The navigation container to search for a navigation stop.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
-        /// <returns>The first navigation stop within the specified navigation container, or <c>null</c>.</returns>
+        /// <returns>The first navigation stop within the specified navigation container, or <see langword="null"/>.</returns>
         private static DependencyObject GetFirstNavigationStop(DependencyObject navContainer, DependencyProperty navProp)
         {
             var min = Int32.MaxValue;
@@ -470,7 +470,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
         /// <param name="local">A value indicating whether the search is restricted only to the visual subtree of <paramref name="navContainer"/>.</param>
-        /// <returns>The next element in the tab order after <paramref name="navElement"/>, or <c>null</c>.</returns>
+        /// <returns>The next element in the tab order after <paramref name="navElement"/>, or <see langword="null"/>.</returns>
         private static DependencyObject FindNextNavigationStop(PresentationFoundationView view, DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, Boolean local)
         {
             if (navElement == null)
@@ -543,7 +543,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
         /// <param name="navMode">The currently active navigation mode.</param>
-        /// <returns>The next element in the tab order after <paramref name="navElement"/>, or <c>null</c>.</returns>
+        /// <returns>The next element in the tab order after <paramref name="navElement"/>, or <see langword="null"/>.</returns>
         private static DependencyObject FindNextVisualElementWithinContainer(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, KeyboardNavigationMode navMode)
         {
             if (navMode == KeyboardNavigationMode.None)
@@ -567,7 +567,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navContainer">The navigation container that contains <paramref name="navElement"/>.</param>
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
-        /// <returns>The next element in the tab order after <paramref name="navElement"/> which has the same tab index, or <c>null</c>.</returns>
+        /// <returns>The next element in the tab order after <paramref name="navElement"/> which has the same tab index, or <see langword="null"/>.</returns>
         private static DependencyObject FindNextVisualElementWithSameTabIndex(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp)
         {
             var targetTabIndex = KeyboardNavigation.GetTabIndex(navElement);
@@ -597,7 +597,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
         /// <param name="navMode">The currently active navigation mode.</param>
-        /// <returns>The next element in the tab order after <paramref name="navElement"/> which has a higher tab index, or <c>null</c>.</returns>
+        /// <returns>The next element in the tab order after <paramref name="navElement"/> which has a higher tab index, or <see langword="null"/>.</returns>
         private static DependencyObject FindNextVisualElementWithHigherTabIndex(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, KeyboardNavigationMode navMode)
         {
             var targetTabIndex = KeyboardNavigation.GetTabIndex(navElement);
@@ -642,7 +642,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navContainer">The navigation container that contains <paramref name="navElement"/>.</param>
         /// <param name="navElement">The element which represents the current position in the visual tree.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
-        /// <returns>The previous element in the visual tree before <paramref name="navElement"/>, or <c>null</c>.</returns>
+        /// <returns>The previous element in the visual tree before <paramref name="navElement"/>, or <see langword="null"/>.</returns>
         private static DependencyObject TraverseVisualTreePrev(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp)
         {
             if (navContainer == navElement)
@@ -662,7 +662,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="navContainer">The navigation container to search for a navigation stop.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
-        /// <returns>The last navigation stop within the specified navigation container, or <c>null</c>.</returns>
+        /// <returns>The last navigation stop within the specified navigation container, or <see langword="null"/>.</returns>
         private static DependencyObject GetLastNavigationStop(DependencyObject navContainer, DependencyProperty navProp)
         {
             var max = Int32.MinValue;
@@ -699,7 +699,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
         /// <param name="local">A value indicating whether the search is restricted only to the visual subtree of <paramref name="navContainer"/>.</param>
-        /// <returns>The previous element in the tab order before <paramref name="navElement"/>, or <c>null</c>.</returns>
+        /// <returns>The previous element in the tab order before <paramref name="navElement"/>, or <see langword="null"/>.</returns>
         private static DependencyObject FindPrevNavigationStop(PresentationFoundationView view, DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, Boolean local)
         {
             var navMode = navContainer.GetValue<KeyboardNavigationMode>(navProp);
@@ -793,7 +793,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
         /// <param name="navMode">The currently active navigation mode.</param>
-        /// <returns>The previous element in the tab order before <paramref name="navElement"/>, or <c>null</c>.</returns>
+        /// <returns>The previous element in the tab order before <paramref name="navElement"/>, or <see langword="null"/>.</returns>
         private static DependencyObject FindPrevVisualElementWithinContainer(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, KeyboardNavigationMode navMode)
         {
             if (navMode == KeyboardNavigationMode.None)
@@ -817,7 +817,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navContainer">The navigation container that contains <paramref name="navElement"/>.</param>
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
-        /// <returns>The previous element in the tab order before <paramref name="navElement"/> which has the same tab index, or <c>null</c>.</returns>
+        /// <returns>The previous element in the tab order before <paramref name="navElement"/> which has the same tab index, or <see langword="null"/>.</returns>
         private static DependencyObject FindPrevVisualElementWithSameTabIndex(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp)
         {
             var targetTabIndex = KeyboardNavigation.GetTabIndex(navElement);
@@ -850,7 +850,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
         /// <param name="navMode">The currently active navigation mode.</param>
-        /// <returns>The previous element in the tab order before <paramref name="navElement"/> which has a lower tab index, or <c>null</c>.</returns>
+        /// <returns>The previous element in the tab order before <paramref name="navElement"/> which has a lower tab index, or <see langword="null"/>.</returns>
         private static DependencyObject FindPrevVisualElementWithLowerTabIndex(DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, KeyboardNavigationMode navMode)
         {
             var targetTabIndex = KeyboardNavigation.GetTabIndex(navElement);
@@ -944,7 +944,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navElement">The element at which to begin the search.</param>
         /// <param name="navProp">The navigation property to evaluate.</param>
         /// <param name="direction">The direction in which to navigate.</param>
-        /// <returns>The next navigation stop in the specified direction, or <c>null</c>.</returns>
+        /// <returns>The next navigation stop in the specified direction, or <see langword="null"/>.</returns>
         private static DependencyObject FindNavigationStopInDirection(PresentationFoundationView view, DependencyObject navContainer, DependencyObject navElement, DependencyProperty navProp, FocusNavigationDirection direction)
         {
             if (navContainer != null && navContainer.GetValue<KeyboardNavigationMode>(navProp) == KeyboardNavigationMode.Once)
@@ -969,7 +969,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="navProp">The navigation property to evaluate.</param>
         /// <param name="direction">The direction in which to navigate.</param>
         /// <param name="local">A value indicating whether the search is restricted only to the visual subtree of <paramref name="navContainer"/>.</param>
-        /// <returns>The next navigation stop in the specified direction, or <c>null</c>.</returns>
+        /// <returns>The next navigation stop in the specified direction, or <see langword="null"/>.</returns>
         private static DependencyObject FindNavigationStopInDirection(PresentationFoundationView view, DependencyObject navContainer, RectangleD navElementBounds, DependencyProperty navProp, FocusNavigationDirection direction, Boolean local = false)
         {
             var bestMatch = default(DependencyObject);

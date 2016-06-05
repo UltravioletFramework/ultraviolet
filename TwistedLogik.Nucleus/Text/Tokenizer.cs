@@ -93,7 +93,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="str">The string that contains the character to evaluate.</param>
         /// <param name="index">The index of the character to evaluate.</param>
         /// <param name="delimiter">The character that delimits the start of the token.</param>
-        /// <returns><c>true</c> if the specified character is the beginning of a token; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is the beginning of a token; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsStartOfToken(String str, Int32 index, out Char? delimiter)
         {
             delimiter = null;
@@ -123,7 +123,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="str">The string that contains the character to evaluate.</param>
         /// <param name="index">The index of the character to evaluate.</param>
         /// <param name="delimiter">The character that must delimit the end of the token.</param>
-        /// <returns><c>true</c> if the specified character is the end of a token; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is the end of a token; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsEndOfToken(String str, Int32 index, Char? delimiter)
         {
             if (index + 1 >= str.Length)
@@ -142,7 +142,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="str">The string that contains the character to evaluate.</param>
         /// <param name="index">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is a token delimiter; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is a token delimiter; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsDelimiter(String str, Int32 index)
         {
             char c = str[index];

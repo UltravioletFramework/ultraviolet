@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="navigationProperty">The styling name of the navigation property.</param>
         /// <param name="navigationPropertyType">The styling name of the navigation property's type.</param>
-        /// <param name="navigationPropertyIndex">The navigation index, if any; otherwise, <c>null</c>.</param>
+        /// <param name="navigationPropertyIndex">The navigation index, if any; otherwise, <see langword="null"/>.</param>
         public UvssNavigationExpression(String navigationProperty, String navigationPropertyType, Int32? navigationPropertyIndex = null)
         {
             this.navigationProperty = navigationProperty;

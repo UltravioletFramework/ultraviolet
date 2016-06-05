@@ -203,7 +203,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is the start of a newline token; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is the start of a newline token; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsStartOfNewline(StringSource input, Int32 ix)
         {
             return input[ix] == '\n' || input[ix] == '\r';
@@ -214,7 +214,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is the start of a non-breaking white space token; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is the start of a non-breaking white space token; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsStartOfNonBreakingSpace(StringSource input, Int32 ix)
         {
             return input[ix] == '\u00A0';
@@ -225,7 +225,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is the end of a non-breaking white space token; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is the end of a non-breaking white space token; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsEndOfNonBreakingSpace(StringSource input, Int32 ix)
         {
             return input[ix] != '\u00A0';
@@ -236,7 +236,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is the start of a breaking white space token; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is the start of a breaking white space token; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsStartOfBreakingSpace(StringSource input, Int32 ix)
         {
             return input[ix] != '\u00A0' && Char.IsWhiteSpace(input[ix]) && !IsStartOfNewline(input, ix);
@@ -247,7 +247,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is the end of a breaking white space token; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is the end of a breaking white space token; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsEndOfBreakingSpace(StringSource input, Int32 ix)
         {
             return input[ix] == '\u00A0' || !Char.IsWhiteSpace(input[ix]) || IsStartOfNewline(input, ix);
@@ -259,7 +259,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        /// <returns><c>true</c> if the specified character is an escaped pipe; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is an escaped pipe; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsEscapedPipe(StringSource input, Int32 ix, TextParserOptions options)
         {
             if ((options & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes)
@@ -273,7 +273,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is the start of a command token; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is the start of a command token; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsStartOfCommand(StringSource input, Int32 ix)
         {
             return input[ix] == '|';
@@ -284,7 +284,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is the end of a command token; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is the end of a command token; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsEndOfCommand(StringSource input, Int32 ix)
         {
             return input[ix] == '|';
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is the start of a word token; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is the start of a word token; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsStartOfWord(StringSource input, Int32 ix)
         {
             return !Char.IsWhiteSpace(input[ix]) && !IsStartOfCommand(input, ix);
@@ -306,7 +306,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><c>true</c> if the specified character is the end of a word token; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified character is the end of a word token; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsEndOfWord(StringSource input, Int32 ix)
         {
             return Char.IsWhiteSpace(input[ix]) || IsStartOfCommand(input, ix);

@@ -29,14 +29,14 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets a value indicating whether the specified button is currently down.
         /// </summary>
         /// <param name="button">The button to evaluate.</param>
-        /// <returns><c>true</c> if the button is down; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the button is down; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsButtonDown(T button);
 
         /// <summary>
         /// Gets a value indicating whether the specified button is currently up.
         /// </summary>
         /// <param name="button">The button to evaluate.</param>
-        /// <returns><c>true</c> if the button is up; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the button is up; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsButtonUp(T button);
 
         /// <summary>
@@ -44,14 +44,14 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <param name="button">The button to evaluate.</param>
         /// <param name="ignoreRepeats">A value indicating whether to ignore repeated button press events on devices which support them.</param>
-        /// <returns><c>true</c> if the button is pressed; otherwise, <c>false</c>.</returns>        
+        /// <returns><see langword="true"/> if the button is pressed; otherwise, <see langword="false"/>.</returns>        
         public abstract Boolean IsButtonPressed(T button, Boolean ignoreRepeats = true);
 
         /// <summary>
         /// Gets a value indicating whether the specified button is currently released.
         /// </summary>
         /// <param name="button">The button to evaluate.</param>
-        /// <returns><c>true</c> if the button is released; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the button is released; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsButtonReleased(T button);
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace TwistedLogik.NucleusTests.Collections
         /// Raises the <see cref="PropertyChanged"/> event.
         /// </summary>
         /// <param name="propertyName">The name of the property that was changed. If all of the object's properties have
-        /// changed, this value can be either <see cref="String.Empty"/> or <c>null</c>.</param>
+        /// changed, this value can be either <see cref="String.Empty"/> or <see langword="null"/>.</param>
         protected virtual void OnPropertyChanged(String propertyName) =>
             PropertyChanged?.Invoke(this, propertyName);
 

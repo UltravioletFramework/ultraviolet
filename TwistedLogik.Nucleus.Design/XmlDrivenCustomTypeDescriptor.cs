@@ -34,7 +34,7 @@ namespace TwistedLogik.Nucleus.Design
         /// <summary>
         /// Returns a filtered collection of property descriptors for the object represented by this type descriptor.
         /// </summary>
-        /// <param name="attributes">An array of attributes to use as a filter. This can be <c>null</c>.</param>
+        /// <param name="attributes">An array of attributes to use as a filter. This can be <see langword="null"/>.</param>
         /// <returns>A <see cref="PropertyDescriptorCollection"/> containing the property descriptions for the object represented by this type descriptor.</returns>
         public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
         {
@@ -57,7 +57,7 @@ namespace TwistedLogik.Nucleus.Design
         /// </summary>
         /// <param name="descriptor">The descriptor to evaluate.</param>
         /// <param name="attributes">The attribute filter.</param>
-        /// <returns><c>true</c> if the member is excluded; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the member is excluded; otherwise, <see langword="false"/>.</returns>
         private static Boolean ExcludedByFilter(MemberDescriptor descriptor, Attribute[] attributes)
         {
             if (attributes == null)

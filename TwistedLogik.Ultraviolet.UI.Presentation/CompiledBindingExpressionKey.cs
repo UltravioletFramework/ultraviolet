@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="k1">The key on the left side of the operator.</param>
         /// <param name="k2">The key on the right side of the operator.</param>
-        /// <returns><c>true</c> if the specified keys are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified keys are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(CompiledBindingExpressionKey k1, CompiledBindingExpressionKey k2)
         {
             return k1.Equals(k2);
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="k1">The key on the left side of the operator.</param>
         /// <param name="k2">The key on the right side of the operator.</param>
-        /// <returns><c>true</c> if the specified keys are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified keys are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(CompiledBindingExpressionKey k1, CompiledBindingExpressionKey k2)
         {
             return !k1.Equals(k2);

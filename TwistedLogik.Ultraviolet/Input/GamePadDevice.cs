@@ -93,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// in accordance with the <see cref="AxisDownThreshold"/> property.
         /// </summary>
         /// <param name="axis">The <see cref="GamePadAxis"/> to evaluate.</param>
-        /// <returns><c>true</c> if the axis is down; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the axis is down; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsAxisDown(GamePadAxis axis);
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// in accordance with the <see cref="AxisDownThreshold"/> property.
         /// </summary>
         /// <param name="axis">The <see cref="GamePadAxis"/> to evaluate.</param>
-        /// <returns><c>true</c> if the axis is up; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the axis is up; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsAxisUp(GamePadAxis axis);
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// in accordance with the <see cref="AxisDownThreshold"/> property.
         /// </summary>
         /// <param name="axis">The <see cref="GamePadAxis"/> to evaluate.</param>
-        /// <returns><c>true</c> if the axis is pressed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the axis is pressed; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsAxisPressed(GamePadAxis axis);
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// in accordance with the <see cref="AxisDownThreshold"/> property.
         /// </summary>
         /// <param name="axis">The <see cref="GamePadAxis"/> to evaluate.</param>
-        /// <returns><c>true</c> if the axis is released; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the axis is released; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsAxisReleased(GamePadAxis axis);
 
         /// <summary>

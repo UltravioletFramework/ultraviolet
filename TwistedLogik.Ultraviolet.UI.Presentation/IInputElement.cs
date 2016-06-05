@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Sets focus on this element.
         /// </summary>
-        /// <returns><c>true</c> if focus was successfully moved to this element; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if focus was successfully moved to this element; otherwise, <see langword="false"/>.</returns>
         Boolean Focus();
 
         /// <summary>

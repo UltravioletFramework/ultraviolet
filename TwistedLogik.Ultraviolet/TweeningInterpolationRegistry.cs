@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet
         /// Unregisters any custom interpolation function for the specified type.
         /// </summary>
         /// <typeparam name="T">The type of value for which to unregister a custom interpolator.</typeparam>
-        /// <returns><c>true</c> if the specified type had a function that was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified type had a function that was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean Unregister<T>()
         {
             return interpolators.Remove(typeof(T));
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets a value indicating whether the specified type has a custom interpolation function.
         /// </summary>
         /// <typeparam name="T">The type of value for which to determine whether a custom interpolator exists.</typeparam>
-        /// <returns><c>true</c> if the specified type has a custom interpolation function; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified type has a custom interpolation function; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains<T>()
         {
             return interpolators.ContainsKey(typeof(T));
@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <typeparam name="T">The type of value for which to retrieve an interpolator.</typeparam>
         /// <param name="interpolator">The interpolator for the specified type, if one exists.</param>
-        /// <returns><c>true</c> if an interpolator was registered for the specified type; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if an interpolator was registered for the specified type; otherwise, <see langword="false"/>.</returns>
         public Boolean TryGet<T>(out Interpolator<T> interpolator)
         {
             Object interpolatorObj;

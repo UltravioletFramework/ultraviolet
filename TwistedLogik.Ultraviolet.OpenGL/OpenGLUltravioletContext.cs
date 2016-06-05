@@ -306,7 +306,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <summary>
         /// Pumps the SDL2 event queue.
         /// </summary>
-        /// <returns><c>true</c> if the context should continue processing the frame; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the context should continue processing the frame; otherwise, <see langword="false"/>.</returns>
         private Boolean PumpEvents()
         {
             SDL_Event @event;

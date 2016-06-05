@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Gets a value indicating whether this rule set is applied to the view's resource manager.
         /// </summary>
-        /// <returns><c>true</c> if this rule set is applied to the view's resource manager; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this rule set is applied to the view's resource manager; otherwise, <see langword="false"/>.</returns>
         public Boolean IsViewResourceRule()
         {
             if (selectors.Count != 1)
@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="element">The UI element to evaluate.</param>
         /// <param name="selector">The selector that matches the element, if any.</param>
-        /// <returns><c>true</c> if the rule set matches the specified UI element; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the rule set matches the specified UI element; otherwise, <see langword="false"/>.</returns>
         public Boolean MatchesElement(UIElement element, out UvssSelector selector)
         {
             selector = null;

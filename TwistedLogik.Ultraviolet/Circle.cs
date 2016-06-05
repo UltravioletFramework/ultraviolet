@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="c1">The first <see cref="Circle"/> to compare.</param>
         /// <param name="c2">The second <see cref="Circle"/> to compare.</param>
-        /// <returns><c>true</c> if the specified circles are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified circles are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(Circle c1, Circle c2)
         {
             return c1.Equals(c2);
@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="c1">The first <see cref="Circle"/> to compare.</param>
         /// <param name="c2">The second <see cref="Circle"/> to compare.</param>
-        /// <returns><c>true</c> if the specified circles are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified circles are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(Circle c1, Circle c2)
         {
             return !c1.Equals(c2);
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a circle to convert.</param>
         /// <param name="circle">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, out Circle circle)
         {
             return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out circle);
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="circle">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Circle circle)
         {
             circle = default(Circle);
@@ -179,7 +179,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Circle))
@@ -191,7 +191,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(Circle other)
         {
             return x == other.x && y == other.y && radius == other.radius;

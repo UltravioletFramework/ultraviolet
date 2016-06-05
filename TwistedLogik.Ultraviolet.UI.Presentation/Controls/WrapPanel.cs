@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="e1">The first element to compare.</param>
         /// <param name="e2">The second element to compare.</param>
-        /// <returns><c>true</c> if the specified elements are in the same layout row; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified elements are in the same layout row; otherwise, <see langword="false"/>.</returns>
         private static Boolean AreInSameRow(UIElement e1, UIElement e2)
         {
             return e1.MostRecentFinalRect.Y == e2.MostRecentFinalRect.Y;
@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="e1">The first element to compare.</param>
         /// <param name="e2">The second element to compare.</param>
-        /// <returns><c>true</c> if the specified elements are in the same layout column; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified elements are in the same layout column; otherwise, <see langword="false"/>.</returns>
         private static Boolean AreInSameColumn(UIElement e1, UIElement e2)
         {
             return e1.MostRecentFinalRect.X == e2.MostRecentFinalRect.X;
@@ -233,7 +233,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="rowCount">The number of elements in the layout row.</param>
         /// <param name="rowWidth">The width of the layout row in device independent pixels.</param>
         /// <param name="rowHeight">The height of the layout row in device independent pixels.</param>
-        /// <returns><c>true</c> if the specified index is the beginning of a valid layout row; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified index is the beginning of a valid layout row; otherwise, <see langword="false"/>.</returns>
         private Boolean CalculateRowProperties(Size2D availableSize, Int32 index, out Int32 rowCount, out Double rowWidth, out Double rowHeight)
         {
             rowCount  = 0;
@@ -274,7 +274,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="columnCount">The number of elements in the layout column.</param>
         /// <param name="columnWidth">The width of the layout column in pixels.</param>
         /// <param name="columnHeight">The height of the layout column in pixels.</param>
-        /// <returns><c>true</c> if the specified index is the beginning of a valid layout column; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified index is the beginning of a valid layout column; otherwise, <see langword="false"/>.</returns>
         private Boolean CalculateColumnProperties(Size2D availableSize, Int32 index, out Int32 columnCount, out Double columnWidth, out Double columnHeight)
         {
             columnCount  = 0;

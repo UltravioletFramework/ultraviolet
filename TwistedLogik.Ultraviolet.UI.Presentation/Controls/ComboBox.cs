@@ -943,7 +943,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets a value indicating whether this combo box contains the specified object as a descendant.
         /// </summary>
         /// <param name="dobj">The object to evaluate.</param>
-        /// <returns><c>true</c> if the specified object is a descendant of this combo box; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified object is a descendant of this combo box; otherwise, <see langword="false"/>.</returns>
         private Boolean ContainsDescendant(DependencyObject dobj)
         {
             var current = dobj;

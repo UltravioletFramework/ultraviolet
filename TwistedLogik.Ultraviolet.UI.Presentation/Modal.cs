@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="modal">The modal dialog box to open.</param>
         /// <param name="duration">The amount of time over which to transition the modal dialog 
-        /// box's state, or <c>null</c> to use the default transition time.</param>
+        /// box's state, or <see langword="null"/> to use the default transition time.</param>
         public static void ShowDialog(Modal modal, TimeSpan? duration = null)
         {
             ShowDialog(null, modal, duration);
@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="window">The window in which to open the modal dialog box.</param>
         /// <param name="modal">The modal dialog box to open.</param>
         /// <param name="duration">The amount of time over which to transition the modal dialog 
-        /// box's state, or <c>null</c> to use the default transition time.</param>
+        /// box's state, or <see langword="null"/> to use the default transition time.</param>
         public static void ShowDialog(IUltravioletWindow window, Modal modal, TimeSpan? duration = null)
         {
             Contract.Require(modal, "modal");
@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="modal">The modal dialog box to open.</param>
         /// <param name="duration">The amount of time over which to transition the modal dialog 
-        /// box's state, or <c>null</c> to use the default transition time.</param>
+        /// box's state, or <see langword="null"/> to use the default transition time.</param>
         /// <returns>A <see cref="ModalTask{T}"/> that completes when the modal dialog box is closed.</returns>
         public static ModalTask<Boolean?> ShowDialogAsync(Modal modal, TimeSpan? duration = null)
         {
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="window">The window in which to open the modal dialog box.</param>
         /// <param name="modal">The modal dialog box to open.</param>
         /// <param name="duration">The amount of time over which to transition the modal dialog 
-        /// box's state, or <c>null</c> to use the default transition time.</param>
+        /// box's state, or <see langword="null"/> to use the default transition time.</param>
         /// <returns>A <see cref="ModalTask{T}"/> that completes when the modal dialog box is closed.</returns>
         public static ModalTask<Boolean?> ShowDialogAsync(IUltravioletWindow window, Modal modal, TimeSpan? duration = null)
         {
@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Closes the modal.
         /// </summary>
         /// <param name="duration">The amount of time over which to transition the modal's state,
-        /// or <c>null</c> to use the default time.</param>
+        /// or <see langword="null"/> to use the default time.</param>
         public void Close(TimeSpan? duration = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dialogResult">The dialog's result value.</param>
         /// <param name="duration">The amount of time over which to transition the modal's state,
-        /// or <c>null</c> to use the default time.</param>
+        /// or <see langword="null"/> to use the default time.</param>
         public void Close(Boolean? dialogResult, TimeSpan? duration = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -174,7 +174,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
-        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
+        /// <param name="disposing"><see langword="true"/> if the object is being disposed; <see langword="false"/> if the object is being finalized.</param>
         protected virtual void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -207,7 +207,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Shows the modal.
         /// </summary>
         /// <param name="window">The window in which to show the modal.</param>
-        /// <param name="duration">The amount of time over which to transition the screen's state, or <c>null</c> to use the default transition time.</param>
+        /// <param name="duration">The amount of time over which to transition the screen's state, or <see langword="null"/> to use the default transition time.</param>
         private void Show(IUltravioletWindow window, TimeSpan? duration = null)
         {
             var screen = Screen;
@@ -228,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// the modal is closed.
         /// </summary>
         /// <param name="window">The window in which to show the modal.</param>
-        /// <param name="duration">The amount of time over which to transition the screen's state, or <c>null</c> to use the default transition time.</param>
+        /// <param name="duration">The amount of time over which to transition the screen's state, or <see langword="null"/> to use the default transition time.</param>
         /// <returns>A <see cref="Task"/> which completes when the modal is closed.</returns>
         private ModalTask<Boolean?> ShowAsync(IUltravioletWindow window, TimeSpan? duration = null)
         {
@@ -258,7 +258,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="window">The window in which to show the modal.</param>
         /// <param name="screen">The screen on which the modal will be opened.</param>
-        /// <param name="duration">The amount of time over which to transition the screen's state, or <c>null</c> to use the default transition time.</param>
+        /// <param name="duration">The amount of time over which to transition the screen's state, or <see langword="null"/> to use the default transition time.</param>
         /// <returns>A <see cref="Task"/> which completes when the modal is closed.</returns>
         private void Open(IUltravioletWindow window, UIScreen screen, TimeSpan? duration = null)
         {

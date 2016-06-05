@@ -43,7 +43,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Resolves an object key to a global identifier.
         /// </summary>
         /// <param name="key">The object key to resolve.</param>
-        /// <returns>The global identifier associated with the specified object key, or <c>null</c> if no such key exists.</returns>
+        /// <returns>The global identifier associated with the specified object key, or <see langword="null"/> if no such key exists.</returns>
         Guid? ResolveObjectKey(String key);
         
         /// <summary>

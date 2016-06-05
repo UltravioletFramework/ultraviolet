@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="container">The item container to evaluate.</param>
         /// <returns>The <see cref="ItemsControl"/> which is logically the owner 
-        /// of <paramref name="container"/>, or <c>null</c> if there is no such control.</returns>
+        /// of <paramref name="container"/>, or <see langword="null"/> if there is no such control.</returns>
         public static ItemsControl ItemsControlFromItemContainer(DependencyObject container)
         {
             var uiElement = container as UIElement;
@@ -219,7 +219,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets a value indicating whether the specified element is an item container for this control.
         /// </summary>
         /// <param name="obj">The object to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is an item container for this control; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element is an item container for this control; otherwise, <see langword="false"/>.</returns>
         protected abstract Boolean IsItemContainer(Object obj);
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="obj">The object to evaluate.</param>
         /// <param name="item">The item to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is the container for the specified item; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element is the container for the specified item; otherwise, <see langword="false"/>.</returns>
         protected abstract Boolean IsItemContainerForItem(Object obj, Object item);
 
         /// <inheritdoc/>

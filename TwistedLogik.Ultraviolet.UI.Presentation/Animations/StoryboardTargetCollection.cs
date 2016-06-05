@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Adds a storyboard target to the collection.
         /// </summary>
         /// <param name="target">The storyboard target to add to the collection.</param>
-        /// <returns><c>true</c> if the target was added to the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the target was added to the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Add(StoryboardTarget target)
         {
             Contract.Require(target, "target");
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Removes a storyboard target from the collection.
         /// </summary>
         /// <param name="target">The storyboard target to remove from the collection.</param>
-        /// <returns><c>true</c> if the target was removed from the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the target was removed from the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(StoryboardTarget target)
         {
             Contract.Require(target, "Target");
@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Gets a value indicating whether the collection contains the specified storyboard target.
         /// </summary>
         /// <param name="target">The storyboard target to evaluate.</param>
-        /// <returns><c>true</c> if the collection contains the specified target; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the collection contains the specified target; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(StoryboardTarget target)
         {
             Contract.Require(target, "target");

@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="uiPanel">The <see cref="UIPanel"/> that is creating the view.</param>
     /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view's containing panel.</param>
-    /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <c>null</c> to skip view model creation.</param>
+    /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <see langword="null"/> to skip view model creation.</param>
     /// <returns>The instance of <see cref="UIView"/> that was created.</returns>
     public delegate UIView UIViewFactory(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory);
 
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="uiPanel">The <see cref="UIPanel"/> which is creating the view.</param>
         /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view's containing panel.</param>
-        /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <c>null</c> to skip view model creation.</param>
+        /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <see langword="null"/> to skip view model creation.</param>
         /// <returns>The instance of <see cref="UIView"/> that was created.</returns>
         public static UIView Create(UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory)
         {
@@ -329,7 +329,7 @@ namespace TwistedLogik.Ultraviolet.UI
         
         /// <summary>
         /// Gets or sets a value indicating whether input is enabled for this view.
-        /// If <c>false</c>, then the view will not receive any input events.
+        /// If <see langword="false"/>, then the view will not receive any input events.
         /// </summary>
         public Boolean IsInputEnabled
         {
@@ -349,7 +349,7 @@ namespace TwistedLogik.Ultraviolet.UI
 
         /// <summary>
         /// Gets or sets a value indicating whether input is allowed for this view.
-        /// If <c>false</c>, then the view will not receive any input events.
+        /// If <see langword="false"/>, then the view will not receive any input events.
         /// </summary>
         /// <remarks>While <see cref="IsInputEnabled"/> may be changed at any time, the value of <see cref="IsInputAllowed"/> is managed
         /// by Ultraviolet itself and corresponds to the <see cref="UIPanel.IsReadyForInput"/> property on the panel that owns the view.</remarks>

@@ -149,7 +149,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// child which contains the specified point.
         /// </summary>
         /// <param name="point">The point in element space to evaluate.</param>
-        /// <returns>The topmost <see cref="Visual"/> child which contains the specified point, or <c>null</c>.</returns>
+        /// <returns>The topmost <see cref="Visual"/> child which contains the specified point, or <see langword="null"/>.</returns>
         protected virtual Visual HitTestChildren(Point2D point)
         {
             for (int i = children.Count - 1; i >= 0; i--)

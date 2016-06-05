@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// Gets the window's fullscreen display mode.
         /// </summary>
         /// <returns>The <see cref="DisplayMode"/> used when the window is in fullscreen mode, 
-        /// or <c>null</c> if the window is using the desktop display mode.</returns>
+        /// or <see langword="null"/> if the window is using the desktop display mode.</returns>
         DisplayMode GetFullscreenDisplayMode();
 
         /// <summary>

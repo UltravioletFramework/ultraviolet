@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Adds a keyframe to the collection.
         /// </summary>
         /// <param name="keyframe">The keyframe to add to the collection.</param>
-        /// <returns><c>true</c> if the keyframe was added to the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the keyframe was added to the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Add(AnimationKeyframe<T> keyframe)
         {
             Contract.Require(keyframe, "keyframe");
@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Removes the specified keyframe from the collection.
         /// </summary>
         /// <param name="keyframe">The keyframe to remove from the collection.</param>
-        /// <returns><c>true</c> if the keyframe was removed from the collection; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if the keyframe was removed from the collection; otherwise, false.</returns>
         public Boolean Remove(AnimationKeyframe<T> keyframe)
         {
             Contract.Require(keyframe, "keyframe");
@@ -73,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Gets a value indicating whether the collection contains the specified keyframe.
         /// </summary>
         /// <param name="keyframe">The keyframe to evaluate.</param>
-        /// <returns><c>true</c> if the collection contains the specified keyframe; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the collection contains the specified keyframe; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(AnimationKeyframe<T> keyframe)
         {
             Contract.Require(keyframe, "keyframe");

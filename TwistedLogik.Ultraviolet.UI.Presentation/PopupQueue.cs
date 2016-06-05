@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the queue is currently drawing the specified popup.
         /// </summary>
         /// <param name="popup">The popup to evaluate.</param>
-        /// <returns><c>true</c> if the queue is currently drawing the specified popup; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the queue is currently drawing the specified popup; otherwise, <see langword="false"/>.</returns>
         public Boolean IsDrawingPopup(Popup popup)
         {
             return position != null && position.Value == popup;
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="point">A point in device-independent screen space to test against the contents of the queue.</param>
         /// <param name="popup">The popup that contains the resulting visual.</param>
         /// <returns>The topmost <see cref="Visual"/> that contains the specified point, 
-        /// or <c>null</c> if none of the items in the queue contain the point.</returns>
+        /// or <see langword="null"/> if none of the items in the queue contain the point.</returns>
         public Visual HitTest(Point2D point, out Popup popup)
         {
             if (queue.Count == 0)

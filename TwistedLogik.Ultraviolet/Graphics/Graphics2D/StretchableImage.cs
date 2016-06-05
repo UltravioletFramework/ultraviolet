@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="parameter">The parameter string to parse.</param>
         /// <param name="tileCenter">A value indicating whether the image is set to tile its center piece.</param>
         /// <param name="tileEdges">A value indicating whether the image is set to tile its edges.</param>
-        /// <returns><c>true</c> if the parameter was parsed successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the parameter was parsed successfully; otherwise, <see langword="false"/>.</returns>
         protected static Boolean ParseTilingParameter(String parameter, ref Boolean tileCenter, ref Boolean tileEdges)
         {
             if (String.Equals(parameter, "tile-center", StringComparison.OrdinalIgnoreCase))
@@ -94,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="texture">The segment's texture.</param>
         /// <param name="position">The segment's position in screen coordinates.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the segment will be drawn.</param>
-        /// <param name="sourceRectangle">The segment's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The segment's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The segment's tint color.</param>
         /// <param name="rotation">The segment's rotation in radians.</param>
         /// <param name="origin">The segment's origin point.</param>

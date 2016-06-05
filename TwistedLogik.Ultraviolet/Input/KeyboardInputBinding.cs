@@ -228,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Gets a value indicating whether the binding's modifier states are satisfied.
         /// </summary>
-        /// <returns><c>true</c> if the binding's modifier states are satisfied; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the binding's modifier states are satisfied; otherwise, <see langword="false"/>.</returns>
         private Boolean AreModifiersSatisfied()
         {
             return

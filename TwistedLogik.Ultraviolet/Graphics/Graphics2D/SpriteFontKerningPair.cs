@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="p1">The first <see cref="SpriteFontKerningPair"/>.</param>
         /// <param name="p2">The second <see cref="SpriteFontKerningPair"/>.</param>
-        /// <returns><c>true</c> if the kerning pairs are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the kerning pairs are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(SpriteFontKerningPair p1, SpriteFontKerningPair p2)
         {
             return p1.Equals(p2);
@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="p1">The first <see cref="SpriteFontKerningPair"/>.</param>
         /// <param name="p2">The second <see cref="SpriteFontKerningPair"/>.</param>
-        /// <returns><c>true</c> if the kerning pairs are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the kerning pairs are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(SpriteFontKerningPair p1, SpriteFontKerningPair p2)
         {
             return !p1.Equals(p2);
@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Gets a value indicating whether this object is equal to another object.
         /// </summary>
         /// <param name="obj">The object to compare to this object.</param>
-        /// <returns><c>true</c> if the objects are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the objects are equal; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object obj)
         {
             if (!(obj is SpriteFontKerningPair))
@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Gets a value indicating whether this kerning pair is equal to another kerning pair.
         /// </summary>
         /// <param name="obj">The kerning pair to compare to this kerning pair.</param>
-        /// <returns><c>true</c> if the kerning pairs are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the kerning pairs are equal; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(SpriteFontKerningPair obj)
         {
             return FirstCharacter == obj.FirstCharacter && SecondCharacter == obj.SecondCharacter;

@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         /// <param name="property">The name of the dependency property to which the animation applies.</param>
         /// <param name="animation">The animation to add to the collection.</param>
-        /// <returns><c>true</c> if the animation was added to the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the animation was added to the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Add(String property, AnimationBase animation)
         {
             Contract.RequireNotEmpty(property, "property");
@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         /// <param name="property">The name of the dependency property to which the animation applies.</param>
         /// <param name="animation">The animation to add to the collection.</param>
-        /// <returns><c>true</c> if the animation was added to the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the animation was added to the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Add(DependencyName property, AnimationBase animation)
         {
             Contract.Require(animation, "animation");
@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         /// <param name="key">The key that identifies the animation to add to the collection.</param>
         /// <param name="animation">The animation to add to the collection.</param>
-        /// <returns><c>true</c> if the animation was added to the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the animation was added to the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Add(StoryboardTargetAnimationKey key, AnimationBase animation)
         {
             Contract.Require(animation, "animation");
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Removes the animation for the specified property from this collection.
         /// </summary>
         /// <param name="property">The name of the property to remove from the collection.</param>
-        /// <returns><c>true</c> if the animation was removed from the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the animation was removed from the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(String property)
         {
             Contract.RequireNotEmpty(property, "property");
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Removes the animation for the specified property from this collection.
         /// </summary>
         /// <param name="property">The name of the property to remove from the collection.</param>
-        /// <returns><c>true</c> if the animation was removed from the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the animation was removed from the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(DependencyName property)
         {
             var key = new StoryboardTargetAnimationKey(property);
@@ -103,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Removes the animation for the specified property from this collection.
         /// </summary>
         /// <param name="key">The key that identifies the animation to remove from the collection.</param>
-        /// <returns><c>true</c> if the animation was removed from the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the animation was removed from the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(StoryboardTargetAnimationKey key)
         {
             AnimationBase animation;
@@ -125,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Removes an animation from this collection.
         /// </summary>
         /// <param name="animation">The animation to remove from the collection.</param>
-        /// <returns><c>true</c> if the animation was removed from the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the animation was removed from the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(AnimationBase animation)
         {
             Contract.Require(animation, "animation");
@@ -153,7 +153,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Gets a value indicating whether the collection contains an animation on the specified property.
         /// </summary>
         /// <param name="property">The name of the property to evaluate.</param>
-        /// <returns><c>true</c> if this collection contains an animation on the specified property; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this collection contains an animation on the specified property; otherwise, <see langword="false"/>.</returns>
         public Boolean ContainsKey(String property)
         {
             Contract.RequireNotEmpty(property, "property");
@@ -167,7 +167,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Gets a value indicating whether the collection contains an animation on the specified property.
         /// </summary>
         /// <param name="property">The name of the property to evaluate.</param>
-        /// <returns><c>true</c> if this collection contains an animation on the specified property; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this collection contains an animation on the specified property; otherwise, <see langword="false"/>.</returns>
         public Boolean ContainsKey(DependencyName property)
         {
             var key = new StoryboardTargetAnimationKey(property);
@@ -178,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Gets a value indicating whether the collection contains an animation on the specified property.
         /// </summary>
         /// <param name="key">The animation key to evaluate.</param>
-        /// <returns><c>true</c> if this collection contains an animation on the specified property; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this collection contains an animation on the specified property; otherwise, <see langword="false"/>.</returns>
         public Boolean ContainsKey(StoryboardTargetAnimationKey key)
         {
             return animations.ContainsKey(key);
@@ -188,7 +188,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// Gets a value indicating whether the collection contains the specified animation.
         /// </summary>
         /// <param name="animation">The animation to evaluate.</param>
-        /// <returns><c>true</c> if this collection contains the specified animation; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this collection contains the specified animation; otherwise, <see langword="false"/>.</returns>
         public Boolean ContainsValue(AnimationBase animation)
         {
             Contract.Require(animation, "animation");

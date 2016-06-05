@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// Gets the touch device with the specified device index.
         /// </summary>
         /// <param name="index">The index of the device to retrieve.</param>
-        /// <returns>The touch device with the specified device index, or <c>null</c> if no such device exists.</returns>
+        /// <returns>The touch device with the specified device index, or <see langword="null"/> if no such device exists.</returns>
         public TouchDevice GetTouchDeviceByIndex(Int32 index)
         {
             return devices[index];

@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Gets a value indicating whether the specified element accepts the Return character.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element accepts Return; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element accepts Return; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetAcceptsReturn(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Gets a value indicating whether the specified element is a tab stop.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is a tab stop; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element is a tab stop; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsTabStop(DependencyObject element)
         {
             Contract.Require(element, "element");

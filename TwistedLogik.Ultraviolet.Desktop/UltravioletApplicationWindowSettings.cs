@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet
         /// Loads window settings from the specified XML element.
         /// </summary>
         /// <param name="xml">The XML element that contains the window settings to load.</param>
-        /// <returns>The window settings that were loaded from the specified XML element or <c>null</c> if 
+        /// <returns>The window settings that were loaded from the specified XML element or <see langword="null"/> if 
         /// settings could not be loaded correctly.</returns>
         public static UltravioletApplicationWindowSettings Load(XElement xml)
         {

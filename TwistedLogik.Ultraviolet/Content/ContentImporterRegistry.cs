@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Finds the appropriate importer for the specified file extension.
         /// </summary>
         /// <param name="extension">The file extension for which to find a content importer.</param>
-        /// <returns>The content importer for the specified file extension, or <c>null</c> if no appropriate importer could be found.</returns>
+        /// <returns>The content importer for the specified file extension, or <see langword="null"/> if no appropriate importer could be found.</returns>
         public IContentImporter FindImporter(String extension)
         {
             Type outputType;
@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="extension">The file extension for which to find a content importer.</param>
         /// <param name="outputType">The importer's output type.</param>
-        /// <returns>The content importer for the specified file extension, or <c>null</c> if no appropriate importer could be found.</returns>
+        /// <returns>The content importer for the specified file extension, or <see langword="null"/> if no appropriate importer could be found.</returns>
         public IContentImporter FindImporter(String extension, out Type outputType)
         {
             Contract.RequireNotEmpty(extension, "extension");

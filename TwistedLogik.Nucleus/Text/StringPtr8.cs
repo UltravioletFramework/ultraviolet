@@ -9,9 +9,9 @@ namespace TwistedLogik.Nucleus.Text
     public struct StringPtr8 : IEquatable<StringPtr8>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StringPtr8"/> structure from the specified <c>null</c>-terminated string.
+        /// Initializes a new instance of the <see cref="StringPtr8"/> structure from the specified <see langword="null"/>-terminated string.
         /// </summary>
-        /// <param name="ptr">A pointer to the <c>null</c>-terminated string data.</param>
+        /// <param name="ptr">A pointer to the <see langword="null"/>-terminated string data.</param>
         [SecurityCritical]
         public StringPtr8(IntPtr ptr)
         {
@@ -56,7 +56,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="ptr1">The first object to compare.</param>
         /// <param name="ptr2">The second object to compare.</param>
-        /// <returns><c>true</c> if the specified objects are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified objects are equal; otherwise, <see langword="false"/>.</returns>
         [SecuritySafeCritical]
         public static Boolean operator ==(StringPtr8 ptr1, StringPtr8 ptr2)
         {
@@ -68,7 +68,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="ptr1">The first object to compare.</param>
         /// <param name="ptr2">The second object to compare.</param>
-        /// <returns><c>true</c> if the specified objects are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified objects are unequal; otherwise, <see langword="false"/>.</returns>
         [SecuritySafeCritical]
         public static Boolean operator !=(StringPtr8 ptr1, StringPtr8 ptr2)
         {
@@ -105,7 +105,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Determines whether the specified object is equal to this object.
         /// </summary>
         /// <param name="obj">The object to compare to this object.</param>
-        /// <returns><c>true</c> ifthis object is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> ifthis object is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         [SecuritySafeCritical]
         public override Boolean Equals(Object obj)
         {
@@ -116,7 +116,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Determines whether the specified object is equal to this object.
         /// </summary>
         /// <param name="obj">The object to compare to this object.</param>
-        /// <returns><c>true</c> ifthis object is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> ifthis object is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         [SecuritySafeCritical]
         public Boolean Equals(StringPtr8 obj)
         {
@@ -135,7 +135,7 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
-        /// Gets a <c>null</c> string pointer.
+        /// Gets a <see langword="null"/> string pointer.
         /// </summary>
         public static StringPtr8 Zero
         {

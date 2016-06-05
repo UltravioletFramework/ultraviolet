@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 			/// </summary>
 			/// <param name="stk1">The first <see cref="StyleKey"/> to compare.</param>
 			/// <param name="stk2">The second <see cref="StyleKey"/> to compare.</param>
-			/// <returns><c>true</c> if the specified keys are equal; otherwise, <c>false</c>.</returns>
+			/// <returns><see langword="true"/> if the specified keys are equal; otherwise, <see langword="false"/>.</returns>
 			public static Boolean operator ==(StyleKey stk1, StyleKey stk2)
 			{
 				return stk1.Equals(stk2);
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 			/// </summary>
 			/// <param name="stk1">The first <see cref="StyleKey"/> to compare.</param>
 			/// <param name="stk2">The second <see cref="StyleKey"/> to compare.</param>
-			/// <returns><c>true</c> if the specified keys are unequal; otherwise, <c>false</c>.</returns>
+			/// <returns><see langword="true"/> if the specified keys are unequal; otherwise, <see langword="false"/>.</returns>
 			public static Boolean operator !=(StyleKey stk1, StyleKey stk2)
 			{
 				return !stk1.Equals(stk2);

@@ -69,7 +69,7 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <param name="ref1">The first <see cref="ResolvedDataObjectReference"/> to compare.</param>
         /// <param name="ref2">The second <see cref="ResolvedDataObjectReference"/> to compare.</param>
-        /// <returns><c>true</c> if the specified references are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified references are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(ResolvedDataObjectReference ref1, ResolvedDataObjectReference ref2)
         {
             return ref1.Value == ref2.Value;
@@ -80,7 +80,7 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <param name="ref1">The first <see cref="ResolvedDataObjectReference"/> to compare.</param>
         /// <param name="ref2">The second <see cref="ResolvedDataObjectReference"/> to compare.</param>
-        /// <returns><c>true</c> if the specified references are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified references are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(ResolvedDataObjectReference ref1, ResolvedDataObjectReference ref2)
         {
             return ref1.Value != ref2.Value;
@@ -142,7 +142,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
-        /// <returns><c>true</c> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object other)
         {
             if (!(other is ResolvedDataObjectReference))
@@ -154,7 +154,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
-        /// <returns><c>true</c> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(ResolvedDataObjectReference other)
         {
             return this.Value == other.Value;

@@ -33,22 +33,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the specified sourced assets are equal.
+        /// Returns <see langword="true"/> if the specified sourced assets are equal.
         /// </summary>
         /// <param name="id1">The first <see cref="SourcedResource{T}"/> to compare.</param>
         /// <param name="id2">The second <see cref="SourcedResource{T}"/> to compare.</param>
-        /// <returns><c>true</c> if the specified sourced assets are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified sourced assets are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(SourcedResource<T> id1, SourcedResource<T> id2)
         {
             return id1.Equals(id2);
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the specified sourced assets are not equal.
+        /// Returns <see langword="true"/> if the specified sourced assets are not equal.
         /// </summary>
         /// <param name="id1">The first <see cref="SourcedResource{T}"/> to compare.</param>
         /// <param name="id2">The second <see cref="SourcedResource{T}"/> to compare.</param>
-        /// <returns><c>true</c> if the specified sourced assets are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified sourced assets are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(SourcedResource<T> id1, SourcedResource<T> id2)
         {
             return !id1.Equals(id2);

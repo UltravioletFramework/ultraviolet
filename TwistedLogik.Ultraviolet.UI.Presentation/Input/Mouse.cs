@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="view">The view for which to set mouse capture.</param>
         /// <param name="element">The element to capture the mouse.</param>
-        /// <returns><c>true</c> if the mouse was successfully captured; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the mouse was successfully captured; otherwise, <see langword="false"/>.</returns>
         public static Boolean Capture(PresentationFoundationView view, IInputElement element)
         {
             return Capture(view, element, CaptureMode.Element);
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="view">The view for which to set mouse capture.</param>
         /// <param name="element">The element to capture the mouse.</param>
         /// <param name="mode">The mouse capture mode.</param>
-        /// <returns><c>true</c> if the mouse was successfully captured; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the mouse was successfully captured; otherwise, <see langword="false"/>.</returns>
         public static Boolean Capture(PresentationFoundationView view, IInputElement element, CaptureMode mode)
         {
             Contract.Require(view, "view");
@@ -134,7 +134,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="view">The view to evaluate.</param>
         /// <returns>The element which has captured the mouse within the specified view, 
-        /// or <c>null</c> if no element has captured the mouse.</returns>
+        /// or <see langword="null"/> if no element has captured the mouse.</returns>
         public static IInputElement GetCaptured(PresentationFoundationView view)
         {
             Contract.Require(view, "view");
@@ -147,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="view">The view to evaluate.</param>
         /// <returns>The element which is the mouse cursor is directly over within the specified view,
-        /// or <c>null</c> if the mouse cursor is not over any element.</returns>
+        /// or <see langword="null"/> if the mouse cursor is not over any element.</returns>
         public static IInputElement GetDirectlyOver(PresentationFoundationView view)
         {
             Contract.Require(view, "view");

@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// Gets a value indicating whether the region contains the specified character.
         /// </summary>
         /// <param name="c">The character to evaluate.</param>
-        /// <returns><c>true</c> if the region contains the specified character; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the region contains the specified character; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(Char c)
         {
             return c >= start && c <= end;

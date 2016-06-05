@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="exp1">The first <see cref="NavigationExpression"/> to compare.</param>
         /// <param name="exp2">The second <see cref="NavigationExpression"/> to compare.</param>
-        /// <returns><c>true</c> if the specified expressions are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified expressions are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(NavigationExpression exp1, NavigationExpression exp2)
         {
             return exp1.Equals(exp2);
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="exp1">The first <see cref="NavigationExpression"/> to compare.</param>
         /// <param name="exp2">The second <see cref="NavigationExpression"/> to compare.</param>
-        /// <returns><c>true</c> if the specified expressions are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified expressions are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(NavigationExpression exp1, NavigationExpression exp2)
         {
             return !exp1.Equals(exp2);
@@ -136,7 +136,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="source">The dependency object to which to apply the expression.</param>
-        /// <returns>The dependency object that was navigated to, or <c>null</c> if no valid target was found.</returns>
+        /// <returns>The dependency object that was navigated to, or <see langword="null"/> if no valid target was found.</returns>
         public DependencyObject ApplyExpression(UltravioletContext uv, DependencyObject source)
         {
             Contract.Require(uv, "uv");

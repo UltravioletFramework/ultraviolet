@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether this object has a defined value for the specified dependency property.
         /// </summary>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to evaluate.</param>
-        /// <returns><c>true</c> if the specified property has a defined value on this object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified property has a defined value on this object; otherwise, <see langword="false"/>.</returns>
         public Boolean HasDefinedValue(DependencyProperty dp)
         {
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
@@ -228,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Applies the specified animation to a dependency property.
         /// </summary>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to animate.</param>
-        /// <param name="animation">The animation to apply to the dependency property, or <c>null</c> to cease animating the property.</param>
+        /// <param name="animation">The animation to apply to the dependency property, or <see langword="null"/> to cease animating the property.</param>
         /// <param name="clock">The clock which controls the animation's playback.</param>
         public void Animate(DependencyProperty dp, AnimationBase animation, Clock clock)
         {

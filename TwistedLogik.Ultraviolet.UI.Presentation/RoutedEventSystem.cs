@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="name">The name of the routed event for which to search.</param>
         /// <param name="ownerType">The routed event's owner type.</param>
         /// <returns>A <see cref="RoutedEvent"/> instance which represents the specified routed event, 
-        /// or <c>null</c> if no such routed event exists.</returns>
+        /// or <see langword="null"/> if no such routed event exists.</returns>
         public static RoutedEvent FindByName(String name, Type ownerType)
         {
             Contract.Require(name, "name");
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="name">The styling name of the routed event for which to search.</param>
         /// <param name="ownerType">The routed event's owner type.</param>
         /// <returns>A <see cref="RoutedEvent"/> instance which represents the specified routed event, 
-        /// or <c>null</c> if no such routed event exists.</returns>
+        /// or <see langword="null"/> if no such routed event exists.</returns>
         public static RoutedEvent FindByStylingName(String name, Type ownerType)
         {
             Contract.Require(name, "name");

@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="type">The type for which to retrieve a comparison delegate.</param>
         /// <param name="op">A <see cref="TriggerComparisonOp"/> value which specifies the type of the comparison operation.</param>
-        /// <returns>The cached <see cref="TriggerComparison"/> delegate for the specified type and operation, or <c>null</c>
+        /// <returns>The cached <see cref="TriggerComparison"/> delegate for the specified type and operation, or <see langword="null"/>
         /// if the specified operation is not supported by the given type.</returns>
         public static TriggerComparison Get(Type type, TriggerComparisonOp op)
         {

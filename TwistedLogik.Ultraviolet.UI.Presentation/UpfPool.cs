@@ -195,7 +195,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets a value indicating whether a garbage collection has occurred since the last time this method was called.
         /// </summary>
-        /// <returns><c>true</c> if a garbage collection has occurred; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if a garbage collection has occurred; otherwise, <see langword="false"/>.</returns>
         private Boolean HasGarbageCollectionOccurredSinceLastCheck()
         {
             var collectionHasOccurred = false;

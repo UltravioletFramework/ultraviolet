@@ -221,7 +221,7 @@ namespace UvDebugSandbox
         /// <summary>
         /// Gets a value indicating whether the game should run in service mode.
         /// </summary>
-        /// <returns><c>true</c> if the game should run in service mode; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the game should run in service mode; otherwise, <see langword="false"/>.</returns>
         private Boolean ShouldRunInServiceMode()
         {
             return compileContent || compileExpressions;
@@ -239,7 +239,7 @@ namespace UvDebugSandbox
         /// <summary>
         /// Gets a value indicating whether the game should compile binding expressions.
         /// </summary>
-        /// <returns><c>true</c> if the game should compile binding expressions; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the game should compile binding expressions; otherwise, <see langword="false"/>.</returns>
         private Boolean ShouldCompileBindingExpressions()
         {
 #if DEBUG

@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets a value indicating whether a tool tip is displayed for the element.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if a tool tip is displayed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if a tool tip is displayed; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsEnabled(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -95,7 +95,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets a value indicating whether a tool tip is currently open for the element.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the tool tip is open; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the tool tip is open; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsOpen(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -107,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets a value indicating whether the tool tip has a drop shadow.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the tool tip has a drop shadow; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the tool tip has a drop shadow; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetHasDropShadow(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -119,7 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets a value indicating whether the tool tip is displayed even if the element is disabled.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the tool tip is displayed for a disabled element; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the tool tip is displayed for a disabled element; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetShowOnDisabled(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -167,7 +167,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets the tool tip's content.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns>The content of the specified element's tool tip, or <c>null</c> if the element has no tool tip.</returns>
+        /// <returns>The content of the specified element's tool tip, or <see langword="null"/> if the element has no tool tip.</returns>
         public static Object GetToolTip(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -241,7 +241,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Sets a value indicating whether a tool tip is displayed for the element.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value"><c>true</c> if a tool tip is displayed; otherwise, <c>false</c>.</param>
+        /// <param name="value"><see langword="true"/> if a tool tip is displayed; otherwise, <see langword="false"/>.</param>
         public static void SetIsEnabled(DependencyObject element, Boolean value)
         {
             Contract.Require(element, "element");
@@ -253,7 +253,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Sets a value indicating whether the tool tip has a drop shadow.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value"><c>true</c> if the tool tip has a drop shadow; otherwise, <c>false</c>.</param>
+        /// <param name="value"><see langword="true"/> if the tool tip has a drop shadow; otherwise, <see langword="false"/>.</param>
         public static void SetHasDropShadow(DependencyObject element, Boolean value)
         {
             Contract.Require(element, "element");
@@ -265,7 +265,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Sets a value indicating whether the tool tip is displayed even if the element is disabled.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value"><c>true</c> if the tool tip is displayed for a disabled element; otherwise, <c>false</c>.</param>
+        /// <param name="value"><see langword="true"/> if the tool tip is displayed for a disabled element; otherwise, <see langword="false"/>.</param>
         public static void SetShowOnDisabled(DependencyObject element, Boolean value)
         {
             Contract.Require(element, "element");
@@ -313,7 +313,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Sets the tool tip's content.
         /// </summary>
         /// <param name="element">The element to update.</param>
-        /// <param name="value">The content of the specified element's tool tip, or <c>null</c> if the element has no tool tip.</param>
+        /// <param name="value">The content of the specified element's tool tip, or <see langword="null"/> if the element has no tool tip.</param>
         public static void SetToolTip(DependencyObject element, Object value)
         {
             Contract.Require(element, "element");

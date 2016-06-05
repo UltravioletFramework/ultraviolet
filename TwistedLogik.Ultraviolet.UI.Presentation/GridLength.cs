@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="gl1">The first <see cref="GridLength"/> to compare.</param>
         /// <param name="gl2">The second <see cref="GridLength"/> to compare.</param>
-        /// <returns><c>true</c> if the specified grid lengths are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified grid lengths are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(GridLength gl1, GridLength gl2)
         {
             return gl1.Equals(gl2);
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="gl1">The first <see cref="GridLength"/> to compare.</param>
         /// <param name="gl2">The second <see cref="GridLength"/> to compare.</param>
-        /// <returns><c>true</c> if the specified grid lengths are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified grid lengths are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(GridLength gl1, GridLength gl2)
         {
             return !gl1.Equals(gl2);
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="s">A string containing a grid length to convert.</param>
         /// <param name="gridLength">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, out GridLength gridLength)
         {
             return TryParse(s, NumberStyles.Float, NumberFormatInfo.CurrentInfo, out gridLength);
@@ -82,7 +82,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="gridLength">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out GridLength gridLength)
         {
             Contract.Require(s, "s");
@@ -181,7 +181,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object obj)
         {
             if (!(obj is GridLength))
@@ -193,7 +193,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(GridLength other)
         {
             return this.value == other.value && this.gridUnitType == other.gridUnitType;

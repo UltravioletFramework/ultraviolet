@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the registered element with the specified identifying name.
         /// </summary>
         /// <param name="name">The identifying name of the element to retrieve.</param>
-        /// <returns>The element with the specified identifying name, or <c>null</c> if no such element exists within the registry.</returns>
+        /// <returns>The element with the specified identifying name, or <see langword="null"/> if no such element exists within the registry.</returns>
         public FrameworkElement GetElementByName(String name)
         {
             FrameworkElement element;

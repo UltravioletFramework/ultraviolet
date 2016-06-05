@@ -55,10 +55,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
         /// <summary>
         /// Attempts to create a new instance of <see cref="CompilerCache"/> by loading the contents of the specified file.
-        /// If the file does not exist, or contains invalid data, this method returns <c>null</c>.
+        /// If the file does not exist, or contains invalid data, this method returns <see langword="null"/>.
         /// </summary>
         /// <param name="path">The path to the file to load.</param>
-        /// <returns>The <see cref="CompilerCache"/> instance that was created, or <c>null</c> if the file could not be loaded.</returns>
+        /// <returns>The <see cref="CompilerCache"/> instance that was created, or <see langword="null"/> if the file could not be loaded.</returns>
         public static CompilerCache TryFromFile(String path)
         {
             try
@@ -169,7 +169,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// Gets a value indicating whether anything is different between this cache and the specified cache.
         /// </summary>
         /// <param name="other">The cache to compare against this cache.</param>
-        /// <returns><c>true</c> if this cache is different from the specified cache; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this cache is different from the specified cache; otherwise, <see langword="false"/>.</returns>
         public Boolean IsDifferentFrom(CompilerCache other)
         {
             Contract.Require(other, "other");

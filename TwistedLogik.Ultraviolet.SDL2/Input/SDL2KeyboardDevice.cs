@@ -277,7 +277,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// Converts inputted text (which is in UTF-8 format) to UTF-16.
         /// </summary>
         /// <param name="input">A pointer to the inputted text.</param>
-        /// <returns><c>true</c> if the input data was successfully converted; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the input data was successfully converted; otherwise, <see langword="false"/>.</returns>
         private unsafe Boolean ConvertTextInputToUtf16(byte* input)
         {
             // Count the number of bytes in the UTF-8 text.

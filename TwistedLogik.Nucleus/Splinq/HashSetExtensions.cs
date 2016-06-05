@@ -13,7 +13,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// </summary>
         /// <typeparam name="T">The type of item contained by <paramref name="source"/>.</typeparam>
         /// <param name="source">The <see cref="HashSet{T}"/> to evaluate.</param>
-        /// <returns><c>true</c> if the source set contains any elements; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the source set contains any elements; otherwise, <see langword="false"/>.</returns>
         public static Boolean Any<T>(this HashSet<T> source)
         {
             Contract.Require(source, "source");
@@ -27,7 +27,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <typeparam name="T">The type of item contained by <paramref name="source"/>.</typeparam>
         /// <param name="source">The <see cref="HashSet{T}"/> to evaluate.</param>
         /// <param name="predicate">The predicate against which to evaluate the items of <paramref name="source"/>.</param>
-        /// <returns><c>true</c> if the source set contains any elements; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the source set contains any elements; otherwise, <see langword="false"/>.</returns>
         public static Boolean Any<T>(this HashSet<T> source, Predicate<T> predicate)
         {
             Contract.Require(source, "source");
@@ -49,7 +49,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <typeparam name="T">The type of item contained by <paramref name="source"/>.</typeparam>
         /// <param name="source">The <see cref="HashSet{T}"/> to evaluate.</param>
         /// <param name="predicate">The predicate against which to evaluate the items of <paramref name="source"/>.</param>
-        /// <returns><c>true</c> if all of the items in the source set match the specified predicate; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if all of the items in the source set match the specified predicate; otherwise, <see langword="false"/>.</returns>
         public static Boolean All<T>(this HashSet<T> source, Predicate<T> predicate)
         {
             Contract.Require(source, "source");

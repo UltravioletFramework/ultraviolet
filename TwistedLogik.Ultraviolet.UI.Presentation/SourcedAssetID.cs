@@ -21,22 +21,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the specified asset identifiers are equal.
+        /// Returns <see langword="true"/> if the specified asset identifiers are equal.
         /// </summary>
         /// <param name="id1">The first <see cref="SourcedAssetID"/> to compare.</param>
         /// <param name="id2">The second <see cref="SourcedAssetID"/> to compare.</param>
-        /// <returns><c>true</c> if the specified identifiers are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified identifiers are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(SourcedAssetID id1, SourcedAssetID id2)
         {
             return id1.assetID.Equals(id2.assetID) && id1.assetSource == id2.assetSource;
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the specified asset identifiers are not equal.
+        /// Returns <see langword="true"/> if the specified asset identifiers are not equal.
         /// </summary>
         /// <param name="id1">The first <see cref="SourcedAssetID"/> to compare.</param>
         /// <param name="id2">The second <see cref="SourcedAssetID"/> to compare.</param>
-        /// <returns><c>true</c> if the specified identifiers are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified identifiers are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(SourcedAssetID id1, SourcedAssetID id2)
         {
             return !id1.assetID.Equals(id2.assetID) || id1.assetSource != id2.assetSource;
@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="s">A string containing the asset identifier to convert.</param>
         /// <param name="value">An instance of the <see cref="SourcedAssetID"/> structure that is equivalent to the specified string.</param>
-        /// <returns><c>true</c> if the string was successfully parsed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, out SourcedAssetID value)
         {
             Contract.Require(s, "s");
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="manifests">The content manifest registry that contains the currently-loaded content manifests.</param>
         /// <param name="s">A string containing the asset identifier to convert.</param>
         /// <param name="value">An instance of the <see cref="SourcedAssetID"/> structure that is equivalent to the specified string.</param>
-        /// <returns><c>true</c> if the string was successfully parsed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(ContentManifestRegistry manifests, String s, out SourcedAssetID value)
         {
             Contract.Require(manifests, "manifests");
@@ -162,7 +162,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="manifests">The content manifest registry that contains the currently-loaded content manifests.</param>
         /// <param name="s">A string containing the asset identifier to convert.</param>
         /// <param name="value">An instance of the <see cref="SourcedAssetID"/> structure that is equivalent to the specified string.</param>
-        /// <returns><c>true</c> if the string was successfully parsed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
         private static Boolean TryParseInternal(ContentManifestRegistry manifests, String s, out SourcedAssetID value)
         {
             var parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);

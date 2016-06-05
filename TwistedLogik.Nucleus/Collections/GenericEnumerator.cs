@@ -12,7 +12,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// <param name="state">A state object to pass to the generation function.</param>
     /// <param name="index">A value indicating the index of the item that should be generated, respective to its collection.</param>
     /// <param name="result">The item that was generated.</param>
-    /// <returns><c>true</c> if a valid item was generated; otherwise, <c>false</c>.</returns>
+    /// <returns><see langword="true"/> if a valid item was generated; otherwise, <see langword="false"/>.</returns>
     public delegate Boolean GenericEnumeratorGenerator<T>(Object state, Int32 index, out T result);
 
     /// <summary>
@@ -69,7 +69,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Advances the enumerator to the next item in the collection.
         /// </summary>
-        /// <returns><c>true</c> if the enumerator advanced to the next item; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the enumerator advanced to the next item; otherwise, <see langword="false"/>.</returns>
         public Boolean MoveNext()
         {
             if (versioner(state) != version)

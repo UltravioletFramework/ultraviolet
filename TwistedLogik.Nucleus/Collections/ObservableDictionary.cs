@@ -108,7 +108,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Removes the object with the specified key from the dictionary, if such an object exists.
         /// </summary>
         /// <param name="key">The key that represents the object to remove from the dictionary.</param>
-        /// <returns><c>true</c> if the object was removed from the dictionary; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the object was removed from the dictionary; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(TKey key)
         {
             TValue existing;
@@ -133,7 +133,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets a value indicating whether the dictionary contains an item with the specified key.
         /// </summary>
         /// <param name="key">The key to evaluate.</param>
-        /// <returns><c>true</c> if the dictionary contains an item with the specified key; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the dictionary contains an item with the specified key; otherwise, <see langword="false"/>.</returns>
         public Boolean ContainsKey(TKey key)
         {
             return dictionary.ContainsKey(key);
@@ -143,7 +143,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets a value indicating whether the dictionary contains an item with the specified value.
         /// </summary>
         /// <param name="value">The value to evaluate.</param>
-        /// <returns><c>true</c> if the dictoinary contains an item with the specified value; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the dictoinary contains an item with the specified value; otherwise, <see langword="false"/>.</returns>
         public Boolean ContainsValue(TValue value)
         {
             return dictionary.ContainsValue(value);
@@ -154,7 +154,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="key">The key of the item to retrieve.</param>
         /// <param name="value">The value of the item that was retrieved, if an item was successfully retrieved.</param>
-        /// <returns><c>true</c> if an item with the specified key was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if an item with the specified key was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean TryGetValue(TKey key, out TValue value)
         {
             return dictionary.TryGetValue(key, out value);
@@ -185,7 +185,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Removes the specified item from the collection.
         /// </summary>
         /// <param name="item">The item to remove from the collection.</param>
-        /// <returns><c>true</c> if the item was removed from the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the item was removed from the collection; otherwise, <see langword="false"/>.</returns>
         Boolean ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
             if (((ICollection<KeyValuePair<TKey, TValue>>)dictionary).Remove(item))
@@ -200,7 +200,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets a value indicating whether the collection contains the specified item.
         /// </summary>
         /// <param name="item">The item to evaluate.</param>
-        /// <returns><c>true</c> if the collection contains the specified item; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the collection contains the specified item; otherwise, <see langword="false"/>.</returns>
         Boolean ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
         {
             return ((ICollection<KeyValuePair<TKey, TValue>>)dictionary).Contains(item);

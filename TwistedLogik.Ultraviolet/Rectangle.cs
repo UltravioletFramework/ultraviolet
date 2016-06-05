@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="r1">The first <see cref="Rectangle"/> to compare.</param>
         /// <param name="r2">The second <see cref="Rectangle"/> to compare.</param>
-        /// <returns><c>true</c> if the specified rectangles are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified rectangles are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(Rectangle r1, Rectangle r2)
         {
             return r1.Equals(r2);
@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="r1">The first <see cref="Rectangle"/> to compare.</param>
         /// <param name="r2">The second <see cref="Rectangle"/> to compare.</param>
-        /// <returns><c>true</c> if the specified rectangles are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified rectangles are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(Rectangle r1, Rectangle r2)
         {
             return !r1.Equals(r2);
@@ -89,7 +89,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a rectangle to convert.</param>
         /// <param name="rect">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, out Rectangle rect)
         {
             return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out rect);
@@ -113,7 +113,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="rect">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Rectangle rect)
         {
             rect = default(Rectangle);
@@ -344,7 +344,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Rectangle))
@@ -356,7 +356,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(Rectangle other)
         {
             return x == other.x && y == other.y && width == other.width && height == other.height;
@@ -366,7 +366,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets a value indicating whether this rectangle intersects the specified rectangle.
         /// </summary>
         /// <param name="rectangle">The rectangle to evaluate.</param>
-        /// <returns><c>true</c> if this rectangle intersects the specified rectangle; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this rectangle intersects the specified rectangle; otherwise, <see langword="false"/>.</returns>
         public Boolean Intersects(Rectangle rectangle)
         {
             return 
@@ -380,7 +380,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets a value indicating whether this rectangle intersects the specified rectangle.
         /// </summary>
         /// <param name="rectangle">The <see cref="Rectangle"/> to evaluate.</param>
-        /// <param name="result"><c>true</c> if this rectangle intersects the specified rectangle; otherwise, <c>false</c>.</param>
+        /// <param name="result"><see langword="true"/> if this rectangle intersects the specified rectangle; otherwise, <see langword="false"/>.</param>
         public void Intersects(ref Rectangle rectangle, out Boolean result)
         {
             result =
@@ -395,7 +395,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="x">The x-coordinate of the point to evaluate.</param>
         /// <param name="y">The y-coordinate of the point to evaluate.</param>
-        /// <returns><c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the rectangle contains the specified point; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(Int32 x, Int32 y)
         {
             return
@@ -419,7 +419,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets a value indicating whether the rectangle contains the specified point.
         /// </summary>
         /// <param name="point">The point to evaluate.</param>
-        /// <returns><c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the rectangle contains the specified point; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(Point2 point)
         {
             return
@@ -443,7 +443,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets a value indicating whether the rectangle contains the specified point.
         /// </summary>
         /// <param name="point">The point to evaluate.</param>
-        /// <returns><c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the rectangle contains the specified point; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(Vector2 point)
         {
             return
@@ -455,7 +455,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets a value indicating whether the rectangle completely contains the specified rectangle.
         /// </summary>
         /// <param name="rectangle">The rectangle to evaluate.</param>
-        /// <param name="result"><c>true</c> if the rectangle completely contains the specified rectangle; otherwise, <c>false</c>.</param>
+        /// <param name="result"><see langword="true"/> if the rectangle completely contains the specified rectangle; otherwise, <see langword="false"/>.</param>
         public void Contains(ref Rectangle rectangle, out Boolean result)
         {
             result = 
@@ -467,7 +467,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets a value indicating whether the rectangle completely contains the specified rectangle.
         /// </summary>
         /// <param name="rectangle">The <see cref="Rectangle"/> to evaluate.</param>
-        /// <returns><c>true</c> if the rectangle completely contains the specified rectangle; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the rectangle completely contains the specified rectangle; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(Rectangle rectangle)
         {
             return

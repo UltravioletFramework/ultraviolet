@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="from">The visual state which is being transitioned from.</param>
         /// <param name="to">The visual state which is being transitioned to.</param>
         /// <param name="transition">The storyboard to apply when transitioning between the specified visual states.</param>
-        /// <returns><c>true</c> if the visual state transition was set; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the visual state transition was set; otherwise, <see langword="false"/>.</returns>
         public Boolean SetVisualStateTransition(String group, String from, String to, Storyboard transition)
         {
             Contract.RequireNotEmpty(group, "group");
@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="from">The visual state which is being transitioned from.</param>
         /// <param name="to">The visual state which is being transitioned to.</param>
         /// <param name="transition">The storyboard which is applied when transitioning between the specified visual states.</param>
-        /// <returns><c>true</c> if the visual state transition was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the visual state transition was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetVisualStateTransition(String group, String from, String to, out Storyboard transition)
         {
             Contract.RequireNotEmpty(group, "group");
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the visual state group with the specified name, if one exists.
         /// </summary>
         /// <param name="group">The name of the visual state group to retrieve.</param>
-        /// <returns>The visual state group with the specified name, or <c>null</c> if no such group exists.</returns>
+        /// <returns>The visual state group with the specified name, or <see langword="null"/> if no such group exists.</returns>
         public VisualStateGroup Get(String group)
         {
             VisualStateGroup g;
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="group">The name of the visual state group which will contain the states.</param>
         /// <param name="states">The list of visual states to create.</param>
-        /// <returns><c>true</c> if the visual state group was created; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the visual state group was created; otherwise, <see langword="false"/>.</returns>
         public Boolean Create(String group, IEnumerable<String> states)
         {
             Contract.RequireNotEmpty(group, "group");
@@ -126,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Creates a new visual state group.
         /// </summary>
         /// <param name="group">The name of the group to create.</param>
-        /// <returns><c>true</c> if the group was created; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the group was created; otherwise, <see langword="false"/>.</returns>
         public Boolean Create(String group)
         {
             Contract.RequireNotEmpty(group, "group");
@@ -142,7 +142,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Destroys the specified visual state group.
         /// </summary>
         /// <param name="group">The name of the group to destroy.</param>
-        /// <returns><c>true</c> if the group was destroyed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the group was destroyed; otherwise, <see langword="false"/>.</returns>
         public Boolean Destroy(String group)
         {
             Contract.RequireNotEmpty(group, "group");
@@ -155,8 +155,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// with the specified name.
         /// </summary>
         /// <param name="group">The name of the visual state group to evaluate.</param>
-        /// <returns><c>true</c> if the collection defines a visual state group with
-        /// the specified name; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the collection defines a visual state group with
+        /// the specified name; otherwise, <see langword="false"/>.</returns>
         public Boolean IsDefined(String group)
         {
             Contract.RequireNotEmpty(group, "group");
@@ -169,7 +169,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="group">The name of the visual state group to transition.</param>
         /// <param name="state">The name of the state into which to transition the group.</param>
-        /// <returns><c>true</c> if the specified group was transitioned into the specified state; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified group was transitioned into the specified state; otherwise, <see langword="false"/>.</returns>
         public Boolean GoToState(String group, String state)
         {
             var vsg = Get(group);

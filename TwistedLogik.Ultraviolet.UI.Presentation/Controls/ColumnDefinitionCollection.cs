@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Removes a column from the collection.
         /// </summary>
         /// <param name="definition">The column to remove from the collection.</param>
-        /// <returns><c>true</c> if the specified column was removed from the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified column was removed from the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(ColumnDefinition definition)
         {
             Contract.Require(definition, "definition");
@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets a value indicating whether the collection contains the specified column.
         /// </summary>
         /// <param name="definition">The column to evaluate.</param>
-        /// <returns><c>true</c> if the collection contains the specified column; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the collection contains the specified column; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(ColumnDefinition definition)
         {
             Contract.Require(definition, "definition");

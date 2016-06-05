@@ -19,22 +19,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the specified transition keys are equal.
+        /// Returns <see langword="true"/> if the specified transition keys are equal.
         /// </summary>
         /// <param name="vstk1">The first <see cref="VisualStateTransitionKey"/> to compare.</param>
         /// <param name="vstk2">The second <see cref="VisualStateTransitionKey"/> to compare.</param>
-        /// <returns><c>true</c> if the specified transition keys are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified transition keys are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(VisualStateTransitionKey vstk1, VisualStateTransitionKey vstk2)
         {
             return vstk1.Equals(vstk2);
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the specified transition keys are not equal.
+        /// Returns <see langword="true"/> if the specified transition keys are not equal.
         /// </summary>
         /// <param name="vstk1">The first <see cref="VisualStateTransitionKey"/> to compare.</param>
         /// <param name="vstk2">The second <see cref="VisualStateTransitionKey"/> to compare.</param>
-        /// <returns><c>true</c> if the specified transition keys are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified transition keys are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(VisualStateTransitionKey vstk1, VisualStateTransitionKey vstk2)
         {
             return !vstk1.Equals(vstk2);

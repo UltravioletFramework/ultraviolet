@@ -267,7 +267,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         /// <param name="target">The render target to which to draw the element.</param>
-        /// <param name="transform">The transformation matrix to apply to the element, or <c>null</c> to use the cumulative sprite batch transformation.</param>
+        /// <param name="transform">The transformation matrix to apply to the element, or <see langword="null"/> to use the cumulative sprite batch transformation.</param>
         public void DrawToRenderTarget(UltravioletTime time, DrawingContext dc, Graphics.RenderTarget2D target, Matrix? transform = null)
         {
             Contract.Require(dc, "dc");
@@ -663,7 +663,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Requests that focus be moved from this element to another element.
         /// </summary>
         /// <param name="direction">The direction in which to move focus.</param>
-        /// <returns><c>true</c> if focus was moved successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if focus was moved successfully; otherwise, <see langword="false"/>.</returns>
         public virtual Boolean MoveFocus(FocusNavigationDirection direction)
         {
             return false;
@@ -694,7 +694,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Captures the mouse to this element.
         /// </summary>
-        /// <returns><c>true</c> if the mouse was successfully captured; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the mouse was successfully captured; otherwise, <see langword="false"/>.</returns>
         public Boolean CaptureMouse()
         {
             return View != null && Mouse.Capture(View, this);
@@ -983,7 +983,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the element's clipping rectangle. A value of <c>null</c> indicates that
+        /// Gets the element's clipping rectangle. A value of <see langword="null"/> indicates that
         /// clipping is disabled for this element.
         /// </summary>
         public RectangleD? ClipRectangle
@@ -2174,7 +2174,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// When overridden in a derived class, calculates the clipping rectangle for this element.
         /// </summary>
-        /// <returns>The clipping rectangle for this element in absolute screen coordinates, or <c>null</c> to disable clipping.</returns>
+        /// <returns>The clipping rectangle for this element in absolute screen coordinates, or <see langword="null"/> to disable clipping.</returns>
         protected virtual RectangleD? ClipCore()
         {
             return null;
@@ -2375,7 +2375,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         /// <param name="image">The image to draw.</param>
         /// <param name="area">The area, relative to the element, in which to draw the image. A value of
-        /// <c>null</c> specifies that the image should fill the element's entire area on the screen.</param>
+        /// <see langword="null"/> specifies that the image should fill the element's entire area on the screen.</param>
         /// <param name="color">The color with which to draw the image.</param>
         /// <param name="drawBlank">A value indicating whether a blank placeholder should be drawn if 
         /// the specified image does not exist or is not loaded.</param>
@@ -2390,7 +2390,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dc">The drawing context that describes the current rendering state.</param>
         /// <param name="image">The image to draw.</param>
         /// <param name="area">The area, relative to the element, in which to draw the image. A value of
-        /// <c>null</c> specifies that the image should fill the element's entire area on the screen.</param>
+        /// <see langword="null"/> specifies that the image should fill the element's entire area on the screen.</param>
         /// <param name="origin">The rotational origin of the image.</param>
         /// <param name="color">The color with which to draw the image.</param>
         /// <param name="drawBlank">A value indicating whether a blank placeholder should be drawn if 
@@ -2440,7 +2440,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dc">The drawing context that describes the current rendering state.</param>
         /// <param name="area">The area, relative to the element, in which to draw the rectangle. A value of
-        /// <c>null</c> specifies that the image should fill the element's entire area on the screen.</param>
+        /// <see langword="null"/> specifies that the image should fill the element's entire area on the screen.</param>
         /// <param name="color">The color with which to draw the image.</param>
         protected void DrawBlank(DrawingContext dc, RectangleD? area, Color color)
         {
@@ -2452,7 +2452,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dc">The drawing context that describes the current rendering state.</param>
         /// <param name="area">The area, relative to the element, in which to draw the rectangle. A value of
-        /// <c>null</c> specifies that the image should fill the element's entire area on the screen.</param>
+        /// <see langword="null"/> specifies that the image should fill the element's entire area on the screen.</param>
         /// <param name="origin">The rotational origin of the rectangle.</param>
         /// <param name="color">The color with which to draw the image.</param>
         protected void DrawBlank(DrawingContext dc, RectangleD? area, Point2D origin, Color color)
@@ -2736,7 +2736,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Draws the element's out-of-band texture, if it has one.
         /// </summary>
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
-        /// <returns><c>true</c> if the element's out-of-band texture was drawn; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the element's out-of-band texture was drawn; otherwise, <see langword="false"/>.</returns>
         private Boolean DrawOutOfBandTexture(DrawingContext dc)
         {
             if (this is Popup || dc.IsOutOfBandRenderingSuppressed)

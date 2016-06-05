@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the current platform supports keyboard input.
         /// </summary>
-        /// <returns><c>true</c> if the current platform supports keyboard input; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the current platform supports keyboard input; otherwise, <see langword="false"/>.</returns>
         Boolean IsKeyboardSupported();
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the current platform supports mouse input.
         /// </summary>
-        /// <returns><c>true</c> if the current platform supports mouse input; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the current platform supports mouse input; otherwise, <see langword="false"/>.</returns>
         Boolean IsMouseSupported();
 
         /// <summary>
@@ -66,40 +66,40 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets a value indicating whether the current platform supports game pad input.
         /// </summary>
-        /// <returns><c>true</c> if the current platform supports game pad input; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the current platform supports game pad input; otherwise, <see langword="false"/>.</returns>
         Boolean IsGamePadSupported();
 
         /// <summary>
         /// Gets a value indicating whether the game pad for the specified player is connected.
         /// </summary>
         /// <param name="playerIndex">The index of the player to evaluate.</param>
-        /// <returns><c>true</c> if the specified player's game pad is connected; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified player's game pad is connected; otherwise, <see langword="false"/>.</returns>
         Boolean IsGamePadConnected(Int32 playerIndex);
 
         /// <summary>
         /// Gets the game pad that belongs to the specified player.
         /// </summary>
         /// <param name="playerIndex">The index of the player for which to retrieve a game pad.</param>
-        /// <returns>The game pad that belongs to the specified player, or <c>null</c> if no such game pad exists.</returns>
+        /// <returns>The game pad that belongs to the specified player, or <see langword="null"/> if no such game pad exists.</returns>
         GamePadDevice GetGamePadForPlayer(Int32 playerIndex);
 
         /// <summary>
         /// Gets the first connected game pad device.
         /// </summary>
-        /// <returns>The first connected game pad device, or <c>null</c> if no game pads are connected.</returns>
+        /// <returns>The first connected game pad device, or <see langword="null"/> if no game pads are connected.</returns>
         GamePadDevice GetFirstConnectedGamePad();
 
         /// <summary>
         /// Gets a value indicating whether touch input is supported.
         /// </summary>
-        /// <returns><c>true</c> if touch input is supported; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if touch input is supported; otherwise, <see langword="false"/>.</returns>
         Boolean IsTouchSupported();
 
         /// <summary>
         /// Gets a value indicating whether a touch device with the specified index exists.
         /// </summary>
         /// <param name="index">The touch device index to evaluate.</param>
-        /// <returns><c>true</c> if there is a touch device at the specified index; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if there is a touch device at the specified index; otherwise, false.</returns>
         Boolean IsTouchDeviceConnected(Int32 index);
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet
         /// Gets the touch device with the specified device index.
         /// </summary>
         /// <param name="index">The index of the device to retrieve.</param>
-        /// <returns>The touch device with the specified device index, or <c>null</c> if no such device exists.</returns>
+        /// <returns>The touch device with the specified device index, or <see langword="null"/> if no such device exists.</returns>
         TouchDevice GetTouchDeviceByIndex(Int32 index);
 
         /// <summary>

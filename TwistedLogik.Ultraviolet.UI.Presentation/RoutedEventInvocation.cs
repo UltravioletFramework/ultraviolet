@@ -292,7 +292,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the specified type represents a valid routed event delegate.
         /// </summary>
         /// <param name="delegateType">The delegate type to evaluate.</param>
-        /// <returns><c>true</c> if the specified delegate type represents a valid routed event delegate; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified delegate type represents a valid routed event delegate; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsValidRoutedEventDelegate(Type delegateType)
         {
             if (!typeof(Delegate).IsAssignableFrom(delegateType))
@@ -318,7 +318,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="data">The routed event data for the current event.</param>
         /// <param name="handledEventsToo">A value indicating whether the current event handler wants to receive handled events.</param>
-        /// <returns><c>true</c> if the event should be raised for this object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the event should be raised for this object; otherwise, <see langword="false"/>.</returns>
         private static Boolean ShouldEventBeRaisedForElement(ref RoutedEventData data, Boolean handledEventsToo)
         {
             return !data.Handled || handledEventsToo;
@@ -331,7 +331,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="first">The first element to process.</param>
         /// <param name="current">The element that is currently being processed.</param>
-        /// <returns><c>true</c> if the event should continue bubbling; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the event should continue bubbling; otherwise, <see langword="false"/>.</returns>
         private static Boolean ShouldContinueBubbling(DependencyObject first, ref DependencyObject current)
         {
             if (current == null)
@@ -359,7 +359,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="first">The first element to process.</param>
         /// <param name="current">The element that is currently being processed.</param>
-        /// <returns><c>true</c> if the event should continue tunnelling; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the event should continue tunnelling; otherwise, <see langword="false"/>.</returns>
         private static Boolean ShouldContinueTunnelling(DependencyObject first, ref DependencyObject current)
         {
             if (current == null)
@@ -398,7 +398,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="evt">A <see cref="RoutedEvent"/> which identifies the routed event for which handlers are being invoked.</param>
         /// <param name="index">The index of the handler to invoke; this value is incremented by one when this method returns.</param>
         /// <param name="handler">The metadata for the handler that corresponds to the specified index within the handler list.</param>
-        /// <returns><c>true</c> if a handler was retrieved for the specified index; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if a handler was retrieved for the specified index; otherwise, <see langword="false"/>.</returns>
         private static Boolean GetEventHandler(DependencyObject element, RoutedEvent evt, ref Int32 index, ref RoutedEventHandlerMetadata handler)
         {
             var indexTemp = index;

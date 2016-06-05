@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="key1">The first <see cref="CurveKey"/> to compare.</param>
         /// <param name="key2">The second <see cref="CurveKey"/> to compare.</param>
-        /// <returns><c>true</c> if the specified curve keys are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified curve keys are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(CurveKey key1, CurveKey key2)
         {
             if (key1 == null || key2 == null)
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="key1">The first <see cref="CurveKey"/> to compare.</param>
         /// <param name="key2">The second <see cref="CurveKey"/> to compare.</param>
-        /// <returns><c>true</c> if the specified curve keys are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified curve keys are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(CurveKey key1, CurveKey key2)
         {
             if (key1 == null || key2 == null)
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object obj)
         {
             return obj is CurveKey && Equals((CurveKey)obj);
@@ -109,7 +109,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(CurveKey obj)
         {
             if (obj == null) 

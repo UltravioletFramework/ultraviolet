@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the component template for the specified interface element.
         /// </summary>
         /// <param name="element">The element for which to retrieve a component template.</param>
-        /// <returns>The component template for the specified interface element, or <c>null</c> if no such template is registered.</returns>
+        /// <returns>The component template for the specified interface element, or <see langword="null"/> if no such template is registered.</returns>
         public XDocument Get(UIElement element)
         {
             Type type;
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The element for which to retrieve a component template.</param>
         /// <param name="actualType">The actual type for which a template was retrieved, which may be an 
         /// ancestor of the runtime type of <paramref name="element"/>.</param>
-        /// <returns>The component template for the specified interface element, or <c>null</c> if no such template is registered.</returns>
+        /// <returns>The component template for the specified interface element, or <see langword="null"/> if no such template is registered.</returns>
         public XDocument Get(UIElement element, out Type actualType)
         {
             Contract.Require(element, "element");
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the component template for the specified element type, if one has been registered.
         /// </summary>
         /// <typeparam name="T">The type of element for which to retrieve a component template.</typeparam>
-        /// <returns>The component template for the specified type, or <c>null</c> if no such template exists.</returns>
+        /// <returns>The component template for the specified type, or <see langword="null"/> if no such template exists.</returns>
         public XDocument Get<T>() where T : UIElement
         {
             Type actualType;
@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the component template for the specified element type, if one has been registered.
         /// </summary>
         /// <param name="type">The type of element for which to retrieve a component template.</param>
-        /// <returns>The component template for the specified type, or <c>null</c> if no such template exists.</returns>
+        /// <returns>The component template for the specified type, or <see langword="null"/> if no such template exists.</returns>
         public XDocument Get(Type type)
         {
             Type actualType;
@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="type">The type of element for which to retrieve a component template.</param>
         /// <param name="actualType">The actual type for which a template was retrieved, which may be an ancestor of <paramref name="type"/>.</param>
-        /// <returns>The component template for the specified type, or <c>null</c> if no such template exists.</returns>
+        /// <returns>The component template for the specified type, or <see langword="null"/> if no such template exists.</returns>
         public XDocument Get(Type type, out Type actualType)
         {
             Contract.Require(type, "type");
@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the default component template for the specified element type, if one has been registered.
         /// </summary>
         /// <typeparam name="T">The type of element for which to retrieve the default component template.</typeparam>
-        /// <returns>The default component template for the specified type, or <c>null</c> if no such template exists.</returns>
+        /// <returns>The default component template for the specified type, or <see langword="null"/> if no such template exists.</returns>
         public XDocument GetDefault<T>() where T : UIElement
         {
             return GetDefault(typeof(T));
@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the default component template for the specified element type, if one has been registered.
         /// </summary>
         /// <param name="type">The type of element for which to retrieve the default component template.</param>
-        /// <returns>The default component template for the specified type, or <c>null</c> if no such template exists.</returns>
+        /// <returns>The default component template for the specified type, or <see langword="null"/> if no such template exists.</returns>
         public XDocument GetDefault(Type type)
         {
             Type actualType;
@@ -126,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="type">The type of element for which to retrieve the default component template.</param>
         /// <param name="actualType">The actual type for which a template was retrieved, which may be an ancestor of <paramref name="type"/>.</param>
-        /// <returns>The default component template for the specified type, or <c>null</c> if no such template exists.</returns>
+        /// <returns>The default component template for the specified type, or <see langword="null"/> if no such template exists.</returns>
         public XDocument GetDefault(Type type, out Type actualType)
         {
             Contract.Require(type, "type");

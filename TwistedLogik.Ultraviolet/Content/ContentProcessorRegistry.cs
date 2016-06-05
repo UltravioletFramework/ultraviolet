@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="input">The processor's input type.</param>
         /// <param name="output">The processor's output type.</param>
-        /// <returns>The content processor that takes the specified types, or <c>null</c> if no such processor exists.</returns>
+        /// <returns>The content processor that takes the specified types, or <see langword="null"/> if no such processor exists.</returns>
         public IContentProcessor FindProcessor(Type input, Type output)
         {
             Contract.Require(input, "input");
@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <typeparam name="TInput">The processor's input type.</typeparam>
         /// <typeparam name="TOutput">The processor's output type.</typeparam>
-        /// <returns>The content processor that takes the specified types, or <c>null</c> if no such processor exists.</returns>
+        /// <returns>The content processor that takes the specified types, or <see langword="null"/> if no such processor exists.</returns>
         public IContentProcessor FindProcessor<TInput, TOutput>()
         {
             return FindProcessor(typeof(TInput), typeof(TOutput));

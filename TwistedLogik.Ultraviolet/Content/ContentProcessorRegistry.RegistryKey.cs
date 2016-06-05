@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.Content
             /// Checks two objects for equality.
             /// </summary>
             /// <param name="other">The object to compare against this object for equality.</param>
-            /// <returns><c>true</c> if this object is equal to the specified object; otherwise, <c>false</c>.</returns>
+            /// <returns><see langword="true"/> if this object is equal to the specified object; otherwise, <see langword="false"/>.</returns>
             public Boolean Equals(RegistryKey other)
             {
                 return Input == other.Input && Output == other.Output;

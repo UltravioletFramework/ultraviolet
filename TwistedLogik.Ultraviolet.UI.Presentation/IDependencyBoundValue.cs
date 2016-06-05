@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Checks to see whether the underlying bound value has changed.
         /// </summary>
-        /// <returns><c>true</c> if the value has changed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the value has changed; otherwise, <see langword="false"/>.</returns>
         Boolean CheckHasChanged();
 
         /// <summary>

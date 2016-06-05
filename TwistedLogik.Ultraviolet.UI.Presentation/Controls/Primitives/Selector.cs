@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Gets a value indicating whether the specified element is selected.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is selected; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element is selected; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsSelected(DependencyObject element)
         {
             Contract.Require(element, "element");
@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Gets a value indicating whether the selected element contains keyboard focus.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is selected; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element is selected; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsSelectionActive(DependencyObject element)
         {
             Contract.Require(element, "element");

@@ -218,7 +218,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="uv">The Ultraviolet context to update.</param>
         /// <param name="time">Time elapsed since the last update.</param>
-        /// <returns><c>true</c> if the host should continue processing; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the host should continue processing; otherwise, <see langword="false"/>.</returns>
         private Boolean UpdateContext(UltravioletContext uv, UltravioletTime time)
         {
             using (UltravioletProfiler.Section(UltravioletProfilerSections.Update))

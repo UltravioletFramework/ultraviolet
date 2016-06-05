@@ -778,7 +778,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets a value indicating whether the grid can resolve the width of its star-sized columns.
         /// </summary>
-        /// <returns><c>true</c> if the columns can be resolved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the columns can be resolved; otherwise, <see langword="false"/>.</returns>
         private Boolean CanResolveStarColumns()
         {
             if (starColumnCount == 0)
@@ -796,7 +796,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Gets a value indicating whether the grid can resolve the height of its star-sized rows.
         /// </summary>
-        /// <returns><c>true</c> if the rows can be resolved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the rows can be resolved; otherwise, <see langword="false"/>.</returns>
         private Boolean CanResolveStarRows()
         {
             if (starRowCount == 0)

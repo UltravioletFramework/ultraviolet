@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// </summary>
         /// <param name="type">The type for which to evaluate placeholder substitutions.</param>
         /// <param name="placeholder">The placeholder string for which to evaluate substitutions.</param>
-        /// <returns>The type associated with the specified placeholder, or <c>null</c> if there is no such placeholder.</returns>
+        /// <returns>The type associated with the specified placeholder, or <see langword="null"/> if there is no such placeholder.</returns>
         public static Type GetPlaceholderType(Type type, String placeholder)
         {
             var attr = type.GetCustomAttributes(typeof(UvmlPlaceholderAttribute), true).Cast<UvmlPlaceholderAttribute>()
@@ -334,7 +334,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <param name="namespace">The namespace within which to place the compiled view model.</param>
         /// <param name="name">The name of the data source's view model.</param>
         /// <param name="path">The path to the file that defines the data source.</param>
-        /// <returns>The instance of <see cref="DataSourceDefinition"/> that was created, or <c>null</c> if the specified
+        /// <returns>The instance of <see cref="DataSourceDefinition"/> that was created, or <see langword="null"/> if the specified
         /// XML does not contain a valid view.</returns>
         private static DataSourceDefinition? CreateDataSourceDefinitionFromFile(String @namespace, String name, String path)
         {
@@ -355,7 +355,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <param name="namespace">The namespace within which to place the compiled view model.</param>
         /// <param name="name">The name of the data source's view model.</param>
         /// <param name="xml">The XML string to parse.</param>
-        /// <returns>The instance of <see cref="DataSourceDefinition"/> that was created, or <c>null</c> if the specified
+        /// <returns>The instance of <see cref="DataSourceDefinition"/> that was created, or <see langword="null"/> if the specified
         /// XML does not contain a valid view.</returns>
         private static DataSourceDefinition? CreateDataSourceDefinitionFromXml(String @namespace, String name, String xml)
         {
@@ -376,7 +376,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <param name="namespace">The namespace within which to place the compiled view model.</param>
         /// <param name="name">The name of the data source's view model.</param>
         /// <param name="path">The path to the file that defines the data source.</param>
-        /// <returns>The instance of <see cref="DataSourceDefinition"/> that was created, or <c>null</c> if the specified
+        /// <returns>The instance of <see cref="DataSourceDefinition"/> that was created, or <see langword="null"/> if the specified
         /// XML does not contain a valid view.</returns>
         private static DataSourceDefinition? CreateDataSourceDefinitionFromXml(XDocument xdocument, String @namespace, String name, String path)
         {
@@ -825,7 +825,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <param name="state">The expression compiler's current state.</param>
         /// <param name="name">The name of the dependency or attached property to retrieve.</param>
         /// <param name="ownerType">The type that references the dependency or attached property.</param>
-        /// <returns>The <see cref="DependencyProperty"/> referred to by the specified name, or <c>null</c> if there is no such dependency property.</returns>
+        /// <returns>The <see cref="DependencyProperty"/> referred to by the specified name, or <see langword="null"/> if there is no such dependency property.</returns>
         private static DependencyProperty FindDependencyOrAttachedPropertyByName(ExpressionCompilerState state, String name, Type ownerType)
         {
             String container;
@@ -847,7 +847,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <param name="name">The attribute name to evaluate.</param>
         /// <param name="container">The attached property's container type.</param>
         /// <param name="property">The attached property's property name.</param>
-        /// <returns><c>true</c> if the specified name represents an attached property; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified name represents an attached property; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsAttachedProperty(String name, out String container, out String property)
         {
             container = null;

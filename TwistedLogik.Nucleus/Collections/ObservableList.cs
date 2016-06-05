@@ -121,7 +121,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Removes the specified item from the list, if it exists in the list.
         /// </summary>
         /// <param name="item">The item to remove from the list.</param>
-        /// <returns><c>true</c> if the specified item was removed from the list; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified item was removed from the list; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(TValue item)
         {
             var index = list.IndexOf(item);
@@ -159,7 +159,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets a value indicating whether the list contains the specified item.
         /// </summary>
         /// <param name="item">The item to evaluate.</param>
-        /// <returns><c>true</c> if the list contains the specified item; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the list contains the specified item; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(TValue item)
         {
             return list.Contains(item);

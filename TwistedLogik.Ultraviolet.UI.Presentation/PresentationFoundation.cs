@@ -140,7 +140,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the data source wrapper type for the view with the specified asset path.
         /// </summary>
         /// <param name="path">The path to the view for which to retrieve a data source wrapper type.</param>
-        /// <returns>The data source wrapper type for the view with the specified path, or <c>null</c> if no such wrapper exists.</returns>
+        /// <returns>The data source wrapper type for the view with the specified path, or <see langword="null"/> if no such wrapper exists.</returns>
         public Type GetDataSourceWrapperTypeByViewPath(String path)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -160,7 +160,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the data source wrapper type with the specified name.
         /// </summary>
         /// <param name="name">The name of the data source wrapper type to retrieve.</param>
-        /// <returns>The data source wrapper type with the specified name, or <c>null</c> if no such wrapper exists.</returns>
+        /// <returns>The data source wrapper type with the specified name, or <see langword="null"/> if no such wrapper exists.</returns>
         public Type GetDataSourceWrapperTypeByName(String name)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -289,7 +289,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <typeparam name="TViewModel">The type of view model to which the element will be bound.</typeparam>
         /// <param name="typeName">The name of the element to instantiate.</param>
         /// <param name="name">The ID with which to create the element.</param>
-        /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
+        /// <returns>The element that was created, or <see langword="null"/> if the element could not be created.</returns>
         public UIElement InstantiateElementByName<TViewModel>(String typeName, String name)
         {
             return InstantiateElementByName(typeName, name, typeof(TViewModel));
@@ -301,7 +301,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="typeName">The name of the element to instantiate.</param>
         /// <param name="name">The ID with which to create the element.</param>
         /// <param name="viewModelType">The type of view model to which the element will be bound.</param>
-        /// <returns>The element that was created, or <c>null</c> if the element could not be created.</returns>
+        /// <returns>The element that was created, or <see langword="null"/> if the element could not be created.</returns>
         public UIElement InstantiateElementByName(String typeName, String name, Type viewModelType)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -331,7 +331,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="name">The name of the known type to retrieve.</param>
         /// <param name="type">The type associated with the specified name.</param>
-        /// <returns><c>true</c> if the specified known type was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified known type was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetKnownType(String name, out Type type)
         {
             return GetKnownType(name, true, out type);
@@ -343,7 +343,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="name">The name of the known type to retrieve.</param>
         /// <param name="isCaseSensitive">A value indicating whether the resolution of the type name is case-sensitive.</param>
         /// <param name="type">The type associated with the specified name.</param>
-        /// <returns><c>true</c> if the specified known type was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified known type was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetKnownType(String name, Boolean isCaseSensitive, out Type type)
         {
             Contract.RequireNotEmpty(name, "name");
@@ -367,7 +367,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="name">The name of the element for which to retrieve the associated type.</param>
         /// <param name="type">The type associated with the specified element.</param>
-        /// <returns><c>true</c> if the specified element type was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element type was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetKnownElement(String name, out Type type)
         {
             return GetKnownElement(name, true, out type);
@@ -379,7 +379,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="name">The name of the element for which to retrieve the associated type.</param>
         /// <param name="isCaseSensitive">A value indicating whether the resolution of the element name is case-sensitive.</param>
         /// <param name="type">The type associated with the specified element.</param>
-        /// <returns><c>true</c> if the specified element type was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element type was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetKnownElement(String name, Boolean isCaseSensitive, out Type type)
         {
             Contract.RequireNotEmpty(name, "name");
@@ -403,7 +403,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="name">The name of the element to evaluate.</param>
         /// <param name="property">The name of the element's default property.</param>
-        /// <returns><c>true</c> if the specified element's default property was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element's default property was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetElementDefaultProperty(String name, out String property)
         {
             Contract.RequireNotEmpty(name, "name");
@@ -424,7 +424,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="type">The type of the element to evaluate.</param>
         /// <param name="property">The name of the element's default property.</param>
-        /// <returns><c>true</c> if the specified element's default property was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element's default property was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetElementDefaultProperty(Type type, out String property)
         {
             Contract.Require(type, "type");
@@ -476,7 +476,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Unregisters a custom element.
         /// </summary>
         /// <param name="type">The type that implements the custom element.</param>
-        /// <returns><c>true</c> if the custom element was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the custom element was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterKnownType(Type type)
         {
             Contract.Require(type, "type");
@@ -493,7 +493,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Unregisters a custom element.
         /// </summary>
         /// <param name="type">The element type to unregister.</param>
-        /// <returns><c>true</c> if the custom element was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the custom element was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterKnownElement(Type type)
         {
             Contract.Require(type, "type");
@@ -999,7 +999,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="name">The name of the known type for which to retrieve a registration.</param>
         /// <param name="registration">The registration for the known type with the specified name.</param>
-        /// <returns><c>true</c> if a known type with the specified name exists; otherwise, <c>false.</c></returns>
+        /// <returns><see langword="true"/> if a known type with the specified name exists; otherwise, <c>false.</c></returns>
         private Boolean GetKnownTypeRegistration(String name, out KnownType registration)
         {
             if (coreTypes.TryGetValue(name, out registration))
@@ -1017,7 +1017,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="type">The CLR type of the known type for which to retrieve a registration.</param>
         /// <param name="registration">The registration for the known element associated with the specified CLR type.</param>
-        /// <returns><c>true</c> if a known type associated with the specified CLR type exists; otherwise, <c>false.</c></returns>
+        /// <returns><see langword="true"/> if a known type associated with the specified CLR type exists; otherwise, <c>false.</c></returns>
         private Boolean GetKnownTypeRegistration(Type type, out KnownType registration)
         {
             foreach (var value in coreTypes.Values)
@@ -1045,7 +1045,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="name">The name of the known element for which to retrieve a registration.</param>
         /// <param name="registration">The registration for the known element with the specified name.</param>
-        /// <returns><c>true</c> if a known element with the specified name exists; otherwise, <c>false.</c></returns>
+        /// <returns><see langword="true"/> if a known element with the specified name exists; otherwise, <c>false.</c></returns>
         private Boolean GetKnownElementRegistration(String name, out KnownElement registration)
         {
             KnownType typeRegistration;
@@ -1063,7 +1063,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="type">The CLR type of the known element for which to retrieve a registration.</param>
         /// <param name="registration">The registration for the known element associated with the specified CLR type.</param>
-        /// <returns><c>true</c> if a known element associated with the specified CLR type exists; otherwise, <c>false.</c></returns>
+        /// <returns><see langword="true"/> if a known element associated with the specified CLR type exists; otherwise, <c>false.</c></returns>
         private Boolean GetKnownElementRegistration(Type type, out KnownElement registration)
         {
             KnownType typeRegistration;

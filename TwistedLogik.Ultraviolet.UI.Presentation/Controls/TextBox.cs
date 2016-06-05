@@ -822,7 +822,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets a value indicating whether the text box's height is constrained by a <see cref="FrameworkElement.Height"/>,
         /// <see cref="FrameworkElement.MinHeight"/>, or <see cref="FrameworkElement.MaxHeight"/> value.
         /// </summary>
-        /// <returns><c>true</c> if the text box's height is constrained; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the text box's height is constrained; otherwise, <see langword="false"/>.</returns>
         private Boolean IsHeightConstrained()
         {
             return !Double.IsNaN(Height) || !MathUtil.IsApproximatelyZero(MinHeight) || !Double.IsPositiveInfinity(MaxHeight);

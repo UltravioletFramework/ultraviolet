@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <remarks>Higher values indicate higher priority.</remarks>
         /// <param name="priorityAdjustment">The amount by which to adjust the binding's priority, 
-        /// or <c>null</c> to reset the input binding's priority adjustment.</param>
+        /// or <see langword="null"/> to reset the input binding's priority adjustment.</param>
         public void AdjustPriority(Int32? priorityAdjustment)
         {
             this.priorityAdjustment = priorityAdjustment;
@@ -43,8 +43,8 @@ namespace TwistedLogik.Ultraviolet.Input
         /// and the same button configuration as the specified input binding.
         /// </summary>
         /// <param name="binding">The <see cref="InputBinding"/> to compare against this input binding.</param>
-        /// <returns><c>true</c> if the specified input binding uses the same device and the same button 
-        /// configuration as this input binding; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified input binding uses the same device and the same button 
+        /// configuration as this input binding; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean UsesSameButtons(InputBinding binding);
 
         /// <summary>
@@ -52,33 +52,33 @@ namespace TwistedLogik.Ultraviolet.Input
         /// and the same primary buttons as the specified input binding.
         /// </summary>
         /// <param name="binding">The <see cref="InputBinding"/> to compare against this input binding.</param>
-        /// <returns><c>true</c> if the specified input binding uses the same device and the same primary 
-        /// buttons as this input binding; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified input binding uses the same device and the same primary 
+        /// buttons as this input binding; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean UsesSamePrimaryButtons(InputBinding binding);
 
         /// <summary>
         /// Gets a value indicating whether the binding is down.
         /// </summary>
-        /// <returns><c>true</c> if the binding is down; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the binding is down; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsDown();
 
         /// <summary>
         /// Gets a value indicating whether the binding is up.
         /// </summary>
-        /// <returns><c>true</c> if the binding is up; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the binding is up; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsUp();
 
         /// <summary>
         /// Gets a value indicating whether the binding was pressed this frame.
         /// </summary>
         /// <param name="ignoreRepeats">A value indicating whether to ignore repeated button press events on devices which support them.</param>
-        /// <returns><c>true</c> if the binding was pressed this frame; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the binding was pressed this frame; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsPressed(Boolean ignoreRepeats = true);
 
         /// <summary>
         /// Gets a value indicating whether the binding was released this frame.
         /// </summary>
-        /// <returns><c>true</c> if the binding was released this frame; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the binding was released this frame; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsReleased();
 
         /// <summary>

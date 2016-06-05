@@ -212,7 +212,7 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Throws an <see cref="ArgumentNullException"/> if the specified object is <c>null</c>.
+        /// Throws an <see cref="ArgumentNullException"/> if the specified object is <see langword="null"/>.
         /// </summary>
         /// <typeparam name="T">The type of object to evaluate for nullity.</typeparam>
         /// <param name="argument">The object to evaluate for nullity.</param>

@@ -95,7 +95,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="p1">The first <see cref="Point2F"/> to compare.</param>
         /// <param name="p2">The second <see cref="Point2F"/> to compare.</param>
-        /// <returns><c>true</c> if the specified points are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified points are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(Point2F p1, Point2F p2)
         {
             return p1.Equals(p2);
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="p1">The first <see cref="Point2F"/> to compare.</param>
         /// <param name="p2">The second <see cref="Point2F"/> to compare.</param>
-        /// <returns><c>true</c> if the specified points are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified points are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(Point2F p1, Point2F p2)
         {
             return !p1.Equals(p2);
@@ -138,7 +138,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a point to convert.</param>
         /// <param name="point">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, out Point2F point)
         {
             return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out point);
@@ -162,7 +162,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="point">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Point2F point)
         {
             point = default(Point2F);
@@ -265,7 +265,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Point2F))
@@ -277,7 +277,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(Point2F other)
         {
             return x == other.x && y == other.y;

@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="sb1">The first <see cref="VersionedStringSource"/> instance to compare.</param>
         /// <param name="sb2">The second <see cref="VersionedStringSource"/> instance to compare.</param>
-        /// <returns><c>true</c> if the specified instances are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified instances are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(VersionedStringSource sb1, VersionedStringSource sb2)
         {
             return sb1.Equals(sb2);
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="sb1">The first <see cref="VersionedStringSource"/> instance to compare.</param>
         /// <param name="sb2">The second <see cref="VersionedStringSource"/> instance to compare.</param>
-        /// <returns><c>true</c> if the specified instances are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified instances are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(VersionedStringSource sb1, VersionedStringSource sb2)
         {
             return !sb1.Equals(sb2);
@@ -182,7 +182,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Evaluates whether the <see cref="VersionedStringSource"/> is equal to another <see cref="Object"/>.
         /// </summary>
         /// <param name="other">The <see cref="Object"/> instance to compare to this instance.</param>
-        /// <returns><c>true</c> if the specified instance is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified instance is equal to this instance; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object other)
         {
             if (other is VersionedStringSource)
@@ -196,7 +196,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Evaluates whether the <see cref="VersionedStringSource"/> is equal to another <see cref="VersionedStringSource"/>.
         /// </summary>
         /// <param name="other">The <see cref="VersionedStringSource"/> instance to compare to this instance.</param>
-        /// <returns><c>true</c> if the specified instance is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified instance is equal to this instance; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(VersionedStringSource other)
         {
             if (sourceString != null && other.sourceString != null)

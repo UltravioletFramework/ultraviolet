@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         /// </summary>
         /// <param name="soundEffect">The <see cref="SoundEffect"/> to play.</param>
         /// <param name="loop">A value indicating whether to loop the sound effect.</param>
-        /// <returns><c>true</c> if the sound effect began playing successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the sound effect began playing successfully; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean Play(SoundEffect soundEffect, Boolean loop = false);
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         /// <param name="pitch">A value from -1.0 (down one octave) to 1.0 (up one octave) indicating the sound effect's pitch adjustment.</param>
         /// <param name="pan">A value from -1.0 (full left) to 1.0 (full right) representing the sound effect's panning position.</param>
         /// <param name="loop">A value indicating whether to loop the sound effect.</param>
-        /// <returns><c>true</c> if the sound effect began playing successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the sound effect began playing successfully; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean Play(SoundEffect soundEffect, Single volume, Single pitch, Single pan, Boolean loop = false);
 
         /// <summary>

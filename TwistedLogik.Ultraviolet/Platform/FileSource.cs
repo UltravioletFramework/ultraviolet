@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// </summary>
         /// <param name="path">The relative path of the node to find.</param>
         /// <param name="throwIfNotFound">A value indicating whether to throw a <see cref="FileNotFoundException"/> if the path does not exist.</param>
-        /// <returns>The archive node with the specified path, or <c>null</c> if no such node exists and <paramref name="throwIfNotFound"/> is <c>false</c>.</returns>
+        /// <returns>The archive node with the specified path, or <see langword="null"/> if no such node exists and <paramref name="throwIfNotFound"/> is <see langword="false"/>.</returns>
         public abstract FileSourceNode Find(String path, Boolean throwIfNotFound = true);
 
         /// <summary>

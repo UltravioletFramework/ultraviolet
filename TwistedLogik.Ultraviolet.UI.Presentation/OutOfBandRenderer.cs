@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// the specified element.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the render targets for the specified element are currently being drawn; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the render targets for the specified element are currently being drawn; otherwise, <see langword="false"/>.</returns>
         public Boolean IsDrawingRenderTargetFor(UIElement element)
         {
             Contract.Require(element, "element");
@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the specified element is rendered out-of-band.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is rendered out-of-band; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element is rendered out-of-band; otherwise, <see langword="false"/>.</returns>
         public Boolean IsRenderedOutOfBand(UIElement element)
         {
             Contract.Require(element, "element");
@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the specified element's texture is ready to be used.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element's texture is ready; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element's texture is ready; otherwise, <see langword="false"/>.</returns>
         public Boolean IsTextureReady(UIElement element)
         {
             Contract.Require(element, "element");
@@ -364,7 +364,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the specified element has become disconnected from the view's layout root through the visual tree.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is visually disconnected; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element is visually disconnected; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsVisuallyDisconnectedFromRoot(UIElement element)
         {
             var current = element;

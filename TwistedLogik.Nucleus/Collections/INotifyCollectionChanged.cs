@@ -13,7 +13,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// </summary>
     /// <param name="collection">The collection that was changed.</param>
     /// <param name="item">The item that was added to the collection.</param>
-    /// <param name="index">The index at which the item was added to the collection, if this is an indexed collection; otherwise, <c>null</c>.</param>
+    /// <param name="index">The index at which the item was added to the collection, if this is an indexed collection; otherwise, <see langword="null"/>.</param>
     public delegate void CollectionItemAddedEventHandler(INotifyCollectionChanged collection, Int32? index, Object item);
 
     /// <summary>
@@ -21,7 +21,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// </summary>
     /// <param name="collection">The collection that was changed.</param>
     /// <param name="item">The item that was removed from the collection.</param>
-    /// <param name="index">The index at which the item was added to the collection, if this is an indexed collection; otherwise, <c>null</c>.</param>
+    /// <param name="index">The index at which the item was added to the collection, if this is an indexed collection; otherwise, <see langword="null"/>.</param>
     public delegate void CollectionItemRemovedEventHandler(INotifyCollectionChanged collection, Int32? index, Object item);
 
     /// <summary>

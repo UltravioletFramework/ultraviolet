@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Removes an item from the collection.
         /// </summary>
         /// <param name="trigger">The trigger to remove from the collection.</param>
-        /// <returns><c>true</c> if the item was removed from the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the item was removed from the collection; otherwise, <see langword="false"/>.</returns>
         internal Boolean Remove(UvssTrigger trigger)
         {
             return triggers.Remove(trigger);
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Gets a value indicating whether the collection contains the specified item.
         /// </summary>
         /// <param name="trigger">The trigger to evaluate.</param>
-        /// <returns><c>true</c> if the collection contains the specified item; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the collection contains the specified item; otherwise, <see langword="false"/>.</returns>
         internal Boolean Contains(UvssTrigger trigger)
         {
             return triggers.Contains(trigger);

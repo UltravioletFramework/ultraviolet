@@ -903,7 +903,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Called when the value of the <see cref="TextBox.TextProperty"/> dependency property changes.
         /// </summary>
         /// <param name="value">The new value of the dependency property.</param>
-        /// <returns><c>true</c> if the editor replaced the text with its own source; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the editor replaced the text with its own source; otherwise, <see langword="false"/>.</returns>
         internal Boolean HandleTextChanged(VersionedStringSource value)
         {
             if (value.IsSourcedFromStringBuilder)
@@ -1374,7 +1374,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <param name="offset">The offset at which the character is being entered.</param>
         /// <param name="character">The character which is being entered.</param>
-        /// <returns><c>true</c> if the character is valid for entry; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the character is valid for entry; otherwise, <see langword="false"/>.</returns>
         protected virtual Boolean IsValidCharacterForEntry(Int32 offset, Char character)
         {
             if (TemplatedParent == null)
@@ -1465,7 +1465,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// The text editor's masking character, or <c>null</c> if masking is not enabled.
+        /// The text editor's masking character, or <see langword="null"/> if masking is not enabled.
         /// </summary>
         protected virtual Char? MaskCharacter
         {
@@ -2014,7 +2014,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Deletes the text in the current selection.
         /// </summary>
         /// <param name="raiseChangeEvents">A value indicating whether the editor should raise events relating to the text being changed.</param>
-        /// <returns><c>true</c> if the selection was deleted; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the selection was deleted; otherwise, <see langword="false"/>.</returns>
         private Boolean DeleteSelection(Boolean raiseChangeEvents)
         {
             var length = SelectionLength;
@@ -2049,7 +2049,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="start">The first character to delete.</param>
         /// <param name="length">The number of characters to delete.</param>
         /// <param name="raiseChangeEvents">A value indicating whether the editor should raise events relating to the text being changed.</param>
-        /// <returns><c>true</c> if the span was deleted; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the span was deleted; otherwise, <see langword="false"/>.</returns>
         private Boolean DeleteSpan(Int32 start, Int32 length, Boolean raiseChangeEvents)
         {
             BeginTrackingSelectionChanges();
@@ -2147,7 +2147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <param name="movementAllowed">A value indicating whether the user's desired movement is allowed.</param>
         /// <param name="movementDirection">A <see cref="CaretNavigationDirection"/> value specifying which direction the selection is moving.</param>
-        /// <returns><c>true</c> if the movement was handled; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the movement was handled; otherwise, <see langword="false"/>.</returns>
         private Boolean HandleSelectionMovement(Boolean movementAllowed, CaretNavigationDirection movementDirection)
         {
             var selecting = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;

@@ -36,7 +36,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a <c>null</c>able 16-bit integer to the stream.
+        /// Writes a <see langword="null"/>able 16-bit integer to the stream.
         /// </summary>
         /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
@@ -50,7 +50,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a <c>null</c>able 32-bit integer to the stream.
+        /// Writes a <see langword="null"/>able 32-bit integer to the stream.
         /// </summary>
         /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
@@ -64,7 +64,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a <c>null</c>able 64-bit integer to the stream.
+        /// Writes a <see langword="null"/>able 64-bit integer to the stream.
         /// </summary>
         /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
@@ -78,7 +78,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a <c>null</c>able unsigned 16-bit integer to the stream.
+        /// Writes a <see langword="null"/>able unsigned 16-bit integer to the stream.
         /// </summary>
         /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
@@ -93,7 +93,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a <c>null</c>able unsigned 32-bit integer to the stream.
+        /// Writes a <see langword="null"/>able unsigned 32-bit integer to the stream.
         /// </summary>
         /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
@@ -108,7 +108,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a <c>null</c>able unsigned 64-bit integer to the stream.
+        /// Writes a <see langword="null"/>able unsigned 64-bit integer to the stream.
         /// </summary>
         /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
@@ -123,7 +123,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a <c>null</c>able single-precision floating point value to the stream.
+        /// Writes a <see langword="null"/>able single-precision floating point value to the stream.
         /// </summary>
         /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
@@ -137,7 +137,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a <c>null</c>able double-precision floating point value to the stream.
+        /// Writes a <see langword="null"/>able double-precision floating point value to the stream.
         /// </summary>
         /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the value.</param>
         /// <param name="value">The value to write.</param>
@@ -196,7 +196,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Writes a <c>null</c>able resolved reference to a Nucleus data object to the stream.
+        /// Writes a <see langword="null"/>able resolved reference to a Nucleus data object to the stream.
         /// </summary>
         /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the data object reference.</param>
         /// <param name="reference">The <see cref="Nullable{ResolvedDataObjectReference}"/> to write to the stream.</param>

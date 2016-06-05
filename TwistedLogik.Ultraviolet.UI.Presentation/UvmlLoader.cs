@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uiPanel">The <see cref="UIPanel"/> that is creating the panel.</param>
         /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> that defines the view.</param>
-        /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <c>null</c> to skip view model creation.</param>
+        /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <see langword="null"/> to skip view model creation.</param>
         /// <returns>The <see cref="PresentationFoundationView"/> that was loaded from the specified XML element.</returns>
         public static PresentationFoundationView Load(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory)
         {

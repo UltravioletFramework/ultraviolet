@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Gets the element which has keyboard focus within the specified view.
         /// </summary>
         /// <param name="view">The view to evaluate.</param>
-        /// <returns>The element which has keyboard focus within the specified view, or <c>null</c>
+        /// <returns>The element which has keyboard focus within the specified view, or <see langword="null"/>
         /// if no element currently has focus.</returns>
         public static IInputElement GetFocusedElement(PresentationFoundationView view)
         {
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Gets a value indicating whether the specified element can receive keyboard focus.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is focusable; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element is focusable; otherwise, <see langword="false"/>.</returns>
         public static Boolean IsFocusable(IInputElement element)
         {
             if (element == null)

@@ -359,7 +359,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
         /// <summary>
         /// Gets or sets a value indicating whether to use controller axes for directional navigation. If this property is
-        /// set to <c>false</c>, then the directional pad will be used instead.
+        /// set to <see langword="false"/>, then the directional pad will be used instead.
         /// </summary>
         public static Boolean UseAxisForDirectionalNavigation
         {
@@ -369,7 +369,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
         /// <summary>
         /// Gets or sets the axis which is used to perform left/right directional navigation if
-        /// <see cref="UseAxisForDirectionalNavigation"/> is <c>true</c>.
+        /// <see cref="UseAxisForDirectionalNavigation"/> is <see langword="true"/>.
         /// </summary>
         public static GamePadAxis DirectionalNavigationAxisX
         {
@@ -379,7 +379,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
         /// <summary>
         /// Gets or sets the axis which is used to perform up/down directional navigation if
-        /// <see cref="UseAxisForDirectionalNavigation"/> is <c>true</c>.
+        /// <see cref="UseAxisForDirectionalNavigation"/> is <see langword="true"/>.
         /// </summary>
         public static GamePadAxis DirectionalNavigationAxisY
         {

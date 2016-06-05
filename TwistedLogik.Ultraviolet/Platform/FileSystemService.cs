@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// Gets a value indicating whether the specified path exists and is a file.
         /// </summary>
         /// <param name="path">The path to evaluate.</param>
-        /// <returns><c>true</c> if the specified path exists and is a file; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified path exists and is a file; otherwise, <see langword="false"/>.</returns>
         public virtual Boolean FileExists(String path)
         {
             Contract.Require(path, "path");
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// Gets a value indicating whether the specified path exists and is a directory.
         /// </summary>
         /// <param name="path">The path to evaluate.</param>
-        /// <returns><c>true</c> if the specified path exists and is a directory; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified path exists and is a directory; otherwise, <see langword="false"/>.</returns>
         public virtual Boolean DirectoryExists(String path)
         {
             Contract.Require(path, "path");

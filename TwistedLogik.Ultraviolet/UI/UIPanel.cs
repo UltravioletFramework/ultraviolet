@@ -373,7 +373,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Opens the panel.
         /// </summary>
         /// <param name="duration">The amount of time over which to transition the panel's state, or
-        /// <c>null</c> to use the default transition time.</param>
+        /// <see langword="null"/> to use the default transition time.</param>
         internal void Open(TimeSpan? duration = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -385,7 +385,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Asynchronously opens the panel.
         /// </summary>
         /// <param name="duration">The amount of time over which to transition the panel's state, or
-        /// <c>null</c> to use the default transition time.</param>
+        /// <see langword="null"/> to use the default transition time.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
         internal Task OpenAsync(TimeSpan? duration = null)
         {
@@ -398,7 +398,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Closes the panel.
         /// </summary>
         /// <param name="duration">The amount of time over which to transition the panel's state, or
-        /// <c>null</c> to use the default transition time.</param>
+        /// <see langword="null"/> to use the default transition time.</param>
         internal void Close(TimeSpan? duration = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -410,7 +410,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Asynchronously closes the panel.
         /// </summary>
         /// <param name="duration">The amount of time over which to transition the panel's state, or
-        /// <c>null</c> to use the default transition time.</param>
+        /// <see langword="null"/> to use the default transition time.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
         internal Task CloseAsync(TimeSpan? duration = null)
         {
@@ -434,7 +434,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Creates a view model for the specified view.
         /// </summary>
         /// <param name="view">The view for which to create a view model.</param>
-        /// <returns>The view model for the specified view, or <c>null</c> if the view has no view model.</returns>
+        /// <returns>The view model for the specified view, or <see langword="null"/> if the view has no view model.</returns>
         protected virtual Object CreateViewModel(UIView view)
         {
             return null;

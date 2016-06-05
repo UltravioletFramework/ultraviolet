@@ -15,7 +15,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// </summary>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the attribute.</param>
         /// <param name="name">The name of the attribute to retrieve.</param>
-        /// <returns>The string value of the attribute if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The string value of the attribute if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static String AttributeValueString(this XElement element, XName name)
         {
             var attr = element.Attribute(name);
@@ -29,7 +29,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// </summary>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the element.</param>
         /// <param name="name">The name of the element to retrieve.</param>
-        /// <returns>The string value of the element if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The string value of the element if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static String ElementValueString(this XElement element, XName name)
         {
             var e = element.Element(name);
@@ -43,7 +43,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// </summary>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the attribute.</param>
         /// <param name="name">The name of the attribute to retrieve.</param>
-        /// <returns>The <see cref="Int32"/> value of the attribute if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The <see cref="Int32"/> value of the attribute if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static Int32? AttributeValueInt32(this XElement element, XName name)
         {
             var attr = element.Attribute(name);
@@ -61,7 +61,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// </summary>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the element.</param>
         /// <param name="name">The name of the element to retrieve.</param>
-        /// <returns>The <see cref="Int32"/> value of the element if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The <see cref="Int32"/> value of the element if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static Int32? ElementValueInt32(this XElement element, XName name)
         {
             var e = element.Element(name);
@@ -79,7 +79,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// </summary>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the attribute.</param>
         /// <param name="name">The name of the attribute to retrieve.</param>
-        /// <returns>The <see cref="Single"/> value of the attribute if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The <see cref="Single"/> value of the attribute if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static Single? AttributeValueSingle(this XElement element, XName name)
         {
             var attr = element.Attribute(name);
@@ -97,7 +97,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// </summary>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the element.</param>
         /// <param name="name">The name of the element to retrieve.</param>
-        /// <returns>The <see cref="Single"/> value of the element if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The <see cref="Single"/> value of the element if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static Single? ElementValueSingle(this XElement element, XName name)
         {
             var e = element.Element(name);
@@ -115,7 +115,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// </summary>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the attribute.</param>
         /// <param name="name">The name of the attribute to retrieve.</param>
-        /// <returns>The <see cref="Double"/> value of the attribute if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The <see cref="Double"/> value of the attribute if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static Double? AttributeValueDouble(this XElement element, XName name)
         {
             var attr = element.Attribute(name);
@@ -133,7 +133,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// </summary>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the element.</param>
         /// <param name="name">The name of the element to retrieve.</param>
-        /// <returns>The <see cref="Double"/> value of the element if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The <see cref="Double"/> value of the element if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static Double? ElementValueDouble(this XElement element, XName name)
         {
             var e = element.Element(name);
@@ -151,7 +151,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// </summary>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the attribute.</param>
         /// <param name="name">The name of the attribute to retrieve.</param>
-        /// <returns>The <see cref="Boolean"/> value of the attribute if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The <see cref="Boolean"/> value of the attribute if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static Boolean? AttributeValueBoolean(this XElement element, XName name)
         {
             var attr = element.Attribute(name);
@@ -169,7 +169,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// </summary>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the element.</param>
         /// <param name="name">The name of the element to retrieve.</param>
-        /// <returns>The <see cref="Boolean"/> value of the element if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The <see cref="Boolean"/> value of the element if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static Boolean? ElementValueBoolean(this XElement element, XName name)
         {
             var e = element.Element(name);
@@ -188,7 +188,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// <typeparam name="T">The type to which to convert the attribute value.</typeparam>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the attribute.</param>
         /// <param name="name">The name of the attribute to retrieve.</param>
-        /// <returns>The value of the attribute if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The value of the attribute if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static T AttributeValue<T>(this XElement element, XName name)
         {
             var str = AttributeValueString(element, name);
@@ -210,7 +210,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// <typeparam name="T">The type to which to convert the element value.</typeparam>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the element.</param>
         /// <param name="name">The name of the element to retrieve.</param>
-        /// <returns>The value of the element if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The value of the element if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static T ElementValue<T>(this XElement element, XName name)
         {
             var str = ElementValueString(element, name);
@@ -235,7 +235,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// <typeparam name="T">The enumeration type to which to convert the attribute value.</typeparam>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the attribute.</param>
         /// <param name="name">The name of the attribute to retrieve.</param>
-        /// <returns>The enumeration value of the attribute if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The enumeration value of the attribute if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static T? AttributeValueEnum<T>(this XElement element, XName name) where T : struct
         {
             var str = AttributeValueString(element, name);
@@ -252,7 +252,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// <typeparam name="T">The enumeration type to which to convert the element value.</typeparam>
         /// <param name="element">The <see cref="XElement"/> from which to retrieve the element.</param>
         /// <param name="name">The name of the element to retrieve.</param>
-        /// <returns>The enumeration value of the element if it exists, or <c>null</c> if it does not exist.</returns>
+        /// <returns>The enumeration value of the element if it exists, or <see langword="null"/> if it does not exist.</returns>
         public static T? ElementValueEnum<T>(this XElement element, XName name) where T : struct
         {
             var str = ElementValueString(element, name);
@@ -267,7 +267,7 @@ namespace TwistedLogik.Nucleus.Xml
         /// Gets a value indicating whether the specified type is an implementation of the <see cref="Nullable{T}"/> type.
         /// </summary>
         /// <param name="type">The type to evaluate.</param>
-        /// <returns><c>true</c> if the specified type is a <c>null</c>able; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified type is a <see langword="null"/>able; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsNullableType(Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);

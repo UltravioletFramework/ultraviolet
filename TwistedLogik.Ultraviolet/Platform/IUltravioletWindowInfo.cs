@@ -17,20 +17,20 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <summary>
         /// Designates the specified window as the primary window.
         /// </summary>
-        /// <param name="window">The window to designate as the primary window, or <c>null</c> to clear the primary window.</param>
+        /// <param name="window">The window to designate as the primary window, or <see langword="null"/> to clear the primary window.</param>
         void DesignatePrimary(IUltravioletWindow window);
 
         /// <summary>
         /// Gets the window with the specified identifier.
         /// </summary>
         /// <param name="id">The identifier of the window to retrieve.</param>
-        /// <returns>The window with the specified identifier, or <c>null</c> if no such window exists.</returns>
+        /// <returns>The window with the specified identifier, or <see langword="null"/> if no such window exists.</returns>
         IUltravioletWindow GetByID(Int32 id);
 
         /// <summary>
         /// Gets the context's primary window.
         /// </summary>
-        /// <returns>The context's primary window, or <c>null</c> if the context is headless.</returns>
+        /// <returns>The context's primary window, or <see langword="null"/> if the context is headless.</returns>
         IUltravioletWindow GetPrimary();
 
         /// <summary>
@@ -64,14 +64,14 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <remarks>Windows which were created from native pointers are disassociated from the current context,
         /// but are not actually destroyed. To destroy such windows, use the native framework which created them.</remarks>
         /// <param name="window">The Ultraviolet window to destroy.</param>
-        /// <returns><c>true</c> if the window was destroyed; <c>false</c> if the window was closed.</returns>
+        /// <returns><see langword="true"/> if the window was destroyed; <see langword="false"/> if the window was closed.</returns>
         Boolean Destroy(IUltravioletWindow window);
 
         /// <summary>
         /// Destroys the window with the specified identifier.
         /// </summary>
         /// <param name="id">The identifier of the window to destroy.</param>
-        /// <returns><c>true</c> if the window was destroyed; <c>false</c> if the window was closed.</returns>
+        /// <returns><see langword="true"/> if the window was destroyed; <see langword="false"/> if the window was closed.</returns>
         Boolean DestroyByID(Int32 id);
 
         /// <summary>

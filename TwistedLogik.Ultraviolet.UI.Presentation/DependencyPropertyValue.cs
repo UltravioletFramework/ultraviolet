@@ -510,7 +510,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// </summary>
             /// <param name="type1">The first type to evaluate.</param>
             /// <param name="type2">The second type to evaluate.</param>
-            /// <returns><c>true</c> if the specified types require special conversion logic; otherwise, <c>false</c>.</returns>
+            /// <returns><see langword="true"/> if the specified types require special conversion logic; otherwise, <see langword="false"/>.</returns>
             private static Boolean TypesRequireSpecialConversion(Type type1, Type type2)
             {
                 if (type1 == type2)
@@ -602,7 +602,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <summary>
             /// Gets a value indicating whether change handler events are currently being deferred.
             /// </summary>
-            /// <returns><c>true</c> if change handler events are being deferred; otherwise, <c>false</c>.</returns>
+            /// <returns><see langword="true"/> if change handler events are being deferred; otherwise, <see langword="false"/>.</returns>
             private Boolean IsDeferringChangeEvents()
             {
                 return owner.IsDeferringChangeEvents;

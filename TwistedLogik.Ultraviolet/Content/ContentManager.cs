@@ -335,7 +335,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <typeparam name="TOutput">The type of asset to preprocess.</typeparam>
         /// <param name="asset">The asset to preprocess.</param>
         /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
-        /// <returns><c>true</c> if the asset was preprocessed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the asset was preprocessed; otherwise, <see langword="false"/>.</returns>
         public Boolean Preprocess<TOutput>(String asset, Boolean delete = false)
         {
             Contract.RequireNotEmpty(asset, "asset");
@@ -351,7 +351,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <typeparam name="TOutput">The type of asset to preprocess.</typeparam>
         /// <param name="asset">The asset to preprocess.</param>
         /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
-        /// <returns><c>true</c> if the asset was preprocessed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the asset was preprocessed; otherwise, <see langword="false"/>.</returns>
         public Boolean Preprocess<TOutput>(AssetID asset, Boolean delete = false)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, "asset");
@@ -493,7 +493,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Gets or sets a value indicating whether the content manager should batch file deletions.
         /// </summary>
-        /// <remarks>When this property is set to <c>true</c>, <see cref="ContentManager"/> will not delete files
+        /// <remarks>When this property is set to <see langword="true"/>, <see cref="ContentManager"/> will not delete files
         /// immediately. Instead, it will buffer deletions until the batch is ended. This is useful when, for example,
         /// preprocessing a large number of files which depend on the same raw resources; batching deletes ensures that
         /// those raw resources remain on disk until all of the assets are preprocessed.</remarks>
@@ -521,7 +521,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Releases resources associated with this object.
         /// </summary>
-        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
+        /// <param name="disposing"><see langword="true"/> if the object is being disposed; <see langword="false"/> if the object is being finalized.</param>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -631,7 +631,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="preprocess">A value indicating whether to preprocess the loaded asset.</param>
         /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
         /// <param name="result">The asset that was loaded.</param>
-        /// <returns><c>true</c> if the asset was loaded or preprocessed successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the asset was loaded or preprocessed successfully; otherwise, <see langword="false"/>.</returns>
         private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean preprocess, Boolean delete, out Object result)
         {
             result = null;
@@ -809,7 +809,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="processor">The content processor for the asset.</param>
         /// <param name="intermediate">The intermediate form of the asset to preprocess.</param>
         /// <param name="delete">A value indicating whether the original file will be deleted after preprocessing is complete.</param>
-        /// <returns><c>true</c> if the asset was preprocessed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the asset was preprocessed; otherwise, <see langword="false"/>.</returns>
         private Boolean PreprocessInternal(String asset, AssetMetadata metadata, IContentProcessor processor, Object intermediate, Boolean delete)
         {
             if (!processor.SupportsPreprocessing)
@@ -835,7 +835,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets a value indicating whether the specified file is preprocessed.
         /// </summary>
         /// <param name="filename">The filename to evaluate.</param>
-        /// <returns><c>true</c> if the specified file is preprocessed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified file is preprocessed; otherwise, <see langword="false"/>.</returns>
         private Boolean IsPreprocessedFile(String filename)
         {
             return Path.GetExtension(filename) == PreprocessedFileExtension;
@@ -846,7 +846,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="filename">The filename to evaluate.</param>
         /// <param name="extension">The file extension of the metadata file.</param>
-        /// <returns><c>true</c> if the specified file contains asset metadata; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified file contains asset metadata; otherwise, <see langword="false"/>.</returns>
         private Boolean IsMetadataFile(String filename, out String extension)
         {
             extension = Path.GetExtension(filename);
@@ -860,7 +860,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="root">The root directory.</param>
         /// <param name="asset">The asset name.</param>
-        /// <param name="extension">The required file extension, if any; otherwise, <c>null</c>.</param>
+        /// <param name="extension">The required file extension, if any; otherwise, <see langword="null"/>.</param>
         /// <param name="flags">A collection of <see cref="AssetResolutionFlags"/> values indicating how to resolve the asset path.</param>
         /// <returns>The path of the specified asset relative to the specified root directory.</returns>
         private String GetAssetPathFromDirectory(String root, String asset, ref String extension, AssetResolutionFlags flags = AssetResolutionFlags.Default)
@@ -905,7 +905,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets the path to the specified asset.
         /// </summary>
         /// <param name="asset">The asset name.</param>
-        /// <param name="extension">The extension for which to search, or <c>null</c> to search for any extension.</param>
+        /// <param name="extension">The extension for which to search, or <see langword="null"/> to search for any extension.</param>
         /// <param name="directory">The directory in which the asset was found.</param>
         /// <param name="flags">A collection of <see cref="AssetResolutionFlags"/> values indicating how to resolve the asset path.</param>
         /// <returns>The path of the specified asset.</returns>
@@ -1172,7 +1172,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="type">The type of asset to preprocess.</param>
         /// <param name="asset">The asset to preprocess.</param>
         /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
-        /// <returns><c>true</c> if the asset was preprocessed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the asset was preprocessed; otherwise, <see langword="false"/>.</returns>
         private Boolean PreprocessInternal(Type type, String asset, Boolean delete)
         {
             Object result;

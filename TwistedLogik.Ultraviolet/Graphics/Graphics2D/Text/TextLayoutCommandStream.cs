@@ -152,7 +152,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="previous">A <see cref="LineInfo"/> structure which describes the previous line.</param>
         /// <param name="next">A <see cref="LineInfo"/> structure which describes the line that comes after <paramref name="previous"/>.</param>
-        /// <returns><c>true</c> if a line was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if a line was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetNextLineInfo(LineInfo previous, out LineInfo next)
         {
             return GetNextLineInfoRef(ref previous, out next);
@@ -164,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="previous">A <see cref="LineInfo"/> structure which describes the previous line.</param>
         /// <param name="next">A <see cref="LineInfo"/> structure which describes the line that comes after <paramref name="previous"/>.</param>
-        /// <returns><c>true</c> if a line was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if a line was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetNextLineInfoRef(ref LineInfo previous, out LineInfo next)
         {
             if (previous.Source != this)
@@ -238,7 +238,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Moves the stream to the next command.
         /// </summary>
-        /// <returns><c>true</c> if the stream was able to seek to the next command; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the stream was able to seek to the next command; otherwise, <see langword="false"/>.</returns>
         public Boolean SeekNextCommand()
         {
             if (stream.PositionInObjects < stream.LengthInObjects)
@@ -252,7 +252,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Moves the stream to the first command in the next line of text, if there is one.
         /// </summary>
-        /// <returns><c>true</c> if the stream was able to seek to another line of text; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the stream was able to seek to another line of text; otherwise, <see langword="false"/>.</returns>
         public Boolean SeekNextLine()
         {
             var currentCommandType = *(TextLayoutCommandType*)stream.Data;
@@ -1048,7 +1048,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a value indicating whether the stream contains commands which change the style of the rendered font 
         /// </summary>
-        /// <remarks>This value will be <c>true</c> if the stream contains any 
+        /// <remarks>This value will be <see langword="true"/> if the stream contains any 
         /// <see cref="TextLayoutCommandType.ToggleBold"/>,
         /// <see cref="TextLayoutCommandType.ToggleItalic"/>,
         /// <see cref="TextLayoutCommandType.PushFont"/>, 

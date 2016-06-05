@@ -975,7 +975,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// When overridden in a derived class, calculates the clipping rectangle for this element.
         /// </summary>
-        /// <returns>The clipping rectangle for this element in absolute screen coordinates, or <c>null</c> to disable clipping.</returns>
+        /// <returns>The clipping rectangle for this element in absolute screen coordinates, or <see langword="null"/> to disable clipping.</returns>
         protected virtual RectangleD? ClipOverride()
         {
             return null;

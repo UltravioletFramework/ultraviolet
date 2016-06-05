@@ -107,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Gets a value indicating whether the property trigger is attached to the specified target.
         /// </summary>
         /// <param name="target">The target to evaluate.</param>
-        /// <returns><c>true</c> if the property trigger is attached to the specified target; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the property trigger is attached to the specified target; otherwise, <see langword="false"/>.</returns>
         protected internal Boolean IsAttachedTo(DependencyObject target)
         {
             return attachments.ContainsKey(target);
@@ -117,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Gets a value indicating whether the property trigger is activated on the specified target.
         /// </summary>
         /// <param name="target">The target to evaluate.</param>
-        /// <returns><c>true</c> if the property trigger is activated on the specified target; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the property trigger is activated on the specified target; otherwise, <see langword="false"/>.</returns>
         protected internal Boolean IsActivatedOn(DependencyObject target)
         {
             Boolean activated;

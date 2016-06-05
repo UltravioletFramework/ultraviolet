@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Returns the item container associated with the specified item.
         /// </summary>
         /// <param name="item">The item for which to retrieve an item container.</param>
-        /// <returns>The item container for the specified item, or <c>null</c> if no such item exists.</returns>
+        /// <returns>The item container for the specified item, or <see langword="null"/> if no such item exists.</returns>
         public DependencyObject ContainerFromItem(Object item)
         {
             for (int i = 0; i < owner.ItemContainers.Count; i++)
@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Returns the item container at the specified index within the item collection.
         /// </summary>
         /// <param name="index">The index of the item container to retrieve.</param>
-        /// <returns>The item container at the specified index, or <c>null</c> if no such item exists.</returns>
+        /// <returns>The item container at the specified index, or <see langword="null"/> if no such item exists.</returns>
         public DependencyObject ContainerFromIndex(Int32 index)
         {
             if (index >= 0 && index < owner.ItemContainers.Count)

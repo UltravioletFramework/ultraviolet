@@ -21,7 +21,7 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Safely disposes the specified object, if it implements <see cref="IDisposable"/>, and sets the passed reference to <c>null</c>.
+        /// Safely disposes the specified object, if it implements <see cref="IDisposable"/>, and sets the passed reference to <see langword="null"/>.
         /// </summary>
         /// <param name="obj">The object to dispose.</param>
         public static void DisposeRef(ref Object obj)
@@ -48,11 +48,11 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
-        /// Safely disposes the specified object and sets the passed reference to <c>null</c>.
+        /// Safely disposes the specified object and sets the passed reference to <see langword="null"/>.
         /// </summary>
         /// <typeparam name="T">The type of object being disposed.</typeparam>
         /// <param name="obj">The object to dispose.</param>
-        /// <returns>A <c>null</c> reference.</returns>
+        /// <returns>A <see langword="null"/> reference.</returns>
         public static T DisposeRef<T>(ref T obj) where T : class, IDisposable
         {
             if (obj != null)

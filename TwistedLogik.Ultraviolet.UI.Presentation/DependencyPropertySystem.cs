@@ -130,7 +130,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="name">The name of the dependency property for which to search.</param>
         /// <param name="ownerType">The dependency property's owner type.</param>
         /// <returns>A <see cref="DependencyProperty"/> instance which represents the specified dependency property, 
-        /// or <c>null</c> if no such dependency property exists.</returns>
+        /// or <see langword="null"/> if no such dependency property exists.</returns>
         public static DependencyProperty FindByName(String name, Type ownerType)
         {
             Contract.Require(name, "name");
@@ -156,7 +156,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="name">The styling name of the dependency property for which to search.</param>
         /// <param name="ownerType">The dependency property's owner type.</param>
         /// <returns>A <see cref="DependencyProperty"/> instance which represents the specified dependency property, 
-        /// or <c>null</c> if no such dependency property exists.</returns>
+        /// or <see langword="null"/> if no such dependency property exists.</returns>
         public static DependencyProperty FindByStylingName(String name, Type ownerType)
         {
             Contract.Require(name, "name");

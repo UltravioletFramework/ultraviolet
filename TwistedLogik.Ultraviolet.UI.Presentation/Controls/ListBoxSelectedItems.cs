@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Gets a value indicating whether the collection contains the specified item.
         /// </summary>
         /// <param name="item">The item to evaluate.</param>
-        /// <returns><c>true</c> if the collection contains the specified item; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the collection contains the specified item; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(Object item)
         {
             return storage.Contains(item);

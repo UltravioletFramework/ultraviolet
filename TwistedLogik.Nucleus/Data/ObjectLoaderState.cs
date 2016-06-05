@@ -109,7 +109,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Gets the default values for the specified type.
         /// </summary>
         /// <param name="type">The type for which to retrieve default values.</param>
-        /// <returns>The default values for the specified type, or <c>null</c> if there are no default values for that type.</returns>
+        /// <returns>The default values for the specified type, or <see langword="null"/> if there are no default values for that type.</returns>
         public IEnumerable<KeyValuePair<String, XElement>> GetDefaultValues(Type type)
         {
             Dictionary<String, XElement> values;

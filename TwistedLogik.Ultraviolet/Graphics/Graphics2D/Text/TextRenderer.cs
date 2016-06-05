@@ -18,10 +18,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
-        /// <param name="stretch">If <c>true</c>, a line is considered to fill the entire horizontal extent of the 
+        /// <param name="stretch">If <see langword="true"/>, a line is considered to fill the entire horizontal extent of the 
         /// layout area, regardless of the line's actual width.</param>
         /// <returns>The index of the line of text at the specified layout-relative position, 
-        /// or <c>null</c> if the specified position is not contained by any line.</returns>
+        /// or <see langword="null"/> if the specified position is not contained by any line.</returns>
         public Int32? GetLineAtPosition(TextLayoutCommandStream input, Vector2 position, Boolean stretch = false)
         {
             return GetLineAtPosition(input, (Int32)position.X, (Int32)position.Y);
@@ -32,10 +32,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="position">The position to evaluate.</param>
-        /// <param name="stretch">If <c>true</c>, a line is considered to fill the entire horizontal extent of the 
+        /// <param name="stretch">If <see langword="true"/>, a line is considered to fill the entire horizontal extent of the 
         /// layout area, regardless of the line's actual width.</param>
         /// <returns>The index of the line of text at the specified layout-relative position, 
-        /// or <c>null</c> if the specified position is not contained by any line.</returns>
+        /// or <see langword="null"/> if the specified position is not contained by any line.</returns>
         public Int32? GetLineAtPosition(TextLayoutCommandStream input, Point2 position, Boolean stretch = false)
         {
             return GetLineAtPosition(input, position.X, position.Y);
@@ -47,10 +47,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="x">The x-coordinate to evaluate.</param>
         /// <param name="y">The y-coordinate to evaluate.</param>
-        /// <param name="stretch">If <c>true</c>, a line is considered to fill the entire horizontal extent of the 
+        /// <param name="stretch">If <see langword="true"/>, a line is considered to fill the entire horizontal extent of the 
         /// layout area, regardless of the line's actual width.</param>
         /// <returns>The index of the line of text at the specified layout-relative position, 
-        /// or <c>null</c> if the specified position is not contained by any line.</returns>
+        /// or <see langword="null"/> if the specified position is not contained by any line.</returns>
         public Int32? GetLineAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, Boolean stretch = false)
         {
             Contract.Require(input, "input");
@@ -562,7 +562,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
         /// <param name="index">The index of the insertion point for which to retrieve a bounding box.</param>
         /// <param name="lineInfo">A <see cref="LineInfo"/> structure which will be populated with metadata describing the line that contains the insertion point.</param>
-        /// <param name="glyphBounds">The bounding box of the glyph that comes after the insertion point, or <c>null</c> if there is no such glyph.</param>
+        /// <param name="glyphBounds">The bounding box of the glyph that comes after the insertion point, or <see langword="null"/> if there is no such glyph.</param>
         /// <returns>A layout-relative bounding box for the specified glyph.</returns>
         public Rectangle GetInsertionPointBounds(TextLayoutCommandStream input, Int32 index, out LineInfo lineInfo, out Rectangle? glyphBounds)
         {
@@ -602,7 +602,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unregisters the style with the specified name.
         /// </summary>
         /// <param name="name">The name of the style to unregister.</param>
-        /// <returns><c>true</c> if the style was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the style was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterStyle(String name)
         {
             return layoutEngine.UnregisterStyle(name);
@@ -622,7 +622,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unregisters the font with the specified name.
         /// </summary>
         /// <param name="name">The name of the font to unregister.</param>
-        /// <returns><c>true</c> if the font was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the font was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterFont(String name)
         {
             return layoutEngine.UnregisterFont(name);
@@ -644,7 +644,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unregisters the icon with the specified name.
         /// </summary>
         /// <param name="name">The name of the icon to unregister.</param>
-        /// <returns><c>true</c> if the icon was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the icon was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterIcon(String name)
         {
             return layoutEngine.UnregisterIcon(name);
@@ -664,7 +664,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unregisters the glyph shader with the specified name.
         /// </summary>
         /// <param name="name">The name of the glyph shader to unregister.</param>
-        /// <returns><c>true</c> if the glyph shader was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the glyph shader was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterGlyphShader(String name)
         {
             return layoutEngine.UnregisterGlyphShader(name);

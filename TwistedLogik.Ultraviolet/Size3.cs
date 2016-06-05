@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s1">The first <see cref="Size3"/> to compare.</param>
         /// <param name="s2">The second <see cref="Size3"/> to compare.</param>
-        /// <returns><c>true</c> if the specified sizes are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified sizes are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(Size3 s1, Size3 s2)
         {
             return s1.Equals(s2);
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s1">The first <see cref="Size3"/> to compare.</param>
         /// <param name="s2">The second <see cref="Size3"/> to compare.</param>
-        /// <returns><c>true</c> if the specified sizes are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified sizes are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(Size3 s1, Size3 s2)
         {
             return !s1.Equals(s2);
@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a size to convert.</param>
         /// <param name="size">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, out Size3 size)
         {
             return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out size);
@@ -100,7 +100,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="size">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Size3 size)
         {
             size = default(Size3);
@@ -178,7 +178,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Size3))
@@ -190,7 +190,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(Size3 other)
         {
             return width == other.width && height == other.height && depth == other.depth;

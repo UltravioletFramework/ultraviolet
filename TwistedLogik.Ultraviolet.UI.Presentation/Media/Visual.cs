@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// Gets a value indicating whether this object is a descendant of the specified ancestor.
         /// </summary>
         /// <param name="descendant">The object to compare to this object.</param>
-        /// <returns><c>true</c> if this object is an ancestor of <paramref name="descendant"/>; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this object is an ancestor of <paramref name="descendant"/>; otherwise, <see langword="false"/>.</returns>
         public Boolean IsAncestorOf(DependencyObject descendant)
         {
             Contract.Require(descendant, "descendant");
@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// Gets a value indicating whether this object is a descendant of the specified descendant.
         /// </summary>
         /// <param name="ancestor">The object to compare to this object.</param>
-        /// <returns><c>true</c> if this object is an descendant of <paramref name="ancestor"/>; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this object is an descendant of <paramref name="ancestor"/>; otherwise, <see langword="false"/>.</returns>
         public Boolean IsDescendantOf(DependencyObject ancestor)
         {
             Contract.Require(ancestor, "ancestor");
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// Returns a transformation matrix which can be used to transform coordinates from this visual to
         /// the layout root of the visual's view.
         /// </summary>
-        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<c>true</c>) or device-independent pixels (<c>false</c>).</param>
+        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<see langword="true"/>) or device-independent pixels (<see langword="false"/>).</param>
         /// <returns>A transformation matrix which can be used to transform coordinates from this visual to the layout root of the visual's view.</returns>
         public Matrix GetTransformToViewMatrix(Boolean inDevicePixels = false)
         {
@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// the specified ancestor of this visual.
         /// </summary>
         /// <param name="ancestor">The ancestor to which coordinates will be transformed.</param>
-        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<c>true</c>) or device-independent pixels (<c>false</c>).</param>
+        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<see langword="true"/>) or device-independent pixels (<see langword="false"/>).</param>
         /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
         public Matrix GetTransformToAncestorMatrix(Visual ancestor, Boolean inDevicePixels = false)
         {
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// the specified descendant of this visual.
         /// </summary>
         /// <param name="descendant">The descendnat to which coordinates will be transformed.</param>
-        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<c>true</c>) or device-independent pixels (<c>false</c>).</param>
+        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<see langword="true"/>) or device-independent pixels (<see langword="false"/>).</param>
         /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
         public Matrix GetTransformToDescendantMatrix(Visual descendant, Boolean inDevicePixels = false)
         {
@@ -206,7 +206,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// which contains the specified point.
         /// </summary>
         /// <param name="point">The point to evaluate.</param>
-        /// <returns>The topmost <see cref="Visual"/> which contains the specified point, or <c>null</c>.</returns>
+        /// <returns>The topmost <see cref="Visual"/> which contains the specified point, or <see langword="null"/>.</returns>
         public Visual HitTest(Point2D point)
         {
             return HitTestCore(point);
@@ -312,7 +312,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// which contains the specified point.
         /// </summary>
         /// <param name="point">The point to evaluate.</param>
-        /// <returns>The topmost <see cref="Visual"/> which contains the specified point, or <c>null</c>.</returns>
+        /// <returns>The topmost <see cref="Visual"/> which contains the specified point, or <see langword="null"/>.</returns>
         protected virtual Visual HitTestCore(Point2D point)
         {
             return null;
@@ -321,7 +321,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <summary>
         /// Gets the visual's transformation matrix.
         /// </summary>
-        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<c>true</c>) or device-independent pixels (<c>false</c>).</param>
+        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<see langword="true"/>) or device-independent pixels (<see langword="false"/>).</param>
         /// <returns>The visual's transformation matrix.</returns>
         protected virtual Matrix GetTransformMatrix(Boolean inDevicePixels = false)
         {
@@ -334,7 +334,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         /// <param name="ancestor">The ancestor to which coordinates will be transformed.</param>
         /// <param name="invert">A value indicating whether to invert the resulting matrix.</param>
-        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<c>true</c>) or device-independent pixels (<c>false</c>).</param>
+        /// <param name="inDevicePixels">A value indicating whether the transform is scaled to device pixels (<see langword="true"/>) or device-independent pixels (<see langword="false"/>).</param>
         /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
         private Matrix MatrixTransformToAncestorInternal(Visual ancestor, Boolean invert, Boolean inDevicePixels = false)
         {

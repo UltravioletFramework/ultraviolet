@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <summary>
         /// Gets the animation's first keyframe.
         /// </summary>
-        /// <returns>The animation's first keyframe, or <c>null</c> if the animation has no keyframes.</returns>
+        /// <returns>The animation's first keyframe, or <see langword="null"/> if the animation has no keyframes.</returns>
         public AnimationKeyframe<T> GetFirstKeyframe()
         {
             return keyframes.Count == 0 ? null : keyframes[0];
@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <summary>
         /// Gets the animation's last keyframe.
         /// </summary>
-        /// <returns>The animation's last keyframe, or <c>null</c> if the animation has no keyframes.</returns>
+        /// <returns>The animation's last keyframe, or <see langword="null"/> if the animation has no keyframes.</returns>
         public AnimationKeyframe<T> GetLastKeyframe()
         {
             return keyframes.Count == 0 ? null : keyframes[keyframes.Count - 1];

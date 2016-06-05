@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="m1">The first <see cref="Matrix"/> to compare.</param>
         /// <param name="m2">The second <see cref="Matrix"/> to compare.</param>
-        /// <returns><c>true</c> if the specified matrices are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified matrices are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(Matrix m1, Matrix m2)
         {
             return m1.Equals(m2);
@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="m1">The first <see cref="Matrix"/> to compare.</param>
         /// <param name="m2">The second <see cref="Matrix"/> to compare.</param>
-        /// <returns><c>true</c> if the specified matrices are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified matrices are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(Matrix m1, Matrix m2)
         {
             return !m1.Equals(m2);
@@ -191,7 +191,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a <see cref="Matrix"/> to convert.</param>
         /// <param name="matrix">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, out Matrix matrix)
         {
             return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out matrix);
@@ -215,7 +215,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="matrix">A variable to populate with the converted value.</param>
-        /// <returns><c>true</c> if <paramref name="s"/> was converted successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Matrix matrix)
         {
             matrix = default(Matrix);
@@ -1661,7 +1661,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix"/> to invert.</param>
         /// <param name="result">The inverted <see cref="Matrix"/>.</param>
-        /// <returns><c>true</c> if the matrix was inverted; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the matrix was inverted; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryInvert(Matrix matrix, out Matrix result)
         {
             var s0 = matrix.m11 * matrix.m22 - matrix.m21 * matrix.m12;
@@ -1721,7 +1721,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix"/> to invert.</param>
         /// <param name="result">The inverted <see cref="Matrix"/>.</param>
-        /// <returns><c>true</c> if the matrix was inverted; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the matrix was inverted; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryInvertRef(ref Matrix matrix, out Matrix result)
         {
             var s0 = matrix.m11 * matrix.m22 - matrix.m21 * matrix.m12;
@@ -1862,7 +1862,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Matrix))
@@ -1874,7 +1874,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(Matrix other)
         {
             return
@@ -1900,7 +1900,7 @@ namespace TwistedLogik.Ultraviolet
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public Boolean EqualsRef(ref Matrix other)
         {
             return

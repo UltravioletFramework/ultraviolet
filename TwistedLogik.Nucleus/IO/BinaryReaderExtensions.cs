@@ -37,7 +37,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a <c>null</c>able 16-bit integer from the stream.
+        /// Reads a <see langword="null"/>able 16-bit integer from the stream.
         /// </summary>
         /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
@@ -52,7 +52,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a <c>null</c>able 32-bit integer from the stream.
+        /// Reads a <see langword="null"/>able 32-bit integer from the stream.
         /// </summary>
         /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
@@ -67,7 +67,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a <c>null</c>able 64-bit integer from the stream.
+        /// Reads a <see langword="null"/>able 64-bit integer from the stream.
         /// </summary>
         /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
@@ -82,7 +82,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a <c>null</c>able unsigned 16-bit integer from the stream.
+        /// Reads a <see langword="null"/>able unsigned 16-bit integer from the stream.
         /// </summary>
         /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
@@ -98,7 +98,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a <c>null</c>able unsigned 32-bit integer from the stream.
+        /// Reads a <see langword="null"/>able unsigned 32-bit integer from the stream.
         /// </summary>
         /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
@@ -114,7 +114,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a <c>null</c>able unsigned 64-bit integer from the stream.
+        /// Reads a <see langword="null"/>able unsigned 64-bit integer from the stream.
         /// </summary>
         /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
@@ -130,7 +130,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a <c>null</c>able single-precision floating point value from the stream.
+        /// Reads a <see langword="null"/>able single-precision floating point value from the stream.
         /// </summary>
         /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
@@ -145,7 +145,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a <c>null</c>able double-precision floating point value from the stream.
+        /// Reads a <see langword="null"/>able double-precision floating point value from the stream.
         /// </summary>
         /// <param name="reader">The <see cref="BinaryReader"/> from which to read the value.</param>
         /// <returns>The value that was read.</returns>
@@ -170,7 +170,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a <c>null</c>able GUID from the stream.
+        /// Reads a <see langword="null"/>able GUID from the stream.
         /// </summary>
         /// <param name="reader">The <see cref="BinaryReader"/> from which to read the GUID.</param>
         /// <returns>The GUID that was read from the stream.</returns>
@@ -202,7 +202,7 @@ namespace TwistedLogik.Nucleus.IO
         }
 
         /// <summary>
-        /// Reads a <c>null</c>able resolved reference to a Nucleus data object from the stream.
+        /// Reads a <see langword="null"/>able resolved reference to a Nucleus data object from the stream.
         /// </summary>
         /// <param name="reader">The <see cref="BinaryReader"/> from which to read the data object reference.</param>
         /// <returns>The <see cref="Nullable{ResolvedDataObjectReference}"/> that was read from the stream.</returns>

@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Removes any bindings which conflict with the specified binding.
         /// </summary>
         /// <param name="binding">The input binding for which to unbind conflicts.</param>
-        /// <param name="predicate">A predicate specifying which input actions to unbind.If <c>null</c>, 
+        /// <param name="predicate">A predicate specifying which input actions to unbind.If <see langword="null"/>, 
         /// all potential conflicts are unbound.</param>
         /// <returns>A collection of input actions which were affected by this operation.</returns>
         public IEnumerable<KeyValuePair<String, InputAction>> UnbindConflicts(InputBinding binding, Predicate<InputAction> predicate = null)

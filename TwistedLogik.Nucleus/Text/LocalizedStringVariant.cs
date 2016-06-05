@@ -58,7 +58,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the string variant has the specified property.
         /// </summary>
         /// <param name="prop">The name of the property to evaluate.</param>
-        /// <returns><c>true</c> if the string variant has the specified property; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the string variant has the specified property; otherwise, <see langword="false"/>.</returns>
         public Boolean HasProperty(String prop)
         {
             return properties.Contains(prop) || parent.HasProperty(prop);
@@ -68,7 +68,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the string variant has the specified property.
         /// </summary>
         /// <param name="prop">The name of the property to evaluate.</param>
-        /// <returns><c>true</c> if the string variant has the specified property; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the string variant has the specified property; otherwise, <see langword="false"/>.</returns>
         public Boolean HasProperty(StringSegment prop)
         {
             foreach (var property in properties)
@@ -83,7 +83,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether the string variant has the specified property.
         /// </summary>
         /// <param name="prop">The name of the property to evaluate.</param>
-        /// <returns><c>true</c> if the string variant has the specified property; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the string variant has the specified property; otherwise, <see langword="false"/>.</returns>
         public Boolean HasPropertyRef(ref StringSegment prop)
         {
             foreach (var property in properties)

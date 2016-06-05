@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unregisters the style with the specified name.
         /// </summary>
         /// <param name="name">The name of the style to unregister.</param>
-        /// <returns><c>true</c> if the style was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the style was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterStyle(String name)
         {
             Contract.RequireNotEmpty(name, "name");
@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unregisters the font with the specified name.
         /// </summary>
         /// <param name="name">The name of the font to unregister.</param>
-        /// <returns><c>true</c> if the font was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the font was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterFont(String name)
         {
             Contract.RequireNotEmpty(name, "name");
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unregisters the icon with the specified name.
         /// </summary>
         /// <param name="name">The name of the icon to unregister.</param>
-        /// <returns><c>true</c> if the icon was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the icon was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterIcon(String name)
         {
             Contract.RequireNotEmpty(name, "name");
@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Unregisters the glyph shader with the specified name.
         /// </summary>
         /// <param name="name">The name of the glyph shader to unregister.</param>
-        /// <returns><c>true</c> if the glyph shader was unregistered; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the glyph shader was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterGlyphShader(String name)
         {
             Contract.RequireNotEmpty(name, "name");

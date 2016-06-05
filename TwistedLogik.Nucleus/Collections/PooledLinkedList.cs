@@ -129,7 +129,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Removes the first occurrence of the specified item from the list.
         /// </summary>
         /// <param name="item">The item to remove from the list.</param>
-        /// <returns><c>true</c> if the specified item was removed from the list; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified item was removed from the list; otherwise, <see langword="false"/>.</returns>
         public bool Remove(T item)
         {
             var node = List.Find(item);
@@ -146,7 +146,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Removes the specified node from the list.
         /// </summary>
         /// <param name="node">The node to remove from the list.</param>
-        /// <returns><c>true</c> if the specified item was removed from the list; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified item was removed from the list; otherwise, <see langword="false"/>.</returns>
         public bool Remove(LinkedListNode<T> node)
         {
             Contract.Require(node, "node");
@@ -181,7 +181,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets a value indicating whether the linked list contains the specified value.
         /// </summary>
         /// <param name="value">The value to locate in the linked list.</param>
-        /// <returns><c>true</c> if the linked list contains the specified value; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the linked list contains the specified value; otherwise, <see langword="false"/>.</returns>
         public bool Contains(T value)
         {
             return List.Contains(value);

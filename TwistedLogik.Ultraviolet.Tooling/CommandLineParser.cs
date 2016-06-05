@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.Tooling
         /// Gets a value indicating whether the specified argument value represents a parameter (i.e. -foo:value).
         /// </summary>
         /// <param name="arg">The argument value to evaluate.</param>
-        /// <returns><c>true</c> if the specified argument value represents a parameter; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified argument value represents a parameter; otherwise, <see langword="false"/>.</returns>
         public Boolean IsParameter(String arg)
         {
             Contract.RequireNotEmpty(arg, "arg");
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.Tooling
         /// Gets a value indicating whether the command line arguments include an argument with the specified name.
         /// </summary>
         /// <param name="name">The name of the argument to evaluate.</param>
-        /// <returns><c>true</c> if the command line arguments include an argument with the specified name; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the command line arguments include an argument with the specified name; otherwise, <see langword="false"/>.</returns>
         public Boolean HasArgument(String name)
         {
             Contract.RequireNotEmpty(name, "name");
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.Tooling
         /// </summary>
         /// <param name="name">The name of the argument for which to retrieve a value.</param>
         /// <param name="value">The value of the specified argument.</param>
-        /// <returns><c>true</c> if the specified argument exists and has a value; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified argument exists and has a value; otherwise, <see langword="false"/>.</returns>
         public Boolean TryGetArgument(String name, out String value)
         {
             Contract.RequireNotEmpty(name, "name");
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.Tooling
         /// </summary>
         /// <param name="name">The name of the argument for which to retrieve a value.</param>
         /// <param name="value">The value of the specified argument.</param>
-        /// <returns><c>true</c> if the specified argument exists and has a value; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified argument exists and has a value; otherwise, <see langword="false"/>.</returns>
         public Boolean TryGetArgument<T>(String name, out T value)
         {
             Contract.RequireNotEmpty(name, "name");

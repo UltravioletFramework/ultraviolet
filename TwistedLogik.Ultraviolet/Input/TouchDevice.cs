@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets a value indicating whether the device was tapped anywhere on its surface
         /// during the previous frame.
         /// </summary>
-        /// <returns><c>true</c> if the device was tapped; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the device was tapped; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean WasTapped();
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <param name="area">A <see cref="RectangleF"/> structure containing the area to 
         /// evaluate, specified in normalized coordinates.</param>
-        /// <returns><c>true</c> if the device was tapped; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the device was tapped; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean WasTapped(RectangleF area);
 
         /// <summary>

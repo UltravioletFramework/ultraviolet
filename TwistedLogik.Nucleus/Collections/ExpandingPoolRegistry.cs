@@ -68,7 +68,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets the pool for the specified type.
         /// </summary>
         /// <param name="type">The type of object for which to retrieve a pool.</param>
-        /// <returns>The pool for the specified type, or <c>null</c> if no such pool exists.</returns>
+        /// <returns>The pool for the specified type, or <see langword="null"/> if no such pool exists.</returns>
         public IPool Get(Type type)
         {
             Contract.Require(type, "type");
@@ -82,7 +82,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets the pool for the specified type.
         /// </summary>
         /// <typeparam name="T">The type of object for which to retrieve a pool.</typeparam>
-        /// <returns>The pool for the specified type, or <c>null</c> if no such pool exists.</returns>
+        /// <returns>The pool for the specified type, or <see langword="null"/> if no such pool exists.</returns>
         public IPool<T> Get<T>()
         {
             IPool pool;

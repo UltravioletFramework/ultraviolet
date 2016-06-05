@@ -15,7 +15,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <typeparam name="TKey">The type of key used by <paramref name="source"/>.</typeparam>
         /// <typeparam name="TValue">The type of value used by <paramref name="source"/>.</typeparam>
         /// <param name="source">The <see cref="ObservableDictionary{TKey, TValue}"/> to evaluate.</param>
-        /// <returns><c>true</c> if the source dictionary contains any elements; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the source dictionary contains any elements; otherwise, <see langword="false"/>.</returns>
         public static Boolean Any<TKey, TValue>(this ObservableDictionary<TKey, TValue> source)
         {
             Contract.Require(source, "source");
@@ -30,7 +30,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <typeparam name="TValue">The type of value used by <paramref name="source"/>.</typeparam>
         /// <param name="source">The <see cref="ObservableDictionary{TKey, TValue}"/> to evaluate.</param>
         /// <param name="predicate">The predicate against which to evaluate the items of <paramref name="source"/>.</param>
-        /// <returns><c>true</c> if the source dictionary contains any elements; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the source dictionary contains any elements; otherwise, <see langword="false"/>.</returns>
         public static Boolean Any<TKey, TValue>(this ObservableDictionary<TKey, TValue> source, Predicate<KeyValuePair<TKey, TValue>> predicate)
         {
             Contract.Require(source, "source");
@@ -53,7 +53,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <typeparam name="TValue">The type of value used by <paramref name="source"/>.</typeparam>
         /// <param name="source">The <see cref="ObservableDictionary{TKey, TValue}"/> to evaluate.</param>
         /// <param name="predicate">The predicate against which to evaluate the items of <paramref name="source"/>.</param>
-        /// <returns><c>true</c> if all of the items in the source dictionary match the specified predicate; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if all of the items in the source dictionary match the specified predicate; otherwise, <see langword="false"/>.</returns>
         public static Boolean All<TKey, TValue>(this ObservableDictionary<TKey, TValue> source, Predicate<KeyValuePair<TKey, TValue>> predicate)
         {
             Contract.Require(source, "source");

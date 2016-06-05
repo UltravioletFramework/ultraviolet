@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Gets a value indicating whether the specified element is a focus scope.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is a focus scope; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element is a focus scope; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsFocusScope(DependencyObject element)
         {
             Contract.Require(element, "element");

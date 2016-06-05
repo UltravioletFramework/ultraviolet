@@ -127,7 +127,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Disposes of all of the objects in the pool, if <typeparamref name="T"/> implements <see cref="System.IDisposable"/>.
         /// </summary>
-        /// <param name="disposing"><c>true</c> if the object is being disposed; false if the object is being finalized.</param>
+        /// <param name="disposing"><see langword="true"/> if the object is being disposed; false if the object is being finalized.</param>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing && disposable)

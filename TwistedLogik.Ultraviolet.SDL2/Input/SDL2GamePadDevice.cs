@@ -785,7 +785,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// Gets a value indicating whether the specified axis value counts as being "down."
         /// </summary>
         /// <param name="value">The axis' value.</param>
-        /// <returns><c>true</c> if the axis is down; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the axis is down; otherwise, <see langword="false"/>.</returns>
         private Boolean IsAxisDown(Single value)
         {
             return Math.Abs(value) >= AxisDownThreshold;

@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet
         /// any assembly containing the implementation of one of the Ultraviolet context's subsystems.
         /// </summary>
         /// <param name="additionalAssemblies">A collection of assemblies to include in the registration process, 
-        /// or <c>null</c> to only load Ultraviolet assemblies.</param>
+        /// or <see langword="null"/> to only load Ultraviolet assemblies.</param>
         void RegisterImportersAndProcessors(IEnumerable<Assembly> additionalAssemblies);
 
         /// <summary>

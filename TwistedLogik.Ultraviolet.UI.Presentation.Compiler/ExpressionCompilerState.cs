@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// </summary>
         /// <param name="name">The name of the known type to retrieve.</param>
         /// <param name="type">The type associated with the specified name.</param>
-        /// <returns><c>true</c> if the specified known type was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified known type was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetKnownType(String name, out Type type)
         {
             return knownTypes.TryGetValue(name, out type);
@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// </summary>
         /// <param name="type">The type of the element to evaluate.</param>
         /// <param name="property">The name of the element's default property.</param>
-        /// <returns><c>true</c> if the specified element's default property was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element's default property was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetElementDefaultProperty(Type type, out String property)
         {
             return knownDefaultProperties.TryGetValue(type, out property);

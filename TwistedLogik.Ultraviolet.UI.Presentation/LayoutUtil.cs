@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the specified element is currently being drawn.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is being drawn; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if the specified element is being drawn; otherwise, false.</returns>
         public static Boolean IsDrawn(UIElement element)
         {
             Contract.Require(element, "element");
@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the specified element is currently filling space in the layout.
         /// </summary>
         /// <param name="element">The element to evaluate.</param>
-        /// <returns><c>true</c> if the specified element is filling space; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified element is filling space; otherwise, <see langword="false"/>.</returns>
         public static Boolean IsSpaceFilling(UIElement element)
         {
             Contract.Require(element, "element");

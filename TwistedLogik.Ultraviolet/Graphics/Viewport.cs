@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// </summary>
         /// <param name="v1">The first <see cref="Viewport"/> to compare.</param>
         /// <param name="v2">The second <see cref="Viewport"/> to compare.</param>
-        /// <returns><c>true</c> if the specified viewports are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified viewports are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(Viewport v1, Viewport v2)
         {
             return v1.Equals(v2);
@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// </summary>
         /// <param name="v1">The first <see cref="Viewport"/> to compare.</param>
         /// <param name="v2">The second <see cref="Viewport"/> to compare.</param>
-        /// <returns><c>true</c> if the specified viewports are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified viewports are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(Viewport v1, Viewport v2)
         {
             return !v1.Equals(v2);
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// Determines whether this instance is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Viewport))
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// Determines whether this instance is equal to the specified viewport.
         /// </summary>
         /// <param name="other">The <see cref="Viewport"/> to compare to this instance.</param>
-        /// <returns><c>true</c> if this instance is equal to the specified viewport; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is equal to the specified viewport; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(Viewport other)
         {
             return x == other.x && y == other.y && width == other.width && height == other.height;

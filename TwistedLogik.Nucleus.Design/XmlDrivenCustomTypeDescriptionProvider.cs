@@ -25,7 +25,7 @@ namespace TwistedLogik.Nucleus.Design
         /// Gets the type descriptor for the given type and object.
         /// </summary>
         /// <param name="objectType">The type of object for which to retrieve the type descriptor.</param>
-        /// <param name="instance">An instance of the type, or <c>null</c>.</param>
+        /// <param name="instance">An instance of the type, or <see langword="null"/>.</param>
         /// <returns>The type descriptor for the specified type.</returns>
         public override ICustomTypeDescriptor GetTypeDescriptor(Type objectType, Object instance)
         {

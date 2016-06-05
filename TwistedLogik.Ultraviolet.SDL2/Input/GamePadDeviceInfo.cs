@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// Gets the game pad that belongs to the specified player.
         /// </summary>
         /// <param name="playerIndex">The index of the player for which to retrieve a game pad.</param>
-        /// <returns>The game pad that belongs to the specified player, or <c>null</c> if no such game pad exists.</returns>
+        /// <returns>The game pad that belongs to the specified player, or <see langword="null"/> if no such game pad exists.</returns>
         public SDL2GamePadDevice GetGamePadForPlayer(Int32 playerIndex)
         {
             Contract.EnsureRange(playerIndex >= 0, "index");
@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <summary>
         /// Gets the first connected game pad device.
         /// </summary>
-        /// <returns>The first connected game pad device, or <c>null</c> if no game pads are connected.</returns>
+        /// <returns>The first connected game pad device, or <see langword="null"/> if no game pads are connected.</returns>
         public SDL2GamePadDevice GetFirstConnectedGamePad()
         {
             for (int i = 0; i < devicesByPlayer.Length; i++)

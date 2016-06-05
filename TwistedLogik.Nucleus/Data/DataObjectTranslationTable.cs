@@ -30,7 +30,7 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <typeparam name="T">The type of data object being evaluated.</typeparam>
         /// <param name="localID">The local identifier of the entry within the translation table to validate.</param>
-        /// <returns><c>true</c> if the entry is valid; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the entry is valid; otherwise, <see langword="false"/>.</returns>
         public Boolean IsValid<T>(UInt16 localID) where T : DataObject
         {
             Guid globalID;

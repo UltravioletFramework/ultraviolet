@@ -260,7 +260,7 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <param name="type">The type to evaluate.</param>
         /// <param name="dataObjectType">The type of data object to load.</param>
-        /// <returns><c>true</c> if the specified type is a lazily-loaded Nucleus data object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified type is a lazily-loaded Nucleus data object; otherwise, <see langword="false"/>.</returns>
         private static Boolean IsLazilyLoadedDataObjectType(Type type, out Type dataObjectType)
         {
             dataObjectType = null;

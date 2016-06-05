@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         /// <param name="vector">The vector to transform.</param>
         /// <param name="result">The transformed vector.</param>
-        /// <returns><c>true</c> if the transformation was successful; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the transformation was successful; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean TryTransform(Vector2 vector, out Vector2 result);
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// </summary>
         /// <param name="point">The point to transform.</param>
         /// <param name="result">The transformed point.</param>
-        /// <returns><c>true</c> if the transformation was successful; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the transformation was successful; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean TryTransform(Point2D point, out Point2D result);
 
         /// <summary>

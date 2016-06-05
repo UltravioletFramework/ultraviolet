@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets or sets the current cursor.
         /// </summary>
-        /// <remarks>Setting this property to <c>null</c> will restore the default cursor.</remarks>
+        /// <remarks>Setting this property to <see langword="null"/> will restore the default cursor.</remarks>
         Cursor Cursor
         {
             get;

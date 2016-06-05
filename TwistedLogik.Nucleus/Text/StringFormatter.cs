@@ -291,7 +291,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="str">The string to evaluate.</param>
         /// <param name="ix">The index to evaluate.</param>
         /// <param name="length">The format specifier's length.</param>
-        /// <returns><c>true</c> if the specified index is the beginning of a format specifier; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified index is the beginning of a format specifier; otherwise, <see langword="false"/>.</returns>
         private Boolean IsFormatSpecifier(String str, Int32 ix, out Int32 length)
         {
             // If this doesn't start with a format specifier delimiter, then obviously it isn't a format specifier!
@@ -329,7 +329,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="str">The string to evaluate.</param>
         /// <param name="ix">The index to evaluate.</param>
         /// <param name="length">The escape sequence's length.</param>
-        /// <returns><c>true</c> if the specified index is an escaped format specifier; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified index is an escaped format specifier; otherwise, <see langword="false"/>.</returns>
         private Boolean IsEscapedFormatSpecifier(String str, Int32 ix, out Int32 length)
         {
             length = 0;

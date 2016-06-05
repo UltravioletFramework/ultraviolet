@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Applies the specified animation to the property value.
         /// </summary>
-        /// <param name="animation">The animation to apply to the value, or <c>null</c> to disable animation.</param>
+        /// <param name="animation">The animation to apply to the value, or <see langword="null"/> to disable animation.</param>
         /// <param name="clock">The clock which controls the animation's playback.</param>
         void Animate(AnimationBase animation, Clock clock);
 

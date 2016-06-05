@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="dobj">The dependency object to evaluate.</param>
-        /// <returns><c>true</c> if the specified object satisfies all of the collection's conditions; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified object satisfies all of the collection's conditions; otherwise, <see langword="false"/>.</returns>
         internal Boolean Evaluate(UltravioletContext uv, DependencyObject dobj)
         {
             Contract.Require(uv, "uv");
@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Gets a value indicating whether the collection contains the specified item.
         /// </summary>
         /// <param name="condition">The item to evaluate.</param>
-        /// <returns><c>true</c> if the collection contains the specified item; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the collection contains the specified item; otherwise, <see langword="false"/>.</returns>
         internal Boolean Contains(UvssPropertyTriggerCondition condition)
         {
             Contract.Require(condition, "condition");

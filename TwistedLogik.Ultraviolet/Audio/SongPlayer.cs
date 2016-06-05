@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         /// </summary>
         /// <param name="song">The <see cref="Song"/> to play.</param>
         /// <param name="loop">A value indicating whether to loop the song.</param>
-        /// <returns><c>true</c> if the song began playing successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the song began playing successfully; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean Play(Song song, Boolean loop = false);
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         /// <param name="pitch">A value from -1.0 (down one octave) to 1.0 (up one octave) indicating the song's pitch adjustment.</param>
         /// <param name="pan">A value from -1.0 (full left) to 1.0 (full right) representing the song's panning position.</param>
         /// <param name="loop">A value indicating whether to loop the song.</param>
-        /// <returns><c>true</c> if the song began playing successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the song began playing successfully; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean Play(Song song, Single volume, Single pitch, Single pan, Boolean loop = false);
 
         /// <summary>

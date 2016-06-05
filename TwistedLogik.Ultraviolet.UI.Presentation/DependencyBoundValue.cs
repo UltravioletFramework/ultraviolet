@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Checks to see whether the bound value has changed since the last digest cycle.
         /// </summary>
-        /// <returns><c>true</c> if the value has changed; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if the value has changed; otherwise, false.</returns>
         public Boolean CheckHasChanged()
         {
             var value = GetUnderlyingValue();

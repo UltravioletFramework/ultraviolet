@@ -101,8 +101,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate children. If <paramref name="predicate"/> is not null,
-        /// any children which cause it to return <c>false</c> will be skipped over by this method.</param>
-        /// <returns>The first child of <paramref name="dobj"/> in the logical tree which matches the specified predicate, or <c>null</c> if no such child exists.</returns>
+        /// any children which cause it to return <see langword="false"/> will be skipped over by this method.</param>
+        /// <returns>The first child of <paramref name="dobj"/> in the logical tree which matches the specified predicate, or <see langword="null"/> if no such child exists.</returns>
         public static DependencyObject GetFirstChild(DependencyObject dobj, Predicate<DependencyObject> predicate = null)
         {
             return GetFirstChild<DependencyObject>(dobj, predicate);
@@ -114,8 +114,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <typeparam name="TChild">The type of child to retrieve.</typeparam>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate children. If <paramref name="predicate"/> is not null,
-        /// any children which cause it to return <c>false</c> will be skipped over by this method.</param>
-        /// <returns>The first child of <paramref name="dobj"/> in the logical tree which matches the specified predicate, or <c>null</c> if no such child exists.</returns>
+        /// any children which cause it to return <see langword="false"/> will be skipped over by this method.</param>
+        /// <returns>The first child of <paramref name="dobj"/> in the logical tree which matches the specified predicate, or <see langword="null"/> if no such child exists.</returns>
         public static DependencyObject GetFirstChild<TChild>(DependencyObject dobj, Predicate<TChild> predicate = null) where TChild : DependencyObject
         {
             Contract.Require(dobj, "dobj");
@@ -139,8 +139,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate children. If <paramref name="predicate"/> is not null,
-        /// any children which cause it to return <c>false</c> will be skipped over by this method.</param>
-        /// <returns>The last child of <paramref name="dobj"/> in the logical tree which matches the specified predicate, or <c>null</c> if no such child exists.</returns>
+        /// any children which cause it to return <see langword="false"/> will be skipped over by this method.</param>
+        /// <returns>The last child of <paramref name="dobj"/> in the logical tree which matches the specified predicate, or <see langword="null"/> if no such child exists.</returns>
         public static DependencyObject GetLastChild(DependencyObject dobj, Predicate<DependencyObject> predicate = null)
         {
             return GetLastChild<DependencyObject>(dobj, predicate);
@@ -152,8 +152,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <typeparam name="TChild">The type of child to retrieve.</typeparam>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate children. If <paramref name="predicate"/> is not null,
-        /// any children which cause it to return <c>false</c> will be skipped over by this method.</param>
-        /// <returns>The last child of <paramref name="dobj"/> in the logical tree which matches the specified predicate, or <c>null</c> if no such child exists.</returns>
+        /// any children which cause it to return <see langword="false"/> will be skipped over by this method.</param>
+        /// <returns>The last child of <paramref name="dobj"/> in the logical tree which matches the specified predicate, or <see langword="null"/> if no such child exists.</returns>
         public static DependencyObject GetLastChild<TChild>(DependencyObject dobj, Predicate<TChild> predicate = null) where TChild : DependencyObject
         {
             Contract.Require(dobj, "dobj");
@@ -177,8 +177,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate siblings. If <paramref name="predicate"/> is not null,
-        /// any siblings which cause it to return <c>false</c> will be skipped over by this method.</param>
-        /// <returns>The next sibling of <paramref name="dobj"/> in the logical tree, or <c>null</c> if no such sibling exists.</returns>
+        /// any siblings which cause it to return <see langword="false"/> will be skipped over by this method.</param>
+        /// <returns>The next sibling of <paramref name="dobj"/> in the logical tree, or <see langword="null"/> if no such sibling exists.</returns>
         public static DependencyObject GetNextSibling(DependencyObject dobj, Predicate<DependencyObject> predicate = null)
         {
             return GetNextSibling<DependencyObject>(dobj, predicate);
@@ -190,8 +190,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <typeparam name="TSibling">The type of sibling to retrieve.</typeparam>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate siblings. If <paramref name="predicate"/> is not null,
-        /// any siblings which cause it to return <c>false</c> will be skipped over by this method.</param>
-        /// <returns>The next sibling of <paramref name="dobj"/> in the logical tree, or <c>null</c> if no such sibling exists.</returns>
+        /// any siblings which cause it to return <see langword="false"/> will be skipped over by this method.</param>
+        /// <returns>The next sibling of <paramref name="dobj"/> in the logical tree, or <see langword="null"/> if no such sibling exists.</returns>
         public static DependencyObject GetNextSibling<TSibling>(DependencyObject dobj, Predicate<TSibling> predicate = null) where TSibling : DependencyObject
         {
             Contract.Require(dobj, "dobj");
@@ -220,8 +220,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate siblings. If <paramref name="predicate"/> is not null,
-        /// any siblings which cause it to return <c>false</c> will be skipped over by this method.</param>
-        /// <returns>The previous sibling of <paramref name="dobj"/> in the logical tree, or <c>null</c> if no such sibling exists.</returns>
+        /// any siblings which cause it to return <see langword="false"/> will be skipped over by this method.</param>
+        /// <returns>The previous sibling of <paramref name="dobj"/> in the logical tree, or <see langword="null"/> if no such sibling exists.</returns>
         public static DependencyObject GetPreviousSibling(DependencyObject dobj, Predicate<DependencyObject> predicate = null)
         {
             return GetPreviousSibling<DependencyObject>(dobj, predicate);
@@ -233,8 +233,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <typeparam name="TSibling">The type of sibling to retrieve.</typeparam>
         /// <param name="dobj">The object to evaluate.</param>
         /// <param name="predicate">A predicate with which to evaluate siblings. If <paramref name="predicate"/> is not null,
-        /// any siblings which cause it to return <c>false</c> will be skipped over by this method.</param>
-        /// <returns>The previous sibling of <paramref name="dobj"/> in the logical tree, or <c>null</c> if no such sibling exists.</returns>
+        /// any siblings which cause it to return <see langword="false"/> will be skipped over by this method.</param>
+        /// <returns>The previous sibling of <paramref name="dobj"/> in the logical tree, or <see langword="null"/> if no such sibling exists.</returns>
         public static DependencyObject GetPreviousSibling<TSibling>(DependencyObject dobj, Predicate<TSibling> predicate = null) where TSibling : DependencyObject
         {
             Contract.Require(dobj, "dobj");

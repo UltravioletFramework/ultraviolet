@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Removes an action from the collection.
         /// </summary>
         /// <param name="action">The action to remove from the collection.</param>
-        /// <returns><c>true</c> if the action was removed from the collection; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the action was removed from the collection; otherwise, <see langword="false"/>.</returns>
         internal Boolean Remove(TriggerAction action)
         {
             Contract.Require(action, "action");
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Gets a value indicating whether the collection contains the specified action.
         /// </summary>
         /// <param name="action">The action to evaluate.</param>
-        /// <returns><c>true</c> if the collection contains the specified action; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the collection contains the specified action; otherwise, <see langword="false"/>.</returns>
         internal Boolean Contains(TriggerAction action)
         {
             Contract.Require(action, "action");

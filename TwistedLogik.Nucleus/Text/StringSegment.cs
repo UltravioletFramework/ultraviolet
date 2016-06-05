@@ -114,7 +114,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="s1">The first <see cref="StringSegment"/>.</param>
         /// <param name="s2">The second <see cref="StringSegment"/>.</param>
-        /// <returns><c>true</c> if the two string segments are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the two string segments are equal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(StringSegment s1, StringSegment s2)
         {
             return s1.Equals(s2);
@@ -125,7 +125,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="s1">The first <see cref="StringSegment"/>.</param>
         /// <param name="s2">The second <see cref="StringSegment"/>.</param>
-        /// <returns><c>true</c> if the two string segments are unequal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the two string segments are unequal; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(StringSegment s1, StringSegment s2)
         {
             return !s1.Equals(s2);
@@ -136,7 +136,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
         /// <param name="s2">The <see cref="SourceString"/> to compare.</param>
-        /// <returns><c>true</c> if the string segment is equal to the string; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the string segment is equal to the string; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(StringSegment s1, String s2)
         {
             return s1.Equals(s2);
@@ -147,7 +147,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
         /// <param name="s2">The <see cref="SourceString"/> to compare.</param>
-        /// <returns><c>true</c> if the string segment is not equal to the string; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the string segment is not equal to the string; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(StringSegment s1, String s2)
         {
             return !s1.Equals(s2);
@@ -158,7 +158,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
         /// <param name="s2">The <see cref="SourceStringBuilder"/> to compare.</param>
-        /// <returns><c>true</c> if the string segment is equal to the string builder; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the string segment is equal to the string builder; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator ==(StringSegment s1, StringBuilder s2)
         {
             return s1.Equals(s2);
@@ -169,7 +169,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
         /// <param name="s2">The <see cref="SourceStringBuilder"/> to compare.</param>
-        /// <returns><c>true</c> if the string segment is not equal to the string builder; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the string segment is not equal to the string builder; otherwise, <see langword="false"/>.</returns>
         public static Boolean operator !=(StringSegment s1, StringBuilder s2)
         {
             return !s1.Equals(s2);
@@ -180,7 +180,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="s1">The first <see cref="StringSegment"/>.</param>
         /// <param name="s2">The second <see cref="StringSegment"/>.</param>
-        /// <returns><c>true</c> if the string segments are contiguous; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the string segments are contiguous; otherwise, <see langword="false"/>.</returns>
         public static Boolean AreSegmentsContiguous(StringSegment s1, StringSegment s2)
         {
             if (s1.sourceString != null)
@@ -278,7 +278,7 @@ namespace TwistedLogik.Nucleus.Text
         /// Gets a value indicating whether this string segment is equal to the specified object.
         /// </summary>
         /// <param name="obj">The object to compare to this segment.</param>
-        /// <returns><c>true</c> ifthis string segment is equal to the specified object; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> ifthis string segment is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public override Boolean Equals(Object obj)
         {
             if (obj is StringSegment) return Equals((StringSegment)obj);
@@ -292,8 +292,8 @@ namespace TwistedLogik.Nucleus.Text
         /// the content of the specified string segment.
         /// </summary>
         /// <param name="other">The <see cref="StringSegment"/> to compare to this segment.</param>
-        /// <returns><c>true</c> if the content of this segment equals the content of the 
-        /// specified string segment; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the content of this segment equals the content of the 
+        /// specified string segment; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(StringSegment other)
         {
             if (IsEmpty)
@@ -319,8 +319,8 @@ namespace TwistedLogik.Nucleus.Text
         /// the content of the specified string.
         /// </summary>
         /// <param name="other">The <see cref="SourceString"/> to compare to this segment.</param>
-        /// <returns><c>true</c> if the content of this segment equals the content of the 
-        /// specified string; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the content of this segment equals the content of the 
+        /// specified string; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(String other)
         {
             if (IsEmpty && other == String.Empty)
@@ -344,8 +344,8 @@ namespace TwistedLogik.Nucleus.Text
         /// the content of the specified string builder.
         /// </summary>
         /// <param name="other">The <see cref="SourceStringBuilder"/> to compare to this segment.</param>
-        /// <returns><c>true</c> if the content of this segment equals the content of the 
-        /// specified string builder; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the content of this segment equals the content of the 
+        /// specified string builder; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(StringBuilder other)
         {
             if (IsEmpty && other.Length == 0)

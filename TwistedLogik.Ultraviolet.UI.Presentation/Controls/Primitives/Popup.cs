@@ -168,12 +168,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Occurs when the <see cref="IsOpen"/> property changes to <c>true</c>.
+        /// Occurs when the <see cref="IsOpen"/> property changes to <see langword="true"/>.
         /// </summary>
         public event UpfEventHandler Opened;
 
         /// <summary>
-        /// Occurs when the <see cref="IsOpen"/> property changes to <c>false</c>.
+        /// Occurs when the <see cref="IsOpen"/> property changes to <see langword="false"/>.
         /// </summary>
         public event UpfEventHandler Closed;
 
@@ -267,7 +267,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Performs a hit test against the popup.
         /// </summary>
         /// <param name="point">The point in screen space to evaluate.</param>
-        /// <returns>The <see cref="Visual"/> at the specified point in screen space, or <c>null</c> if there is no such visual.</returns>
+        /// <returns>The <see cref="Visual"/> at the specified point in screen space, or <see langword="null"/> if there is no such visual.</returns>
         internal Visual PopupHitTest(Point2D point)
         {
             if (!IsOpen)
@@ -755,7 +755,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="screenArea">A rectangle that describes the area of the screen.</param>
         /// <param name="popupArea">A rectangle that describes the area of the popup.</param>
         /// <param name="edge">A <see cref="PopupScreenEdges"/> value that specifies which edge to examine.</param>
-        /// <returns><c>true</c> if the popup is crossing the specified screen edge; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the popup is crossing the specified screen edge; otherwise, <see langword="false"/>.</returns>
         private Boolean IsCrossingScreenEdge(ref RectangleD screenArea, ref RectangleD popupArea, PopupScreenEdges edge)
         {
             var transformedPopupArea = popupArea;

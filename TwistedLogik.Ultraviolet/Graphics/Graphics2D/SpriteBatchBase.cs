@@ -168,7 +168,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         public void Draw(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color)
         {
@@ -180,7 +180,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="origin">The sprite's origin point.</param>
@@ -207,7 +207,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color)
         {
@@ -219,7 +219,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="origin">The sprite's origin point.</param>
@@ -236,7 +236,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="origin">The sprite's origin point.</param>
@@ -269,7 +269,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="data">The sprite's custom data.</param>
         public void Draw(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color, SpriteData data)
@@ -286,7 +286,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="origin">The sprite's origin point.</param>
@@ -323,7 +323,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="data">The sprite's custom data.</param>
         public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, SpriteData data)
@@ -340,7 +340,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="origin">The sprite's origin point.</param>
@@ -362,7 +362,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="origin">The sprite's origin point.</param>
@@ -394,8 +394,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
-        /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
+        /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height)
         {
             DrawSprite(animation, position, width, height, Color.White, 0f, SpriteEffects.None, 0f, default(SpriteData));
@@ -406,8 +406,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
-        /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
+        /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation)
@@ -420,8 +420,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
-        /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
+        /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
@@ -447,8 +447,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
-        /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
+        /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         /// <param name="data">The sprite's custom data.</param>
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, SpriteData data)
         {
@@ -460,8 +460,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
-        /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
+        /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="data">The sprite's custom data.</param>
@@ -475,8 +475,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="width">The width in pixels of the destination rectangle, or <c>null</c> to use the width of the sprite.</param>
-        /// <param name="height">The height in pixels of the destination rectangle, or <c>null</c> to use the height of the sprite.</param>
+        /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
@@ -1569,7 +1569,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
-        /// <param name="disposing"><c>true</c> if the object is being disposed; <c>false</c> if the object is being finalized.</param>
+        /// <param name="disposing"><see langword="true"/> if the object is being disposed; <see langword="false"/> if the object is being finalized.</param>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -1853,7 +1853,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="origin">The sprite's origin point.</param>
@@ -1911,7 +1911,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
-        /// <param name="sourceRectangle">The sprite's position on its texture, or <c>null</c> to draw the entire texture.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="origin">The sprite's origin point.</param>

@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// Gets a value indicating whether the specified transformation is an identity transformation.
         /// </summary>
         /// <param name="transform">The transform to evaluate.</param>
-        /// <returns><c>true</c> if the specified transform is an identity transform; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified transform is an identity transform; otherwise, <see langword="false"/>.</returns>
         public static Boolean IsIdentityTransform(Transform transform)
         {
             return (transform == null || transform.IsIdentity);

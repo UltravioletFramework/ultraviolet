@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="from">The visual state which is being transitioned from.</param>
         /// <param name="to">The visual state which is being transitioned to.</param>
         /// <param name="transition">The storyboard to apply when transitioning between the specified visual states.</param>
-        /// <returns><c>true</c> if the visual state transition was set; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the visual state transition was set; otherwise, <see langword="false"/>.</returns>
         public Boolean SetVisualStateTransition(String from, String to, Storyboard transition)
         {
             Contract.RequireNotEmpty(to, "to");
@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="from">The visual state which is being transitioned from.</param>
         /// <param name="to">The visual state which is being transitioned to.</param>
         /// <param name="transition">The storyboard which is applied when transitioning between the specified visual states.</param>
-        /// <returns><c>true</c> if the visual state transition was retrieved; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the visual state transition was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetVisualStateTransition(String from, String to, out Storyboard transition)
         {
             Contract.RequireNotEmpty(to, "to");
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets the visual state with the specified name.
         /// </summary>
         /// <param name="state">The name of the visual state to retrieve.</param>
-        /// <returns>The visual state with the specified name, or <c>null</c> if no such state exists.</returns>
+        /// <returns>The visual state with the specified name, or <see langword="null"/> if no such state exists.</returns>
         public VisualState Get(String state)
         {
             VisualState vs;
@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Creates a new visual state within the group.
         /// </summary>
         /// <param name="state">The name of the visual state to create.</param>
-        /// <returns><c>true</c> if the visual state was created; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the visual state was created; otherwise, <see langword="false"/>.</returns>
         public Boolean Create(String state)
         {
             Contract.RequireNotEmpty(state, "state");
@@ -125,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Destroys the specified visual state.
         /// </summary>
         /// <param name="state">The name of the visual state to destroy.</param>
-        /// <returns><c>true</c> if the visual state was destroyed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the visual state was destroyed; otherwise, <see langword="false"/>.</returns>
         public Boolean Destroy(String state)
         {
             Contract.RequireNotEmpty(state, "state");
@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Gets a value indicating whether the group contains a visual state with the specified name.
         /// </summary>
         /// <param name="state">The name of the visual state to evaluate.</param>
-        /// <returns><c>true</c> if the group contains a visual state with the specified name; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the group contains a visual state with the specified name; otherwise, <see langword="false"/>.</returns>
         public Boolean IsDefined(String state)
         {
             Contract.RequireNotEmpty(state, "state");
@@ -162,7 +162,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Transitions the group into the specified state, if it exists.
         /// </summary>
         /// <param name="state">The name of the state into which to transition the group.</param>
-        /// <returns><c>true</c> if the group was transitioned into the specified state; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the group was transitioned into the specified state; otherwise, <see langword="false"/>.</returns>
         public Boolean GoToState(String state)
         {
             Contract.RequireNotEmpty(state, "state");
@@ -242,7 +242,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="to">The visual state which is being transitioned to.</param>
         /// <param name="key">The visual state transition key which was created.</param>
         /// <param name="transitionMustExist">A value indicating whether the specifiied transition must exist in order for a key to be created.</param>
-        /// <returns><c>true</c> if the visual state transition key was created; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the visual state transition key was created; otherwise, <see langword="false"/>.</returns>
         private Boolean GetVisualStateTransitionKey(VisualState from, VisualState to, out VisualStateTransitionKey key, Boolean transitionMustExist)
         {
             key = new VisualStateTransitionKey(from, to);
@@ -266,7 +266,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="to">The visual state which is being transitioned to.</param>
         /// <param name="key">The visual state transition key which was created.</param>
         /// <param name="transitionMustExist">A value indicating whether the specifiied transition must exist in order for a key to be created.</param>
-        /// <returns><c>true</c> if the visual state transition key was created; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the visual state transition key was created; otherwise, <see langword="false"/>.</returns>
         private Boolean GetVisualStateTransitionKey(String from, String to, out VisualStateTransitionKey key, Boolean transitionMustExist)
         {
             var vsFrom = (VisualState)null;

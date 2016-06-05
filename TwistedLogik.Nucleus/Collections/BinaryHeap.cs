@@ -150,7 +150,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Removes an item from the binary heap.
         /// </summary>
         /// <param name="item">The item to be removed.</param>
-        /// <returns><c>true</c> if the item was removed; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the item was removed; otherwise, <see langword="false"/>.</returns>
         public bool Remove(T item)
         {
             EnsureSort();
@@ -169,7 +169,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Gets a value indicating whether the heap contains the specified value.
         /// </summary>
         /// <param name="item">The value for which to search the heap.</param>
-        /// <returns><c>true</c> if the heap contains the specified value; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the heap contains the specified value; otherwise, <see langword="false"/>.</returns>
         public bool Contains(T item)
         {
             EnsureSort();

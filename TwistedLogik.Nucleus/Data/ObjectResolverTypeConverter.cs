@@ -15,7 +15,7 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         /// <param name="context">An <see cref="ITypeDescriptorContext"/> that provides a format context.</param>
         /// <param name="sourceType">A <see cref="Type"/> that represents the type you want to convert from.</param>
-        /// <returns><c>true</c> if this converter can perform the conversion; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this converter can perform the conversion; otherwise, <see langword="false"/>.</returns>
         public override Boolean CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             if (sourceType == typeof(String))

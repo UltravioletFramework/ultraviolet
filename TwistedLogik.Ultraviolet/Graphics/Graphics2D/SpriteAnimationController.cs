@@ -75,7 +75,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// then the controller will return to the currently playing animation.
         /// </summary>
         /// <param name="animation">The <see cref="SpriteAnimation"/> to play.</param>
-        /// <param name="playbackTime">The desired playback time in milliseconds, or <c>null</c> to use the standard playback time.</param>
+        /// <param name="playbackTime">The desired playback time in milliseconds, or <see langword="null"/> to use the standard playback time.</param>
         public void FireAndForget(SpriteAnimation animation, Double? playbackTime = null)
         {
             FireAndForget(animation, this.animation, playbackTime);
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="animation">The animation to play.</param>
         /// <param name="defaultAnimation">The <see cref="SpriteAnimation"/> to play once the fire-and-forget animation has completed.</param>
-        /// <param name="playbackTime">The desired playback time in milliseconds, or <c>null</c> to use the standard playback time.</param>
+        /// <param name="playbackTime">The desired playback time in milliseconds, or <see langword="null"/> to use the standard playback time.</param>
         public void FireAndForget(SpriteAnimation animation, SpriteAnimation defaultAnimation, Double? playbackTime = null)
         {
             this.animation = animation;
@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Gets the playing animation's current frame.
         /// </summary>
-        /// <returns>The playing animation's current frame, or <c>null</c> if no animation is playing.</returns>
+        /// <returns>The playing animation's current frame, or <see langword="null"/> if no animation is playing.</returns>
         public SpriteFrame GetFrame()
         {
             return frame;

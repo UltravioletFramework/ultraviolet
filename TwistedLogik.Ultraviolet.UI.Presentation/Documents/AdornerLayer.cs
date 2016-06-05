@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// Performs a hit test to find the adorner at the specified point.
         /// </summary>
         /// <param name="point">The point to test, in element-local space.</param>
-        /// <returns>The <see cref="Adorner"/> at the specified point, or <c>null</c> if there is no adorner at that point.</returns>
+        /// <returns>The <see cref="Adorner"/> at the specified point, or <see langword="null"/> if there is no adorner at that point.</returns>
         public Adorner AdornerHitTest(Point2D point)
         {
             return HitTest(point) as Adorner;
@@ -147,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// Creates an array containing the adorners for the specified element.
         /// </summary>
         /// <param name="element">The element for which to retrieve adorners.</param>
-        /// <returns>An array containing the adorners for the specified element, or <c>null</c> if there are no such adorners.</returns>
+        /// <returns>An array containing the adorners for the specified element, or <see langword="null"/> if there are no such adorners.</returns>
         public Adorner[] GetAdorners(UIElement element)
         {
             Contract.Require(element, "element");
