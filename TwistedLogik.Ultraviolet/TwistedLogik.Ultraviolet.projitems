@@ -13,6 +13,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Audio\PlaybackState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\Song.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\SongPlayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\SongTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\SongTagCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\SongTagCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\SoundEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\SoundEffectPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Circle.cs" />

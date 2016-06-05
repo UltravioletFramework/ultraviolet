@@ -19,11 +19,13 @@ namespace TwistedLogik.Ultraviolet.Audio
         }
 
         /// <summary>
+        /// Gets the song's collection of tags.
+        /// </summary>
+        public abstract SongTagCollection Tags { get; }
+
+        /// <summary>
         /// Gets the song's duration.
         /// </summary>
-        public abstract TimeSpan Duration
-        {
-            get;
-        }
+        public abstract TimeSpan Duration { get; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Audio;
 using TwistedLogik.Ultraviolet.BASS.Native;
@@ -23,13 +24,28 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
 
             this.file = file;
 
-            var stream    = CreateStream(BASSNative.BASS_STREAM_DECODE);
-            var duration  = BASSUtil.GetDurationInSeconds(stream);
+            var stream = CreateStream(BASSNative.BASS_STREAM_DECODE);
+
+            tags = new SongTagCollection();
+            ReadTagsFromStream(stream);
+            
+            var duration = BASSUtil.GetDurationInSeconds(stream);
 
             if (!BASSNative.StreamFree(stream))
                 throw new BASSException();
 
             this.duration = TimeSpan.FromSeconds(duration);
+        }
+
+        /// <inheritdoc/>
+        public override SongTagCollection Tags
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return tags;
+            }
         }
 
         /// <inheritdoc/>
@@ -78,8 +94,22 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Reads any supported tags which are contained by the specified stream.
+        /// </summary>
+        private void ReadTagsFromStream(UInt32 stream)
+        {
+            var tagsOgg = default(IDictionary<String, String>);
+            if (BASSNative.ChannelGetTags_Ogg(stream, out tagsOgg))
+            {
+                foreach (var tagOgg in tagsOgg)
+                    tags.Add(tagOgg.Key, tagOgg.Value);
+            }
+        }
+
         // The file from which to stream the song.
         private readonly String file;
+        private readonly SongTagCollection tags;
         private readonly TimeSpan duration;
 
         // The instance manager used when we can't read files directly from the file system using BASS.

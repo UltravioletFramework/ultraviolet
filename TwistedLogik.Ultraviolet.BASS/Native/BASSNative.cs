@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
 using TwistedLogik.Nucleus;
@@ -18,61 +19,87 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
         }
 
         public static readonly IntPtr STREAMPROC_DUMMY = new IntPtr(0);
-        public static readonly IntPtr STREAMPROC_PUSH  = new IntPtr(-1);
-        
-        public const UInt32 BASS_OK			    = 0;	
-        public const UInt32 BASS_ERROR_MEM	    = 1;	
-        public const UInt32 BASS_ERROR_FILEOPEN = 2;	
-        public const UInt32 BASS_ERROR_DRIVER   = 3;	
-        public const UInt32 BASS_ERROR_BUFLOST  = 4;	
-        public const UInt32 BASS_ERROR_HANDLE   = 5;	
-        public const UInt32 BASS_ERROR_FORMAT   = 6;	
-        public const UInt32 BASS_ERROR_POSITION = 7;	
-        public const UInt32 BASS_ERROR_INIT	    = 8;	
-        public const UInt32 BASS_ERROR_START    = 9;	
-        public const UInt32 BASS_ERROR_ALREADY  = 14;	
-        public const UInt32 BASS_ERROR_NOCHAN   = 18;	
-        public const UInt32 BASS_ERROR_ILLTYPE  = 19;	
-        public const UInt32 BASS_ERROR_ILLPARAM = 20;	
-        public const UInt32 BASS_ERROR_NO3D	    = 21;	
-        public const UInt32 BASS_ERROR_NOEAX    = 22;	
-        public const UInt32 BASS_ERROR_DEVICE   = 23;	
-        public const UInt32 BASS_ERROR_NOPLAY   = 24;	
-        public const UInt32 BASS_ERROR_FREQ	    = 25;	
-        public const UInt32 BASS_ERROR_NOTFILE  = 27;	
-        public const UInt32 BASS_ERROR_NOHW	    = 29;	
-        public const UInt32 BASS_ERROR_EMPTY    = 31;	
-        public const UInt32 BASS_ERROR_NONET    = 32;	
-        public const UInt32 BASS_ERROR_CREATE   = 33;	
-        public const UInt32 BASS_ERROR_NOFX	    = 34;	
-        public const UInt32 BASS_ERROR_NOTAVAIL = 37;	
-        public const UInt32 BASS_ERROR_DECODE   = 38;	
-        public const UInt32 BASS_ERROR_DX	    = 39;	
-        public const UInt32 BASS_ERROR_TIMEOUT  = 40;	
-        public const UInt32 BASS_ERROR_FILEFORM = 41;	
-        public const UInt32 BASS_ERROR_SPEAKER  = 42;	
-        public const UInt32 BASS_ERROR_VERSION  = 43;	
-        public const UInt32 BASS_ERROR_CODEC    = 44;	
-        public const UInt32 BASS_ERROR_ENDED    = 45;	
-        public const UInt32 BASS_ERROR_BUSY	    = 46;
-        public const UInt32 BASS_ERROR_UNKNOWN  = unchecked((UInt32)(-1));	
+        public static readonly IntPtr STREAMPROC_PUSH = new IntPtr(-1);
 
-        public const UInt32 BASS_ACTIVE_STOPPED	= 0;
-        public const UInt32 BASS_ACTIVE_PLAYING	= 1;
-        public const UInt32 BASS_ACTIVE_STALLED	= 2;
-        public const UInt32 BASS_ACTIVE_PAUSED	= 3;
+        public const UInt32 BASS_OK = 0;
+        public const UInt32 BASS_ERROR_MEM = 1;
+        public const UInt32 BASS_ERROR_FILEOPEN = 2;
+        public const UInt32 BASS_ERROR_DRIVER = 3;
+        public const UInt32 BASS_ERROR_BUFLOST = 4;
+        public const UInt32 BASS_ERROR_HANDLE = 5;
+        public const UInt32 BASS_ERROR_FORMAT = 6;
+        public const UInt32 BASS_ERROR_POSITION = 7;
+        public const UInt32 BASS_ERROR_INIT = 8;
+        public const UInt32 BASS_ERROR_START = 9;
+        public const UInt32 BASS_ERROR_ALREADY = 14;
+        public const UInt32 BASS_ERROR_NOCHAN = 18;
+        public const UInt32 BASS_ERROR_ILLTYPE = 19;
+        public const UInt32 BASS_ERROR_ILLPARAM = 20;
+        public const UInt32 BASS_ERROR_NO3D = 21;
+        public const UInt32 BASS_ERROR_NOEAX = 22;
+        public const UInt32 BASS_ERROR_DEVICE = 23;
+        public const UInt32 BASS_ERROR_NOPLAY = 24;
+        public const UInt32 BASS_ERROR_FREQ = 25;
+        public const UInt32 BASS_ERROR_NOTFILE = 27;
+        public const UInt32 BASS_ERROR_NOHW = 29;
+        public const UInt32 BASS_ERROR_EMPTY = 31;
+        public const UInt32 BASS_ERROR_NONET = 32;
+        public const UInt32 BASS_ERROR_CREATE = 33;
+        public const UInt32 BASS_ERROR_NOFX = 34;
+        public const UInt32 BASS_ERROR_NOTAVAIL = 37;
+        public const UInt32 BASS_ERROR_DECODE = 38;
+        public const UInt32 BASS_ERROR_DX = 39;
+        public const UInt32 BASS_ERROR_TIMEOUT = 40;
+        public const UInt32 BASS_ERROR_FILEFORM = 41;
+        public const UInt32 BASS_ERROR_SPEAKER = 42;
+        public const UInt32 BASS_ERROR_VERSION = 43;
+        public const UInt32 BASS_ERROR_CODEC = 44;
+        public const UInt32 BASS_ERROR_ENDED = 45;
+        public const UInt32 BASS_ERROR_BUSY = 46;
+        public const UInt32 BASS_ERROR_UNKNOWN = unchecked((UInt32)(-1));
+
+        public const UInt32 BASS_ACTIVE_STOPPED = 0;
+        public const UInt32 BASS_ACTIVE_PLAYING = 1;
+        public const UInt32 BASS_ACTIVE_STALLED = 2;
+        public const UInt32 BASS_ACTIVE_PAUSED = 3;
 
         public const UInt32 BASS_STREAMPROC_END = 0x80000000;
 
         public const UInt32 BASS_STREAM_AUTOFREE = 0x40000;
-        public const UInt32 BASS_STREAM_DECODE   = 0x200000;
+        public const UInt32 BASS_STREAM_DECODE = 0x200000;
 
         public const UInt32 BASS_FX_FREESOURCE = 0x10000;
 
         public const UInt32 BASS_SAMPLE_LOOP = 4;
-        public const UInt32 BASS_SAMPLE_OVER_VOL  = 0x10000;
-        public const UInt32 BASS_SAMPLE_OVER_POS  = 0x20000;
+        public const UInt32 BASS_SAMPLE_OVER_VOL = 0x10000;
+        public const UInt32 BASS_SAMPLE_OVER_POS = 0x20000;
         public const UInt32 BASS_SAMPLE_OVER_DIST = 0x30000;
+
+        public const UInt32 BASS_TAG_ID3 = 0;
+        public const UInt32 BASS_TAG_ID3V2 = 1;
+        public const UInt32 BASS_TAG_OGG = 2;
+        public const UInt32 BASS_TAG_HTTP = 3;
+        public const UInt32 BASS_TAG_ICY = 4;
+        public const UInt32 BASS_TAG_META = 5;
+        public const UInt32 BASS_TAG_APE = 6;
+        public const UInt32 BASS_TAG_MP4 = 7;
+        public const UInt32 BASS_TAG_WMA = 8;
+        public const UInt32 BASS_TAG_VENDOR = 9;
+        public const UInt32 BASS_TAG_LYRICS3 = 10;
+        public const UInt32 BASS_TAG_CA_CODEC = 11;
+        public const UInt32 BASS_TAG_MF = 13;
+        public const UInt32 BASS_TAG_WAVEFORMAT = 14;
+        public const UInt32 BASS_TAG_RIFF_INFO = 0x100;
+        public const UInt32 BASS_TAG_RIFF_BEXT = 0x101;
+        public const UInt32 BASS_TAG_RIFF_CART = 0x102;
+        public const UInt32 BASS_TAG_RIFF_DISP = 0x103;
+        public const UInt32 BASS_TAG_APE_BINARY = 0x1000;
+        public const UInt32 BASS_TAG_MUSIC_NAME = 0x10000;
+        public const UInt32 BASS_TAG_MUSIC_MESSAGE = 0x10001;
+        public const UInt32 BASS_TAG_MUSIC_ORDERS = 0x10002;
+        public const UInt32 BASS_TAG_MUSIC_AUTH = 0x10003;
+        public const UInt32 BASS_TAG_MUSIC_INST = 0x10100;
+        public const UInt32 BASS_TAG_MUSIC_SAMPLE = 0x10300;
 
         [DllImport("bass", EntryPoint = "BASS_ErrorGetCode")]
         public static extern Int32 ErrorGetCode();
@@ -197,6 +224,43 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
         [DllImport("bass", EntryPoint = "BASS_ChannelRemoveSync")]
         public static extern Boolean ChannelRemoveSync(UInt32 handle, UInt32 sync);
 
+        [DllImport("bass", EntryPoint = "BASS_ChannelGetTags")]
+        public static extern void* ChannelGetTags(UInt32 handle, UInt32 tags);
+        
+        public static Boolean ChannelGetTags_Ogg(UInt32 handle, out IDictionary<String, String> tags)
+        {
+            var ptr = (Byte*)ChannelGetTags(handle, BASS_TAG_OGG);
+            if (ptr == null)
+            {
+                var error = ErrorGetCode();
+                if (error == BASS_ERROR_NOTAVAIL)
+                {
+                    tags = null;
+                    return false;
+                }
+
+                throw new BASSException(error);
+            }
+
+            var result = new Dictionary<String, String>();
+
+            while (*ptr != 0)
+            {
+                var str = Marshal.PtrToStringAnsi((IntPtr)ptr);
+
+                var tag = str.Split('=');
+                var key = tag[0];
+                var value = tag[1];
+
+                result[key] = value;
+
+                ptr += str.Length + 1;
+            }
+
+            tags = result;
+            return true;
+        }
+
         [DllImport("bass", EntryPoint = "BASS_SampleLoad")]
         private static extern UInt32 SampleLoad(Boolean mem, IntPtr file, UInt64 offset, UInt32 length, UInt32 max, UInt32 flags);
 
@@ -215,10 +279,10 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
 
         public static UInt32 SampleLoad(Byte[] data, UInt64 offset, UInt32 length, UInt32 max, UInt32 flags)
         {
-			fixed (Byte* pData = data)
-			{
-				return SampleLoad(true, (IntPtr)pData, offset, length, max, flags);
-			}            
+            fixed (Byte* pData = data)
+            {
+                return SampleLoad(true, (IntPtr)pData, offset, length, max, flags);
+            }            
         }
 
         [DllImport("bass", EntryPoint = "BASS_SampleFree")]
@@ -233,13 +297,13 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
         [DllImport("bass", EntryPoint = "BASS_SampleGetData")]
         public static extern Boolean SampleGetData(UInt32 handle, IntPtr buffer);
 
-		public static Boolean SampleGetData(UInt32 handle, Byte[] buffer)
-		{
-			fixed (Byte* pBuffer = buffer)
-			{
-				return SampleGetData(handle, (IntPtr)pBuffer);
-			}
-		}
+        public static Boolean SampleGetData(UInt32 handle, Byte[] buffer)
+        {
+            fixed (Byte* pBuffer = buffer)
+            {
+                return SampleGetData(handle, (IntPtr)pBuffer);
+            }
+        }
 
         [DllImport("bass", EntryPoint = "BASS_Pause")]
         public static extern Boolean Pause();
