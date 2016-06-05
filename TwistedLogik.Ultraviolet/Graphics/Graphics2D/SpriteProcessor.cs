@@ -236,10 +236,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                             if (!String.IsNullOrWhiteSpace(frameDesc.Atlas))
                             {
                                 var atlas = manager.Load<TextureAtlas>(frameDesc.Atlas);
-                                if (!atlas.ContainsCell(frame.AtlasCell))
-                                    throw new InvalidDataException(UltravioletStrings.SpriteContainsInvalidAtlasCell.Format(frame.AtlasCell));
+                                if (!atlas.ContainsCell(frameDesc.AtlasCell))
+                                    throw new InvalidDataException(UltravioletStrings.SpriteContainsInvalidAtlasCell.Format(frameDesc.AtlasCell));
 
-                                var cell = atlas[frame.AtlasCell];
+                                var cell = atlas[frameDesc.AtlasCell];
 
                                 frame.Atlas = frameDesc.Atlas;
                                 frame.AtlasCell = frameDesc.AtlasCell;
