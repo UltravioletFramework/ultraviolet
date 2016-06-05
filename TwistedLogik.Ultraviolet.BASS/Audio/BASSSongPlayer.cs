@@ -20,49 +20,51 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
 
         }
 
-        /// <summary>
-        /// Updates the player's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last update.</param>
+        /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
         }
 
-        /// <summary>
-        /// Plays the specified song.
-        /// </summary>
-        /// <param name="song">The song to play.</param>
-        /// <param name="loop">A value indicating whether to loop the song.</param>
-        /// <returns>true if the song began playing successfully; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean Play(Song song, Boolean loop = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(song, nameof(song));
 
-            return PlayInternal(song, 1f, 0f, 0f, loop);
+            return PlayInternal(song, 1f, 0f, 0f,
+                loop ? TimeSpan.Zero : (TimeSpan?)null, null);
         }
 
-        /// <summary>
-        /// Plays the specified song.
-        /// </summary>
-        /// <param name="song">The song to play.</param>
-        /// <param name="volume">A value from 0.0 (silent) to 1.0 (full volume) representing the song's volume.</param>
-        /// <param name="pitch">A value from -1.0 (down one octave) to 1.0 (up one octave) indicating the song's pitch adjustment.</param>
-        /// <param name="pan">A value from -1.0 (full left) to 1.0 (full right) representing the song's panning position.</param>
-        /// <param name="loop">A value indicating whether to loop the song.</param>
-        /// <returns>true if the song began playing successfully; otherwise, false.</returns>
+        /// <inheritdoc/>
+        public override Boolean Play(Song song, TimeSpan loopStart, TimeSpan loopLength)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(song, nameof(song));
+
+            return PlayInternal(song, 1f, 0f, 0f, loopStart, loopLength);
+        }
+
+        /// <inheritdoc/>
         public override Boolean Play(Song song, Single volume, Single pitch, Single pan, Boolean loop = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(song, nameof(song));
 
-            return PlayInternal(song, volume, pitch, pan, loop);
+            return PlayInternal(song, volume, pitch, pan,
+                loop ? TimeSpan.Zero : (TimeSpan?)null, null);
         }
 
-        /// <summary>
-        /// Stops the song that is currently playing.
-        /// </summary>
+        /// <inheritdoc/>
+        public override Boolean Play(Song song, Single volume, Single pitch, Single pan, TimeSpan loopStart, TimeSpan loopLength)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(song, nameof(song));
+
+            return PlayInternal(song, volume, pitch, pan, loopStart, loopLength);
+        }
+
+        /// <inheritdoc/>
         public override void Stop()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -73,12 +75,13 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
                     throw new BASSException();
 
                 stream = 0;
+
+                loopSyncDelegate = null;
+                loopSync = 0;
             }
         }
 
-        /// <summary>
-        /// Pauses the song that is currently playing.
-        /// </summary>
+        /// <inheritdoc/>
         public override void Pause()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -90,9 +93,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Resumes the song after it has been paused.
-        /// </summary>
+        /// <inheritdoc/>
         public override void Resume()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -104,11 +105,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Slides the song's volume to the specified value over the specified period of time.
-        /// </summary>
-        /// <param name="volume">The value to which to slide the song's volume.</param>
-        /// <param name="time">The amount of time over which to perform the slide.</param>
+        /// <inheritdoc/>
         public override void SlideVolume(Single volume, TimeSpan time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -118,11 +115,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             BASSUtil.SlideVolume(stream, volume, time);
         }
 
-        /// <summary>
-        /// Slides the song's pitch to the specified value over the specified period of time.
-        /// </summary>
-        /// <param name="pitch">The value to which to slide the song's pitch.</param>
-        /// <param name="time">The amount of time over which to perform the slide.</param>
+        /// <inheritdoc/>
         public override void SlidePitch(Single pitch, TimeSpan time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -132,11 +125,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             BASSUtil.SlidePitch(stream, pitch, time);
         }
 
-        /// <summary>
-        /// Slides the song's pan to the specified value over the specified period of time.
-        /// </summary>
-        /// <param name="pan">The value to which to slide the song's pan.</param>
-        /// <param name="time">The amount of time over which to perform the slide.</param>
+        /// <inheritdoc/>
         public override void SlidePan(Single pan, TimeSpan time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -146,9 +135,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             BASSUtil.SlidePan(stream, pan, time);
         }
 
-        /// <summary>
-        /// Gets the player's current playback state.
-        /// </summary>
+        /// <inheritdoc/>
         public override PlaybackState State
         {
             get
@@ -174,9 +161,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the song is playing.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean IsPlaying
         {
             get 
@@ -187,9 +172,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the song is looping.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean IsLooping
         {
             get
@@ -199,7 +182,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
                 if (!IsChannelValid())
                     return false;
 
-                return BASSUtil.GetIsLooping(stream);
+                return loopSync != 0 || BASSUtil.GetIsLooping(stream);
             }
             set
             {
@@ -207,13 +190,22 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
 
                 EnsureChannelIsValid();
 
-                BASSUtil.SetIsLooping(stream, value);
+                if (loopSync != 0)
+                {
+                    if (!BASSNative.ChannelRemoveSync(stream, loopSync))
+                        throw new BASSException();
+
+                    loopSync = 0;
+                    loopSyncDelegate = null;
+                }
+                else
+                {
+                    BASSUtil.SetIsLooping(stream, value);
+                }
             }
         }
 
-        /// <summary>
-        /// Gets or sets the song's current playback position.
-        /// </summary>
+        /// <inheritdoc/>
         public override TimeSpan Position
         {
             get 
@@ -239,9 +231,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets the song's duration.
-        /// </summary>
+        /// <inheritdoc/>
         public override TimeSpan Duration
         {
             get 
@@ -256,9 +246,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value from 0.0 (silent) to 1.0 (full volume) representing the song's volume.
-        /// </summary>
+        /// <inheritdoc/>
         public override Single Volume
         {
             get 
@@ -280,9 +268,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value from -1.0 (down one octave) to 1.0 (up one octave) indicating the song's pitch adjustment.
-        /// </summary>
+        /// <inheritdoc/>
         public override Single Pitch
         {
             get
@@ -304,9 +290,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value from -1.0 (full left) to 1.0 (full right) representing the song's panning position.
-        /// </summary>
+        /// <inheritdoc/>
         public override Single Pan
         {
             get
@@ -331,7 +315,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         /// <summary>
         /// Plays the specified song.
         /// </summary>
-        private Boolean PlayInternal(Song song, Single volume, Single pitch, Single pan, Boolean loop)
+        private Boolean PlayInternal(Song song, Single volume, Single pitch, Single pan, TimeSpan? loopStart, TimeSpan? loopLength)
         {
             Ultraviolet.ValidateResource(song);
 
@@ -342,17 +326,31 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             if (!BASSUtil.IsValidHandle(stream))
                 throw new BASSException();
 
-            BASSUtil.SetIsLooping(stream, loop);
+            var autoloop = loopStart.HasValue && !loopLength.HasValue;
+            var syncloop = loopStart.HasValue && !autoloop;
+
+            BASSUtil.SetIsLooping(stream, autoloop);
             BASSUtil.SetVolume(stream, MathUtil.Clamp(volume, 0f, 1f));
             BASSUtil.SetPitch(stream, MathUtil.Clamp(pitch, -1f, 1f));
             BASSUtil.SetPan(stream, MathUtil.Clamp(pan, -1f, 1f));
+
+            if (loopStart > TimeSpan.Zero && loopLength <= TimeSpan.Zero)
+                throw new ArgumentException(nameof(loopLength));
+
+            if (syncloop)
+            {
+                var loopStartInBytes = BASSNative.ChannelSeconds2Bytes(stream, loopStart.Value.TotalSeconds);
+                var loopEndInBytes = BASSNative.ChannelSeconds2Bytes(stream, (loopStart + loopLength).Value.TotalSeconds);
+                loopSyncDelegate = LoopSync;
+                loopSync = BASSNative.ChannelSetSync(stream, BASSSync.SYNC_POS, loopEndInBytes, loopSyncDelegate, new IntPtr((Int32)loopStartInBytes));
+            }
 
             if (!BASSNative.ChannelPlay(stream, true))
                 throw new BASSException();
 
             return true;
         }
-
+        
         /// <summary>
         /// Throws an <see cref="System.InvalidOperationException"/> if the channel is not in a valid state.
         /// </summary>
@@ -362,6 +360,15 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             {
                 throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
             }
+        }
+
+        /// <summary>
+        /// Performs custom looping when a loop range is specified.
+        /// </summary>
+        private void LoopSync(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
+        {
+            if (!BASSNative.ChannelSetPosition(channel, (UInt32)user, 0))
+                throw new BASSException();
         }
 
         /// <summary>
@@ -375,5 +382,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
 
         // State values.
         private UInt32 stream;
+        private UInt32 loopSync;
+        private SyncProc loopSyncDelegate;
     }
 }

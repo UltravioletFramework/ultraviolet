@@ -58,12 +58,33 @@ namespace TwistedLogik.Ultraviolet.Audio
         /// Plays the specified <see cref="Song"/>.
         /// </summary>
         /// <param name="song">The <see cref="Song"/> to play.</param>
+        /// <param name="loopStart">The time at which the song beings looping.</param>
+        /// <param name="loopLength">The length of the portion of the song which loops.</param>
+        /// <returns><see langword="true"/> if the song began playing successfully; otherwise, <see langword="false"/>.</returns>
+        public abstract Boolean Play(Song song, TimeSpan loopStart, TimeSpan loopLength);
+
+        /// <summary>
+        /// Plays the specified <see cref="Song"/>.
+        /// </summary>
+        /// <param name="song">The <see cref="Song"/> to play.</param>
         /// <param name="volume">A value from 0.0 (silent) to 1.0 (full volume) representing the song's volume.</param>
         /// <param name="pitch">A value from -1.0 (down one octave) to 1.0 (up one octave) indicating the song's pitch adjustment.</param>
         /// <param name="pan">A value from -1.0 (full left) to 1.0 (full right) representing the song's panning position.</param>
         /// <param name="loop">A value indicating whether to loop the song.</param>
         /// <returns><see langword="true"/> if the song began playing successfully; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean Play(Song song, Single volume, Single pitch, Single pan, Boolean loop = false);
+
+        /// <summary>
+        /// Plays the specified <see cref="Song"/>.
+        /// </summary>
+        /// <param name="song">The <see cref="Song"/> to play.</param>
+        /// <param name="volume">A value from 0.0 (silent) to 1.0 (full volume) representing the song's volume.</param>
+        /// <param name="pitch">A value from -1.0 (down one octave) to 1.0 (up one octave) indicating the song's pitch adjustment.</param>
+        /// <param name="pan">A value from -1.0 (full left) to 1.0 (full right) representing the song's panning position.</param>
+        /// <param name="loopStart">The time at which the song beings looping.</param>
+        /// <param name="loopLength">The length of the portion of the song which loops.</param>
+        /// <returns><see langword="true"/> if the song began playing successfully; otherwise, <see langword="false"/>.</returns>
+        public abstract Boolean Play(Song song, Single volume, Single pitch, Single pan, TimeSpan loopStart, TimeSpan loopLength);
 
         /// <summary>
         /// Stops the song that is currently playing.
