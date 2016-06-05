@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="asm">The assembly that contains the content processors to register.</param>
         public void RegisterAssembly(Assembly asm)
         {
-            Contract.Require(asm, "asm");
+            Contract.Require(asm, nameof(asm));
 
             var processors = from type in asm.GetTypes()
                              let attrs = type.GetCustomAttributes(typeof(ContentProcessorAttribute), false).Cast<ContentProcessorAttribute>()
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The content processor that takes the specified types, or <see langword="null"/> if no such processor exists.</returns>
         public IContentProcessor FindProcessor(Type input, Type output)
         {
-            Contract.Require(input, "input");
+            Contract.Require(input, nameof(input));
 
             var key = new RegistryKey(input, output);
             var instance = default(IContentProcessor);

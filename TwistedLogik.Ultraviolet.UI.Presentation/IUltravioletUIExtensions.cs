@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The core management object for the Ultraviolet Presentation Foundation.</returns>
         public static PresentationFoundation GetPresentationFoundation(this IUltravioletUI ui)
         {
-            Contract.Require(ui, "ui");
+            Contract.Require(ui, nameof(ui));
 
             return PresentationFoundation.Instance;
         }

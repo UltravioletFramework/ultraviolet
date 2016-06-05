@@ -29,9 +29,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="handledEventsToo">A value indicating whether to invoke the handler even if it has already been handled.</param>
         public static void RegisterClassHandler(Type classType, RoutedEvent routedEvent, Delegate handler, Boolean handledEventsToo)
         {
-            Contract.Require(classType, "classType");
-            Contract.Require(routedEvent, "routedEvent");
-            Contract.Require(handler, "handler");
+            Contract.Require(classType, nameof(classType));
+            Contract.Require(routedEvent, nameof(routedEvent));
+            Contract.Require(handler, nameof(handler));
 
             var manager = GetClassHandlerManager(routedEvent, classType);
             manager.AddHandler(handler, handledEventsToo);
@@ -57,8 +57,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The internal list of handlers for the specified routed event.</returns>
         internal static List<RoutedEventHandlerMetadata> GetClassHandlers(Type classType, RoutedEvent routedEvent)
         {
-            Contract.Require(classType, "classType");
-            Contract.Require(routedEvent, "routedEvent");
+            Contract.Require(classType, nameof(classType));
+            Contract.Require(routedEvent, nameof(routedEvent));
 
             var manager = GetClassHandlerManager(routedEvent, classType, false);
             if (manager == null)

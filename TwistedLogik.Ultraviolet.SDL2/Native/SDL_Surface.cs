@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         /// <returns>The instance of SDL_Surface that was created.</returns>
         public static SDL_Surface CreateFromStream(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
 
             var data = new Byte[stream.Length];
             stream.Read(data, 0, data.Length);
@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         /// <returns>The instance of SDL_Surface that was created.</returns>
         public static SDL_Surface CreateFromSurfaceSource(SurfaceSource source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             var width  = source.Width;
             var height = source.Height;
@@ -215,7 +215,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         public void GetData(Color[] data, Rectangle region)
         {
             Contract.EnsureNotDisposed(this, disposed);
-            Contract.Require(data, "data");
+            Contract.Require(data, nameof(data));
 
             var top = region.Top;
             var left = region.Left;
@@ -250,7 +250,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         public void SetData(Color[] data, Rectangle region)
         {
             Contract.EnsureNotDisposed(this, disposed);
-            Contract.Require(data, "data");
+            Contract.Require(data, nameof(data));
 
             var top = region.Top;
             var left = region.Left;

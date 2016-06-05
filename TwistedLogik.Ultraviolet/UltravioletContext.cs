@@ -90,8 +90,8 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
         public UltravioletContext(IUltravioletHost host, UltravioletConfiguration configuration)
         {
-            Contract.Require(host, "host");
-            Contract.Require(configuration, "configuration");
+            Contract.Require(host, nameof(host));
+            Contract.Require(configuration, nameof(configuration));
 
             AcquireContext();
             DetectPlatform();
@@ -313,7 +313,7 @@ namespace TwistedLogik.Ultraviolet
         public T GetFactoryMethod<T>(String name) where T : class
         {
             Contract.EnsureNotDisposed(this, disposed);
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             return factory.GetFactoryMethod<T>(name);
         }
@@ -328,7 +328,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The <see cref="Task"/> that was spawned.</returns>
         public Task SpawnTask(Action<CancellationToken> action)
         {
-            Contract.Require(action, "action");
+            Contract.Require(action, nameof(action));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotSpawnTasks);
 
@@ -493,7 +493,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task QueueWorkItem(Action workItem, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -513,7 +513,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task QueueWorkItem(Action<Object> workItem, Object state, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -533,7 +533,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task<T> QueueWorkItem<T>(Func<T> workItem, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -554,7 +554,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task<T> QueueWorkItem<T>(Func<Object, T> workItem, Object state, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -573,7 +573,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task QueueWorkItem(Func<Task> workItem, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -593,7 +593,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task QueueWorkItem(Func<Object, Task> workItem, Object state, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -613,7 +613,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task<T> QueueWorkItem<T>(Func<Task<T>> workItem, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -634,7 +634,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task<T> QueueWorkItem<T>(Func<Object, Task<T>> workItem, Object state, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -653,7 +653,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task<Task> QueueWorkItemWrapped(Func<Task> workItem, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -673,7 +673,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task<Task> QueueWorkItemWrapped(Func<Object, Task> workItem, Object state, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -695,7 +695,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task<Task<T>> QueueWorkItemWrapped<T>(Func<Task<T>> workItem, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -720,7 +720,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
         public Task<Task<T>> QueueWorkItemWrapped<T>(Func<Object, Task<T>> workItem, Object state, Boolean forceAsync = false)
         {
-            Contract.Require(workItem, "workItem");
+            Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
@@ -906,7 +906,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The Ultraviolet context that was created.</returns>
         internal static UltravioletContext EnsureSuccessfulCreation(Func<UltravioletContext> fn)
         {
-            Contract.Require(fn, "fn");
+            Contract.Require(fn, nameof(fn));
 
             try
             {
@@ -996,7 +996,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="asm">The assembly for which to initialize factory methods.</param>
         protected void InitializeFactoryMethodsInAssembly(Assembly asm)
         {
-            Contract.Require(asm, "asm");
+            Contract.Require(asm, nameof(asm));
 
             var initializerTypes = from t in asm.GetTypes()
                                    where t.IsClass && !t.IsAbstract && typeof(IUltravioletFactoryInitializer).IsAssignableFrom(t)

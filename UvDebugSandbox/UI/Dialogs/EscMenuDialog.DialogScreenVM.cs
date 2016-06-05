@@ -17,7 +17,7 @@ namespace UvDebugSandbox.UI.Dialogs
             /// <param name="screen">The dialog screen that owns the view model.</param>
             internal DialogScreenVM(DialogScreen screen)
             {
-                Contract.Require(screen, "screen");
+                Contract.Require(screen, nameof(screen));
 
                 this.screen = screen;
             }

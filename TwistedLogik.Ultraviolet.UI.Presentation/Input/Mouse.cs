@@ -82,7 +82,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns><see langword="true"/> if the mouse was successfully captured; otherwise, <see langword="false"/>.</returns>
         public static Boolean Capture(PresentationFoundationView view, IInputElement element, CaptureMode mode)
         {
-            Contract.Require(view, "view");
+            Contract.Require(view, nameof(view));
 
             if (element != null)
             {
@@ -137,7 +137,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// or <see langword="null"/> if no element has captured the mouse.</returns>
         public static IInputElement GetCaptured(PresentationFoundationView view)
         {
-            Contract.Require(view, "view");
+            Contract.Require(view, nameof(view));
 
             return view.ElementWithMouseCapture;
         }
@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// or <see langword="null"/> if the mouse cursor is not over any element.</returns>
         public static IInputElement GetDirectlyOver(PresentationFoundationView view)
         {
-            Contract.Require(view, "view");
+            Contract.Require(view, nameof(view));
 
             return view.ElementUnderMouse;
         }
@@ -163,8 +163,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddQueryCursorHandler(DependencyObject element, UpfQueryCursorEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, QueryCursorEvent, handler);
         }
@@ -177,8 +177,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewMouseMoveHandler(DependencyObject element, UpfMouseMoveEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewMouseMoveEvent, handler);
         }
@@ -191,8 +191,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewMouseDownHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewMouseDownEvent, handler);
         }
@@ -205,8 +205,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewMouseUpHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewMouseUpEvent, handler);
         }
@@ -219,8 +219,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewMouseClickHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewMouseClickEvent, handler);
         }
@@ -233,8 +233,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewMouseDoubleClickHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewMouseDoubleClickEvent, handler);
         }
@@ -247,8 +247,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewMouseWheelHandler(DependencyObject element, UpfMouseWheelEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewMouseWheelEvent, handler);
         }
@@ -261,8 +261,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddGotMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, GotMouseCaptureEvent, handler);
         }
@@ -275,8 +275,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddLostMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, LostMouseCaptureEvent, handler);
         }
@@ -289,8 +289,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddMouseMoveHandler(DependencyObject element, UpfMouseMoveEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, MouseMoveEvent, handler);
         }
@@ -303,8 +303,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddMouseEnterHandler(DependencyObject element, UpfMouseEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, MouseEnterEvent, handler);
         }
@@ -317,8 +317,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddMouseLeaveHandler(DependencyObject element, UpfMouseEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, MouseLeaveEvent, handler);
         }
@@ -331,8 +331,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddMouseUpHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, MouseDownEvent, handler);
         }
@@ -345,8 +345,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddMouseDownHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, MouseUpEvent, handler);
         }
@@ -359,8 +359,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddMouseClickHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, MouseClickEvent, handler);
         }
@@ -373,8 +373,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddMouseDoubleClickHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, MouseDoubleClickEvent, handler);
         }
@@ -387,8 +387,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddMouseWheelHandler(DependencyObject element, UpfMouseWheelEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, MouseWheelEvent, handler);
         }
@@ -401,8 +401,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveQueryCursorHandler(DependencyObject element, UpfMouseMoveEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, QueryCursorEvent, handler);
         }
@@ -415,8 +415,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewMouseMoveHandler(DependencyObject element, UpfMouseMoveEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewMouseMoveEvent, handler);
         }
@@ -429,8 +429,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewMouseDownHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewMouseDownEvent, handler);
         }
@@ -443,8 +443,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewMouseUpHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewMouseUpEvent, handler);
         }
@@ -457,8 +457,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewMouseClickHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewMouseClickEvent, handler);
         }
@@ -471,8 +471,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewMouseDoubleClickHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewMouseDoubleClickEvent, handler);
         }
@@ -485,8 +485,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewMouseWheelHandler(DependencyObject element, UpfMouseWheelEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewMouseWheelEvent, handler);
         }
@@ -499,8 +499,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveGotMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, GotMouseCaptureEvent, handler);
         }
@@ -513,8 +513,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveLostMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, LostMouseCaptureEvent, handler);
         }
@@ -527,8 +527,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseMoveHandler(DependencyObject element, MouseMoveEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, MouseMoveEvent, handler);
         }
@@ -541,8 +541,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseEnterHandler(DependencyObject element, UpfMouseEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, MouseEnterEvent, handler);
         }
@@ -555,8 +555,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseLeaveHandler(DependencyObject element, UpfMouseEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, MouseLeaveEvent, handler);
         }
@@ -569,8 +569,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseUpHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, MouseDownEvent, handler);
         }
@@ -583,8 +583,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseDownHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, MouseUpEvent, handler);
         }
@@ -597,8 +597,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseClickHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, MouseClickEvent, handler);
         }
@@ -611,8 +611,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseDoubleClickHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, MouseDoubleClickEvent, handler);
         }
@@ -625,8 +625,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseWheelHandler(DependencyObject element, UpfMouseWheelEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, MouseWheelEvent, handler);
         }

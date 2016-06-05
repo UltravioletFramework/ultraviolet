@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The specified named factory method, or <see langword="null"/> if no such factory method is registered.</returns>
         public T TryGetFactoryMethod<T>(String name) where T : class
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             var registry = default(Dictionary<String, Delegate>);
             if (!namedFactoryMethods.TryGetValue(typeof(T), out registry))
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The specified named factory method.</returns>
         public T GetFactoryMethod<T>(String name) where T : class
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
             
             var registry = default(Dictionary<String, Delegate>);
             if (!namedFactoryMethods.TryGetValue(typeof(T), out registry))
@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="factory">A delegate representing the factory method to register.</param>
         public void SetFactoryMethod<T>(T factory) where T : class
         {
-            Contract.Require(factory, "factory");
+            Contract.Require(factory, nameof(factory));
 
             var key = typeof(T);
             var del = factory as Delegate;
@@ -133,8 +133,8 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="factory">A delegate representing the factory method to register.</param>
         public void SetFactoryMethod<T>(String name, T factory) where T : class
         {
-            Contract.RequireNotEmpty(name, "name");
-            Contract.Require(factory, "factory");
+            Contract.RequireNotEmpty(name, nameof(name));
+            Contract.Require(factory, nameof(factory));
 
             var key = typeof(T);
             var registry = default(Dictionary<String, Delegate>);
@@ -169,7 +169,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns><see langword="true"/> if the factory method was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean RemoveFactoryMethod<T>(String name) where T : class
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             var key = typeof(T);
             var registry = default(Dictionary<String, Delegate>);

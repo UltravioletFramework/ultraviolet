@@ -34,7 +34,7 @@ namespace TwistedLogik.Nucleus.Design
         /// <param name="stream">The stream that contains the type description metadata.</param>
         public static void Load(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
 
             var metadata = XDocument.Load(stream);
             ProcessMetadata(metadata);

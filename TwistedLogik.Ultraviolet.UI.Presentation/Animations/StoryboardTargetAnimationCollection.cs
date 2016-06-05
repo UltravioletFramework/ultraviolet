@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="target">The storyboard target that owns the collection.</param>
         public StoryboardTargetAnimationCollection(StoryboardTarget target)
         {
-            Contract.Require(target, "target");
+            Contract.Require(target, nameof(target));
 
             this.target = target;
         }
@@ -28,8 +28,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if the animation was added to the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Add(String property, AnimationBase animation)
         {
-            Contract.RequireNotEmpty(property, "property");
-            Contract.Require(animation, "animation");
+            Contract.RequireNotEmpty(property, nameof(property));
+            Contract.Require(animation, nameof(animation));
 
             var name = new DependencyName(property);
             var key = new StoryboardTargetAnimationKey(name);
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if the animation was added to the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Add(DependencyName property, AnimationBase animation)
         {
-            Contract.Require(animation, "animation");
+            Contract.Require(animation, nameof(animation));
 
             var key = new StoryboardTargetAnimationKey(property);
             return Add(key, animation);
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if the animation was added to the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Add(StoryboardTargetAnimationKey key, AnimationBase animation)
         {
-            Contract.Require(animation, "animation");
+            Contract.Require(animation, nameof(animation));
 
             Remove(key);
 
@@ -81,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if the animation was removed from the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(String property)
         {
-            Contract.RequireNotEmpty(property, "property");
+            Contract.RequireNotEmpty(property, nameof(property));
 
             var name = new DependencyName(property);
             var key = new StoryboardTargetAnimationKey(name);
@@ -128,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if the animation was removed from the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(AnimationBase animation)
         {
-            Contract.Require(animation, "animation");
+            Contract.Require(animation, nameof(animation));
 
             var key   = default(StoryboardTargetAnimationKey);
             var found = false;
@@ -156,7 +156,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if this collection contains an animation on the specified property; otherwise, <see langword="false"/>.</returns>
         public Boolean ContainsKey(String property)
         {
-            Contract.RequireNotEmpty(property, "property");
+            Contract.RequireNotEmpty(property, nameof(property));
 
             var name = new DependencyName(property);
             var key = new StoryboardTargetAnimationKey(name);
@@ -191,7 +191,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if this collection contains the specified animation; otherwise, <see langword="false"/>.</returns>
         public Boolean ContainsValue(AnimationBase animation)
         {
-            Contract.Require(animation, "animation");
+            Contract.Require(animation, nameof(animation));
 
             return animations.ContainsValue(animation);
         }

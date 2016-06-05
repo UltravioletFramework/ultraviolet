@@ -231,7 +231,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="element">The element to which to apply styles.</param>
         internal void ApplyStyles(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             ApplyStylesInternal(element);
         }

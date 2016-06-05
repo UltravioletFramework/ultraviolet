@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         protected SpriteBatchBase(UltravioletContext uv, Int32 batchSize = 2048)
             : base(uv)
         {
-            Contract.EnsureRange(batchSize > 0, "batchSize");
+            Contract.EnsureRange(batchSize > 0, nameof(batchSize));
 
             this.batchSize = batchSize;
             this.batchInfo = new SpriteBatchInfo<SpriteData>(batchSize);
@@ -257,7 +257,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The sprite's custom data.</param>
         public void Draw(Texture2D texture, RectangleF destinationRectangle, Color color, SpriteData data)
         {
-            Contract.Require(texture, "texture");
+            Contract.Require(texture, nameof(texture));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -274,7 +274,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The sprite's custom data.</param>
         public void Draw(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color, SpriteData data)
         {
-            Contract.Require(texture, "texture");
+            Contract.Require(texture, nameof(texture));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The sprite's custom data.</param>
         public void Draw(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(texture, "texture");
+            Contract.Require(texture, nameof(texture));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -311,7 +311,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The sprite's custom data.</param>
         public void Draw(Texture2D texture, Vector2 position, Color color, SpriteData data)
         {
-            Contract.Require(texture, "texture");
+            Contract.Require(texture, nameof(texture));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -328,7 +328,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The sprite's custom data.</param>
         public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, SpriteData data)
         {
-            Contract.Require(texture, "texture");
+            Contract.Require(texture, nameof(texture));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -350,7 +350,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The sprite's custom data.</param>
         public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(texture, "texture");
+            Contract.Require(texture, nameof(texture));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -372,7 +372,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The sprite's custom data.</param>
         public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(texture, "texture");
+            Contract.Require(texture, nameof(texture));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -484,7 +484,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The sprite's custom data.</param>
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(animation, "animation");
+            Contract.Require(animation, nameof(animation));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -580,7 +580,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The sprite's custom data.</param>
         public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale, Color color, Single rotation, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(animation, "animation");
+            Contract.Require(animation, nameof(animation));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -656,7 +656,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="color">The text's color.</param>
         public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -673,7 +673,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="color">The text's color.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -694,7 +694,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -716,7 +716,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -737,7 +737,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -759,7 +759,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -776,7 +776,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -794,7 +794,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -816,7 +816,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -839,7 +839,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -861,7 +861,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -884,7 +884,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -900,7 +900,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="color">The text's color.</param>
         public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -917,7 +917,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="color">The text's color.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -938,7 +938,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -960,7 +960,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -981,7 +981,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1003,7 +1003,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1020,7 +1020,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1038,7 +1038,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1060,7 +1060,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1083,7 +1083,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1105,7 +1105,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1128,7 +1128,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1144,7 +1144,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="color">The text's color.</param>
         public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1161,7 +1161,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="color">The text's color.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1182,7 +1182,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1204,7 +1204,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1225,7 +1225,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1247,7 +1247,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The text's layer depth.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1264,7 +1264,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1282,7 +1282,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1304,7 +1304,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1327,7 +1327,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1349,7 +1349,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1372,7 +1372,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The text's custom data.</param>
         public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1438,7 +1438,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="data">The image's custom data.</param>
         public void DrawImage(TextureImage image, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(image, "image");
+            Contract.Require(image, nameof(image));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
@@ -1984,7 +1984,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         private void DrawStringInternal(GlyphShaderContext glyphShaderContext, SpriteFontFace fontFace, StringSource text, Vector2 position, 
             Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
-            Contract.Require(fontFace, "fontFace");
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
             

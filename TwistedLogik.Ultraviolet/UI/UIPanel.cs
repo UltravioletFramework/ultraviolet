@@ -53,8 +53,8 @@ namespace TwistedLogik.Ultraviolet.UI
         internal UIPanel(UltravioletContext uv, String rootDirectory, ContentManager globalContent)
             : base(uv ?? UltravioletContext.DemandCurrent())
         {
-            Contract.RequireNotEmpty(rootDirectory, "rootDirectory");
-            Contract.Require(globalContent, "globalContent");
+            Contract.RequireNotEmpty(rootDirectory, nameof(rootDirectory));
+            Contract.Require(globalContent, nameof(globalContent));
 
             this.vmfactory = new UIViewModelFactory(CreateViewModel);
 
@@ -270,7 +270,7 @@ namespace TwistedLogik.Ultraviolet.UI
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
-                Contract.Ensure<ArgumentException>(value.TotalMilliseconds >= 0, "value");
+                Contract.Ensure<ArgumentException>(value.TotalMilliseconds >= 0, nameof(value));
 
                 defaultOpenTransitionDuration = value;
             }
@@ -291,7 +291,7 @@ namespace TwistedLogik.Ultraviolet.UI
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
-                Contract.Ensure<ArgumentException>(value.TotalMilliseconds >= 0, "value");
+                Contract.Ensure<ArgumentException>(value.TotalMilliseconds >= 0, nameof(value));
 
                 defaultCloseTransitionDuration = value;
             }

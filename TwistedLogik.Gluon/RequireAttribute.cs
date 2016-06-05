@@ -62,7 +62,7 @@ namespace TwistedLogik.Gluon
         /// <returns>true if this is a core function; otherwise, false.</returns>
         public Boolean IsCore(Version version, Boolean gles)
         {
-            Contract.Require(version, "version");
+            Contract.Require(version, nameof(version));
 
             return IsCore(version.Major, version.Minor, gles);
         }

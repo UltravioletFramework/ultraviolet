@@ -40,7 +40,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="resolver">The custom value resolver to register.</param>
         public static void RegisterValueResolver<T>(CustomObjectResolver resolver)
         {
-            Contract.Require(resolver, "resolver");
+            Contract.Require(resolver, nameof(resolver));
 
             registeredCustomResolvers[typeof(T)] = resolver;
         }
@@ -174,9 +174,9 @@ namespace TwistedLogik.Nucleus.Data
         /// <returns>The parsed value.</returns>
         public static Object ParseEnum(Type type, String value, Boolean ignoreCase)
         {
-            Contract.Require(type, "type");
-            Contract.Require(value, "value");
-            Contract.Ensure<ArgumentException>(type.IsEnum, "type");
+            Contract.Require(type, nameof(type));
+            Contract.Require(value, nameof(value));
+            Contract.Ensure<ArgumentException>(type.IsEnum, nameof(type));
 
             if (value == String.Empty)
                 throw new FormatException();

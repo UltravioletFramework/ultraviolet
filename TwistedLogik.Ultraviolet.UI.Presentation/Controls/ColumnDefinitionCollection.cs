@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="grid">The <see cref="Grid"/> that owns the collection.</param>
         internal ColumnDefinitionCollection(Grid grid)
         {
-            Contract.Require(grid, "grid");
+            Contract.Require(grid, nameof(grid));
 
             this.grid           = grid;
             this.implicitColumn = new ColumnDefinition() { Grid = grid, Width = new GridLength(1.0, GridUnitType.Star) };
@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns><see langword="true"/> if the specified column was removed from the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(ColumnDefinition definition)
         {
-            Contract.Require(definition, "definition");
+            Contract.Require(definition, nameof(definition));
 
             if (storage.Remove(definition))
             {
@@ -107,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns><see langword="true"/> if the collection contains the specified column; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(ColumnDefinition definition)
         {
-            Contract.Require(definition, "definition");
+            Contract.Require(definition, nameof(definition));
 
             if (storage.Count == 0)
             {

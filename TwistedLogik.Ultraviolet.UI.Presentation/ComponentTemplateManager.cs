@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The component template for the specified interface element, or <see langword="null"/> if no such template is registered.</returns>
         public XDocument Get(UIElement element, out Type actualType)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return Get(element.GetType(), out actualType);
         }
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The component template for the specified type, or <see langword="null"/> if no such template exists.</returns>
         public XDocument Get(Type type, out Type actualType)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
 
             var template = default(XDocument);
             actualType = null;
@@ -129,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The default component template for the specified type, or <see langword="null"/> if no such template exists.</returns>
         public XDocument GetDefault(Type type, out Type actualType)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
 
             var template = default(XDocument);
             actualType = null;
@@ -166,8 +166,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="template">The template to register for the specified type.</param>
         public void Set(Type type, XDocument template)
         {
-            Contract.Require(type, "type");
-            Contract.Require(template, "template");
+            Contract.Require(type, nameof(type));
+            Contract.Require(template, nameof(template));
 
             lock (sync)
             {
@@ -192,8 +192,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="template">The template to register as the default for the specified type.</param>
         public void SetDefault(Type type, XDocument template)
         {
-            Contract.Require(type, "type");
-            Contract.Require(template, "template");
+            Contract.Require(type, nameof(type));
+            Contract.Require(template, nameof(template));
 
             lock (sync)
             {
@@ -216,7 +216,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="type">The type of element for which to remove the component template.</param>
         public void Remove(Type type)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
 
             lock (sync)
             {

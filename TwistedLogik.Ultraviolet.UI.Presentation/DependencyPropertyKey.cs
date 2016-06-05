@@ -13,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dependencyProperty">The <see cref="DependencyProperty"/> instance to which this key provides access.</param>
         internal DependencyPropertyKey(DependencyProperty dependencyProperty)
         {
-            Contract.Require(dependencyProperty, "dependencyProperty");
+            Contract.Require(dependencyProperty, nameof(dependencyProperty));
 
             this.dependencyProperty = dependencyProperty;
         }

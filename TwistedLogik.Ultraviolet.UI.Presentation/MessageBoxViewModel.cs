@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="mb">The message box that owns the screen.</param>
         protected internal MessageBoxViewModel(MessageBoxModal mb)
         {
-            Contract.Require(mb, "mb");
+            Contract.Require(mb, nameof(mb));
 
             this.mb = mb;
         }

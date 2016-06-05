@@ -15,7 +15,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="tokens">The list to populate with the retrieved tokens.</param>
         public static void Tokenize(this String str, IList<String> tokens)
         {
-            Contract.Require(tokens, "tokens");
+            Contract.Require(tokens, nameof(tokens));
 
             Tokenize(str, tokens, Int32.MaxValue);
         }
@@ -28,7 +28,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="tokens">The list to populate with the retrieved tokens.</param>
         public static void Tokenize(this String str, IList<String> tokens, Int32 count)
         {
-            Contract.Require(tokens, "tokens");
+            Contract.Require(tokens, nameof(tokens));
 
             string remainder = null;
             Tokenize(str, tokens, count, out remainder);
@@ -43,7 +43,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="remainder">The portion of the original string that was not tokenized.</param>
         public static void Tokenize(this String str, IList<String> tokens, Int32 count, out String remainder)
         {
-            Contract.Require(tokens, "tokens");
+            Contract.Require(tokens, nameof(tokens));
 
             // Assume no remainder.
             remainder = "";

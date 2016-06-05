@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
         /// <param name="stream">The <see cref="Stream"/> that contains the surface data.</param>
         public AndroidSurfaceSource(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
 
             using (var bmp = BitmapFactory.DecodeStream(stream))
             {

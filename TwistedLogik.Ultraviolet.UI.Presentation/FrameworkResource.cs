@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="asset">The asset identifier that identifies the resource to load.</param>
         public void Load(ContentManager content, AssetID asset)
         {
-            Contract.Require(content, "content");
+            Contract.Require(content, nameof(content));
 
             value = content.Load<TResource>(asset);
         }

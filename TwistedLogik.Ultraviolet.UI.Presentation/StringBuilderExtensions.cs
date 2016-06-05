@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static StringBuilder InsertVersionedStringSource(this StringBuilder @this, Int32 index, VersionedStringSource value)
         {
             Contract.Require(@this, "this");
-            Contract.EnsureRange(index >= 0 && index <= @this.Length, "index");
+            Contract.EnsureRange(index >= 0 && index <= @this.Length, nameof(index));
 
             if (value.IsValid)
             {

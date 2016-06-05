@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="initializer">A function which initializes a new instance of the bound resource.</param>
         public UltravioletSingleton(UltravioletSingletonFlags flags, Func<UltravioletContext, T> initializer)
         {
-            Contract.Require(initializer, "initializer");
+            Contract.Require(initializer, nameof(initializer));
 
             this.flags = flags;
             this.initializer = initializer;

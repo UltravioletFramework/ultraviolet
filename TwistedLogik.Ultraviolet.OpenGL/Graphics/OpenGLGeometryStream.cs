@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void Attach(IndexBuffer ibuffer)
         {
-            Contract.Require(ibuffer, "ibuffer");
+            Contract.Require(ibuffer, nameof(ibuffer));
             Contract.EnsureNot(HasIndices, UltravioletStrings.GeometryStreamAlreadyHasIndices);
             Contract.EnsureNotDisposed(this, Disposed);
 

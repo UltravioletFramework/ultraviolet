@@ -40,8 +40,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <inheritdoc/>
         public BindingExpressionCompilationResult Compile(UltravioletContext uv, BindingExpressionCompilerOptions options)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(options, "options");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(options, nameof(options));
 
             if (String.IsNullOrEmpty(options.Input) || String.IsNullOrEmpty(options.Output))
                 throw new ArgumentException(PresentationStrings.InvalidCompilerOptions);
@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <inheritdoc/>
         public BindingExpressionCompilationResult CompileSingleView(UltravioletContext uv, BindingExpressionCompilerOptions options)
         {
-            Contract.Require(options, "options");
+            Contract.Require(options, nameof(options));
 
             if (String.IsNullOrEmpty(options.Input))
                 throw new ArgumentException(PresentationStrings.InvalidCompilerOptions);

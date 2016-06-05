@@ -43,7 +43,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="asm">The assembly that contains the plugins to load.</param>
         public static void LoadPlugins(Assembly asm)
         {
-            Contract.Require(asm, "asm");
+            Contract.Require(asm, nameof(asm));
 
             var plugins = from type in asm.GetTypes()
                           where
@@ -67,7 +67,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="plugin">The localization plugin to load.</param>
         public static void LoadPlugin(ILocalizationPlugin plugin)
         {
-            Contract.Require(plugin, "plugin");
+            Contract.Require(plugin, nameof(plugin));
 
             var cultures = plugin.Cultures ?? new String[0];
 
@@ -100,8 +100,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="evaluator">The evaluator to register.</param>
         public static void RegisterPluralityEvaluator(String culture, LocalizationPluralityEvaluator evaluator)
         {
-            Contract.RequireNotEmpty(culture, "culture");
-            Contract.Require(evaluator, "evaluator");
+            Contract.RequireNotEmpty(culture, nameof(culture));
+            Contract.Require(evaluator, nameof(evaluator));
 
             registeredPluralityEvaluators[culture] = evaluator;
         }
@@ -115,9 +115,9 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="evaluator">The evaluator to register.</param>
         public static void RegisterMatchEvaluator(String culture, String name, LocalizationMatchEvaluator evaluator)
         {
-            Contract.RequireNotEmpty(culture, "culture");
-            Contract.RequireNotEmpty(name, "name");
-            Contract.Require(evaluator, "evaluator");
+            Contract.RequireNotEmpty(culture, nameof(culture));
+            Contract.RequireNotEmpty(name, nameof(name));
+            Contract.Require(evaluator, nameof(evaluator));
 
             if (!registeredMatchEvaluators.ContainsKey(culture))
             {
@@ -152,7 +152,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The plurality group associated with the specified culture and quantity.</returns>
         public static String GetPluralityGroup(String culture, Int32 quantity)
         {
-            Contract.RequireNotEmpty(culture, "culture");
+            Contract.RequireNotEmpty(culture, nameof(culture));
 
             LocalizationPluralityEvaluator evaluator;
             if (registeredPluralityEvaluators.TryGetValue(culture, out evaluator))
@@ -181,8 +181,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The variant of <paramref name="source"/> which is the best match for <paramref name="target"/> according to the specified rule.</returns>
         public static String MatchVariant(LocalizedString source, LocalizedStringVariant target, String rule)
         {
-            Contract.Require(target, "target");
-            Contract.RequireNotEmpty(rule, "rule");
+            Contract.Require(target, nameof(target));
+            Contract.RequireNotEmpty(rule, nameof(rule));
 
             return MatchVariantInternal(CurrentCulture, source, target, rule);
         }
@@ -197,9 +197,9 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The variant of <paramref name="source"/> which is the best match for <paramref name="target"/> according to the specified rule.</returns>
         public static String MatchVariant(String culture, LocalizedString source, LocalizedStringVariant target, String rule)
         {
-            Contract.RequireNotEmpty(culture, "culture");
-            Contract.Require(target, "target");
-            Contract.RequireNotEmpty(rule, "rule");
+            Contract.RequireNotEmpty(culture, nameof(culture));
+            Contract.Require(target, nameof(target));
+            Contract.RequireNotEmpty(rule, nameof(rule));
 
             return MatchVariantInternal(culture, source, target, rule);
         }
@@ -213,7 +213,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The variant of <paramref name="source"/> which is the best match for <paramref name="target"/> according to the specified rule.</returns>
         public static String MatchVariant(LocalizedString source, LocalizedStringVariant target, StringSegment rule)
         {
-            Contract.Require(target, "target");
+            Contract.Require(target, nameof(target));
 
             return MatchVariantInternal(CurrentCulture, source, target, rule);
         }
@@ -228,8 +228,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The variant of <paramref name="source"/> which is the best match for <paramref name="target"/> according to the specified rule.</returns>
         public static String MatchVariant(String culture, LocalizedString source, LocalizedStringVariant target, StringSegment rule)
         {
-            Contract.RequireNotEmpty(culture, "culture");
-            Contract.Require(target, "target");
+            Contract.RequireNotEmpty(culture, nameof(culture));
+            Contract.Require(target, nameof(target));
 
             return MatchVariantInternal(culture, source, target, rule);
         }

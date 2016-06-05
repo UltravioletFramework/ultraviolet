@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         protected IndexBuffer(UltravioletContext uv, IndexBufferElementType itype, Int32 icount)
             : base(uv)
         {
-            Contract.EnsureRange(icount > 0, "icount");
+            Contract.EnsureRange(icount > 0, nameof(icount));
 
             this.itype = itype;
             this.icount = icount;
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="IndexBuffer"/> that was created.</returns>
         public static IndexBuffer Create(IndexBufferElementType itype, Int32 icount)
         {
-            Contract.EnsureRange(icount > 0, "icount");
+            Contract.EnsureRange(icount > 0, nameof(icount));
 
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<IndexBufferFactory>()(uv, itype, icount);

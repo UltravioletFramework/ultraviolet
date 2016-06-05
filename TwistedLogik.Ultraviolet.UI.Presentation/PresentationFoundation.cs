@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="presentationConfig">Configuration settings for the Ultraviolet Presentation Foundation.</param>
         public static void Configure(UltravioletConfiguration ultravioletConfig, PresentationFoundationConfiguration presentationConfig = null)
         {
-            Contract.Require(ultravioletConfig, "configuration");
+            Contract.Require(ultravioletConfig, nameof(ultravioletConfig));
 
             ultravioletConfig.ViewProviderAssembly = typeof(PresentationFoundation).Assembly.FullName;
             ultravioletConfig.ViewProviderConfiguration = presentationConfig;
@@ -72,8 +72,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Object CreateDataSourceWrapperByName(String name, Object viewModel, Namescope namescope)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.RequireNotEmpty(name, "name");
-            Contract.Require(namescope, "namescope");
+            Contract.RequireNotEmpty(name, nameof(name));
+            Contract.Require(namescope, nameof(namescope));
 
             if (viewModel == null)
                 return null;
@@ -111,7 +111,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Object CreateDataSourceWrapperForControl(Control viewModel)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(viewModel, "control");
+            Contract.Require(viewModel, nameof(viewModel));
 
             if (viewModel == null)
                 return null;
@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Type GetDataSourceWrapperTypeByViewPath(String path)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.RequireNotEmpty(path, "path");
+            Contract.RequireNotEmpty(path, nameof(path));
 
             var name = PresentationFoundationView.GetDataSourceWrapperNameForView(path);
 
@@ -164,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Type GetDataSourceWrapperTypeByName(String name)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             Type wrapperType;
             if (compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
@@ -182,7 +182,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void CompileExpressions(String root, CompileExpressionsFlags flags = CompileExpressionsFlags.None)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.RequireNotEmpty(root, "root");
+            Contract.RequireNotEmpty(root, nameof(root));
             
             LoadBindingExpressionCompiler();
 
@@ -217,7 +217,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void CompileExpressionsIfSupported(String root, CompileExpressionsFlags flags = CompileExpressionsFlags.None)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.RequireNotEmpty(root, "root");
+            Contract.RequireNotEmpty(root, nameof(root));
 
             if (Ultraviolet.Platform == UltravioletPlatform.Android)
                 return;
@@ -346,7 +346,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the specified known type was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetKnownType(String name, Boolean isCaseSensitive, out Type type)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
             Contract.EnsureNotDisposed(this, Disposed);
 
             type = null;
@@ -382,7 +382,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the specified element type was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetKnownElement(String name, Boolean isCaseSensitive, out Type type)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
             Contract.EnsureNotDisposed(this, Disposed);
 
             type = null;
@@ -406,7 +406,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the specified element's default property was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetElementDefaultProperty(String name, out String property)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
             Contract.EnsureNotDisposed(this, Disposed);
 
             property = null;
@@ -427,7 +427,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the specified element's default property was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetElementDefaultProperty(Type type, out String property)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
             Contract.EnsureNotDisposed(this, Disposed);
 
             property = null;
@@ -446,7 +446,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="asm">The assembly for which to register known types.</param>
         public void RegisterKnownTypes(Assembly asm)
         {
-            Contract.Require(asm, "asm");
+            Contract.Require(asm, nameof(asm));
             
             var knownTypes = from t in asm.GetTypes()
                              let attr = t.GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault()
@@ -466,7 +466,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="type">The type that implements the custom element.</param>
         public void RegisterElement(Type type)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
             Contract.EnsureNotDisposed(this, Disposed);
 
             RegisterElementInternal(registeredTypes, type, null);
@@ -479,7 +479,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the custom element was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterKnownType(Type type)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
             Contract.EnsureNotDisposed(this, Disposed);
 
             KnownType registration;
@@ -496,7 +496,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the custom element was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterKnownElement(Type type)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
             Contract.EnsureNotDisposed(this, Disposed);
 
             KnownElement registration;
@@ -676,7 +676,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The element to remove from the queues.</param>
         internal void RemoveFromQueues(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             StyleQueue.Remove(element);
             MeasureQueue.Remove(element);

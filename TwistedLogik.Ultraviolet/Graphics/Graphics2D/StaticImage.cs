@@ -129,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out StaticImage image)
         {
-            Contract.Require(s, "s");
+            Contract.Require(s, nameof(s));
 
             var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
 

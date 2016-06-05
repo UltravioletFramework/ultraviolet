@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns><see langword="true"/> if navigation was performed; otherwise, <see langword="false"/>.</returns>
         public static Boolean PerformNavigation(PresentationFoundationView view, KeyboardDevice device, Key key, Boolean ctrl, Boolean alt, Boolean shift, Boolean repeat)
         {
-            Contract.Require(view, "view");
+            Contract.Require(view, nameof(view));
 
             var element = (view.ElementWithFocus ?? view.LayoutRoot) as UIElement;
             if (element == null)
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns><see langword="true"/> if navigation was performed; otherwise, <see langword="false"/>.</returns>
         public static Boolean PerformNavigation(PresentationFoundationView view, GamePadDevice device, GamePadButton button)
         {
-            Contract.Require(view, "view");
+            Contract.Require(view, nameof(view));
 
             var element = (view.ElementWithFocus ?? view.LayoutRoot) as UIElement;
             if (element == null)
@@ -103,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns><see langword="true"/> if navigation was performed; otherwise, <see langword="false"/>.</returns>
         public static Boolean PerformNavigation(PresentationFoundationView view, GamePadDevice device, GamePadAxis axis)
         {
-            Contract.Require(view, "view");
+            Contract.Require(view, nameof(view));
 
             if (GamePad.UseAxisForDirectionalNavigation)
             {

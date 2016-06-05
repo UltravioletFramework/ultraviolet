@@ -15,7 +15,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>A <see cref="StringSegment"/> that was created from the specified substring.</returns>
         public static StringSegment Segment(this String str, Int32 start)
         {
-            Contract.Require(str, "str");
+            Contract.Require(str, nameof(str));
 
             return new StringSegment(str, start, str.Length - start);
         }
@@ -29,7 +29,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>A <see cref="StringSegment"/> that was created from the specified substring.</returns>
         public static StringSegment Segment(this String str, Int32 start, Int32 length)
         {
-            Contract.Require(str, "str");
+            Contract.Require(str, nameof(str));
 
             return new StringSegment(str, start, length);
         }

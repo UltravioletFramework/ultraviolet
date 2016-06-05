@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The <see cref="SpriteAnimationID"/> that was read from the stream.</returns>
         public static SpriteAnimationID ReadSpriteAnimationID(this BinaryReader reader)
         {
-            Contract.Require(reader, "reader");
+            Contract.Require(reader, nameof(reader));
 
             return ReadSpriteAnimationID(reader, UltravioletContext.DemandCurrent().GetContent().Manifests);
         }
@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The <see cref="Nullable{SpriteAnimationID}"/> identifier that was read from the stream.</returns>
         public static SpriteAnimationID? ReadNullableSpriteAnimationID(this BinaryReader reader)
         {
-            Contract.Require(reader, "reader");
+            Contract.Require(reader, nameof(reader));
 
             return ReadNullableSpriteAnimationID(reader, UltravioletContext.DemandCurrent().GetContent().Manifests);
         }
@@ -44,8 +44,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The <see cref="SpriteAnimationID"/> that was read from the stream.</returns>
         public static SpriteAnimationID ReadSpriteAnimationID(this BinaryReader reader, ContentManifestRegistry manifests)
         {
-            Contract.Require(reader, "reader");
-            Contract.Require(manifests, "manifests");
+            Contract.Require(reader, nameof(reader));
+            Contract.Require(manifests, nameof(manifests));
 
             var valid = reader.ReadBoolean();
             if (valid)
@@ -69,8 +69,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The <see cref="SpriteAnimationID"/> that was read from the stream.</returns>
         public static SpriteAnimationID? ReadNullableSpriteAnimationID(this BinaryReader reader, ContentManifestRegistry manifests)
         {
-            Contract.Require(reader, "reader");
-            Contract.Require(manifests, "manifests");
+            Contract.Require(reader, nameof(reader));
+            Contract.Require(manifests, nameof(manifests));
 
             var hasValue = reader.ReadBoolean();
             if (hasValue)

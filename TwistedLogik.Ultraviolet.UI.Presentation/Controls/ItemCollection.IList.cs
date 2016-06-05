@@ -9,8 +9,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         public void CopyTo(Object[] array, Int32 arrayIndex)
         {
-            Contract.Require(array, "array");
-            Contract.EnsureRange(arrayIndex >= 0, "arrayIndex");
+            Contract.Require(array, nameof(array));
+            Contract.EnsureRange(arrayIndex >= 0, nameof(arrayIndex));
 
             if (IsBoundToItemsSource)
             {

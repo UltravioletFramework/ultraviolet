@@ -14,8 +14,8 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
         /// <inheritdoc/>
         public override void SaveAsPng(Surface2D surface, Stream stream)
         {
-            Contract.Require(surface, "surface");
-            Contract.Require(stream, "stream");
+            Contract.Require(surface, nameof(surface));
+            Contract.Require(stream, nameof(stream));
 
             Save(surface, stream, Bitmap.CompressFormat.Png);
         }
@@ -23,8 +23,8 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
         /// <inheritdoc/>
         public override void SaveAsJpeg(Surface2D surface, Stream stream)
         {
-            Contract.Require(surface, "surface");
-            Contract.Require(stream, "stream");
+            Contract.Require(surface, nameof(surface));
+            Contract.Require(stream, nameof(stream));
 
             Save(surface, stream, Bitmap.CompressFormat.Jpeg);
         }
@@ -32,8 +32,8 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
         /// <inheritdoc/>
         public override void SaveAsPng(RenderTarget2D renderTarget, Stream stream)
         {
-            Contract.Require(renderTarget, "renderTarget");
-            Contract.Require(stream, "stream");
+            Contract.Require(renderTarget, nameof(renderTarget));
+            Contract.Require(stream, nameof(stream));
 
             Save(renderTarget, stream, Bitmap.CompressFormat.Png);
         }
@@ -41,8 +41,8 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
         /// <inheritdoc/>
         public override void SaveAsJpeg(RenderTarget2D renderTarget, Stream stream)
         {
-            Contract.Require(renderTarget, "renderTarget");
-            Contract.Require(stream, "stream");
+            Contract.Require(renderTarget, nameof(renderTarget));
+            Contract.Require(stream, nameof(stream));
 
             Save(renderTarget, stream, Bitmap.CompressFormat.Jpeg);
         }

@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// if no element currently has focus.</returns>
         public static IInputElement GetFocusedElement(PresentationFoundationView view)
         {
-            Contract.Require(view, "view");
+            Contract.Require(view, nameof(view));
 
             return view.ElementWithFocus;
         }
@@ -95,8 +95,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewGotKeyboardFocusHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewGotKeyboardFocusEvent, handler);
         }
@@ -109,8 +109,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewLostKeyboardFocusHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewLostKeyboardFocusEvent, handler);
         }
@@ -123,8 +123,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddGotKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, GotKeyboardFocusEvent, handler);
         }
@@ -137,8 +137,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddLostKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, LostKeyboardFocusEvent, handler);
         }
@@ -151,8 +151,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewTextInputHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewTextInputEvent, handler);
         }
@@ -165,8 +165,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewTextEditingHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewTextEditingEvent, handler);
         }
@@ -179,8 +179,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewKeyDownHandler(DependencyObject element, UpfKeyDownEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewKeyDownEvent, handler);
         }
@@ -193,8 +193,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewKeyUpHandler(DependencyObject element, UpfKeyEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewKeyUpEvent, handler);
         }
@@ -207,8 +207,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddTextInputHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, TextInputEvent, handler);
         }
@@ -221,8 +221,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddTextEditingHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, TextEditingEvent, handler);
         }
@@ -235,8 +235,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddKeyDownHandler(DependencyObject element, UpfKeyDownEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, KeyDownEvent, handler);
         }
@@ -249,8 +249,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddKeyUpHandler(DependencyObject element, UpfKeyEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, KeyUpEvent, handler);
         }
@@ -263,8 +263,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewGotKeyboardFocusHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewGotKeyboardFocusEvent, handler);
         }
@@ -277,8 +277,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewLostKeyboardFocusHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewLostKeyboardFocusEvent, handler);
         }
@@ -291,8 +291,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveGotKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, GotKeyboardFocusEvent, handler);
         }
@@ -305,8 +305,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveLostKeyboardFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, LostKeyboardFocusEvent, handler);
         }
@@ -319,8 +319,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewTextInputHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewTextInputEvent, handler);
         }
@@ -333,8 +333,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewTextEditingHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewTextEditingEvent, handler);
         }
@@ -347,8 +347,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewKeyDownHandler(DependencyObject element, UpfKeyDownEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewKeyDownEvent, handler);
         }
@@ -361,8 +361,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewKeyUpHandler(DependencyObject element, UpfKeyEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewKeyUpEvent, handler);
         }
@@ -375,8 +375,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveTextInputHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, TextInputEvent, handler);
         }
@@ -389,8 +389,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveTextEditingHandler(DependencyObject element, UpfKeyboardEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, TextEditingEvent, handler);
         }
@@ -403,8 +403,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveKeyDownHandler(DependencyObject element, UpfKeyDownEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, KeyDownEvent, handler);
         }
@@ -417,8 +417,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveKeyUpHandler(DependencyObject element, UpfKeyEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, KeyUpEvent, handler);
         }

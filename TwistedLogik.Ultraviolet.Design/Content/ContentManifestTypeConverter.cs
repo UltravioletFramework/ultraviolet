@@ -20,8 +20,8 @@ namespace TwistedLogik.Ultraviolet.Design.Content
         /// <param name="manifestGroupName">The name of the manifest group from which to retrieve values.</param>
         public ContentManifestTypeConverter(String manifestName, String manifestGroupName)
         {
-            Contract.RequireNotEmpty(manifestName, "manifestName");
-            Contract.RequireNotEmpty(manifestGroupName, "manifestGroupName");
+            Contract.RequireNotEmpty(manifestName, nameof(manifestName));
+            Contract.RequireNotEmpty(manifestGroupName, nameof(manifestGroupName));
 
             values = GetStandardValuesForManifestGroup(manifestName, manifestGroupName);
         }

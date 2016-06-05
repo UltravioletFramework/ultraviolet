@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="namescope">The namescope for this data source wrapper.</param>
         protected CompiledDataSourceWrapper(Namescope namescope)
         {
-            Contract.Require(namescope, "namescope");
+            Contract.Require(namescope, nameof(namescope));
 
             this.namescope = namescope;
         }

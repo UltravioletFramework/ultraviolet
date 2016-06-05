@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="batchSize">The sprite batch size.</param>
         public SpriteBatchInfo(Int32 batchSize)
         {
-            Contract.EnsureRange(batchSize > 0, "batchSize");
+            Contract.EnsureRange(batchSize > 0, nameof(batchSize));
 
             this.headers = new SpriteHeader[batchSize];
             this.data = new SpriteData[batchSize];

@@ -26,8 +26,8 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         /// <param name="capacityInBytes">The stream's capacity in bytes.</param>
         public UnsafeObjectStream(Int32 capacityInObjects, Int32 capacityInBytes)
         {
-            Contract.EnsureRange(capacityInObjects >= 0, "capacityInObjects");
-            Contract.EnsureRange(capacityInBytes >= 0, "capacityInBytes");
+            Contract.EnsureRange(capacityInObjects >= 0, nameof(capacityInObjects));
+            Contract.EnsureRange(capacityInBytes >= 0, nameof(capacityInBytes));
 
             this.index = (capacityInObjects == 0) ? EmptyIndex : new Int32[capacityInObjects];
             this.data = (capacityInBytes == 0) ? EmptyData : new Byte[capacityInBytes];
@@ -90,7 +90,7 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         public void* RawSeekObject(Int32 offset)
         {
             Contract.Ensure(hasAcquiredPointers, NucleusStrings.UnsafeStreamMustAcquirePointers);
-            Contract.EnsureRange(offset >= 0 && offset <= lengthInObjects, "offset");
+            Contract.EnsureRange(offset >= 0 && offset <= lengthInObjects, nameof(offset));
 
             positionInObjects = offset;
             positionInBytes = (offset == lengthInObjects) ? lengthInBytes : index[offset];
@@ -229,7 +229,7 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         /// <param name="numberOfBytes">The number of bytes to reserve.</param>
         public void Reserve(Int32 numberOfBytes)
         {
-            Contract.EnsureRange(numberOfBytes > 0, "numberOfBytes");
+            Contract.EnsureRange(numberOfBytes > 0, nameof(numberOfBytes));
             Contract.Ensure(positionInBytes == lengthInBytes, NucleusStrings.UnsafeStreamCanOnlyReserveAtStreamEnd);
 
             EnsureIndexCapacity(lengthInObjects + 1);
@@ -244,8 +244,8 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         /// <param name="numberOfBytes">The number of bytes to reserve.</param>
         public void ReserveMultiple(Int32 numberOfObjects, Int32 numberOfBytes)
         {
-            Contract.Ensure(numberOfObjects > 0, "numberOfObjects");
-            Contract.Ensure(numberOfBytes > 0, "numberOfBytes");
+            Contract.Ensure(numberOfObjects > 0, nameof(numberOfObjects));
+            Contract.Ensure(numberOfBytes > 0, nameof(numberOfBytes));
             Contract.Ensure(positionInBytes == lengthInBytes, NucleusStrings.UnsafeStreamCanOnlyReserveAtStreamEnd);
 
             EnsureIndexCapacity(lengthInObjects + numberOfObjects);
@@ -276,9 +276,9 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         /// <param name="numberOfBytes">The number of bytes to reserve.</param>
         public void ReserveInsert(Int32 insertPosition, Int32 numberOfObjects, Int32 numberOfBytes)
         {
-            Contract.Ensure(insertPosition >= 0 && insertPosition <= lengthInObjects, "insertPosition");
-            Contract.Ensure(numberOfObjects > 0, "numberOfObjects");
-            Contract.Ensure(numberOfBytes > 0, "numberOfBytes");
+            Contract.Ensure(insertPosition >= 0 && insertPosition <= lengthInObjects, nameof(insertPosition));
+            Contract.Ensure(numberOfObjects > 0, nameof(numberOfObjects));
+            Contract.Ensure(numberOfBytes > 0, nameof(numberOfBytes));
 
             var insert = (insertPosition < lengthInObjects);
             var insertPositionInBytes = insert ? index[insertPosition] : lengthInBytes;
@@ -310,8 +310,8 @@ namespace TwistedLogik.Nucleus.Collections.Specialized
         /// <param name="numberOfBytes">The number of bytes by which to advance the pointer.</param>
         public void FinalizeObject(Int32 numberOfBytes)
         {
-            Contract.EnsureRange(numberOfBytes > 0, "numberOfBytes");
-            Contract.EnsureRange(positionInBytes + numberOfBytes <= CapacityInBytes, "numberOfBytes");
+            Contract.EnsureRange(numberOfBytes > 0, nameof(numberOfBytes));
+            Contract.EnsureRange(positionInBytes + numberOfBytes <= CapacityInBytes, nameof(numberOfBytes));
             Contract.Ensure(lengthInObjects + 1 <= CapacityInBytes, NucleusStrings.BufferLengthExceeded);
 
             if (positionInObjects < lengthInObjects && index[positionInObjects] != 0)

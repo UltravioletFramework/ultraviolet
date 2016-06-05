@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="path">The path to the file to save.</param>
         public void Save(String path)
         {
-            Contract.RequireNotEmpty(path, "path");
+            Contract.RequireNotEmpty(path, nameof(path));
             Contract.EnsureNotDisposed(this, Disposed);
 
             SerializeToXml().Save(path);
@@ -111,7 +111,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="stream">The <see cref="Stream"/> to which to save the input actions.</param>
         public void Save(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
             Contract.EnsureNotDisposed(this, Disposed);
 
             SerializeToXml().Save(stream);
@@ -124,7 +124,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="throwIfNotFound">A value indicating whether to throw an exception if the specified file is not found.</param>
         public void Load(String path, Boolean throwIfNotFound = true)
         {
-            Contract.RequireNotEmpty(path, "path");
+            Contract.RequireNotEmpty(path, nameof(path));
             Contract.EnsureNotDisposed(this, Disposed);
 
             try
@@ -151,7 +151,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="stream">The <see cref="Stream"/> from which to load the input actions.</param>
         public void Load(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
 
             var xml = XDocument.Load(stream);
             DeserializeFromXml(xml);
@@ -220,7 +220,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="binding">The input binding to register.</param>
         internal void RegisterBinding(InputBinding binding)
         {
-            Contract.Require(binding, "binding");
+            Contract.Require(binding, nameof(binding));
             Contract.EnsureNotDisposed(this, Disposed);
 
             foreach (var g in groups)
@@ -240,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="binding">The input binding to unregister.</param>
         internal void UnregisterBinding(InputBinding binding)
         {
-            Contract.Require(binding, "binding");
+            Contract.Require(binding, nameof(binding));
             Contract.EnsureNotDisposed(this, Disposed);
 
             foreach (var g in groups)
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <returns>The input action that was created.</returns>
         protected InputAction CreateAction(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             if (actions.ContainsKey(name))
                 throw new InvalidOperationException(UltravioletStrings.InputActionAlreadyExists.Format(name));

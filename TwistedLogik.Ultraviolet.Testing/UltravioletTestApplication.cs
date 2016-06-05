@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.Testing
         /// <inheritdoc/>
         public IUltravioletTestApplication SkipFrames(Int32 frameCount)
         {
-            Contract.EnsureRange(frameCount >= 0, "frameCount");
+            Contract.EnsureRange(frameCount >= 0, nameof(frameCount));
 
             framesToSkip = frameCount;
             return this;

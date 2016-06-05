@@ -25,8 +25,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewGenericInteractionHandler(DependencyObject element, UpfGenericInteractionEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewGenericInteractionEvent, handler);
         }
@@ -39,8 +39,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddGenericInteractionHandler(DependencyObject element, UpfGenericInteractionEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, GenericInteractionEvent, handler);
         }
@@ -53,8 +53,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewGenericInteractionHandler(DependencyObject element, UpfTouchTapEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewGenericInteractionEvent, handler);
         }
@@ -67,8 +67,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveGenericInteractionHandler(DependencyObject element, UpfTouchTapEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, GenericInteractionEvent, handler);
         }

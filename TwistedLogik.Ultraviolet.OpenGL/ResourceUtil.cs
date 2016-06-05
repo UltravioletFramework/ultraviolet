@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <returns>A string of text that contains the file data.</returns>
         public static String ReadResourceString(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             var asm = Assembly.GetExecutingAssembly();
 
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <returns>A string of text that contains the file data.</returns>
         public static String ReadShaderResourceString(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             if (gl.IsGLES)
             {

@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dobj">The object to initialize.</param>
         public static void InitializeObject(DependencyObject dobj)
         {
-            Contract.Require(dobj, "dobj");
+            Contract.Require(dobj, nameof(dobj));
 
             var type = dobj.GetType();
             while (type != null && typeof(DependencyObject).IsAssignableFrom(type))
@@ -38,8 +38,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="ownerType">The type to add as an owner for the specified dependency property.</param>
         public static void AddOwner(DependencyProperty dp, Type ownerType)
         {
-            Contract.Require(dp, "dp");
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(dp, nameof(dp));
+            Contract.Require(ownerType, nameof(ownerType));
 
             RegisterInternal(dp, ownerType);
         }
@@ -55,9 +55,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="DependencyProperty"/> instance which represents the registered dependency property.</returns>
         public static DependencyProperty Register(String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
         {
-            Contract.Require(name, "name");
-            Contract.Require(propertyType, "propertyType");
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(name, nameof(name));
+            Contract.Require(propertyType, nameof(propertyType));
+            Contract.Require(ownerType, nameof(ownerType));
 
             var dp = new DependencyProperty(dpid++, name, uvssName, propertyType, ownerType, metadata);
             RegisterInternal(dp, ownerType);
@@ -75,9 +75,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="DependencyProperty"/> instance which represents the registered attached property.</returns>
         public static DependencyProperty RegisterAttached(String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
         {
-            Contract.Require(name, "name");
-            Contract.Require(propertyType, "propertyType");
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(name, nameof(name));
+            Contract.Require(propertyType, nameof(propertyType));
+            Contract.Require(ownerType, nameof(ownerType));
 
             var dp = new DependencyProperty(dpid++, name, uvssName, propertyType, ownerType, metadata, isAttached: true);
             RegisterInternal(dp, ownerType);
@@ -95,9 +95,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="DependencyPropertyKey"/> instance which provides access to the read-only dependency property.</returns>
         public static DependencyPropertyKey RegisterReadOnly(String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
         {
-            Contract.Require(name, "name");
-            Contract.Require(propertyType, "propertyType");
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(name, nameof(name));
+            Contract.Require(propertyType, nameof(propertyType));
+            Contract.Require(ownerType, nameof(ownerType));
 
             var dp = new DependencyProperty(dpid++, name, uvssName, propertyType, ownerType, metadata, isReadOnly: true);
             RegisterInternal(dp, ownerType);
@@ -115,9 +115,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="DependencyPropertyKey"/> instance which provides access to the read-only attached property.</returns>
         public static DependencyPropertyKey RegisterAttachedReadOnly(String name, String uvssName, Type propertyType, Type ownerType, PropertyMetadata metadata = null)
         {
-            Contract.Require(name, "name");
-            Contract.Require(propertyType, "propertyType");
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(name, nameof(name));
+            Contract.Require(propertyType, nameof(propertyType));
+            Contract.Require(ownerType, nameof(ownerType));
 
             var dp = new DependencyProperty(dpid++, name, uvssName, propertyType, ownerType, metadata, isReadOnly: true, isAttached: true);
             RegisterInternal(dp, ownerType);
@@ -133,8 +133,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// or <see langword="null"/> if no such dependency property exists.</returns>
         public static DependencyProperty FindByName(String name, Type ownerType)
         {
-            Contract.Require(name, "name");
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(name, nameof(name));
+            Contract.Require(ownerType, nameof(ownerType));
 
             var type = ownerType;
             while (type != null)
@@ -159,8 +159,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// or <see langword="null"/> if no such dependency property exists.</returns>
         public static DependencyProperty FindByStylingName(String name, Type ownerType)
         {
-            Contract.Require(name, "name");
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(name, nameof(name));
+            Contract.Require(ownerType, nameof(ownerType));
 
             var type = ownerType;
             while (type != null)

@@ -30,8 +30,8 @@ namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
         /// of the static methods on <see cref="UltravioletProfiler"/> have been invoked.</remarks>
         public static void RegisterProfiler(UltravioletContext owner, UltravioletFactory factory)
         {
-            Contract.Require(owner, "owner");
-            Contract.Require(factory, "factory");
+            Contract.Require(owner, nameof(owner));
+            Contract.Require(factory, nameof(factory));
 
             factory.RemoveFactoryMethod<UltravioletProfilerFactory>();
             factory.SetFactoryMethod<UltravioletProfilerFactory>(uv => new dotTraceProfiler(uv));

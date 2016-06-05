@@ -15,7 +15,7 @@ namespace TwistedLogik.Nucleus
         /// <param name="comparer">The function used to compare objects.</param>
         public FunctorComparer(Func<T, T, Int32> comparer)
         {
-            Contract.Require(comparer, "comparer");
+            Contract.Require(comparer, nameof(comparer));
 
             this.comparer = comparer;
         }

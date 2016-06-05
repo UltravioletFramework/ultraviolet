@@ -17,8 +17,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="handledEventsToo">A value indicating whether the handler should receive events which have already been handled by other handlers.</param>
         public void Add(RoutedEvent evt, Delegate handler, Boolean handledEventsToo)
         {
-            Contract.Require(evt, "evt");
-            Contract.Require(handler, "handler");
+            Contract.Require(evt, nameof(evt));
+            Contract.Require(handler, nameof(handler));
 
             if (evt.DelegateType != handler.GetType())
                 throw new ArgumentException(PresentationStrings.HandlerTypeMismatch.Format(handler.GetType().Name, evt.DelegateType.Name), "handler");
@@ -47,8 +47,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="handler">A delegate which represents the handler to remove from the specified routed event.</param>
         public void Remove(RoutedEvent evt, Delegate handler)
         {
-            Contract.Require(evt, "evt");
-            Contract.Require(handler, "handler");
+            Contract.Require(evt, nameof(evt));
+            Contract.Require(handler, nameof(handler));
 
             lock (routedEventDelegates)
             {

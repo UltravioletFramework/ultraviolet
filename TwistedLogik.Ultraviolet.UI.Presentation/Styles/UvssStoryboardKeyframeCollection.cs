@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="keyframe">The animation keyframe to add to the collection.</param>
         internal void Add(UvssStoryboardKeyframe keyframe)
         {
-            Contract.Require(keyframe, "keyframe");
+            Contract.Require(keyframe, nameof(keyframe));
 
             this.keyframes.Add(keyframe);
         }

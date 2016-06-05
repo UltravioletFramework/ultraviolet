@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="length">The file data's length in bytes.</param>
         internal ContentArchiveStream(Stream source, Int64 start, Int64 length)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             this.source = source;
             this.source.Seek(start, SeekOrigin.Begin);
@@ -73,9 +73,9 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <inheritdoc/>
         public override Int32 Read(Byte[] buffer, Int32 offset, Int32 count)
         {
-            Contract.Require(buffer, "buffer");
-            Contract.EnsureRange(offset >= 0 && offset < buffer.Length, "offset");
-            Contract.EnsureRange(count > 0, "count");
+            Contract.Require(buffer, nameof(buffer));
+            Contract.EnsureRange(offset >= 0 && offset < buffer.Length, nameof(offset));
+            Contract.EnsureRange(count > 0, nameof(count));
             Contract.EnsureNotDisposed(this, disposed);
 
             if (Position + count >= Length)
@@ -168,7 +168,7 @@ namespace TwistedLogik.Ultraviolet.Content
             set
             {
                 Contract.EnsureNotDisposed(this, disposed);
-                Contract.EnsureRange(value >= 0 && value < Length, "value");
+                Contract.EnsureRange(value >= 0 && value < Length, nameof(value));
 
                 source.Position = start + value;
             }

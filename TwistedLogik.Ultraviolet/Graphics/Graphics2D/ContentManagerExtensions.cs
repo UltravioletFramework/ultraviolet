@@ -20,8 +20,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The sprite animation that was loaded.</returns>
         public static SpriteAnimation Load(this ContentManager contentManager, SpriteAnimationID id, Boolean cache = true)
         {
-            Contract.Require(contentManager, "contentManager");
-            Contract.Ensure<ArgumentException>(id.IsValid, "id");
+            Contract.Require(contentManager, nameof(contentManager));
+            Contract.Ensure<ArgumentException>(id.IsValid, nameof(id));
             Contract.EnsureNotDisposed(contentManager, contentManager.Disposed);
 
             var sprite = contentManager.Load<Sprite>(SpriteAnimationID.GetSpriteAssetIDRef(ref id), cache);

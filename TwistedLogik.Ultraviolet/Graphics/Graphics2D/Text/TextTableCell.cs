@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="row">The row that owns the cell.</param>
         internal TextTableCell(TextTableRow<ViewModelType> row)
         {
-            Contract.Require(row, "row");
+            Contract.Require(row, nameof(row));
 
             this.row = row;
         }

@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns>The closest ancestor of the specified element which is a focus scope.</returns>
         public static DependencyObject GetFocusScope(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             if (element.GetValue<Boolean>(IsFocusScopeProperty))
                 return element;
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns>The element with logical focus within the specified focus scope.</returns>
         public static IInputElement GetFocusedElement(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<IInputElement>(FocusedElementProperty);
         }
@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns><see langword="true"/> if the specified element is a focus scope; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsFocusScope(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Boolean>(IsFocusScopeProperty);
         }
@@ -72,7 +72,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="value">The element with logical focus within the specified focus scope.</param>
         public static void SetFocusedElement(DependencyObject element, IInputElement value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(FocusedElementProperty, value);
         }
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="value">A value indicating whether the specified element is a focus scope.</param>
         public static void SetIsFocusScope(DependencyObject element, Boolean value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(IsFocusScopeProperty, value);
         }
@@ -97,8 +97,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddGotFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             UIElementHelper.AddHandler(element, GotFocusEvent, handler);
         }
@@ -111,8 +111,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddLostFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             UIElementHelper.AddHandler(element, LostFocusEvent, handler);
         }
@@ -125,8 +125,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveGotFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             UIElementHelper.RemoveHandler(element, GotFocusEvent, handler);
         }
@@ -139,8 +139,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveLostFocusHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             UIElementHelper.RemoveHandler(element, LostFocusEvent, handler);
         }

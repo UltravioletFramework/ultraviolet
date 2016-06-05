@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="view">The view that owns this resource collection.</param>
         internal PresentationFoundationViewResources(PresentationFoundationView view)
         {
-            Contract.Require(view, "view");
+            Contract.Require(view, nameof(view));
 
             this.view = view;
         }

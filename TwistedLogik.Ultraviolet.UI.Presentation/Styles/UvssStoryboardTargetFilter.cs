@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="type">The type filter to add to the collection.</param>
         internal void Add(String type)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
 
             this.types.Add(type);
         }

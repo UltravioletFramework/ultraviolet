@@ -17,9 +17,9 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="properties">A collection of properties to attach to the string variant.</param>
         internal LocalizedStringVariant(LocalizedString parent, String group, String value, IEnumerable<String> properties = null)
         {
-            Contract.Require(parent, "parent");
-            Contract.Require(group, "group");
-            Contract.Require(value, "value");
+            Contract.Require(parent, nameof(parent));
+            Contract.Require(group, nameof(group));
+            Contract.Require(value, nameof(value));
 
             this.parent = parent;
             this.group = group;

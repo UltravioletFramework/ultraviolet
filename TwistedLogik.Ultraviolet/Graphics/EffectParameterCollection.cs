@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         protected EffectParameterCollection(IEnumerable<EffectParameter> parameters)
         {
-            Contract.Require(parameters, "parameters");
+            Contract.Require(parameters, nameof(parameters));
 
             foreach (var parameter in parameters)
             {

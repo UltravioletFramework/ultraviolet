@@ -16,7 +16,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns><see langword="true"/> if the source list contains any elements; otherwise, <see langword="false"/>.</returns>
         public static Boolean Any<T>(this LinkedList<T> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             return source.Count > 0;
         }
@@ -30,8 +30,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns><see langword="true"/> if the source list contains any elements; otherwise, <see langword="false"/>.</returns>
         public static Boolean Any<T>(this LinkedList<T> source, Predicate<T> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             foreach (var item in source)
             {
@@ -52,8 +52,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns><see langword="true"/> if all of the items in the source list match the specified predicate; otherwise, <see langword="false"/>.</returns>
         public static Boolean All<T>(this LinkedList<T> source, Predicate<T> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             foreach (var item in source)
             {
@@ -71,7 +71,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The number of items in the source list.</returns>
         public static Int32 Count<T>(this LinkedList<T> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             return source.Count;
         }
@@ -85,8 +85,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The number of items in the source list.</returns>
         public static Int32 Count<T>(this LinkedList<T> source, Predicate<T> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             var count = 0;
 
@@ -107,7 +107,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The first item in the source list.</returns>
         public static T First<T>(this LinkedList<T> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             if (source.Count == 0)
                 throw new InvalidOperationException(NucleusStrings.SequenceHasNoElements);
@@ -124,8 +124,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The first item in the source list that satisfies the predicate.</returns>
         public static T First<T>(this LinkedList<T> source, Predicate<T> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             foreach (var item in source)
             {
@@ -144,7 +144,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The last item in the source list.</returns>
         public static T Last<T>(this LinkedList<T> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             if (source.Count == 0)
                 throw new InvalidOperationException(NucleusStrings.SequenceHasNoElements);
@@ -161,8 +161,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The last item in the source list that satisfies the predicate.</returns>
         public static T Last<T>(this LinkedList<T> source, Predicate<T> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             for (var current = source.Last; current != null; current = current.Previous)
             {
@@ -183,7 +183,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The single item in the source list.</returns>
         public static T Single<T>(this LinkedList<T> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             if (source.Count == 0)
                 throw new InvalidOperationException(NucleusStrings.SequenceHasNoElements);
@@ -204,8 +204,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The single item in the source list that matches the specified predicate.</returns>
         public static T Single<T>(this LinkedList<T> source, Predicate<T> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             var count = 0;
             var value = default(T);
@@ -236,7 +236,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The single item in the source list, or a default value.</returns>
         public static T SingleOrDefault<T>(this LinkedList<T> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             if (source.Count < 1)
                 return default(T);
@@ -257,8 +257,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The single item in the source list, or a default value.</returns>
         public static T SingleOrDefault<T>(this LinkedList<T> source, Predicate<T> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             var count = 0;
             var value = default(T);
@@ -289,7 +289,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The maximum item in the list.</returns>
         public static T Max<T>(this LinkedList<T> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             var comparer = Comparer<T>.Default;
 
@@ -329,7 +329,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The minimum item in the list.</returns>
         public static T Min<T>(this LinkedList<T> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             var comparer = Comparer<T>.Default;
 

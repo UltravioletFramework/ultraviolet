@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The <see cref="UltravioletMessageID"/> that was acquired.</returns>
         public static UltravioletMessageID Acquire(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             var id = Interlocked.Increment(ref counter);
             return new UltravioletMessageID(name, id);

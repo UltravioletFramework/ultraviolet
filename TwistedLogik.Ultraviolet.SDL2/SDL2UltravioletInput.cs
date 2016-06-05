@@ -161,7 +161,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
         public Boolean IsTouchDeviceConnected(Int32 index)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureRange(index >= 0, "index");
+            Contract.EnsureRange(index >= 0, nameof(index));
 
             return GetTouchDeviceByIndex(index) != null;
         }
@@ -178,7 +178,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
         public TouchDevice GetTouchDeviceByIndex(Int32 index)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureRange(index >= 0, "index");
+            Contract.EnsureRange(index >= 0, nameof(index));
 
             return index >= touchInfo.Count ? null : touchInfo.GetTouchDeviceByIndex(index);
         }

@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="host">The Ultraviolet host.</param>
         public UltravioletHostCore(IUltravioletHost host)
         {
-            Contract.Require(host, "host");
+            Contract.Require(host, nameof(host));
 
             this.host = host;
             this.tickTimer.Start();

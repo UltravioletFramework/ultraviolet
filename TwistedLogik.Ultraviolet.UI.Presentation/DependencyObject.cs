@@ -238,7 +238,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
 
             if (animation != null)
-                Contract.Require(clock, "clock");
+                Contract.Require(clock, nameof(clock));
 
             var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
             wrapper.Animate(animation, clock);
@@ -255,7 +255,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Animate<T>(DependencyProperty dp, T value, EasingFunction fn, Clock clock)
         {
             Contract.Require(dp, nameof(dp));
-            Contract.Require(clock, "clock");
+            Contract.Require(clock, nameof(clock));
 
             if (dp.IsReadOnly)
                 throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));
@@ -816,8 +816,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal void EnlistDependencyPropertyInStoryboard(DependencyProperty dp, StoryboardInstance storyboardInstance, AnimationBase animation)
         {
             Contract.Require(dp, nameof(dp));
-            Contract.Require(storyboardInstance, "storyboardInstance");
-            Contract.Require(animation, "animation");
+            Contract.Require(storyboardInstance, nameof(storyboardInstance));
+            Contract.Require(animation, nameof(animation));
 
             if (dp.IsReadOnly)
                 throw new InvalidOperationException(PresentationStrings.DependencyPropertyIsReadOnly.Format(dp.Name));

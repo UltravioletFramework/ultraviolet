@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>An instance of the SpriteAnimationID structure that is equivalent to the specified string.</returns>
         public static SpriteAnimationID Parse(String s)
         {
-            Contract.Require(s, "s");
+            Contract.Require(s, nameof(s));
 
             SpriteAnimationID value;
             if (!TryParseInternal(UltravioletContext.DemandCurrent().GetContent().Manifests, s, out value))
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, out SpriteAnimationID value)
         {
-            Contract.Require(s, "s");
+            Contract.Require(s, nameof(s));
 
             var uv = UltravioletContext.DemandCurrent();
             return TryParseInternal(uv.GetContent().Manifests, s, out value);
@@ -98,8 +98,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>An instance of the SpriteAnimationID structure that is equivalent to the specified string.</returns>
         public static SpriteAnimationID Parse(ContentManifestRegistry manifests, String s)
         {
-            Contract.Require(manifests, "manifests");
-            Contract.Require(s, "s");
+            Contract.Require(manifests, nameof(manifests));
+            Contract.Require(s, nameof(s));
 
             SpriteAnimationID value;
             if (!TryParseInternal(manifests, s, out value))
@@ -118,8 +118,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(ContentManifestRegistry manifests, String s, out SpriteAnimationID value)
         {
-            Contract.Require(manifests, "manifests");
-            Contract.Require(s, "s");
+            Contract.Require(manifests, nameof(manifests));
+            Contract.Require(s, nameof(s));
 
             return TryParseInternal(manifests, s, out value);
         }

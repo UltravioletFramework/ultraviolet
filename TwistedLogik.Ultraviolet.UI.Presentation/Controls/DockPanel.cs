@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The <see cref="Dock"/> value that specifies how an element is positioned within its parent <see cref="DockPanel"/>.</returns>
         public static Dock GetDock(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Dock>(DockProperty);
         }
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">The <see cref="Dock"/> value that specifies how an element is positioned within its parent <see cref="DockPanel"/>.</param>
         public static void SetDock(DependencyObject element, Dock value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue<Dock>(DockProperty, value);
         }

@@ -20,10 +20,10 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="assetIndex">The asset's index within its content manifest group.</param>
         internal AssetID(String manifestName, String manifestGroup, String assetName, String assetPath, Int32 assetIndex)
         {
-            Contract.RequireNotEmpty(manifestName, "manifest");
-            Contract.RequireNotEmpty(manifestGroup, "manifestGroup");
-            Contract.RequireNotEmpty(assetName, "assetName");
-            Contract.EnsureRange(assetIndex >= 0, "assetIndex");
+            Contract.RequireNotEmpty(manifestName, nameof(manifestName));
+            Contract.RequireNotEmpty(manifestGroup, nameof(manifestGroup));
+            Contract.RequireNotEmpty(assetName, nameof(assetName));
+            Contract.EnsureRange(assetIndex >= 0, nameof(assetIndex));
 
             this.manifestName = manifestName;
             this.manifestGroup = manifestGroup;
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</returns>
         public static AssetID Parse(String s)
         {
-            Contract.Require(s, "s");
+            Contract.Require(s, nameof(s));
 
             AssetID value;
             if (!TryParseInternal(UltravioletContext.DemandCurrent().GetContent().Manifests, s, out value))
@@ -81,7 +81,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, out AssetID value)
         {
-            Contract.Require(s, "s");
+            Contract.Require(s, nameof(s));
 
             return TryParseInternal(UltravioletContext.DemandCurrent().GetContent().Manifests, s, out value);
         }
@@ -94,8 +94,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</returns>
         public static AssetID Parse(ContentManifestRegistry manifests, String s)
         {
-            Contract.Require(manifests, "manifests");
-            Contract.Require(s, "s");
+            Contract.Require(manifests, nameof(manifests));
+            Contract.Require(s, nameof(s));
 
             AssetID value;
             if (!TryParseInternal(manifests, s, out value))
@@ -114,8 +114,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(ContentManifestRegistry manifests, String s, out AssetID value)
         {
-            Contract.Require(manifests, "manifests");
-            Contract.Require(s, "s");
+            Contract.Require(manifests, nameof(manifests));
+            Contract.Require(s, nameof(s));
 
             return TryParseInternal(manifests, s, out value);
         }

@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="bubble">A value indicating whether to bubble invalidation up through the visual tree.</param>
         public LayoutQueue(Action<UIElement> invalidate, Boolean bubble = true)
         {
-            Contract.Require(invalidate, "invalidate");
+            Contract.Require(invalidate, nameof(invalidate));
 
             this.invalidate = invalidate;
             this.bubble     = bubble;
@@ -29,7 +29,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The element to add to the queue.</param>
         public void Enqueue(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             var current = element;
             var parent  = element;
@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The element to remove from the queue.</param>
         public void Remove(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             var entry = new Entry(element.LayoutDepth, element);
             queue.Remove(entry);

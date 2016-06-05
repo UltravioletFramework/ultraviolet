@@ -19,8 +19,8 @@ namespace TwistedLogik.Nucleus.IO
         /// <param name="method">A function which selects the method with which to read the list's items.</param>
         public static void ReadList<T>(this BinaryReader reader, IList<T> list, Func<BinaryReader, Func<T>> method)
         {
-            Contract.Require(list, "list");
-            Contract.Require(method, "method");
+            Contract.Require(list, nameof(list));
+            Contract.Require(method, nameof(method));
 
             var methodToInvoke = method(reader);
             if (methodToInvoke == null)

@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The horizontal offset between the tool tip's placement point and its position on the screen.</returns>
         public static Double GetHorizontalOffset(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Double>(HorizontalOffsetProperty);
         }
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The vertical offset between the tool tip's placement point and its position on the screen.</returns>
         public static Double GetVerticalOffset(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Double>(VerticalOffsetProperty);
         }
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The delay in milliseconds before the tool tip opens.</returns>
         public static Double GetInitialShowDelay(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Double>(InitialShowDelayProperty);
         }
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// can be opened without a delay.</returns>
         public static Double GetBetweenShowDelay(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Double>(BetweenShowDelayProperty);
         }
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The amount of time in milliseconds that the tool tip remains visible.</returns>
         public static Double GetShowDuration(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Double>(ShowDurationProperty);
         }
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns><see langword="true"/> if a tool tip is displayed; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsEnabled(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Boolean>(IsEnabledProperty);
         }
@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns><see langword="true"/> if the tool tip is open; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsOpen(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Boolean>(IsOpenProperty);
         }
@@ -110,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns><see langword="true"/> if the tool tip has a drop shadow; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetHasDropShadow(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Boolean>(HasDropShadowProperty);
         }
@@ -122,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns><see langword="true"/> if the tool tip is displayed for a disabled element; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetShowOnDisabled(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Boolean>(ShowOnDisabledProperty);
         }
@@ -134,7 +134,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>A <see cref="PlacementMode"/> value which specifies how the tool tip is arranged on the screen.</returns>
         public static PlacementMode GetPlacement(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<PlacementMode>(PlacementProperty);
         }
@@ -146,7 +146,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The rectangle relative to which the tool tip popup is placed.</returns>
         public static RectangleD GetPlacementRectangle(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<RectangleD>(PlacementRectangleProperty);
         }
@@ -158,7 +158,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The element relative to which the tool tip popup is placed.</returns>
         public static UIElement GetPlacementTarget(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<UIElement>(PlacementTargetProperty);
         }
@@ -170,7 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The content of the specified element's tool tip, or <see langword="null"/> if the element has no tool tip.</returns>
         public static Object GetToolTip(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Object>(ToolTipProperty);
         }
@@ -182,7 +182,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">The horizontal offset between the tool tip's placement point and its position on the screen.</param>
         public static void SetHorizontalOffset(DependencyObject element, Double value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(HorizontalOffsetProperty, value);
         }
@@ -194,7 +194,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">The vertical offset between the tool tip's placement point and its position on the screen.</param>
         public static void SetVerticalOffset(DependencyObject element, Double value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(VerticalOffsetProperty, value);
         }
@@ -206,7 +206,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">The delay in milliseconds before the tool tip opens.</param>
         public static void SetInitialShowDelay(DependencyObject element, Double value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(InitialShowDelayProperty, value);
         }
@@ -220,7 +220,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// can be opened without a delay.</param>
         public static void SetBetweenShowDelay(DependencyObject element, Double value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(BetweenShowDelayProperty, value);
         }
@@ -232,7 +232,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">The amount of time in milliseconds that the tool tip remains visible.</param>
         public static void SetShowDuration(DependencyObject element, Double value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(ShowDurationProperty, value);
         }
@@ -244,7 +244,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value"><see langword="true"/> if a tool tip is displayed; otherwise, <see langword="false"/>.</param>
         public static void SetIsEnabled(DependencyObject element, Boolean value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(IsEnabledProperty, value);
         }
@@ -256,7 +256,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value"><see langword="true"/> if the tool tip has a drop shadow; otherwise, <see langword="false"/>.</param>
         public static void SetHasDropShadow(DependencyObject element, Boolean value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(HasDropShadowProperty, value);
         }
@@ -268,7 +268,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value"><see langword="true"/> if the tool tip is displayed for a disabled element; otherwise, <see langword="false"/>.</param>
         public static void SetShowOnDisabled(DependencyObject element, Boolean value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(ShowOnDisabledProperty, value);
         }
@@ -280,7 +280,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">A <see cref="PlacementMode"/> value which specifies how the tool tip is arranged on the screen.</param>
         public static void SetPlacement(DependencyObject element, PlacementMode value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(PlacementProperty, value);
         }
@@ -292,7 +292,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">The rectangle relative to which the tool tip popup is placed.</param>
         public static void SetPlacementRectangle(DependencyObject element, RectangleD value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(PlacementRectangleProperty, value);
         }
@@ -304,7 +304,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">The element relative to which the tool tip popup is placed.</param>
         public static void SetPlacementTarget(DependencyObject element, UIElement value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(PlacementTargetProperty, value);
         }
@@ -316,7 +316,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">The content of the specified element's tool tip, or <see langword="null"/> if the element has no tool tip.</param>
         public static void SetToolTip(DependencyObject element, Object value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(ToolTipProperty, value);
         }
@@ -329,7 +329,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddToolTipOpeningHandler(DependencyObject element, UpfToolTipEventHandler handler)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             UIElementHelper.AddHandler(element, ToolTipOpeningEvent, handler);
         }
@@ -342,7 +342,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddToolTipClosingHandler(DependencyObject element, UpfToolTipEventHandler handler)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             UIElementHelper.AddHandler(element, ToolTipClosingEvent, handler);
         }
@@ -355,7 +355,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveToolTipOpeningHandler(DependencyObject element, UpfToolTipEventHandler handler)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             UIElementHelper.RemoveHandler(element, ToolTipOpeningEvent, handler);
         }
@@ -368,7 +368,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveToolTipClosingHandler(DependencyObject element, UpfToolTipEventHandler handler)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             UIElementHelper.RemoveHandler(element, ToolTipClosingEvent, handler);
         }

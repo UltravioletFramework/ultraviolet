@@ -19,7 +19,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns><see langword="true"/> if the database contains entries for the specified culture; otherwise, <see langword="false"/>.</returns>
         public Boolean IsCultureLoaded(String culture)
         {
-            Contract.RequireNotEmpty(culture, "culture");
+            Contract.RequireNotEmpty(culture, nameof(culture));
 
             return strings.ContainsKey(culture);
         }
@@ -121,7 +121,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="paths">An array containing the parts of the path to the file from which to load localization data.</param>
         public void LoadFromFile(params String[] paths)
         {
-            Contract.Require(paths, "paths");
+            Contract.Require(paths, nameof(paths));
 
             var path = Path.Combine(paths);
             LoadFromFile(path);
@@ -134,7 +134,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="path">The path to the file from which to load localization data.</param>
         public void LoadFromFile(String path)
         {
-            Contract.RequireNotEmpty(path, "path");
+            Contract.RequireNotEmpty(path, nameof(path));
 
             var extension = Path.GetExtension(path)?.ToLowerInvariant();
 
@@ -163,7 +163,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="paths">An array containing the parts of the path to the directory from which to load localization data.</param>
         public void LoadFromDirectory(params String[] paths)
         {
-            Contract.Require(paths, "paths");
+            Contract.Require(paths, nameof(paths));
 
             var path = Path.Combine(paths);
             LoadFromDirectory(path);
@@ -176,7 +176,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="path">The path to the directory from which to load localization data.</param>
         public void LoadFromDirectory(String path)
         {
-            Contract.Require(path, "path");
+            Contract.Require(path, nameof(path));
 
             var files = default(String[]);
 
@@ -237,7 +237,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns><see langword="true"/> if the database contains a string with the specified key for the current culture; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(String key)
         {
-            Contract.RequireNotEmpty(key, "key");
+            Contract.RequireNotEmpty(key, nameof(key));
 
             var db = GetCultureStrings(Localization.CurrentCulture);
             return db.ContainsKey(key);
@@ -251,7 +251,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns><see langword="true"/> if the database contains a string with the specified key for the specified culture; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(String culture, String key)
         {
-            Contract.RequireNotEmpty(key, "key");
+            Contract.RequireNotEmpty(key, nameof(key));
 
             var db = GetCultureStrings(culture);
             return db.ContainsKey(key);
@@ -265,8 +265,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The string that was retrieved.</returns>
         public LocalizedString Get(String culture, String key)
         {
-            Contract.RequireNotEmpty(key, "key");
-            Contract.RequireNotEmpty(culture, "culture");
+            Contract.RequireNotEmpty(key, nameof(key));
+            Contract.RequireNotEmpty(culture, nameof(culture));
 
             var db = GetCultureStrings(culture);
             var value = (LocalizedString)null;

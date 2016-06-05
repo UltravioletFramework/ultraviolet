@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public OpenGLShaderUniformCollection(IEnumerable<OpenGLShaderUniform> uniforms)
         {
-            Contract.Require(uniforms, "uniforms");
+            Contract.Require(uniforms, nameof(uniforms));
 
             foreach (var uniform in uniforms)
                 AddInternal(uniform);

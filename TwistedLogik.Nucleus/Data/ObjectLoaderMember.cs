@@ -65,7 +65,7 @@ namespace TwistedLogik.Nucleus.Data
         {
             if (IsIndexer)
             {
-                Contract.Require(element, "element");
+                Contract.Require(element, nameof(element));
                 SetValue(value, GetIndexParameters(element));
             }
             else

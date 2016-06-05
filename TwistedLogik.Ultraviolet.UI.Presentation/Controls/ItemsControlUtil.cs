@@ -18,8 +18,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The item container that contains the specified object, or <see langword="null"/>.</returns>
         public static TContainer FindContainer<TContainer>(ItemsControl control, Object item) where TContainer : UIElement
         {
-            Contract.Require(control, "control");
-            Contract.Require(item, "item");
+            Contract.Require(control, nameof(control));
+            Contract.Require(item, nameof(item));
 
             var current = item as DependencyObject;
 
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The item container which is currently focused, or <see langword="null"/>.</returns>
         public static TContainer FindFocusedContainer<TContainer>(ItemsControl control) where TContainer : UIElement
         {
-            Contract.Require(control, "control");
+            Contract.Require(control, nameof(control));
             
             var focused = Keyboard.GetFocusedElement(control.View);
             return (focused == null) ? null : FindContainer<TContainer>(control, focused);
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The first item in the list, or <see langword="null"/> if the list is empty.</returns>
         public static TContainer GetFirstItem<TContainer>(ItemsControl control, ScrollViewer scrollview) where TContainer : UIElement
         {
-            Contract.Require(control, "control");
+            Contract.Require(control, nameof(control));
             
             if (scrollview == null || control.Items.Count == 0)
                 return null;
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The last item in the list, or <see langword="null"/> if the list is empty.</returns>
         public static TContainer GetLastItem<TContainer>(ItemsControl control, ScrollViewer scrollview) where TContainer : UIElement
         {
-            Contract.Require(control, "control");
+            Contract.Require(control, nameof(control));
 
             if (scrollview == null || control.Items.Count == 0)
                 return null;
@@ -93,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The item at the specified offset which is displayed on the specified page, or <see langword="null"/> if the list is empty.</returns>
         public static TContainer GetFirstItemOnPage<TContainer>(ItemsControl control, ScrollViewer scrollview, Double min, Double max, Double offset) where TContainer : UIElement
         {
-            Contract.Require(control, "control");
+            Contract.Require(control, nameof(control));
 
             if (scrollview == null || control.Items.Count == 0)
                 return null;
@@ -126,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The first item which is displayed on the current page, or <see langword="null"/> if the list is empty.</returns>
         public static TContainer GetFirstItemOnCurrentPage<TContainer>(ItemsControl control, ScrollViewer scrollview) where TContainer : UIElement
         {
-            Contract.Require(control, "control");
+            Contract.Require(control, nameof(control));
 
             if (scrollview == null || control.Items.Count == 0)
                 return null;
@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The first item which is displayed on the previous page, or <see langword="null"/> if the list is empty.</returns>
         public static TContainer GetFirstItemOnPreviousPage<TContainer>(ItemsControl control, ScrollViewer scrollview) where TContainer : UIElement
         {
-            Contract.Require(control, "control");
+            Contract.Require(control, nameof(control));
 
             if (scrollview == null || control.Items.Count == 0)
                 return null;
@@ -165,7 +165,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The item at the specified offset which is displayed on the specified page, or <see langword="null"/> if the list is empty.</returns>
         public static TContainer GetLastItemOnPage<TContainer>(ItemsControl control, ScrollViewer scrollview, Double min, Double max, Double offset) where TContainer : UIElement
         {
-            Contract.Require(control, "control");
+            Contract.Require(control, nameof(control));
 
             if (scrollview == null || control.Items.Count == 0)
                 return null;
@@ -197,7 +197,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The last item which is displayed on the current page, or <see langword="null"/> if the list is empty.</returns>
         public static TContainer GetLastItemOnCurrentPage<TContainer>(ItemsControl control, ScrollViewer scrollview) where TContainer : UIElement
         {
-            Contract.Require(control, "control");
+            Contract.Require(control, nameof(control));
 
             if (scrollview == null || control.Items.Count == 0)
                 return null;
@@ -215,7 +215,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The last item which is displayed on the next page, or <see langword="null"/> if the list is empty.</returns>
         public static TContainer GetLastItemOnNextPage<TContainer>(ItemsControl control, ScrollViewer scrollview) where TContainer : UIElement
         {
-            Contract.Require(control, "control");
+            Contract.Require(control, nameof(control));
 
             if (scrollview == null || control.Items.Count == 0)
                 return null;
@@ -267,8 +267,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="buffer">A value indicating whether to leave a buffer space between the item and the edge of the scroll viewer.</param>
         public static void ScrollItemIntoView<TContainer>(ItemsControl control, ScrollViewer scrollview, Object item, Boolean buffer = true) where TContainer : UIElement
         {
-            Contract.Require(control, "control");
-            Contract.Require(item, "item");
+            Contract.Require(control, nameof(control));
+            Contract.Require(item, nameof(item));
 
             if (scrollview == null)
                 return;

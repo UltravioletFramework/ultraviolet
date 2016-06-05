@@ -116,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="LineInfo"/> structure which describes the specified line of formatted text.</returns>
         public LineInfo GetLineInfo(Int32 index)
         {
-            Contract.EnsureRange(index >= 0 && index < LineCount, "index");
+            Contract.EnsureRange(index >= 0 && index < LineCount, nameof(index));
 
             var acquiredPointers = !HasAcquiredPointers;
             if (acquiredPointers)
@@ -214,7 +214,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="TextLayoutCommandType"/> that represents the type of command at the stream's new position.</returns>
         public TextLayoutCommandType SeekLine(Int32 index)
         {
-            Contract.EnsureRange(index >= 0 && index < LineCount, "index");
+            Contract.EnsureRange(index >= 0 && index < LineCount, nameof(index));
 
             var position = 1;
 
@@ -275,7 +275,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The index of the specified style within the command stream's internal registry.</returns>
         public Int16 RegisterStyle(StringSegment name, TextStyle style)
         {
-            Contract.Require(style, "style");
+            Contract.Require(style, nameof(style));
 
             return RegisterResource(name, style, styles, stylesByName);
         }
@@ -299,7 +299,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The index of the specified font within the command stream's internal registry.</returns>
         public Int16 RegisterFont(StringSegment name, SpriteFont font)
         {
-            Contract.Require(font, "font");
+            Contract.Require(font, nameof(font));
 
             return RegisterResource(name, font, fonts, fontsByName);
         }
@@ -312,7 +312,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The index of the specified glyph shader within the command stream's internal registry.</returns>
         public Int16 RegisterGlyphShader(StringSegment name, GlyphShader glyphShader)
         {
-            Contract.Require(glyphShader, "glyphShader");
+            Contract.Require(glyphShader, nameof(glyphShader));
 
             return RegisterResource(name, glyphShader, glyphShaders, glyphShadersByName);
         }
@@ -324,7 +324,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The index of the specified source string within the command stream's internal registry.</returns>
         public Int16 RegisterSourceString(String source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             return RegisterSource(source);
         }
@@ -336,7 +336,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The index of the specified source string builder within the command stream's internal registry.</returns>
         public Int16 RegisterSourceStringBuilder(StringBuilder source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             return RegisterSource(source);
         }

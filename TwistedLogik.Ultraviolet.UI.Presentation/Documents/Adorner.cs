@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         protected Adorner(UIElement adornedElement)
             : base(adornedElement.Ultraviolet, null)
         {
-            Contract.Require(adornedElement, "adornedElement");
+            Contract.Require(adornedElement, nameof(adornedElement));
 
             this.adornedElement = adornedElement;
         }

@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the contents of the selection.</param>
         public void GetSelectedText(StringBuilder stringBuilder)
         {
-            Contract.Require(stringBuilder, "stringBuilder");
+            Contract.Require(stringBuilder, nameof(stringBuilder));
 
             stringBuilder.Length = 0;
 
@@ -147,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <returns>A string containing the contents of the specified line of text.</returns>
         public String GetLineText(Int32 lineIndex)
         {
-            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, "lineIndex");
+            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, nameof(lineIndex));
 
             var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
 
@@ -161,8 +161,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the contents of the specified line of text.</param>
         public void GetLineText(Int32 lineIndex, StringBuilder stringBuilder)
         {
-            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, "lineIndex");
-            Contract.Require(stringBuilder, "stringBuilder");
+            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, nameof(lineIndex));
+            Contract.Require(stringBuilder, nameof(stringBuilder));
 
             var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
 
@@ -179,8 +179,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="length">The number of characters to select.</param>
         public void Select(Int32 start, Int32 length)
         {
-            Contract.EnsureRange(start >= 0 && start <= textLayoutStream.TotalLength, "start");
-            Contract.EnsureRange(length >= 0 && start + length <= textLayoutStream.TotalLength, "length");
+            Contract.EnsureRange(start >= 0 && start <= textLayoutStream.TotalLength, nameof(start));
+            Contract.EnsureRange(length >= 0 && start + length <= textLayoutStream.TotalLength, nameof(length));
 
             BeginTrackingSelectionChanges();
             
@@ -327,7 +327,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="lineIndex">The index of the line to scroll into view.</param>
         public void ScrollToLine(Int32 lineIndex)
         {
-            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, "lineIndex");
+            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, nameof(lineIndex));
 
             var scrollViewer = Parent as ScrollViewer;
             if (scrollViewer == null)
@@ -353,7 +353,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <returns>The index of the first character on the specified line.</returns>
         public Int32 GetCharacterIndexFromLineIndex(Int32 lineIndex)
         {
-            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, "lineIndex");
+            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, nameof(lineIndex));
 
             if (View == null)
                 return 0;
@@ -453,7 +453,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <returns>The index of the line of text that contains the specified character.</returns>
         public Int32 GetLineIndexFromCharacterIndex(Int32 charIndex)
         {
-            Contract.EnsureRange(charIndex >= 0 && charIndex < textLayoutStream.TotalLength, "charIndex");
+            Contract.EnsureRange(charIndex >= 0 && charIndex < textLayoutStream.TotalLength, nameof(charIndex));
 
             var lineInfo = textLayoutStream.GetLineInfo(0);
             var charCount = 0;
@@ -483,7 +483,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <returns>The number of characters on the specified line of text.</returns>
         public Int32 GetLineLength(Int32 lineIndex)
         {
-            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, "lineIndex");
+            Contract.EnsureRange(lineIndex >= 0 && lineIndex < textLayoutStream.LineCount, nameof(lineIndex));
 
             var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
 
@@ -510,7 +510,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// or <see cref="RectangleD.Empty"/> if the bounding rectangle cannot be determined.</returns>
         public RectangleD GetRectFromCharacterIndex(Int32 charIndex, Boolean trailingEdge)
         {
-            Contract.EnsureRange(charIndex >= 0 && charIndex < textLayoutStream.TotalLength, "charIndex");
+            Contract.EnsureRange(charIndex >= 0 && charIndex < textLayoutStream.TotalLength, nameof(charIndex));
 
             if (View == null)
                 return RectangleD.Empty;
@@ -551,7 +551,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             get { return caretPosition; }
             set
             {
-                Contract.EnsureRange(value >= 0 && value <= bufferText.Length, "value");
+                Contract.EnsureRange(value >= 0 && value <= bufferText.Length, nameof(value));
 
                 selectionPosition = null;
 
@@ -571,7 +571,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             get { return Math.Min(selectionPosition ?? caretPosition, caretPosition); }
             set
             {
-                Contract.EnsureRange(value >= 0, "value");
+                Contract.EnsureRange(value >= 0, nameof(value));
 
                 var boundedStart = Math.Min(value, textLayoutStream.TotalLength);
                 var boundedLength = Math.Min(SelectionLength, textLayoutStream.TotalLength - value);
@@ -594,7 +594,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
             set
             {
-                Contract.EnsureRange(value >= 0, "value");
+                Contract.EnsureRange(value >= 0, nameof(value));
 
                 var boundedStart = SelectionStart;
                 var boundedLength = Math.Min(SelectionLength, textLayoutStream.TotalLength - boundedStart);

@@ -19,9 +19,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public UpfPool(UltravioletContext uv, Int32 capacity, Int32 watermark, Func<TPooledType> allocator)
             : base(uv)
         {
-            Contract.Require(allocator, "allocator");
-            Contract.EnsureRange(capacity >= 0, "capacity");
-            Contract.EnsureRange(watermark >= 0, "watermark");
+            Contract.Require(allocator, nameof(allocator));
+            Contract.EnsureRange(capacity >= 0, nameof(capacity));
+            Contract.EnsureRange(watermark >= 0, nameof(watermark));
 
             this.gcCounts = new Int32[GC.MaxGeneration + 1];
             for (int i = 0; i <= GC.MaxGeneration; i++)
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The object that was retrieved from the pool.</returns>
         public PooledObject Retrieve(Object owner)
         {
-            Contract.Require(owner, "owner");
+            Contract.Require(owner, nameof(owner));
 
             var @object = headAvailable;
             if (@object == null)

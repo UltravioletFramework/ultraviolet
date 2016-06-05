@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <returns>The <see cref="CompilerCache"/> instance that was created.</returns>
         public static CompilerCache FromFile(String path)
         {
-            Contract.RequireNotEmpty(path, "path");
+            Contract.RequireNotEmpty(path, nameof(path));
 
             var cache = new CompilerCache();
 
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <returns>The <see cref="CompilerCache"/> instance that was created.</returns>
         public static CompilerCache FromDataSourceWrappers(IEnumerable<DataSourceWrapperInfo> dataSourceWrappers)
         {
-            Contract.Require(dataSourceWrappers, "dataSourceWrappers");
+            Contract.Require(dataSourceWrappers, nameof(dataSourceWrappers));
 
             var cache = new CompilerCache();
 
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <returns>The SHA1 hash for the specified type.</returns>
         public static String GenerateHashForType(Type type)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
 
             var sb = new StringBuilder(type.FullName);
 
@@ -123,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <returns>Thed SHA1 hash for the specified XML element.</returns>
         public static String GenerateHashForXElement(XElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return ComputeSHA1String(element.ToString());
         }
@@ -153,7 +153,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <param name="path">The path to the file to which to save the cache.</param>
         public void Save(String path)
         {
-            Contract.RequireNotEmpty(path, "path");
+            Contract.RequireNotEmpty(path, nameof(path));
             
             using (var stream = File.Open(path, FileMode.Create))
             using (var writer = new StreamWriter(stream))
@@ -172,7 +172,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// <returns><see langword="true"/> if this cache is different from the specified cache; otherwise, <see langword="false"/>.</returns>
         public Boolean IsDifferentFrom(CompilerCache other)
         {
-            Contract.Require(other, "other");
+            Contract.Require(other, nameof(other));
 
             var keys = Enumerable.Union(this.hashes.Keys, other.hashes.Keys).ToList();
             foreach (var key in keys)

@@ -17,8 +17,8 @@ namespace TwistedLogik.Ultraviolet.Content
             /// <param name="output">The output type.</param>
             public RegistryKey(Type input, Type output)
             {
-                Contract.Require(input, "input");
-                Contract.Require(output, "output");
+                Contract.Require(input, nameof(input));
+                Contract.Require(output, nameof(output));
 
                 this.Input = input;
                 this.Output = output;

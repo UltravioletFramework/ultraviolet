@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc />
         protected override void OnCollectionItemAdded(Int32 index, SpriteFrame item)
         {
-            Contract.Require(item, "item");
+            Contract.Require(item, nameof(item));
 
             Duration += item.Duration;
 

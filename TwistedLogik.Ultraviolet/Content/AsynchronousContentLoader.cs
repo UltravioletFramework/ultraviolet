@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="step">The content loading step to add to the loader.</param>
         public void AddStep(Action step)
         {
-            Contract.Require(step, "step");
+            Contract.Require(step, nameof(step));
             Contract.EnsureNot(IsLoading, UltravioletStrings.ContentLoaderAlreadyLoading);
 
             AddStepInternal(step);
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="step">The content loading step to add to the loader.</param>
         public void AddStep(Action<ContentManager> step)
         {
-            Contract.Require(step, "step");
+            Contract.Require(step, nameof(step));
             Contract.EnsureNot(IsLoading, UltravioletStrings.ContentLoaderAlreadyLoading);
 
             AddStepInternal(() => { step(content); });
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="manifest">The content manifest to load.</param>
         public void AddStep(ContentManifest manifest)
         {
-            Contract.Require(manifest, "manifest");
+            Contract.Require(manifest, nameof(manifest));
 
             AddStepInternal(() => { content.Load(manifest); });
         }

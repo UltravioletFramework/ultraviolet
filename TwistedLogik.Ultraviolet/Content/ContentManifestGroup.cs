@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// and properties of type <see cref="AssetID"/> which match the names of assets within this manifest group.</remarks>
         public void PopulateAssetLibrary(Type type)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
 
             // Populate the library's fields.
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static);
@@ -129,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// the asset does not exist in the manifest group.</returns>
         public Int32 IndexOf(ContentManifestAsset asset)
         {
-            Contract.Require(asset, "asset");
+            Contract.Require(asset, nameof(asset));
 
             return Storage.IndexOf(asset);
         }

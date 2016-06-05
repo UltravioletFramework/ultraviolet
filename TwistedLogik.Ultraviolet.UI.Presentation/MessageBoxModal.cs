@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="owner">The screen that owns the message box.</param>
         public MessageBoxModal(UIScreen owner)
         {
-            Contract.Require(owner, "owner");
+            Contract.Require(owner, nameof(owner));
 
             var uv = owner.Ultraviolet;
             var screenFactory = uv.TryGetFactoryMethod<MessageBoxScreenFactory>();

@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>An <see cref="ContentArchiveNode"/> that represents the root of the constructed archive tree.</returns>
         internal static ContentArchiveNode FromFileSystem(String path)
         {
-            Contract.RequireNotEmpty(path, "path");
+            Contract.RequireNotEmpty(path, nameof(path));
 
             return new ContentArchiveNode(null, path);
         }
@@ -96,7 +96,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>An <see cref="ContentArchiveNode"/> that represents the root of the constructed archive tree.</returns>
         internal static ContentArchiveNode FromArchive(BinaryReader reader)
         {
-            Contract.Require(reader, "reader");
+            Contract.Require(reader, nameof(reader));
 
             return new ContentArchiveNode(null, reader);
         }
@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="position">The position of the first node's data within the stream.</param>
         public void WriteIndex(BinaryWriter writer, ref Int64 position)
         {
-            Contract.Require(writer, "writer");
+            Contract.Require(writer, nameof(writer));
 
             WriteIndexInternal(writer, ref position);
         }
@@ -125,7 +125,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="writer">A <see cref="BinaryWriter"/> on the stream to which to serialize the node.</param>
         public void WriteData(BinaryWriter writer)
         {
-            Contract.Require(writer, "writer");
+            Contract.Require(writer, nameof(writer));
             Contract.Ensure<NotSupportedException>(path != null);
 
             if (IsFile)

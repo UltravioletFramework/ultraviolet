@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The <see cref="UltravioletApplicationSettings"/> which was retrieved.</returns>
         public static UltravioletActivitySettings FromCurrentSettings(UltravioletContext uv)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             var settings = new UltravioletActivitySettings();
 

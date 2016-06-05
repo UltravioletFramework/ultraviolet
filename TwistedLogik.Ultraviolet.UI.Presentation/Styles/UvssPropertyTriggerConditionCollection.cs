@@ -18,8 +18,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns><see langword="true"/> if the specified object satisfies all of the collection's conditions; otherwise, <see langword="false"/>.</returns>
         internal Boolean Evaluate(UltravioletContext uv, DependencyObject dobj)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(dobj, "dobj");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(dobj, nameof(dobj));
 
             foreach (var condition in conditions)
             {
@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="condition">The item to add to the collection.</param>
         internal void Add(UvssPropertyTriggerCondition condition)
         {
-            Contract.Require(condition, "condition");
+            Contract.Require(condition, nameof(condition));
 
             conditions.Add(condition);
             UpdateCanonicalName();
@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="conditions">The set of conditions to add to this collection.</param>
         internal void AddRange(IEnumerable<UvssPropertyTriggerCondition> conditions)
         {
-            Contract.Require(conditions, "conditions");
+            Contract.Require(conditions, nameof(conditions));
 
             this.conditions.AddRange(conditions);
             UpdateCanonicalName();
@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="condition">The item to remove from the collection.</param>
         internal Boolean Remove(UvssPropertyTriggerCondition condition)
         {
-            Contract.Require(condition, "condition");
+            Contract.Require(condition, nameof(condition));
 
             return conditions.Remove(condition);
         }
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns><see langword="true"/> if the collection contains the specified item; otherwise, <see langword="false"/>.</returns>
         internal Boolean Contains(UvssPropertyTriggerCondition condition)
         {
-            Contract.Require(condition, "condition");
+            Contract.Require(condition, nameof(condition));
 
             return conditions.Contains(condition);
         }

@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The asset path of the specified dependency.</returns>
         protected static String ResolveDependencyAssetPath(IContentImporterMetadata metadata, String dependency)
         {
-            Contract.Require(metadata, "metadata");
+            Contract.Require(metadata, nameof(metadata));
 
             if (dependency == null)
                 return null;

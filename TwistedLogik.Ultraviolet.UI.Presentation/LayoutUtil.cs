@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the specified element is being drawn; otherwise, false.</returns>
         public static Boolean IsDrawn(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             if (element.Visibility != Visibility.Visible)
                 return false;
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the specified element is filling space; otherwise, <see langword="false"/>.</returns>
         public static Boolean IsSpaceFilling(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.Visibility != Visibility.Collapsed;
         }

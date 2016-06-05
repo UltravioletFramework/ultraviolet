@@ -46,8 +46,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
         public static Surface2D Create(Int32 width, Int32 height)
         {
-            Contract.EnsureRange(width > 0, "width");
-            Contract.EnsureRange(height > 0, "height");
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
 
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<Surface2DFactory>()(uv, width, height);
@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
         public static Surface2D Create(SurfaceSource source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<Surface2DFromSourceFactory>()(uv, source);

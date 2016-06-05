@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="message">The error message.</param>
         public BindingExpressionCompilationError(XObject source, String filename, String message)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             var lineInfo = (IXmlLineInfo)source;
 

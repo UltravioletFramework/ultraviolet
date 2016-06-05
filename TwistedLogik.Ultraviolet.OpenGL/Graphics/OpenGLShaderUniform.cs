@@ -21,8 +21,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="sampler">The effect's corresponding texture sampler, if any.</param>
         public OpenGLShaderUniform(UltravioletContext uv, String name, UInt32 type, UInt32 program, Int32 location, Int32 sampler)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(name, "name");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(name, nameof(name));
 
             this.uv = uv;
             this.name = name ?? String.Empty;
@@ -132,7 +132,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="source">The effect parameter which the uniform will use as its data source.</param>
         public void SetDataSource(OpenGLEffectParameterData source)
         {
-            Contract.Require(source, "source"); 
+            Contract.Require(source, nameof(source)); 
 
             this.source = source;
         }

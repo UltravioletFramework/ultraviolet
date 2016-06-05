@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="owner">The <see cref="ItemsControl"/> that owns this generator.</param>
         internal ItemContainerGenerator(ItemsControl owner)
         {
-            Contract.Require(owner, "owner");
+            Contract.Require(owner, nameof(owner));
 
             this.owner = owner;
         }
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The item that is contained by the specified item container.</returns>
         public Object ItemFromContainer(DependencyObject container)
         {
-            Contract.Require(container, "container");
+            Contract.Require(container, nameof(container));
 
             return container.GetValue<Object>(AssociatedItemProperty);
         }
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The index of the specified container within the item control which owns it.</returns>
         public Int32 IndexFromContainer(DependencyObject container)
         {
-            Contract.Require(container, "container");
+            Contract.Require(container, nameof(container));
 
             return owner.ItemContainers.IndexOf(container);
         }
@@ -82,7 +82,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="item">The contained item.</param>
         internal void AssociateContainerWithItem(DependencyObject container, Object item)
         {
-            Contract.Require(container, "container");
+            Contract.Require(container, nameof(container));
 
             if (item == null)
             {

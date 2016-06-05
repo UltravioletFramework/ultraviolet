@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns>The <see cref="NavigationExpression"/> that was created.</returns>
         public static NavigationExpression? FromUvssNavigationExpression(UltravioletContext uv, UvssNavigationExpression uvssexp)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             if (uvssexp == null)
                 return null;
@@ -139,8 +139,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns>The dependency object that was navigated to, or <see langword="null"/> if no valid target was found.</returns>
         public DependencyObject ApplyExpression(UltravioletContext uv, DependencyObject source)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(source, "source");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(source, nameof(source));
 
             var dp = DependencyProperty.FindByStylingName(uv, source, propertyName.Owner, propertyName.Name);
             if (dp == null)

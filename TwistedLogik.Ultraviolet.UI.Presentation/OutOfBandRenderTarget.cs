@@ -43,8 +43,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="height">The render target's new height in pixels.</param>
         public void Resize(Int32 width, Int32 height)
         {
-            Contract.EnsureRange(width >= 1, "width");
-            Contract.EnsureRange(height >= 1, "height");
+            Contract.EnsureRange(width >= 1, nameof(width));
+            Contract.EnsureRange(height >= 1, nameof(height));
             Contract.EnsureNotDisposed(this, Disposed);
             
             this.renderTarget.Resize(width, height);
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the element was resized; otherwise, <see langword="false"/>.</returns>
         public Boolean ResizeForElement(UIElement element, out RectangleD bounds)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             if (element.View == null)
             {

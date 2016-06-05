@@ -14,8 +14,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="evaluator">The match evaluator.</param>
         public LocalizationMatchEvaluatorData(String name, LocalizationMatchEvaluator evaluator)
         {
-            Contract.Require(name, "name");
-            Contract.Require(evaluator, "evaluator");
+            Contract.Require(name, nameof(name));
+            Contract.Require(evaluator, nameof(evaluator));
 
             this.Name = name;
             this.Evaluator = evaluator;

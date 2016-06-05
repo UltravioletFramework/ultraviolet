@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="isSelected">A value indicating whether the specified element is selected.</param>
         public static void SetIsSelected(DependencyObject element, Boolean isSelected)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(IsSelectedProperty, isSelected);
         }
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <returns><see langword="true"/> if the specified element is selected; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsSelected(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Boolean>(IsSelectedProperty);
         }
@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <returns><see langword="true"/> if the specified element is selected; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsSelectionActive(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Boolean>(IsSelectionActiveProperty);
         }
@@ -359,7 +359,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="item">The item to unselect.</param>
         protected void UnselectItem(Object item)
         {
-            Contract.Require(item, "item");
+            Contract.Require(item, nameof(item));
 
             var container = ItemContainerGenerator.ContainerFromItem(item);
             if (container == null)
@@ -374,7 +374,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="container">The item container to unselect.</param>
         protected void UnselectContainer(DependencyObject container)
         {
-            Contract.Require(container, "container");
+            Contract.Require(container, nameof(container));
 
             SetIsSelected(container, false);
         }
@@ -403,7 +403,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="item">The item to select.</param>
         protected void SelectItem(Object item)
         {
-            Contract.Require(item, "item");
+            Contract.Require(item, nameof(item));
 
             var container = ItemContainerGenerator.ContainerFromItem(item);
             if (container == null)
@@ -421,7 +421,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="container">The item container to select.</param>
         protected void SelectContainer(DependencyObject container)
         {
-            Contract.Require(container, "container");
+            Contract.Require(container, nameof(container));
             
             SetIsSelected(container, true);
         }

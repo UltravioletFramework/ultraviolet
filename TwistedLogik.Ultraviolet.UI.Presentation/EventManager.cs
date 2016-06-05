@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A delegate of the requested type which will invoke the specified event.</returns>
         public static T GetInvocationDelegate<T>(RoutedEvent evt) where T : class
         {
-            Contract.Require(evt, "evt");
+            Contract.Require(evt, nameof(evt));
 
             return evt.InvocationDelegate as T;
         }
@@ -94,9 +94,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// or <see langword="null"/> if no such routed event exists.</returns>
         public static RoutedEvent FindByName(UltravioletContext uv, DependencyObject dobj, String owner, String name)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(dobj, "dobj");
-            Contract.RequireNotEmpty(name, "name");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(dobj, nameof(dobj));
+            Contract.RequireNotEmpty(name, nameof(name));
 
             var type = String.IsNullOrEmpty(owner) ? dobj.GetType() : null;
             if (type == null)
@@ -131,9 +131,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// or <see langword="null"/> if no such routed event exists.</returns>
         public static RoutedEvent FindByStylingName(UltravioletContext uv, DependencyObject dobj, String owner, String name)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(dobj, "dobj");
-            Contract.RequireNotEmpty(name, "name");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(dobj, nameof(dobj));
+            Contract.RequireNotEmpty(name, nameof(name));
 
             var type = String.IsNullOrEmpty(owner) ? dobj.GetType() : null;
             if (type == null)

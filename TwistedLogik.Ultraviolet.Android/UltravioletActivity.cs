@@ -42,8 +42,8 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="application">The name of the application </param>
         protected UltravioletActivity(String company, String application)
         {
-            Contract.RequireNotEmpty(company, "company");
-            Contract.RequireNotEmpty(application, "application");
+            Contract.RequireNotEmpty(company, nameof(company));
+            Contract.RequireNotEmpty(application, nameof(application));
 
             PreserveApplicationSettings = true;
 
@@ -263,7 +263,7 @@ namespace TwistedLogik.Ultraviolet
             set
             {
                 Contract.EnsureNotDisposed(this, disposed);
-                Contract.EnsureRange(value.TotalMilliseconds >= 0, "value");
+                Contract.EnsureRange(value.TotalMilliseconds >= 0, nameof(value));
 
                 this.targetElapsedTime = value;
                 if (hostcore != null)
@@ -478,7 +478,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="name">The name of the manifest resource being loaded as the file system source.</param>
         protected void SetFileSourceFromManifestIfExists(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             var asm = GetType().Assembly;
             if (asm.GetManifestResourceNames().Contains(name))
@@ -496,7 +496,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="name">The name of the manifest resource being loaded as the file system source.</param>
         protected void SetFileSourceFromManifest(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             var asm = GetType().Assembly;
             if (!asm.GetManifestResourceNames().Contains(name))
@@ -514,7 +514,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="configuration">The <see cref="UltravioletConfiguration"/> to populate.</param>
         protected void PopulateConfiguration(UltravioletConfiguration configuration)
         {
-            Contract.Require(configuration, "configuration");
+            Contract.Require(configuration, nameof(configuration));
         }
 
         /// <summary>

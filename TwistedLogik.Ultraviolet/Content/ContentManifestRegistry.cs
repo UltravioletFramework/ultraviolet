@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="path">The path to the file to load.</param>
         public void Load(String path)
         {
-            Contract.RequireNotEmpty(path, "path");
+            Contract.RequireNotEmpty(path, nameof(path));
 
             var manifest = ContentManifest.Load(path);
             Add(manifest);
@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="paths">A collection of paths representing the files to load.</param>
         public void Load(IEnumerable<String> paths)
         {
-            Contract.Require(paths, "paths");
+            Contract.Require(paths, nameof(paths));
 
             foreach (var path in paths)
             {
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="stream">The <see cref="Stream"/> that contains the content manifest to load.</param>
         public void Load(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
 
             var manifest = ContentManifest.LoadXml(stream);
             Add(manifest);
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="manifest">The <see cref="ContentManifest"/> to add to the registry.</param>
         public void Add(ContentManifest manifest)
         {
-            Contract.Require(manifest, "manifest");
+            Contract.Require(manifest, nameof(manifest));
 
             if (Contains(manifest.Name))
                 throw new InvalidOperationException(UltravioletStrings.ContentManifestAlreadyContainsAsset.Format(manifest.Name));
@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns><see langword="true"/> if the content manifest was removed from the registry; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             var item = this[name];
             if (item != null)
@@ -94,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns><see langword="true"/> if the content manifest registry contains a manifest with the specified name; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             return StorageByName.ContainsKey(name);
         }
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns><see langword="true"/> if the content manifest registry contains the specified manifest; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(ContentManifest manifest)
         {
-            Contract.Require(manifest, "manifest");
+            Contract.Require(manifest, nameof(manifest));
 
             return ContainsInternal(manifest);
         }

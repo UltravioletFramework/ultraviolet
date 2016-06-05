@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Desktop.Graphics
         /// <param name="stream">The <see cref="Stream"/> that contains the surface data.</param>
         public DesktopSurfaceSource(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
 
             var data = new Byte[stream.Length];
             stream.Read(data, 0, data.Length);
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.Desktop.Graphics
         /// <param name="bmp">The bitmap from which to read surface data.</param>
         public DesktopSurfaceSource(Bitmap bmp)
         {
-            Contract.Require(bmp, "bmp");
+            Contract.Require(bmp, nameof(bmp));
 
             this.bmp = bmp;
             this.bmpData = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);

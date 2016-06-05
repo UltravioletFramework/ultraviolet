@@ -62,9 +62,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="subscriber">The subscriber that wishes to receive change notifications for the specified dependency property.</param>
         internal static void RegisterRaisedNotification(DependencyObject dobj, RoutedEvent routedEvent, IRoutedEventRaisedNotificationSubscriber subscriber)
         {
-            Contract.Require(dobj, "dobj");
-            Contract.Require(routedEvent, "routedEvent");
-            Contract.Require(subscriber, "subscriber");
+            Contract.Require(dobj, nameof(dobj));
+            Contract.Require(routedEvent, nameof(routedEvent));
+            Contract.Require(subscriber, nameof(subscriber));
 
             routedEvent.raisedNotificationServer.Subscribe(dobj, subscriber);
         }
@@ -77,9 +77,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="subscriber">The subscriber that wishes to stop receiving change notifications for the specified dependency property.</param>
         internal static void UnregisterRaisedNotification(DependencyObject dobj, RoutedEvent routedEvent, IRoutedEventRaisedNotificationSubscriber subscriber)
         {
-            Contract.Require(dobj, "dobj");
-            Contract.Require(routedEvent, "routedEvent");
-            Contract.Require(subscriber, "subscriber");
+            Contract.Require(dobj, nameof(dobj));
+            Contract.Require(routedEvent, nameof(routedEvent));
+            Contract.Require(subscriber, nameof(subscriber));
 
             routedEvent.raisedNotificationServer.Unsubscribe(dobj, subscriber);
         }

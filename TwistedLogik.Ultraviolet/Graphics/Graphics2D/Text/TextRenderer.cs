@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// or <see langword="null"/> if the specified position is not contained by any line.</returns>
         public Int32? GetLineAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, Boolean stretch = false)
         {
-            Contract.Require(input, "input");
+            Contract.Require(input, nameof(input));
 
             if (x < 0 || y < 0 || input.Count == 0)
                 return null;
@@ -222,7 +222,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// or <c>nulll</c> if the specified position is not contained by any glyph.</returns>
         public Int32? GetGlyphAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, Boolean snapToLine, out Int32? lineAtPosition)
         {
-            Contract.Require(input, "input");
+            Contract.Require(input, nameof(input));
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
@@ -320,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The index of the insertion point which is closest to the specified layout-relative position.</returns>
         public Int32 GetInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32 lineAtPosition)
         {
-            Contract.Require(input, "input");
+            Contract.Require(input, nameof(input));
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
@@ -347,8 +347,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A layout-relative bounding box for the specified line.</returns>
         public Rectangle GetLineBounds(TextLayoutCommandStream input, Int32 index)
         {
-            Contract.Require(input, "input");
-            Contract.EnsureRange(index >= 0 && index < input.LineCount, "index");
+            Contract.Require(input, nameof(input));
+            Contract.EnsureRange(index >= 0 && index < input.LineCount, nameof(index));
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
@@ -401,8 +401,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A layout-relative bounding box for the specified glyph.</returns>
         public Rectangle GetGlyphBounds(TextLayoutCommandStream input, Int32 index, out LineInfo lineInfo, Boolean spanLineHeight = false)
         {
-            Contract.Require(input, "input");
-            Contract.EnsureRange(index >= 0 && index < input.TotalLength, "index");
+            Contract.Require(input, nameof(input));
+            Contract.EnsureRange(index >= 0 && index < input.TotalLength, nameof(index));
 
             var glyphCountSeen = 0;
             
@@ -566,7 +566,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A layout-relative bounding box for the specified glyph.</returns>
         public Rectangle GetInsertionPointBounds(TextLayoutCommandStream input, Int32 index, out LineInfo lineInfo, out Rectangle? glyphBounds)
         {
-            Contract.Require(input, "input");
+            Contract.Require(input, nameof(input));
             
             if (input.TotalLength == index)
             {
@@ -678,8 +678,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
         public void Parse(String input, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
-            Contract.Require(input, "input");
-            Contract.Require(output, "output");
+            Contract.Require(input, nameof(input));
+            Contract.Require(output, nameof(output));
 
             parser.Parse(input, output, options);
         }
@@ -698,8 +698,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// of the source text are re-parsed by this operation.</remarks>
         public void ParseIncremental(String input, Int32 start, Int32 count, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
-            Contract.Require(input, "input");
-            Contract.Require(output, "output");
+            Contract.Require(input, nameof(input));
+            Contract.Require(output, nameof(output));
 
             parser.ParseIncremental(input, start, count, output, options);
         }
@@ -712,8 +712,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
         public void Parse(StringBuilder input, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
-            Contract.Require(input, "input");
-            Contract.Require(output, "output");
+            Contract.Require(input, nameof(input));
+            Contract.Require(output, nameof(output));
 
             parser.Parse(input, output, options);
         }
@@ -732,8 +732,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// of the source text are re-parsed by this operation.</remarks>
         public void ParseIncremental(StringBuilder input, Int32 start, Int32 count, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
-            Contract.Require(input, "input");
-            Contract.Require(output, "output");
+            Contract.Require(input, nameof(input));
+            Contract.Require(output, nameof(output));
 
             parser.ParseIncremental(input, start, count, output, options);
         }
@@ -746,8 +746,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="settings">The layout settings.</param>
         public void CalculateLayout(String input, TextLayoutCommandStream output, TextLayoutSettings settings)
         {
-            Contract.Require(input, "input");
-            Contract.Require(output, "output");
+            Contract.Require(input, nameof(input));
+            Contract.Require(output, nameof(output));
 
             parser.Parse(input, parserResult);
             layoutEngine.CalculateLayout(parserResult, output, settings);
@@ -761,8 +761,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="settings">The layout settings.</param>
         public void CalculateLayout(StringBuilder input, TextLayoutCommandStream output, TextLayoutSettings settings)
         {
-            Contract.Require(input, "input");
-            Contract.Require(output, "output");
+            Contract.Require(input, nameof(input));
+            Contract.Require(output, nameof(output));
 
             parser.Parse(input, parserResult);
             layoutEngine.CalculateLayout(parserResult, output, settings);
@@ -776,8 +776,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="settings">The layout settings.</param>
         public void CalculateLayout(TextParserTokenStream input, TextLayoutCommandStream output, TextLayoutSettings settings)
         {
-            Contract.Require(input, "input");
-            Contract.Require(output, "output");
+            Contract.Require(input, nameof(input));
+            Contract.Require(output, nameof(output));
 
             layoutEngine.CalculateLayout(input, output, settings);
         }
@@ -793,8 +793,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
         public RectangleF Draw(SpriteBatch spriteBatch, String input, Vector2 position, Color defaultColor, TextLayoutSettings settings)
         {
-            Contract.Require(spriteBatch, "spriteBatch");
-            Contract.Require(input, "input");
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
 
             parser.Parse(input, parserResult);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
@@ -816,8 +816,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
         public RectangleF Draw(SpriteBatch spriteBatch, String input, Vector2 position, Color defaultColor, Int32 start, Int32 count, TextParserOptions parserOptions, TextLayoutSettings settings)
         {
-            Contract.Require(spriteBatch, "spriteBatch");
-            Contract.Require(input, "input");
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
 
             parser.Parse(input, parserResult, parserOptions);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
@@ -836,8 +836,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
         public RectangleF Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Color defaultColor, TextLayoutSettings settings)
         {
-            Contract.Require(spriteBatch, "spriteBatch");
-            Contract.Require(input, "input");
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
 
             parser.Parse(input, parserResult);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
@@ -859,8 +859,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
         public RectangleF Draw(SpriteBatch spriteBatch, StringBuilder input, Vector2 position, Color defaultColor, Int32 start, Int32 count, TextParserOptions parserOptions, TextLayoutSettings settings)
         {
-            Contract.Require(spriteBatch, "spriteBatch");
-            Contract.Require(input, "input");
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
 
             parser.Parse(input, parserResult, parserOptions);
             layoutEngine.CalculateLayout(parserResult, layoutResult, settings);
@@ -879,8 +879,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
         public RectangleF Draw(SpriteBatch spriteBatch, TextParserTokenStream input, Vector2 position, Color defaultColor, TextLayoutSettings settings)
         {
-            Contract.Require(spriteBatch, "spriteBatch");
-            Contract.Require(input, "input");
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
 
             layoutEngine.CalculateLayout(input, layoutResult, settings);
 
@@ -900,8 +900,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
         public RectangleF Draw(SpriteBatch spriteBatch, TextParserTokenStream input, Vector2 position, Color defaultColor, Int32 start, Int32 count, TextLayoutSettings settings)
         {
-            Contract.Require(spriteBatch, "spriteBatch");
-            Contract.Require(input, "input");
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
 
             layoutEngine.CalculateLayout(input, layoutResult, settings);
 
@@ -918,8 +918,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
         public RectangleF Draw(SpriteBatch spriteBatch, TextLayoutCommandStream input, Vector2 position, Color defaultColor)
         {
-            Contract.Require(spriteBatch, "spriteBatch");
-            Contract.Require(input, "input");
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
 
             return DrawInternal(spriteBatch, input, position, defaultColor, 0, Int32.MaxValue);
         }
@@ -936,8 +936,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="RectangleF"/> which represents the bounding box of the formatted text.</returns>
         public RectangleF Draw(SpriteBatch spriteBatch, TextLayoutCommandStream input, Vector2 position, Color defaultColor, Int32 start, Int32 count)
         {
-            Contract.Require(spriteBatch, "spriteBatch");
-            Contract.Require(input, "input");
+            Contract.Require(spriteBatch, nameof(spriteBatch));
+            Contract.Require(input, nameof(input));
 
             return DrawInternal(spriteBatch, input, position, defaultColor, start, count);
         }

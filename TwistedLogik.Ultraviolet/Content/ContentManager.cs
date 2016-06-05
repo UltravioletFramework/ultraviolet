@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="manifest">The <see cref="ContentManifest"/> to load.</param>
         public void Load(ContentManifest manifest)
         {
-            Contract.Require(manifest, "manifest"); 
+            Contract.Require(manifest, nameof(manifest)); 
             Contract.EnsureNotDisposed(this, Disposed);
 
             Object result;
@@ -153,7 +153,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The asset that was loaded from the specified file.</returns>
         public TOutput Load<TOutput>(AssetID asset, Boolean cache = true)
         {
-            Contract.Ensure<ArgumentException>(asset.IsValid, "asset");
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
 
             return Load<TOutput>(AssetID.GetAssetPath(asset), cache);
         }
@@ -167,8 +167,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The asset that was loaded from the specified stream.</returns>
         public TOutput LoadFromStream<TOutput>(Stream stream, String extension)
         {
-            Contract.Require(stream, "stream");
-            Contract.RequireNotEmpty(extension, "extension");
+            Contract.Require(stream, nameof(stream));
+            Contract.RequireNotEmpty(extension, nameof(extension));
             Contract.EnsureNotDisposed(this, Disposed);
 
             return (TOutput)LoadInternalFromStream(typeof(TOutput), stream, extension);
@@ -206,7 +206,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput Import<TOutput>(String asset, out Type outputType)
         {
-            Contract.RequireNotEmpty(asset, "asset");
+            Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
             var metadata = GetAssetMetadata(asset, false);
@@ -239,7 +239,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput Import<TOutput>(AssetID asset, out Type outputType)
         {
-            Contract.Ensure<ArgumentException>(asset.IsValid, "asset");
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
 
             return Import<TOutput>(AssetID.GetAssetPath(asset), out outputType);
         }
@@ -253,7 +253,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput ImportFromStream<TOutput>(Stream stream, String extension)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
             Contract.EnsureNotDisposed(this, Disposed);
 
             var path = String.Format("__STREAM.{0}", extension);
@@ -272,7 +272,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The processed asset.</returns>
         public TOutput Process<TOutput>(Object intermediate, XElement metadata = null)
         {
-            Contract.Require(intermediate, "intermediate");
+            Contract.Require(intermediate, nameof(intermediate));
             Contract.EnsureNotDisposed(this, Disposed);
 
             var processor = FindContentProcessor("unknown", intermediate.GetType(), typeof(TOutput));
@@ -292,7 +292,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The processed asset.</returns>
         public TOutput Process<TInput, TOutput>(TInput intermediate, XElement metadata = null) where TInput : class
         {
-            Contract.Require(intermediate, "intermediate");
+            Contract.Require(intermediate, nameof(intermediate));
             Contract.EnsureNotDisposed(this, Disposed);
 
             var processor = FindContentProcessor("unknown", typeof(TInput), typeof(TOutput));
@@ -309,7 +309,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="delete">A value indicating whether to delete the original files after preprocessing them.</param>
         public void Preprocess(ContentManifest manifest, Boolean delete = false)
         {
-            Contract.Require(manifest, "manifest");
+            Contract.Require(manifest, nameof(manifest));
             Contract.EnsureNotDisposed(this, Disposed);
 
             PreprocessInternal(new[] { manifest }, delete);
@@ -322,7 +322,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="delete">A value indicating whether to delete the original files after preprocessing them.</param>
         public void Preprocess(IEnumerable<ContentManifest> manifests, Boolean delete = false)
         {
-            Contract.Require(manifests, "manifests");
+            Contract.Require(manifests, nameof(manifests));
             Contract.EnsureNotDisposed(this, Disposed);
 
             PreprocessInternal(manifests, delete);
@@ -338,7 +338,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns><see langword="true"/> if the asset was preprocessed; otherwise, <see langword="false"/>.</returns>
         public Boolean Preprocess<TOutput>(String asset, Boolean delete = false)
         {
-            Contract.RequireNotEmpty(asset, "asset");
+            Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
             return PreprocessInternal(typeof(TOutput), asset, delete);
@@ -354,7 +354,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns><see langword="true"/> if the asset was preprocessed; otherwise, <see langword="false"/>.</returns>
         public Boolean Preprocess<TOutput>(AssetID asset, Boolean delete = false)
         {
-            Contract.Ensure<ArgumentException>(asset.IsValid, "asset");
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
 
             return PreprocessInternal(typeof(TOutput), AssetID.GetAssetPath(asset), delete);
         }
@@ -417,8 +417,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The list of assets in the specified asset directory.</returns>
         public IEnumerable<String> GetAssetsInDirectory(String path, String searchPattern = "*")
         {
-            Contract.RequireNotEmpty(path, "path");
-            Contract.RequireNotEmpty(searchPattern, "searchPattern");
+            Contract.RequireNotEmpty(path, nameof(path));
+            Contract.RequireNotEmpty(searchPattern, nameof(searchPattern));
             Contract.EnsureNotDisposed(this, Disposed);
 
             return GetAssetsInDirectoryInternal(NormalizeAssetPath(path), searchPattern).Keys;
@@ -432,8 +432,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The list of resolved asset file paths in the specified asset directory.</returns>
         public IEnumerable<String> GetAssetFilePathsInDirectory(String path, String searchPattern = "*")
         {
-            Contract.RequireNotEmpty(path, "path");
-            Contract.RequireNotEmpty(searchPattern, "searchPattern");
+            Contract.RequireNotEmpty(path, nameof(path));
+            Contract.RequireNotEmpty(searchPattern, nameof(searchPattern));
             Contract.EnsureNotDisposed(this, Disposed);
 
             return GetAssetsInDirectoryInternal(NormalizeAssetPath(path), searchPattern).Values;
@@ -447,7 +447,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The list of subdirectories in the specified asset directory.</returns>
         public IEnumerable<String> GetSubdirectories(String path, String searchPattern = "*")
         {
-            Contract.Require(path, "path");
+            Contract.Require(path, nameof(path));
             Contract.EnsureNotDisposed(this, Disposed);
 
             var results = new Dictionary<String, String>();

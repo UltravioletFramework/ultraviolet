@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <returns>The <see cref="SyntaxNode"/> at the root of the parsed syntax tree.</returns>
         public static UvssDocumentSyntax Parse(String source, UvssParserOptions options = UvssParserOptions.None)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             var input = UvssLexer.Tokenize(source);
             var position = 0;

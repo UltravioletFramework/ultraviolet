@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <returns><see langword="true"/> if the specified path exists and is a file; otherwise, <see langword="false"/>.</returns>
         public virtual Boolean FileExists(String path)
         {
-            Contract.Require(path, "path");
+            Contract.Require(path, nameof(path));
 
             if (source != null)
             {
@@ -65,7 +65,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <returns><see langword="true"/> if the specified path exists and is a directory; otherwise, <see langword="false"/>.</returns>
         public virtual Boolean DirectoryExists(String path)
         {
-            Contract.Require(path, "path");
+            Contract.Require(path, nameof(path));
 
             if (source != null)
             {
@@ -83,8 +83,8 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <returns>A list of directories at the specified path.</returns>
         public virtual IEnumerable<String> ListFiles(String path, String searchPattern = "*")
         {
-            Contract.Require(path, "path");
-            Contract.Require(searchPattern, "searchPattern");
+            Contract.Require(path, nameof(path));
+            Contract.Require(searchPattern, nameof(searchPattern));
 
             if (source != null)
             {
@@ -103,8 +103,8 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <returns>A list of directories at the specified path.</returns>
         public virtual IEnumerable<String> ListDirectories(String path, String searchPattern = "*")
         {
-            Contract.Require(path, "path");
-            Contract.Require(searchPattern, "searchPattern");
+            Contract.Require(path, nameof(path));
+            Contract.Require(searchPattern, nameof(searchPattern));
 
             if (source != null)
             {
@@ -122,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// <returns>A <see cref="Stream"/> on the file at <paramref name="path"/>.</returns>
         public virtual Stream OpenRead(String path)
         {
-            Contract.Require(path, "path");
+            Contract.Require(path, nameof(path));
 
             if (source != null)
             {

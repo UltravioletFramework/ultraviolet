@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="style">The style to register.</param>
         public void RegisterStyle(String name, TextStyle style)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             registeredStyles.Add(name, style);
         }
@@ -30,8 +30,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="font">The font to register.</param>
         public void RegisterFont(String name, SpriteFont font)
         {
-            Contract.RequireNotEmpty(name, "name");
-            Contract.Require(font, "font");
+            Contract.RequireNotEmpty(name, nameof(name));
+            Contract.Require(font, nameof(font));
 
             registeredFonts.Add(name, font);
         }
@@ -45,8 +45,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="width">The height to which to scale the icon, or null to preserve the sprite's original height.</param>
         public void RegisterIcon(String name, SpriteAnimation icon, Int32? width = null, Int32? height = null)
         {
-            Contract.RequireNotEmpty(name, "name");
-            Contract.Require(icon, "icon");
+            Contract.RequireNotEmpty(name, nameof(name));
+            Contract.Require(icon, nameof(icon));
 
             registeredIcons.Add(name, new TextIconInfo(icon, width, height));
         }
@@ -58,8 +58,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="shader">The glyph shader to register.</param>
         public void RegisterGlyphShader(String name, GlyphShader shader)
         {
-            Contract.RequireNotEmpty(name, "name");
-            Contract.Require(shader, "shader");
+            Contract.RequireNotEmpty(name, nameof(name));
+            Contract.Require(shader, nameof(shader));
 
             registeredGlyphShaders.Add(name, shader);
         }
@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns><see langword="true"/> if the style was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterStyle(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             return registeredStyles.Remove(name);
         }
@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns><see langword="true"/> if the font was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterFont(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             return registeredFonts.Remove(name);
         }
@@ -95,7 +95,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns><see langword="true"/> if the icon was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterIcon(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             return registeredIcons.Remove(name);
         }
@@ -107,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns><see langword="true"/> if the glyph shader was unregistered; otherwise, <see langword="false"/>.</returns>
         public Boolean UnregisterGlyphShader(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             return registeredGlyphShaders.Remove(name);
         }
@@ -120,8 +120,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="settings">A <see cref="TextLayoutSettings"/> structure which contains the settings for this operation.</param>
         public void CalculateLayout(TextParserTokenStream input, TextLayoutCommandStream output, TextLayoutSettings settings)
         {
-            Contract.Require(input, "input");
-            Contract.Require(output, "output");
+            Contract.Require(input, nameof(input));
+            Contract.Require(output, nameof(output));
 
             if (settings.Font == null)
                 throw new ArgumentException(UltravioletStrings.InvalidLayoutSettings);

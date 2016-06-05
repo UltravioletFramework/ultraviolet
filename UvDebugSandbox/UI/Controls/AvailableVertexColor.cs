@@ -16,7 +16,7 @@ namespace UvDebugSandbox.UI.Controls
         /// <param name="color">The color value.</param>
         public AvailableVertexColor(String name, Color color)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             this.name = name;
             this.color = color;

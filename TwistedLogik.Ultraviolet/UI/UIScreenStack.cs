@@ -270,7 +270,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <returns><see langword="true"/> if the screen was closed; otherwise, <see langword="false"/>.</returns>
         public Boolean Close(UIScreen screen, TimeSpan? duration = null)
         {
-            Contract.Require(screen, "screen");
+            Contract.Require(screen, nameof(screen));
 
             if (screens.Contains(screen))
             {
@@ -289,7 +289,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <returns>A task which represents the asynchronous operation.</returns>
         public Task CloseAsync(UIScreen screen, TimeSpan? duration = null)
         {
-            Contract.Require(screen, "screen");
+            Contract.Require(screen, nameof(screen));
 
             if (screens.Contains(screen))
             {
@@ -408,8 +408,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <returns><see langword="true"/> if the first screen needed to be closed; otherwise, <see langword="false"/>.</returns>
         public Boolean CloseThenOpen(UIScreen closing, UIScreen opening)
         {
-            Contract.Require(closing, "closing");
-            Contract.Require(opening, "opening");
+            Contract.Require(closing, nameof(closing));
+            Contract.Require(opening, nameof(opening));
 
             if (!Contains(closing))
                 throw new InvalidOperationException(UltravioletStrings.ScreenNotInStack);
@@ -427,8 +427,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <returns><see langword="true"/> if the first screen needed to be closed; otherwise, <see langword="false"/>.</returns>
         public Boolean CloseThenOpen(UIScreen closing, TimeSpan closingDuration, UIScreen opening, TimeSpan openingDuration)
         {
-            Contract.Require(closing, "closing");
-            Contract.Require(opening, "opening");
+            Contract.Require(closing, nameof(closing));
+            Contract.Require(opening, nameof(opening));
 
             if (!Contains(closing))
                 throw new InvalidOperationException(UltravioletStrings.ScreenNotInStack);
@@ -443,7 +443,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <returns><see langword="true"/> if the screen stack contains the specified screen; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(UIScreen screen)
         {
-            Contract.Require(screens, "screens");
+            Contract.Require(screens, nameof(screens));
 
             return screens.Contains(screen);
         }

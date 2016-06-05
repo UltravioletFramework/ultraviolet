@@ -16,7 +16,7 @@ namespace TwistedLogik.Nucleus.Collections
             /// <param name="heap">The heap that is being enumerated.</param>
             internal Enumerator(BinaryHeap<T> heap)
             {
-                Contract.Require(heap, "heap");
+                Contract.Require(heap, nameof(heap));
 
                 this.heap = heap;
                 this.position = -1;

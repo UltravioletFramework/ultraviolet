@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The instance of <see cref="Cursor"/> that was created.</returns>
         public static Cursor Create(Surface2D surface)
         {
-            Contract.Require(surface, "surface");
+            Contract.Require(surface, nameof(surface));
 
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<CursorFactory>()(uv, surface, 0, 0);
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The instance of <see cref="Cursor"/> that was created.</returns>
         public static Cursor Create(Surface2D surface, Int32 hx, Int32 hy)
         {
-            Contract.Require(surface, "surface");
+            Contract.Require(surface, nameof(surface));
 
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<CursorFactory>()(uv, surface, hx, hy);

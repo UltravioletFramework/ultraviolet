@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         public BASSSong(UltravioletContext uv, String file)
             : base(uv)
         {
-            Contract.RequireNotEmpty(file, "file");
+            Contract.RequireNotEmpty(file, nameof(file));
 
             this.file = file;
 

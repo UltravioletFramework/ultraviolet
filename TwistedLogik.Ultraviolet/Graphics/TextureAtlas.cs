@@ -18,8 +18,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         internal TextureAtlas(Texture2D texture, IEnumerable<KeyValuePair<String, Rectangle>> cells)
             : base((texture == null) ? null : texture.Ultraviolet)
         {
-            Contract.Require(texture, "texture");
-            Contract.Require(cells, "cells");
+            Contract.Require(texture, nameof(texture));
+            Contract.Require(cells, nameof(cells));
 
             this.texture = texture;
             this.cells = new Dictionary<string, Rectangle>();

@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="action">The action to perform.</param>
         public void ForEach(Action<T> action)
         {
-            Contract.Require(action, "action");
+            Contract.Require(action, nameof(action));
 
             temp.Clear();
             try
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="value">The value to add to the list.</param>
         public void AddFirst(T value)
         {
-            Contract.Require(value, "value");
+            Contract.Require(value, nameof(value));
 
             var weakref = new WeakReference(value);
             lock (storage)
@@ -69,7 +69,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="value">The value to add to the list.</param>
         public void AddLast(T value)
         {
-            Contract.Require(value, "value");
+            Contract.Require(value, nameof(value));
 
             var weakref = new WeakReference(value);
             lock (storage)
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="value">The value to remove from the list.</param>
         public void Remove(T value)
         {
-            Contract.Require(value, "value");
+            Contract.Require(value, nameof(value));
 
             lock (storage)
             {

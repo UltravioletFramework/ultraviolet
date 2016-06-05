@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="uv">The Ultraviolet context.</param>
         protected UltravioletResource(UltravioletContext uv)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             this.uv = uv;
         }

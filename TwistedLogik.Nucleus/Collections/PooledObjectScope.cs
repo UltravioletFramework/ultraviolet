@@ -16,7 +16,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="instance">The object instance being managed by the scope.</param>
         internal PooledObjectScope(IPool pool, T instance)
         {
-            Contract.Require(pool, "pool");
+            Contract.Require(pool, nameof(pool));
 
             this.pool = pool;
             this.instance = instance;

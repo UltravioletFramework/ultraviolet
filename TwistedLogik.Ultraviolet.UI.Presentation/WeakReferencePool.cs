@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="weakReference">The weak reference to release into the pool.</param>
         public void Release(WeakReference weakReference)
         {
-            Contract.Require(weakReference, "weakReference");
+            Contract.Require(weakReference, nameof(weakReference));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Initialize();
@@ -50,7 +50,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="weakReference">The weak reference to release into the pool.</param>
         public void ReleaseRef(ref WeakReference weakReference)
         {
-            Contract.Require(weakReference, "weakReference");
+            Contract.Require(weakReference, nameof(weakReference));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Initialize();

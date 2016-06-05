@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="stringBuilder">A <see cref="StringBuilder"/> instance to populate with the text box's text.</param>
         public void GetText(StringBuilder stringBuilder)
         {
-            Contract.Require(stringBuilder, "stringBuilder");
+            Contract.Require(stringBuilder, nameof(stringBuilder));
 
             var value = GetValue<VersionedStringSource>(TextProperty);
 

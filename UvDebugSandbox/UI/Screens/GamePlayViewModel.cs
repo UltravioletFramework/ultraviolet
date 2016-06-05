@@ -22,7 +22,7 @@ namespace UvDebugSandbox.UI.Screens
         /// <param name="escMenuDialog">The escape menu dialog box used by this screen.</param>
         public GamePlayViewModel(GamePlayScreen owner, EscMenuDialog escMenuDialog)
         {
-            Contract.Require(owner, "owner");
+            Contract.Require(owner, nameof(owner));
 
             this.owner = owner;
             this.escMenuDialog = escMenuDialog;

@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns>The clock that was retrieved.</returns>
         public UpfPool<StoryboardClock>.PooledObject Retrieve(StoryboardInstance storyboardInstance)
         {
-            Contract.Require(storyboardInstance, "storyboardInstance");
+            Contract.Require(storyboardInstance, nameof(storyboardInstance));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Initialize();
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="clock">The clock to release into the pool.</param>
         public void Release(UpfPool<StoryboardClock>.PooledObject clock)
         {
-            Contract.Require(clock, "clock");
+            Contract.Require(clock, nameof(clock));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Initialize();
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="clock">The clock to release into the pool.</param>
         public void ReleaseRef(ref UpfPool<StoryboardClock>.PooledObject clock)
         {
-            Contract.Require(clock, "clock");
+            Contract.Require(clock, nameof(clock));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Initialize();

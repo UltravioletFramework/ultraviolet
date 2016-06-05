@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="uv">The Ultraviolet context.</param>
         public UIScreenStackCollection(UltravioletContext uv)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             var windows = uv.GetPlatform().Windows;
 
@@ -50,7 +50,7 @@ namespace TwistedLogik.Ultraviolet.UI
         {
             get
             {
-                Contract.Require(window, "window");
+                Contract.Require(window, nameof(window));
 
                 UIScreenStack stack;
                 if (!screenStacks.TryGetValue(window, out stack))

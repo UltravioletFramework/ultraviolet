@@ -27,7 +27,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="length">The length of the substring.</param>
         public static void AppendStringPtr(this StringBuilder sb, StringPtr8 ptr, Int32 offset, Int32 length)
         {
-            Contract.Require(sb, "sb");
+            Contract.Require(sb, nameof(sb));
 
             if (ptr == StringPtr8.Zero)
                 return;
@@ -57,7 +57,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="length">The length of the substring.</param>
         public static void AppendStringPtr(this StringBuilder sb, StringPtr16 ptr, Int32 offset, Int32 length)
         {
-            Contract.Require(sb, "sb");
+            Contract.Require(sb, nameof(sb));
 
             if (ptr == StringPtr16.Zero)
                 return;
@@ -77,7 +77,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="length">The length of the substring.</param>
         public static void AppendSubstring(this StringBuilder sb, String str, Int32 offset, Int32 length)
         {
-            Contract.Require(sb, "sb");
+            Contract.Require(sb, nameof(sb));
 
             var end = offset + length;
             for (int i = offset; i < end; i++)
@@ -92,7 +92,7 @@ namespace TwistedLogik.Nucleus.Text
         [CLSCompliant(false)]
         public static void AppendSegment(this StringBuilder sb, StringSegment value)
         {
-            Contract.Require(sb, "sb");
+            Contract.Require(sb, nameof(sb));
 
             if (value.IsEmpty)
                 return;
@@ -110,7 +110,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="value">The <see cref="StringSegment"/> to append to the <see cref="StringBuilder"/>.</param>
         public static void AppendSegment(this StringBuilder sb, ref StringSegment value)
         {
-            Contract.Require(sb, "sb");
+            Contract.Require(sb, nameof(sb));
 
             if (value.IsEmpty)
                 return;
@@ -128,7 +128,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="value">The value to append to the <see cref="StringBuilder"/>.</param>
         public static void AppendPaddedInt2(this StringBuilder sb, Int32 value)
         {
-            Contract.Require(sb, "sb");
+            Contract.Require(sb, nameof(sb));
 
             sb.Concat(value, 2);
         }
@@ -140,7 +140,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="value">The value to append to the <see cref="StringBuilder"/>.</param>
         public static void AppendIntWithCommas(this StringBuilder sb, int value)
         {
-            Contract.Require(sb, "sb");
+            Contract.Require(sb, nameof(sb));
 
             var group = 0;
             var written = 0;
@@ -168,7 +168,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="value">The value to append to the <see cref="StringBuilder"/>.</param>
         public static void AppendPaddedSingle2(this StringBuilder sb, Single value)
         {
-            Contract.Require(sb, "sb");
+            Contract.Require(sb, nameof(sb));
 
             sb.Concat(value, 2);
         }
@@ -181,7 +181,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="value">The value to append to the <see cref="StringBuilder"/>.</param>
         public static void AppendPaddedDouble2(this StringBuilder sb, Double value)
         {
-            Contract.Require(sb, "sb");
+            Contract.Require(sb, nameof(sb));
 
             sb.Concat((float)value, 2);
         }
@@ -195,8 +195,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="output">The <see cref="StringBuilder"/> to populate with the substring.</param>
         public static void Substring(this StringBuilder source, Int32 start, Int32 length, StringBuilder output)
         {
-            Contract.Require(source, "source");
-            Contract.Require(output, "output");
+            Contract.Require(source, nameof(source));
+            Contract.Require(output, nameof(output));
 
             output.Length = 0;
             for (int i = start; i < start + length; i++)
@@ -214,8 +214,8 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The number of substrings that were retrieved.</returns>
         public static int Split(this StringBuilder source, Char delimiter, StringBuilder[] output)
         {
-            Contract.Require(source, "source");
-            Contract.Require(output, "output");
+            Contract.Require(source, nameof(source));
+            Contract.Require(output, nameof(output));
 
             if (output.Length == 0)
                 return 0;

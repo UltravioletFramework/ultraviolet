@@ -34,8 +34,8 @@ namespace TwistedLogik.Ultraviolet
             }
             internal set
             {
-                Contract.RequireNotEmpty(name, "name");
-                Contract.Require(value, "value");
+                Contract.RequireNotEmpty(name, nameof(name));
+                Contract.Require(value, nameof(value));
 
                 cursors[name] = value;
             }

@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="popup">The popup to enqueue.</param>
         public void Enqueue(Popup popup)
         {
-            Contract.Require(popup, "popup");
+            Contract.Require(popup, nameof(popup));
 
             if (next == null)
             {

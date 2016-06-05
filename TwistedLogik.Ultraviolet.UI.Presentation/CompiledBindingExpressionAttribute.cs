@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="expression">The expression which was compiled.</param>
         public CompiledBindingExpressionAttribute(String expression)
         {
-            Contract.RequireNotEmpty(expression, "expression");
+            Contract.RequireNotEmpty(expression, nameof(expression));
 
             this.Expression = expression;
         }

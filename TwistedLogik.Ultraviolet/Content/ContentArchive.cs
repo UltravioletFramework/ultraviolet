@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The <see cref="ContentArchive"/> that was created.</returns>
         public static ContentArchive FromFileSystem(IEnumerable<String> directories)
         {
-            Contract.Require(directories, "directories");
+            Contract.Require(directories, nameof(directories));
 
             return new ContentArchive(directories.Select(x => ContentArchiveNode.FromFileSystem(x)));
         }
@@ -73,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The <see cref="ContentArchive"/> that was created.</returns>
         public static ContentArchive FromArchiveFile(Func<Stream> loader)
         {
-            Contract.Require(loader, "loader");
+            Contract.Require(loader, nameof(loader));
 
             return new ContentArchive(loader);
         }
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="writer">A <see cref="BinaryWriter"/> on the stream to which to save the archive.</param>
         public void Save(BinaryWriter writer)
         {
-            Contract.Require(writer, "writer");
+            Contract.Require(writer, nameof(writer));
             Contract.Ensure<NotSupportedException>(canSave);
 
             writer.Write("UVARC0");
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <inheritdoc/>
         public override FileSourceNode Find(String path, Boolean throwIfNotFound = true)
         {
-            Contract.Require(path, "path");
+            Contract.Require(path, nameof(path));
 
             if (path.StartsWith("/"))
             {
@@ -174,7 +174,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <inheritdoc/>
         public override Stream Extract(String path)
         {
-            Contract.Require(path, "path");
+            Contract.Require(path, nameof(path));
             Contract.Ensure<NotSupportedException>(canExtract);
 
             var node = Find(path);

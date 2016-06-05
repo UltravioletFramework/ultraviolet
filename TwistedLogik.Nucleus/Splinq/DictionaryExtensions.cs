@@ -17,7 +17,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns><see langword="true"/> if the source dictionary contains any elements; otherwise, <see langword="false"/>.</returns>
         public static Boolean Any<TKey, TValue>(this Dictionary<TKey, TValue> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             return source.Count > 0;
         }
@@ -32,8 +32,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns><see langword="true"/> if the source dictionary contains any elements; otherwise, <see langword="false"/>.</returns>
         public static Boolean Any<TKey, TValue>(this Dictionary<TKey, TValue> source, Predicate<KeyValuePair<TKey, TValue>> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             foreach (var item in source)
             {
@@ -55,8 +55,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns><see langword="true"/> if all of the items in the source dictionary match the specified predicate; otherwise, <see langword="false"/>.</returns>
         public static Boolean All<TKey, TValue>(this Dictionary<TKey, TValue> source, Predicate<KeyValuePair<TKey, TValue>> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             foreach (var item in source)
             {
@@ -75,7 +75,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The number of items in the source dictionary.</returns>
         public static Int32 Count<TKey, TValue>(this Dictionary<TKey, TValue> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             return source.Count;
         }
@@ -90,8 +90,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The number of items in the source dictionary.</returns>
         public static Int32 Count<TKey, TValue>(this Dictionary<TKey, TValue> source, Predicate<KeyValuePair<TKey, TValue>> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             var count = 0;
 
@@ -113,7 +113,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The first item in the source dictionary.</returns>
         public static KeyValuePair<TKey, TValue> First<TKey, TValue>(this Dictionary<TKey, TValue> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             foreach (var item in source)
                 return item;
@@ -131,8 +131,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The first item in the source dictionary that satisfies the predicate.</returns>
         public static KeyValuePair<TKey, TValue> First<TKey, TValue>(this Dictionary<TKey, TValue> source, Predicate<KeyValuePair<TKey, TValue>> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
             
             foreach (var item in source)
             {
@@ -152,7 +152,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The last item in the source dictionary.</returns>
         public static KeyValuePair<TKey, TValue> Last<TKey, TValue>(this Dictionary<TKey, TValue> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             var value = default(KeyValuePair<TKey, TValue>);
             var valueExists = false;
@@ -179,8 +179,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The last item in the source dictionary that satisfies the predicate.</returns>
         public static KeyValuePair<TKey, TValue> Last<TKey, TValue>(this Dictionary<TKey, TValue> source, Predicate<KeyValuePair<TKey, TValue>> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             var value = default(KeyValuePair<TKey, TValue>);
             var valueExists = false;
@@ -210,7 +210,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The single item in the source dictionary.</returns>
         public static KeyValuePair<TKey, TValue> Single<TKey, TValue>(this Dictionary<TKey, TValue> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             if (source.Count > 1)
                 throw new InvalidOperationException(NucleusStrings.SequenceHasMoreThanOneElement);
@@ -232,8 +232,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The single item in the source dictionary that matches the specified predicate.</returns>
         public static KeyValuePair<TKey, TValue> Single<TKey, TValue>(this Dictionary<TKey, TValue> source, Predicate<KeyValuePair<TKey, TValue>> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             var count = 0;
             var value = default(KeyValuePair<TKey, TValue>);
@@ -265,7 +265,7 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The single item in the source dictionary, or a default value.</returns>
         public static KeyValuePair<TKey, TValue> SingleOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             if (source.Count > 1)
                 throw new InvalidOperationException(NucleusStrings.SequenceHasMoreThanOneElement);
@@ -287,8 +287,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The single item in the source dictionary, or a default value.</returns>
         public static KeyValuePair<TKey, TValue> SingleOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> source, Predicate<KeyValuePair<TKey, TValue>> predicate)
         {
-            Contract.Require(source, "source");
-            Contract.Require(predicate, "predicate");
+            Contract.Require(source, nameof(source));
+            Contract.Require(predicate, nameof(predicate));
 
             var count = 0;
             var value = default(KeyValuePair<TKey, TValue>);
@@ -322,8 +322,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The maximum item in the dictionary.</returns>
         public static TResult Max<TKey, TValue, TResult>(this Dictionary<TKey, TValue> source, Func<KeyValuePair<TKey, TValue>, TResult> selector)
         {
-            Contract.Require(source, "source");
-            Contract.Require(selector, "selector");
+            Contract.Require(source, nameof(source));
+            Contract.Require(selector, nameof(selector));
 
             var comparer = Comparer<TResult>.Default;
 
@@ -365,8 +365,8 @@ namespace TwistedLogik.Nucleus.Splinq
         /// <returns>The minimum item in the dictionary.</returns>
         public static TResult Min<TKey, TValue, TResult>(this Dictionary<TKey, TValue> source, Func<KeyValuePair<TKey, TValue>, TResult> selector)
         {
-            Contract.Require(source, "source");
-            Contract.Require(selector, "selector");
+            Contract.Require(source, nameof(source));
+            Contract.Require(selector, nameof(selector));
 
             var comparer = Comparer<TResult>.Default;
 

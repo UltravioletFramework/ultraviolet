@@ -19,8 +19,8 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The original content path, if it was found; otherwise, <paramref name="path"/>.</returns>
         public static String GetOriginalContentFilePath(String root, String path)
         {
-            Contract.Require(root, "root");
-            Contract.RequireNotEmpty(path, "path");
+            Contract.Require(root, nameof(root));
+            Contract.RequireNotEmpty(path, nameof(path));
 
             var entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly == null)

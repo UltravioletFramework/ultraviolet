@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="name"></param>
         internal UltravioletProfilerSection(String name)
         {
-            Contract.Require(name, "name");
+            Contract.Require(name, nameof(name));
 
             this.name = name;
         }

@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public OpenGLEffectPass(UltravioletContext uv, String name, ICollection<OpenGLShaderProgram> programs)
             : base(uv)
         {
-            Contract.RequireNotEmpty(programs, "programs");
+            Contract.RequireNotEmpty(programs, nameof(programs));
 
             this.name = name ?? String.Empty;
             this.programs = new OpenGLShaderProgramCollection(programs);
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
-                Contract.EnsureRange(value >= 0 && value < ProgramCount, "value");
+                Contract.EnsureRange(value >= 0 && value < ProgramCount, nameof(value));
 
                 programIndex = value;
             }

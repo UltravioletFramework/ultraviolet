@@ -67,9 +67,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The <see cref="PresentationFoundationView"/> that was loaded from the specified XML document.</returns>
         public static PresentationFoundationView Load(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(uiPanel, "uiPanel");
-            Contract.Require(uiPanelDefinition, "uiPanelDefinition");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(uiPanel, nameof(uiPanel));
+            Contract.Require(uiPanelDefinition, nameof(uiPanelDefinition));
 
             if (uiPanelDefinition.ViewElement == null)
                 return null;
@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The name of the data source wrapper for the specified view.</returns>
         public static String GetDataSourceWrapperNameForView(String path)
         {
-            Contract.RequireNotEmpty(path, "path");
+            Contract.RequireNotEmpty(path, nameof(path));
 
             var pathComponents = path.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
             pathComponents[pathComponents.Length - 1] = Path.GetFileNameWithoutExtension(pathComponents[pathComponents.Length - 1]);
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The name of the data source wrapper for the specified control type.</returns>
         public static String GetDataSourceWrapperNameForComponentTemplate(Type type)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
 
             return String.Format("{0}_Template_Impl", type.FullName.Replace('.', '_'));
         }
@@ -130,8 +130,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public override void Draw(UltravioletTime time, SpriteBatch spriteBatch, Single opacity)
         {
-            Contract.Require(time, "time");
-            Contract.Require(spriteBatch, "spriteBatch");
+            Contract.Require(time, nameof(time));
+            Contract.Require(spriteBatch, nameof(spriteBatch));
 
             if (Ultraviolet.IsRunningInServiceMode)
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
@@ -177,7 +177,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
-            Contract.Require(time, "time");
+            Contract.Require(time, nameof(time));
 
             if (Window == null)
                 return;
@@ -211,8 +211,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="action">The action to perform on the selected objects.</param>
         public void Select(UvssSelector selector, Object state, Action<UIElement, Object> action)
         {
-            Contract.Require(selector, "selector");
-            Contract.Require(action, "action");
+            Contract.Require(selector, nameof(selector));
+            Contract.Require(action, nameof(action));
 
             SelectInternal(layoutRoot, selector, state, action);
         }
@@ -227,8 +227,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="action">The action to perform on the selected objects.</param>
         public void Select(UIElement root, UvssSelector selector, Object state, Action<UIElement, Object> action)
         {
-            Contract.Require(selector, "selector");
-            Contract.Require(action, "action");
+            Contract.Require(selector, nameof(selector));
+            Contract.Require(action, nameof(action));
 
             SelectInternal(root ?? layoutRoot, selector, state, action);
         }
@@ -285,7 +285,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the element was successfully focused; otherwise, <see langword="false"/>.</returns>
         public Boolean FocusElement(IInputElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             if (elementWithFocus == element || !Keyboard.IsFocusable(element))
                 return false;
@@ -355,7 +355,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The element from which to remove input focus.</param>
         public void BlurElement(IInputElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             if (elementWithFocus != element)
                 return;
@@ -415,7 +415,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the mouse was successfully captured; otherwise, <see langword="false"/>.</returns>
         public Boolean CaptureMouse(IInputElement element, CaptureMode mode)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             if (element == null || mode == CaptureMode.None)
             {
@@ -462,7 +462,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The element with the specified identifying name, or <see langword="null"/> if no such element exists.</returns>
         public UIElement GetElementByName(String name)
         {
-            Contract.RequireNotEmpty(name, "id");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             return namescope.GetElementByName(name);
         }
@@ -710,7 +710,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The <see cref="Storyboard"/> with the specified name, or <see langword="null"/> if the specified storyboard does not exist.</returns>
         public Storyboard FindStoryboard(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             if (StyleSheet != null)
             {
@@ -786,7 +786,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The button to register.</param>
         internal void RegisterDefaultButton(Button button)
         {
-            Contract.Require(button, "button");
+            Contract.Require(button, nameof(button));
 
             var weakReference = WeakReferencePool.Instance.Retrieve();
             weakReference.Target = button;
@@ -800,7 +800,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The button to register.</param>
         internal void RegisterCancelButton(Button button)
         {
-            Contract.Require(button, "button");
+            Contract.Require(button, nameof(button));
 
             var weakReference = WeakReferencePool.Instance.Retrieve();
             weakReference.Target = button;
@@ -814,7 +814,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The button to unregister.</param>
         internal void UnregisterDefaultButton(Button button)
         {
-            Contract.Require(button, "button");
+            Contract.Require(button, nameof(button));
 
             for (int i = 0; i < defaultButtons.Count; i++)
             {
@@ -833,7 +833,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The button to unregister.</param>
         internal void UnregisterCancelButton(Button button)
         {
-            Contract.Require(button, "button");
+            Contract.Require(button, nameof(button));
 
             for (int i = 0; i < cancelButtons.Count; i++)
             {

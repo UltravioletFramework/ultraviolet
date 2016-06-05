@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="index">The element's usage index.</param>
         public VertexElement(Int32 position, VertexFormat format, VertexUsage usage, Int32 index)
         {
-            Contract.EnsureRange(index >= 0 && index < UsageIndexCount, "index");
+            Contract.EnsureRange(index >= 0 && index < UsageIndexCount, nameof(index));
 
             this.position = position;
             this.format = format;

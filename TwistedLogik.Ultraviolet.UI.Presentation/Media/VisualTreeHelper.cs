@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>The topmost <see cref="Visual"/> which contains the specified point, or <see langword="null"/>.</returns>
         public static Visual HitTest(Visual reference, Point2D point)
         {
-            Contract.Require(reference, "reference");
+            Contract.Require(reference, nameof(reference));
 
             return reference.HitTest(point);
         }
@@ -59,8 +59,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <param name="action">The action to perform on each of the specified object's visual children.</param>
         public static void ForEachChild<TChild>(DependencyObject dobj, Object state, Action<TChild, Object> action) where TChild : class
         {
-            Contract.Require(dobj, "dobj");
-            Contract.Require(action, "action");
+            Contract.Require(dobj, nameof(dobj));
+            Contract.Require(action, nameof(action));
 
             var children = GetChildrenCount(dobj);
             for (int i = 0; i < children; i++)
@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>The visual root of <paramref name="dobj"/>.</returns>
         public static DependencyObject GetRoot(DependencyObject dobj)
         {
-            Contract.Require(dobj, "dobj");
+            Contract.Require(dobj, nameof(dobj));
 
             var current = dobj;
             var parent = default(DependencyObject);
@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>The parent of <paramref name="dobj"/>.</returns>
         public static DependencyObject GetParent(DependencyObject dobj)
         {
-            Contract.Require(dobj, "dobj");
+            Contract.Require(dobj, nameof(dobj));
 
             var visual = dobj as Visual;
             if (visual == null)
@@ -121,7 +121,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>The specified visual child of <paramref name="dobj"/>.</returns>
         public static DependencyObject GetChild(DependencyObject dobj, Int32 childIndex)
         {
-            Contract.Require(dobj, "dobj");
+            Contract.Require(dobj, nameof(dobj));
 
             var visual = dobj as Visual;
             if (visual == null)
@@ -139,7 +139,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>The specified visual child of <paramref name="dobj"/>.</returns>
         public static DependencyObject GetChildByZOrder(DependencyObject dobj, Int32 childIndex)
         {
-            Contract.Require(dobj, "dobj");
+            Contract.Require(dobj, nameof(dobj));
 
             var visual = dobj as Visual;
             if (visual == null)
@@ -170,7 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>The first child of <paramref name="dobj"/> in the visual tree which matches the specified predicate, or <see langword="null"/> if no such child exists.</returns>
         public static DependencyObject GetFirstChild<TChild>(DependencyObject dobj, Predicate<TChild> predicate = null) where TChild : DependencyObject
         {
-            Contract.Require(dobj, "dobj");
+            Contract.Require(dobj, nameof(dobj));
 
             var children = GetChildrenCount(dobj);
             if (children == 0)
@@ -208,7 +208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>The last child of <paramref name="dobj"/> in the visual tree which matches the specified predicate, or <see langword="null"/> if no such child exists.</returns>
         public static DependencyObject GetLastChild<TChild>(DependencyObject dobj, Predicate<TChild> predicate = null) where TChild : DependencyObject
         {
-            Contract.Require(dobj, "dobj");
+            Contract.Require(dobj, nameof(dobj));
 
             var children = GetChildrenCount(dobj);
             if (children == 0)
@@ -246,7 +246,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>The next sibling of <paramref name="dobj"/> in the visual tree which matches the specified predicate, or <see langword="null"/> if no such sibling exists.</returns>
         public static DependencyObject GetNextSibling<TSibling>(DependencyObject dobj, Predicate<TSibling> predicate = null) where TSibling : DependencyObject
         {
-            Contract.Require(dobj, "dobj");
+            Contract.Require(dobj, nameof(dobj));
 
             var parent = GetParent(dobj);
             if (parent == null)
@@ -289,7 +289,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>The previous sibling of <paramref name="dobj"/> in the visual tree, or <see langword="null"/> if no such sibling exists.</returns>
         public static DependencyObject GetPreviousSibling<TSibling>(DependencyObject dobj, Predicate<TSibling> predicate = null) where TSibling : DependencyObject
         {
-            Contract.Require(dobj, "dobj");
+            Contract.Require(dobj, nameof(dobj));
 
             var parent = GetParent(dobj);
             if (parent == null)
@@ -316,7 +316,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>The number of visual children belonging to <paramref name="dobj"/>.</returns>
         public static Int32 GetChildrenCount(DependencyObject dobj)
         {
-            Contract.Require(dobj, "dobj");
+            Contract.Require(dobj, nameof(dobj));
 
             var visual = dobj as Visual;
             if (visual == null)

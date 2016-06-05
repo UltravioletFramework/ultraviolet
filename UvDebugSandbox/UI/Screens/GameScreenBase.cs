@@ -20,7 +20,7 @@ namespace UvDebugSandbox.UI.Screens
         public GameScreenBase(String rootDirectory, String definitionAsset, ContentManager globalContent, UIScreenService uiScreenService)
             : base(rootDirectory, definitionAsset, globalContent)
         {
-            Contract.Require(uiScreenService, "uiScreenService");
+            Contract.Require(uiScreenService, nameof(uiScreenService));
 
             this.uiScreenService = uiScreenService;
         }

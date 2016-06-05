@@ -85,8 +85,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewAxisChangedHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewAxisChangedEvent, handler);
         }
@@ -99,8 +99,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewAxisDownHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewAxisDownEvent, handler);
         }
@@ -113,8 +113,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewAxisUpHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewAxisUpEvent, handler);
         }
@@ -127,8 +127,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewButtonDownHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewButtonDownEvent, handler);
         }
@@ -141,8 +141,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewButtonUpHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewButtonUpEvent, handler);
         }
@@ -155,8 +155,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddAxisChangedHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, AxisChangedEvent, handler);
         }
@@ -169,8 +169,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddAxisDownHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, AxisDownEvent, handler);
         }
@@ -183,8 +183,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddAxisUpHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, AxisUpEvent, handler);
         }
@@ -197,8 +197,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddButtonDownHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, ButtonDownEvent, handler);
         }
@@ -211,8 +211,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddButtonUpHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, ButtonUpEvent, handler);
         }
@@ -225,8 +225,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewAxisChangedHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewAxisChangedEvent, handler);
         }
@@ -239,8 +239,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewAxisDownHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewAxisDownEvent, handler);
         }
@@ -253,8 +253,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewAxisUpHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewAxisUpEvent, handler);
         }
@@ -267,8 +267,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewButtonDownHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewButtonDownEvent, handler);
         }
@@ -281,8 +281,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewButtonUpHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewButtonUpEvent, handler);
         }
@@ -295,8 +295,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveAxisChangedHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, AxisChangedEvent, handler);
         }
@@ -309,8 +309,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveAxisDownHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, AxisDownEvent, handler);
         }
@@ -323,8 +323,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveAxisUpHandler(DependencyObject element, UpfGamePadAxisChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, AxisDownEvent, handler);
         }
@@ -337,8 +337,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveButtonDownHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, ButtonDownEvent, handler);
         }
@@ -351,8 +351,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveButtonUpHandler(DependencyObject element, UpfKeyboardFocusChangedEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, ButtonUpEvent, handler);
         }

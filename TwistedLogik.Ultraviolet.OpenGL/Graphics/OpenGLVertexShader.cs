@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public OpenGLVertexShader(UltravioletContext uv, String[] source)
             : base(uv)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             var shader = 0u;
 

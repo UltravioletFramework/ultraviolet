@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="DynamicIndexBuffer"/> that was created.</returns>
         public static new DynamicIndexBuffer Create(IndexBufferElementType itype, Int32 icount)
         {
-            Contract.EnsureRange(icount > 0, "icount");
+            Contract.EnsureRange(icount > 0, nameof(icount));
 
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<DynamicIndexBufferFactory>()(uv, itype, icount);

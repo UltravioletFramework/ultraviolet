@@ -20,9 +20,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="RoutedEvent"/> instance which represents the registered routed event.</returns>
         public static RoutedEvent Register(String name, String uvssName, RoutingStrategy routingStrategy, Type delegateType, Type ownerType)
         {
-            Contract.Require(name, "name");
-            Contract.Require(delegateType, "delegateType");
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(name, nameof(name));
+            Contract.Require(delegateType, nameof(delegateType));
+            Contract.Require(ownerType, nameof(ownerType));
 
             var evt = new RoutedEvent(reid++, name, uvssName, routingStrategy, delegateType, ownerType);
             RegisterInternal(evt, ownerType);
@@ -38,8 +38,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// or <see langword="null"/> if no such routed event exists.</returns>
         public static RoutedEvent FindByName(String name, Type ownerType)
         {
-            Contract.Require(name, "name");
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(name, nameof(name));
+            Contract.Require(ownerType, nameof(ownerType));
 
             var type = ownerType;
             while (type != null)
@@ -64,8 +64,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// or <see langword="null"/> if no such routed event exists.</returns>
         public static RoutedEvent FindByStylingName(String name, Type ownerType)
         {
-            Contract.Require(name, "name");
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(name, nameof(name));
+            Contract.Require(ownerType, nameof(ownerType));
 
             var type = ownerType;
             while (type != null)
@@ -88,8 +88,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="ownerType">The owner type to add to the specified routed event.</param>
         internal static RoutedEvent AddOwner(RoutedEvent routedEvent, Type ownerType)
         {
-            Contract.Require(routedEvent, "routedEvent");
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(routedEvent, nameof(routedEvent));
+            Contract.Require(ownerType, nameof(ownerType));
 
             RegisterInternal(routedEvent, ownerType);
 

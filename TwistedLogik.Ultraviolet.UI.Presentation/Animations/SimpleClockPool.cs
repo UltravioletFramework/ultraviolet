@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="clock">The clock to release into the pool.</param>
         public void Release(UpfPool<SimpleClock>.PooledObject clock)
         {
-            Contract.Require(clock, "clock");
+            Contract.Require(clock, nameof(clock));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Initialize();
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="clock">The clock to release into the pool.</param>
         public void ReleaseRef(ref UpfPool<SimpleClock>.PooledObject clock)
         {
-            Contract.Require(clock, "clock");
+            Contract.Require(clock, nameof(clock));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Initialize();

@@ -30,9 +30,9 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="deallocator">An action which is performed on objects which are being returned to the pool.</param>
         public ExpandingPool(Int32 capacity, Int32 watermark, Func<T> allocator = null, Action<T> deallocator = null)
         {
-            Contract.EnsureRange(capacity >= 0, "capacity");
-            Contract.EnsureRange(watermark >= 1, "watermark");
-            Contract.EnsureRange(watermark >= capacity, "watermark");
+            Contract.EnsureRange(capacity >= 0, nameof(capacity));
+            Contract.EnsureRange(watermark >= 1, nameof(watermark));
+            Contract.EnsureRange(watermark >= capacity, nameof(watermark));
 
             this.watermark = watermark;
             this.allocator = allocator ?? CreateDefaultAllocator();

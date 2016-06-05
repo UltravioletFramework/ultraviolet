@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="asm">The assembly that contains the importers to register.</param>
         public void RegisterAssembly(Assembly asm)
         {
-            Contract.Require(asm, "asm");
+            Contract.Require(asm, nameof(asm));
 
             var importers = from type in asm.GetTypes()
                             let attrs = type.GetCustomAttributes(typeof(ContentImporterAttribute), false).Cast<ContentImporterAttribute>()
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <returns>The content importer for the specified file extension, or <see langword="null"/> if no appropriate importer could be found.</returns>
         public IContentImporter FindImporter(String extension, out Type outputType)
         {
-            Contract.RequireNotEmpty(extension, "extension");
+            Contract.RequireNotEmpty(extension, nameof(extension));
 
             RegistryEntry entry;
             if (registeredImporters.TryGetValue(extension, out entry))
@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="extension">The file extension for which to register the importer.</param>
         public void RegisterImporter<T>(String extension) where T : IContentImporter
         {
-            Contract.RequireNotEmpty(extension, "extension");
+            Contract.RequireNotEmpty(extension, nameof(extension));
 
             var baseImporterType = GetBaseContentImporterType(typeof(T));
             if (baseImporterType == null)
@@ -112,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="extension">The file extension from which to unregister the importer.</param>
         public void UnregisterImporter<T>(String extension) where T : IContentImporter
         {
-            Contract.RequireNotEmpty(extension, "extension");
+            Contract.RequireNotEmpty(extension, nameof(extension));
 
             registeredImporters.Remove(extension);
         }

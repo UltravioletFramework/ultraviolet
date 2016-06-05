@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         [SecurityCritical]
         public void GetPassword(StringBuilder stringBuilder)
         {
-            Contract.Require(stringBuilder, "stringBuilder");
+            Contract.Require(stringBuilder, nameof(stringBuilder));
 
             if (PART_Editor != null)
                 PART_Editor.GetPassword(stringBuilder);

@@ -74,8 +74,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
         public static RenderBuffer2D Create(RenderBufferFormat format, Int32 width, Int32 height, RenderBufferOptions options)
         {
-            Contract.EnsureRange(width > 0, "width");
-            Contract.EnsureRange(height > 0, "height");
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
 
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<RenderBuffer2DFactory>()(uv, format, width, height, options);

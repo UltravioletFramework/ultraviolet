@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.Input
             /// <returns><see langword="true"/> if the binding was added to the group; otherwise, <see langword="false"/>.</returns>
             public Boolean Add(InputBinding binding)
             {
-                Contract.Require(binding, "binding");
+                Contract.Require(binding, nameof(binding));
 
                 if (bindings.Count == 0 || bindings[0].UsesSamePrimaryButtons(binding))
                 {

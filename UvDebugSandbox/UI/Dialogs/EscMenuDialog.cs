@@ -16,7 +16,7 @@ namespace UvDebugSandbox.UI.Dialogs
         /// <param name="owner">The screen that owns the dialog box.</param>
         public EscMenuDialog(GameScreenBase owner)
         {
-            Contract.Require(owner, "owner");
+            Contract.Require(owner, nameof(owner));
 
             this.screen = new DialogScreen(this, owner.GlobalContent);
         }

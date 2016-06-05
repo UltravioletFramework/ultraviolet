@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         protected Effect(EffectImplementation impl)
             : base(impl.Ultraviolet)
         {
-            Contract.Require(impl, "impl");
+            Contract.Require(impl, nameof(impl));
 
             this.impl = impl;
         }
@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="Effect"/> that was created.</returns>
         public static Effect Create(EffectImplementation impl)
         {
-            Contract.Require(impl, "impl");
+            Contract.Require(impl, nameof(impl));
 
             return new Effect(impl);
         }

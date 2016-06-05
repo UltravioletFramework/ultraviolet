@@ -152,7 +152,7 @@ namespace TwistedLogik.Nucleus.Text
             [SecuritySafeCritical]
             get
             {
-                Contract.EnsureRange(index >= 0 && index < length, "index");
+                Contract.EnsureRange(index >= 0 && index < length, nameof(index));
                 unsafe
                 {
                     return (Char)(*((sbyte*)ptr + index));

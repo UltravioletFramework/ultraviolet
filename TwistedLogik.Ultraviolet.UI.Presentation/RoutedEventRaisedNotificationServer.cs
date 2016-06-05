@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="routedEvent">The routed event that this notification server represents.</param>
         public RoutedEventRaisedNotificationServer(RoutedEvent routedEvent)
         {
-            Contract.Require(routedEvent, "dprop");
+            Contract.Require(routedEvent, nameof(routedEvent));
 
             this.routedEvent = routedEvent;
         }

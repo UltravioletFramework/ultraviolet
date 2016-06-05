@@ -91,7 +91,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <param name="buffer">An array of bytes to contain random numbers.</param>
         public override void NextBytes(Byte[] buffer)
         {
-            Contract.Require(buffer, "buffer");
+            Contract.Require(buffer, nameof(buffer));
 
             for (int i = 0; i < buffer.Length; i++)
                 buffer[i] = (byte)Next(0, Byte.MaxValue + 1);

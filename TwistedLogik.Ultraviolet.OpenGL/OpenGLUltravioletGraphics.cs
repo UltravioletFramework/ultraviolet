@@ -270,7 +270,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void SetTexture(Int32 sampler, Texture2D texture)
         {
-            Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, "sampler");
+            Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, nameof(sampler));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Ultraviolet.ValidateResource(texture);
@@ -310,7 +310,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public Texture2D GetTexture(Int32 sampler)
         {
-            Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, "sampler");
+            Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, nameof(sampler));
             Contract.EnsureNotDisposed(this, Disposed);
 
             return this.textures[sampler];
@@ -349,7 +349,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void SetBlendState(BlendState state)
         {
-            Contract.Require(state, "state");
+            Contract.Require(state, nameof(state));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Ultraviolet.ValidateResource(state);
@@ -372,7 +372,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void SetDepthStencilState(DepthStencilState state)
         {
-            Contract.Require(state, "state");
+            Contract.Require(state, nameof(state));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Ultraviolet.ValidateResource(state);
@@ -395,7 +395,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void SetRasterizerState(RasterizerState state)
         {
-            Contract.Require(state, "state");
+            Contract.Require(state, nameof(state));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Ultraviolet.ValidateResource(state);
@@ -418,8 +418,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void SetSamplerState(Int32 sampler, SamplerState state)
         {
-            Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, "sampler");
-            Contract.Require(state, "state");
+            Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, nameof(sampler));
+            Contract.Require(state, nameof(state));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Ultraviolet.ValidateResource(state);
@@ -460,7 +460,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public SamplerState GetSamplerState(Int32 sampler)
         {
-            Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, "sampler");
+            Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, nameof(sampler));
             Contract.EnsureNotDisposed(this, Disposed);
 
             return this.samplerStates[sampler];
@@ -516,8 +516,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void DrawPrimitives(PrimitiveType type, Int32 start, Int32 count)
         {
-            Contract.EnsureRange(start >= 0, "start");
-            Contract.EnsureRange(count > 0, "count");
+            Contract.EnsureRange(start >= 0, nameof(start));
+            Contract.EnsureRange(count > 0, nameof(count));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Contract.Ensure(geometryStream != null, OpenGLStrings.NoGeometryStream);
@@ -536,8 +536,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void DrawIndexedPrimitives(PrimitiveType type, Int32 start, Int32 count)
         {
-            Contract.EnsureRange(start >= 0, "start");
-            Contract.EnsureRange(count > 0, "count");
+            Contract.EnsureRange(start >= 0, nameof(start));
+            Contract.EnsureRange(count > 0, nameof(count));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Contract.Ensure(geometryStream != null, OpenGLStrings.NoGeometryStream);
@@ -564,8 +564,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances, Int32 baseInstance = 0)
         {
-            Contract.EnsureRange(start >= 0, "start");
-            Contract.EnsureRange(count > 0, "count");
+            Contract.EnsureRange(start >= 0, nameof(start));
+            Contract.EnsureRange(count > 0, nameof(count));
             Contract.EnsureNotDisposed(this, Disposed);
             
             Contract.Ensure<NotSupportedException>(Capabilities.SupportsInstancedRendering);

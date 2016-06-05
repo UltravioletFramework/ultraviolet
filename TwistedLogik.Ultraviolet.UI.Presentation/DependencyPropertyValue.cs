@@ -21,8 +21,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="property">The dependency property which has its value represented by this object.</param>
             public DependencyPropertyValue(DependencyObject owner, DependencyProperty property)
             {
-                Contract.Require(owner, "owner");
-                Contract.Require(property, "property");
+                Contract.Require(owner, nameof(owner));
+                Contract.Require(property, nameof(property));
 
                 this.owner    = owner;
                 this.property = property;
@@ -90,7 +90,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public void Trigger(SetTriggerAction action)
             {
-                Contract.Require(action, "action");
+                Contract.Require(action, nameof(action));
 
                 var oldValue = GetValue();
 
@@ -103,8 +103,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public void Animate(AnimationBase animation, Clock clock)
             {
-                Contract.Require(animation, "animation");
-                Contract.Require(clock, "clock");
+                Contract.Require(animation, nameof(animation));
+                Contract.Require(clock, nameof(clock));
 
                 if (this.animation == animation && this.animationClock == clock)
                     return;
@@ -131,7 +131,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="clock">The clock which drives the animation.</param>
             public void Animate(T value, EasingFunction fn, Clock clock)
             {
-                Contract.Require(clock, "clock");
+                Contract.Require(clock, nameof(clock));
 
                 var oldValue = GetValue();
 
@@ -187,8 +187,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public void Bind(Type dataSourceType, String expression)
             {
-                Contract.Require(dataSourceType, "dataSourceType");
-                Contract.RequireNotEmpty(expression, "expression");
+                Contract.Require(dataSourceType, nameof(dataSourceType));
+                Contract.RequireNotEmpty(expression, nameof(expression));
 
                 var oldValue = GetValue();
 
@@ -291,7 +291,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public void ClearTriggeredValue(SetTriggerAction trigger)
             {
-                Contract.Require(trigger, "trigger");
+                Contract.Require(trigger, nameof(trigger));
 
                 if (triggeredValueSource != trigger)
                     return;

@@ -206,7 +206,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Thickness thickness)
         {
-            Contract.Require(s, "s");
+            Contract.Require(s, nameof(s));
 
             thickness = default(Thickness);
 

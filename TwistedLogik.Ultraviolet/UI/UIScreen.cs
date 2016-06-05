@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <inheritdoc/>
         public override void Draw(UltravioletTime time, SpriteBatch spriteBatch)
         {
-            Contract.Require(spriteBatch, "spriteBatch");
+            Contract.Require(spriteBatch, nameof(spriteBatch));
             Contract.EnsureNotDisposed(this, Disposed);
 
             if (!IsOnCurrentWindow)

@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="target">The storyboard target to add to the collection.</param>
         internal void Add(UvssStoryboardTarget target)
         {
-            Contract.Require(target, "target");
+            Contract.Require(target, nameof(target));
 
             this.targets.Add(target);
         }

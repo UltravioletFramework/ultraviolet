@@ -50,7 +50,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</returns>
         public static SourcedAssetID Parse(String s)
         {
-            Contract.Require(s, "s");
+            Contract.Require(s, nameof(s));
 
             SourcedAssetID value;
             if (!TryParseInternal(null, s, out value))
@@ -69,7 +69,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, out SourcedAssetID value)
         {
-            Contract.Require(s, "s");
+            Contract.Require(s, nameof(s));
 
             return TryParseInternal(null, s, out value);
         }
@@ -82,8 +82,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>An instance of the <see cref="SourcedAssetID"/> structure that is equivalent to the specified string.</returns>
         public static SourcedAssetID Parse(ContentManifestRegistry manifests, String s)
         {
-            Contract.Require(manifests, "manifests");
-            Contract.Require(s, "s");
+            Contract.Require(manifests, nameof(manifests));
+            Contract.Require(s, nameof(s));
 
             SourcedAssetID value;
             if (!TryParseInternal(manifests, s, out value))
@@ -102,8 +102,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(ContentManifestRegistry manifests, String s, out SourcedAssetID value)
         {
-            Contract.Require(manifests, "manifests");
-            Contract.Require(s, "s");
+            Contract.Require(manifests, nameof(manifests));
+            Contract.Require(s, nameof(s));
 
             return TryParseInternal(manifests, s, out value);
         }

@@ -37,8 +37,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, Char substitutionCharacter, Boolean ownsTexture = false)
             : base(uv)
         {
-            Contract.Require(texture, "texture");
-            Contract.Require(glyphs, "glyphs");
+            Contract.Require(texture, nameof(texture));
+            Contract.Require(glyphs, nameof(glyphs));
 
             this.texture = texture;
             this.ownsTexture = ownsTexture;
@@ -67,8 +67,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The size of the specified substring of text when rendered using this font.</returns>
         public Size2 MeasureString(String text, Int32 start, Int32 count)
         {
-            Contract.EnsureRange(start >= 0 && start < text.Length, "start");
-            Contract.EnsureRange(count >= 0 && start + count <= text.Length, "count");
+            Contract.EnsureRange(start >= 0 && start < text.Length, nameof(start));
+            Contract.EnsureRange(count >= 0 && start + count <= text.Length, nameof(count));
 
             var source = new StringSource(text);
             return MeasureString(ref source, start, count);
@@ -94,8 +94,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The size of the specified substring of text when rendered using this font.</returns>
         public Size2 MeasureString(StringBuilder text, Int32 start, Int32 count)
         {
-            Contract.EnsureRange(start >= 0 && start < text.Length, "start");
-            Contract.EnsureRange(count >= 0 && start + count <= text.Length, "count");
+            Contract.EnsureRange(start >= 0 && start < text.Length, nameof(start));
+            Contract.EnsureRange(count >= 0 && start + count <= text.Length, nameof(count));
 
             var source = new StringSource(text);
             return MeasureString(ref source, start, count);
@@ -121,8 +121,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The size of the specified substring of text when rendered using this font.</returns>
         public Size2 MeasureString(StringSegment text, Int32 start, Int32 count)
         {
-            Contract.EnsureRange(start >= 0 && start < text.Length, "start");
-            Contract.EnsureRange(count >= 0 && start + count <= text.Length, "count");
+            Contract.EnsureRange(start >= 0 && start < text.Length, nameof(start));
+            Contract.EnsureRange(count >= 0 && start + count <= text.Length, nameof(count));
 
             var source = new StringSource(text);
             return MeasureString(ref source, start, count);

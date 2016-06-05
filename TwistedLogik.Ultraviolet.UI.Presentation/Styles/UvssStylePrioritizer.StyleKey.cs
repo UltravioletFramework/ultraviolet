@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 			/// <param name="navigationExpression">The navigation expression for the style.</param>
 			public StyleKey(String name, NavigationExpression? navigationExpression)
 			{
-				Contract.Require(name, "name");
+				Contract.Require(name, nameof(name));
 
 				this.name = name;
 				this.navigationExpression = navigationExpression;

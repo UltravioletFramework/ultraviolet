@@ -148,7 +148,7 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
             set
             {
                 Contract.EnsureNotDisposed(this, IsDisposed);
-                Contract.EnsureRange(value.TotalMilliseconds >= 0, "value");
+                Contract.EnsureRange(value.TotalMilliseconds >= 0, nameof(value));
 
                 this.targetElapsedTime = value;
                 if (hostcore != null)

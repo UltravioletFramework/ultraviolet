@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public OpenGLCursor(UltravioletContext uv, Surface2D surface, Int32 hx, Int32 hy)
             : base(uv)
         {
-            Contract.Require(surface, "surface");
+            Contract.Require(surface, nameof(surface));
 
             uv.ValidateResource(surface);
 
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <returns><see langword="true"/> if cursors are supported; otherwise, <see langword="false"/>.</returns>
         public static Boolean AreCursorsSupported(UltravioletContext uv)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             return uv.Platform != UltravioletPlatform.Android;
         }

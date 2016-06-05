@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="element">The XML element that contains the binding data.</param>
         internal KeyboardInputBinding(UltravioletContext uv, XElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             this.keyboard = uv.GetInput().GetKeyboard();
 
@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="key">A <see cref="Key"/> value representing the binding's primary key.</param>
         public KeyboardInputBinding(UltravioletContext uv, Key key)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             if (!uv.GetInput().IsKeyboardSupported())
             {

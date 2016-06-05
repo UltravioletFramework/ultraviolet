@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet
         /// then this method returns -1.  Otherwise, this method returns 1.</remarks>
         public Int32 CompareTo(CurveKey other)
         {
-            Contract.Require(other, "other");
+            Contract.Require(other, nameof(other));
 
             if (this.position == other.position) return 0;
             if (this.position <  other.position) return -1;

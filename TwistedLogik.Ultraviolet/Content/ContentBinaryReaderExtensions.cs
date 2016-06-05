@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// asset identifier that was read from the stream.</returns>
         public static AssetID ReadAssetID(this BinaryReader reader)
         {
-            Contract.Require(reader, "reader");
+            Contract.Require(reader, nameof(reader));
 
             return ReadAssetID(reader, UltravioletContext.DemandCurrent().GetContent().Manifests);
         }
@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// asset identifier that was read from the stream.</returns>
         public static AssetID? ReadNullableAssetID(this BinaryReader reader)
         {
-            Contract.Require(reader, "reader");
+            Contract.Require(reader, nameof(reader));
 
             return ReadNullableAssetID(reader, UltravioletContext.DemandCurrent().GetContent().Manifests);
         }
@@ -45,8 +45,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// asset identifier that was read from the stream.</returns>
         public static AssetID ReadAssetID(this BinaryReader reader, ContentManifestRegistry manifests)
         {
-            Contract.Require(reader, "reader");
-            Contract.Require(manifests, "manifests");
+            Contract.Require(reader, nameof(reader));
+            Contract.Require(manifests, nameof(manifests));
 
             var valid = reader.ReadBoolean();
             if (valid)
@@ -81,8 +81,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// asset identifier that was read from the stream.</returns>
         public static AssetID? ReadNullableAssetID(this BinaryReader reader, ContentManifestRegistry manifests)
         {
-            Contract.Require(reader, "reader");
-            Contract.Require(manifests, "manifests");
+            Contract.Require(reader, nameof(reader));
+            Contract.Require(manifests, nameof(manifests));
 
             var hasValue = reader.ReadBoolean();
             if (hasValue)

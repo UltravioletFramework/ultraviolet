@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="obj">The object to populate with element references.</param>
         public void PopulateFieldsFromRegisteredElements(Object obj)
         {
-            Contract.Require(obj, "obj");
+            Contract.Require(obj, nameof(obj));
 
             if (obj is IDataSourceWrapper)
                 obj = ((IDataSourceWrapper)obj).WrappedDataSource;

@@ -498,9 +498,9 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreatePerspective(Single width, Single height, Single nearPlaneDistance, Single farPlaneDistance)
         {
-            Contract.EnsureRange(nearPlaneDistance > 0, "nearPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > 0, "farPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, "nearPlaneDistance");
+            Contract.EnsureRange(nearPlaneDistance > 0, nameof(nearPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
             var nearmfar = nearPlaneDistance - farPlaneDistance;
 
@@ -528,9 +528,9 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="result">The <see cref="Matrix"/> that was created.</param>
         public static void CreatePerspective(Single width, Single height, Single nearPlaneDistance, Single farPlaneDistance, out Matrix result)
         {
-            Contract.EnsureRange(nearPlaneDistance > 0, "nearPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > 0, "farPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, "nearPlaneDistance");
+            Contract.EnsureRange(nearPlaneDistance > 0, nameof(nearPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
             var nearmfar = nearPlaneDistance - farPlaneDistance;
 
@@ -558,10 +558,10 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreatePerspectiveFieldOfView(Single fieldOfView, Single aspectRatio, Single nearPlaneDistance, Single farPlaneDistance)
         {
-            Contract.EnsureRange(fieldOfView > 0 && fieldOfView < Math.PI, "fieldOfView");
-            Contract.EnsureRange(nearPlaneDistance > 0, "nearPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > 0, "farPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, "nearPlaneDistance");
+            Contract.EnsureRange(fieldOfView > 0 && fieldOfView < Math.PI, nameof(fieldOfView));
+            Contract.EnsureRange(nearPlaneDistance > 0, nameof(nearPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
             var yScale = 1f / Math.Tan(fieldOfView * 0.5f);
             var xScale = yScale / aspectRatio;
@@ -591,10 +591,10 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="result">The <see cref="Matrix"/> that was created.</param>
         public static void CreatePerspectiveFieldOfView(Single fieldOfView, Single aspectRatio, Single nearPlaneDistance, Single farPlaneDistance, out Matrix result)
         {
-            Contract.EnsureRange(fieldOfView > 0 && fieldOfView < Math.PI, "fieldOfView");
-            Contract.EnsureRange(nearPlaneDistance > 0, "nearPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > 0, "farPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, "nearPlaneDistance");
+            Contract.EnsureRange(fieldOfView > 0 && fieldOfView < Math.PI, nameof(fieldOfView));
+            Contract.EnsureRange(nearPlaneDistance > 0, nameof(nearPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
             var yScale = 1f / Math.Tan(fieldOfView * 0.5f);
             var xScale = yScale / aspectRatio;
@@ -626,9 +626,9 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreatePerspectiveOffCenter(Single left, Single right, Single bottom, Single top, Single nearPlaneDistance, Single farPlaneDistance)
         {
-            Contract.EnsureRange(nearPlaneDistance > 0, "nearPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > 0, "farPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, "nearPlaneDistance");
+            Contract.EnsureRange(nearPlaneDistance > 0, nameof(nearPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
             var nearmfar = nearPlaneDistance - farPlaneDistance;
 
@@ -665,9 +665,9 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="result">The <see cref="Matrix"/> that was created.</param>
         public static void CreatePerspectiveOffCenter(Single left, Single right, Single bottom, Single top, Single nearPlaneDistance, Single farPlaneDistance, out Matrix result)
         {
-            Contract.EnsureRange(nearPlaneDistance > 0, "nearPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > 0, "farPlaneDistance");
-            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, "nearPlaneDistance");
+            Contract.EnsureRange(nearPlaneDistance > 0, nameof(nearPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
+            Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
             var nearmfar = nearPlaneDistance - farPlaneDistance;
 
@@ -700,8 +700,8 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The projection <see cref="Matrix"/> used by a sprite batch.</returns>
         public static Matrix CreateSpriteBatchProjection(Single viewportWidth, Single viewportHeight)
         {
-            Contract.EnsureRange(viewportWidth > 0, "viewportWidth");
-            Contract.EnsureRange(viewportHeight > 0, "viewportHeight");
+            Contract.EnsureRange(viewportWidth > 0, nameof(viewportWidth));
+            Contract.EnsureRange(viewportHeight > 0, nameof(viewportHeight));
 
             var sx = +2f * (1f / viewportWidth);
             var sy = -2f * (1f / viewportHeight);
@@ -722,8 +722,8 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="result">The projection <see cref="Matrix"/> used by a sprite batch.</param>
         public static void CreateSpriteBatchProjection(Single viewportWidth, Single viewportHeight, out Matrix result)
         {
-            Contract.EnsureRange(viewportWidth > 0, "viewportWidth");
-            Contract.EnsureRange(viewportHeight > 0, "viewportHeight");
+            Contract.EnsureRange(viewportWidth > 0, nameof(viewportWidth));
+            Contract.EnsureRange(viewportHeight > 0, nameof(viewportHeight));
 
             var sx = +2f * (1f / viewportWidth);
             var sy = -2f * (1f / viewportHeight);

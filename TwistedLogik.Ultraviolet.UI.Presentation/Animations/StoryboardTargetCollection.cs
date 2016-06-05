@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="storyboard">The storyboard that owns the collection.</param>
         internal StoryboardTargetCollection(Storyboard storyboard)
         {
-            Contract.Require(storyboard, "storyboard");
+            Contract.Require(storyboard, nameof(storyboard));
 
             this.storyboard = storyboard;
         }
@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if the target was added to the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Add(StoryboardTarget target)
         {
-            Contract.Require(target, "target");
+            Contract.Require(target, nameof(target));
 
             if (target.Storyboard == Storyboard)
                 return false;
@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if the target was removed from the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Remove(StoryboardTarget target)
         {
-            Contract.Require(target, "Target");
+            Contract.Require(target, nameof(target));
 
             if (target.Storyboard != Storyboard)
                 return false;
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if the collection contains the specified target; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(StoryboardTarget target)
         {
-            Contract.Require(target, "target");
+            Contract.Require(target, nameof(target));
 
             return targets.Contains(target);
         }

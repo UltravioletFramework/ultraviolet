@@ -58,7 +58,7 @@ namespace TwistedLogik.Nucleus
         /// <param name="name">The name of the native library to load.</param>
         public static void Load(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             loader(name);
         }

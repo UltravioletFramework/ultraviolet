@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The invocation delegate for the specified routed event.</returns>
         public static Delegate CreateInvocationDelegate(RoutedEvent evt)
         {
-            Contract.Require(evt, "evt");
+            Contract.Require(evt, nameof(evt));
 
             if (!IsValidRoutedEventDelegate(evt.DelegateType))
                 throw new InvalidOperationException(PresentationStrings.InvalidRoutedEventDelegate.Format(evt.DelegateType.Name));

@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dprop">The dependency property that this notification server represents.</param>
         public DependencyPropertyChangeNotificationServer(DependencyProperty dprop)
         {
-            Contract.Require(dprop, "dprop");
+            Contract.Require(dprop, nameof(dprop));
 
             this.dprop = dprop;
         }

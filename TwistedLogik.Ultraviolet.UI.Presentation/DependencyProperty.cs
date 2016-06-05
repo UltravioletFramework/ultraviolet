@@ -212,9 +212,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// or <see langword="null"/> if no such dependency property exists.</returns>
         public static DependencyProperty FindByName(UltravioletContext uv, DependencyObject dobj, String owner, String name)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(dobj, "dobj");
-            Contract.RequireNotEmpty(name, "name");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(dobj, nameof(dobj));
+            Contract.RequireNotEmpty(name, nameof(name));
 
             var type = String.IsNullOrEmpty(owner) ? dobj.GetType() : null;
             if (type == null)
@@ -249,9 +249,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// or <see langword="null"/> if no such dependency property exists.</returns>
         public static DependencyProperty FindByStylingName(UltravioletContext uv, DependencyObject dobj, String owner, String name)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(dobj, "dobj");
-            Contract.RequireNotEmpty(name, "name");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(dobj, nameof(dobj));
+            Contract.RequireNotEmpty(name, nameof(name));
 
             var type = String.IsNullOrEmpty(owner) ? dobj.GetType() : null;
             if (type == null)
@@ -281,7 +281,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A reference to this dependency property instance.</returns>
         public DependencyProperty AddOwner(Type ownerType, PropertyMetadata typeMetadata)
         {
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(ownerType, nameof(ownerType));
 
             DependencyPropertySystem.AddOwner(this, ownerType);
 
@@ -297,7 +297,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="typeMetadata">The property metadata for the specified type.</param>
         public void OverrideMetadata(Type forType, PropertyMetadata typeMetadata)
         {
-            Contract.Require(ownerType, "ownerType");
+            Contract.Require(ownerType, nameof(ownerType));
 
             if (metadataOverrides.ContainsKey(forType))
                 throw new InvalidOperationException(PresentationStrings.DependencyPropertyAlreadyRegistered);
@@ -349,9 +349,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="subscriber">The subscriber that wishes to receive change notifications for the specified dependency property.</param>
         internal static void RegisterChangeNotification(DependencyObject dobj, DependencyProperty dprop, IDependencyPropertyChangeNotificationSubscriber subscriber)
         {
-            Contract.Require(dobj, "dobj");
-            Contract.Require(dprop, "dprop");
-            Contract.Require(subscriber, "subscriber");
+            Contract.Require(dobj, nameof(dobj));
+            Contract.Require(dprop, nameof(dprop));
+            Contract.Require(subscriber, nameof(subscriber));
 
             dprop.changeNotificationServer.Subscribe(dobj, subscriber);
         }
@@ -364,9 +364,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="subscriber">The subscriber that wishes to stop receiving change notifications for the specified dependency property.</param>
         internal static void UnregisterChangeNotification(DependencyObject dobj, DependencyProperty dprop, IDependencyPropertyChangeNotificationSubscriber subscriber)
         {
-            Contract.Require(dobj, "dobj");
-            Contract.Require(dprop, "dprop");
-            Contract.Require(subscriber, "subscriber");
+            Contract.Require(dobj, nameof(dobj));
+            Contract.Require(dprop, nameof(dprop));
+            Contract.Require(subscriber, nameof(subscriber));
 
             dprop.changeNotificationServer.Unsubscribe(dobj, subscriber);
         }
@@ -435,7 +435,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the specified type is an owner type; otherwise, <see langword="false"/>.</returns>
         internal Boolean IsOwner(Type type)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
 
             var current = type;
             while (current != null)

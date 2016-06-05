@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <returns>The effect implementation.</returns>
         private static EffectImplementation CreateEffectImplementation(UltravioletContext uv)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             var programs   = new[] { new OpenGLShaderProgram(uv, vertShader, fragShader, false) };
             var passes     = new[] { new OpenGLEffectPass(uv, null, programs) };

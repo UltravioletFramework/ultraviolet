@@ -49,7 +49,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="action">The action to add to the collection.</param>
         internal void Add(TriggerAction action)
         {
-            Contract.Require(action, "action");
+            Contract.Require(action, nameof(action));
 
             actions.Add(action);
         }
@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns><see langword="true"/> if the action was removed from the collection; otherwise, <see langword="false"/>.</returns>
         internal Boolean Remove(TriggerAction action)
         {
-            Contract.Require(action, "action");
+            Contract.Require(action, nameof(action));
 
             return actions.Remove(action);
         }
@@ -73,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns><see langword="true"/> if the collection contains the specified action; otherwise, <see langword="false"/>.</returns>
         internal Boolean Contains(TriggerAction action)
         {
-            Contract.Require(action, "action");
+            Contract.Require(action, nameof(action));
 
             return actions.Contains(action);
         }

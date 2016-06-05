@@ -18,8 +18,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="name">The visual state group's name.</param>
         internal VisualStateGroup(FrameworkElement element, String name)
         {
-            Contract.Require(element, "element");
-            Contract.RequireNotEmpty(name, "name");
+            Contract.Require(element, nameof(element));
+            Contract.RequireNotEmpty(name, nameof(name));
 
             this.element = element;
             this.name    = name;
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the visual state transition was set; otherwise, <see langword="false"/>.</returns>
         public Boolean SetVisualStateTransition(String from, String to, Storyboard transition)
         {
-            Contract.RequireNotEmpty(to, "to");
+            Contract.RequireNotEmpty(to, nameof(to));
 
             VisualStateTransitionKey key;
             if (!GetVisualStateTransitionKey(from, to, out key, transitionMustExist: false))
@@ -71,7 +71,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the visual state transition was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetVisualStateTransition(String from, String to, out Storyboard transition)
         {
-            Contract.RequireNotEmpty(to, "to");
+            Contract.RequireNotEmpty(to, nameof(to));
 
             VisualStateTransitionKey key;
             if (!GetVisualStateTransitionKey(from, to, out key, transitionMustExist: false))
@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the visual state was created; otherwise, <see langword="false"/>.</returns>
         public Boolean Create(String state)
         {
-            Contract.RequireNotEmpty(state, "state");
+            Contract.RequireNotEmpty(state, nameof(state));
 
             if (states.ContainsKey(state))
                 return false;
@@ -128,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the visual state was destroyed; otherwise, <see langword="false"/>.</returns>
         public Boolean Destroy(String state)
         {
-            Contract.RequireNotEmpty(state, "state");
+            Contract.RequireNotEmpty(state, nameof(state));
 
             VisualState vs;
             if (states.TryGetValue(state, out vs))
@@ -153,7 +153,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the group contains a visual state with the specified name; otherwise, <see langword="false"/>.</returns>
         public Boolean IsDefined(String state)
         {
-            Contract.RequireNotEmpty(state, "state");
+            Contract.RequireNotEmpty(state, nameof(state));
 
             return states.ContainsKey(state);
         }
@@ -165,7 +165,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the group was transitioned into the specified state; otherwise, <see langword="false"/>.</returns>
         public Boolean GoToState(String state)
         {
-            Contract.RequireNotEmpty(state, "state");
+            Contract.RequireNotEmpty(state, nameof(state));
 
             var vs = Get(state);
             if (vs == null)

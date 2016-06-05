@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         public override Boolean Play(Song song, Boolean loop = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(song, "song");
+            Contract.Require(song, nameof(song));
 
             return PlayInternal(song, 1f, 0f, 0f, loop);
         }
@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         public override Boolean Play(Song song, Single volume, Single pitch, Single pan, Boolean loop = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(song, "song");
+            Contract.Require(song, nameof(song));
 
             return PlayInternal(song, volume, pitch, pan, loop);
         }

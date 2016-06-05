@@ -40,8 +40,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
         public void Parse(String input, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
-            Contract.Require(input, "input");
-            Contract.Require(output, "output");
+            Contract.Require(input, nameof(input));
+            Contract.Require(output, nameof(output));
 
             output.Clear();
             Parse(new StringSource(input), output, 0, input.Length, options);
@@ -61,9 +61,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// of the source text are re-parsed by this operation.</remarks>
         public IncrementalResult ParseIncremental(String input, Int32 start, Int32 count, TextParserTokenStream result, TextParserOptions options = TextParserOptions.None)
         {
-            Contract.Require(input, "input");
-            Contract.Require(result, "output");
-            Contract.EnsureRange(start >= 0, "start");
+            Contract.Require(input, nameof(input));
+            Contract.Require(result, nameof(result));
+            Contract.EnsureRange(start >= 0, nameof(start));
 
             return ParseIncremental(new StringSource(input), start, count, result, options);
         }
@@ -76,8 +76,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
         public void Parse(StringBuilder input, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
         {
-            Contract.Require(input, "input");
-            Contract.Require(output, "output");
+            Contract.Require(input, nameof(input));
+            Contract.Require(output, nameof(output));
 
             output.Clear();
             Parse(new StringSource(input), output, 0, input.Length, options);
@@ -97,10 +97,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// of the source text are re-parsed by this operation.</remarks>
         public IncrementalResult ParseIncremental(StringBuilder input, Int32 start, Int32 count, TextParserTokenStream result, TextParserOptions options = TextParserOptions.None)
         {
-            Contract.Require(input, "input");
-            Contract.Require(result, "output");
-            Contract.EnsureRange(start >= 0, "start");
-            Contract.EnsureRange(count >= 0 && start + count <= input.Length, "count");
+            Contract.Require(input, nameof(input));
+            Contract.Require(result, nameof(result));
+            Contract.EnsureRange(start >= 0, nameof(start));
+            Contract.EnsureRange(count >= 0 && start + count <= input.Length, nameof(count));
 
             return ParseIncremental(new StringSource(input), start, count, result, options);
         }

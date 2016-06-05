@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             get { return backBufferDepthSize; }
             set
             {
-                Contract.EnsureRange(value >= 0, "value");
+                Contract.EnsureRange(value >= 0, nameof(value));
 
                 backBufferDepthSize = value;
             }
@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             get { return backBufferStencilSize; }
             set
             {
-                Contract.EnsureRange(value >= 0, "value");
+                Contract.EnsureRange(value >= 0, nameof(value));
 
                 backBufferStencilSize = value;
             }
@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             get { return multiSampleBuffers; }
             set
             {
-                Contract.EnsureRange(value >= 0, "value");
+                Contract.EnsureRange(value >= 0, nameof(value));
 
                 multiSampleBuffers = value;
             }
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             get { return multiSampleSamples; }
             set
             {
-                Contract.EnsureRange(value >= 0, "value");
+                Contract.EnsureRange(value >= 0, nameof(value));
 
                 multiSampleSamples = value;
             }

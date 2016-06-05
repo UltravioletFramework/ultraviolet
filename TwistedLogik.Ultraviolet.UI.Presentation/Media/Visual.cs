@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns><see langword="true"/> if this object is an ancestor of <paramref name="descendant"/>; otherwise, <see langword="false"/>.</returns>
         public Boolean IsAncestorOf(DependencyObject descendant)
         {
-            Contract.Require(descendant, "descendant");
+            Contract.Require(descendant, nameof(descendant));
             
             var descendantVisual = descendant as Visual;
             if (descendantVisual == null)
@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns><see langword="true"/> if this object is an descendant of <paramref name="ancestor"/>; otherwise, <see langword="false"/>.</returns>
         public Boolean IsDescendantOf(DependencyObject ancestor)
         {
-            Contract.Require(ancestor, "ancestor");
+            Contract.Require(ancestor, nameof(ancestor));
 
             var ancestorVisual = ancestor as Visual;
             if (ancestorVisual == null)
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
         public Matrix GetTransformToAncestorMatrix(Visual ancestor, Boolean inDevicePixels = false)
         {
-            Contract.Require(ancestor, "ancestor");
+            Contract.Require(ancestor, nameof(ancestor));
 
             return this.MatrixTransformToAncestorInternal(ancestor, false, inDevicePixels);
         }
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <returns>A <see cref="Matrix"/> which represents the specified transformation.</returns>
         public Matrix GetTransformToDescendantMatrix(Visual descendant, Boolean inDevicePixels = false)
         {
-            Contract.Require(descendant, "descendant");
+            Contract.Require(descendant, nameof(descendant));
 
             return descendant.MatrixTransformToAncestorInternal(this, true, inDevicePixels);
         }

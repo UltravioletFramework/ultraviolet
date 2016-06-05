@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="uv">The Ultraviolet context.</param>
         public UIElement(UltravioletContext uv)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             var attr = (UvmlKnownTypeAttribute)GetType().GetCustomAttributes(typeof(UvmlKnownTypeAttribute), false).SingleOrDefault();
 
@@ -270,8 +270,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="transform">The transformation matrix to apply to the element, or <see langword="null"/> to use the cumulative sprite batch transformation.</param>
         public void DrawToRenderTarget(UltravioletTime time, DrawingContext dc, Graphics.RenderTarget2D target, Matrix? transform = null)
         {
-            Contract.Require(dc, "dc");
-            Contract.Require(target, "target");
+            Contract.Require(dc, nameof(dc));
+            Contract.Require(target, nameof(target));
 
             var graphics = Ultraviolet.GetGraphics();
             graphics.SetRenderTarget(target);
@@ -454,7 +454,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="options">A set of <see cref="ArrangeOptions"/> values specifying the options for this arrangement.</param>
         public void Arrange(RectangleD finalRect, ArrangeOptions options = ArrangeOptions.None)
         {
-            Contract.EnsureRange(finalRect.Width >= 0 && finalRect.Height >= 0, "finalRect");
+            Contract.EnsureRange(finalRect.Width >= 0 && finalRect.Height >= 0, nameof(finalRect));
 
             if (View == null)
             {
@@ -626,8 +626,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="handler">A delegate that represents the handler to add to the element for the specified routed event.</param>
         public void AddHandler(RoutedEvent evt, Delegate handler)
         {
-            Contract.Require(evt, "evt");
-            Contract.Require(handler, "handler");
+            Contract.Require(evt, nameof(evt));
+            Contract.Require(handler, nameof(handler));
 
             AddHandler(evt, handler, false);
         }
@@ -640,8 +640,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="handledEventsToo">A value indicating whether the handler should receive events which have already been handled by other handlers.</param>
         public void AddHandler(RoutedEvent evt, Delegate handler, Boolean handledEventsToo)
         {
-            Contract.Require(evt, "evt");
-            Contract.Require(handler, "handler");
+            Contract.Require(evt, nameof(evt));
+            Contract.Require(handler, nameof(handler));
 
             routedEventManager.Add(evt, handler, handledEventsToo);
         }
@@ -653,8 +653,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="handler">A delegate that represents the handler to remove from the element for the specified routed event.</param>
         public void RemoveHandler(RoutedEvent evt, Delegate handler)
         {
-            Contract.Require(evt, "evt");
-            Contract.Require(handler, "handler");
+            Contract.Require(evt, nameof(evt));
+            Contract.Require(handler, nameof(handler));
 
             routedEventManager.Remove(evt, handler);
         }
@@ -1453,7 +1453,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="storyboardInstance">The storyboard instance for which to animate this element.</param>
         internal void Animate(StoryboardInstance storyboardInstance)
         {
-            Contract.Require(storyboardInstance, "storyboardInstance");
+            Contract.Require(storyboardInstance, nameof(storyboardInstance));
 
             foreach (var target in storyboardInstance.Storyboard.Targets)
             {
@@ -1705,8 +1705,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected internal sealed override void ApplyStyle(UvssRule style, UvssSelector selector, NavigationExpression? navigationExpression, DependencyProperty dprop)
         {
-            Contract.Require(style, "style");
-            Contract.Require(selector, "selector");
+            Contract.Require(style, nameof(style));
+            Contract.Require(selector, nameof(selector));
 
             var target = (DependencyObject)this;
             if (navigationExpression.HasValue)
@@ -2397,7 +2397,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// the specified image does not exist or is not loaded.</param>
         protected void DrawImage(DrawingContext dc, SourcedImage image, RectangleD? area, Point2D origin, Color color, Boolean drawBlank = false)
         {
-            Contract.Require(dc, "dc");
+            Contract.Require(dc, nameof(dc));
             
             var imageResource = image.Resource;
             if (imageResource == null || !imageResource.IsLoaded)
@@ -2457,7 +2457,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="color">The color with which to draw the image.</param>
         protected void DrawBlank(DrawingContext dc, RectangleD? area, Point2D origin, Color color)
         {
-            Contract.Require(dc, "dc");
+            Contract.Require(dc, nameof(dc));
 
             var imageResource = View.Resources.BlankImage.Resource;
             if (imageResource == null || !imageResource.IsLoaded)

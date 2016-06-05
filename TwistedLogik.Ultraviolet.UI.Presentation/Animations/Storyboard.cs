@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="element">The element on which to begin playing the storyboard.</param>
         public void Begin(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.BeginStoryboard(this);
         }
@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="element">The element on which to stop the storyboard.</param>
         public void Stop(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.StopStoryboard(this);
         }

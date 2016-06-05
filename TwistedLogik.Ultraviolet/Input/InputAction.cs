@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         internal InputAction(InputActionCollection collection)
         {
-            Contract.Require(collection, "collection");
+            Contract.Require(collection, nameof(collection));
 
             this.collection = collection;
         }

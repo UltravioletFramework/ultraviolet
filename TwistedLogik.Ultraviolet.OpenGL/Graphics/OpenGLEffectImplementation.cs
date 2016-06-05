@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
-                Contract.Require(value, "value");
+                Contract.Require(value, nameof(value));
 
                 if (!techniques.Contains(value))
                     throw new ArgumentException(OpenGLStrings.TechniqueBelongsToDifferentEffect);

@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="text">The text to display.</param>
         public static void Show(MessageBoxModal mb, String text)
         {
-            Contract.Require(mb, "mb");
+            Contract.Require(mb, nameof(mb));
             
             mb.Prepare(text, null, MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None);
 
@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="caption">The caption to display.</param>
         public static void Show(MessageBoxModal mb, String text, String caption)
         {
-            Contract.Require(mb, "mb");
+            Contract.Require(mb, nameof(mb));
             
             mb.Prepare(text, caption, MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None);
 
@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">A <see cref="MessageBoxButton"/> value that specifies the set of buttons to display.</param>
         public static void Show(MessageBoxModal mb, String text, String caption, MessageBoxButton button)
         {
-            Contract.Require(mb, "mb");
+            Contract.Require(mb, nameof(mb));
             
             mb.Prepare(text, caption, button, MessageBoxImage.None, MessageBoxResult.None);
 
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="image">A <see cref="MessageBoxImage"/> value that specifies the image to display.</param>
         public static void Show(MessageBoxModal mb, String text, String caption, MessageBoxButton button, MessageBoxImage image)
         {
-            Contract.Require(mb, "mb");
+            Contract.Require(mb, nameof(mb));
             
             mb.Prepare(text, caption, button, image, MessageBoxResult.None);
 
@@ -82,7 +82,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="defaultResult">A <see cref="MessageBoxResult"/> value that specifies the message box's default option.</param>
         public static void Show(MessageBoxModal mb, String text, String caption, MessageBoxButton button, MessageBoxImage image, MessageBoxResult defaultResult)
         {
-            Contract.Require(mb, "mb");
+            Contract.Require(mb, nameof(mb));
             
             mb.Prepare(text, caption, button, image, defaultResult);
 
@@ -98,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specifies which message box button was clicked by the user.</returns>
         public static ModalTask<MessageBoxResult> ShowAsync(MessageBoxModal mb, String text)
         {
-            Contract.Require(mb, "mb");
+            Contract.Require(mb, nameof(mb));
             
             mb.Prepare(text, null, MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None);
 
@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specifies which message box button was clicked by the user.</returns>
         public static ModalTask<MessageBoxResult> ShowAsync(MessageBoxModal mb, String text, String caption)
         {
-            Contract.Require(mb, "mb");
+            Contract.Require(mb, nameof(mb));
             
             mb.Prepare(text, caption, MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None);
 
@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specifies which message box button was clicked by the user.</returns>
         public static ModalTask<MessageBoxResult> ShowAsync(MessageBoxModal mb, String text, String caption, MessageBoxButton button)
         {
-            Contract.Require(mb, "mb");
+            Contract.Require(mb, nameof(mb));
             
             mb.Prepare(text, caption, button, MessageBoxImage.None, MessageBoxResult.None);
 
@@ -152,7 +152,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specifies which message box button was clicked by the user.</returns>
         public static ModalTask<MessageBoxResult> ShowAsync(MessageBoxModal mb, String text, String caption, MessageBoxButton button, MessageBoxImage image)
         {
-            Contract.Require(mb, "mb");
+            Contract.Require(mb, nameof(mb));
             
             mb.Prepare(text, caption, button, image, MessageBoxResult.None);
 
@@ -172,7 +172,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// specifies which message box button was clicked by the user.</returns>
         public static ModalTask<MessageBoxResult> ShowAsync(MessageBoxModal mb, String text, String caption, MessageBoxButton button, MessageBoxImage image, MessageBoxResult defaultResult)
         {
-            Contract.Require(mb, "mb");
+            Contract.Require(mb, nameof(mb));
             
             mb.Prepare(text, caption, button, image, defaultResult);
 

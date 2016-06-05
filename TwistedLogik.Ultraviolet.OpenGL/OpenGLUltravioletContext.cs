@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public OpenGLUltravioletContext(IUltravioletHost host, OpenGLUltravioletConfiguration configuration)
             : base(host, configuration)
         {
-            Contract.Require(configuration, "configuration");
+            Contract.Require(configuration, nameof(configuration));
 
             this.IsHardwareInputDisabled = configuration.IsHardwareInputDisabled;
 
@@ -119,7 +119,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
-            Contract.Require(time, "time");
+            Contract.Require(time, nameof(time));
             Contract.EnsureNotDisposed(this, Disposed);
 
             var sdlinput = input as SDL2UltravioletInput;

@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// box's state, or <see langword="null"/> to use the default transition time.</param>
         public static void ShowDialog(IUltravioletWindow window, Modal modal, TimeSpan? duration = null)
         {
-            Contract.Require(modal, "modal");
+            Contract.Require(modal, nameof(modal));
 
             modal.Show(window, duration);
         }
@@ -67,7 +67,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="ModalTask{T}"/> that completes when the modal dialog box is closed.</returns>
         public static ModalTask<Boolean?> ShowDialogAsync(IUltravioletWindow window, Modal modal, TimeSpan? duration = null)
         {
-            Contract.Require(modal, "modal");
+            Contract.Require(modal, nameof(modal));
 
             return modal.ShowAsync(window, duration);
         }

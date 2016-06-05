@@ -135,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The part of the binding expression which represents the member navigation path, or <see langword="null"/> if no such part exists.</returns>
         public static String GetBindingMemberPathPart(String expression, Boolean braces = true)
         {
-            Contract.RequireNotEmpty(expression, "expression");
+            Contract.RequireNotEmpty(expression, nameof(expression));
 
             if (!IsBindingExpression(expression, braces))
                 throw new ArgumentException(PresentationStrings.InvalidBindingExpression.Format(expression));
@@ -151,7 +151,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The part of the binding expression which represents the format string, or <see langword="null"/> if no such part exists.</returns>
         public static String GetBindingFormatStringPart(String expression, Boolean braces = true)
         {
-            Contract.RequireNotEmpty(expression, "expression");
+            Contract.RequireNotEmpty(expression, nameof(expression));
 
             if (!IsBindingExpression(expression, braces))
                 throw new ArgumentException(PresentationStrings.InvalidBindingExpression.Format(expression));
@@ -168,8 +168,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The type of the binding expression.</returns>
         public static Type GetExpressionType(Type dataSourceType, String expression, Boolean braces = true)
         {
-            Contract.Require(dataSourceType, "dataSourceType");
-            Contract.RequireNotEmpty(expression, "expression");
+            Contract.Require(dataSourceType, nameof(dataSourceType));
+            Contract.RequireNotEmpty(expression, nameof(expression));
 
             var expMemberPath = GetBindingMemberPathPart(expression, braces);
 
@@ -194,10 +194,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>A <see cref="Delegate"/> which represents the bound event handler.</returns>
         public static Delegate CreateBoundEventDelegate(Object dataSource, Type dataSourceType, Type delegateType, String expression)
         {
-            Contract.Require(dataSource, "dataSource");
-            Contract.Require(dataSourceType, "dataSourceType");
-            Contract.Require(delegateType, "delegateType");
-            Contract.RequireNotEmpty(expression, "expression");
+            Contract.Require(dataSource, nameof(dataSource));
+            Contract.Require(dataSourceType, nameof(dataSourceType));
+            Contract.Require(delegateType, nameof(delegateType));
+            Contract.RequireNotEmpty(expression, nameof(expression));
 
             var builder = new BoundEventBuilder(dataSource, dataSourceType, delegateType, expression);
             return builder.Compile();

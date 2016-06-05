@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="animation">The animation to apply to the dependency property.</param>
         internal void Enlist(IDependencyPropertyValue dpValue, AnimationBase animation)
         {
-            Contract.Require(dpValue, "dpValue");
+            Contract.Require(dpValue, nameof(dpValue));
 
             var enlistment = new Enlistment(dpValue, animation);
             enlistedDependencyProperties.Add(enlistment);
@@ -59,9 +59,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="target">The <see cref="UIElement"/> with which is targeted by the instance.</param>
         internal void AssociateWith(Storyboard storyboard, UpfPool<StoryboardClock>.PooledObject clock, UIElement target)
         {
-            Contract.Require(storyboard, "storyboard");
-            Contract.Require(clock, "clock");
-            Contract.Require(target, "target");
+            Contract.Require(storyboard, nameof(storyboard));
+            Contract.Require(clock, nameof(clock));
+            Contract.Require(target, nameof(target));
 
             if (this.storyboard != null)
                 throw new InvalidOperationException();

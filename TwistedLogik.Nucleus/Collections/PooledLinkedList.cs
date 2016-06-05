@@ -29,7 +29,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="capacity">The linked list's initial capacity.</param>
         public PooledLinkedList(Int32 capacity)
         {
-            Contract.EnsureRange(capacity >= 1, "capacity");
+            Contract.EnsureRange(capacity >= 1, nameof(capacity));
 
             NodePool = new List<LinkedListNode<T>>(capacity);
 
@@ -102,7 +102,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="item">The value to insert.</param>
         public void AddAfter(LinkedListNode<T> node, T item)
         {
-            Contract.Require(node, "node");
+            Contract.Require(node, nameof(node));
             Contract.Ensure(node.List == List, NucleusStrings.ListNodeDoesNotBelongToList);
 
             var value = RetrieveNode();
@@ -117,7 +117,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="item">The value to insert.</param>
         public void AddBefore(LinkedListNode<T> node, T item)
         {
-            Contract.Require(node, "node");
+            Contract.Require(node, nameof(node));
             Contract.Ensure(node.List == List, NucleusStrings.ListNodeDoesNotBelongToList);
 
             var value = RetrieveNode();
@@ -149,7 +149,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <returns><see langword="true"/> if the specified item was removed from the list; otherwise, <see langword="false"/>.</returns>
         public bool Remove(LinkedListNode<T> node)
         {
-            Contract.Require(node, "node");
+            Contract.Require(node, nameof(node));
             Contract.Ensure(node.List == List, NucleusStrings.ListNodeDoesNotBelongToList);
 
             List.Remove(node);

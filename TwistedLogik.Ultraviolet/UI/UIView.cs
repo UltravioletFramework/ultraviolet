@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI
         public UIView(UltravioletContext uv, UIPanel panel, Type viewModelType)
             : base(uv)
         {
-            Contract.Require(panel, "panel");
+            Contract.Require(panel, nameof(panel));
 
             this.panel = panel;
             this.viewModelType = viewModelType;
@@ -52,8 +52,8 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <returns>The instance of <see cref="UIView"/> that was created.</returns>
         public static UIView Create(UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory)
         {
-            Contract.Require(uiPanel, "uiPanel");
-            Contract.Require(uiPanelDefinition, "uiPanelDefinition");
+            Contract.Require(uiPanel, nameof(uiPanel));
+            Contract.Require(uiPanelDefinition, nameof(uiPanelDefinition));
 
             var uv = UltravioletContext.DemandCurrent();
             var factory = uv.TryGetFactoryMethod<UIViewFactory>();
@@ -113,7 +113,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// <param name="area">The area on the window in which to position the view.</param>
         public virtual void SetViewPosition(IUltravioletWindow window, Rectangle area)
         {
-            Contract.Require(window, "window");
+            Contract.Require(window, nameof(window));
 
             var viewPositionChanged = (this.area.X != area.X || this.area.Y != area.Y);
             var viewSizeChanged = (this.area.Width != area.Width || this.area.Height != area.Height);

@@ -28,7 +28,7 @@ namespace TwistedLogik.Gluon
         /// <param name="initializer">The OpenGL initializer.</param>
         public static void Initialize(IOpenGLInitializer initializer)
         {
-            Contract.Require(initializer, "initializer");
+            Contract.Require(initializer, nameof(initializer));
             Contract.EnsureNot(initialized, GluonStrings.OpenGLAlreadyInitialized);
 
             initializing = true;
@@ -97,7 +97,7 @@ namespace TwistedLogik.Gluon
         /// <returns>true if the OpenGL version is greater than or equal to the specified version; otherwise, false.</returns>
         public static bool IsVersionAtLeast(Version version)
         {
-            Contract.Require(version, "version");
+            Contract.Require(version, nameof(version));
 
             return IsVersionAtLeast(version.Major, version.Minor);
         }
@@ -110,8 +110,8 @@ namespace TwistedLogik.Gluon
         /// <returns>true if the OpenGL version is greater than or equal to the specified version; otherwise, false.</returns>
         public static bool IsVersionAtLeast(Int32 major, Int32 minor)
         {
-            Contract.EnsureRange(major >= 1, "major");
-            Contract.EnsureRange(minor >= 0, "minor");
+            Contract.EnsureRange(major >= 1, nameof(major));
+            Contract.EnsureRange(minor >= 0, nameof(minor));
 
             if (!initialized && !initializing)
                 throw new InvalidOperationException(GluonStrings.OpenGLNotInitialized);
@@ -128,7 +128,7 @@ namespace TwistedLogik.Gluon
         /// <returns>true if the OpenGL version is less than or equal to the specified version; otherwise, false.</returns>
         public static bool IsVersionAtMost(Version version)
         {
-            Contract.Require(version, "version");
+            Contract.Require(version, nameof(version));
 
             return IsVersionAtMost(version.Major, version.Minor);
         }
@@ -141,8 +141,8 @@ namespace TwistedLogik.Gluon
         /// <returns>true if the OpenGL version is less than or equal to the specified version; otherwise, false.</returns>
         public static bool IsVersionAtMost(Int32 major, Int32 minor)
         {
-            Contract.EnsureRange(major >= 1, "major");
-            Contract.EnsureRange(minor >= 0, "minor");
+            Contract.EnsureRange(major >= 1, nameof(major));
+            Contract.EnsureRange(minor >= 0, nameof(minor));
 
             if (!initialized && !initializing)
                 throw new InvalidOperationException(GluonStrings.OpenGLNotInitialized);
@@ -159,7 +159,7 @@ namespace TwistedLogik.Gluon
         /// <returns>true if the OpenGL driver supports the specified extension; otherwise, false.</returns>
         public static bool IsExtensionSupported(String extension)
         {
-            Contract.RequireNotEmpty(extension, "extension");
+            Contract.RequireNotEmpty(extension, nameof(extension));
 
             if (!initialized && !initializing)
                 throw new InvalidOperationException(GluonStrings.OpenGLNotInitialized);

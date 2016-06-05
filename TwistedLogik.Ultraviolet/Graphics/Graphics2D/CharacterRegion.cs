@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The collection of character regions that was created.</returns>
         public static IEnumerable<CharacterRegion> CreateFromSourceText(String text)
         {
-            Contract.Require(text, "text");
+            Contract.Require(text, nameof(text));
 
             var regions = new List<CharacterRegion>();
             var characters = (from c in text

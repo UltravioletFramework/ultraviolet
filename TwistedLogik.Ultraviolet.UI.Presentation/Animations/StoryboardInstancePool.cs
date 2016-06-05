@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="storyboardInstance">The storyboard instance to release into the pool.</param>
         public void Release(UpfPool<StoryboardInstance>.PooledObject storyboardInstance)
         {
-            Contract.Require(storyboardInstance, "storyboardInstance");
+            Contract.Require(storyboardInstance, nameof(storyboardInstance));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Initialize();
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="storyboardInstance">The storyboard instance to release into the pool.</param>
         public void ReleaseRef(ref UpfPool<StoryboardInstance>.PooledObject storyboardInstance)
         {
-            Contract.Require(storyboardInstance, "storyboardInstance");
+            Contract.Require(storyboardInstance, nameof(storyboardInstance));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Initialize();

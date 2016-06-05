@@ -15,8 +15,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="visualStateName">The visual state's name.</param>
         internal VisualState(VisualStateGroup visualStateGroup, String visualStateName)
         {
-            Contract.Require(visualStateGroup, "visualStateGroup");
-            Contract.RequireNotEmpty(visualStateName, "name");
+            Contract.Require(visualStateGroup, nameof(visualStateGroup));
+            Contract.RequireNotEmpty(visualStateName, nameof(name));
 
             this.visualStateGroup = visualStateGroup;
             this.qualifiedName    = String.Format("{0}.{1}", visualStateGroup.Name, visualStateName);

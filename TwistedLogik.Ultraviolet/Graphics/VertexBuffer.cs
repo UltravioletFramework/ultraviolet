@@ -26,8 +26,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         protected VertexBuffer(UltravioletContext uv, VertexDeclaration vdecl, Int32 vcount)
             : base(uv)
         {
-            Contract.Require(vdecl, "vdecl");
-            Contract.EnsureRange(vcount > 0, "vcount");
+            Contract.Require(vdecl, nameof(vdecl));
+            Contract.EnsureRange(vcount > 0, nameof(vcount));
 
             this.vertexDeclaration = vdecl;
             this.vertexCount = vcount;
@@ -41,8 +41,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="VertexBuffer"/> that was created.</returns>
         public static VertexBuffer Create(VertexDeclaration vdecl, Int32 vcount)
         {
-            Contract.Require(vdecl, "vdecl");
-            Contract.EnsureRange(vcount > 0, "vcount");
+            Contract.Require(vdecl, nameof(vdecl));
+            Contract.EnsureRange(vcount > 0, nameof(vcount));
 
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<VertexBufferFactory>()(uv, vdecl, vcount);
@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="VertexBuffer"/> that was created.</returns>
         public static VertexBuffer Create<T>(Int32 vcount) where T : struct, IVertexType
         {
-            Contract.EnsureRange(vcount > 0, "vcount");
+            Contract.EnsureRange(vcount > 0, nameof(vcount));
 
             var vdecl = new T().VertexDeclaration;
 

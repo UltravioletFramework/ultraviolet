@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// window, or <see langword="null"/> if the cursor is outside of the window.</returns>
         public override Vector2? GetPositionInWindow(IUltravioletWindow window)
         {
-            Contract.Require(window, "window");
+            Contract.Require(window, nameof(window));
 
             if (Window != window)
                 return null;

@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="element">The XML element that contains the binding data.</param>
         internal MouseInputBinding(UltravioletContext uv, XElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             this.mouse = uv.GetInput().GetMouse();
 
@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="button">The <see cref="MouseButton"/> value that represents the binding's primary button.</param>
         public MouseInputBinding(UltravioletContext uv, MouseButton button)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             if (!uv.GetInput().IsMouseSupported())
             {

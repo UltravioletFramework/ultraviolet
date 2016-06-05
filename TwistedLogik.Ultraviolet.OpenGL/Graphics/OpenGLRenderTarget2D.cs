@@ -23,8 +23,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public OpenGLRenderTarget2D(UltravioletContext uv, Int32 width, Int32 height, RenderTargetUsage usage, IEnumerable<RenderBuffer2D> buffers = null)
             : base(uv)
         {
-            Contract.EnsureRange(width > 0, "width");
-            Contract.EnsureRange(height > 0, "height");
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
 
             // NOTE: If we're in an older version of GLES, we need to use glFramebufferTexture2D()
             glFramebufferTextureIsSupported = !gl.IsGLES || gl.IsVersionAtLeast(3, 2);
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void Attach(RenderBuffer2D buffer)
         {
-            Contract.Require(buffer, "buffer");
+            Contract.Require(buffer, nameof(buffer));
             Contract.Ensure<ArgumentException>(
                 buffer.Width == width && 
                 buffer.Height == height, OpenGLStrings.RenderBufferIsWrongSize);
@@ -84,8 +84,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override void Resize(Int32 width, Int32 height)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureRange(width >= 1, "width");
-            Contract.EnsureRange(height >= 1, "height");
+            Contract.EnsureRange(width >= 1, nameof(width));
+            Contract.EnsureRange(height >= 1, nameof(height));
 
             if (this.width == width && this.height == height)
                 return;
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void GetData(Color[] data)
         {
-            Contract.Require(data, "data");
+            Contract.Require(data, nameof(data));
 
             var bufferTargetSize = Width * Height;
             if (bufferTargetSize != data.Length)
@@ -114,11 +114,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void GetData(Color[] data, Rectangle region)
         {
-            Contract.Require(data, "data");
-            Contract.EnsureRange(region.X >= 0 && region.X < Width, "region");
-            Contract.EnsureRange(region.Y >= 0 && region.Y < Height, "region");
-            Contract.EnsureRange(region.Width > 0 && region.X + region.Width < Width, "region");
-            Contract.EnsureRange(region.Height > 0 && region.Y + region.Height < Height, "region");
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(region.X >= 0 && region.X < Width, nameof(region));
+            Contract.EnsureRange(region.Y >= 0 && region.Y < Height, nameof(region));
+            Contract.EnsureRange(region.Width > 0 && region.X + region.Width < Width, nameof(region));
+            Contract.EnsureRange(region.Height > 0 && region.Y + region.Height < Height, nameof(region));
 
             var bufferTargetSize = region.Width * region.Height;
             if (bufferTargetSize != data.Length)

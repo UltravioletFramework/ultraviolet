@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the render targets for the specified element are currently being drawn; otherwise, <see langword="false"/>.</returns>
         public Boolean IsDrawingRenderTargetFor(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element == currentElementDrawingRenderTarget;
         }
@@ -46,7 +46,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the specified element is rendered out-of-band; otherwise, <see langword="false"/>.</returns>
         public Boolean IsRenderedOutOfBand(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
             Contract.EnsureNotDisposed(this, Disposed);
 
             return element.OutOfBandRenderTarget != null;
@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the specified element's texture is ready; otherwise, <see langword="false"/>.</returns>
         public Boolean IsTextureReady(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
             Contract.EnsureNotDisposed(this, Disposed);
 
             var rtarget = element.OutOfBandRenderTarget;
@@ -100,8 +100,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="additional">The number of additional render targets to reserve.</param>
         public void Register(UIElement element, Int32 additional)
         {
-            Contract.Require(element, "element");
-            Contract.EnsureRange(additional >= 0, "additional");
+            Contract.Require(element, nameof(element));
+            Contract.EnsureRange(additional >= 0, nameof(additional));
             Contract.EnsureNotDisposed(this, Disposed);
 
             if (IsRenderedOutOfBand(element))
@@ -143,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The element to unregister.</param>
         public void Unregister(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
             Contract.EnsureNotDisposed(this, Disposed);
 
             foreach (var registeredElement in registeredElements)
@@ -297,7 +297,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// not registered for out-of-band rendering.</c></returns>
         public OutOfBandRenderTarget GetElementRenderTarget(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
             Contract.EnsureNotDisposed(this, Disposed);
 
             var pooledObject = element.OutOfBandRenderTarget;

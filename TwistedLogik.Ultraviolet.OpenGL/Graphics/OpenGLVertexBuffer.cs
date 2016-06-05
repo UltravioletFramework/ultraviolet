@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public OpenGLVertexBuffer(UltravioletContext uv, VertexDeclaration vdecl, Int32 vcount, UInt32 usage)
             : base(uv, vdecl, vcount)
         {
-            Contract.Require(vdecl, "vdecl");
+            Contract.Require(vdecl, nameof(vdecl));
 
             this.vdecl = vdecl;
             this.usage = usage;
@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="data">An array containing the data to set in the vertex buffer.</param>
         public override void SetData<T>(T[] data)
         {
-            Contract.Require(data, "data");
+            Contract.Require(data, nameof(data));
             Contract.Ensure(data.Length <= VertexCount, OpenGLStrings.DataTooLargeForBuffer);
             
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
@@ -75,9 +75,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="options">A hint to the underlying driver indicating whether data will be overwritten by this operation.</param>
         public override void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOptions options)
         {
-            Contract.Require(data, "data");
-            Contract.EnsureRange(count > 0, "count");
-            Contract.EnsureRange(offset >= 0 && offset + count <= data.Length, "offset");
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(count > 0, nameof(count));
+            Contract.EnsureRange(offset >= 0 && offset + count <= data.Length, nameof(offset));
             Contract.Ensure(count <= VertexCount, OpenGLStrings.DataTooLargeForBuffer);
 
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);

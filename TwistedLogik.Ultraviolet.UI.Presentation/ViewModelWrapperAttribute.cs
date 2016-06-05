@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="wrapperType">The wrapper type associated with this view model type.</param>
         public ViewModelWrapperAttribute(Type wrapperType)
         {
-            Contract.Require(wrapperType, "wrapperType");
+            Contract.Require(wrapperType, nameof(wrapperType));
 
             this.WrapperType = wrapperType;
         }

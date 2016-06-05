@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns><see langword="true"/> if the specified element accepts Return; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetAcceptsReturn(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Boolean>(AcceptsReturnProperty);
         }
@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns><see langword="true"/> if the specified element is a tab stop; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetIsTabStop(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Boolean>(IsTabStopProperty);
         }
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns>The tab index of the specified element.</returns>
         public static Int32 GetTabIndex(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Int32>(TabIndexProperty);
         }
@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns>The <see cref="KeyboardNavigationMode"/> which is used during navigation.</returns>
         public static KeyboardNavigationMode GetTabNavigation(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<KeyboardNavigationMode>(TabNavigationProperty);
         }
@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns>The <see cref="KeyboardNavigationMode"/> which is used during navigation.</returns>
         public static KeyboardNavigationMode GetControlTabNavigation(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<KeyboardNavigationMode>(ControlTabNavigationProperty);
         }
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns>The <see cref="KeyboardNavigationMode"/> which is used during navigation.</returns>
         public static KeyboardNavigationMode GetDirectionalNavigation(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<KeyboardNavigationMode>(DirectionalNavigationProperty);
         }
@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="value">The value to set.</param>
         public static void SetAcceptsReturn(DependencyObject element, Boolean value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(AcceptsReturnProperty, value);
         }
@@ -103,7 +103,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="value">The value to set.</param>
         public static void SetIsTabStop(DependencyObject element, Boolean value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(IsTabStopProperty, value);
         }
@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="value">The value to set.</param>
         public static void SetTabIndex(DependencyObject element, Int32 value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(TabIndexProperty, value);
         }
@@ -128,7 +128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="value">The value to set.</param>
         public static void SetTabNavigation(DependencyObject element, KeyboardNavigationMode value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(TabNavigationProperty, value);
         }
@@ -141,7 +141,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="value">The value to set.</param>
         public static void SetControlTabNavigation(DependencyObject element, KeyboardNavigationMode value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(ControlTabNavigationProperty, value);
         }
@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="value">The value to set.</param>
         public static void SetDirectionalNavigation(DependencyObject element, KeyboardNavigationMode value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(DirectionalNavigationProperty, value);
         }

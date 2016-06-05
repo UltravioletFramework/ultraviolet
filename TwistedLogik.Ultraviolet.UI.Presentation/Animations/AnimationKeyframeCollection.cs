@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="animation">The animation that owns the collection.</param>
         public AnimationKeyframeCollection(Animation<T> animation)
         {
-            Contract.Require(animation, "animation");
+            Contract.Require(animation, nameof(animation));
 
             this.animation = animation;
         }
@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if the keyframe was added to the collection; otherwise, <see langword="false"/>.</returns>
         public Boolean Add(AnimationKeyframe<T> keyframe)
         {
-            Contract.Require(keyframe, "keyframe");
+            Contract.Require(keyframe, nameof(keyframe));
 
             if (Contains(keyframe))
                 return false;
@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if the keyframe was removed from the collection; otherwise, false.</returns>
         public Boolean Remove(AnimationKeyframe<T> keyframe)
         {
-            Contract.Require(keyframe, "keyframe");
+            Contract.Require(keyframe, nameof(keyframe));
 
             if (keyframes.Remove(keyframe))
             {
@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <returns><see langword="true"/> if the collection contains the specified keyframe; otherwise, <see langword="false"/>.</returns>
         public Boolean Contains(AnimationKeyframe<T> keyframe)
         {
-            Contract.Require(keyframe, "keyframe");
+            Contract.Require(keyframe, nameof(keyframe));
 
             return keyframes.Contains(keyframe);
         }

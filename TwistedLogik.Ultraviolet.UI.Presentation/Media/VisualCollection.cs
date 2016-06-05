@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <param name="parent">The visual parent of objects which are added to this collection.</param>
         public VisualCollection(Visual parent)
         {
-            Contract.Require(parent, "parent");
+            Contract.Require(parent, nameof(parent));
 
             this.parent = parent;
         }
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <inheritdoc/>
         public void Add(Visual item)
         {
-            Contract.Require(item, "item");
+            Contract.Require(item, nameof(item));
 
             AddVisualChild(item);
             storage = storage ?? new List<Visual>();
@@ -93,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <inheritdoc/>
         public void Insert(Int32 index, Visual item)
         {
-            Contract.Require(item, "item");
+            Contract.Require(item, nameof(item));
 
             AddVisualChild(item);
             storage = storage ?? new List<Visual>();
@@ -123,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         /// <inheritdoc/>
         public Boolean Remove(Visual item)
         {
-            Contract.Require(item, "item");
+            Contract.Require(item, nameof(item));
 
             if (storage == null)
                 return false;
@@ -159,14 +159,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         {
             get
             {
-                Contract.EnsureRange(storage != null, "index");
+                Contract.EnsureRange(storage != null, nameof(index));
 
                 return storage[index];
             }
             set
             {
-                Contract.Require(value, "value");
-                Contract.EnsureRange(storage != null, "index");
+                Contract.Require(value, nameof(value));
+                Contract.EnsureRange(storage != null, nameof(index));
 
                 var existing = storage[index];
                 RemoveVisualChild(existing);

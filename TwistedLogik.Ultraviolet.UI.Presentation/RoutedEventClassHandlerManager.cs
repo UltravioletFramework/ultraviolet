@@ -16,8 +16,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="ownerType">The type with which this registry is associated.</param>
         public RoutedEventClassHandlerManager(RoutedEvent routedEvent, Type ownerType)
         {
-            Contract.Require(routedEvent, "routedEvent");
-            Contract.Require(ownerType, "type");
+            Contract.Require(routedEvent, nameof(routedEvent));
+            Contract.Require(ownerType, nameof(ownerType));
 
             this.routedEvent = routedEvent;
             this.ownerType   = ownerType;

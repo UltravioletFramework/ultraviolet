@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the diagnostics renderer should draw the visual bounds of the specified element; otherwise, <see langword="false"/>.</returns>
         public static Boolean GetDrawVisualBounds(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Boolean>(DrawVisualBoundsProperty);
         }
@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="value">A value specifying whether the diagnostics renderer should draw the visual bounds of the specified element.</param>
         public static void SetDrawVisualBounds(DependencyObject element, Boolean value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(DrawVisualBoundsProperty, value);
         }
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The color with which the diagnostics renderer will render the visual bounds of the specified element.</returns>
         public static Color GetDrawVisualBoundsColor(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Color>(DrawVisualBoundsColorProperty);
         }
@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="value">The color with which the diagnostics renderer should draw the visual bounds of the specified element.</param>
         public static void SetDrawVisualBoundsColor(DependencyObject element, Color value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(DrawVisualBoundsColorProperty, value);
         }

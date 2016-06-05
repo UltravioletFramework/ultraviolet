@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="s">The <see cref="String"/> that contains the string data.</param>
         public StringSource(String s)
         {
-            Contract.Require(s, "s");
+            Contract.Require(s, nameof(s));
 
             this.str     = s;
             this.builder = null;
@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="sb">The <see cref="StringBuilder"/> that contains the string data.</param>
         public StringSource(StringBuilder sb)
         {
-            Contract.Require(sb, "sb");
+            Contract.Require(sb, nameof(sb));
 
             this.str     = null;
             this.builder = sb;

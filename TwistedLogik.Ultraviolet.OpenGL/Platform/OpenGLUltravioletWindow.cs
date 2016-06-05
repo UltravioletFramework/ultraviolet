@@ -120,10 +120,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         public void SetFullscreenDisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh, Int32? displayIndex = null)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureRange(width > 0, "width");
-            Contract.EnsureRange(height > 0, "height");
-            Contract.EnsureRange(bpp > 0, "bpp");
-            Contract.EnsureRange(refresh > 0, "refresh");
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
+            Contract.EnsureRange(bpp > 0, nameof(bpp));
+            Contract.EnsureRange(refresh > 0, nameof(refresh));
 
             if (displayIndex.HasValue)
             {
@@ -714,7 +714,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <returns>The default window icon.</returns>
         private static Surface2D LoadDefaultWindowIcon(UltravioletContext uv)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             return IconLoader.Create().LoadIcon();
         }

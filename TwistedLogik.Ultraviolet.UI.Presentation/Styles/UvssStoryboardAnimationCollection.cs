@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="animation">The storyboard animation to add to the collection.</param>
         internal void Add(UvssStoryboardAnimation animation)
         {
-            Contract.Require(animation, "animation");
+            Contract.Require(animation, nameof(animation));
 
             this.animations.Add(animation);
         }

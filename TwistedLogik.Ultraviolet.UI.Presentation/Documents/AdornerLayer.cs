@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// <returns>The nearest <see cref="AdornerLayer"/> which is above <paramref name="visual"/> in the visual tree.</returns>
         public static AdornerLayer GetAdornerLayer(Visual visual)
         {
-            Contract.Require(visual, "visual");
+            Contract.Require(visual, nameof(visual));
 
             var current = (DependencyObject)visual;
 
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// <param name="adorner">The adorner to add to the adorner layer.</param>
         public void Add(Adorner adorner)
         {
-            Contract.Require(adorner, "adorner");
+            Contract.Require(adorner, nameof(adorner));
 
             // NOTE: In WPF this doesn't work but it also doesn't produce an error, so we just fail silently here
             var adornerLayerParent = VisualTreeHelper.GetParent(this);
@@ -93,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// <param name="adorner">The adorner to remove from the adorner layer.</param>
         public void Remove(Adorner adorner)
         {
-            Contract.Require(adorner, "adorner");
+            Contract.Require(adorner, nameof(adorner));
 
             var index = adorners.IndexOf(adorner);
             if (index >= 0)
@@ -112,8 +112,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// <param name="list">The list to populate with the adorners for <paramref name="element"/>.</param>
         public void GetAdorners(UIElement element, IList list)
         {
-            Contract.Require(element, "element");
-            Contract.Require(list, "list");
+            Contract.Require(element, nameof(element));
+            Contract.Require(list, nameof(list));
 
             list.Clear();
 
@@ -131,8 +131,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// <param name="list">The list to populate with the adorners for <paramref name="element"/>.</param>
         public void GetAdorners(UIElement element, IList<Adorner> list)
         {
-            Contract.Require(element, "element");
-            Contract.Require(list, "list");
+            Contract.Require(element, nameof(element));
+            Contract.Require(list, nameof(list));
 
             list.Clear();
 
@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
         /// <returns>An array containing the adorners for the specified element, or <see langword="null"/> if there are no such adorners.</returns>
         public Adorner[] GetAdorners(UIElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             if (adorners.Count == 0)
                 return null;

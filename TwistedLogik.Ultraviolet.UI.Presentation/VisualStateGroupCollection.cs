@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The framework element that owns the collection.</param>
         internal VisualStateGroupCollection(FrameworkElement element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             this.element = element;
         }
@@ -42,8 +42,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the visual state transition was set; otherwise, <see langword="false"/>.</returns>
         public Boolean SetVisualStateTransition(String group, String from, String to, Storyboard transition)
         {
-            Contract.RequireNotEmpty(group, "group");
-            Contract.RequireNotEmpty(to, "to");
+            Contract.RequireNotEmpty(group, nameof(group));
+            Contract.RequireNotEmpty(to, nameof(to));
 
             var vsg = Get(group);
             if (vsg == null)
@@ -62,8 +62,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the visual state transition was retrieved; otherwise, <see langword="false"/>.</returns>
         public Boolean GetVisualStateTransition(String group, String from, String to, out Storyboard transition)
         {
-            Contract.RequireNotEmpty(group, "group");
-            Contract.RequireNotEmpty(to, "to");
+            Contract.RequireNotEmpty(group, nameof(group));
+            Contract.RequireNotEmpty(to, nameof(to));
 
             var vsg = Get(group);
             if (vsg == null)
@@ -95,8 +95,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the visual state group was created; otherwise, <see langword="false"/>.</returns>
         public Boolean Create(String group, IEnumerable<String> states)
         {
-            Contract.RequireNotEmpty(group, "group");
-            Contract.Require(states, "states");
+            Contract.RequireNotEmpty(group, nameof(group));
+            Contract.Require(states, nameof(states));
 
             var hasGroups = groups.Count > 0;
 
@@ -129,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the group was created; otherwise, <see langword="false"/>.</returns>
         public Boolean Create(String group)
         {
-            Contract.RequireNotEmpty(group, "group");
+            Contract.RequireNotEmpty(group, nameof(group));
 
             if (groups.ContainsKey(group))
                 return false;
@@ -145,7 +145,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the group was destroyed; otherwise, <see langword="false"/>.</returns>
         public Boolean Destroy(String group)
         {
-            Contract.RequireNotEmpty(group, "group");
+            Contract.RequireNotEmpty(group, nameof(group));
 
             return groups.Remove(group);
         }        
@@ -159,7 +159,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// the specified name; otherwise, <see langword="false"/>.</returns>
         public Boolean IsDefined(String group)
         {
-            Contract.RequireNotEmpty(group, "group");
+            Contract.RequireNotEmpty(group, nameof(group));
 
             return groups.ContainsKey(group);
         }

@@ -136,7 +136,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>The specified string variant.</returns>
         public LocalizedStringVariant GetVariant(String group)
         {
-            Contract.Require(group, "group");
+            Contract.Require(group, nameof(group));
 
             var value = (LocalizedStringVariant)null;
             variants.TryGetValue(group, out value);
@@ -331,7 +331,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <returns>A copy of the source string that is pseudolocalized.</returns>
         internal static LocalizedString CreatePseudolocalized(LocalizedString source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             var pseudoString = new LocalizedString(Localization.PseudolocalizedCulture, source.Key, 
                 source.ContainsHtmlEncodedCharacters, source.PseudolocalizationDisabled);

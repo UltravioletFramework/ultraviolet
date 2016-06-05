@@ -217,7 +217,7 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
         /// <param name="uv">The Ultraviolet context in which to enlist the panel.</param>
         private void CreateUltravioletWindow(UltravioletContext uv)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             if (this.uv != null)
                 throw new InvalidOperationException(WindowsFormsStrings.PanelAlreadyEnlisted);

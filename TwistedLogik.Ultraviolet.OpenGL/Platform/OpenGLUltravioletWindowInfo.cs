@@ -23,8 +23,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
         internal OpenGLUltravioletWindowInfo(UltravioletContext uv, OpenGLUltravioletConfiguration configuration)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(configuration, "configuration");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(configuration, nameof(configuration));
 
             this.uv = uv;
 
@@ -261,7 +261,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         /// <returns>true if the window was destroyed; false if the window was closed.</returns>
         public Boolean Destroy(IUltravioletWindow window)
         {
-            Contract.Require(window, "window");
+            Contract.Require(window, nameof(window));
 
             if (!windows.Remove(window))
                 throw new InvalidOperationException(UltravioletStrings.InvalidResource);

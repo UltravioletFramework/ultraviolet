@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <returns>The relative order of the specified element on its z-plane.</returns>
         public static Double GetZIndex(DependencyObject element)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             return element.GetValue<Int32>(ZIndexProperty);
         }
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="value">The relative order of the specified element on its z-plane.</param>
         public static void SetZIndex(DependencyObject element, Int32 value)
         {
-            Contract.Require(element, "element");
+            Contract.Require(element, nameof(element));
 
             element.SetValue(ZIndexProperty, value);
         }
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected internal override UIElement GetLogicalChild(Int32 childIndex)
         {
-            Contract.EnsureRange(childIndex >= 0 && childIndex < children.Count + 1, "childIndex");
+            Contract.EnsureRange(childIndex >= 0 && childIndex < children.Count + 1, nameof(childIndex));
 
             return children[childIndex];
         }
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected internal override UIElement GetVisualChildByZOrder(Int32 childIndex)
         {
-            Contract.EnsureRange(childIndex >= 0 && childIndex < children.Count + 1, "childIndex");
+            Contract.EnsureRange(childIndex >= 0 && childIndex < children.Count + 1, nameof(childIndex));
 
             return children.GetByZOrder(childIndex);
         }

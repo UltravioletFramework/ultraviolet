@@ -194,7 +194,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="value">The dependency property value to add to the subscriber list.</param>
         internal void Subscribe(IDependencyPropertyValue value)
         {
-            Contract.Require(value, "value");
+            Contract.Require(value, nameof(value));
 
             subscribers.AddLast(value);
         }
@@ -205,7 +205,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="value">The dependency property value to remove from the subscriber list.</param>
         internal void Unsubscribe(IDependencyPropertyValue value)
         {
-            Contract.Require(value, "value");
+            Contract.Require(value, nameof(value));
 
             subscribers.Remove(value);
         }

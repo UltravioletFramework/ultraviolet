@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Tooling
         /// <param name="args">The command line arguments to parse.</param>
         public CommandLineParser(IEnumerable<String> args)
         {
-            Contract.Require(args, "args");
+            Contract.Require(args, nameof(args));
 
             foreach (var arg in args)
             {
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.Tooling
         /// <returns><see langword="true"/> if the specified argument value represents a parameter; otherwise, <see langword="false"/>.</returns>
         public Boolean IsParameter(String arg)
         {
-            Contract.RequireNotEmpty(arg, "arg");
+            Contract.RequireNotEmpty(arg, nameof(arg));
 
             return arg.StartsWith("-");
         }
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.Tooling
         /// <returns><see langword="true"/> if the command line arguments include an argument with the specified name; otherwise, <see langword="false"/>.</returns>
         public Boolean HasArgument(String name)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             return arguments.ContainsKey(name.ToLowerInvariant());
         }
@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.Tooling
         /// <returns><see langword="true"/> if the specified argument exists and has a value; otherwise, <see langword="false"/>.</returns>
         public Boolean TryGetArgument(String name, out String value)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             String strval;
             if (!arguments.TryGetValue(name.ToLowerInvariant(), out strval))
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.Tooling
         /// <returns><see langword="true"/> if the specified argument exists and has a value; otherwise, <see langword="false"/>.</returns>
         public Boolean TryGetArgument<T>(String name, out T value)
         {
-            Contract.RequireNotEmpty(name, "name");
+            Contract.RequireNotEmpty(name, nameof(name));
 
             String strval;
             if (!arguments.TryGetValue(name.ToLowerInvariant(), out strval))

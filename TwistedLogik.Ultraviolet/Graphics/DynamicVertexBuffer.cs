@@ -37,8 +37,8 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="DynamicVertexBuffer"/> that was created.</returns>
         public static new DynamicVertexBuffer Create(VertexDeclaration vdecl, Int32 vcount)
         {
-            Contract.Require(vdecl, "vdecl");
-            Contract.EnsureRange(vcount > 0, "vcount");
+            Contract.Require(vdecl, nameof(vdecl));
+            Contract.EnsureRange(vcount > 0, nameof(vcount));
 
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<DynamicVertexBufferFactory>()(uv, vdecl, vcount);
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <returns>The instance of <see cref="DynamicVertexBuffer"/> that was created.</returns>
         public static new DynamicVertexBuffer Create<T>(Int32 vcount) where T : struct, IVertexType
         {
-            Contract.EnsureRange(vcount > 0, "vcount");
+            Contract.EnsureRange(vcount > 0, nameof(vcount));
 
             var vdecl = new T().VertexDeclaration;
 

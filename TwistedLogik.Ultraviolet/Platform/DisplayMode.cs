@@ -21,9 +21,9 @@ namespace TwistedLogik.Ultraviolet.Platform
         /// or <see langword="null"/> if the window has no preferred display.</param>
         public DisplayMode(Int32 width, Int32 height, Int32 bpp, Int32 refresh, Int32? displayIndex = null)
         {
-            Contract.EnsureRange(width > 0, "width");
-            Contract.EnsureRange(height > 0, "height");
-            Contract.EnsureRange(bpp > 0, "bpp");
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
+            Contract.EnsureRange(bpp > 0, nameof(bpp));
 
             this.Width = width;
             this.Height = height;

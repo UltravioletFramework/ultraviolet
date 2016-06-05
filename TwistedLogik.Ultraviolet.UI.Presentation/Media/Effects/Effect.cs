@@ -20,9 +20,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
         /// <param name="effect">The shader effect to apply to the render target, if any.</param>
         public static void DrawRenderTargetAtVisualBounds(DrawingContext dc, UIElement element, OutOfBandRenderTarget target, GraphicsEffect effect = null)
         {
-            Contract.Require(dc, "dc");
-            Contract.Require(element, "element");
-            Contract.Require(target, "rtarget");
+            Contract.Require(dc, nameof(dc));
+            Contract.Require(element, nameof(element));
+            Contract.Require(target, nameof(target));
 
             if (element.View == null)
                 return;

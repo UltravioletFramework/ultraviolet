@@ -28,9 +28,9 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="allocator">The pool's instance allocator, if it must be created.</param>
         public void Create<T>(Int32 capacity, Int32 watermark, Func<T> allocator = null)
         {
-            Contract.EnsureRange(capacity >= 0, "capacity");
-            Contract.EnsureRange(watermark >= 1, "watermark");
-            Contract.EnsureRange(watermark >= capacity, "watermark");
+            Contract.EnsureRange(capacity >= 0, nameof(capacity));
+            Contract.EnsureRange(watermark >= 1, nameof(watermark));
+            Contract.EnsureRange(watermark >= capacity, nameof(watermark));
 
             if (pools.ContainsKey(typeof(T)))
                 throw new InvalidOperationException(NucleusStrings.PoolRegistryAlreadyContainsType.Format(typeof(T)));
@@ -71,7 +71,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <returns>The pool for the specified type, or <see langword="null"/> if no such pool exists.</returns>
         public IPool Get(Type type)
         {
-            Contract.Require(type, "type");
+            Contract.Require(type, nameof(type));
 
             IPool pool;
             pools.TryGetValue(type, out pool);
@@ -114,9 +114,9 @@ namespace TwistedLogik.Nucleus.Collections
         /// <returns>The pool for the specified type.</returns>
         public IPool<T> Get<T>(Int32 capacity, Int32 watermark, Func<T> allocator = null)
         {
-            Contract.EnsureRange(capacity >= 0, "capacity");
-            Contract.EnsureRange(watermark >= 1, "watermark");
-            Contract.EnsureRange(watermark >= capacity, "watermark");
+            Contract.EnsureRange(capacity >= 0, nameof(capacity));
+            Contract.EnsureRange(watermark >= 1, nameof(watermark));
+            Contract.EnsureRange(watermark >= capacity, nameof(watermark));
 
             IPool pool;
             if (!pools.TryGetValue(typeof(T), out pool))

@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 		internal UvssEventTrigger(String eventName, Boolean handled, Boolean setHandled, Boolean isImportant)
 			: base(isImportant)
 		{
-			Contract.RequireNotEmpty(eventName, "eventName");
+			Contract.RequireNotEmpty(eventName, nameof(eventName));
 
 			this.eventName = new DependencyName(eventName);
 			this.handled = handled;

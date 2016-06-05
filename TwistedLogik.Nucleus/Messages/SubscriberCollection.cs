@@ -52,7 +52,7 @@ namespace TwistedLogik.Nucleus.Messages
         /// <param name="subscriber">The subscriber to remove.</param>
         public void RemoveFromAll(IMessageSubscriber<TMessageType> subscriber)
         {
-            Contract.Require(subscriber, "subscriber");
+            Contract.Require(subscriber, nameof(subscriber));
 
             foreach (var collection in subscribers)
             {

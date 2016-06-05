@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Content
             /// <param name="importer">The registered importer instance.</param>
             public RegistryEntry(IContentImporter importer)
             {
-                Contract.Require(importer, "importer");
+                Contract.Require(importer, nameof(importer));
 
                 var baseImporterType = ContentImporterRegistry.GetBaseContentImporterType(importer.GetType());
                 var outputType = baseImporterType.GetGenericArguments().Single();

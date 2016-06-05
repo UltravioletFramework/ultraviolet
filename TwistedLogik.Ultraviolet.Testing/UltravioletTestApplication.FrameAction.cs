@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Testing
             /// <param name="action">The action to perform on the specified frame.</param>
             public FrameAction(Int32 frame, Action<IUltravioletTestApplication> action)
             {
-                Contract.Require(action, "action");
+                Contract.Require(action, nameof(action));
 
                 this.frame = frame;
                 this.action = action;

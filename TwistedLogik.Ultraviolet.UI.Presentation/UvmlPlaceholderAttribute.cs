@@ -17,8 +17,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="type">The type which is substituted for the placeholder.</param>
         public UvmlPlaceholderAttribute(String placeholder, Type type)
         {
-            Contract.RequireNotEmpty(placeholder, "placeholder");
-            Contract.Require(type, "type");
+            Contract.RequireNotEmpty(placeholder, nameof(placeholder));
+            Contract.Require(type, nameof(type));
 
             this.placeholder = placeholder;
             this.type = type;

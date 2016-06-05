@@ -17,7 +17,7 @@ namespace UvDebugSandbox.UI.Screens
         /// <param name="owner">The <see cref="GameMenuScreen"/> that owns this view model.</param>
         public GameMenuViewModel(GameMenuScreen owner)
         {
-            Contract.Require(owner, "owner");
+            Contract.Require(owner, nameof(owner));
 
             this.owner = owner;
         }

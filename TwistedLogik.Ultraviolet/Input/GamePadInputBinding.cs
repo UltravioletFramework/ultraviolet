@@ -18,8 +18,8 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <param name="element">The XML element that contains the binding data.</param>
         internal GamePadInputBinding(UltravioletContext uv, XElement element)
         {
-            Contract.Require(uv, "uv");
-            Contract.Require(element, "element");
+            Contract.Require(uv, nameof(uv));
+            Contract.Require(element, nameof(element));
 
             this.uv = uv;
             this.playerIndex = element.ElementValueInt32("Player") ?? 0;
@@ -37,8 +37,8 @@ namespace TwistedLogik.Ultraviolet.Input
         public GamePadInputBinding(UltravioletContext uv, Int32 playerIndex, GamePadButton button)
             : base()
         {
-            Contract.Require(uv, "uv");
-            Contract.EnsureRange(playerIndex >= 0, "playerIndex");
+            Contract.Require(uv, nameof(uv));
+            Contract.EnsureRange(playerIndex >= 0, nameof(playerIndex));
 
             this.uv = uv;
             this.playerIndex = playerIndex;

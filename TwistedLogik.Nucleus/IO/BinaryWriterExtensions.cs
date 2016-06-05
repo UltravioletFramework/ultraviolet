@@ -21,8 +21,8 @@ namespace TwistedLogik.Nucleus.IO
         /// <param name="method">A function which selects the method with which to write the list's items.</param>
         public static void Write<T>(this BinaryWriter writer, IList<T> list, Func<BinaryWriter, Action<T>> method)
         {
-            Contract.Require(list, "list");
-            Contract.Require(method, "method");
+            Contract.Require(list, nameof(list));
+            Contract.Require(method, nameof(method));
 
             var methodToInvoke = method(writer);
             if (methodToInvoke == null)

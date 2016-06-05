@@ -145,7 +145,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out StretchableImage3 image)
         {
-            Contract.Require(s, "s");
+            Contract.Require(s, nameof(s));
 
             var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
 
@@ -235,7 +235,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             get { return left; }
             set
             {
-                Contract.EnsureRange(value >= 0, "value");
+                Contract.EnsureRange(value >= 0, nameof(value));
 
                 left = value;
                 UpdateMinimumRecommendedSize();
@@ -250,7 +250,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             get { return right; }
             set
             {
-                Contract.EnsureRange(value >= 0, "value");
+                Contract.EnsureRange(value >= 0, nameof(value));
 
                 right = value;
                 UpdateMinimumRecommendedSize();

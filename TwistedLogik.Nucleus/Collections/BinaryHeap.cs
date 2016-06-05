@@ -47,7 +47,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="capacity">The initial capacity of the binary heap.</param>
         public BinaryHeap(IComparer<T> comparer, Int32 capacity)
         {
-            Contract.EnsureNot<ArgumentOutOfRangeException>(capacity < 0, "capacity");
+            Contract.EnsureNot<ArgumentOutOfRangeException>(capacity < 0, nameof(capacity));
 
             this.capacity = capacity;
             this.count = 0;
@@ -104,7 +104,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="collection">The collection that contains the items to add to the heap.</param>
         public void AddRange(IEnumerable<T> collection)
         {
-            Contract.Require(collection, "collection");
+            Contract.Require(collection, nameof(collection));
 
             foreach (var item in collection)
             {

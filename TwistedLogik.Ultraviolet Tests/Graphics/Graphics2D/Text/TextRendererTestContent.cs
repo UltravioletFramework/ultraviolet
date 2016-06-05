@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
     {
         public TextRendererTestContent(String text, TextParserOptions parserOptions = TextParserOptions.None)
         {
-            Contract.RequireNotEmpty(text, "text");
+            Contract.RequireNotEmpty(text, nameof(text));
 
             this.Text = text;
             this.TextParserOptions = parserOptions;
@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         public void Load(ContentManager content)
         {
-            Contract.Require(content, "content");
+            Contract.Require(content, nameof(content));
 
             this.SpriteBatch = SpriteBatch.Create();
             this.SpriteFont = content.Load<SpriteFont>(FontPath ?? "Fonts/Garamond");

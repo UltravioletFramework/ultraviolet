@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <param name="elements">The vertex declaration's elements.</param>
         public VertexDeclaration(IEnumerable<VertexElement> elements)
         {
-            Contract.Require(elements, "elements");
+            Contract.Require(elements, nameof(elements));
 
             this.elements = elements.ToList();
             this.stride = CalculateStride();

@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public OpenGLTexture2D(UltravioletContext uv, SDL_Surface surface)
             : base(uv)
         {
-            Contract.Require(surface, "surface");
+            Contract.Require(surface, nameof(surface));
 
             var mode = gl.GL_NONE;
             var internalformat = gl.GL_NONE;

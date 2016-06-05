@@ -16,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="task">The task which is wrapped by this instance.</param>
         internal ModalTask(Task<T> task)
         {
-            Contract.Require(task, "task");
+            Contract.Require(task, nameof(task));
 
             this.task = task;
         }

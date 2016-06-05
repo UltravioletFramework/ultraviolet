@@ -58,8 +58,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewTapHandler(DependencyObject element, UpfTouchTapEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewTapEvent, handler);
         }
@@ -72,8 +72,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewFingerDownHandler(DependencyObject element, UpfTouchEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewFingerDownEvent, handler);
         }
@@ -86,8 +86,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewFingerUpHandler(DependencyObject element, UpfTouchEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewFingerUpEvent, handler);
         }
@@ -100,8 +100,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddPreviewFingerMotionHandler(DependencyObject element, UpfTouchMotionEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, PreviewFingerMotionEvent, handler);
         }
@@ -114,8 +114,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddTapHandler(DependencyObject element, UpfTouchTapEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, TapEvent, handler);
         }
@@ -128,8 +128,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddFingerDownHandler(DependencyObject element, UpfTouchEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, FingerDownEvent, handler);
         }
@@ -142,8 +142,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddFingerUpHandler(DependencyObject element, UpfTouchEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, FingerUpEvent, handler);
         }
@@ -156,8 +156,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to add to the specified element.</param>
         public static void AddFingerMotionHandler(DependencyObject element, UpfTouchMotionEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, FingerMotionEvent, handler);
         }
@@ -170,8 +170,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewTapHandler(DependencyObject element, UpfTouchTapEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewTapEvent, handler);
         }
@@ -184,8 +184,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewFingerDownHandler(DependencyObject element, UpfTouchEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewFingerDownEvent, handler);
         }
@@ -198,8 +198,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewFingerUpHandler(DependencyObject element, UpfTouchEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewFingerUpEvent, handler);
         }
@@ -212,8 +212,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemovePreviewFingerMotionHandler(DependencyObject element, UpfTouchMotionEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, PreviewFingerMotionEvent, handler);
         }
@@ -226,8 +226,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveTapHandler(DependencyObject element, UpfTouchTapEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, TapEvent, handler);
         }
@@ -240,8 +240,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveFingerDownHandler(DependencyObject element, UpfTouchEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, FingerDownEvent, handler);
         }
@@ -254,8 +254,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveFingerUpHandler(DependencyObject element, UpfTouchEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, FingerUpEvent, handler);
         }
@@ -268,8 +268,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveFingerMotionHandler(DependencyObject element, UpfTouchMotionEventHandler handler)
         {
-            Contract.Require(element, "element");
-            Contract.Require(handler, "handler");
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, FingerMotionEvent, handler);
         }

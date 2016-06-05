@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="source">The object that originated the event.</param>
         public RoutedEventData(DependencyObject source)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             this.originalSource = source;
             this.source         = source;

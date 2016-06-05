@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="content">The content manager with which to load the image's texture resource.</param>
         public void Load(ContentManager content)
         {
-            Contract.Require(content, "content");
+            Contract.Require(content, nameof(content));
 
             if (!cursorCollectionID.IsValid || String.IsNullOrEmpty(cursorName))
                 return;

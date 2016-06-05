@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             /// <param name="owner">The <see cref="Selector"/> that owns this collection.</param>
             public SelectionCollection(Selector owner)
             {
-                Contract.Require(owner, "owner");
+                Contract.Require(owner, nameof(owner));
 
                 this.owner = owner;
             }
@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             /// <param name="container">The container to add to the collection.</param>
             public void Add(DependencyObject container)
             {
-                Contract.Require(container, "container");
+                Contract.Require(container, nameof(container));
 
                 var index = owner.ItemContainerGenerator.IndexFromContainer(container);
                 var metadata = new SelectionMetadata(container, index);
@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             /// <param name="container">The container to remove from the collection.</param>
             public void Remove(DependencyObject container)
             {
-                Contract.Require(container, "container");
+                Contract.Require(container, nameof(container));
 
                 var index = 0;
                 for (var current = selections.First; current != null; current = current.Next)

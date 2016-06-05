@@ -46,8 +46,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public OpenGLSurface2D(UltravioletContext uv, Int32 width, Int32 height)
             : base(uv)
         {
-            Contract.EnsureRange(width > 0, "width");
-            Contract.EnsureRange(height > 0, "height");
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
 
             this.nativesurf = new SDL_Surface(width, height);
         }
@@ -70,7 +70,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override void GetData(Color[] data)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(data, "data");
+            Contract.Require(data, nameof(data));
 
             nativesurf.GetData(data, new Rectangle(0, 0, Width, Height));
         }
@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override void GetData(Color[] data, Rectangle region)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(data, "data");
+            Contract.Require(data, nameof(data));
 
             nativesurf.GetData(data, region);
         }
@@ -95,7 +95,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override void SetData(Color[] data)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(data, "data");
+            Contract.Require(data, nameof(data));
 
             nativesurf.SetData(data, new Rectangle(0, 0, Width, Height));
         }
@@ -108,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override void SetData(Color[] data, Rectangle region)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(data, "data");
+            Contract.Require(data, nameof(data));
 
             nativesurf.SetData(data, region);
         }
@@ -120,7 +120,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override void Blit(Surface2D dst)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(dst, "dst");
+            Contract.Require(dst, nameof(dst));
 
             Ultraviolet.ValidateResource(dst);
 
@@ -135,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override void Blit(Surface2D dst, Rectangle dstRect)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(dst, "dst");
+            Contract.Require(dst, nameof(dst));
 
             Ultraviolet.ValidateResource(dst);
 
@@ -151,7 +151,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override void Blit(Rectangle srcRect, Surface2D dst, Rectangle dstRect)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(dst, "dst");
+            Contract.Require(dst, nameof(dst));
 
             Ultraviolet.ValidateResource(dst);
 
@@ -221,7 +221,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="stream">The stream to which to save the image data.</param>
         public override void SaveAsJpeg(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
 
             var saver = SurfaceSaver.Create();
             saver.SaveAsJpeg(this, stream);
@@ -233,7 +233,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="stream">The stream to which to save the image data.</param>
         public override void SaveAsPng(Stream stream)
         {
-            Contract.Require(stream, "stream");
+            Contract.Require(stream, nameof(stream));
 
             var saver = SurfaceSaver.Create();
             saver.SaveAsPng(this, stream);

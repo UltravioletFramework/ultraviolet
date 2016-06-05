@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>An XML element that represents the specified window settings.</returns>
         public static XElement Save(UltravioletApplicationWindowSettings settings)
         {
-            Contract.Require(settings, "settings");
+            Contract.Require(settings, nameof(settings));
 
             return new XElement("Window",
                 new XElement("WindowState", settings.WindowState),
@@ -97,7 +97,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>The window settings which were retrieved.</returns>
         public static UltravioletApplicationWindowSettings FromCurrentSettings(UltravioletContext uv)
         {
-            Contract.Require(uv, "uv");
+            Contract.Require(uv, nameof(uv));
 
             var primary = uv.GetPlatform().Windows.GetPrimary();
             if (primary == null)

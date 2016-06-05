@@ -20,7 +20,7 @@ namespace UvDebugSandbox.UI.Dialogs
             public DialogScreen(EscMenuDialog dialog, ContentManager globalContent)
                 : base("Content/UI/Dialogs/EscMenuDialog", "EscMenuDialog", globalContent)
             {
-                Contract.Require(dialog, "dialog");
+                Contract.Require(dialog, nameof(dialog));
 
                 this.dialog = dialog;
             }

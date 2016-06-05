@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>true if the shader compiled; otherwise, false.</returns>
         public static Boolean Compile(UInt32 shader, String[] source, out String log)
         {
-            Contract.Require(source, "source");
+            Contract.Require(source, nameof(source));
 
             unsafe
             {

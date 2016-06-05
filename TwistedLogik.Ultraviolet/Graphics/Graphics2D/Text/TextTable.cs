@@ -19,10 +19,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="font">The table's default font.</param>
         public TextTable(TextRenderer renderer, Int32 width, Int32 height, SpriteFont font)
         {
-            Contract.Require(renderer, "renderer");
-            Contract.EnsureRange(width >= 0, "width");
-            Contract.EnsureRange(height >= 0, "height");
-            Contract.Require(font, "font");
+            Contract.Require(renderer, nameof(renderer));
+            Contract.EnsureRange(width >= 0, nameof(width));
+            Contract.EnsureRange(height >= 0, nameof(height));
+            Contract.Require(font, nameof(font));
 
             this.renderer = renderer;
             this.width = width;
@@ -38,8 +38,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="height">The table's new height.</param>
         public void Resize(Int32 width, Int32 height)
         {
-            Contract.EnsureRange(width > 0, "width");
-            Contract.EnsureRange(height > 0, "height");
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
 
             this.width = width;
             this.height = height;
@@ -138,7 +138,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="color">The table's default text color.</param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color)
         {
-            Contract.Require(spriteBatch, "spriteBatch");
+            Contract.Require(spriteBatch, nameof(spriteBatch));
 
             PerformLayout();
 

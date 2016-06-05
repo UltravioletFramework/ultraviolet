@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public OpenGLEffectParameter(UltravioletContext uv, String name, UInt32 type)
             : base(uv)
         {
-            Contract.Require(name, "name");
+            Contract.Require(name, nameof(name));
 
             this.name = name ?? String.Empty;
             this.type = type;

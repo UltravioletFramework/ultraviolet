@@ -107,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="action">A delegate to invoke for each <see cref="GlyphShader"/> instance in the proxy.</param>
         public void ForEach(Object state, Action<Object, GlyphShader> action)
         {
-            Contract.Require(action, "action");
+            Contract.Require(action, nameof(action));
 
             if (glyphShader != null)
             {

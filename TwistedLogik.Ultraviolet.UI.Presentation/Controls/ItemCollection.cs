@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="owner">The <see cref="ItemsControl"/> that owns the collection.</param>
         public ItemCollection(ItemsControl owner)
         {
-            Contract.Require(owner, "owner");
+            Contract.Require(owner, nameof(owner));
 
             this.owner = owner;
         }

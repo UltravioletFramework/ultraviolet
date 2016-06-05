@@ -15,8 +15,8 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="extension">The file extension for which the importer is used.</param>
         public ContentImporterAttribute(String extension)
         {
-            Contract.RequireNotEmpty(extension, "extension");
-            Contract.Ensure(extension.StartsWith("."), "extension");
+            Contract.RequireNotEmpty(extension, nameof(extension));
+            Contract.Ensure(extension.StartsWith("."), nameof(extension));
 
             this.Extension = extension;
         }
