@@ -59,9 +59,10 @@ namespace TwistedLogik.Ultraviolet.Audio
         /// </summary>
         /// <param name="song">The <see cref="Song"/> to play.</param>
         /// <param name="loopStart">The time at which the song beings looping.</param>
-        /// <param name="loopLength">The length of the portion of the song which loops.</param>
+        /// <param name="loopLength">The length of the portion of the song which loops, or <see langword="null"/>
+        /// to loop until the end of the song.</param>
         /// <returns><see langword="true"/> if the song began playing successfully; otherwise, <see langword="false"/>.</returns>
-        public abstract Boolean Play(Song song, TimeSpan loopStart, TimeSpan loopLength);
+        public abstract Boolean Play(Song song, TimeSpan loopStart, TimeSpan? loopLength = null);
 
         /// <summary>
         /// Plays the specified <see cref="Song"/>.
@@ -82,9 +83,10 @@ namespace TwistedLogik.Ultraviolet.Audio
         /// <param name="pitch">A value from -1.0 (down one octave) to 1.0 (up one octave) indicating the song's pitch adjustment.</param>
         /// <param name="pan">A value from -1.0 (full left) to 1.0 (full right) representing the song's panning position.</param>
         /// <param name="loopStart">The time at which the song beings looping.</param>
-        /// <param name="loopLength">The length of the portion of the song which loops.</param>
+        /// <param name="loopLength">The length of the portion of the song which loops, or <see langword="null"/>
+        /// to loop until the end of the song.</param>
         /// <returns><see langword="true"/> if the song began playing successfully; otherwise, <see langword="false"/>.</returns>
-        public abstract Boolean Play(Song song, Single volume, Single pitch, Single pan, TimeSpan loopStart, TimeSpan loopLength);
+        public abstract Boolean Play(Song song, Single volume, Single pitch, Single pan, TimeSpan loopStart, TimeSpan? loopLength = null);
 
         /// <summary>
         /// Stops the song that is currently playing.

@@ -37,12 +37,12 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         }
 
         /// <inheritdoc/>
-        public override Boolean Play(Song song, TimeSpan loopStart, TimeSpan loopLength)
+        public override Boolean Play(Song song, TimeSpan loopStart, TimeSpan? loopLength)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(song, nameof(song));
 
-            return PlayInternal(song, 1f, 0f, 0f, loopStart, loopLength);
+            return PlayInternal(song, 1f, 0f, 0f, loopStart, loopLength ?? Duration - loopStart);
         }
 
         /// <inheritdoc/>
@@ -56,12 +56,12 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         }
 
         /// <inheritdoc/>
-        public override Boolean Play(Song song, Single volume, Single pitch, Single pan, TimeSpan loopStart, TimeSpan loopLength)
+        public override Boolean Play(Song song, Single volume, Single pitch, Single pan, TimeSpan loopStart, TimeSpan? loopLength)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(song, nameof(song));
 
-            return PlayInternal(song, volume, pitch, pan, loopStart, loopLength);
+            return PlayInternal(song, volume, pitch, pan, loopStart, loopLength ?? Duration - loopStart);
         }
 
         /// <inheritdoc/>
