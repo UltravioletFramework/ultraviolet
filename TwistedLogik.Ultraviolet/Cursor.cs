@@ -72,5 +72,21 @@ namespace TwistedLogik.Ultraviolet
         {
             get;
         }
+
+        /// <summary>
+        /// Gets the x-coordinate of the cursor's hotspot.
+        /// </summary>
+        public abstract Int32 HotspotX
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the y-coordinate of the cursor's hotspot.
+        /// </summary>
+        public abstract Int32 HotspotY
+        {
+            get;
+        }
     }
 }

@@ -138,6 +138,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
+    <Compile Include="CursorCollectionTests.cs" />
     <Compile Include="Content\AssetIDTests.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteFontTests.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteTests.cs" />
@@ -933,6 +934,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Textures\Triangle_Preprocessed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Cursors\CursorsJson.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">

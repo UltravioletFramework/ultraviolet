@@ -28,20 +28,24 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (AreCursorsSupported(uv))
             {
                 this.cursor = SDL.CreateColorCursor(((OpenGLSurface2D)surface).Native, hx, hy);
-                this.width  = surface.Width;
-                this.height = surface.Height;
+                this.Width = surface.Width;
+                this.Height = surface.Height;
+                this.HotspotX = hx;
+                this.HotspotY = hy;
 
                 if (this.cursor == null)
                 {
-                    this.width  = 0;
-                    this.height = 0;
+                    this.Width = 0;
+                    this.Height = 0;
+                    this.HotspotX = 0;
+                    this.HotspotY = 0;
                 }
             }
             else
             {
                 this.cursor = null;
-                this.width  = 0;
-                this.height = 0;
+                this.Width = 0;
+                this.Height = 0;
             }
         }
 
@@ -58,16 +62,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <inhertidoc/>
-        public override Int32 Width
-        {
-            get { return width; }
-        }
+        public override Int32 Width { get; }
 
         /// <inhertidoc/>
-        public override Int32 Height
-        {
-            get { return height; }
-        }
+        public override Int32 Height { get; }
+
+        /// <inhertidoc/>
+        public override Int32 HotspotX { get; }
+
+        /// <inhertidoc/>
+        public override Int32 HotspotY { get; }
 
         /// <summary>
         /// Gets a pointer to the native SDL2 cursor.
@@ -98,9 +102,5 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
         // The native SDL2 cursor.
         private readonly SDL_Cursor* cursor;
-
-        // Property values.
-        private readonly Int32 width;
-        private readonly Int32 height;
     }
 }
