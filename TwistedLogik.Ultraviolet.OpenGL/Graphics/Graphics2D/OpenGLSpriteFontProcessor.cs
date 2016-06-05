@@ -157,15 +157,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
 
             var texturePath = reader.ReadString();
             var texture = manager.Load<Texture2D>(texturePath);
-            var textureRegion = default(Rectangle?);
             var textureRegionSpecified = reader.ReadBoolean();
             if (textureRegionSpecified)
             {
-                textureRegion = new Rectangle(
-                    reader.ReadInt32(),
-                    reader.ReadInt32(),
-                    reader.ReadInt32(),
-                    reader.ReadInt32());
+                reader.ReadInt32();
+                reader.ReadInt32();
+                reader.ReadInt32();
+                reader.ReadInt32();
             }
 
             var substitution = reader.ReadChar();
