@@ -21,21 +21,13 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
 
         }
 
-        /// <summary>
-        /// Updates the player's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last update.</param>
+        /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
         }
 
-        /// <summary>
-        /// Plays a sound effect.
-        /// </summary>
-        /// <param name="soundEffect">The sound effect to play.</param>
-        /// <param name="loop">A value indicating whether to loop the sound effect.</param>
-        /// <returns>true if the sound effect began playing successfully; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean Play(SoundEffect soundEffect, Boolean loop = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -43,15 +35,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             return PlayInternal(soundEffect, 1f, 0f, 0f, loop);
         }
 
-        /// <summary>
-        /// Plays a sound effect.
-        /// </summary>
-        /// <param name="soundEffect">The sound effect to play.</param>
-        /// <param name="volume">A value from 0.0 (silent) to 1.0 (full volume) representing the sound effect's volume.</param>
-        /// <param name="pitch">A value from -1.0 (down one octave) to 1.0 (up one octave) indicating the sound effect's pitch adjustment.</param>
-        /// <param name="pan">A value from -1.0 (full left) to 1.0 (full right) representing the sound effect's panning position.</param>
-        /// <param name="loop">A value indicating whether to loop the sound effect.</param>
-        /// <returns>true if the sound effect began playing successfully; otherwise, false.</returns>
+        /// <inheritdoc/>
         public override Boolean Play(SoundEffect soundEffect, Single volume, Single pitch, Single pan, Boolean loop = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -59,28 +43,28 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             return PlayInternal(soundEffect, volume, pitch, pan, loop);
         }
 
-        /// <summary>
-        /// Stops the sound effect.
-        /// </summary>
+        /// <inheritdoc/>
         public override void Stop()
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
+            EnsureChannelIsValid();
 
             if (State != PlaybackState.Stopped)
             {
                 if (!BASSNative.ChannelStop(channel))
                     throw new BASSException();
-
-                Release();
             }
+
+            Release();
         }
 
-        /// <summary>
-        /// Pauses the sound effect.
-        /// </summary>
+        /// <inheritdoc/>
         public override void Pause()
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
+            EnsureChannelIsValid();
 
             if (State == PlaybackState.Playing)
             {
@@ -89,12 +73,12 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Resumes the sound effect.
-        /// </summary>
+        /// <inheritdoc/>
         public override void Resume()
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
+            EnsureChannelIsValid();
 
             if (State == PlaybackState.Paused)
             {
@@ -103,11 +87,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Slides the sound effect's volume to the specified value over the specified period of time.
-        /// </summary>
-        /// <param name="volume">The value to which to slide the sound effect's volume.</param>
-        /// <param name="time">The amount of time over which to perform the slide.</param>
+        /// <inheritdoc/>
         public override void SlideVolume(Single volume, TimeSpan time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -117,11 +97,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             BASSUtil.SlideVolume(channel, volume, time);
         }
 
-        /// <summary>
-        /// Slides the sound effect's pitch to the specified value over the specified period of time.
-        /// </summary>
-        /// <param name="pitch">The value to which to slide the sound effect's pitch.</param>
-        /// <param name="time">The amount of time over which to perform the slide.</param>
+        /// <inheritdoc/>
         public override void SlidePitch(Single pitch, TimeSpan time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -132,11 +108,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             BASSUtil.SlidePitch(channel, pitch, time);
         }
 
-        /// <summary>
-        /// Slides the sound effect's pan to the specified value over the specified period of time.
-        /// </summary>
-        /// <param name="pan">The value to which to slide the sound effect's pan.</param>
-        /// <param name="time">The amount of time over which to perform the slide.</param>
+        /// <inheritdoc/>
         public override void SlidePan(Single pan, TimeSpan time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -146,9 +118,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             BASSUtil.SlidePan(channel, pan, time);
         }
 
-        /// <summary>
-        /// Gets the player's current playback state.
-        /// </summary>
+        /// <inheritdoc/>
         public override PlaybackState State
         {
             get
@@ -172,13 +142,12 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
                             return PlaybackState.Stopped;
                     }
                 }
+
                 return PlaybackState.Stopped;
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the sound effect is playing.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean IsPlaying
         {
             get
@@ -189,9 +158,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the sound effect is looping.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean IsLooping
         {
             get
@@ -213,10 +180,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets or sets the player's position within the currently playing sound effect.
-        /// </summary>
-        /// <remarks>If no sound is currently playing, TimeSpan.Zero is returned.</remarks>
+        /// <inheritdoc/>
         [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
         public override TimeSpan Position
         {
@@ -265,10 +229,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets the duration of the currently playing sound effect.
-        /// </summary>
-        /// <remarks>If no sound is currently playing, TimeSpan.Zero is returned.</remarks>
+        /// <inheritdoc/>
         public override TimeSpan Duration
         {
             get
@@ -283,9 +244,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value from 0.0 (silent) to 1.0 (full volume) representing the sound effect's volume.
-        /// </summary>
+        /// <inheritdoc/>
         public override Single Volume
         {
             get
@@ -307,9 +266,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value from -1.0 (down one octave) to 1.0 (up one octave) indicating the sound effect's pitch adjustment.
-        /// </summary>
+        /// <inheritdoc/>
         public override Single Pitch
         {
             get
@@ -335,9 +292,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value from -1.0 (full left) to 1.0 (full right) representing the sound effect's panning position.
-        /// </summary>
+        /// <inheritdoc/>
         public override Single Pan
         {
             get
@@ -357,6 +312,66 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
 
                 BASSUtil.SetPitch(channel, MathUtil.Clamp(value, -1f, 1f));
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                Release();
+            }
+            base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Releases any BASS resources being held by the player.
+        /// </summary>
+        private void Release()
+        {
+            if (stream != 0)
+            {
+                if (!BASSNative.StreamFree(stream))
+                    throw new BASSException();
+
+                stream = 0;
+            }
+
+            if (sample != 0)
+            {
+                if (!BASSNative.SampleFree(sample))
+                    throw new BASSException();
+
+                sample = 0;
+            }
+
+            channel = 0;
+            promoted = false;
+            playing = null;
+        }
+
+        /// <summary>
+        /// Throws an <see cref="System.InvalidOperationException"/> if the channel is not in a valid state.
+        /// </summary>
+        private void EnsureChannelIsValid()
+        {
+            if (State == PlaybackState.Stopped)
+            {
+                throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the channel is in a valid state.
+        /// </summary>
+        /// <returns>true if the channel is in a valid state; otherwise, false.</returns>
+        private Boolean IsChannelValid()
+        {
+            if (playing != null && playing.Disposed)
+            {
+                Release();
+            }
+            return State != PlaybackState.Stopped;
         }
 
         /// <summary>
@@ -380,12 +395,10 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             {
                 var error = BASSNative.ErrorGetCode();
                 if (error == BASSNative.BASS_ERROR_NOCHAN)
-                {
                     return false;
-                }
+
                 throw new BASSException(error);
             }
-            bassfx.SampleFreed += HandleSampleFreed;
 
             // Set the channel's attributes.
             if (pitch == 0)
@@ -402,64 +415,12 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             // Play the channel.
             if (!BASSNative.ChannelPlay(channel, true))
                 throw new BASSException();
+
+            this.playing = soundEffect;
+
             return true;
         }
-
-        /// <summary>
-        /// Handles the currently-playing sample being freed.
-        /// </summary>
-        private void HandleSampleFreed(Object sender, EventArgs e)
-        {
-            var sfx = (BASSSoundEffect)sender;
-            sfx.SampleFreed -= HandleSampleFreed;
-            Stop();
-        }
         
-        /// <summary>
-        /// Releases any BASS resources being held by the player.
-        /// </summary>
-        private void Release()
-        {
-            if (stream != 0)
-            {
-                if (!BASSNative.StreamFree(stream))
-                    throw new BASSException();
-
-                stream = 0;
-            }
-
-            if (sample != 0)
-            {
-                if (!BASSNative.SampleFree(sample))
-                    throw new BASSException();
-
-                sample = 0;
-            }
-
-            channel  = 0;
-            promoted = false;
-        }
-
-        /// <summary>
-        /// Throws an <see cref="System.InvalidOperationException"/> if the channel is not in a valid state.
-        /// </summary>
-        private void EnsureChannelIsValid()
-        {
-            if (State == PlaybackState.Stopped)
-            {
-                throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the channel is in a valid state.
-        /// </summary>
-        /// <returns>true if the channel is in a valid state; otherwise, false.</returns>
-        private Boolean IsChannelValid()
-        {
-            return State != PlaybackState.Stopped;
-        }
-
         /// <summary>
         /// Promotes the current channel to a stream.  
         /// This is necessary if the pitch is shifted, because BASS_FX only works on streams.
@@ -515,8 +476,8 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
                 }
                 sampleDataPosition += (int)byteCount;
 
-                return streampos >= sampleDataLength ? 
-                    byteCount | BASSNative.BASS_STREAMPROC_END : 
+                return streampos >= sampleDataLength ?
+                    byteCount | BASSNative.BASS_STREAMPROC_END :
                     byteCount;
             });
 
@@ -557,6 +518,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         private UInt32 sample;
         private UInt32 stream;
         private UInt32 channel;
+        private SoundEffect playing;
 
         // The data source for promoted streams.
         private BASS_SAMPLE sampleInfo;

@@ -41,11 +41,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
                 throw new BASSException();
         }
 
-        /// <summary>
-        /// Plays the sound effect in a fire-and-forget fashion.
-        /// </summary>
-        /// <remarks>If you need to control the sound effect's properties while it is playing, play it
-        /// using an instance of the <see cref="SoundEffectPlayer"/> class instead.</remarks>
+        /// <inheritdoc/>
         public override void Play()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -58,14 +54,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
                 throw new BASSException();
         }
 
-        /// <summary>
-        /// Plays the sound effect in a fire-and-forget fashion with the specified parameters.
-        /// </summary>
-        /// <remarks>If you need to control the sound effect's properties while it is playing, play it
-        /// using an instance of the <see cref="SoundEffectPlayer"/> class instead.</remarks>
-        /// <param name="volume">A value from 0.0 (silent) to 1.0 (full volume) representing the sound effect's volume.</param>
-        /// <param name="pitch">A value from -1.0 (down one octave) to 1.0 (up one octave) indicating the sound effect's pitch adjustment.</param>
-        /// <param name="pan">A value from -1.0 (full left) to 1.0 (full right) representing the sound effect's panning position.</param>
+        /// <inheritdoc/>
         public override void Play(Single volume, Single pitch, Single pan)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -104,9 +93,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
                 throw new BASSException();
         }
 
-        /// <summary>
-        /// Gets the sound effect's duration.
-        /// </summary>
+        /// <inheritdoc/>
         public override TimeSpan Duration
         {
             get
@@ -130,23 +117,13 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             info = this.sampleInfo;
             return sample;
         }
-
-        /// <summary>
-        /// Occurs when the sound effect's sample data is about to be freed.
-        /// </summary>
-        internal event EventHandler SampleFreed;
-
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
                 return;
-
-            OnSampleFreed(EventArgs.Empty);
-
+            
             if (!BASSNative.SampleFree(sample))
                 throw new BASSException();
 
@@ -158,13 +135,6 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
 
             base.Dispose(disposing);
         }
-
-        /// <summary>
-        /// Raises the Disposed event.
-        /// </summary>
-        /// <param name="e">An EventArgs that contains the event data.</param>
-        private void OnSampleFreed(EventArgs e) =>
-            SampleFreed?.Invoke(this, e);
 
         // The sound effect's sample data.
         private IntPtr data;
