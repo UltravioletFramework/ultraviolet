@@ -29,13 +29,30 @@ namespace TwistedLogik.Ultraviolet.Tests.Content
 
         [Test]
         [Category("Content")]
-        public void AssetID_DeserializesFromJson()
+        public void AssetID_DeserializesFromJson_WithXmlManifest()
         {
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithContent(content =>
                 {
                     content.Ultraviolet.GetContent().Manifests.Load(Path.Combine("Content", "Manifests", "Test.manifest"));
                     
+                    var id = JsonConvert.DeserializeObject<AssetID>(@"""#Test:Textures:Triangle""");
+
+                    TheResultingValue(id)
+                        .ShouldBe(AssetID.Parse("#Test:Textures:Triangle"));
+                })
+                .RunForOneFrame();
+        }
+
+        [Test]
+        [Category("Content")]
+        public void AssetID_DeserializesFromJson_WithJsonManifest()
+        {
+            GivenAnUltravioletApplicationWithNoWindow()
+                .WithContent(content =>
+                {
+                    content.Ultraviolet.GetContent().Manifests.Load(Path.Combine("Content", "Manifests", "TestJson.jsmanifest"));
+
                     var id = JsonConvert.DeserializeObject<AssetID>(@"""#Test:Textures:Triangle""");
 
                     TheResultingValue(id)

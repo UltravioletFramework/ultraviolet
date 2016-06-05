@@ -374,6 +374,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Manifests\TestJson.jsmanifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Songs\Deep Haze.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

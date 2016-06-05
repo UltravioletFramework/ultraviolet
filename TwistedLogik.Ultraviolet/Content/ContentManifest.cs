@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 case ".js":
                 case ".json":
-                case ".jmanifest":
+                case ".jsmanifest":
                     return LoadJson(path);
 
                 default:

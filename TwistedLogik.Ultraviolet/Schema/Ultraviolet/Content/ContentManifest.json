@@ -4,7 +4,10 @@
   "type": "object",
   "properties": {
     "name": { "type": "string" },
-    "groups": { "$ref": "#/definitions/contentManifestGroup" }
+    "groups": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/contentManifestGroup" }
+    }
   },
   "required": [ "name" ],
   "definitions": {
