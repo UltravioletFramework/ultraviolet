@@ -44,15 +44,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         {
                             var cell = row.Cells.Add();
                             cell.TextFlags = cellDesc.TextFlags;
-                            cell.Text = cellDesc.Text;
+                            cell.RawText = cellDesc.Text;
                             cell.Format = cellDesc.Format;
                             cell.Width = cellDesc.Width;
                             cell.Height = cellDesc.Height;
 
                             if (!String.IsNullOrEmpty(cellDesc.Binding))
-                            {
                                 cell.Bind(cellDesc.Binding);
-                            }
+
+                            cell.Refresh();
                         }
                     }
                 }

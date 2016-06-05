@@ -27,9 +27,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public void Refresh()
         {
             if (getBoundData == null)
-                return;
+            {
+                if (Format == null)
+                    return;
 
-            Text = getBoundData(row.Table.ViewModel);
+                FormattedText = String.Format(Format, RawText);
+            }
+            else
+            {
+                FormattedText = getBoundData(row.Table.ViewModel);
+            }
         }
 
         /// <summary>
@@ -48,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             this.getBoundData = (vm) =>
             {
-                var obj = getter.Invoke(vm, null);
+                var obj = vm == null ? null : getter.Invoke(vm, null);
                 var fmt = String.IsNullOrWhiteSpace(Format) ? "{0}" : Format;
                 return String.Format(fmt, obj);
             };
@@ -98,19 +105,27 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets the cell's text.
+        /// Gets the cell's raw text.
         /// </summary>
-        public String Text
+        public String RawText
         {
-            get { return text; }
+            get { return rawText; }
             set
             {
-                if (text != value)
+                if (rawText != value)
                 {
-                    text = value;
+                    rawText = value;
                     row.Table.MarkDirty();
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the cell's formatted text.
+        /// </summary>
+        public String FormattedText
+        {
+            get; private set;
         }
 
         /// <summary>
@@ -194,7 +209,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         internal void PerformLayout(TextRenderer renderer, Int32 width, Int32 height)
         {
             var settings = new TextLayoutSettings(row.Table.Font, width, null, textFlags);
-            renderer.CalculateLayout(text, layout, settings);
+            renderer.CalculateLayout(FormattedText, layout, settings);
         }
 
         /// <summary>
@@ -232,7 +247,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         // Property values.
         private readonly TextTableRow<ViewModelType> row;
         private String format;
-        private String text;
+        private String rawText;
         private TextFlags textFlags;
         private Int32? width;
         private Int32? height;

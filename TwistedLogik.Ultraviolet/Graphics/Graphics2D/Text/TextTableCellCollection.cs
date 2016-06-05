@@ -55,13 +55,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var cell = new TextTableCell<ViewModelType>(row)
             {
                 Format = format,
-                Text = text,
+                RawText = text,
                 TextFlags = textFlags,
                 Width = width,
                 Height = height,
             };
+            cell.Refresh();
+
             AddInternal(cell);
             row.Table.MarkDirty();
+
             return cell;
         }
 
