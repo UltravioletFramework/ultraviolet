@@ -47,9 +47,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         public override void Stop()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-
-            EnsureChannelIsValid();
-
+            
             if (State != PlaybackState.Stopped)
             {
                 if (!BASSNative.ChannelStop(channel))
