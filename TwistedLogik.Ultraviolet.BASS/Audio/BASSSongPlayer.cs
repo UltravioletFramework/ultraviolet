@@ -69,15 +69,10 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (State != PlaybackState.Stopped)
+            if (StopInternal())
             {
-                if (!BASSNative.ChannelStop(stream))
-                    throw new BASSException();
-
-                stream = 0;
-
-                loopSyncDelegate = null;
-                loopSync = 0;
+                OnStateChanged();
+                OnSongEnded();
             }
         }
 
@@ -90,6 +85,8 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             {
                 if (!BASSNative.ChannelPause(stream))
                     throw new BASSException();
+
+                OnStateChanged();
             }
         }
 
@@ -102,6 +99,8 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             {
                 if (!BASSNative.ChannelPlay(stream, false))
                     throw new BASSException();
+
+                OnStateChanged();
             }
         }
 
@@ -182,7 +181,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
                 if (!IsChannelValid())
                     return false;
 
-                return loopSync != 0 || BASSUtil.GetIsLooping(stream);
+                return syncLoop != 0 || BASSUtil.GetIsLooping(stream);
             }
             set
             {
@@ -190,13 +189,13 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
 
                 EnsureChannelIsValid();
 
-                if (loopSync != 0)
+                if (syncLoop != 0)
                 {
-                    if (!BASSNative.ChannelRemoveSync(stream, loopSync))
+                    if (!BASSNative.ChannelRemoveSync(stream, syncLoop))
                         throw new BASSException();
 
-                    loopSync = 0;
-                    loopSyncDelegate = null;
+                    syncLoop = 0;
+                    syncLoopDelegate = null;
                 }
                 else
                 {
@@ -312,6 +311,15 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             }
         }
 
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+                StopInternal();
+
+            base.Dispose(disposing);
+        }
+
         /// <summary>
         /// Plays the specified song.
         /// </summary>
@@ -341,16 +349,48 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             {
                 var loopStartInBytes = BASSNative.ChannelSeconds2Bytes(stream, loopStart.Value.TotalSeconds);
                 var loopEndInBytes = BASSNative.ChannelSeconds2Bytes(stream, (loopStart + loopLength).Value.TotalSeconds);
-                loopSyncDelegate = LoopSync;
-                loopSync = BASSNative.ChannelSetSync(stream, BASSSync.SYNC_POS, loopEndInBytes, loopSyncDelegate, new IntPtr((Int32)loopStartInBytes));
+                syncLoopDelegate = SyncLoop;
+                syncLoop = BASSNative.ChannelSetSync(stream, BASSSync.SYNC_POS, loopEndInBytes, syncLoopDelegate, new IntPtr((Int32)loopStartInBytes));
+                if (syncLoop == 0)
+                    throw new BASSException();
             }
+
+            syncEndDelegate = SyncEnd;
+            syncEnd = BASSNative.ChannelSetSync(stream, BASSSync.SYNC_END, 0, syncEndDelegate, IntPtr.Zero);
+            if (syncEnd == 0)
+                throw new BASSException();
 
             if (!BASSNative.ChannelPlay(stream, true))
                 throw new BASSException();
 
+            OnStateChanged();
+            OnSongStarted();
+
             return true;
         }
-        
+
+        /// <summary>
+        /// Releases the memory associated with the underlying stream object.
+        /// </summary>
+        private Boolean StopInternal()
+        {
+            if (stream == 0)
+                return false;
+
+            if (!BASSNative.StreamFree(stream))
+                throw new BASSException();
+
+            stream = 0;
+
+            syncLoopDelegate = null;
+            syncLoop = 0;
+
+            syncEndDelegate = null;
+            syncEnd = 0;
+
+            return true;
+        }
+
         /// <summary>
         /// Throws an <see cref="System.InvalidOperationException"/> if the channel is not in a valid state.
         /// </summary>
@@ -365,10 +405,25 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         /// <summary>
         /// Performs custom looping when a loop range is specified.
         /// </summary>
-        private void LoopSync(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
+        private void SyncLoop(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
         {
             if (!BASSNative.ChannelSetPosition(channel, (UInt32)user, 0))
                 throw new BASSException();
+        }
+
+        /// <summary>
+        /// Raises a callback when a song ends.
+        /// </summary>
+        private void SyncEnd(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
+        {
+            if (!IsLooping)
+            {
+                if (StopInternal())
+                {
+                    OnStateChanged();
+                    OnSongEnded();
+                }
+            }
         }
 
         /// <summary>
@@ -382,7 +437,9 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
 
         // State values.
         private UInt32 stream;
-        private UInt32 loopSync;
-        private SyncProc loopSyncDelegate;
+        private UInt32 syncLoop;
+        private UInt32 syncEnd;
+        private SyncProc syncLoopDelegate;
+        private SyncProc syncEndDelegate;
     }
 }
