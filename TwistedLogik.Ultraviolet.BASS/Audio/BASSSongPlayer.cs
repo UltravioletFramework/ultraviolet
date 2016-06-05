@@ -153,7 +153,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
                             return PlaybackState.Stopped;
 
                         case BASSNative.BASS_ACTIVE_PAUSED:
-                            return PlaybackState.Stopped;
+                            return PlaybackState.Paused;
                     }
                 }
                 return PlaybackState.Stopped;
