@@ -138,6 +138,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
+    <Compile Include="Audio\SongTests.cs" />
     <Compile Include="CursorCollectionTests.cs" />
     <Compile Include="Content\AssetIDTests.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteFontTests.cs" />
@@ -145,8 +146,8 @@
     <Compile Include="Graphics\Texture2DTests.cs" />
     <Compile Include="Graphics\TextureAtlasTests.cs" />
     <Compile Include="SetUpFixture.cs" />
-    <Compile Include="Audio\BASS_SoundEffectPlayerTests.cs" />
-    <Compile Include="Audio\BASS_SongPlayerTests.cs" />
+    <Compile Include="Audio\SoundEffectPlayerTests.cs" />
+    <Compile Include="Audio\SongPlayerTests.cs" />
     <Compile Include="CircleDTests.cs" />
     <Compile Include="Graphics\CustomCompositor.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextParserTests.cs" />
@@ -382,6 +383,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Songs\Tone.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Sprites\ExplosionJson.jssprite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

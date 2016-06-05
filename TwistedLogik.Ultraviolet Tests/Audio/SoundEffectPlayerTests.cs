@@ -6,7 +6,7 @@ using TwistedLogik.Ultraviolet.Testing;
 namespace TwistedLogik.Ultraviolet.Tests.Audio
 {
     [TestFixture]
-    public class BASS_SoundEffectPlayerTests : UltravioletApplicationTestFramework
+    public class SoundEffectPlayerTests : UltravioletApplicationTestFramework
     {
         [Test]
         [Category("Audio")]

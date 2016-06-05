@@ -6,21 +6,21 @@ using TwistedLogik.Ultraviolet.Testing;
 namespace TwistedLogik.Ultraviolet.Tests.Audio
 {
     [TestFixture]
-    public class BASS_SongPlayerTests : UltravioletApplicationTestFramework
+    public class SongPlayerTests : UltravioletApplicationTestFramework
     {
         [Test]
         [Category("Audio")]
-        public void BASS_SongPlayer_PlaySetsVolumePitchAndPan()
+        public void SongPlayer_PlaySetsVolumePitchAndPan()
         {
             var songPlayer = default(SongPlayer);
-            var song       = default(Song);
+            var song = default(Song);
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
                     songPlayer = SongPlayer.Create();
-                    song       = content.Load<Song>("Songs/Deep Haze");
+                    song = content.Load<Song>("Songs/Deep Haze");
 
                     songPlayer.Play(song, 0.25f, 0.50f, 0.75f, false);
 
@@ -33,17 +33,17 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
 
         [Test]
         [Category("Audio")]
-        public void BASS_SongPlayer_PlayResetsVolumePitchAndPanWhenNotSpecified()
+        public void SongPlayer_PlayResetsVolumePitchAndPanWhenNotSpecified()
         {
             var songPlayer = default(SongPlayer);
-            var song       = default(Song);
+            var song = default(Song);
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
                     songPlayer = SongPlayer.Create();
-                    song       = content.Load<Song>("Songs/Deep Haze");
+                    song = content.Load<Song>("Songs/Deep Haze");
 
                     songPlayer.Play(song, 0.25f, 0.50f, 0.75f, false);
                     songPlayer.Stop();
@@ -58,17 +58,17 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
 
         [Test]
         [Category("Audio")]
-        public void BASS_SongPlayer_SlidesVolumeCorrectly()
+        public void SongPlayer_SlidesVolumeCorrectly()
         {
             var songPlayer = default(SongPlayer);
-            var song       = default(Song);
+            var song = default(Song);
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
                     songPlayer = SongPlayer.Create();
-                    song       = content.Load<Song>("Songs/Deep Haze");
+                    song = content.Load<Song>("Songs/Deep Haze");
 
                     songPlayer.Play(song, false);
 
@@ -83,17 +83,17 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
 
         [Test]
         [Category("Audio")]
-        public void BASS_SongPlayer_SlidesPitchCorrectly()
+        public void SongPlayer_SlidesPitchCorrectly()
         {
             var songPlayer = default(SongPlayer);
-            var song       = default(Song);
+            var song = default(Song);
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
                     songPlayer = SongPlayer.Create();
-                    song       = content.Load<Song>("Songs/Deep Haze");
+                    song = content.Load<Song>("Songs/Deep Haze");
 
                     songPlayer.Play(song, false);
 
@@ -108,17 +108,17 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
 
         [Test]
         [Category("Audio")]
-        public void BASS_SongPlayer_SlidesPanCorrectly()
+        public void SongPlayer_SlidesPanCorrectly()
         {
             var songPlayer = default(SongPlayer);
-            var song       = default(Song);
+            var song = default(Song);
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
                     songPlayer = SongPlayer.Create();
-                    song       = content.Load<Song>("Songs/Deep Haze");
+                    song = content.Load<Song>("Songs/Deep Haze");
 
                     songPlayer.Play(song, false);
 
@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
 
         [Test]
         [Category("Audio")]
-        public void BASS_SongPlayer_ThrowsExceptionIfVolumeSetWhileNotPlaying()
+        public void SongPlayer_ThrowsExceptionIfVolumeSetWhileNotPlaying()
         {
             var songPlayer = default(SongPlayer);
 
@@ -153,7 +153,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
 
         [Test]
         [Category("Audio")]
-        public void BASS_SongPlayer_ThrowsExceptionIfPitchSetWhileNotPlaying()
+        public void SongPlayer_ThrowsExceptionIfPitchSetWhileNotPlaying()
         {
             var songPlayer = default(SongPlayer);
 
@@ -173,7 +173,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Audio
 
         [Test]
         [Category("Audio")]
-        public void BASS_SongPlayer_ThrowsExceptionIfPanSetWhileNotPlaying()
+        public void SongPlayer_ThrowsExceptionIfPanSetWhileNotPlaying()
         {
             var songPlayer = default(SongPlayer);
 
