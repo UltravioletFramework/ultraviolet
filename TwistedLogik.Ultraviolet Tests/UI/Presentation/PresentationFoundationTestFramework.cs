@@ -1,5 +1,5 @@
 ﻿using System;
-using NUnit.Framework;
+using System.IO;
 using TwistedLogik.Nucleus.Testing;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Testing;
@@ -85,8 +85,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
                 })
                 .WithContent(content =>
                 {
-                    var contentManifestFiles = content.GetAssetFilePathsInDirectory("Manifests");
-                    content.Ultraviolet.GetContent().Manifests.Load(contentManifestFiles);
+                    content.Ultraviolet.GetContent().Manifests.Load(Path.Combine("Content", "Manifests", "Global.manifest"));
 
                     var globalStyleSheet = content.Load<UvssDocument>(@"UI\DefaultUIStyles");
                     content.Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStyleSheet(globalStyleSheet);
