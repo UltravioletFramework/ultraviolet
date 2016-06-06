@@ -8,11 +8,188 @@ using TwistedLogik.Nucleus.Text;
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
+    /// Represents a method which determines the color with which to draw a link.
+    /// </summary>
+    /// <param name="target">The link target.</param>
+    /// <param name="visited">A value indicating whether the link has been visited.</param>
+    /// <param name="hovering">A value indicating whether the link is currently under the cursor.</param>
+    /// <param name="active">A value indicating whether the link is currently active (i.e. being clicked).</param>
+    /// <param name="color">The color to apply to the specified link.</param>
+    /// <returns><see langword="true"/> if the text color should be changed; otherwise, <see langword="false"/>.</returns>
+    public delegate Boolean LinkColorizer(String target, Boolean visited, Boolean hovering, Boolean active, out Color color);
+
+    /// <summary>
+    /// Represents a method which executes a link.
+    /// </summary>
+    /// <param name="target">The target of the link being executed.</param>
+    /// <returns><see langword="true"/> if the link was executed successfully;
+    /// otherwise, <see langword="false"/>.</returns>
+    public delegate Boolean LinkClickHandler(String target);
+
+    /// <summary>
+    /// Represents a method which retrieves a value indicating whether the 
+    /// specified link target has been visited.
+    /// </summary>
+    /// <param name="target">The link target to evaluate.</param>
+    /// <returns><see langword="true"/> if the specified link target has been visited;
+    /// otherwise, <see langword="false"/>.</returns>
+    public delegate Boolean LinkStateEvaluator(String target);
+
+    /// <summary>
     /// Contains methods for rendering formatted text.
     /// </summary>
     [SecuritySafeCritical]
     public sealed unsafe class TextRenderer
     {
+        /// <summary>
+        /// Deactivates the specified command stream's currently active link, if it has one.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <returns><see langword="true"/> if a link was deactivated; otherwise, <see langword="false"/>.</returns>
+        public Boolean DeactivateLink(TextLayoutCommandStream input)
+        {
+            Contract.Require(input, nameof(input));
+
+            var hadActivatedLinkIndex = input.ActiveLinkIndex.HasValue;
+            input.ActiveLinkIndex = null;
+            return hadActivatedLinkIndex;
+        }
+
+        /// <summary>
+        /// Activates the link at the position within the input command stream specified by the value of
+        /// the <see cref="TextLayoutCommandStream.CursorPosition"/> property, if any such link exists,
+        /// and deactivates all other links within the command stream.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <returns><see langword="true"/> if a link was found and activated; otherwise, <see langword="false"/>.</returns>
+        public Boolean ActivateLinkAtCursor(TextLayoutCommandStream input)
+        {
+            Contract.Require(input, nameof(input));
+
+            var position = input.CursorPosition;
+            if (position == null)
+            {
+                input.ActiveLinkIndex = null;
+                return false;
+            }
+
+            return ActivateLinkAtPosition(input, position.Value.X, position.Value.Y);
+        }
+
+        /// <summary>
+        /// Activates the link at the specified position within the input command stream, if any such link exists,
+        /// and deactivates all other links within the command stream.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="x">The bounds-relative x-coordinate to search for a link.</param>
+        /// <param name="y">The bounds-relative y-coordinate to search for a link.</param>
+        /// <returns><see langword="true"/> if a link was found and activated; otherwise, <see langword="false"/>.</returns>
+        public Boolean ActivateLinkAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
+        {
+            Contract.Require(input, nameof(input));
+            
+            var acquiredPointers = !input.HasAcquiredPointers;
+            if (acquiredPointers)
+                input.AcquirePointers();
+
+            input.Seek(0);
+
+            var linkIndex = GetLinkIndexAtPosition(input, x, y);
+            var linkTarget = linkIndex.HasValue ? input.GetLinkTarget(linkIndex.Value) : null;
+
+            if (acquiredPointers)
+                input.ReleasePointers();
+
+            ClearLayoutStacks();
+
+            input.ActiveLinkIndex = linkIndex;
+            return input.ActiveLinkIndex.HasValue;
+        }
+
+        /// <summary>
+        /// Executes the specified command stream's currently active link, if it has one.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="onlyIfLinkContainsCursor">A value specifying whether the link should only be activated
+        /// if it currently contains the cursor position as specified by the value of the layout
+        /// stream's <see cref="TextLayoutCommandStream.CursorPosition"/> property.</param>
+        /// <returns><see langword="true"/> if a link is found and successfully executed; otherwise, <see langword="false"/>.</returns>
+        public Boolean ExecuteActivatedLink(TextLayoutCommandStream input, Boolean onlyIfLinkContainsCursor = true)
+        {
+            Contract.Require(input, nameof(input));
+
+            if (input.ActiveLinkIndex == null || LinkClickHandler == null)
+                return false;
+
+            if (onlyIfLinkContainsCursor)
+            {
+                if (GetLinkIndexAtCursor(input) != input.ActiveLinkIndex)
+                {
+                    input.ActiveLinkIndex = null;
+                    return false;
+                }
+            }
+
+            var target = input.GetLinkTarget(input.ActiveLinkIndex.Value);
+            var result = LinkClickHandler(target);
+            input.ActiveLinkIndex = null;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the index of the link at the cursor position specified by the value
+        /// of the <see cref="TextLayoutCommandStream.CursorPosition"/> property.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <returns>The index of the link at the specified position within the input command
+        /// stream's layout area, or <see langword="null"/> if there no such link.</returns>
+        public Int16? GetLinkIndexAtCursor(TextLayoutCommandStream input)
+        {
+            Contract.Require(input, nameof(input));
+
+            if (input.CursorPosition == null)
+                return null;
+
+            var position = input.CursorPosition.Value;
+            return GetLinkIndexAtPosition(input, position.X, position.Y);
+        }
+
+        /// <summary>
+        /// Gets the index of the link at the specified position within the 
+        /// input command stream's layout area.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="x">The layout-relative x-coordinate of the position to evaluate.</param>
+        /// <param name="y">The layout-relative y-coordinate of the position to evaluate.</param>
+        /// <returns>The index of the link at the specified position within the input command
+        /// stream's layout area, or <see langword="null"/> if there no such link.</returns>
+        public Int16? GetLinkIndexAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y)
+        {
+            Contract.Require(input, nameof(input));
+
+            var linkIndex = default(Int16?);
+
+            var acquiredPointers = !input.HasAcquiredPointers;
+            if (acquiredPointers)
+                input.AcquirePointers();
+
+            input.Seek(0);
+
+            var line = default(Int32?);
+            var glyph = GetGlyphOrInsertionPointAtPosition(input, x, y, out line, GlyphSearchMode.SearchGlyphs);
+
+            if (glyph != null)
+                linkIndex = linkStack.Count > 0 ? linkStack.Peek().Value : (Int16?)null;
+
+            if (acquiredPointers)
+                input.ReleasePointers();
+
+            ClearLayoutStacks();
+
+            return linkIndex;
+        }
+
         /// <summary>
         /// Gets the index of the line of text at the specified layout-relative position.
         /// </summary>
@@ -943,6 +1120,33 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Gets or sets the delegate which determines the color with which to draw the renderer's links.
+        /// </summary>
+        public LinkColorizer LinkColorizer
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the delegate which evaluates which links have been previously visited.
+        /// </summary>
+        public LinkStateEvaluator LinkStateEvaluator
+        {
+            get;
+            set;
+        }
+        
+        /// <summary>
+        /// Gets or sets the delegate which executes links.
+        /// </summary>
+        public LinkClickHandler LinkClickHandler
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
         /// </summary>
         private RectangleF DrawInternal(SpriteBatch spriteBatch, TextLayoutCommandStream input, Vector2 position, Color defaultColor, Int32 start, Int32 count)
@@ -975,6 +1179,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
                 input.AcquirePointers();
+
+            var linkAtCursor = GetLinkIndexAtCursor(input);
 
             input.Seek(0);
 
@@ -1026,9 +1232,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             {
                                 RefreshFont(ref settings, bold, italic, out font, out fontFace);
                             }
-                            if ((change & TextRendererStateChange.ChangeColor) == TextRendererStateChange.ChangeColor)
+                            if ((change & TextRendererStateChange.ChangeColor) == TextRendererStateChange.ChangeColor ||
+                                (change & TextRendererStateChange.ChangeLink) == TextRendererStateChange.ChangeLink)
                             {
-                                RefreshColor(defaultColor, out color);
+                                var linkIndex = linkStack.Count > 0 ? linkStack.Peek().Value : (Int16?)null;
+                                RefreshColor(input, defaultColor, linkIndex, linkAtCursor, ref color);
                             }
                         }
                         input.SeekNextCommand();
@@ -1177,6 +1385,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             fontStack.Clear();
             colorStack.Clear();
             glyphShaderStack.Clear();
+            linkStack.Clear();
         }
 
         /// <summary>
@@ -1240,6 +1449,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Pushes a link onto the link stack.
+        /// </summary>
+        private void PushLink(Int16 linkIndex)
+        {
+            PushScopedStack(linkStack, linkIndex);
+        }
+
+        /// <summary>
         /// Pops a value off of a style-scoped stack.
         /// </summary>
         private void PopScopedStack<T>(Stack<TextStyleScoped<T>> stack)
@@ -1294,6 +1511,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Pops a link off of the link stack.
+        /// </summary>
+        private void PopLink()
+        {
+            PopScopedStack(linkStack);
+        }
+
+        /// <summary>
         /// Pops the current style scope off of the stacks.
         /// </summary>
         private void PopStyleScope()
@@ -1322,9 +1547,38 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Updates the current text color by examining the state of the layout stacks.
         /// </summary>
-        private void RefreshColor(Color defaultColor, out Color color)
+        private void RefreshColor(TextLayoutCommandStream input, Color defaultColor, Int16? linkIndex, Int16? linkAtCursor, ref Color color)
         {
-            color = (colorStack.Count == 0) ? defaultColor : colorStack.Peek().Value;
+            if (linkIndex.HasValue)
+            {
+                var target = input.GetLinkTarget(linkIndex.Value);
+                var visited = LinkStateEvaluator?.Invoke(target) ?? false;
+                var hovering = linkIndex == linkAtCursor;
+                var active = input.ActiveLinkIndex == linkIndex;
+
+                if (LinkColorizer != null)
+                {
+                    Color colorizerResult;
+                    if (LinkColorizer(target, visited, hovering, active, out colorizerResult))
+                        color = colorizerResult;
+                }
+                else
+                {
+                    if (active)
+                        color = new Color(0xEE, 0x00, 0x00, 0xFF);
+                    else
+                    {
+                        if (visited)
+                            color = new Color(0x55, 0x1A, 0x8B, 0xFF);
+                        else
+                            color = new Color(0x00, 0x00, 0xEE, 0xFF);
+                    }
+                }
+            }
+            else
+            {
+                color = (colorStack.Count == 0) ? defaultColor : colorStack.Peek().Value;
+            }
         }
 
         /// <summary>
@@ -1379,6 +1633,15 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     }
                     return TextRendererStateChange.None;
 
+                case TextLayoutCommandType.PushLink:
+                    if ((stacks & TextRendererStacks.Link) == TextRendererStacks.Link)
+                    {
+                        var cmd = (TextLayoutLinkCommand*)input.Data;
+                        PushLink(cmd->LinkTargetIndex);
+                        return TextRendererStateChange.ChangeLink;
+                    }
+                    return TextRendererStateChange.None;
+
                 case TextLayoutCommandType.PopStyle:
                     if ((stacks & TextRendererStacks.Style) == TextRendererStacks.Style)
                     {
@@ -1408,6 +1671,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                     {
                         PopGlyphShader();
                         return TextRendererStateChange.ChangeGlyphShader;
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.PopLink:
+                    if ((stacks & TextRendererStacks.Link) == TextRendererStacks.Link)
+                    {
+                        PopLink();
+                        return TextRendererStateChange.ChangeLink;
                     }
                     return TextRendererStateChange.None;
 
@@ -1583,7 +1854,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             var blockOffset = ((TextLayoutBlockInfoCommand*)input.Data)->Offset;
             var offsetLineX = 0;
-            var offsetLineY = 0;
+            var offsetLineY = blockOffset;
 
             // If our search point comes before the start of the block, then
             // the only possible answer is the first glyph in the block.
@@ -1738,7 +2009,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     default:
                         {
-                            var change = ProcessStylingCommand(input, cmdType, TextRendererStacks.Style | TextRendererStacks.Font, ref bold, ref italic, ref source);
+                            var change = ProcessStylingCommand(input, cmdType, 
+                                TextRendererStacks.Style | TextRendererStacks.Font | TextRendererStacks.Link, ref bold, ref italic, ref source);
                             if ((change & TextRendererStateChange.ChangeFont) == TextRendererStateChange.ChangeFont)
                             {
                                 RefreshFont(ref settings, bold, italic, out font, out fontFace);
@@ -1781,5 +2053,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private readonly Stack<TextStyleScoped<SpriteFont>> fontStack = new Stack<TextStyleScoped<SpriteFont>>();
         private readonly Stack<TextStyleScoped<Color>> colorStack = new Stack<TextStyleScoped<Color>>();
         private readonly Stack<TextStyleScoped<GlyphShader>> glyphShaderStack = new Stack<TextStyleScoped<GlyphShader>>();
+        private readonly Stack<TextStyleScoped<Int16>> linkStack = new Stack<TextStyleScoped<Int16>>();
     }
 }

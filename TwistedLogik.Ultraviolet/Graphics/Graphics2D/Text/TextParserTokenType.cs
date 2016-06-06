@@ -66,6 +66,16 @@
         PopGlyphShader,
 
         /// <summary>
+        /// The token pushes a link onto the link stack.
+        /// </summary>
+        PushLink,
+
+        /// <summary>
+        /// The token pops a link off of the link stack.
+        /// </summary>
+        PopLink,
+
+        /// <summary>
         /// The token represents a custom command.
         /// </summary>
         Custom = 128,

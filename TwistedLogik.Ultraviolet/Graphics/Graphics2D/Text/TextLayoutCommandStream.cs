@@ -318,6 +318,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Registers a link target with the command stream.
+        /// </summary>
+        /// <param name="target">The link target to register.</param>
+        /// <returns>The index of the specified link target within the command stream's internal registry.</returns>
+        public Int16 RegisterLinkTarget(StringSegment target)
+        {
+            return RegisterResource(target, target.ToString(), linkTargets, null);
+        }
+
+        /// <summary>
         /// Registers a source string with the command stream.
         /// </summary>
         /// <param name="source">The source string to register.</param>
@@ -435,6 +445,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public GlyphShader GetGlyphShader(Int16 index)
         {
             return glyphShaders[index];
+        }
+
+        /// <summary>
+        /// Retrieves the registered link target at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered link target to retrieve.</param>
+        /// <returns>The registered link target at the specified index within the command stream's internal registry.</returns>
+        public String GetLinkTarget(Int16 index)
+        {
+            return linkTargets[index];
         }
 
         /// <summary>
@@ -721,6 +741,32 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.PushLink"/> command to the current position in the stream.
+        /// </summary>
+        /// <param name="command">The command to write to the stream.</param>
+        public void WritePushLink(TextLayoutLinkCommand command)
+        {
+            hasMultipleFontStyles = true;
+
+            stream.Reserve(sizeof(TextLayoutLinkCommand));
+            *(TextLayoutLinkCommand*)stream.Data = command;
+            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushLink;
+            stream.FinalizeObject(sizeof(TextLayoutLinkCommand));
+        }
+        
+        /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.PopLink"/> command to the current position in the stream.
+        /// </summary>
+        public void WritePopLink()
+        {
+            hasMultipleFontStyles = true;
+
+            stream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopLink;
+            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+        }
+
+        /// <summary>
         /// Writes a <see cref="TextLayoutCommandType.Custom"/> command to the current position in the stream.
         /// </summary>
         /// <param name="command">The command to write to the stream.</param>
@@ -917,6 +963,25 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.PushLink"/> command from the current position in the command stream.
+        /// </summary>
+        /// <returns>The command that was read.</returns>
+        public TextLayoutLinkCommand ReadPushLinkCommand()
+        {
+            var command = *(TextLayoutLinkCommand*)stream.Data;
+            stream.RawSeekForward();
+            return command;
+        }
+
+        /// <summary>
+        /// Reads a <see cref="TextLayoutCommandType.PopLink"/> command from the current position in the command stream.
+        /// </summary>
+        public void ReadPopLinkCommand()
+        {
+            stream.RawSeekForward();
+        }
+
+        /// <summary>
         /// Reads a <see cref="TextLayoutCommandType.Custom"/> command from the current position in the command stream.
         /// </summary>
         /// <returns>The command that was read.</returns>
@@ -1068,7 +1133,43 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             get { return stream.HasAcquiredPointers; }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="CursorPosition"/> property
+        /// currently has a defined value.
+        /// </summary>
+        public Boolean CursorPositionSpecified
+        {
+            get { return CursorPosition.HasValue; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the cursor position (as specified by <see cref="CursorPosition"/>
+        /// is currently within the stream's bounds.
+        /// </summary>
+        public Boolean CursorWithinBounds
+        {
+            get { return CursorPosition.HasValue && Bounds.Contains(CursorPosition.Value); }
+        }
         
+        /// <summary>
+        /// Gets or sets the position of the mouse cursor relative to the command stream's bounds.
+        /// </summary>
+        public Point2? CursorPosition
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the index of the stream's currently activated link.
+        /// </summary>
+        public Int16? ActiveLinkIndex
+        {
+            get;
+            internal set;
+        }
+
         /// <summary>
         /// Gets the <see cref="UnsafeObjectStream"/> which provides the command stream's storage.
         /// </summary>
@@ -1083,7 +1184,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private Int16 RegisterResource<TResource>(StringSegment name, TResource resource, List<TResource> resourcesList, Dictionary<StringSegment, Int16> resourcesByName)
         {
             Int16 index;
-            if (resourcesByName.TryGetValue(name, out index))
+            if (resourcesByName != null && resourcesByName.TryGetValue(name, out index))
                 return index;
 
             index = (Int16)resourcesList.Count;
@@ -1092,7 +1193,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 throw new InvalidOperationException(UltravioletStrings.LayoutEngineHasTooManyResources);
 
             resourcesList.Add(resource);
-            resourcesByName[name] = index;
+
+            if (resourcesByName != null)
+                resourcesByName[name] = index;
 
             return index;
         }
@@ -1121,15 +1224,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private readonly UnsafeObjectStream stream = new UnsafeObjectStream(32, 256);
 
         // The stream's object registries.
-        private readonly Dictionary<StringSegment, Int16> stylesByName = new Dictionary<StringSegment, Int16>();
-        private readonly Dictionary<StringSegment, Int16> iconsByName = new Dictionary<StringSegment, Int16>();
-        private readonly Dictionary<StringSegment, Int16> fontsByName = new Dictionary<StringSegment, Int16>();
-        private readonly Dictionary<StringSegment, Int16> glyphShadersByName = new Dictionary<StringSegment, Int16>();
+        private readonly Dictionary<StringSegment, Int16> stylesByName = new Dictionary<StringSegment, Int16>(0);
+        private readonly Dictionary<StringSegment, Int16> iconsByName = new Dictionary<StringSegment, Int16>(0);
+        private readonly Dictionary<StringSegment, Int16> fontsByName = new Dictionary<StringSegment, Int16>(0);
+        private readonly Dictionary<StringSegment, Int16> glyphShadersByName = new Dictionary<StringSegment, Int16>(0);
         private readonly Dictionary<Object, Int16> sourcesByReference = new Dictionary<Object, Int16>();
-        private readonly List<TextStyle> styles = new List<TextStyle>();
-        private readonly List<TextIconInfo> icons = new List<TextIconInfo>();
-        private readonly List<SpriteFont> fonts = new List<SpriteFont>();
-        private readonly List<GlyphShader> glyphShaders = new List<GlyphShader>();
+        private readonly List<TextStyle> styles = new List<TextStyle>(0);
+        private readonly List<TextIconInfo> icons = new List<TextIconInfo>(0);
+        private readonly List<SpriteFont> fonts = new List<SpriteFont>(0);
+        private readonly List<GlyphShader> glyphShaders = new List<GlyphShader>(0);
+        private readonly List<String> linkTargets = new List<String>(0);
         private readonly List<Object> sources = new List<Object>();
 
         // Property values.

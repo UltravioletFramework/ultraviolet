@@ -519,6 +519,19 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 return new TextParserToken(TextParserTokenType.PopGlyphShader, StringSegment.Empty, sourceOffset, sourceLength);
             }
 
+            // Set the current link.
+            if (tokenText.Length >= 8 && tokenText.Substring(0, 6) == "|link:")
+            {
+                var target = tokenText.Substring(6, tokenText.Length - 7);
+                return new TextParserToken(TextParserTokenType.PushLink, target, sourceOffset, sourceLength);
+            }
+
+            // Clear the current link.
+            if (tokenText == "|link|")
+            {
+                return new TextParserToken(TextParserTokenType.PopLink, StringSegment.Empty, sourceOffset, sourceLength);
+            }
+
             // Set the preset style.
             if (tokenText.Length >= 9 && tokenText.Substring(0, 7) == "|style:")
             {

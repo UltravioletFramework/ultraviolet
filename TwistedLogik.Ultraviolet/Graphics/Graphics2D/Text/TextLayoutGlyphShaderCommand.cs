@@ -3,7 +3,7 @@
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
-    /// Represents a lyout command to push a glyph shader onto the glyph shader stack.
+    /// Represents a layout command to push a glyph shader onto the glyph shader stack.
     /// </summary>
     public struct TextLayoutGlyphShaderCommand
     {

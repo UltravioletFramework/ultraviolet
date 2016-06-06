@@ -195,6 +195,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                         ProcessPushGlyphShaderToken(output, ref token, ref state, ref index);
                         break;
 
+                    case TextParserTokenType.PushLink:
+                        ProcessPushLinkToken(output, ref token, ref state, ref index);
+                        break;
+
                     case TextParserTokenType.PopFont:
                         ProcessPopFontToken(output, ref token, ref state, ref index);
                         break;
@@ -209,6 +213,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     case TextParserTokenType.PopGlyphShader:
                         ProcessPopGlyphShaderToken(output, ref token, ref state, ref index);
+                        break;
+                        
+                    case TextParserTokenType.PopLink:
+                        ProcessPopLinkToken(output, ref token, ref state, ref index);
                         break;
                         
                     default:
@@ -391,6 +399,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.PushLink"/>.
+        /// </summary>
+        private void ProcessPushLinkToken(TextLayoutCommandStream output,
+            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+        {
+            var pushedLinkTargetIndex = RegisterLinkTargetWithCommandStream(output, token.Text);
+            output.WritePushLink(new TextLayoutLinkCommand(pushedLinkTargetIndex));
+            state.AdvanceLineToNextCommand();
+            index++;
+        }
+
+        /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.PopFont"/>.
         /// </summary>
         private void ProcessPopFontToken(TextLayoutCommandStream output,
@@ -432,6 +452,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             ref TextParserToken token, ref LayoutState state, ref Int32 index)
         {
             output.WritePopGlyphShader();
+            state.AdvanceLineToNextCommand();
+            index++;
+        }
+
+        /// <summary>
+        /// Processes a parser token with type <see cref="TextParserTokenType.PopLink"/>.
+        /// </summary>
+        private void ProcessPopLinkToken(TextLayoutCommandStream output,
+            ref TextParserToken token, ref LayoutState state, ref Int32 index)
+        {
+            output.WritePopLink();
             state.AdvanceLineToNextCommand();
             index++;
         }
@@ -855,6 +886,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 throw new InvalidOperationException(UltravioletStrings.UnrecognizedGlyphShader.Format(name));
 
             return output.RegisterGlyphShader(name, glyphShader);
+        }
+
+        /// <summary>
+        /// Registers the specified link target with the command stream and returns its resulting index.
+        /// </summary>
+        private Int16 RegisterLinkTargetWithCommandStream(TextLayoutCommandStream output, StringSegment target)
+        {
+            return output.RegisterLinkTarget(target.ToString());
         }
 
         /// <summary>

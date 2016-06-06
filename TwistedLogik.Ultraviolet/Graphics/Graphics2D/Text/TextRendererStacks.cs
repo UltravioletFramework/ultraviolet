@@ -34,8 +34,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         GlyphShader = 0x0008,
 
         /// <summary>
+        /// The link stack.
+        /// </summary>
+        Link = 0x0010,
+
+        /// <summary>
         /// All of the renderer's stacks.
         /// </summary>
-        All = Style | Font | Color | GlyphShader
+        All = Style | Font | Color | GlyphShader | Link
     }
 }

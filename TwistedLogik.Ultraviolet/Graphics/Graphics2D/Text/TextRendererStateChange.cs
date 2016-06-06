@@ -27,5 +27,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// The current glyph shader has changed.
         /// </summary>
         ChangeGlyphShader = 0x0004,
+
+        /// <summary>
+        /// The current link has changed.
+        /// </summary>
+        ChangeLink = 0x0008,
     }
 }

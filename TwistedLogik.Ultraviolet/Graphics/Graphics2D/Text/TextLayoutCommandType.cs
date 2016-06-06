@@ -101,6 +101,16 @@
         LineBreak,
 
         /// <summary>
+        /// Represents a command to push a link onto the link stack.
+        /// </summary>
+        PushLink,
+
+        /// <summary>
+        /// Represents a command to pop a link off of the link stack.
+        /// </summary>
+        PopLink,
+
+        /// <summary>
         /// Represents a custom command.
         /// </summary>
         Custom,
