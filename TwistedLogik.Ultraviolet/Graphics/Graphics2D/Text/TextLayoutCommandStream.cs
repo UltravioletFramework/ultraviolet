@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security;
 using System.Text;
 using TwistedLogik.Nucleus;
@@ -228,6 +227,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Moves the stream before its first element.
+        /// </summary>
+        public void SeekBeginning()
+        {
+            Seek(0);
+        }
+
+        /// <summary>
         /// Moves the stream past its last element.
         /// </summary>
         public void SeekEnd()
@@ -268,17 +275,29 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Registers a source string with the command stream.
+        /// </summary>
+        /// <param name="source">The source string to register.</param>
+        /// <returns>The index of the specified source string within the command stream's internal registry.</returns>
+        public Int16 RegisterSourceString(String source) =>
+            (resources = resources ?? new TextLayoutCommandStreamResources()).RegisterSource(source);
+
+        /// <summary>
+        /// Registers a source string builder with the command stream.
+        /// </summary>
+        /// <param name="source">The source string builder to register.</param>
+        /// <returns>The index of the specified source string builder within the command stream's internal registry.</returns>
+        public Int16 RegisterSourceStringBuilder(StringBuilder source) =>
+            (resources = resources ?? new TextLayoutCommandStreamResources()).RegisterSource(source);
+
+        /// <summary>
         /// Registers a style with the command stream.
         /// </summary>
         /// <param name="name">The name of the style to register.</param>
         /// <param name="style">The style to register under the specified name.</param>
         /// <returns>The index of the specified style within the command stream's internal registry.</returns>
-        public Int16 RegisterStyle(StringSegment name, TextStyle style)
-        {
-            Contract.Require(style, nameof(style));
-
-            return RegisterResource(name, style, styles, stylesByName);
-        }
+        public Int16 RegisterStyle(StringSegment name, TextStyle style) =>
+            (resources = resources ?? new TextLayoutCommandStreamResources()).RegisterStyle(name, style);
 
         /// <summary>
         /// Registers an icon with the command stream.
@@ -286,10 +305,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the icon to register.</param>
         /// <param name="icon">The icon to register under the specified name.</param>
         /// <returns>The index of the specified icon within the command stream's internal registry.</returns>
-        public Int16 RegisterIcon(StringSegment name, TextIconInfo icon)
-        {
-            return RegisterResource(name, icon, icons, iconsByName);
-        }
+        public Int16 RegisterIcon(StringSegment name, TextIconInfo icon) =>
+            (resources = resources ?? new TextLayoutCommandStreamResources()).RegisterIcon(name, icon);
 
         /// <summary>
         /// Registers a font with the command stream.
@@ -297,12 +314,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the font to register.</param>
         /// <param name="font">The font to register under the specified name.</param>
         /// <returns>The index of the specified font within the command stream's internal registry.</returns>
-        public Int16 RegisterFont(StringSegment name, SpriteFont font)
-        {
-            Contract.Require(font, nameof(font));
-
-            return RegisterResource(name, font, fonts, fontsByName);
-        }
+        public Int16 RegisterFont(StringSegment name, SpriteFont font) =>
+            (resources = resources ?? new TextLayoutCommandStreamResources()).RegisterFont(name, font);
 
         /// <summary>
         /// Registers a glyph shader with the command stream.
@@ -310,152 +323,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the glyph shader to register.</param>
         /// <param name="glyphShader">The glyph shader to register under the specified name.</param>
         /// <returns>The index of the specified glyph shader within the command stream's internal registry.</returns>
-        public Int16 RegisterGlyphShader(StringSegment name, GlyphShader glyphShader)
-        {
-            Contract.Require(glyphShader, nameof(glyphShader));
-
-            return RegisterResource(name, glyphShader, glyphShaders, glyphShadersByName);
-        }
+        public Int16 RegisterGlyphShader(StringSegment name, GlyphShader glyphShader) =>
+            (resources = resources ?? new TextLayoutCommandStreamResources()).RegisterGlyphShader(name, glyphShader);
 
         /// <summary>
         /// Registers a link target with the command stream.
         /// </summary>
         /// <param name="target">The link target to register.</param>
         /// <returns>The index of the specified link target within the command stream's internal registry.</returns>
-        public Int16 RegisterLinkTarget(StringSegment target)
-        {
-            return RegisterResource(target, target.ToString(), linkTargets, null);
-        }
-
-        /// <summary>
-        /// Registers a source string with the command stream.
-        /// </summary>
-        /// <param name="source">The source string to register.</param>
-        /// <returns>The index of the specified source string within the command stream's internal registry.</returns>
-        public Int16 RegisterSourceString(String source)
-        {
-            Contract.Require(source, nameof(source));
-
-            return RegisterSource(source);
-        }
-
-        /// <summary>
-        /// Registers a source string builder with the command stream.
-        /// </summary>
-        /// <param name="source">The source string builder to register.</param>
-        /// <returns>The index of the specified source string builder within the command stream's internal registry.</returns>
-        public Int16 RegisterSourceStringBuilder(StringBuilder source)
-        {
-            Contract.Require(source, nameof(source));
-
-            return RegisterSource(source);
-        }
-
-        /// <summary>
-        /// Retrieves the registered style with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the style to retrieve.</param>
-        /// <returns>The registered style with the specified name.</returns>
-        public TextStyle GetStyle(StringSegment name)
-        {
-            Int16 index;
-            if (!stylesByName.TryGetValue(name, out index))
-                return null;
-
-            return styles[index];
-        }
-
-        /// <summary>
-        /// Retrieves the registered style at the specified index within the command stream's internal registry.
-        /// </summary>
-        /// <param name="index">The index of the registered style to retrieve.</param>
-        /// <returns>The registered style at the specified index within the command stream's internal registry.</returns>
-        public TextStyle GetStyle(Int16 index)
-        {
-            return styles[index];
-        }
-
-        /// <summary>
-        /// Retrieves the registered icon with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the icon to retrieve.</param>
-        /// <returns>The registered icon with the specified name.</returns>
-        public TextIconInfo? GetIcon(StringSegment name)
-        {
-            Int16 index;
-            if (!iconsByName.TryGetValue(name, out index))
-                return null;
-
-            return icons[index];
-        }
-
-        /// <summary>
-        /// Retrieves the registered icon at the specified index within the command stream's internal registry.
-        /// </summary>
-        /// <param name="index">The index of the registered icon to retrieve.</param>
-        /// <returns>The registered icon at the specified index within the command stream's internal registry.</returns>
-        public TextIconInfo GetIcon(Int16 index)
-        {
-            return icons[index];
-        }
-
-        /// <summary>
-        /// Retrieves the registered font with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the font to retrieve.</param>
-        /// <returns>The registered font with the specified name.</returns>
-        public SpriteFont GetFont(StringSegment name)
-        {
-            Int16 index;
-            if (!fontsByName.TryGetValue(name, out index))
-                return null;
-
-            return fonts[index];
-        }
-
-        /// <summary>
-        /// Retrieves the registered font at the specified index within the command stream's internal registry.
-        /// </summary>
-        /// <param name="index">The index of the registered font to retrieve.</param>
-        /// <returns>The registered font at the specified index within the command stream's internal registry.</returns>
-        public SpriteFont GetFont(Int16 index)
-        {
-            return fonts[index];
-        }
-
-        /// <summary>
-        /// Retrieves the registered glyph shader with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the glyph shader to retrieve.</param>
-        /// <returns>The registered glyph shader with the specified name.</returns>
-        public GlyphShader GetGlyphShader(StringSegment name)
-        {
-            Int16 index;
-            if (!glyphShadersByName.TryGetValue(name, out index))
-                return null;
-
-            return glyphShaders[index];
-        }
-
-        /// <summary>
-        /// Retrieves the registered glyph shader at the specified index within the command stream's internal registry.
-        /// </summary>
-        /// <param name="index">The index of the registered glyph shader to retrieve.</param>
-        /// <returns>The registered glyph shader at the specified index within the command stream's internal registry.</returns>
-        public GlyphShader GetGlyphShader(Int16 index)
-        {
-            return glyphShaders[index];
-        }
-
-        /// <summary>
-        /// Retrieves the registered link target at the specified index within the command stream's internal registry.
-        /// </summary>
-        /// <param name="index">The index of the registered link target to retrieve.</param>
-        /// <returns>The registered link target at the specified index within the command stream's internal registry.</returns>
-        public String GetLinkTarget(Int16 index)
-        {
-            return linkTargets[index];
-        }
+        public Int16 RegisterLinkTarget(StringSegment target) =>
+            (resources = resources ?? new TextLayoutCommandStreamResources()).RegisterLinkTarget(target.ToString());
 
         /// <summary>
         /// Retrieves the registered source string at the specified index within the command stream's internal registry.
@@ -464,7 +341,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The registered source string at the specified index within the command stream's internal registry.</returns>
         public String GetSourceString(Int16 index)
         {
-            return (String)sources[index];
+            if (resources == null)
+                throw new IndexOutOfRangeException(nameof(index));
+
+            return resources.GetSourceString(index);
         }
 
         /// <summary>
@@ -474,7 +354,115 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The registered source string builder at the specified index within the command stream's internal registry.</returns>
         public StringBuilder GetSourceStringBuilder(Int16 index)
         {
-            return (StringBuilder)sources[index];
+            if (resources == null)
+                throw new IndexOutOfRangeException(nameof(index));
+
+            return resources.GetSourceStringBuilder(index);
+        }
+
+        /// <summary>
+        /// Retrieves the registered style with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the style to retrieve.</param>
+        /// <returns>The registered style with the specified name.</returns>
+        public TextStyle GetStyle(StringSegment name)
+        {
+            return resources?.GetStyle(name);
+        }
+
+        /// <summary>
+        /// Retrieves the registered style at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered style to retrieve.</param>
+        /// <returns>The registered style at the specified index within the command stream's internal registry.</returns>
+        public TextStyle GetStyle(Int16 index)
+        {
+            if (resources == null)
+                throw new IndexOutOfRangeException(nameof(index));
+
+            return resources.GetStyle(index);
+        }
+
+        /// <summary>
+        /// Retrieves the registered icon with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the icon to retrieve.</param>
+        /// <returns>The registered icon with the specified name.</returns>
+        public TextIconInfo? GetIcon(StringSegment name)
+        {
+            return resources?.GetIcon(name);
+        }
+
+        /// <summary>
+        /// Retrieves the registered icon at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered icon to retrieve.</param>
+        /// <returns>The registered icon at the specified index within the command stream's internal registry.</returns>
+        public TextIconInfo GetIcon(Int16 index)
+        {
+            if (resources == null)
+                throw new IndexOutOfRangeException(nameof(index));
+
+            return resources.GetIcon(index);
+        }
+
+        /// <summary>
+        /// Retrieves the registered font with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the font to retrieve.</param>
+        /// <returns>The registered font with the specified name.</returns>
+        public SpriteFont GetFont(StringSegment name)
+        {
+            return resources?.GetFont(name);
+        }
+
+        /// <summary>
+        /// Retrieves the registered font at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered font to retrieve.</param>
+        /// <returns>The registered font at the specified index within the command stream's internal registry.</returns>
+        public SpriteFont GetFont(Int16 index)
+        {
+            if (resources == null)
+                throw new IndexOutOfRangeException(nameof(index));
+
+            return resources.GetFont(index);
+        }
+
+        /// <summary>
+        /// Retrieves the registered glyph shader with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the glyph shader to retrieve.</param>
+        /// <returns>The registered glyph shader with the specified name.</returns>
+        public GlyphShader GetGlyphShader(StringSegment name)
+        {
+            return resources?.GetGlyphShader(name);
+        }
+
+        /// <summary>
+        /// Retrieves the registered glyph shader at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered glyph shader to retrieve.</param>
+        /// <returns>The registered glyph shader at the specified index within the command stream's internal registry.</returns>
+        public GlyphShader GetGlyphShader(Int16 index)
+        {
+            if (resources == null)
+                throw new IndexOutOfRangeException(nameof(index));
+
+            return resources.GetGlyphShader(index);
+        }
+
+        /// <summary>
+        /// Retrieves the registered link target at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered link target to retrieve.</param>
+        /// <returns>The registered link target at the specified index within the command stream's internal registry.</returns>
+        public String GetLinkTarget(Int16 index)
+        {
+            if (resources == null)
+                throw new IndexOutOfRangeException(nameof(index));
+
+            return resources.GetLinkTarget(index);
         }
 
         /// <summary>
@@ -502,20 +490,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             stream.Clear();
 
-            styles.Clear();
-            stylesByName.Clear();
-
-            icons.Clear();
-            iconsByName.Clear();
-
-            fonts.Clear();
-            fontsByName.Clear();
-
-            glyphShaders.Clear();
-            glyphShadersByName.Clear();
-
-            sources.Clear();
-            sourcesByReference.Clear();
+            if (resources != null)
+                resources.Clear();
 
             Settings = default(TextLayoutSettings);
             SourceText = StringSegment.Empty;
@@ -1178,63 +1154,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             get { return stream; }
         }
         
-        /// <summary>
-        /// Registers a resource with the command stream.
-        /// </summary>
-        private Int16 RegisterResource<TResource>(StringSegment name, TResource resource, List<TResource> resourcesList, Dictionary<StringSegment, Int16> resourcesByName)
-        {
-            Int16 index;
-            if (resourcesByName != null && resourcesByName.TryGetValue(name, out index))
-                return index;
-
-            index = (Int16)resourcesList.Count;
-
-            if (index > Int16.MaxValue)
-                throw new InvalidOperationException(UltravioletStrings.LayoutEngineHasTooManyResources);
-
-            resourcesList.Add(resource);
-
-            if (resourcesByName != null)
-                resourcesByName[name] = index;
-
-            return index;
-        }
-
-        /// <summary>
-        /// Registers a source string or string builder with the command stream.
-        /// </summary>
-        private Int16 RegisterSource(Object source)
-        {
-            var index = default(Int16);
-            if (sourcesByReference.TryGetValue(source, out index))
-                return index;
-
-            index = (Int16)sources.Count;
-
-            if (index > Int16.MaxValue)
-                throw new InvalidOperationException(UltravioletStrings.LayoutEngineHasTooManyStringSources);
-
-            sources.Add(source);
-            sourcesByReference[source] = index;
-
-            return index;
-        }
-
         // The underlying data stream containing our commands.
         private readonly UnsafeObjectStream stream = new UnsafeObjectStream(32, 256);
-
-        // The stream's object registries.
-        private readonly Dictionary<StringSegment, Int16> stylesByName = new Dictionary<StringSegment, Int16>(0);
-        private readonly Dictionary<StringSegment, Int16> iconsByName = new Dictionary<StringSegment, Int16>(0);
-        private readonly Dictionary<StringSegment, Int16> fontsByName = new Dictionary<StringSegment, Int16>(0);
-        private readonly Dictionary<StringSegment, Int16> glyphShadersByName = new Dictionary<StringSegment, Int16>(0);
-        private readonly Dictionary<Object, Int16> sourcesByReference = new Dictionary<Object, Int16>();
-        private readonly List<TextStyle> styles = new List<TextStyle>(0);
-        private readonly List<TextIconInfo> icons = new List<TextIconInfo>(0);
-        private readonly List<SpriteFont> fonts = new List<SpriteFont>(0);
-        private readonly List<GlyphShader> glyphShaders = new List<GlyphShader>(0);
-        private readonly List<String> linkTargets = new List<String>(0);
-        private readonly List<Object> sources = new List<Object>();
+        private TextLayoutCommandStreamResources resources;
 
         // Property values.
         private Boolean hasMultipleFontStyles;
