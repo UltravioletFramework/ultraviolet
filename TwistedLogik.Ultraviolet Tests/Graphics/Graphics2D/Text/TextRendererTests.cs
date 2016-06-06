@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
-            
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CutsOffTextThatExceedsVerticalLayoutSpace.png");
         }
@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
-                    
+
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
                         new TextLayoutSettings(content.SpriteFont, null, null, TextFlags.Standard));
 
@@ -131,7 +131,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
-            
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_DoesNotBreakOnNonBreakingSpace_WhenBreakingSpaceIsAvailable.png");
         }
@@ -192,7 +192,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.Begin();
 
-                    content.SpriteBatch.Draw(content.BlankTexture, 
+                    content.SpriteBatch.Draw(content.BlankTexture,
                         new RectangleF(0, 0, width, height), Color.Red * 0.5f);
 
                     content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
@@ -264,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
 
                     content.SpriteBatch.Begin();
-                    content.SpriteBatch.Draw(content.BlankTexture, 
+                    content.SpriteBatch.Draw(content.BlankTexture,
                         new RectangleF(0, 0, width, height), Color.Red * 0.5f);
 
                     content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
@@ -279,7 +279,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldHaveSize(132, 22)
                 .ShouldHaveLengthInCommands(2)
                 .ShouldHaveLengthInGlyphs(17);
-            
+
             TheResultingValue(content.TextLayoutResult.GetLineInfo(1))
                 .ShouldHavePosition(0, 22)
                 .ShouldHaveSize(198, 22)
@@ -291,7 +291,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldHaveSize(204, 22)
                 .ShouldHaveLengthInCommands(2)
                 .ShouldHaveLengthInGlyphs(24);
-            
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksAtLastBreakingSpace_WithLeftAlignment.png");
         }
@@ -381,7 +381,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 });
 
             TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe("Hello! This is a Xtesttesttesttest of the line breaking algorithm.".Length);
-            
+
             TheResultingValue(content.TextLayoutResult.GetLineInfo(0))
                 .ShouldHavePosition(54, 0)
                 .ShouldHaveSize(132, 22)
@@ -432,7 +432,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         content.TextRenderer.GetLineAtPosition(content.TextLayoutResult, 181, 77),
                     };
                     content.TextLayoutResult.ReleasePointers();
-                    
+
                     content.SpriteBatch.Begin();
 
                     content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
@@ -451,7 +451,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
-            
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetCorrectLineAtPosition_ForPositionInsideText.png");
         }
@@ -557,7 +557,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
-            
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText_Stretch.png");
         }
@@ -672,7 +672,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
-            
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph.png");
         }
@@ -756,7 +756,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
-            
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled.png");
         }
@@ -812,11 +812,11 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
-            
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds.png");
         }
-        
+
         [Test]
         [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetGlyphBounds() when layout commands are disabled.")]
@@ -860,7 +860,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     content.SpriteBatch.End();
                 });
-            
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png");
         }
@@ -870,15 +870,15 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         [Description("Ensures that the TextRenderer class correctly parses and renders color tags.")]
         public void TextRenderer_CanRenderColoredStrings()
         {
-            var spriteBatch  = default(SpriteBatch);
-            var spriteFont   = default(SpriteFont);
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(SpriteFont);
             var textRenderer = default(TextRenderer);
 
             var result = GivenAnUltravioletApplication()
                 .WithContent(content =>
                 {
-                    spriteBatch  = SpriteBatch.Create();
-                    spriteFont   = content.Load<SpriteFont>("Fonts/SegoeUI");
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<SpriteFont>("Fonts/SegoeUI");
                     textRenderer = new TextRenderer();
                 })
                 .Render(uv =>
@@ -900,15 +900,15 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         [Description("Ensures that the TextRenderer class correctly parses and renders styling tags.")]
         public void TextRenderer_CanRenderStyledStrings()
         {
-            var spriteBatch  = default(SpriteBatch);
-            var spriteFont   = default(SpriteFont);
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(SpriteFont);
             var textRenderer = default(TextRenderer);
 
             var result = GivenAnUltravioletApplication()
                 .WithContent(content =>
                 {
-                    spriteBatch  = SpriteBatch.Create();
-                    spriteFont   = content.Load<SpriteFont>("Fonts/Garamond");
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<SpriteFont>("Fonts/Garamond");
                     textRenderer = new TextRenderer();
                 })
                 .Render(uv =>
@@ -916,7 +916,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
                     var settings = new TextLayoutSettings(spriteFont, null, null, TextFlags.Standard);
-                    textRenderer.Draw(spriteBatch, 
+                    textRenderer.Draw(spriteBatch,
                         "This string is regular\n" +
                         "|b|This string is bold|b|\n" +
                         "|i|This string is italic|i|\n" +
@@ -934,21 +934,21 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         [Description("Ensures that the TextRenderer class correctly aligns text in accordance with the TextFlags values specified in TextLayoutSettings.")]
         public void TextRenderer_CanAlignTextWithinAnArea()
         {
-            var spriteBatch  = default(SpriteBatch);
-            var spriteFont   = default(SpriteFont);
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(SpriteFont);
             var textRenderer = default(TextRenderer);
 
             var result = GivenAnUltravioletApplication()
                 .WithContent(content =>
                 {
-                    spriteBatch  = SpriteBatch.Create();
-                    spriteFont   = content.Load<SpriteFont>("Fonts/SegoeUI");
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<SpriteFont>("Fonts/SegoeUI");
                     textRenderer = new TextRenderer();
                 })
                 .Render(uv =>
                 {
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width  = window.Compositor.Width;
+                    var width = window.Compositor.Width;
                     var height = window.Compositor.Height;
 
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
@@ -992,25 +992,25 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
         [Description("Ensures that the TextRenderer class takes font kerning into account even when crossing the boundaries between layout tokens.")]
         public void TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries()
         {
-            var spriteBatch  = default(SpriteBatch);
-            var spriteFont   = default(SpriteFont);
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(SpriteFont);
             var textRenderer = default(TextRenderer);
 
             var result = GivenAnUltravioletApplication()
                 .WithContent(content =>
                 {
-                    spriteBatch  = SpriteBatch.Create();
-                    spriteFont   = content.Load<SpriteFont>("Fonts/Garamond");
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<SpriteFont>("Fonts/Garamond");
                     textRenderer = new TextRenderer();
                 })
                 .Render(uv =>
                 {
                     const string text =
-                        "||c:AARRGGBB| - Changes the color of text.\n" + 
+                        "||c:AARRGGBB| - Changes the color of text.\n" +
                         "|c:FFFF0000|red|c| |c:FFFF8000|orange|c| |c:FFFFFF00|yellow|c| |c:FF00FF00|green|c| |c:FF0000FF|blue|c| |c:FF6F00FF|indigo|c| |c:FFFF00FF|magenta|c|";
-                    
+
                     var window = uv.GetPlatform().Windows.GetPrimary();
-                    var width  = window.Compositor.Width;
+                    var width = window.Compositor.Width;
                     var height = window.Compositor.Height;
 
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
@@ -1051,9 +1051,9 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         "|b|consectetur adipiscing elit.|b|\n" +
                         "\n" +
                         "|i|Pellentesque egestas luctus sapien|i|\n" +
-                        "|b||i|in malesuada.|i||b|\n" + 
+                        "|b||i|in malesuada.|i||b|\n" +
                         "\n";
-                    
+
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     var width = window.Compositor.Width;
                     var height = window.Compositor.Height;
@@ -1069,11 +1069,126 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     spriteBatch.End();
                 });
-            
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png");
         }
-        
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that the TextRenderer class correctly renders links.")]
+        public void TextRenderer_CorrectlyRendersLinks()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(SpriteFont);
+            var textRenderer = default(TextRenderer);
+            var textStream = default(TextLayoutCommandStream);
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<SpriteFont>("Fonts/Garamond");
+                    textRenderer = new TextRenderer();
+                    textStream = new TextLayoutCommandStream();
+                })
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+                    var window = uv.GetPlatform().Windows.GetCurrent();
+                    var width = window.ClientSize.Width;
+                    var height = window.ClientSize.Height;
+
+                    textRenderer.LinkStateEvaluator = (target) => String.Equals(target, "visited", StringComparison.InvariantCulture);
+
+                    var settings = new TextLayoutSettings(spriteFont, width, height, TextFlags.AlignCenter | TextFlags.AlignMiddle);
+                    textRenderer.CalculateLayout(
+                        "Links can |link:unvisited|unvisited|link| if you've never clicked them.\n" +
+                        "Links can be |link:visited|visisted|link| if you've already clicked them.\n" +
+                        "Links can be |link:active|active even if they\ncross multiple lines|link| if the cursor is clicking them.", textStream, settings);
+                    
+                    textRenderer.UpdateCursor(textStream, new Point2(236, 191));
+                    textRenderer.ActivateLinkAtCursor(textStream);
+
+                    textRenderer.Draw(spriteBatch, textStream, Vector2.Zero, Color.White);
+
+                    spriteBatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersLinks.png");
+        }
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that the TextRenderer class correctly renders links when using a custom colorizer.")]
+        public void TextRenderer_CorrectlyRendersLinks_WithColorizer()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(SpriteFont);
+            var textRenderer = default(TextRenderer);
+            var textStream = default(TextLayoutCommandStream);
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<SpriteFont>("Fonts/Garamond");
+                    textRenderer = new TextRenderer();
+                    textStream = new TextLayoutCommandStream();
+                })
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+                    var window = uv.GetPlatform().Windows.GetCurrent();
+                    var width = window.ClientSize.Width;
+                    var height = window.ClientSize.Height;
+
+                    textRenderer.LinkColorizer = (String target, Boolean visited, Boolean hovering, Boolean active, out Color color) =>
+                    {
+                        if (active)
+                        {
+                            color = Color.Magenta;
+                        }
+                        else
+                        {
+                            if (visited)
+                            {
+                                color = Color.Yellow;
+                            }
+                            else
+                            {
+                                color = Color.Lime;
+                            }
+                        }
+                        return true;
+                    };
+                    textRenderer.LinkStateEvaluator = (target) => String.Equals(target, "visited", StringComparison.InvariantCulture);
+
+                    var settings = new TextLayoutSettings(spriteFont, width, height, TextFlags.AlignCenter | TextFlags.AlignMiddle);
+                    textRenderer.CalculateLayout(
+                        "Links can |link:unvisited|unvisited|link| if you've never clicked them.\n" +
+                        "Links can be |link:visited|visisted|link| if you've already clicked them.\n" +
+                        "Links can be |link:active|active even if they\ncross multiple lines|link| if the cursor is clicking them.", textStream, settings);
+
+                    textRenderer.UpdateCursor(textStream, new Point2(236, 191));
+                    textRenderer.ActivateLinkAtCursor(textStream);
+
+                    textRenderer.Draw(spriteBatch, textStream, Vector2.Zero, Color.White);
+
+                    spriteBatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersLinks_WithColorizer.png");
+        }
+
         protected static LineInfoResult TheResultingValue(LineInfo obj)
         {
             return new LineInfoResult(obj);
