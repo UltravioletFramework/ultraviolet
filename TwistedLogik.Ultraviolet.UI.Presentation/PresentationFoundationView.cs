@@ -1474,7 +1474,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var mouse = Ultraviolet.GetInput().GetMouse();
 
             // Determine which element is currently under the mouse cursor.
-            var mousePosInWindow = mouse.GetPositionInWindow(Window) ?? Vector2.Zero;
+            var mousePosInWindow = mouse.GetPositionInWindow(Window) ?? Point2.Zero;
             var mousePos = Display.PixelsToDips((Point2D)mousePosInWindow);
             var mouseView = mouse.Window == Window ? this : null;
 

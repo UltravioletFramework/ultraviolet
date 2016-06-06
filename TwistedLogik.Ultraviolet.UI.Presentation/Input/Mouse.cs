@@ -120,10 +120,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                         if (popup == null)
                             return new Point2D(Double.NaN, Double.NaN);
 
-                        positionDips = (Vector2)popup.ScreenToPopup((Point2D)positionDips);
+                        positionDips = popup.ScreenToPopup(positionDips);
                     }
                     
-                    return (Point2D)visualRoot.TransformToDescendant(uiElement, positionDips);
+                    return visualRoot.TransformToDescendant(uiElement, positionDips);
                 }
             }
             return new Point2D(Double.NaN, Double.NaN);

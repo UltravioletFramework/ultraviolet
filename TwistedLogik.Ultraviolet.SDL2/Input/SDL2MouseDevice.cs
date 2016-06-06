@@ -82,7 +82,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <param name="window">The window to evaluate.</param>
         /// <returns>The cursor's compositor-space position within the specified 
         /// window, or <see langword="null"/> if the cursor is outside of the window.</returns>
-        public override Vector2? GetPositionInWindow(IUltravioletWindow window)
+        public override Point2? GetPositionInWindow(IUltravioletWindow window)
         {
             Contract.Require(window, nameof(window));
 
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             var spos = (Point2)Position;
             var cpos = Window.Compositor.WindowToPoint(spos);
 
-            return (Vector2)cpos;
+            return cpos;
         }
 
         /// <inheritdoc/>
@@ -150,13 +150,13 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
-        public override Vector2 Position
+        public override Point2 Position
         {
             get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return new Vector2(x, y);
+                return new Point2(x, y);
             }
         }
 
