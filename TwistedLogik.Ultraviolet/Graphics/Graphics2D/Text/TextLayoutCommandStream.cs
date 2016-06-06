@@ -466,6 +466,29 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Updates the position of the cursor relative to this command stream's text.
+        /// </summary>
+        /// <param name="position">The cursor's position relative to the text's layout area, 
+        /// or <see langword="null"/> to indicate that the cursor is not over the text.</param>
+        public void UpdateCursor(Point2? position)
+        {
+            CursorPosition = position;
+
+            if (position == null)
+                ActiveLinkIndex = null;
+        }
+
+        /// <summary>
+        /// Updates the position of the cursor relative to this command stream's text.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the cursor relative to the text's layout area.</param>
+        /// <param name="y">The y-coordinate of the cursor relative to the text's layout area.</param>
+        public void UpdateCursor(Int32 x, Int32 y)
+        {
+            CursorPosition = new Point2(x, y);
+        }
+
+        /// <summary>
         /// Activates the link with the specified index within the command stream and deactivates 
         /// any other links in the text.
         /// </summary>
@@ -1140,18 +1163,12 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
         
         /// <summary>
-        /// Gets or sets the position of the mouse cursor relative to the command stream's bounds.
+        /// Gets or sets the position of the mouse cursor relative to the command stream's layout area.
         /// </summary>
         public Point2? CursorPosition
         {
-            get { return cursorPosition; }
-            set
-            {
-                cursorPosition = value;
-
-                if (!value.HasValue)
-                    ActiveLinkIndex = null;
-            }
+            get;
+            private set;
         }
 
         /// <summary>
@@ -1177,6 +1194,5 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
         // Property values.
         private Boolean hasMultipleFontStyles;
-        private Point2? cursorPosition;
     }
 }

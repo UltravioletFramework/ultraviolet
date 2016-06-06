@@ -42,6 +42,32 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     public sealed unsafe class TextRenderer
     {
         /// <summary>
+        /// Updates the position of the cursor relative to the specified command stream's text.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="position">The cursor's position relative to the text's layout area, 
+        /// or <see langword="null"/> to indicate that the cursor is not over the text.</param>
+        public void UpdateCursor(TextLayoutCommandStream input, Point2? position)
+        {
+            Contract.Require(input, nameof(input));
+
+            input.UpdateCursor(position);
+        }
+
+        /// <summary>
+        /// Updates the position of the cursor relative to the specified command stream's text.
+        /// </summary>
+        /// <param name="input">The command stream that contains the layout information to evaluate.</param>
+        /// <param name="x">The x-coordinate of the cursor relative to the text's layout area.</param>
+        /// <param name="y">The y-coordinate of the cursor relative to the text's layout area.</param>
+        public void UpdateCursor(TextLayoutCommandStream input, Int32 x, Int32 y)
+        {
+            Contract.Require(input, nameof(input));
+
+            input.UpdateCursor(x, y);
+        }
+
+        /// <summary>
         /// Deactivates the specified command stream's currently active link, if it has one.
         /// </summary>
         /// <param name="input">The command stream that contains the layout information to evaluate.</param>
