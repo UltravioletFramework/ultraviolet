@@ -663,7 +663,7 @@
     <None Include="Resources\Expected\Graphics\TextureAtlas_LoadsAndRendersCorrectly_FromXml.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderNonPremultipliedTexture.png">
+    <None Include="Resources\Expected\Graphics\Texture2D_LoadsNonPremultiplied_WhenGivenContentMetadata.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\UltravioletGraphics_RendersFrameCorrectly_WithCustomCompositor.png">

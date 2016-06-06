@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
                 });
 
             TheResultingImage(result)
-                .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRenderNonPremultipliedTexture.png");
+                .ShouldMatch(@"Resources/Expected/Graphics/Texture2D_LoadsNonPremultiplied_WhenGivenContentMetadata.png");
         }
 
         [Test]
