@@ -1150,24 +1150,23 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var width = window.ClientSize.Width;
                     var height = window.ClientSize.Height;
 
-                    textRenderer.LinkColorizer = (String target, Boolean visited, Boolean hovering, Boolean active, out Color color) =>
+                    textRenderer.LinkColorizer = (target, visited, hovering, active, currentColor) =>
                     {
                         if (active)
                         {
-                            color = Color.Magenta;
+                            return Color.Magenta;
                         }
                         else
                         {
                             if (visited)
                             {
-                                color = Color.Yellow;
+                                return Color.Yellow;
                             }
                             else
                             {
-                                color = Color.Lime;
+                                return Color.Lime;
                             }
                         }
-                        return true;
                     };
                     textRenderer.LinkStateEvaluator = (target) => String.Equals(target, "visited", StringComparison.InvariantCulture);
 

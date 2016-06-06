@@ -14,9 +14,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     /// <param name="visited">A value indicating whether the link has been visited.</param>
     /// <param name="hovering">A value indicating whether the link is currently under the cursor.</param>
     /// <param name="active">A value indicating whether the link is currently active (i.e. being clicked).</param>
-    /// <param name="color">The color to apply to the specified link.</param>
-    /// <returns><see langword="true"/> if the text color should be changed; otherwise, <see langword="false"/>.</returns>
-    public delegate Boolean LinkColorizer(String target, Boolean visited, Boolean hovering, Boolean active, out Color color);
+    /// <param name="currentColor">The color to apply to the specified link.</param>
+    /// <returns>The color with which the link should be drawn.</returns>
+    public delegate Color LinkColorizer(String target, Boolean visited, Boolean hovering, Boolean active, Color currentColor);
 
     /// <summary>
     /// Represents a method which executes a link.
@@ -1584,9 +1584,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                 if (LinkColorizer != null)
                 {
-                    Color colorizerResult;
-                    if (LinkColorizer(target, visited, hovering, active, out colorizerResult))
-                        color = colorizerResult;
+                    color = LinkColorizer(target, visited, hovering, active, color);
                 }
                 else
                 {
