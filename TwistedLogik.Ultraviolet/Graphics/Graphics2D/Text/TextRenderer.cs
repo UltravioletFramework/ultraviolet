@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(input, nameof(input));
 
             var hadActivatedLinkIndex = input.ActiveLinkIndex.HasValue;
-            input.ActiveLinkIndex = null;
+            input.ActivateLink(null);
             return hadActivatedLinkIndex;
         }
 
@@ -69,7 +69,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var position = input.CursorPosition;
             if (position == null)
             {
-                input.ActiveLinkIndex = null;
+                input.ActivateLink(null);
                 return false;
             }
 
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
             ClearLayoutStacks();
 
-            input.ActiveLinkIndex = linkIndex;
+            input.ActivateLink(linkIndex);
             return input.ActiveLinkIndex.HasValue;
         }
 
@@ -125,14 +125,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             {
                 if (GetLinkIndexAtCursor(input) != input.ActiveLinkIndex)
                 {
-                    input.ActiveLinkIndex = null;
+                    input.ActivateLink(null);
                     return false;
                 }
             }
 
             var target = input.GetLinkTarget(input.ActiveLinkIndex.Value);
             var result = LinkClickHandler(target);
-            input.ActiveLinkIndex = null;
+            input.ActivateLink(null);
 
             return result;
         }

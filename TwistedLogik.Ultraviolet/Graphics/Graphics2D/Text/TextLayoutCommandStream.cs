@@ -466,6 +466,17 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Activates the link with the specified index within the command stream and deactivates 
+        /// any other links in the text.
+        /// </summary>
+        /// <param name="index">The index of the link to activate, or <see langword="null"/> if no
+        /// link should be considered active.</param>
+        public void ActivateLink(Int16? index)
+        {
+            ActiveLinkIndex = index;
+        }
+
+        /// <summary>
         /// Prepares the stream for reading or writing by acquiring pointers to its underlying buffers.
         /// While pointers are acquired, these buffers will be pinned in memory.
         /// </summary>
@@ -1123,7 +1134,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Gets a value indicating whether the cursor position (as specified by <see cref="CursorPosition"/>
         /// is currently within the stream's bounds.
         /// </summary>
-        public Boolean CursorWithinBounds
+        public Boolean CursorPositionWithinBounds
         {
             get { return CursorPosition.HasValue && Bounds.Contains(CursorPosition.Value); }
         }
@@ -1133,8 +1144,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public Point2? CursorPosition
         {
-            get;
-            set;
+            get { return cursorPosition; }
+            set
+            {
+                cursorPosition = value;
+
+                if (!value.HasValue)
+                    ActiveLinkIndex = null;
+            }
         }
 
         /// <summary>
@@ -1143,7 +1160,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Int16? ActiveLinkIndex
         {
             get;
-            internal set;
+            private set;
         }
 
         /// <summary>
@@ -1160,5 +1177,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
         // Property values.
         private Boolean hasMultipleFontStyles;
+        private Point2? cursorPosition;
     }
 }
