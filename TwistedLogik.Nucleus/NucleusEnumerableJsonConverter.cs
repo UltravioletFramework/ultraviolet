@@ -21,6 +21,9 @@ namespace TwistedLogik.Nucleus
         /// <inheritdoc/>
         public override Object ReadJson(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
         {
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+
             var token = JToken.Load(reader);
             if (token.Type == JTokenType.Array)
             {

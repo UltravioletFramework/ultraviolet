@@ -1,7 +1,7 @@
 ﻿using System;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
-using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
@@ -130,6 +130,15 @@ namespace TwistedLogik.Ultraviolet.Tests
         }
 
         [Test]
+        public void CircleD_SerializesToJson_WhenNullable()
+        {
+            var circle = new CircleD(1.2, 2.3, 3.4);
+            var json = JsonConvert.SerializeObject((CircleD?)circle);
+
+            TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""radius"":3.4}");
+        }
+
+        [Test]
         public void CircleD_DeserializesFromJson()
         {
             const String json = @"{ ""x"":1.2,""y"":2.3,""radius"":3.4 }";
@@ -139,6 +148,25 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(circle)
                 .ShouldHavePosition(1.2, 2.3)
                 .ShouldHaveRadius(3.4);
+        }
+
+        [Test]
+        public void CircleD_DeserializesFromJson_WhenNullable()
+        {
+            const String json1 = @"{ ""x"":1.2,""y"":2.3,""radius"":3.4 }";
+
+            var circle1 = JsonConvert.DeserializeObject<CircleD?>(json1);
+
+            TheResultingValue(circle1.Value)
+                .ShouldHavePosition(1.2, 2.3)
+                .ShouldHaveRadius(3.4);
+
+            const String json2 = @"null";
+
+            var circle2 = JsonConvert.DeserializeObject<CircleD?>(json2);
+
+            TheResultingValue(circle2.HasValue)
+                .ShouldBe(false);
         }
     }
 }

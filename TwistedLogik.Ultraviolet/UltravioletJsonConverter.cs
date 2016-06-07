@@ -19,17 +19,27 @@ namespace TwistedLogik.Ultraviolet
         {
             readers = new Dictionary<Type, ReadJsonDelegate>();
             readers[typeof(Radians)] = ReadJson_Radians;
+            readers[typeof(Radians?)] = ReadJson_NullableRadians;
             readers[typeof(Color)] = ReadJson_Color;
+            readers[typeof(Color?)] = ReadJson_NullableColor;
             readers[typeof(Matrix)] = ReadJson_Matrix;
+            readers[typeof(Matrix?)] = ReadJson_NullableMatrix;
             readers[typeof(AssetID)] = ReadJson_AssetID;
+            readers[typeof(AssetID?)] = ReadJson_NullableAssetID;
             readers[typeof(SpriteAnimationID)] = ReadJson_SpriteAnimationID;
+            readers[typeof(SpriteAnimationID?)] = ReadJson_NullableSpriteAnimationID;
 
             writers = new Dictionary<Type, WriteJsonDelegate>();
             writers[typeof(Radians)] = WriteJson_Radians;
+            writers[typeof(Radians?)] = WriteJson_NullableRadians;
             writers[typeof(Color)] = WriteJson_Color;
+            writers[typeof(Color?)] = WriteJson_NullableColor;
             writers[typeof(Matrix)] = WriteJson_Matrix;
+            writers[typeof(Matrix?)] = WriteJson_NullableMatrix;
             writers[typeof(AssetID)] = WriteJson_AssetID;
+            writers[typeof(AssetID?)] = WriteJson_NullableAssetID;
             writers[typeof(SpriteAnimationID)] = WriteJson_SpriteAnimationID;
+            writers[typeof(SpriteAnimationID?)] = WriteJson_NullableSpriteAnimationID;
         }
 
         /// <inheritdoc/>
@@ -59,6 +69,17 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Reads a <see cref="Nullable{Radians}"/> value.
+        /// </summary>
+        private static Object ReadJson_NullableRadians(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+
+            return ReadJson_Radians(reader, objectType, existingValue, serializer);
+        }
+
+        /// <summary>
         /// Reads a <see cref="Color"/> value.
         /// </summary>
         private static Object ReadJson_Color(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
@@ -73,6 +94,17 @@ namespace TwistedLogik.Ultraviolet
             var a = values.Length == 4 ? values[3] : (Int32)Byte.MaxValue;
 
             return new Color(r, g, b, a);
+        }
+
+        /// <summary>
+        /// Reads a <see cref="Nullable{Color}"/> value.
+        /// </summary>
+        private static Object ReadJson_NullableColor(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+
+            return ReadJson_Color(reader, objectType, existingValue, serializer);
         }
 
         /// <summary>
@@ -92,6 +124,17 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Reads a <see cref="Matrix"/> value.
+        /// </summary>
+        private static Object ReadJson_NullableMatrix(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+
+            return ReadJson_Matrix(reader, objectType, existingValue, serializer);
+        }
+
+        /// <summary>
         /// Reads a <see cref="AssetID"/> value.
         /// </summary>
         private static Object ReadJson_AssetID(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
@@ -101,12 +144,34 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Reads a <see cref="Nullable{AssetID}"/> value.
+        /// </summary>
+        private static Object ReadJson_NullableAssetID(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+
+            return ReadJson_AssetID(reader, objectType, existingValue, serializer);
+        }
+
+        /// <summary>
         /// Reads a <see cref="SpriteAnimationID"/> value.
         /// </summary>
         private static Object ReadJson_SpriteAnimationID(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
         {
             var value = (String)serializer.Deserialize(reader, typeof(String));
             return SpriteAnimationID.Parse(value);
+        }
+
+        /// <summary>
+        /// Reads a <see cref="Nullable{SpriteAnimationID}"/> value.
+        /// </summary>
+        private static Object ReadJson_NullableSpriteAnimationID(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+
+            return ReadJson_SpriteAnimationID(reader, objectType, existingValue, serializer);
         }
 
         /// <inheritdoc/>
@@ -134,12 +199,34 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Writes a <see cref="Nullable{Radians}"/> value.
+        /// </summary>
+        private static void WriteJson_NullableRadians(JsonWriter writer, Object value, JsonSerializer serializer)
+        {
+            if (value == null || !((Radians?)value).HasValue)
+                serializer.Serialize(writer, null);
+            else
+                WriteJson_Radians(writer, value, serializer);
+        }
+
+        /// <summary>
         /// Writes a <see cref="Color"/> value.
         /// </summary>
         private static void WriteJson_Color(JsonWriter writer, Object value, JsonSerializer serializer)
         {
             var c = (Color)value;
             serializer.Serialize(writer, new Int32[] { c.R, c.G, c.B, c.A });
+        }
+
+        /// <summary>
+        /// Writes a <see cref="Nullable{Color}"/> value.
+        /// </summary>
+        private static void WriteJson_NullableColor(JsonWriter writer, Object value, JsonSerializer serializer)
+        {
+            if (value == null || !((Color?)value).HasValue)
+                serializer.Serialize(writer, null);
+            else
+                WriteJson_Color(writer, value, serializer);
         }
 
         /// <summary>
@@ -158,6 +245,17 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Writes a <see cref="Nullable{Matrix}"/> value.
+        /// </summary>
+        private static void WriteJson_NullableMatrix(JsonWriter writer, Object value, JsonSerializer serializer)
+        {
+            if (value == null || !((Matrix?)value).HasValue)
+                serializer.Serialize(writer, null);
+            else
+                WriteJson_Matrix(writer, value, serializer);
+        }
+
+        /// <summary>
         /// Writes a <see cref="AssetID"/> value.
         /// </summary>
         private static void WriteJson_AssetID(JsonWriter writer, Object value, JsonSerializer serializer)
@@ -167,12 +265,34 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Writes a <see cref="Nullable{AssetID}"/> value.
+        /// </summary>
+        private static void WriteJson_NullableAssetID(JsonWriter writer, Object value, JsonSerializer serializer)
+        {
+            if (value == null || !((AssetID?)value).HasValue)
+                serializer.Serialize(writer, null);
+            else
+                WriteJson_AssetID(writer, value, serializer);
+        }
+
+        /// <summary>
         /// Writes a <see cref="SpriteAnimationID"/> value.
         /// </summary>
         private static void WriteJson_SpriteAnimationID(JsonWriter writer, Object value, JsonSerializer serializer)
         {
             var id = (SpriteAnimationID)value;
             serializer.Serialize(writer, id.ToString());
+        }
+
+        /// <summary>
+        /// Writes a <see cref="Nullable{SpriteAnimationID}"/> value.
+        /// </summary>
+        private static void WriteJson_NullableSpriteAnimationID(JsonWriter writer, Object value, JsonSerializer serializer)
+        {
+            if (value == null || !((SpriteAnimationID?)value).HasValue)
+                serializer.Serialize(writer, null);
+            else
+                WriteJson_SpriteAnimationID(writer, value, serializer);
         }
 
         /// <inheritdoc/>

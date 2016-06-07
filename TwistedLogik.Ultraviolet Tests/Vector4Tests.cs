@@ -1,7 +1,7 @@
 ﻿using System;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TwistedLogik.Ultraviolet.Testing;
-using Newtonsoft.Json;
 
 namespace TwistedLogik.Ultraviolet.Tests
 {
@@ -801,14 +801,41 @@ namespace TwistedLogik.Ultraviolet.Tests
         }
 
         [Test]
+        public void Vector4_SerializesToJson_WhenNullable()
+        {
+            var vector = new Vector4(1.2f, 2.3f, 3.4f, 4.5f);
+            var json = JsonConvert.SerializeObject((Vector4?)vector);
+
+            TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""z"":3.4,""w"":4.5}");
+        }
+
+        [Test]
         public void Vector4_DeserializesFromJson()
         {
-            const String json = @"{""width"":1.2,""height"":2.3,""depth"":3.4}";
+            const String json = @"{ ""x"": 1.2, ""y"": 2.3, ""z"": 3.4, ""w"": 4.5 }";
             
-            var size = JsonConvert.DeserializeObject<Size3D>(json);
+            var vector = JsonConvert.DeserializeObject<Vector4>(json);
 
-            TheResultingValue(size)
-                .ShouldBe(1.2, 2.3, 3.4);
+            TheResultingValue(vector)
+                .ShouldBe(1.2f, 2.3f, 3.4f, 4.5f);
+        }
+
+        [Test]
+        public void Vector4_DeserializesFromJson_WhenNullable()
+        {
+            const String json1 = @"{ ""x"": 1.2, ""y"": 2.3, ""z"": 3.4, ""w"": 4.5 }";
+
+            var vector1 = JsonConvert.DeserializeObject<Vector4?>(json1);
+
+            TheResultingValue(vector1.Value)
+                .ShouldBe(1.2f, 2.3f, 3.4f, 4.5f);
+
+            const String json2 = @"null";
+
+            var vector2 = JsonConvert.DeserializeObject<Vector4?>(json2);
+
+            TheResultingValue(vector2.HasValue)
+                .ShouldBe(false);
         }
     }
 }

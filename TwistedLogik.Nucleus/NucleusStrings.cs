@@ -88,6 +88,8 @@ namespace TwistedLogik.Nucleus
         public static readonly StringResource JsonIncorrectArrayLengthForType        = new StringResource(StringDatabase, "JSON_INCORRECT_ARRAY_LENGTH_FOR_TYPE");
         public static readonly StringResource JsonCannotWriteNonGlobalStringResource = new StringResource(StringDatabase, "JSON_CANNOT_WRITE_NON_GLOBAL_STRING_RESOURCE");
         public static readonly StringResource JsonCannotReadStringVariantCollection  = new StringResource(StringDatabase, "JSON_CANNOT_READ_STRING_VARIANT_COLLECTION");
+        public static readonly StringResource JsonObjectResolverRequiresString       = new StringResource(StringDatabase, "JSON_OBJECT_RESOLVER_REQUIRES_STRING");
+        public static readonly StringResource JsonValueCannotBeNull                  = new StringResource(StringDatabase, "JSON_VALUE_CANNOT_BE_NULL");
 #pragma warning restore 1591
     }
 }

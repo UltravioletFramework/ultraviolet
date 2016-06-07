@@ -801,6 +801,15 @@ namespace TwistedLogik.Ultraviolet.Tests
         }
 
         [Test]
+        public void Vector2_SerializesToJson_WhenNullable()
+        {
+            var vector = new Vector2(1.2f, 2.3f);
+            var json = JsonConvert.SerializeObject((Vector2?)vector);
+
+            TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3}");
+        }
+
+        [Test]
         public void Vector2_DeserializesFromJson()
         {
             const String json = @"{""x"":1.2,""y"":2.3}";
@@ -809,6 +818,24 @@ namespace TwistedLogik.Ultraviolet.Tests
 
             TheResultingValue(vector)
                 .ShouldBe(1.2f, 2.3f);
+        }
+
+        [Test]
+        public void Vector2_DeserializesFromJson_WhenNullable()
+        {
+            const String json1 = @"{""x"":1.2,""y"":2.3}";
+
+            var vector1 = JsonConvert.DeserializeObject<Vector2?>(json1);
+
+            TheResultingValue(vector1.Value)
+                .ShouldBe(1.2f, 2.3f);
+
+            const String json2 = @"null";
+
+            var vector2 = JsonConvert.DeserializeObject<Vector2?>(json2);
+
+            TheResultingValue(vector2.HasValue)
+                .ShouldBe(false);
         }
     }
 }

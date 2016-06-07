@@ -330,4 +330,14 @@
       <Variant>Cannot read LocalizedStringVariantCollectionDescription. JSON data is not in the correct format.</Variant>
     </en-US>
   </String>
+  <String Key="JSON_OBJECT_RESOLVER_REQUIRES_STRING">
+    <en-US>
+      <Variant>Cannot read object because the resolver requires a String value, but instead found a {0} value.</Variant>
+    </en-US>
+  </String>
+  <String Key="JSON_VALUE_CANNOT_BE_NULL">
+    <en-US>
+      <Variant>Value cannot be null.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

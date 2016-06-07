@@ -138,6 +138,15 @@ namespace TwistedLogik.Ultraviolet.Tests
         }
 
         [Test]
+        public void RectangleD_SerializesToJson_WhenNullable()
+        {
+            var rect = new RectangleD(1.2, 2.3, 3.4, 4.5);
+            var json = JsonConvert.SerializeObject((RectangleD?)rect);
+
+            TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""width"":3.4,""height"":4.5}");
+        }
+
+        [Test]
         public void RectangleD_DeserializesFromJson()
         {
             const String json = @"{""x"":1.2,""y"":2.3,""width"":3.4,""height"":4.5}";
@@ -147,6 +156,25 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(rect)
                 .ShouldHavePosition(1.2, 2.3)
                 .ShouldHaveDimensions(3.4, 4.5);
+        }
+
+        [Test]
+        public void RectangleD_DeserializesFromJson_WhenNullable()
+        {
+            const String json1 = @"{""x"":1.2,""y"":2.3,""width"":3.4,""height"":4.5}";
+
+            var rect1 = JsonConvert.DeserializeObject<RectangleD?>(json1);
+
+            TheResultingValue(rect1.Value)
+                .ShouldHavePosition(1.2, 2.3)
+                .ShouldHaveDimensions(3.4, 4.5);
+
+            const String json2 = @"null";
+
+            var rect2 = JsonConvert.DeserializeObject<RectangleD?>(json2);
+
+            TheResultingValue(rect2.HasValue)
+                .ShouldBe(false);
         }
     }
 }

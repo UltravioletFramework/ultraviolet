@@ -49,7 +49,18 @@ namespace TwistedLogik.Nucleus.Tests
 
             TheResultingString(json).ShouldBe(@"987654");
         }
-        
+
+        [Test]
+        public void MaskedUInt32_SerializesToJson_WhenNullable()
+        {
+            var value = (MaskedUInt32?)987654;
+
+            var json = JsonConvert.SerializeObject(value);
+
+            TheResultingString(json)
+                .ShouldBe(@"987654");
+        }
+
         [Test]
         public void MaskedUInt32_DeserializesFromJson()
         {
@@ -57,7 +68,26 @@ namespace TwistedLogik.Nucleus.Tests
             
             var value = JsonConvert.DeserializeObject<MaskedUInt32>(json);
 
-            TheResultingValue(value.Value).ShouldBe(123456);
+            TheResultingValue(value.Value)
+                .ShouldBe(123456);
+        }
+
+        [Test]
+        public void MaskedUInt32_DeserializesFromJson_WhenNullable()
+        {
+            const String json1 = @"123456";
+
+            var value1 = JsonConvert.DeserializeObject<MaskedUInt32?>(json1);
+
+            TheResultingValue(value1.Value.Value)
+                .ShouldBe(123456);
+
+            const String json2 = @"null";
+
+            var value2 = JsonConvert.DeserializeObject<MaskedUInt32?>(json2);
+
+            TheResultingValue(value2.HasValue)
+                .ShouldBe(false);
         }
 
         [Test]
@@ -67,7 +97,26 @@ namespace TwistedLogik.Nucleus.Tests
 
             var value = JsonConvert.DeserializeObject<MaskedUInt32>(json);
 
-            TheResultingValue(value.Value).ShouldBe(123456);
+            TheResultingValue(value.Value)
+                .ShouldBe(123456);
+        }
+
+        [Test]
+        public void MaskedUInt32_DeserializesFromJson_String_WhenNullable()
+        {
+            const String json1 = @"""123456""";
+
+            var value1 = JsonConvert.DeserializeObject<MaskedUInt32?>(json1);
+
+            TheResultingValue(value1.Value.Value)
+                .ShouldBe(123456);
+
+            const String json2 = @"null";
+
+            var value2 = JsonConvert.DeserializeObject<MaskedUInt32?>(json2);
+
+            TheResultingValue(value2.HasValue)
+                .ShouldBe(false);
         }
     }
 }

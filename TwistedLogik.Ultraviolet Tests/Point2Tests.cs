@@ -123,6 +123,15 @@ namespace TwistedLogik.Ultraviolet.Tests
         }
 
         [Test]
+        public void Point2_SerializesToJson_WhenNullable()
+        {
+            var point = new Point2(1, 2);
+            var json = JsonConvert.SerializeObject((Point2?)point);
+
+            TheResultingString(json).ShouldBe(@"{""x"":1,""y"":2}");
+        }
+
+        [Test]
         public void Point2_DeserializesFromJson()
         {
             const String json = @"{""x"":1,""y"":2}";
@@ -131,6 +140,24 @@ namespace TwistedLogik.Ultraviolet.Tests
 
             TheResultingValue(point)
                 .ShouldBe(1, 2);
+        }
+
+        [Test]
+        public void Point2_DeserializesFromJson_WhenNullable()
+        {
+            const String json1 = @"{""x"":1,""y"":2}";
+
+            var point1 = JsonConvert.DeserializeObject<Point2?>(json1);
+
+            TheResultingValue(point1.Value)
+                .ShouldBe(1, 2);
+
+            const String Json2 = @"null";
+
+            var point2 = JsonConvert.DeserializeObject<Point2?>(Json2);
+
+            TheResultingValue(point2.HasValue)
+                .ShouldBe(false);
         }
     }
 }

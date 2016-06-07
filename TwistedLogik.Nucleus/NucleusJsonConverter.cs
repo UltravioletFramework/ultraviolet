@@ -36,14 +36,20 @@ namespace TwistedLogik.Nucleus
         {
             readers = new Dictionary<Type, ReadJsonDelegate>();
             readers[typeof(ResolvedDataObjectReference)] = ReadJson_ResolvedDataObjectReference;
+            readers[typeof(ResolvedDataObjectReference?)] = ReadJson_NullableResolvedDataObjectReference;
             readers[typeof(MaskedUInt32)] = ReadJson_MaskedUInt32;
+            readers[typeof(MaskedUInt32?)] = ReadJson_NullableMaskedUInt32;
             readers[typeof(MaskedUInt64)] = ReadJson_MaskedUInt64;
+            readers[typeof(MaskedUInt64?)] = ReadJson_NullableMaskedUInt64;
             readers[typeof(StringResource)] = ReadJson_StringResource;
 
             writers = new Dictionary<Type, WriteJsonDelegate>();
             writers[typeof(ResolvedDataObjectReference)] = WriteJson_ResolvedDataObjectReference;
+            writers[typeof(ResolvedDataObjectReference?)] = WriteJson_NullableResolvedDataObjectReference;
             writers[typeof(MaskedUInt32)] = WriteJson_MaskedUInt32;
+            writers[typeof(MaskedUInt32?)] = WriteJson_NullableMaskedUInt32;
             writers[typeof(MaskedUInt64)] = WriteJson_MaskedUInt64;
+            writers[typeof(MaskedUInt64?)] = WriteJson_NullableMaskedUInt64;
             writers[typeof(StringResource)] = WriteJson_StringResource;
         }
 
@@ -75,6 +81,17 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
+        /// Reads a <see cref="Nullable{ResolvedDataObjectReference}"/> value.
+        /// </summary>
+        private static Object ReadJson_NullableResolvedDataObjectReference(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+
+            return ReadJson_ResolvedDataObjectReference(reader, objectType, existingValue, serializer);
+        }
+
+        /// <summary>
         /// Reads a <see cref="MaskedUInt32"/> value.
         /// </summary>
         private static Object ReadJson_MaskedUInt32(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
@@ -88,6 +105,17 @@ namespace TwistedLogik.Nucleus
             {
                 return new MaskedUInt32((UInt32)serializer.Deserialize(reader, typeof(UInt32)));
             }
+        }
+
+        /// <summary>
+        /// Reads a <see cref="Nullable{MaskedUInt32}"/> value.
+        /// </summary>
+        private static Object ReadJson_NullableMaskedUInt32(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+
+            return ReadJson_MaskedUInt32(reader, objectType, existingValue, serializer);
         }
 
         /// <summary>
@@ -105,7 +133,18 @@ namespace TwistedLogik.Nucleus
                 return new MaskedUInt64((UInt64)serializer.Deserialize(reader, typeof(UInt64)));
             }
         }
-        
+
+        /// <summary>
+        /// Reads a <see cref="Nullable{MaskedUInt64}"/> value.
+        /// </summary>
+        private static Object ReadJson_NullableMaskedUInt64(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+
+            return ReadJson_MaskedUInt64(reader, objectType, existingValue, serializer);
+        }
+
         /// <summary>
         /// Reads a <see cref="StringResource"/> value.
         /// </summary>
@@ -150,6 +189,17 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
+        /// Writes a <see cref="Nullable{ResolvedDataObjectReference}"/> value.
+        /// </summary>
+        private static void WriteJson_NullableResolvedDataObjectReference(JsonWriter writer, Object value, JsonSerializer serializer)
+        {
+            if (value == null || !((ResolvedDataObjectReference?)value).HasValue)
+                serializer.Serialize(writer, null);
+            else
+                WriteJson_ResolvedDataObjectReference(writer, value, serializer);
+        }
+
+        /// <summary>
         /// Writes a <see cref="MaskedUInt32"/> value.
         /// </summary>
         private static void WriteJson_MaskedUInt32(JsonWriter writer, Object value, JsonSerializer serializer)
@@ -159,12 +209,34 @@ namespace TwistedLogik.Nucleus
         }
 
         /// <summary>
+        /// Writes a <see cref="Nullable{MaskedUInt32}"/> value.
+        /// </summary>
+        private static void WriteJson_NullableMaskedUInt32(JsonWriter writer, Object value, JsonSerializer serializer)
+        {
+            if (value == null || !((MaskedUInt32?)value).HasValue)
+                serializer.Serialize(writer, null);
+            else
+                WriteJson_MaskedUInt32(writer, value, serializer);
+        }
+
+        /// <summary>
         /// Writes a <see cref="MaskedUInt64"/> value.
         /// </summary>
         private static void WriteJson_MaskedUInt64(JsonWriter writer, Object value, JsonSerializer serializer)
         {
             var m = (MaskedUInt64)value;
             serializer.Serialize(writer, m.Value);
+        }
+
+        /// <summary>
+        /// Writes a <see cref="Nullable{MaskedUInt64}"/> value.
+        /// </summary>
+        private static void WriteJson_NullableMaskedUInt64(JsonWriter writer, Object value, JsonSerializer serializer)
+        {
+            if (value == null || !((MaskedUInt64?)value).HasValue)
+                serializer.Serialize(writer, null);
+            else
+                WriteJson_MaskedUInt64(writer, value, serializer);
         }
 
         /// <summary>

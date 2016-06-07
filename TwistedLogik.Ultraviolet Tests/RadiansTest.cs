@@ -114,6 +114,15 @@ namespace TwistedLogik.Ultraviolet.Tests
         }
 
         [Test]
+        public void Radians_SerializesToJson_WhenNullable()
+        {
+            var radians = 1.234f;
+            var json = JsonConvert.SerializeObject((Radians?)radians);
+
+            TheResultingString(json).ShouldBe(@"1.234");
+        }
+
+        [Test]
         public void Radians_DeserializesFromJson()
         {
             const String json = @"1.234";
@@ -122,6 +131,24 @@ namespace TwistedLogik.Ultraviolet.Tests
 
             TheResultingValue(radians)
                 .ShouldBe(1.234f);
+        }
+
+        [Test]
+        public void Radians_DeserializesFromJson_WhenNullable()
+        {
+            const String json1 = @"1.234";
+
+            var radians1 = JsonConvert.DeserializeObject<Radians?>(json1);
+
+            TheResultingValue(radians1.Value)
+                .ShouldBe(1.234f);
+
+            const String json2 = @"null";
+
+            var radians2 = JsonConvert.DeserializeObject<Radians?>(json2);
+
+            TheResultingValue(radians2.HasValue)
+                .ShouldBe(false);
         }
     }
 }

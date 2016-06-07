@@ -47,7 +47,19 @@ namespace TwistedLogik.Nucleus.Tests
             
             var json = JsonConvert.SerializeObject(value);
 
-            TheResultingString(json).ShouldBe(@"987654");
+            TheResultingString(json)
+                .ShouldBe(@"987654");
+        }
+
+        [Test]
+        public void MaskedUInt64_SerializesToJson_WhenNullable()
+        {
+            var value = (MaskedUInt64?)987654;
+
+            var json = JsonConvert.SerializeObject(value);
+
+            TheResultingString(json)
+                .ShouldBe(@"987654");
         }
 
         [Test]
@@ -57,7 +69,26 @@ namespace TwistedLogik.Nucleus.Tests
             
             var value = JsonConvert.DeserializeObject<MaskedUInt64>(json);
 
-            TheResultingValue(value.Value).ShouldBe(123456);
+            TheResultingValue(value.Value)
+                .ShouldBe(123456);
+        }
+
+        [Test]
+        public void MaskedUInt64_DeserializesFromJson_WhenNullable()
+        {
+            const String json1 = @"123456";
+
+            var value1 = JsonConvert.DeserializeObject<MaskedUInt64?>(json1);
+
+            TheResultingValue(value1.Value.Value)
+                .ShouldBe(123456);
+
+            const String json2 = @"null";
+
+            var value2 = JsonConvert.DeserializeObject<MaskedUInt64?>(json2);
+
+            TheResultingValue(value2.HasValue)
+                .ShouldBe(false);
         }
 
         [Test]
@@ -67,7 +98,26 @@ namespace TwistedLogik.Nucleus.Tests
             
             var value = JsonConvert.DeserializeObject<MaskedUInt64>(json);
 
-            TheResultingValue(value.Value).ShouldBe(18446744073709551615u);
+            TheResultingValue(value.Value)
+                .ShouldBe(18446744073709551615u);
+        }
+
+        [Test]
+        public void MaskedUInt64_DeserializesFromJson_String_WhenNullable()
+        {
+            const String json1 = @"""18446744073709551615""";
+
+            var value1 = JsonConvert.DeserializeObject<MaskedUInt64?>(json1);
+
+            TheResultingValue(value1.Value.Value)
+                .ShouldBe(18446744073709551615u);
+
+            const String json2 = @"null";
+
+            var value2 = JsonConvert.DeserializeObject<MaskedUInt64?>(json2);
+
+            TheResultingValue(value2.HasValue)
+                .ShouldBe(false);
         }
     }
 }

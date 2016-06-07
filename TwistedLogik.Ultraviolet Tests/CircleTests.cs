@@ -130,6 +130,15 @@ namespace TwistedLogik.Ultraviolet.Tests
         }
 
         [Test]
+        public void Circle_SerializesToJson_WhenNullable()
+        {
+            var circle = new Circle(1, 2, 3);
+            var json = JsonConvert.SerializeObject((Circle?)circle);
+
+            TheResultingString(json).ShouldBe(@"{""x"":1,""y"":2,""radius"":3}");
+        }
+
+        [Test]
         public void CircleF_DeserializesFromJson()
         {
             const String json = @"{ ""x"":1,""y"":2,""radius"":3 }";
@@ -139,6 +148,25 @@ namespace TwistedLogik.Ultraviolet.Tests
             TheResultingValue(circle)
                 .ShouldHavePosition(1, 2)
                 .ShouldHaveRadius(3);
+        }
+
+        [Test]
+        public void CircleF_DeserializesFromJson_WhenNullable()
+        {
+            const String json1 = @"{ ""x"":1,""y"":2,""radius"":3 }";
+
+            var circle1 = JsonConvert.DeserializeObject<Circle?>(json1);
+
+            TheResultingValue(circle1.Value)
+                .ShouldHavePosition(1, 2)
+                .ShouldHaveRadius(3);
+
+            const String json2 = @"null";
+
+            var circle2 = JsonConvert.DeserializeObject<Circle?>(json2);
+
+            TheResultingValue(circle2.HasValue)
+                .ShouldBe(false);
         }
     }
 }
