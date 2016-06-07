@@ -24,7 +24,7 @@ namespace TwistedLogik.Nucleus.Data
         /// <inheritdoc/>
         public override void WriteJson(JsonWriter writer, Object value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <inheritdoc/>
