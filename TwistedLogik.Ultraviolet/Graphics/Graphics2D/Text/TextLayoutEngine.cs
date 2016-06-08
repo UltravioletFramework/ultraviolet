@@ -12,6 +12,38 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     public sealed partial class TextLayoutEngine
     {
         /// <summary>
+        /// Removes all registered styles.
+        /// </summary>
+        public void ClearStyles()
+        {
+            registeredStyles.Clear();
+        }
+
+        /// <summary>
+        /// Removes all registered fonts.
+        /// </summary>
+        public void ClearFonts()
+        {
+            registeredFonts.Clear();
+        }
+
+        /// <summary>
+        /// Removes all registered icons.
+        /// </summary>
+        public void ClearIcons()
+        {
+            registeredIcons.Clear();
+        }
+
+        /// <summary>
+        /// Removes all registered glyph shaders.
+        /// </summary>
+        public void ClearGlyphShaders()
+        {
+            registeredGlyphShaders.Clear();
+        }
+
+        /// <summary>
         /// Registers a style with the specified name.
         /// </summary>
         /// <param name="name">The name of the style to register.</param>

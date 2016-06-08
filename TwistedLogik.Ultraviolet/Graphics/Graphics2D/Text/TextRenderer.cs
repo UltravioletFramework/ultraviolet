@@ -792,6 +792,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Removes all registered styles.
+        /// </summary>
+        public void ClearStyles()
+        {
+            layoutEngine.ClearStyles();
+        }
+
+        /// <summary>
         /// Registers a style with the specified name.
         /// </summary>
         /// <param name="name">The name of the style to register.</param>
@@ -809,6 +817,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Boolean UnregisterStyle(String name)
         {
             return layoutEngine.UnregisterStyle(name);
+        }
+
+        /// <summary>
+        /// Removes all registered fonts.
+        /// </summary>
+        public void ClearFonts()
+        {
+            layoutEngine.ClearFonts();
         }
 
         /// <summary>
@@ -832,6 +848,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Removes all registered icons.
+        /// </summary>
+        public void ClearIcons()
+        {
+            layoutEngine.ClearIcons();
+        }
+
+        /// <summary>
         /// Registers the icon with the specified name.
         /// </summary>
         /// <param name="name">The name of the icon to register.</param>
@@ -851,6 +875,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         public Boolean UnregisterIcon(String name)
         {
             return layoutEngine.UnregisterIcon(name);
+        }
+
+        /// <summary>
+        /// Removes all registered glyph shaders.
+        /// </summary>
+        public void ClearGlyphShaders()
+        {
+            layoutEngine.ClearGlyphShaders();
         }
 
         /// <summary>
