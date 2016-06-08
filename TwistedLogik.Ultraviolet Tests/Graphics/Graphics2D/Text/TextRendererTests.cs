@@ -282,15 +282,15 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
 
             TheResultingValue(content.TextLayoutResult.GetLineInfo(1))
                 .ShouldHavePosition(0, 22)
-                .ShouldHaveSize(198, 22)
+                .ShouldHaveSize(236, 22)
                 .ShouldHaveLengthInCommands(15)
-                .ShouldHaveLengthInGlyphs(25);
+                .ShouldHaveLengthInGlyphs(30);
 
             TheResultingValue(content.TextLayoutResult.GetLineInfo(2))
                 .ShouldHavePosition(0, 44)
-                .ShouldHaveSize(204, 22)
-                .ShouldHaveLengthInCommands(2)
-                .ShouldHaveLengthInGlyphs(24);
+                .ShouldHaveSize(166, 22)
+                .ShouldHaveLengthInCommands(1)
+                .ShouldHaveLengthInGlyphs(19);
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksAtLastBreakingSpace_WithLeftAlignment.png");
@@ -335,16 +335,16 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldHaveLengthInGlyphs(17);
 
             TheResultingValue(content.TextLayoutResult.GetLineInfo(1))
-                .ShouldHavePosition(42, 22)
-                .ShouldHaveSize(198, 22)
+                .ShouldHavePosition(4, 22)
+                .ShouldHaveSize(236, 22)
                 .ShouldHaveLengthInCommands(15)
-                .ShouldHaveLengthInGlyphs(25);
+                .ShouldHaveLengthInGlyphs(30);
 
             TheResultingValue(content.TextLayoutResult.GetLineInfo(2))
-                .ShouldHavePosition(36, 44)
-                .ShouldHaveSize(204, 22)
-                .ShouldHaveLengthInCommands(2)
-                .ShouldHaveLengthInGlyphs(24);
+                .ShouldHavePosition(74, 44)
+                .ShouldHaveSize(166, 22)
+                .ShouldHaveLengthInCommands(1)
+                .ShouldHaveLengthInGlyphs(19);
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksAtLastBreakingSpace_WithRightAlignment.png");
@@ -389,16 +389,16 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                 .ShouldHaveLengthInGlyphs(17);
 
             TheResultingValue(content.TextLayoutResult.GetLineInfo(1))
-                .ShouldHavePosition(21, 22)
-                .ShouldHaveSize(198, 22)
+                .ShouldHavePosition(2, 22)
+                .ShouldHaveSize(236, 22)
                 .ShouldHaveLengthInCommands(15)
-                .ShouldHaveLengthInGlyphs(25);
+                .ShouldHaveLengthInGlyphs(30);
 
             TheResultingValue(content.TextLayoutResult.GetLineInfo(2))
-                .ShouldHavePosition(18, 44)
-                .ShouldHaveSize(204, 22)
-                .ShouldHaveLengthInCommands(2)
-                .ShouldHaveLengthInGlyphs(24);
+                .ShouldHavePosition(37, 44)
+                .ShouldHaveSize(166, 22)
+                .ShouldHaveLengthInCommands(1)
+                .ShouldHaveLengthInGlyphs(19);
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksAtLastBreakingSpace_WithCenterAlignment.png");

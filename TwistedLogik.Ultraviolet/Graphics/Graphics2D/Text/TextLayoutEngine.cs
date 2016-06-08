@@ -617,6 +617,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var tokenText = default(StringSegment);
             var tokenNext = default(TextParserToken?);
             var tokenSize = default(Size2);
+            var tokenKerning = 0;
+            var tokenIsBreakingSpace = false;
 
             while (index < input.Count)
             {
@@ -635,14 +637,30 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 tokenText = token.Text.Substring(state.ParserTokenOffset ?? 0);
                 tokenNext = GetNextTextToken(input, index);
                 tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext);
+                tokenKerning = font.Kerning.Get(tokenText[tokenText.Length - 1], ' ');
 
                 // NOTE: We assume in a couple of places that tokens sizes don't exceed Int16.MaxValue, so try to
                 // avoid accumulating tokens larger than that just in case somebody is doing something dumb
                 if (width + tokenSize.Width > Int16.MaxValue)
                     break;
+                
+                if (token.IsWhiteSpace && (state.LineBreakCommand == null || !token.IsNonBreakingSpace))
+                {
+                    lineBreakPossible = true;
+                    state.LineBreakCommand = output.Count;
+                    state.LineBreakOffset = accumulatedLength + token.Text.Length - 1;
+                    tokenIsBreakingSpace = true;
+                }
+                else
+                {
+                    tokenIsBreakingSpace = false;
+                }
 
-                var overflowsLine = state.PositionX + tokenSize.Width > availableWidth;
-                if (overflowsLine)
+                // For most tokens we need to bail out here if there's a line overflow, but
+                // if it's a breaking space we need to be sure that it's part of the command stream
+                // so that we can go back and replace it in the line break phase!
+                var overflowsLine = state.PositionX + tokenSize.Width - tokenKerning > availableWidth;
+                if (overflowsLine && !tokenIsBreakingSpace)
                 {
                     lineOverflow = true;
                     break;
@@ -650,13 +668,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                 if (tokenText.Start != accumulatedStart + accumulatedLength)
                     break;
-
-                if (token.IsWhiteSpace && (state.LineBreakCommand == null || !token.IsNonBreakingSpace))
-                {
-                    lineBreakPossible = true;
-                    state.LineBreakCommand = output.Count;
-                    state.LineBreakOffset = accumulatedLength + token.Text.Length - 1;
-                }
 
                 width = width + tokenSize.Width;
                 height = Math.Max(height, tokenSize.Height);
@@ -668,6 +679,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                 state.LineLengthInCommands--;
 
                 index++;
+
+                // At this point, we need to bail out even for breaking spaces.
+                if (overflowsLine && tokenIsBreakingSpace)
+                {
+                    lineOverflow = true;
+                    break;
+                }
             }
 
             if (lineBreakPossible)
