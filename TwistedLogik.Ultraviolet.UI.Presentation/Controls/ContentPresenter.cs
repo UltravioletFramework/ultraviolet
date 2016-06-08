@@ -433,9 +433,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 {
                     var availableSizeInPixels = Display.DipsToPixels(availableSize);
 
+                    var flags = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalAlignment, VerticalAlignment);
                     var settings = new TextLayoutSettings(font,
                         (Int32)Math.Ceiling(availableSizeInPixels.Width),
-                        (Int32)Math.Ceiling(availableSizeInPixels.Height), TextFlags.Standard, containingControl.FontStyle);
+                        (Int32)Math.Ceiling(availableSizeInPixels.Height), flags, containingControl.FontStyle);
 
                     View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
                 }

@@ -129,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             UpdateTextLayoutResult(availableSize);
 
             var sizePixels = new Size2D(textLayoutCommands.ActualWidth, textLayoutCommands.ActualHeight);
-            var sizeDips   = Display.PixelsToDips(sizePixels);
+            var sizeDips = Display.PixelsToDips(sizePixels);
 
             return sizeDips;
         }
@@ -180,13 +180,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (textParserResult.Count > 0 && Font.IsLoaded)
             {
-                var unconstrainedWidth  = Double.IsPositiveInfinity(availableSize.Width)  && HorizontalAlignment != HorizontalAlignment.Stretch;
+                var unconstrainedWidth = Double.IsPositiveInfinity(availableSize.Width) && HorizontalAlignment != HorizontalAlignment.Stretch;
                 var unconstrainedHeight = Double.IsPositiveInfinity(availableSize.Height) && VerticalAlignment != VerticalAlignment.Stretch;
 
-                var constraintX = unconstrainedWidth  ? null : (Int32?)Math.Ceiling(Display.DipsToPixels(availableSize.Width));
+                var constraintX = unconstrainedWidth ? null : (Int32?)Math.Ceiling(Display.DipsToPixels(availableSize.Width));
                 var constraintY = unconstrainedHeight ? null : (Int32?)Math.Ceiling(Display.DipsToPixels(availableSize.Height));
 
-                var flags    = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);
+                var flags = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);
                 var settings = new TextLayoutSettings(Font, constraintX, constraintY, flags, FontStyle);
 
                 View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
