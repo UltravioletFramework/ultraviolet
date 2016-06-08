@@ -206,7 +206,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var glyph = GetGlyphOrInsertionPointAtPosition(input, x, y, out line, GlyphSearchMode.SearchGlyphs);
 
             if (glyph != null)
-                linkIndex = linkStack.Count > 0 ? linkStack.Peek().Value : (Int16?)null;
+                linkIndex = linkStack.Count > 0 ? linkStack.Peek() : (Int16?)null;
 
             if (acquiredPointers)
                 input.ReleasePointers();
@@ -1294,7 +1294,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             if ((change & TextRendererStateChange.ChangeColor) == TextRendererStateChange.ChangeColor ||
                                 (change & TextRendererStateChange.ChangeLink) == TextRendererStateChange.ChangeLink)
                             {
-                                var linkIndex = linkStack.Count > 0 ? linkStack.Peek().Value : (Int16?)null;
+                                var linkIndex = linkStack.Count > 0 ? linkStack.Peek() : (Int16?)null;
                                 RefreshColor(input, defaultColor, linkIndex, linkAtCursor, ref color);
 
                                 if (linkStack.Count == 0)
@@ -1515,7 +1515,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         private void PushLink(Int16 linkIndex)
         {
-            PushScopedStack(linkStack, linkIndex);
+            linkStack.Push(linkIndex);
         }
 
         /// <summary>
@@ -1577,7 +1577,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         private void PopLink()
         {
-            PopScopedStack(linkStack);
+            if (linkStack.Count == 0)
+                return;
+
+            linkStack.Pop();
         }
 
         /// <summary>
@@ -2113,6 +2116,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         private readonly Stack<TextStyleScoped<SpriteFont>> fontStack = new Stack<TextStyleScoped<SpriteFont>>();
         private readonly Stack<TextStyleScoped<Color>> colorStack = new Stack<TextStyleScoped<Color>>();
         private readonly Stack<TextStyleScoped<GlyphShader>> glyphShaderStack = new Stack<TextStyleScoped<GlyphShader>>();
-        private readonly Stack<TextStyleScoped<Int16>> linkStack = new Stack<TextStyleScoped<Int16>>();
+        private readonly Stack<Int16> linkStack = new Stack<Int16>();
     }
 }
