@@ -264,6 +264,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPerformanceStats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationProfilerSections.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PropertyMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SourcedSpriteAnimationID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedCursorResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedCursor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringBuilderExtensions.cs" />
@@ -272,6 +273,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssSelectorPartQualifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SystemParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SourcedTextIconDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SourcedTextStyleDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextWrapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UIElementInstanceFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPool.IPooledObject.cs" />

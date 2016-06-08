@@ -350,4 +350,24 @@
       <Variant>No element named '{0}' exists within the current namescope.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_LINK_COLORIZER">
+    <en-US>
+      <Variant>View model method '{0}' was not found or is not a valid link colorizer.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_LINK_STATE_EVALUATOR">
+    <en-US>
+      <Variant>View model method '{0}' was not found or is not a valid link state evaluator.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_LINK_CLICK_HANDLER">
+    <en-US>
+      <Variant>View model method '{0}' was not found or is not a valid link click handler.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_CONTAINS_INVALID_RESOURCES">
+    <en-US>
+      <Variant>The specified resource collection contains an invalid asset identifier.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

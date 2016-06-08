@@ -1,5 +1,7 @@
 ﻿using System;
+using Newtonsoft.Json;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -7,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents an asset identifier which is flagged as being either globally- or locally-sourced.
     /// </summary>
+    [JsonConverter(typeof(ObjectResolverJsonConverter))]
     public struct SourcedAssetID : IEquatable<SourcedAssetID>
     {
         /// <summary>
@@ -16,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="assetSource">The asset's source.</param>
         public SourcedAssetID(AssetID assetID, AssetSource assetSource)
         {
-            this.assetID     = assetID;
+            this.assetID = assetID;
             this.assetSource = assetSource;
         }
 
@@ -43,11 +46,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Converts the string representation of an asset identifier to an instance of the <see cref="AssetID"/> structure
+        /// Converts the string representation of an asset identifier to an instance of the <see cref="SourcedAssetID"/> structure
         /// using the content manifest registry provided by the current Ultraviolet context.
         /// </summary>
         /// <param name="s">A string containing the asset identifier to convert.</param>
-        /// <returns>An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</returns>
+        /// <returns>An instance of the <see cref="SourcedAssetID"/> structure that is equivalent to the specified string.</returns>
         public static SourcedAssetID Parse(String s)
         {
             Contract.Require(s, nameof(s));
@@ -170,7 +173,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new FormatException();
 
             // Parse the asset identifier
-            var assetID       = default(AssetID);
+            var assetID = default(AssetID);
             var assetIDParsed = false;
 
             if (manifests == null)
@@ -187,7 +190,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 value = default(SourcedAssetID);
                 return false;
             }
-         
+
             // Parse the asset source
             AssetSource assetSource = AssetSource.Global;
             if (parts.Length == 2)

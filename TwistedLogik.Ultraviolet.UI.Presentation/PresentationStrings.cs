@@ -93,6 +93,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource CollectionTypeNotSupported           = new StringResource(StringDatabase, "COLLECTION_TYPE_NOT_SUPPORTED");
         public static readonly StringResource TemplateTypeMismatch                 = new StringResource(StringDatabase, "TEMPLATE_TYPE_MISMATCH");
         public static readonly StringResource NamedElementDoesNotExist             = new StringResource(StringDatabase, "NAMED_ELEMENT_DOES_NOT_EXIST");
+        public static readonly StringResource InvalidLinkColorizer                 = new StringResource(StringDatabase, "INVALID_LINK_COLORIZER");
+        public static readonly StringResource InvalidLinkStateEvaluator            = new StringResource(StringDatabase, "INVALID_LINK_STATE_EVALUATOR");
+        public static readonly StringResource InvalidLinkClickHandler              = new StringResource(StringDatabase, "INVALID_LINK_CLICK_HANDLER");
+        public static readonly StringResource CollectionContainsInvalidResources   = new StringResource(StringDatabase, "COLLECTION_CONTAINS_INVALID_RESOURCES");
 #pragma warning restore 1591
     }
 }

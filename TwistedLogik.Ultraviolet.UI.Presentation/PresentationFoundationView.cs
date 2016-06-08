@@ -691,6 +691,57 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+        /// <summary>
+        /// Loads the resource represented by the specified asset identifier.
+        /// </summary>
+        /// <typeparam name="TResource">The type of resource to load.</typeparam>
+        /// <param name="id">The identifier of the resource to load.</param>
+        /// <returns>The resource that was loaded, or <see langword="null"/> if the resource could not be loaded.</returns>
+        public TResource LoadResource<TResource>(SourcedAssetID id) where TResource : class
+        {
+            return LoadResource<TResource>(id.AssetID, id.AssetSource);
+        }
+
+        /// <summary>
+        /// Loads the resource represented by the specified asset identifier.
+        /// </summary>
+        /// <typeparam name="TResource">The type of resource to load.</typeparam>
+        /// <param name="id">The identifier of the resource to load.</param>
+        /// <param name="source">The source from which to load the asset.</param>
+        /// <returns>The resource that was loaded, or <see langword="null"/> if the resource could not be loaded.</returns>
+        public TResource LoadResource<TResource>(AssetID id, AssetSource source) where TResource : class
+        {
+            if (!id.IsValid)
+                return null;
+
+            var content = (source == AssetSource.Global) ?
+                GlobalContent : LocalContent;
+
+            if (content == null)
+                return null;
+
+            return content.Load<TResource>(id);
+        }
+
+        /// <summary>
+        /// Loads the sprite animation represented by the specified sprite animation identifier.
+        /// </summary>
+        /// <param name="id">The identifier of the resource to load.</param>
+        /// <returns>The resource that was loaded, or <see langword="null"/> if the resource could not be loaded.</returns>
+        public SpriteAnimation LoadResource(SourcedSpriteAnimationID id)
+        {
+            if (!id.SpriteAnimationID.IsValid)
+                return null;
+
+            var content = (id.SpriteSource == AssetSource.Global) ?
+                GlobalContent : LocalContent;
+
+            if (content == null)
+                return null;
+
+            return content.Load(id.SpriteAnimationID);
+        }
+
         /// <inheritdoc/>
         public override TViewModel GetViewModel<TViewModel>()
         {
@@ -1109,7 +1160,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (!viewIsOpen)
                 return;
-            
+
             var dipsArea = Display.PixelsToDips(Area);
             layoutRoot.Measure(dipsArea.Size);
             layoutRoot.Arrange(dipsArea);
@@ -1397,7 +1448,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             isMouseOverSet.Clear();
 
             var mousePosInWindow = mouse.GetPositionInWindow(Window);
-            var mouseElement = mousePosInWindow == null ? null : 
+            var mouseElement = mousePosInWindow == null ? null :
                 (DependencyObject)HitTestScreenPixel((Point2)mousePosInWindow.Value);
 
             while (mouseElement != null)
@@ -1764,7 +1815,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var xRelativeToWindow = windowSize.Width * x;
             var yRelativeToWindow = windowSize.Height * y;
 
-            var posRelativeToCompositor = 
+            var posRelativeToCompositor =
                 Window.Compositor.WindowToPoint((Int32)xRelativeToWindow, (Int32)yRelativeToWindow);
 
             var xRelativeToView = posRelativeToCompositor.X - this.X;
@@ -1785,7 +1836,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return (Point2D)Display.PixelsToDips(new Vector2(xPixels, yPixels));
         }
-        
+
         /// <summary>
         /// Gets a value indicating whether the specified element is valid for receiving input.
         /// </summary>
@@ -1843,19 +1894,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (content == null)
                 return false;
 
-            layoutRoot.ToolTip.Content                 = content;
-            layoutRoot.ToolTipPopup.VerticalOffset     = ToolTipService.GetVerticalOffset(uiToolTipElement);
-            layoutRoot.ToolTipPopup.HorizontalOffset   = ToolTipService.GetHorizontalOffset(uiToolTipElement);
-            layoutRoot.ToolTipPopup.Placement          = ToolTipService.GetPlacement(uiToolTipElement);
+            layoutRoot.ToolTip.Content = content;
+            layoutRoot.ToolTipPopup.VerticalOffset = ToolTipService.GetVerticalOffset(uiToolTipElement);
+            layoutRoot.ToolTipPopup.HorizontalOffset = ToolTipService.GetHorizontalOffset(uiToolTipElement);
+            layoutRoot.ToolTipPopup.Placement = ToolTipService.GetPlacement(uiToolTipElement);
             layoutRoot.ToolTipPopup.PlacementRectangle = ToolTipService.GetPlacementRectangle(uiToolTipElement);
-            layoutRoot.ToolTipPopup.PlacementTarget    = ToolTipService.GetPlacementTarget(uiToolTipElement);
-            layoutRoot.ToolTipPopup.Effect             = ToolTipService.GetHasDropShadow(uiToolTipElement) ? toolTipDropShadow : null;
-            layoutRoot.ToolTipPopup.IsOpen             = false;
-            layoutRoot.ToolTipPopup.IsOpen             = true;
+            layoutRoot.ToolTipPopup.PlacementTarget = ToolTipService.GetPlacementTarget(uiToolTipElement);
+            layoutRoot.ToolTipPopup.Effect = ToolTipService.GetHasDropShadow(uiToolTipElement) ? toolTipDropShadow : null;
+            layoutRoot.ToolTipPopup.IsOpen = false;
+            layoutRoot.ToolTipPopup.IsOpen = true;
 
             timeSinceToolTipWasClosed = 0.0;
             timeSinceToolTipWasOpened = 0.0;
-            timeUntilToolTipWillOpen  = 0.0;
+            timeUntilToolTipWillOpen = 0.0;
 
             toolTipElementDisplayed = uiToolTipElement;
             toolTipElementDisplayed.SetValue(ToolTipService.IsOpenPropertyKey, true);
@@ -1899,7 +1950,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return IsMouseCapturedByElement(recipient) ? recipient : elementWithMouseCapture;
         }
-        
+
         /// <summary>
         /// Navigates the visual tree starting at the specified element until an element is found which has a valid tooltip.
         /// </summary>
@@ -2114,8 +2165,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var originalFocus = elementWithFocus;
 
-                var dipsX      = Display.PixelsToDips(x);
-                var dipsY      = Display.PixelsToDips(y);
+                var dipsX = Display.PixelsToDips(x);
+                var dipsY = Display.PixelsToDips(y);
                 var dipsDeltaX = Display.PixelsToDips(dx);
                 var dipsDeltaY = Display.PixelsToDips(dy);
 
@@ -2147,7 +2198,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             UpdateElementUnderMouse();
 
             var handled = false;
-            var recipient = elementUnderMouse;            
+            var recipient = elementUnderMouse;
             if (recipient != null)
             {
                 var originalFocus = elementWithFocus;
@@ -2282,7 +2333,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Mouse.RaisePreviewMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelData);
                     Mouse.RaiseMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelData);
                 }
-                
+
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
@@ -2320,7 +2371,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     if (genericInteractionData.Handled)
                         handled = true;
                 }
-                
+
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
@@ -2349,7 +2400,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Touch.RaiseFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerDownData);
 
                 elementLastTouched = recipient as IInputElement;
-                
+
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
@@ -2375,7 +2426,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Touch.RaiseFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerUpData);
 
                 elementLastTouched = null;
-                
+
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
@@ -2401,7 +2452,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var fingerMotionData = new RoutedEventData(recipient);
                 Touch.RaisePreviewFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, ref fingerMotionData);
                 Touch.RaiseFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, ref fingerMotionData);
-                
+
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
@@ -2428,7 +2479,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             UnhookFirstPlayerGamePadEvents();
         }
-        
+
         /// <summary>
         /// Handles the <see cref="GamePadDevice.AxisChanged"/> event.
         /// </summary>
@@ -2474,7 +2525,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (performGamePadNav)
                 FocusNavigator.PerformNavigation(this, device, axis);
-            
+
             if (originalFocus != elementWithFocus)
                 focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
         }
@@ -2495,7 +2546,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var gamePadAxisPressedData = new RoutedEventData(recipient);
                 GamePad.RaisePreviewAxisUp(recipient, device, axis, ref gamePadAxisPressedData);
                 GamePad.RaiseAxisUp(recipient, device, axis, ref gamePadAxisPressedData);
-                
+
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
             }
@@ -2532,14 +2583,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     ActivateDefaultOrCancelButton(defaultButtons);
                     return;
                 }
-                
+
                 if (GamePad.CancelButton == button)
                 {
                     ActivateDefaultOrCancelButton(cancelButtons);
                     return;
                 }
             }
-            
+
             if (originalFocus != elementWithFocus)
                 focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
         }
@@ -2551,7 +2602,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (device.PlayerIndex != 0 || !IsInputEnabledAndAllowed)
                 return;
-            
+
             var recipient = elementWithFocus as DependencyObject;
             if (recipient != null)
             {
@@ -2560,7 +2611,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var gamePadAxisChangedData = new RoutedEventData(recipient);
                 GamePad.RaisePreviewButtonUp(recipient, device, button, ref gamePadAxisChangedData);
                 GamePad.RaiseButtonUp(recipient, device, button, ref gamePadAxisChangedData);
-                
+
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
             }
