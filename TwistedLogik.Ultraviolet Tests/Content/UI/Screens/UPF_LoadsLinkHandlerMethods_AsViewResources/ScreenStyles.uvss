@@ -1,0 +1,5 @@
+﻿View
+{
+	link-state-evaluator: TestLinkStateEvaluator;
+	link-colorizer: TestLinkColorizer;
+}

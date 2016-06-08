@@ -298,6 +298,16 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_VisualClone_DrawsCorrectly_WhenParentIsTransformed.png");
         }
 
+        [Test]
+        [Category("UPF"), Category("Rendering")]
+        [Description("Ensures that a UPF view correctly loads the link state evaluator and link colorizer defined as resources in its style sheet.")]
+        public void UPF_LoadsLinkHandlerMethods_AsViewResources()
+        {
+            var result = RunPresentationTestFor(content => new UPF_LoadsLinkHandlerMethods_AsViewResources(content));
+            
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_LoadsLinkHandlerMethods_AsViewResources.png");
+        }
+
         /// <summary>
         /// Runs a standard test by spinning up an Ultraviolet application and displaying the specified UPF screen.
         /// </summary>

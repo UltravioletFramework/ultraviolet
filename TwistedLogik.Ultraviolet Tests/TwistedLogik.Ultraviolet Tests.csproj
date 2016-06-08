@@ -172,6 +172,8 @@
     <Compile Include="MatrixTests.cs" />
     <Compile Include="UI\Presentation\Input\KeyboardNavigationTests.cs" />
     <Compile Include="UI\Presentation\PresentationFoundationTestFramework.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources_VM.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_DirNav_Cycle.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_DirNav_Continue.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_DirNav_Contained.cs" />
@@ -615,6 +617,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_LoadsLinkHandlerMethods_AsViewResources.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersLinks_WithColorizer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -952,6 +957,12 @@
     <None Include="Content\Cursors\CursorsJson.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\UI\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources\ScreenStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Content\UI\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
