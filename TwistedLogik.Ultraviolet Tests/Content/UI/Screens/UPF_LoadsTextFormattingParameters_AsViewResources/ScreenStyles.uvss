@@ -1,0 +1,7 @@
+﻿View
+{
+	text-styles: #Global:Json:TextStyles;
+	text-fonts: #Global:Json:TextFonts;
+	text-icons: #Global:Json:TextIcons;
+	text-shaders: #Global:Json:TextShaders;
+}

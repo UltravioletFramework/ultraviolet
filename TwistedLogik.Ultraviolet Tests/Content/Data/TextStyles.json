@@ -1,0 +1,7 @@
+﻿{
+  "teststyle": {
+    "color": [ 255, 255, 0, 255 ],
+    "bold": true,
+    "italic":  true
+  }
+}

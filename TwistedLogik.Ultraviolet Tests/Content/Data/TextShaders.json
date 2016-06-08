@@ -1,0 +1,5 @@
+﻿{
+  "testshader": {
+    "$type": "TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.RainbowGlyphShader, TwistedLogik.Ultraviolet.Tests"
+  }
+}

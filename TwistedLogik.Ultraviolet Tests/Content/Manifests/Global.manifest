@@ -2,6 +2,7 @@
 <ContentManifest Name="Global">
   <ContentGroup Name="Fonts" Directory="Fonts" Type="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFont">
     <Asset Name="DefaultUI">..\UI\DefaultUIFont</Asset>
+    <Asset Name="SegoeUI">SegoeUI</Asset>
   </ContentGroup>
   <ContentGroup Name="Textures" Directory="Textures" Type="TwistedLogik.Ultraviolet.Graphics.Texture2D">
     <Asset Name="DefaultUI">..\UI\DefaultUI</Asset>
@@ -15,5 +16,14 @@
   </ContentGroup>
   <ContentGroup Name="Cursors" Directory="Cursors" Type="TwistedLogik.Ultraviolet.CursorCollection">
     <Asset Name="Cursors">Cursors</Asset>
+  </ContentGroup>
+  <ContentGroup Name="Json" Directory="Data" Type="Newtonsoft.Json.Linq.JObject, Newtonsoft.Json">
+    <Asset Name="TextStyles">TextStyles</Asset>
+    <Asset Name="TextFonts">TextFonts</Asset>
+    <Asset Name="TextIcons">TextIcons</Asset>
+    <Asset Name="TextShaders">TextShaders</Asset>
+  </ContentGroup>
+  <ContentGroup Name="Sprites" Directory="Sprites" Type="TwistedLogik.Ultraviolet.Graphics.Graphics2D.Sprite">
+    <Asset Name="InterfaceIcons">InterfaceIcons</Asset>
   </ContentGroup>
 </ContentManifest>
