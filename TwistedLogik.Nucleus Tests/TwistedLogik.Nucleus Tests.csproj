@@ -126,6 +126,7 @@
     <Compile Include="Data\DataObjectRegistryTests.cs" />
     <Compile Include="Data\DataObjectRegistryTests.TestDataObjectRegistry.cs" />
     <Compile Include="Data\DataObjectRegistryTests.TestDataObject.cs" />
+    <Compile Include="NucleusEnumJsonConverterTests.cs" />
     <Compile Include="SetUpFixture.cs" />
     <Compile Include="Collections\BinaryHeapTest.cs" />
     <Compile Include="Collections\ObservableItem.cs" />
