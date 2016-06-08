@@ -1218,6 +1218,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var font = settings.Font;
             var fontFace = font.GetFace(bold, italic);
             var color = defaultColor;
+            var lastColorOutsideLink = defaultColor;
 
             var availableHeight = settings.Height ?? Int32.MaxValue;
             var blockOffset = 0;
@@ -1272,7 +1273,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 
                     case TextLayoutCommandType.Icon:
                         DrawIcon(spriteBatch, input, 
-                            position.X + lineOffset, position.Y + blockOffset, lineHeight, start, count, color, ref charsSeen);
+                            position.X + lineOffset, position.Y + blockOffset, lineHeight, start, count, lastColorOutsideLink, ref charsSeen);
                         break;
                         
                     case TextLayoutCommandType.LineBreak:
@@ -1295,6 +1296,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             {
                                 var linkIndex = linkStack.Count > 0 ? linkStack.Peek().Value : (Int16?)null;
                                 RefreshColor(input, defaultColor, linkIndex, linkAtCursor, ref color);
+
+                                if (linkStack.Count == 0)
+                                    lastColorOutsideLink = color;
                             }
                         }
                         input.SeekNextCommand();
