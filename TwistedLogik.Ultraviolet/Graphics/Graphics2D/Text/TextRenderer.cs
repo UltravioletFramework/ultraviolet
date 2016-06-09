@@ -144,7 +144,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         {
             Contract.Require(input, nameof(input));
 
-            if (input.ActiveLinkIndex == null || LinkClickHandler == null)
+            if (input.ActiveLinkIndex == null)
                 return false;
 
             if (onlyIfLinkContainsCursor)
@@ -157,7 +157,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             }
 
             var target = input.GetLinkTarget(input.ActiveLinkIndex.Value);
-            var result = LinkClickHandler(target);
+            var result = false;
+
+            if (LinkClickHandler != null)
+                result = LinkClickHandler(target);
+
             input.ActivateLink(null);
 
             return result;
@@ -1238,7 +1242,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
                 input.AcquirePointers();
-
+            
             var linkAtCursor = GetLinkIndexAtCursor(input);
 
             input.Seek(0);

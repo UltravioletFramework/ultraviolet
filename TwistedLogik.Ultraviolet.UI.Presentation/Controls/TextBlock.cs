@@ -5,6 +5,7 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -103,6 +104,53 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        {
+            LinkUtil.UpdateLinkCursor(textLayoutCommands, this);
+
+            base.OnMouseMove(device, x, y, dx, dy, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnMouseLeave(MouseDevice device, ref RoutedEventData data)
+        {
+            LinkUtil.UpdateLinkCursor(textLayoutCommands, this);
+
+            base.OnMouseLeave(device, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        {
+            if (button == MouseButton.Left)
+            {
+                LinkUtil.ActivateTextLink(textLayoutCommands, this, ref data);
+            }
+            base.OnMouseDown(device, button, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        {
+            if (button == MouseButton.Left)
+            {
+                LinkUtil.ExecuteTextLink(textLayoutCommands, this, ref data);
+            }
+            base.OnMouseUp(device, button, ref data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTap(TouchDevice device, Int64 fingerID, Double x, Double y, ref RoutedEventData data)
+        {
+            LinkUtil.UpdateLinkCursor(textLayoutCommands, this);
+            if (LinkUtil.ActivateTextLink(textLayoutCommands, this, ref data))
+            {
+                LinkUtil.ExecuteTextLink(textLayoutCommands, this, ref data);
+            }
+            base.OnTap(device, fingerID, x, y, ref data);
+        }
+
+        /// <inheritdoc/>
         protected override void OnInitialized()
         {
             UpdateTextParserResult();
@@ -190,8 +238,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var settings = new TextLayoutSettings(Font, constraintX, constraintY, flags, FontStyle);
 
                 View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
+                LinkUtil.UpdateLinkCursor(textLayoutCommands, this);
             }
-        }
+        }        
 
         // State values.
         private readonly TextParserTokenStream textParserResult = new TextParserTokenStream();
