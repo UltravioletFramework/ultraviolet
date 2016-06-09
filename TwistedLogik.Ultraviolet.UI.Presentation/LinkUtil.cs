@@ -1,5 +1,4 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 
@@ -15,17 +14,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="stream">The command stream to update.</param>
         /// <param name="element">The element that owns the command stream.</param>
-        public static void UpdateLinkCursor(TextLayoutCommandStream stream, UIElement element)
+        /// <param name="position">The position of the input device.</param>
+        public static void UpdateLinkCursor(TextLayoutCommandStream stream, UIElement element, Point2D? position)
         {
             Contract.Require(element, nameof(element));
 
             if (stream == null)
                 return;
             
-            var positionDips = Mouse.GetPosition(element);
-            var positionPixs = (Point2)element.View.Display.DipsToPixels(positionDips);
+            var positionDips = position;
+            var positionPixs = positionDips.HasValue ? (Point2)element.View.Display.DipsToPixels(positionDips.Value) : (Point2?)null;
 
-            if (element.Bounds.Contains(positionDips) || element.IsMouseCaptured)
+            if (positionDips.HasValue && (element.Bounds.Contains(positionDips.Value) || element.IsMouseCaptured))
             {
                 element.View.Resources
                     .TextRenderer.UpdateCursor(stream, positionPixs);
@@ -38,11 +38,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Activates any link at the current cursor position within the content presenter's text block.
+        /// Activates any link at the current cursor position within the specified command stream.
         /// </summary>
         /// <param name="stream">The command stream to update.</param>
         /// <param name="element">The element that owns the command stream.</param>
         /// <param name="data">The event metadata for the routed event which prompted the link activation.</param>
+        /// <returns><see langword="true"/> if the command stream's link was deactivated; otherwise, <see langword="false"/>.</returns>
         public static Boolean ActivateTextLink(TextLayoutCommandStream stream, UIElement element, ref RoutedEventData data)
         {
             Contract.Require(element, nameof(element));
@@ -58,7 +59,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Executes any link at the current cursor position within the content presenter's text block/
+        /// Deactivates the specified command stream's activated link, if it has one.
+        /// </summary>
+        /// <param name="stream">The command stream to update.</param>
+        /// <param name="element">The element that owns the command stream.</param>
+        /// <returns><see langword="true"/> if the command stream's link was deactivated; otherwise, <see langword="false"/>.</returns>
+        public static Boolean DeactivateTextLink(TextLayoutCommandStream stream, UIElement element)
+        {
+            Contract.Require(element, nameof(element));
+
+            if (stream == null)
+                return false;
+
+            return element.View.Resources.TextRenderer.DeactivateLink(stream);
+        }
+
+        /// <summary>
+        /// Executes any link at the current cursor position within the specified command stream.
         /// </summary>
         /// <param name="stream">The command stream to update.</param>
         /// <param name="element">The element that owns the command stream.</param>

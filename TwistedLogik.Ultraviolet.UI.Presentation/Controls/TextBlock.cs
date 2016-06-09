@@ -4,8 +4,9 @@ using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -106,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
         {
-            LinkUtil.UpdateLinkCursor(textLayoutCommands, this);
+            LinkUtil.UpdateLinkCursor(textLayoutCommands, this, Mouse.GetPosition(this));
 
             base.OnMouseMove(device, x, y, dx, dy, ref data);
         }
@@ -114,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnMouseLeave(MouseDevice device, ref RoutedEventData data)
         {
-            LinkUtil.UpdateLinkCursor(textLayoutCommands, this);
+            LinkUtil.UpdateLinkCursor(textLayoutCommands, this, Mouse.GetPosition(this));
 
             base.OnMouseLeave(device, ref data);
         }
@@ -140,14 +141,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnTap(TouchDevice device, Int64 fingerID, Double x, Double y, ref RoutedEventData data)
+        protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, ref RoutedEventData data)
         {
-            LinkUtil.UpdateLinkCursor(textLayoutCommands, this);
-            if (LinkUtil.ActivateTextLink(textLayoutCommands, this, ref data))
+            if (fingerID == 0)
             {
-                LinkUtil.ExecuteTextLink(textLayoutCommands, this, ref data);
+                LinkUtil.DeactivateTextLink(textLayoutCommands, this);
+                LinkUtil.UpdateLinkCursor(textLayoutCommands, this, null);
             }
-            base.OnTap(device, fingerID, x, y, ref data);
+            base.OnFingerUp(device, fingerID, x, y, pressure, ref data);
         }
 
         /// <inheritdoc/>
@@ -234,11 +235,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var constraintX = unconstrainedWidth ? null : (Int32?)Math.Ceiling(Display.DipsToPixels(availableSize.Width));
                 var constraintY = unconstrainedHeight ? null : (Int32?)Math.Ceiling(Display.DipsToPixels(availableSize.Height));
 
+                var cursorpos = textLayoutCommands.CursorPosition;
+
                 var flags = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);
                 var settings = new TextLayoutSettings(Font, constraintX, constraintY, flags, FontStyle);
 
                 View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
-                LinkUtil.UpdateLinkCursor(textLayoutCommands, this);
+                View.Resources.TextRenderer.UpdateCursor(textLayoutCommands, cursorpos);
             }
         }        
 
