@@ -184,7 +184,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             base.OnMouseUp(device, button, ref data);
         }
-        
+
+        /// <inheritdoc/>
+        protected override void OnIsMouseOverChanged()
+        {
+            LinkUtil.UpdateLinkCursor(textLayoutCommands, this, null);
+
+            base.OnIsMouseOverChanged();
+        }
+
         /// <inheritdoc/>
         protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, ref RoutedEventData data)
         {

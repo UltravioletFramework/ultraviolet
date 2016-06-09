@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var positionDips = position;
             var positionPixs = positionDips.HasValue ? (Point2)element.View.Display.DipsToPixels(positionDips.Value) : (Point2?)null;
 
-            if (positionDips.HasValue && (element.Bounds.Contains(positionDips.Value) || element.IsMouseCaptured))
+            if (positionDips.HasValue && (element.IsMouseOver || element.IsMouseCaptured))
             {
                 element.View.Resources
                     .TextRenderer.UpdateCursor(stream, positionPixs);
