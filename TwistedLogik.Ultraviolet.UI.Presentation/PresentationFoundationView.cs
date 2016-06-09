@@ -2348,9 +2348,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var position = GetTouchCoordinates(x, y);
-
+            
             var handled = false;
-            var recipient = elementUnderMouse as DependencyObject;
+            var recipient = (Ultraviolet.GetInput().EmulateMouseWithTouchInput ? elementUnderMouse : elementLastTouched) as DependencyObject;
             if (recipient != null)
             {
                 var originalFocus = elementWithFocus;
@@ -2416,7 +2416,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var position = GetTouchCoordinates(x, y);
 
-            var recipient = elementLastTouched as DependencyObject;
+            var recipient = (Ultraviolet.GetInput().EmulateMouseWithTouchInput ? elementUnderMouse : elementLastTouched) as DependencyObject;
             if (recipient != null)
             {
                 var originalFocus = elementWithFocus;
@@ -2442,7 +2442,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var position = GetTouchCoordinates(x, y);
 
-            var recipient = elementLastTouched as DependencyObject;
+            var recipient = (Ultraviolet.GetInput().EmulateMouseWithTouchInput ? elementUnderMouse : elementLastTouched) as DependencyObject;
             if (recipient != null)
             {
                 var originalFocus = elementWithFocus;
