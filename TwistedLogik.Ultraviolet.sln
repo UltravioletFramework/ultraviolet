@@ -127,8 +127,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace (iOS)", "TwistedLogik.Ultraviolet.Profiler.dotTrace (iOS)\TwistedLogik.Ultraviolet.Profiler.dotTrace (iOS).csproj", "{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS)\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS).csproj", "{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (iOS)", "TwistedLogik.Ultraviolet.UI.Presentation (iOS)\TwistedLogik.Ultraviolet.UI.Presentation (iOS).csproj", "{4F741CCA-6FBF-439E-A26A-ABB189619101}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems*{4f741cca-6fbf-439e-a26a-abb189619101}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{b5502009-935a-40ba-b415-abbf55427cad}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{480c60a0-20c2-4bbc-8d87-e5383ee66ff8}*SharedItemsImports = 4
 		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{08b2b8d5-152f-45fb-b4eb-8c09010a9908}*SharedItemsImports = 4
@@ -153,6 +158,7 @@ Global
 		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
 		UvDebugSandbox\UvDebugSandbox.projitems*{fec3b657-42e7-4e8e-8760-9fd7eff1d0e5}*SharedItemsImports = 4
 		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{49a66667-2355-4755-a3ad-4ef9ca638534}*SharedItemsImports = 4
+		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{6115a978-b4b6-46d3-ad13-f0dc358b8bd3}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{ddc2077d-a8e5-4866-8c74-5ebb1ca7f8e1}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{3416af37-8a39-479d-b78f-88d72cadd458}*SharedItemsImports = 4
@@ -456,6 +462,18 @@ Global
 		{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}.Signed|Any CPU.ActiveCfg = Release|Any CPU
 		{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{4F741CCA-6FBF-439E-A26A-ABB189619101}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F741CCA-6FBF-439E-A26A-ABB189619101}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F741CCA-6FBF-439E-A26A-ABB189619101}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F741CCA-6FBF-439E-A26A-ABB189619101}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F741CCA-6FBF-439E-A26A-ABB189619101}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{4F741CCA-6FBF-439E-A26A-ABB189619101}.Signed|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
