@@ -58,7 +58,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
             Contract.Require(uv, nameof(uv));
 
-            return uv.Platform != UltravioletPlatform.Android;
+            return 
+                uv.Platform != UltravioletPlatform.Android && 
+                uv.Platform != UltravioletPlatform.iOS;
         }
 
         /// <inhertidoc/>

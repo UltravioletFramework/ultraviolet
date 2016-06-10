@@ -1209,6 +1209,9 @@ namespace TwistedLogik.Ultraviolet
                         shim = Assembly.Load("TwistedLogik.Ultraviolet.Android.dll");
                         break;
 
+                    case UltravioletPlatform.iOS:
+                        throw new NotImplementedException("NYI");
+
                     default:
                         throw new NotSupportedException();
                 }
@@ -1316,6 +1319,8 @@ namespace TwistedLogik.Ultraviolet
         {
 #if ANDROID
             this.platform = UltravioletPlatform.Android;
+#elif IOS
+            this.platform = UltravioletPlatform.iOS;
 #else
             switch (Environment.OSVersion.Platform)
             {

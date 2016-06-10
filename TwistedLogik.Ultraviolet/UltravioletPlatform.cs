@@ -25,5 +25,10 @@ namespace TwistedLogik.Ultraviolet
         /// Mac OS X.
         /// </summary>
         OSX,
+
+        /// <summary>
+        /// Mobile iOS.
+        /// </summary>
+        iOS,
     }
 }

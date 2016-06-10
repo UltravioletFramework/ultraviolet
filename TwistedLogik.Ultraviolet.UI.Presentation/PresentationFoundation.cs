@@ -219,9 +219,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, nameof(root));
 
-            if (Ultraviolet.Platform == UltravioletPlatform.Android)
+            if (Ultraviolet.Platform == UltravioletPlatform.Android ||
+                Ultraviolet.Platform == UltravioletPlatform.iOS)
+            {
                 return;
-            
+            }
             CompileExpressions(root, flags);
         }
 
@@ -246,6 +248,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     case UltravioletPlatform.Android:
                         compiledExpressionsAssembly = Assembly.Load(CompiledExpressionsAssemblyName);
                         break;
+
+                    case UltravioletPlatform.iOS:
+                        throw new NotImplementedException("NYI");
 
                     default:
                         throw new NotSupportedException();
@@ -822,7 +827,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void LoadBindingExpressionCompiler()
         {
-            if (Ultraviolet.Platform == UltravioletPlatform.Android)
+            if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
                 throw new NotSupportedException();
 
             if (bindingExpressionCompiler != null)

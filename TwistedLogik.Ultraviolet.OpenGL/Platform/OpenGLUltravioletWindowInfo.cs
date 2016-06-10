@@ -383,9 +383,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, configuration.MultiSampleSamples) < 0)
                 throw new SDL2Exception();
 
-            // If we're running on Android, we can't create a headless context.
-            var isRunningOnAndroid = (Ultraviolet.Platform == UltravioletPlatform.Android);
-            if (isRunningOnAndroid && configuration.Headless)
+            // If we're running on Android or iOS, we can't create a headless context.
+            var isRunningOnMobile = (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS);
+            if (isRunningOnMobile && configuration.Headless)
                 throw new InvalidOperationException(OpenGLStrings.CannotCreateHeadlessContextOnAndroid);
 
             // Initialize the hidden master window used to create the OpenGL context.
@@ -393,7 +393,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             var masterHeight = 0;
             var masterFlags = SDL_WindowFlags.OPENGL;
 
-            if (isRunningOnAndroid)
+            if (isRunningOnMobile)
             {
                 masterFlags |= SDL_WindowFlags.FULLSCREEN | SDL_WindowFlags.RESIZABLE;
             }
@@ -403,7 +403,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             }
 
             // Attempt to create the OpenGL window. If that fails, reduce our requirements and try again before failing.
-            var masterptr = SDL.CreateWindow(isRunningOnAndroid ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
+            var masterptr = SDL.CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
             if (masterptr == IntPtr.Zero)
             {
                 if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, 0) < 0)
@@ -412,7 +412,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
                 if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, 0) < 0)
                     throw new SDL2Exception();
 
-                masterptr = SDL.CreateWindow(isRunningOnAndroid ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
+                masterptr = SDL.CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
                 if (masterptr == IntPtr.Zero)
                 {
                     throw new SDL2Exception();
@@ -429,7 +429,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             // If this is not a headless context, create the primary application window.
             if (!configuration.Headless)
             {
-                if (isRunningOnAndroid)
+                if (isRunningOnMobile)
                 {
                     this.windows.Add(this.master);
                     DesignatePrimary(this.master);

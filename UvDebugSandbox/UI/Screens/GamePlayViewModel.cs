@@ -138,7 +138,20 @@ namespace UvDebugSandbox.UI.Screens
         /// </summary>
         public String HelpMessage
         {
-            get { return owner.Ultraviolet.Platform == UltravioletPlatform.Android ? "Press |c:ffffff00|BACK|c| to exit." : "Press |c:ffffff00|ESC|c| to exit."; }
+            get
+            {
+                switch (owner.Ultraviolet.Platform)
+                {
+                    case UltravioletPlatform.Android:
+                        return "Press |c:ffffff00|BACK|c| to exit.";
+
+                    case UltravioletPlatform.iOS:
+                        return "Press |c:ffffff00|HOME|c| to exit.";
+
+                    default:
+                        return "Press |c:ffffff00|ESC|c| to exit.";
+                }
+            }
         }
 
         /// <summary>

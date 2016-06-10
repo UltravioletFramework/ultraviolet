@@ -256,7 +256,7 @@ namespace UvDebugSandbox
         {
             if (ShouldCompileContent())
             {
-                if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
                     throw new NotSupportedException();
 
                 var archive = ContentArchive.FromFileSystem(new[] { "Content" });

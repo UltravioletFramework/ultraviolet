@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (SDL.Init(sdlFlags) != 0)
                 throw new SDL2Exception();
 
-            var isGLES = (Platform == UltravioletPlatform.Android);
+            var isGLES = (Platform == UltravioletPlatform.Android || Platform == UltravioletPlatform.iOS);
 
             var versionRequired = isGLES ? new Version(2, 0) : new Version(3, 1);
             var versionRequested = isGLES ? configuration.MinimumOpenGLESVersion : configuration.MinimumOpenGLVersion;
