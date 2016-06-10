@@ -121,7 +121,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             input.Seek(0);
 
             var linkIndex = GetLinkIndexAtPosition(input, x, y);
-            var linkTarget = linkIndex.HasValue ? input.GetLinkTarget(linkIndex.Value) : null;
 
             if (acquiredPointers)
                 input.ReleasePointers();

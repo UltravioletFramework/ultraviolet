@@ -108,6 +108,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample15_RenderTargetsAndBu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBuffers (Desktop)", "Sample15_RenderTargetsAndBuffers (Desktop)\Sample15_RenderTargetsAndBuffers (Desktop).csproj", "{03638242-3ADB-4881-88C7-63519F4A377B}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample16_CustomTextLayoutCommands", "Sample16_CustomTextLayoutCommands\Sample16_CustomTextLayoutCommands.shproj", "{D11DDE73-67C6-4D43-8270-67ACAF9ACC10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample16_CustomTextLayoutCommands (Desktop)", "Sample16_CustomTextLayoutCommands (Desktop)\Sample16_CustomTextLayoutCommands (Desktop).csproj", "{1C57EBC6-7048-4ADD-A17D-F2BCE8953210}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Sample5_RenderingSprites\Sample5_RenderingSprites.projitems*{0ecfaa60-2d08-4330-8533-a2262447dd1f}*SharedItemsImports = 13
@@ -115,12 +119,14 @@ Global
 		Sample14_LoadingImageDataWithSurfaces\Sample14_LoadingImageDataWithSurfaces.projitems*{067ae3a0-bbf6-47b1-8371-3710f199da65}*SharedItemsImports = 4
 		Sample4_ContentManagement\Sample4_ContentManagement.projitems*{2c6b942e-3d19-4211-af85-82402fd31a73}*SharedItemsImports = 4
 		SampleSharedLib\SampleSharedLib.projitems*{f07c30f1-b571-4516-9019-d9f5f8efa15b}*SharedItemsImports = 13
+		Sample16_CustomTextLayoutCommands\Sample16_CustomTextLayoutCommands.projitems*{1c57ebc6-7048-4add-a17d-f2bce8953210}*SharedItemsImports = 4
 		Sample3_RenderingGeometry\Sample3_RenderingGeometry.projitems*{a4ec586b-92e6-4980-aa87-958bf9e45e8f}*SharedItemsImports = 13
 		Sample1_CreatingAnApplication\Sample1_CreatingAnApplication.projitems*{fd1ac1b5-c403-4c80-8169-9dfa1277e81a}*SharedItemsImports = 13
 		Sample6_RenderingText\Sample6_RenderingText.projitems*{b689c7be-e5e6-49af-a594-f7771a74c7d4}*SharedItemsImports = 4
 		Sample2_HandlingInput\Sample2_HandlingInput.projitems*{b13372ad-66ea-4829-a5de-6032bb60af7c}*SharedItemsImports = 4
 		Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.projitems*{06b65153-1d88-4805-b2fd-a5b3bcab3587}*SharedItemsImports = 13
 		Sample10_AsynchronousContentLoading\Sample10_AsynchronousContentLoading.projitems*{9491b997-483c-4f11-8a96-13b122e5419a}*SharedItemsImports = 13
+		Sample16_CustomTextLayoutCommands\Sample16_CustomTextLayoutCommands.projitems*{d11dde73-67c6-4d43-8270-67acaf9acc10}*SharedItemsImports = 13
 		Sample12_UPF\Sample12_UPF.projitems*{6be6da33-0089-41c0-a4e1-b51f145a22ef}*SharedItemsImports = 13
 		Sample6_RenderingText\Sample6_RenderingText.projitems*{92c3587d-b6d3-493c-98c0-c0983e622a80}*SharedItemsImports = 13
 		Sample13_UPFAdvanced\Sample13_UPFAdvanced.projitems*{e7a444cb-f7ab-46d9-8406-e21e5db850f9}*SharedItemsImports = 4
@@ -245,6 +251,12 @@ Global
 		{03638242-3ADB-4881-88C7-63519F4A377B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{03638242-3ADB-4881-88C7-63519F4A377B}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{03638242-3ADB-4881-88C7-63519F4A377B}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{1C57EBC6-7048-4ADD-A17D-F2BCE8953210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C57EBC6-7048-4ADD-A17D-F2BCE8953210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C57EBC6-7048-4ADD-A17D-F2BCE8953210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C57EBC6-7048-4ADD-A17D-F2BCE8953210}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C57EBC6-7048-4ADD-A17D-F2BCE8953210}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{1C57EBC6-7048-4ADD-A17D-F2BCE8953210}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
