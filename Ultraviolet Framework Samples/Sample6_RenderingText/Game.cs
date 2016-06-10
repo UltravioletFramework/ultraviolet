@@ -6,10 +6,10 @@ using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.OpenGL;
-using UltravioletSample.Sample6_RenderingText.Assets;
-using UltravioletSample.Sample6_RenderingText.Input;
+using UltravioletSample.Sample16_CustomTextLayoutCommands.Assets;
+using UltravioletSample.Sample16_CustomTextLayoutCommands.Input;
 
-namespace UltravioletSample.Sample6_RenderingText
+namespace UltravioletSample.Sample16_CustomTextLayoutCommands
 {
 #if ANDROID
     [Android.App.Activity(Label = "Sample 6 - Rendering Text", MainLauncher = true, ConfigurationChanges = 

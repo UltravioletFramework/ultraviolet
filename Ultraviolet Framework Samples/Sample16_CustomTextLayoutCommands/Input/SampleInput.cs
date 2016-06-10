@@ -17,12 +17,16 @@ namespace UltravioletSample.Sample16_CustomTextLayoutCommands.Input
             public static Actions Instance { get; } = CreateSingleton<Actions>();
 
             public InputAction ExitApplication { get; private set; }
+            public InputAction ResetScrollingText { get; private set; }
 
             /// <inheritdoc/>
             protected override void OnCreatingActions()
             {
                 this.ExitApplication =
                     CreateAction("EXIT_APPLICATION");
+
+                this.ResetScrollingText =
+                    CreateAction("RESET_SCROLLING_TEXT");
 
                 base.OnCreatingActions();
             }
@@ -47,6 +51,9 @@ namespace UltravioletSample.Sample16_CustomTextLayoutCommands.Input
             {
                 this.ExitApplication
                     .Primary = CreateKeyboardBinding(Key.Escape);
+
+                this.ResetScrollingText
+                    .Primary = CreateKeyboardBinding(Key.R);
             }
 
             private void Reset_Android()
