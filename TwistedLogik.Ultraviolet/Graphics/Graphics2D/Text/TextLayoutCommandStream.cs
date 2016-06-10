@@ -13,7 +13,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
     /// <param name="state">An arbitrary state object.</param>
     /// <param name="position">The command's position within the source text.</param>
     /// <param name="command">The command which is being evaluated.</param>
-    public delegate void TextLayoutCommandEvaluator(Object state, Int32 position, TextLayoutCustomCommand command);
+    /// <returns><see langword="true"/> to continue searching for commands; otherwise, <see langword="false"/>.</returns>
+    public delegate Boolean TextLayoutCommandEvaluator(Object state, Int32 position, TextLayoutCustomCommand command);
 
     /// <summary>
     /// Represents a stream of commands produced by the text layout engine.
@@ -50,6 +51,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             Contract.EnsureRange(startGlyph >= 0, nameof(startGlyph));
             Contract.Require(evaluator, nameof(evaluator));
 
+            var terminateOnNextNonCommandToken = false;
+
             var glyphsSeen = 0;
             var glyphsMax = (glyphCount == Int32.MaxValue) ? Int32.MaxValue : startGlyph + glyphCount;
 
@@ -62,6 +65,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
             while (StreamPositionInObjects < Count)
             {                
                 var cmdType = *(TextLayoutCommandType*)Data;
+                if (cmdType != TextLayoutCommandType.Custom && terminateOnNextNonCommandToken)
+                    break;
+
                 switch (cmdType)
                 {
                     case TextLayoutCommandType.Text:
@@ -92,7 +98,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
                             if (glyphsSeen > startGlyph || startGlyph == 0)
                             {
                                 var cmd = (TextLayoutCustomCommand*)Data;
-                                evaluator(state, glyphsSeen, *cmd);
+                                if (!evaluator(state, glyphsSeen, *cmd))
+                                    terminateOnNextNonCommandToken = true;
                             }
                         }
                         break;
