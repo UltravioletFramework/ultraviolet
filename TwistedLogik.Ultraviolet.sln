@@ -115,6 +115,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Nucleus (iOS)", "TwistedLogik.Nucleus (iOS)\TwistedLogik.Nucleus (iOS).csproj", "{4628DF73-2C5C-4CD1-AB2C-197F6233504F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Gluon (iOS)", "TwistedLogik.Gluon (iOS)\TwistedLogik.Gluon (iOS).csproj", "{65ECB0C3-FD4E-494A-A000-43500B9CB851}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{b5502009-935a-40ba-b415-abbf55427cad}*SharedItemsImports = 4
@@ -128,6 +130,7 @@ Global
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{40d272db-90e1-4332-a32f-6effeb44fe87}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
+		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{65ecb0c3-fd4e-494a-a000-43500b9cb851}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}*SharedItemsImports = 4
 		UvDebugSandbox\UvDebugSandbox.projitems*{a8c85c23-03c2-41c6-8331-48835d257634}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{0b17931c-1595-4ada-9086-f26e5f5a387d}*SharedItemsImports = 4
@@ -402,6 +405,12 @@ Global
 		{4628DF73-2C5C-4CD1-AB2C-197F6233504F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4628DF73-2C5C-4CD1-AB2C-197F6233504F}.Signed|Any CPU.ActiveCfg = Release|Any CPU
 		{4628DF73-2C5C-4CD1-AB2C-197F6233504F}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{65ECB0C3-FD4E-494A-A000-43500B9CB851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65ECB0C3-FD4E-494A-A000-43500B9CB851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65ECB0C3-FD4E-494A-A000-43500B9CB851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65ECB0C3-FD4E-494A-A000-43500B9CB851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65ECB0C3-FD4E-494A-A000-43500B9CB851}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{65ECB0C3-FD4E-494A-A000-43500B9CB851}.Signed|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
