@@ -33,6 +33,8 @@ namespace TwistedLogik.Ultraviolet
 
             this.company = company;
             this.application = application;
+
+            InitializeApplication();
         }
 
         /// <inheritdoc/>
@@ -231,6 +233,8 @@ namespace TwistedLogik.Ultraviolet
                 {
                     uv.Messages.Unsubscribe(this);
 
+                    DisposePlatformResources();
+
                     if (primary != null)
                     {
                         primary.Drawing -= uv_Drawing;
@@ -414,6 +418,16 @@ namespace TwistedLogik.Ultraviolet
             get;
             set;
         }
+
+        /// <summary>
+        /// Initializes the application's state.
+        /// </summary>
+        partial void InitializeApplication();
+
+        /// <summary>
+        /// Disposes any platform-specific resources.
+        /// </summary>
+        partial void DisposePlatformResources();
 
         /// <summary>
         /// Creates the application's Ultraviolet context.

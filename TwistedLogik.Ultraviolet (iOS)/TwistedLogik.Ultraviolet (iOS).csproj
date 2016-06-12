@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="TwistedLogik.Ultraviolet.iOS.Bindings">
+      <HintPath>..\TwistedLogik.Ultraviolet.iOS.Bindings\bin\Debug\TwistedLogik.Ultraviolet.iOS.Bindings.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup />
@@ -57,6 +60,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
+    <Compile Include="UltravioletAppDelegate.cs" />
     <Compile Include="UltravioletApplication.cs" />
     <Compile Include="UltravioletApplicationAudioSettings.cs" />
     <Compile Include="UltravioletApplicationSettings.cs" />
