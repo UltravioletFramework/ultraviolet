@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;IOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -63,10 +63,6 @@
     <ProjectReference Include="..\TwistedLogik.Nucleus %28iOS%29\TwistedLogik.Nucleus %28iOS%29.csproj">
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
       <Name>TwistedLogik.Nucleus %28iOS%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28iOS%29\TwistedLogik.Ultraviolet %28iOS%29.csproj">
-      <Project>{8f9f44fb-e63c-48de-8752-19b745111559}</Project>
-      <Name>TwistedLogik.Ultraviolet %28iOS%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2 %28iOS%29\TwistedLogik.Ultraviolet.SDL2 %28iOS%29.csproj">
       <Project>{6355ebda-2aee-47d2-a74f-efb38054fabd}</Project>

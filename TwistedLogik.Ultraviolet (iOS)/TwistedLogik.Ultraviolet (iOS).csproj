@@ -44,8 +44,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="TwistedLogik.Ultraviolet.iOS.Bindings">
+    <Reference Condition="'$(Configuration)' == 'Debug'" Include="TwistedLogik.Ultraviolet.iOS.Bindings">
       <HintPath>..\TwistedLogik.Ultraviolet.iOS.Bindings\bin\Debug\TwistedLogik.Ultraviolet.iOS.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(Configuration)' == 'Release'" Include="TwistedLogik.Ultraviolet.iOS.Bindings">
+      <HintPath>..\TwistedLogik.Ultraviolet.iOS.Bindings\bin\Release\TwistedLogik.Ultraviolet.iOS.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
