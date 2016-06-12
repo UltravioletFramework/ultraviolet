@@ -99,10 +99,9 @@
     <CodesignKey>iPhone Distribution</CodesignKey>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>UltravioletGame.Game</StartupObject>
+    <StartupObject>SAFE_PROJECT_NAME.Game</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Game.cs" />
     <None Include="..\Dependencies\BASS\iOS\libbass.a">
       <Link>libbass.a</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -115,9 +114,39 @@
       <Link>libSDL2.a</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <BundleResource Include="..\UltravioletGame\Content\Manifests\Global.manifest">
+      <Link>Resources\Content\Manifests\Global.manifest</Link>
+    </BundleResource>
     <None Include="Info.plist" />
+    <Compile Include="..\UltravioletGame\Assets\GlobalFontID.cs">
+      <Link>Assets\GlobalFontID.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletGame\Game.cs">
+      <Link>Game.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletGame\Input\GameInputActions.cs">
+      <Link>Input\GameInputActions.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletGame\Input\IUltravioletInputExtensions.cs">
+      <Link>Input\IUltravioletInputExtensions.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
+    <BundleResource Include="..\UltravioletGame\Content\Localization\GameStrings.xml">
+      <Link>Resources\Content\Localization\GameStrings.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UltravioletGame\Content\Fonts\SegoeUI.xml">
+      <Link>Resources\Content\Fonts\SegoeUI.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UltravioletGame\Content\Fonts\SegoeUITexture.png">
+      <Link>Resources\Content\Fonts\SegoeUITexture.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\UltravioletGame\Content\Cursors\Cursors.xml">
+      <Link>Resources\Content\Cursors\Cursors.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UltravioletGame\Content\Cursors\CursorsImage.png">
+      <Link>Resources\Content\Cursors\CursorsImage.png</Link>
+    </BundleResource>
     <Content Include="Entitlements.plist" />
   </ItemGroup>
   <ItemGroup>
@@ -139,15 +168,13 @@
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
       <Name>TwistedLogik.Nucleus %28iOS%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28iOS%29\TwistedLogik.Ultraviolet %28iOS%29.csproj">
+      <Project>{8f9f44fb-e63c-48de-8752-19b745111559}</Project>
+      <Name>TwistedLogik.Ultraviolet %28iOS%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS %28iOS%29\TwistedLogik.Ultraviolet.BASS %28iOS%29.csproj">
       <Project>{ddc2077d-a8e5-4866-8c74-5ebb1ca7f8e1}</Project>
       <Name>TwistedLogik.Ultraviolet.BASS %28iOS%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.iOS\TwistedLogik.Ultraviolet.iOS.csproj">
-      <Project>{295ec20a-af97-4934-822c-8ee7919cec53}</Project>
-      <Name>TwistedLogik.Ultraviolet.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL %28iOS%29\TwistedLogik.Ultraviolet.OpenGL %28iOS%29.csproj">
       <Project>{480c60a0-20c2-4bbc-8d87-e5383ee66ff8}</Project>

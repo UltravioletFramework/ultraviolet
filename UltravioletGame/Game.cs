@@ -30,7 +30,10 @@ namespace SAFE_PROJECT_NAME
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
         /// </summary>
-        public Game() : base("YOUR_ORGANIZATION", "PROJECT_NAME") { }
+        public Game() : base("YOUR_ORGANIZATION", "PROJECT_NAME")
+        {
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+        }
 
         /// <summary>
         /// The application's entry point.

@@ -472,6 +472,16 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Ensures that the assembly which contains the specified type is linked on platforms
+        /// which require ahead-of-time compilation.
+        /// </summary>
+        /// <typeparam name="T">One of the types defined by the assembly to link.</typeparam>
+        protected void EnsureAssemblyIsLinked<T>()
+        {
+            /* do nothing */
+        }
+
+        /// <summary>
         /// Sets the file system source to an archive file loaded from a manifest resource stream,
         /// if the specified manifest resource exists.
         /// </summary>
