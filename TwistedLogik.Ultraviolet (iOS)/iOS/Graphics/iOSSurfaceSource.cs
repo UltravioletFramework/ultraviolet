@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.iOS.Graphics
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSource"/> class for the iOS platform.
     /// </summary>
-    public sealed class iOSSurfaceSource : SurfaceSource
+    public sealed unsafe class iOSSurfaceSource : SurfaceSource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="iOSSurfaceSource"/> class.
@@ -30,15 +30,19 @@ namespace TwistedLogik.Ultraviolet.iOS.Graphics
                     this.height = (Int32)img.Size.Height;
                     this.stride = (Int32)img.CGImage.BytesPerRow;
 
-                    this.bmpData = new Byte[stride * height];
-                    this.bmpDataHandle = GCHandle.Alloc(bmpData, GCHandleType.Pinned);
+                    this.bmpData = Marshal.AllocHGlobal(stride * height);
 
-                    using (var bmp = new CGBitmapContext(bmpData, width, height, 8, 4 * width, CGColorSpace.CreateDeviceRGB(), CGImageAlphaInfo.First))
+                    using (var colorSpace = CGColorSpace.CreateDeviceRGB())
                     {
-                        bmp.DrawImage(new CGRect(0, 0, width, height), img.CGImage);
+                        using (var bmp = new CGBitmapContext(bmpData, width, height, 8, stride, colorSpace, CGImageAlphaInfo.PremultipliedLast))
+                        {
+                            bmp.DrawImage(new CGRect(0, 0, width, height), img.CGImage);
+                        }
                     }
                 }
-            }            
+            }
+
+            ReversePremultiplication();
         }
 
         /// <inheritdoc/>
@@ -57,8 +61,8 @@ namespace TwistedLogik.Ultraviolet.iOS.Graphics
 
                 unsafe
                 {
-                    fixed (Byte* pixel = &bmpData[y * stride + (x * sizeof(UInt32))])
-                        return Color.FromArgb(*(UInt32*)pixel);
+                    var pixel = ((Byte*)bmpData.ToPointer())[y * stride + (x * sizeof(UInt32))];
+                    return Color.FromRgba(*(UInt32*)pixel);
                 }
             }
         }
@@ -70,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.iOS.Graphics
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                return bmpDataHandle.AddrOfPinnedObject();
+                return bmpData;
             }
         }
 
@@ -108,7 +112,25 @@ namespace TwistedLogik.Ultraviolet.iOS.Graphics
         }
 
         /// <inheritdoc/>
-        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.BGRA;
+        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.RGBA;
+
+        /// <summary>
+        /// Reverses the premultiplication which is automatically applied by the iOS API's...
+        /// ...so that Ultraviolet can re-premultiply it later. Yeah.
+        /// </summary>
+        private void ReversePremultiplication()
+        {
+            var pBmpData = (UInt32*)bmpData.ToPointer();
+            for (int i = 0; i < width * height; i++)
+            {
+                var pixel = Color.FromRgba(*pBmpData);
+                var a = pixel.A / 255f;
+                var r = (Int32)(pixel.R / a);
+                var g = (Int32)(pixel.G / a);
+                var b = (Int32)(pixel.B / a);
+                *pBmpData++ = new Color(r, g, b, a).PackedValue;
+            }
+        }
 
         /// <summary>
         /// Releases resources associated with the object.
@@ -119,14 +141,14 @@ namespace TwistedLogik.Ultraviolet.iOS.Graphics
             if (disposed)
                 return;
 
-            bmpDataHandle.Free();
+            if (bmpData != IntPtr.Zero)
+                Marshal.FreeHGlobal(bmpData);
 
             disposed = true;
         }
 
         // State values.
-        private readonly Byte[] bmpData;
-        private readonly GCHandle bmpDataHandle;
+        private readonly IntPtr bmpData;
         private readonly Int32 width;
         private readonly Int32 height;
         private readonly Int32 stride;

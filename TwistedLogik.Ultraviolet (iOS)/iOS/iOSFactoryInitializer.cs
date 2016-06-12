@@ -22,6 +22,7 @@ namespace TwistedLogik.Ultraviolet.iOS
             factory.SetFactoryMethod<SurfaceSourceFactory>((stream) => new iOSSurfaceSource(stream));
             factory.SetFactoryMethod<SurfaceSaverFactory>(() => new iOSSurfaceSaver());
             factory.SetFactoryMethod<IconLoaderFactory>(() => new iOSIconLoader());
+            factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
             factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new iOSScreenRotationService(display));
             factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new iOSScreenDensityService(display));
 
