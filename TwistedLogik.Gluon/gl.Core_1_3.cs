@@ -1,279 +1,329 @@
 ﻿using System;
 
+#if IOS
+using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapperAttribute;
+#endif
+
 namespace TwistedLogik.Gluon
 {
     public static unsafe partial class gl
     {
+        [MonoNativeFunctionWrapper]
         private delegate void glActiveTextureDelegate(uint texture);
         [Require(MinVersion = "1.3")]
         private static readonly glActiveTextureDelegate glActiveTexture = null;
 
         public static void ActiveTexture(uint texture) { glActiveTexture(texture); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glClientActiveTextureDelegate(uint texture);
         [Require(MinVersion = "1.3")]
         private static readonly glClientActiveTextureDelegate glClientActiveTexture = null;
 
         public static void ClientActiveTexture(uint texture) { glClientActiveTexture(texture); }
 
-        private delegate void glCompressedTexImage1DDelegate(uint target, int level, uint internalformat, int width, int border, int imageSize, void* data);
+        [MonoNativeFunctionWrapper]
+        private delegate void glCompressedTexImage1DDelegate(uint target, int level, uint internalformat, int width, int border, int imageSize, IntPtr data);
         [Require(MinVersion = "1.3")]
         private static readonly glCompressedTexImage1DDelegate glCompressedTexImage1D = null;
 
-        public static void CompressedTexImage1D(uint target, int level, uint internalformat, int width, int border, int imageSize, void* data) { glCompressedTexImage1D(target, level, internalformat, width, border, imageSize, data); }
+        public static void CompressedTexImage1D(uint target, int level, uint internalformat, int width, int border, int imageSize, void* data) { glCompressedTexImage1D(target, level, internalformat, width, border, imageSize, (IntPtr)data); }
 
-        private delegate void glCompressedTexImage2DDelegate(uint target, int level, uint internalformat, int width, int height, int border, int imageSize, void* data);
+        [MonoNativeFunctionWrapper]
+        private delegate void glCompressedTexImage2DDelegate(uint target, int level, uint internalformat, int width, int height, int border, int imageSize, IntPtr data);
         [Require(MinVersion = "1.3")]
         private static readonly glCompressedTexImage2DDelegate glCompressedTexImage2D = null;
 
-        public static void CompressedTexImage2D(uint target, int level, uint internalformat, int width, int height, int border, int imageSize, void* data) { glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data); }
+        public static void CompressedTexImage2D(uint target, int level, uint internalformat, int width, int height, int border, int imageSize, void* data) { glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, (IntPtr)data); }
 
-        private delegate void glCompressedTexImage3DDelegate(uint target, int level, uint internalformat, int width, int height, int depth, int border, int imageSize, void* data);
+        [MonoNativeFunctionWrapper]
+        private delegate void glCompressedTexImage3DDelegate(uint target, int level, uint internalformat, int width, int height, int depth, int border, int imageSize, IntPtr data);
         [Require(MinVersion = "1.3")]
         private static readonly glCompressedTexImage3DDelegate glCompressedTexImage3D = null;
 
-        public static void CompressedTexImage3D(uint target, int level, uint internalformat, int width, int height, int depth, int border, int imageSize, void* data) { glCompressedTexImage3D(target, level, internalformat, width, height, depth, border, imageSize, data); }
+        public static void CompressedTexImage3D(uint target, int level, uint internalformat, int width, int height, int depth, int border, int imageSize, void* data) { glCompressedTexImage3D(target, level, internalformat, width, height, depth, border, imageSize, (IntPtr)data); }
 
-        private delegate void glCompressedTexSubImage1DDelegate(uint target, int level, int xoffset, int width, uint format, int imageSize, void* data);
+        [MonoNativeFunctionWrapper]
+        private delegate void glCompressedTexSubImage1DDelegate(uint target, int level, int xoffset, int width, uint format, int imageSize, IntPtr data);
         [Require(MinVersion = "1.3")]
         private static readonly glCompressedTexSubImage1DDelegate glCompressedTexSubImage1D = null;
 
-        public static void CompressedTexSubImage1D(uint target, int level, int xoffset, int width, uint format, int imageSize, void* data) { glCompressedTexSubImage1D(target, level, xoffset, width, format, imageSize, data); }
+        public static void CompressedTexSubImage1D(uint target, int level, int xoffset, int width, uint format, int imageSize, void* data) { glCompressedTexSubImage1D(target, level, xoffset, width, format, imageSize, (IntPtr)data); }
 
-        private delegate void glCompressedTexSubImage2DDelegate(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, int imageSize, void* data);
+        [MonoNativeFunctionWrapper]
+        private delegate void glCompressedTexSubImage2DDelegate(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, int imageSize, IntPtr data);
         [Require(MinVersion = "1.3")]
         private static readonly glCompressedTexSubImage2DDelegate glCompressedTexSubImage2D = null;
 
-        public static void CompressedTexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, int imageSize, void* data) { glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data); }
+        public static void CompressedTexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, int imageSize, void* data) { glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, (IntPtr)data); }
 
-        private delegate void glCompressedTexSubImage3DDelegate(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, int imageSize, void* data);
+        [MonoNativeFunctionWrapper]
+        private delegate void glCompressedTexSubImage3DDelegate(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, int imageSize, IntPtr data);
         [Require(MinVersion = "1.3")]
         private static readonly glCompressedTexSubImage3DDelegate glCompressedTexSubImage3D = null;
 
-        public static void CompressedTexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, int imageSize, void* data) { glCompressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data); }
+        public static void CompressedTexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, int imageSize, void* data) { glCompressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, (IntPtr)data); }
 
-        private delegate void glGetCompressedTexImageDelegate(uint target, int lod, void* img);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetCompressedTexImageDelegate(uint target, int lod, IntPtr img);
         [Require(MinVersion = "1.3")]
         private static readonly glGetCompressedTexImageDelegate glGetCompressedTexImage = null;
 
-        public static void GetCompressedTexImage(uint target, int lod, void* img) { glGetCompressedTexImage(target, lod, img); }
+        public static void GetCompressedTexImage(uint target, int lod, void* img) { glGetCompressedTexImage(target, lod, (IntPtr)img); }
 
-        private delegate void glLoadTransposeMatrixdDelegate(double* m);
+        [MonoNativeFunctionWrapper]
+        private delegate void glLoadTransposeMatrixdDelegate(IntPtr m);
         [Require(MinVersion = "1.3")]
         private static readonly glLoadTransposeMatrixdDelegate glLoadTransposeMatrixd = null;
 
-        public static void LoadTransposeMatrixd(double* m) { glLoadTransposeMatrixd(m); }
+        public static void LoadTransposeMatrixd(double* m) { glLoadTransposeMatrixd((IntPtr)m); }
 
-        private delegate void glLoadTransposeMatrixfDelegate(float* m);
+        [MonoNativeFunctionWrapper]
+        private delegate void glLoadTransposeMatrixfDelegate(IntPtr m);
         [Require(MinVersion = "1.3")]
         private static readonly glLoadTransposeMatrixfDelegate glLoadTransposeMatrixf = null;
 
-        public static void LoadTransposeMatrixf(float* m) { glLoadTransposeMatrixf(m); }
+        public static void LoadTransposeMatrixf(float* m) { glLoadTransposeMatrixf((IntPtr)m); }
 
-        private delegate void glMultTransposeMatrixdDelegate(double* m);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultTransposeMatrixdDelegate(IntPtr m);
         [Require(MinVersion = "1.3")]
         private static readonly glMultTransposeMatrixdDelegate glMultTransposeMatrixd = null;
 
-        public static void MultTransposeMatrixd(double* m) { glMultTransposeMatrixd(m); }
+        public static void MultTransposeMatrixd(double* m) { glMultTransposeMatrixd((IntPtr)m); }
 
-        private delegate void glMultTransposeMatrixfDelegate(float* m);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultTransposeMatrixfDelegate(IntPtr m);
         [Require(MinVersion = "1.3")]
         private static readonly glMultTransposeMatrixfDelegate glMultTransposeMatrixf = null;
 
-        public static void MultTransposeMatrixf(float* m) { glMultTransposeMatrixf(m); }
+        public static void MultTransposeMatrixf(float* m) { glMultTransposeMatrixf((IntPtr)m); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord1dDelegate(uint target, double s);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord1dDelegate glMultiTexCoord1d = null;
 
         public static void MultiTexCoord1d(uint target, double s) { glMultiTexCoord1d(target, s); }
 
-        private delegate void glMultiTexCoord1dvDelegate(uint target, double* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord1dvDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord1dvDelegate glMultiTexCoord1dv = null;
 
-        public static void MultiTexCoord1dv(uint target, double* v) { glMultiTexCoord1dv(target, v); }
+        public static void MultiTexCoord1dv(uint target, double* v) { glMultiTexCoord1dv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord1fDelegate(uint target, float s);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord1fDelegate glMultiTexCoord1f = null;
 
         public static void MultiTexCoord1f(uint target, float s) { glMultiTexCoord1f(target, s); }
 
-        private delegate void glMultiTexCoord1fvDelegate(uint target, float* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord1fvDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord1fvDelegate glMultiTexCoord1fv = null;
 
-        public static void MultiTexCoord1fv(uint target, float* v) { glMultiTexCoord1fv(target, v); }
+        public static void MultiTexCoord1fv(uint target, float* v) { glMultiTexCoord1fv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord1iDelegate(uint target, int s);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord1iDelegate glMultiTexCoord1i = null;
 
         public static void MultiTexCoord1i(uint target, int s) { glMultiTexCoord1i(target, s); }
 
-        private delegate void glMultiTexCoord1ivDelegate(uint target, int* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord1ivDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord1ivDelegate glMultiTexCoord1iv = null;
 
-        public static void MultiTexCoord1iv(uint target, int* v) { glMultiTexCoord1iv(target, v); }
+        public static void MultiTexCoord1iv(uint target, int* v) { glMultiTexCoord1iv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord1sDelegate(uint target, short s);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord1sDelegate glMultiTexCoord1s = null;
 
         public static void MultiTexCoord1s(uint target, short s) { glMultiTexCoord1s(target, s); }
 
-        private delegate void glMultiTexCoord1svDelegate(uint target, short* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord1svDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord1svDelegate glMultiTexCoord1sv = null;
 
-        public static void MultiTexCoord1sv(uint target, short* v) { glMultiTexCoord1sv(target, v); }
+        public static void MultiTexCoord1sv(uint target, short* v) { glMultiTexCoord1sv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord2dDelegate(uint target, double s, double t);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord2dDelegate glMultiTexCoord2d = null;
 
         public static void MultiTexCoord2d(uint target, double s, double t) { glMultiTexCoord2d(target, s, t); }
 
-        private delegate void glMultiTexCoord2dvDelegate(uint target, double* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord2dvDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord2dvDelegate glMultiTexCoord2dv = null;
 
-        public static void MultiTexCoord2dv(uint target, double* v) { glMultiTexCoord2dv(target, v); }
+        public static void MultiTexCoord2dv(uint target, double* v) { glMultiTexCoord2dv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord2fDelegate(uint target, float s, float t);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord2fDelegate glMultiTexCoord2f = null;
 
         public static void MultiTexCoord2f(uint target, float s, float t) { glMultiTexCoord2f(target, s, t); }
 
-        private delegate void glMultiTexCoord2fvDelegate(uint target, float* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord2fvDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord2fvDelegate glMultiTexCoord2fv = null;
 
-        public static void MultiTexCoord2fv(uint target, float* v) { glMultiTexCoord2fv(target, v); }
+        public static void MultiTexCoord2fv(uint target, float* v) { glMultiTexCoord2fv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord2iDelegate(uint target, int s, int t);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord2iDelegate glMultiTexCoord2i = null;
 
         public static void MultiTexCoord2i(uint target, int s, int t) { glMultiTexCoord2i(target, s, t); }
 
-        private delegate void glMultiTexCoord2ivDelegate(uint target, int* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord2ivDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord2ivDelegate glMultiTexCoord2iv = null;
 
-        public static void MultiTexCoord2iv(uint target, int* v) { glMultiTexCoord2iv(target, v); }
+        public static void MultiTexCoord2iv(uint target, int* v) { glMultiTexCoord2iv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord2sDelegate(uint target, short s, short t);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord2sDelegate glMultiTexCoord2s = null;
 
         public static void MultiTexCoord2s(uint target, short s, short t) { glMultiTexCoord2s(target, s, t); }
 
-        private delegate void glMultiTexCoord2svDelegate(uint target, short* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord2svDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord2svDelegate glMultiTexCoord2sv = null;
 
-        public static void MultiTexCoord2sv(uint target, short* v) { glMultiTexCoord2sv(target, v); }
+        public static void MultiTexCoord2sv(uint target, short* v) { glMultiTexCoord2sv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord3dDelegate(uint target, double s, double t, double r);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord3dDelegate glMultiTexCoord3d = null;
 
         public static void MultiTexCoord3d(uint target, double s, double t, double r) { glMultiTexCoord3d(target, s, t, r); }
 
-        private delegate void glMultiTexCoord3dvDelegate(uint target, double* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord3dvDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord3dvDelegate glMultiTexCoord3dv = null;
 
-        public static void MultiTexCoord3dv(uint target, double* v) { glMultiTexCoord3dv(target, v); }
+        public static void MultiTexCoord3dv(uint target, double* v) { glMultiTexCoord3dv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord3fDelegate(uint target, float s, float t, float r);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord3fDelegate glMultiTexCoord3f = null;
 
         public static void MultiTexCoord3f(uint target, float s, float t, float r) { glMultiTexCoord3f(target, s, t, r); }
 
-        private delegate void glMultiTexCoord3fvDelegate(uint target, float* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord3fvDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord3fvDelegate glMultiTexCoord3fv = null;
 
-        public static void MultiTexCoord3fv(uint target, float* v) { glMultiTexCoord3fv(target, v); }
+        public static void MultiTexCoord3fv(uint target, float* v) { glMultiTexCoord3fv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord3iDelegate(uint target, int s, int t, int r);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord3iDelegate glMultiTexCoord3i = null;
 
         public static void MultiTexCoord3i(uint target, int s, int t, int r) { glMultiTexCoord3i(target, s, t, r); }
 
-        private delegate void glMultiTexCoord3ivDelegate(uint target, int* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord3ivDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord3ivDelegate glMultiTexCoord3iv = null;
 
-        public static void MultiTexCoord3iv(uint target, int* v) { glMultiTexCoord3iv(target, v); }
+        public static void MultiTexCoord3iv(uint target, int* v) { glMultiTexCoord3iv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord3sDelegate(uint target, short s, short t, short r);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord3sDelegate glMultiTexCoord3s = null;
 
         public static void MultiTexCoord3s(uint target, short s, short t, short r) { glMultiTexCoord3s(target, s, t, r); }
 
-        private delegate void glMultiTexCoord3svDelegate(uint target, short* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord3svDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord3svDelegate glMultiTexCoord3sv = null;
 
-        public static void MultiTexCoord3sv(uint target, short* v) { glMultiTexCoord3sv(target, v); }
+        public static void MultiTexCoord3sv(uint target, short* v) { glMultiTexCoord3sv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord4dDelegate(uint target, double s, double t, double r, double q);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord4dDelegate glMultiTexCoord4d = null;
 
         public static void MultiTexCoord4d(uint target, double s, double t, double r, double q) { glMultiTexCoord4d(target, s, t, r, q); }
 
-        private delegate void glMultiTexCoord4dvDelegate(uint target, double* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord4dvDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord4dvDelegate glMultiTexCoord4dv = null;
 
-        public static void MultiTexCoord4dv(uint target, double* v) { glMultiTexCoord4dv(target, v); }
+        public static void MultiTexCoord4dv(uint target, double* v) { glMultiTexCoord4dv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord4fDelegate(uint target, float s, float t, float r, float q);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord4fDelegate glMultiTexCoord4f = null;
 
         public static void MultiTexCoord4f(uint target, float s, float t, float r, float q) { glMultiTexCoord4f(target, s, t, r, q); }
 
-        private delegate void glMultiTexCoord4fvDelegate(uint target, float* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord4fvDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord4fvDelegate glMultiTexCoord4fv = null;
 
-        public static void MultiTexCoord4fv(uint target, float* v) { glMultiTexCoord4fv(target, v); }
+        public static void MultiTexCoord4fv(uint target, float* v) { glMultiTexCoord4fv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord4iDelegate(uint target, int s, int t, int r, int q);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord4iDelegate glMultiTexCoord4i = null;
 
         public static void MultiTexCoord4i(uint target, int s, int t, int r, int q) { glMultiTexCoord4i(target, s, t, r, q); }
 
-        private delegate void glMultiTexCoord4ivDelegate(uint target, int* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord4ivDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord4ivDelegate glMultiTexCoord4iv = null;
 
-        public static void MultiTexCoord4iv(uint target, int* v) { glMultiTexCoord4iv(target, v); }
+        public static void MultiTexCoord4iv(uint target, int* v) { glMultiTexCoord4iv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glMultiTexCoord4sDelegate(uint target, short s, short t, short r, short q);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord4sDelegate glMultiTexCoord4s = null;
 
         public static void MultiTexCoord4s(uint target, short s, short t, short r, short q) { glMultiTexCoord4s(target, s, t, r, q); }
 
-        private delegate void glMultiTexCoord4svDelegate(uint target, short* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glMultiTexCoord4svDelegate(uint target, IntPtr v);
         [Require(MinVersion = "1.3")]
         private static readonly glMultiTexCoord4svDelegate glMultiTexCoord4sv = null;
 
-        public static void MultiTexCoord4sv(uint target, short* v) { glMultiTexCoord4sv(target, v); }
+        public static void MultiTexCoord4sv(uint target, short* v) { glMultiTexCoord4sv(target, (IntPtr)v); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glSampleCoverageDelegate(float value, bool invert);
         [Require(MinVersion = "1.3")]
         private static readonly glSampleCoverageDelegate glSampleCoverage = null;

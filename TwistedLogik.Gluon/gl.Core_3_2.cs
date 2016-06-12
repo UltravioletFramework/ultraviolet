@@ -1,9 +1,14 @@
 ﻿using System;
 
+#if IOS
+using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapperAttribute;
+#endif
+
 namespace TwistedLogik.Gluon
 {
     public static unsafe partial class gl
     {
+        [MonoNativeFunctionWrapper]
         private delegate void glGetInteger64i_vDelegate(uint pname, uint index, long* data);
         [Require(MinVersion = "3.2")]
         private static readonly glGetInteger64i_vDelegate glGetInteger64i_v = null;
@@ -17,12 +22,14 @@ namespace TwistedLogik.Gluon
             return value;
         }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glGetBufferParameteri64vDelegate(uint target, uint value, long* data);
         [Require(MinVersion = "3.2")]
         private static readonly glGetBufferParameteri64vDelegate glGetBufferParameteri64v = null;
 
         public static void GetBufferParameteri64v(uint target, uint value, long* data) { glGetBufferParameteri64v(target, value, data); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glFramebufferTextureDelegate(uint target, uint attachment, uint texture, int level);
         [Require(MinVersion = "3.2")]
         private static readonly glFramebufferTextureDelegate glFramebufferTexture = null;

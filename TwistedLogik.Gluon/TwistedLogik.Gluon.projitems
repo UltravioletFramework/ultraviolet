@@ -47,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)gl.Initialization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GluonStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IOpenGLInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MonoNativeFunctionWrapperAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RequireAttribute.cs" />
   </ItemGroup>
   <ItemGroup>

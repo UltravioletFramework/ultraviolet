@@ -1,9 +1,14 @@
 ﻿using System;
 
+#if IOS
+using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapperAttribute;
+#endif
+
 namespace TwistedLogik.Gluon
 {
 	public static unsafe partial class gl
 	{
+		[MonoNativeFunctionWrapper]
 		private delegate void glVertexAttribDivisorDelegate(uint index, uint divisor);
 		[Require(MinVersion = "3.3")]
 		private static readonly glVertexAttribDivisorDelegate glVertexAttribDivisor = null;

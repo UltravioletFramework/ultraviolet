@@ -396,7 +396,7 @@ namespace TwistedLogik.Gluon
             }
             else
             {
-                gl.glGetIntegerv(GL_MINOR_VERSION, &minorVersion);
+                gl.glGetIntegerv(GL_MINOR_VERSION, (IntPtr)(&minorVersion));
                 gl.majorVersion = majorVersion;
                 gl.minorVersion = minorVersion;
             }
@@ -438,7 +438,7 @@ namespace TwistedLogik.Gluon
             else
             {
                 Int32 numExtensions;
-                gl.glGetIntegerv(gl.GL_NUM_EXTENSIONS, &numExtensions);
+                gl.glGetIntegerv(gl.GL_NUM_EXTENSIONS, (IntPtr)(&numExtensions));
 
                 for (var i = 0; i < numExtensions; i++)
                 {

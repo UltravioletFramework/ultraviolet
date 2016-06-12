@@ -1,9 +1,14 @@
 ﻿using System;
 
+#if IOS
+using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapperAttribute;
+#endif
+
 namespace TwistedLogik.Gluon
 {
 	public static unsafe partial class gl
 	{
+        [MonoNativeFunctionWrapper]
         private delegate void glTexStorage1DDelegate(uint target, int levels, uint internalformat, int width);
 		[Require(MinVersion = "4.2", Extension = "GL_ARB_texture_storage")]
         private static readonly glTexStorage1DDelegate glTexStorage1D = null;
@@ -13,6 +18,7 @@ namespace TwistedLogik.Gluon
             glTexStorage1D(target, levels, internalformat, width);
         }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glTexStorage2DDelegate(uint target, int levels, uint internalformat, int width, int height);
 		[Require(MinVersion = "4.2", Extension = "GL_ARB_texture_storage")]
         private static readonly glTexStorage2DDelegate glTexStorage2D = null;
@@ -22,6 +28,7 @@ namespace TwistedLogik.Gluon
             glTexStorage2D(target, levels, internalformat, width, height);
         }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glTexStorage3DDelegate(uint target, int levels, uint internalformat, int width, int height, int depth);
         [Require(MinVersion = "4.2", Extension = "GL_ARB_texture_storage")]
         private static readonly glTexStorage3DDelegate glTexStorage3D = null;
@@ -31,14 +38,17 @@ namespace TwistedLogik.Gluon
             glTexStorage3D(target, levels, internalformat, width, height, depth);
         }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glTextureStorage1DEXTDelegate(uint texture, uint target, int levels, uint internalformat, int width);
         [Require(Extension = "GL_EXT_direct_state_access")]
         private static readonly glTextureStorage1DEXTDelegate glTextureStorage1DEXT = null;
 
+        [MonoNativeFunctionWrapper]
         private delegate void glTextureStorage2DEXTDelegate(uint texture, uint target, int levels, uint internalformat, int width, int height);
         [Require(Extension = "GL_EXT_direct_state_access")]
         private static readonly glTextureStorage2DEXTDelegate glTextureStorage2DEXT = null;
 
+        [MonoNativeFunctionWrapper]
         private delegate void glTextureStorage3DEXTDelegate(uint texture, uint target, int levels, uint internalformat, int width, int height, int depth);
         [Require(Extension = "GL_EXT_direct_state_access")]
         private static readonly glTextureStorage3DEXTDelegate glTextureStorage3DEXT = null;

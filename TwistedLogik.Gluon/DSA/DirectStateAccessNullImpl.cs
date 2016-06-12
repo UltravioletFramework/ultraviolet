@@ -12,12 +12,12 @@ namespace TwistedLogik.Gluon
         {
             public override void NamedBufferData(uint buffer, uint target, IntPtr size, void* data, uint usage)
             {
-                glBufferData(target, size, data, usage);
+                glBufferData(target, size, (IntPtr)data, usage);
             }
 
             public override void NamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data)
             {
-                glBufferSubData(target, offset, size, data);
+                glBufferSubData(target, offset, size, (IntPtr)data);
             }
 
             public override void NamedFramebufferTexture(uint framebuffer, uint target, uint attachment, uint texture, int level)
@@ -37,7 +37,7 @@ namespace TwistedLogik.Gluon
 
             public override unsafe void NamedFramebufferDrawBuffers(uint framebuffer, int n, uint* bufs)
             {
-                glDrawBuffers(n, bufs);
+                glDrawBuffers(n, (IntPtr)bufs);
             }
 
             public override uint CheckNamedFramebufferStatus(uint framebuffer, uint target)
@@ -52,12 +52,12 @@ namespace TwistedLogik.Gluon
 
             public override void TextureImage2D(uint texture, uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, void* pixels)
             {
-                glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+                glTexImage2D(target, level, internalformat, width, height, border, format, type, (IntPtr)pixels);
             }
 
             public override void TextureSubImage2D(uint texture, uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, void* pixels)
             {
-                glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
+                glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (IntPtr)pixels);
             }
 
             public override void TextureStorage1D(uint texture, uint target, int levels, uint internalformat, int width)

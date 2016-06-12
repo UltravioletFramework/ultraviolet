@@ -11,12 +11,12 @@ namespace TwistedLogik.Gluon
         {
             public override void NamedBufferData(uint buffer, uint target, IntPtr size, void* data, uint usage)
             {
-                glNamedBufferData(buffer, size, data, usage);
+                glNamedBufferData(buffer, size, (IntPtr)data, usage);
             }
 
             public override void NamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data)
             {
-                glNamedBufferSubData(buffer, offset, size, data);
+                glNamedBufferSubData(buffer, offset, size, (IntPtr)data);
             }
 
             public override void NamedFramebufferTexture(uint framebuffer, uint target, uint attachment, uint texture, int level)
@@ -36,7 +36,7 @@ namespace TwistedLogik.Gluon
 
             public override unsafe void NamedFramebufferDrawBuffers(uint framebuffer, int n, uint* bufs)
             {
-                glNamedFramebufferDrawBuffers(framebuffer, n, bufs);
+                glNamedFramebufferDrawBuffers(framebuffer, n, (IntPtr)bufs);
             }
 
             public override uint CheckNamedFramebufferStatus(uint framebuffer, uint target)
@@ -57,7 +57,7 @@ namespace TwistedLogik.Gluon
 
             public override void TextureSubImage2D(uint texture, uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, void* pixels)
             {
-                glTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, type, pixels);
+                glTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, type, (IntPtr)pixels);
             }
 
             public override void TextureStorage1D(uint texture, uint target, int levels, uint internalformat, int width)

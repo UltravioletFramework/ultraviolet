@@ -1,27 +1,35 @@
 ﻿using System;
 
+#if IOS
+using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapperAttribute;
+#endif
+
 namespace TwistedLogik.Gluon
 {
     public static unsafe partial class gl
     {
-        private delegate void glDrawRangeElementsDelegate(uint mode, uint start, uint end, int count, uint type, void* indices);
+        [MonoNativeFunctionWrapper]
+        private delegate void glDrawRangeElementsDelegate(uint mode, uint start, uint end, int count, uint type, IntPtr indices);
         [Require(MinVersion = "1.2")]
         private static readonly glDrawRangeElementsDelegate glDrawRangeElements = null;
 
-        public static void DrawRangeElements(uint mode, uint start, uint end, int count, uint type, void* indices) { glDrawRangeElements(mode, start, end, count, type, indices); }
+        public static void DrawRangeElements(uint mode, uint start, uint end, int count, uint type, void* indices) { glDrawRangeElements(mode, start, end, count, type, (IntPtr)indices); }
 
-        private delegate void glTexImage3DDelegate(uint target, int level, int internalFormat, int width, int height, int depth, int border, uint format, uint type, void* data);
+        [MonoNativeFunctionWrapper]
+        private delegate void glTexImage3DDelegate(uint target, int level, int internalFormat, int width, int height, int depth, int border, uint format, uint type, IntPtr data);
         [Require(MinVersion = "1.2")]
         private static readonly glTexImage3DDelegate glTexImage3D = null;
 
-        public static void TexImage3D(uint target, int level, int internalFormat, int width, int height, int depth, int border, uint format, uint type, void* data) { glTexImage3D(target, level, internalFormat, width, height, depth, border, format, type, data); }
+        public static void TexImage3D(uint target, int level, int internalFormat, int width, int height, int depth, int border, uint format, uint type, void* data) { glTexImage3D(target, level, internalFormat, width, height, depth, border, format, type, (IntPtr)data); }
 
-        private delegate void glTexSubImage3DDelegate(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, void* data);
+        [MonoNativeFunctionWrapper]
+        private delegate void glTexSubImage3DDelegate(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, IntPtr data);
         [Require(MinVersion = "1.2")]
         private static readonly glTexSubImage3DDelegate glTexSubImage3D = null;
 
-        public static void TexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, void* data) { glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, data); }
+        public static void TexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, void* data) { glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (IntPtr)data); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glCopyTexSubImage3DDelegate(uint target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height);
         [Require(MinVersion = "1.2")]
         private static readonly glCopyTexSubImage3DDelegate glCopyTexSubImage3D = null;

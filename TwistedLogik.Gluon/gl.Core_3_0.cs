@@ -1,332 +1,393 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
+#if IOS
+using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapperAttribute;
+#endif
+
 namespace TwistedLogik.Gluon
 {
     public static unsafe partial class gl
     {
+        [MonoNativeFunctionWrapper]
         private delegate void glColorMaskiDelegate(uint buf, bool red, bool green, bool blue, bool alpha);
         [Require(MinVersion = "3.0")]
         private static readonly glColorMaskiDelegate glColorMaski = null;
 
         public static void ColorMaski(uint buf, bool red, bool green, bool blue, bool alpha) { glColorMaski(buf, red, green, blue, alpha); }
 
-        private delegate void glGetBooleani_vDelegate(uint pname, uint index, bool* data);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetBooleani_vDelegate(uint pname, uint index, IntPtr data);
         [Require(MinVersion = "3.0")]
         private static readonly glGetBooleani_vDelegate glGetBooleani_v = null;
 
-        public static void GetBooleani_v(uint pname, uint index, bool* data) { glGetBooleani_v(pname, index, data); }
+        public static void GetBooleani_v(uint pname, uint index, bool* data) { glGetBooleani_v(pname, index, (IntPtr)data); }
 
         public static bool GetBooleani(uint pname, uint index)
         {
             bool value;
-            glGetBooleani_v(pname, index, &value);
+            glGetBooleani_v(pname, index, (IntPtr)(&value));
             return value;
         }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glEnableiDelegate(uint cap, uint index);
         [Require(MinVersion = "3.0")]
         private static readonly glEnableiDelegate glEnablei = null;
 
         public static void Enablei(uint cap, uint index) { glEnablei(cap, index); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glDisableiDelegate(uint cap, uint index);
         [Require(MinVersion = "3.0")]
         private static readonly glDisableiDelegate glDisablei = null;
 
         public static void Disablei(uint cap, uint index) { glDisablei(cap, index); }
 
+        [MonoNativeFunctionWrapper]
         private delegate bool glIsEnablediDelegate(uint cap, uint index);
         [Require(MinVersion = "3.0")]
         private static readonly glIsEnablediDelegate glIsEnabledi = null;
 
         public static bool IsEnabledi(uint cap, uint index) { return glIsEnabledi(cap, index); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glBeginTransformFeedbackDelegate(uint primitiveMode);
         [Require(MinVersion = "3.0")]
         private static readonly glBeginTransformFeedbackDelegate glBeginTransformFeedback = null;
 
         public static void BeginTransformFeedback(uint primitiveMode) { glBeginTransformFeedback(primitiveMode); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glEndTransformFeedbackDelegate();
-        private delegate void glTransformFeedbackVaryingsDelegate(uint program, int count, sbyte** varyings, uint bufferMode);
+        [MonoNativeFunctionWrapper]
+        private delegate void glTransformFeedbackVaryingsDelegate(uint program, int count, IntPtr varyings, uint bufferMode);
         [Require(MinVersion = "3.0")]
         private static readonly glTransformFeedbackVaryingsDelegate glTransformFeedbackVaryings = null;
 
-        public static void TransformFeedbackVaryings(uint program, int count, sbyte** varyings, uint bufferMode) { glTransformFeedbackVaryings(program, count, varyings, bufferMode); }
+        public static void TransformFeedbackVaryings(uint program, int count, sbyte** varyings, uint bufferMode) =>
+            glTransformFeedbackVaryings(program, count, (IntPtr)varyings, bufferMode);
 
-        private delegate void glGetTransformFeedbackVaryingDelegate(uint program, uint index, int bufSize, int* length, int* size, uint* type, sbyte* name);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetTransformFeedbackVaryingDelegate(uint program, uint index, int bufSize, IntPtr length, IntPtr size, IntPtr type, IntPtr name);
         [Require(MinVersion = "3.0")]
         private static readonly glGetTransformFeedbackVaryingDelegate glGetTransformFeedbackVarying = null;
 
-        public static void GetTransformFeedbackVarying(uint program, uint index, int bufSize, int* length, int* size, uint* type, sbyte* name) { glGetTransformFeedbackVarying(program, index, bufSize, length, size, type, name); }
+        public static void GetTransformFeedbackVarying(uint program, uint index, int bufSize, int* length, int* size, uint* type, sbyte* name) =>
+            glGetTransformFeedbackVarying(program, index, bufSize, (IntPtr)length, (IntPtr)size, (IntPtr)type, (IntPtr)name);
 
+        [MonoNativeFunctionWrapper]
         private delegate void glClampColorDelegate(uint target, uint clamp);
         [Require(MinVersion = "3.0")]
         private static readonly glClampColorDelegate glClampColor = null;
 
         public static void ClampColor(uint target, uint clamp) { glClampColor(target, clamp); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glBeginConditionalRenderDelegate(uint id, uint mode);
         [Require(MinVersion = "3.0")]
         private static readonly glBeginConditionalRenderDelegate glBeginConditionalRender = null;
 
         public static void BeginConditionalRender(uint id, uint mode) { glBeginConditionalRender(id, mode); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glEndConditionalRenderDelegate();
+        [MonoNativeFunctionWrapper]
         private delegate void glVertexAttribI1iDelegate(uint index, int v0);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI1iDelegate glVertexAttribI1i = null;
 
         public static void VertexAttribI1i(uint index, int v0) { glVertexAttribI1i(index, v0); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glVertexAttribI2iDelegate(uint index, int v0, int v1);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI2iDelegate glVertexAttribI2i = null;
 
         public static void VertexAttribI2i(uint index, int v0, int v1) { glVertexAttribI2i(index, v0, v1); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glVertexAttribI3iDelegate(uint index, int v0, int v1, int v2);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI3iDelegate glVertexAttribI3i = null;
 
         public static void VertexAttribI3i(uint index, int v0, int v1, int v2) { glVertexAttribI3i(index, v0, v1, v2); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glVertexAttribI4iDelegate(uint index, int v0, int v1, int v2, int v3);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI4iDelegate glVertexAttribI4i = null;
 
         public static void VertexAttribI4i(uint index, int v0, int v1, int v2, int v3) { glVertexAttribI4i(index, v0, v1, v2, v3); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glVertexAttribI1uiDelegate(uint index, uint v0);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI1uiDelegate glVertexAttribI1ui = null;
 
         public static void VertexAttribI1ui(uint index, uint v0) { glVertexAttribI1ui(index, v0); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glVertexAttribI2uiDelegate(uint index, uint v0, uint v1);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI2uiDelegate glVertexAttribI2ui = null;
 
         public static void VertexAttribI2ui(uint index, uint v0, uint v1) { glVertexAttribI2ui(index, v0, v1); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glVertexAttribI3uiDelegate(uint index, uint v0, uint v1, uint v2);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI3uiDelegate glVertexAttribI3ui = null;
 
         public static void VertexAttribI3ui(uint index, uint v0, uint v1, uint v2) { glVertexAttribI3ui(index, v0, v1, v2); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glVertexAttribI4uiDelegate(uint index, uint v0, uint v1, uint v2, uint v3);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI4uiDelegate glVertexAttribI4ui = null;
 
         public static void VertexAttribI4ui(uint index, uint v0, uint v1, uint v2, uint v3) { glVertexAttribI4ui(index, v0, v1, v2, v3); }
 
-        private delegate void glVertexAttribI1ivDelegate(uint index, int* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI1ivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI1ivDelegate glVertexAttribI1iv = null;
 
-        public static void VertexAttribI1iv(uint index, int* v) { glVertexAttribI1iv(index, v); }
+        public static void VertexAttribI1iv(uint index, int* v) { glVertexAttribI1iv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribI2ivDelegate(uint index, int* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI2ivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI2ivDelegate glVertexAttribI2iv = null;
 
-        public static void VertexAttribI2iv(uint index, int* v) { glVertexAttribI2iv(index, v); }
+        public static void VertexAttribI2iv(uint index, int* v) { glVertexAttribI2iv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribI3ivDelegate(uint index, int* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI3ivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI3ivDelegate glVertexAttribI3iv = null;
 
-        public static void VertexAttribI3iv(uint index, int* v) { glVertexAttribI3iv(index, v); }
+        public static void VertexAttribI3iv(uint index, int* v) { glVertexAttribI3iv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribI4ivDelegate(uint index, int* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI4ivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI4ivDelegate glVertexAttribI4iv = null;
 
-        public static void VertexAttribI4iv(uint index, int* v) { glVertexAttribI4iv(index, v); }
+        public static void VertexAttribI4iv(uint index, int* v) { glVertexAttribI4iv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribI1uivDelegate(uint index, uint* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI1uivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI1uivDelegate glVertexAttribI1uiv = null;
 
-        public static void VertexAttribI1uiv(uint index, uint* v) { glVertexAttribI1uiv(index, v); }
+        public static void VertexAttribI1uiv(uint index, uint* v) { glVertexAttribI1uiv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribI2uivDelegate(uint index, uint* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI2uivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI2uivDelegate glVertexAttribI2uiv = null;
 
-        public static void VertexAttribI2uiv(uint index, uint* v) { glVertexAttribI2uiv(index, v); }
+        public static void VertexAttribI2uiv(uint index, uint* v) { glVertexAttribI2uiv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribI3uivDelegate(uint index, uint* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI3uivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI3uivDelegate glVertexAttribI3uiv = null;
 
-        public static void VertexAttribI3uiv(uint index, uint* v) { glVertexAttribI3uiv(index, v); }
+        public static void VertexAttribI3uiv(uint index, uint* v) { glVertexAttribI3uiv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribI4uivDelegate(uint index, uint* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI4uivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI4uivDelegate glVertexAttribI4uiv = null;
 
-        public static void VertexAttribI4uiv(uint index, uint* v) { glVertexAttribI4uiv(index, v); }
+        public static void VertexAttribI4uiv(uint index, uint* v) { glVertexAttribI4uiv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribI4bvDelegate(uint index, sbyte* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI4bvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI4bvDelegate glVertexAttribI4bv = null;
 
-        public static void VertexAttribI4bv(uint index, sbyte* v) { glVertexAttribI4bv(index, v); }
+        public static void VertexAttribI4bv(uint index, sbyte* v) { glVertexAttribI4bv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribI4svDelegate(uint index, short* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI4svDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI4svDelegate glVertexAttribI4sv = null;
 
-        public static void VertexAttribI4sv(uint index, short* v) { glVertexAttribI4sv(index, v); }
+        public static void VertexAttribI4sv(uint index, short* v) { glVertexAttribI4sv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribI4ubvDelegate(uint index, byte* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI4ubvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI4ubvDelegate glVertexAttribI4ubv = null;
 
-        public static void VertexAttribI4ubv(uint index, byte* v) { glVertexAttribI4ubv(index, v); }
+        public static void VertexAttribI4ubv(uint index, byte* v) { glVertexAttribI4ubv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribI4usvDelegate(uint index, ushort* v);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribI4usvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribI4usvDelegate glVertexAttribI4usv = null;
 
-        public static void VertexAttribI4usv(uint index, ushort* v) { glVertexAttribI4usv(index, v); }
+        public static void VertexAttribI4usv(uint index, ushort* v) { glVertexAttribI4usv(index, (IntPtr)v); }
 
-        private delegate void glVertexAttribIPointerDelegate(uint index, int size, uint type, int stride, void* pointer);
+        [MonoNativeFunctionWrapper]
+        private delegate void glVertexAttribIPointerDelegate(uint index, int size, uint type, int stride, IntPtr pointer);
         [Require(MinVersion = "3.0")]
         private static readonly glVertexAttribIPointerDelegate glVertexAttribIPointer = null;
 
-        public static void VertexAttribIPointer(uint index, int size, uint type, int stride, void* pointer) { glVertexAttribIPointer(index, size, type, stride, pointer); }
+        public static void VertexAttribIPointer(uint index, int size, uint type, int stride, void* pointer) { glVertexAttribIPointer(index, size, type, stride, (IntPtr)pointer); }
 
-        private delegate void glGetVertexAttribIivDelegate(uint index, uint pname, int* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetVertexAttribIivDelegate(uint index, uint pname, IntPtr @params);
         [Require(MinVersion = "3.0")]
         private static readonly glGetVertexAttribIivDelegate glGetVertexAttribIiv = null;
 
-        public static void GetVertexAttribIiv(uint index, uint pname, int* @params) { glGetVertexAttribIiv(index, pname, @params); }
+        public static void GetVertexAttribIiv(uint index, uint pname, int* @params) { glGetVertexAttribIiv(index, pname, (IntPtr)@params); }
 
-        private delegate void glGetVertexAttribIuivDelegate(uint index, uint pname, uint* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetVertexAttribIuivDelegate(uint index, uint pname, IntPtr @params);
         [Require(MinVersion = "3.0")]
         private static readonly glGetVertexAttribIuivDelegate glGetVertexAttribIuiv = null;
 
-        public static void GetVertexAttribIuiv(uint index, uint pname, uint* @params) { glGetVertexAttribIuiv(index, pname, @params); }
+        public static void GetVertexAttribIuiv(uint index, uint pname, uint* @params) { glGetVertexAttribIuiv(index, pname, (IntPtr)@params); }
 
-        private delegate void glGetUniformuivDelegate(uint program, int location, uint* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetUniformuivDelegate(uint program, int location, IntPtr @params);
         [Require(MinVersion = "3.0")]
         private static readonly glGetUniformuivDelegate glGetUniformuiv = null;
 
-        public static void GetUniformuiv(uint program, int location, uint* @params) { glGetUniformuiv(program, location, @params); }
+        public static void GetUniformuiv(uint program, int location, uint* @params) { glGetUniformuiv(program, location, (IntPtr)@params); }
 
-        private delegate void glBindFragDataLocationDelegate(uint program, uint colorNumber, sbyte* name);
+        [MonoNativeFunctionWrapper]
+        private delegate void glBindFragDataLocationDelegate(uint program, uint colorNumber, IntPtr name);
         [Require(MinVersion = "3.0")]
         private static readonly glBindFragDataLocationDelegate glBindFragDataLocation = null;
 
-        public static void BindFragDataLocation(uint program, uint colorNumber, sbyte* name) { glBindFragDataLocation(program, colorNumber, name); }
+        public static void BindFragDataLocation(uint program, uint colorNumber, sbyte* name) { glBindFragDataLocation(program, colorNumber, (IntPtr)name); }
 
-        private delegate int glGetFragDataLocationDelegate(uint program, sbyte* name);
+        [MonoNativeFunctionWrapper]
+        private delegate int glGetFragDataLocationDelegate(uint program, IntPtr name);
         [Require(MinVersion = "3.0")]
         private static readonly glGetFragDataLocationDelegate glGetFragDataLocation = null;
 
-        public static int GetFragDataLocation(uint program, sbyte* name) { return glGetFragDataLocation(program, name); }
+        public static int GetFragDataLocation(uint program, sbyte* name) { return glGetFragDataLocation(program, (IntPtr)name); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glUniform1uiDelegate(int location, uint v0);
         [Require(MinVersion = "3.0")]
         private static readonly glUniform1uiDelegate glUniform1ui = null;
 
         public static void Uniform1ui(int location, uint v0) { glUniform1ui(location, v0); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glUniform2uiDelegate(int location, uint v0, uint v1);
         [Require(MinVersion = "3.0")]
         private static readonly glUniform2uiDelegate glUniform2ui = null;
 
         public static void Uniform2ui(int location, uint v0, uint v1) { glUniform2ui(location, v0, v1); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glUniform3uiDelegate(int location, uint v0, uint v1, uint v2);
         [Require(MinVersion = "3.0")]
         private static readonly glUniform3uiDelegate glUniform3ui = null;
 
         public static void Uniform3ui(int location, uint v0, uint v1, uint v2) { glUniform3ui(location, v0, v1, v2); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glUniform4uiDelegate(int location, uint v0, uint v1, uint v2, uint v3);
         [Require(MinVersion = "3.0")]
         private static readonly glUniform4uiDelegate glUniform4ui = null;
 
         public static void Uniform4ui(int location, uint v0, uint v1, uint v2, uint v3) { glUniform4ui(location, v0, v1, v2, v3); }
 
-        private delegate void glUniform1uivDelegate(int location, int count, uint* value);
+        [MonoNativeFunctionWrapper]
+        private delegate void glUniform1uivDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "3.0")]
         private static readonly glUniform1uivDelegate glUniform1uiv = null;
 
-        public static void Uniform1uiv(int location, int count, uint* value) { glUniform1uiv(location, count, value); }
+        public static void Uniform1uiv(int location, int count, uint* value) { glUniform1uiv(location, count, (IntPtr)value); }
 
-        private delegate void glUniform2uivDelegate(int location, int count, uint* value);
+        [MonoNativeFunctionWrapper]
+        private delegate void glUniform2uivDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "3.0")]
         private static readonly glUniform2uivDelegate glUniform2uiv = null;
 
-        public static void Uniform2uiv(int location, int count, uint* value) { glUniform2uiv(location, count, value); }
+        public static void Uniform2uiv(int location, int count, uint* value) { glUniform2uiv(location, count, (IntPtr)value); }
 
-        private delegate void glUniform3uivDelegate(int location, int count, uint* value);
+        [MonoNativeFunctionWrapper]
+        private delegate void glUniform3uivDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "3.0")]
         private static readonly glUniform3uivDelegate glUniform3uiv = null;
 
-        public static void Uniform3uiv(int location, int count, uint* value) { glUniform3uiv(location, count, value); }
+        public static void Uniform3uiv(int location, int count, uint* value) { glUniform3uiv(location, count, (IntPtr)value); }
 
-        private delegate void glUniform4uivDelegate(int location, int count, uint* value);
+        [MonoNativeFunctionWrapper]
+        private delegate void glUniform4uivDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "3.0")]
         private static readonly glUniform4uivDelegate glUniform4uiv = null;
 
-        public static void Uniform4uiv(int location, int count, uint* value) { glUniform4uiv(location, count, value); }
+        public static void Uniform4uiv(int location, int count, uint* value) { glUniform4uiv(location, count, (IntPtr)value); }
 
-        private delegate void glTexParameterIivDelegate(uint target, uint pname, int* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glTexParameterIivDelegate(uint target, uint pname, IntPtr @params);
         [Require(MinVersion = "3.0")]
         private static readonly glTexParameterIivDelegate glTexParameterIiv = null;
 
-        public static void TexParameterIiv(uint target, uint pname, int* @params) { glTexParameterIiv(target, pname, @params); }
+        public static void TexParameterIiv(uint target, uint pname, int* @params) { glTexParameterIiv(target, pname, (IntPtr)@params); }
 
-        private delegate void glTexParameterIuivDelegate(uint target, uint pname, uint* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glTexParameterIuivDelegate(uint target, uint pname, IntPtr @params);
         [Require(MinVersion = "3.0")]
         private static readonly glTexParameterIuivDelegate glTexParameterIuiv = null;
 
-        public static void TexParameterIuiv(uint target, uint pname, uint* @params) { glTexParameterIuiv(target, pname, @params); }
+        public static void TexParameterIuiv(uint target, uint pname, uint* @params) { glTexParameterIuiv(target, pname, (IntPtr)@params); }
 
-        private delegate void glGetTexParameterIivDelegate(uint target, uint pname, int* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetTexParameterIivDelegate(uint target, uint pname, IntPtr @params);
         [Require(MinVersion = "3.0")]
         private static readonly glGetTexParameterIivDelegate glGetTexParameterIiv = null;
 
-        public static void GetTexParameterIiv(uint target, uint pname, int* @params) { glGetTexParameterIiv(target, pname, @params); }
+        public static void GetTexParameterIiv(uint target, uint pname, int* @params) { glGetTexParameterIiv(target, pname, (IntPtr)@params); }
 
-        private delegate void glGetTexParameterIuivDelegate(uint target, uint pname, uint* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetTexParameterIuivDelegate(uint target, uint pname, IntPtr @params);
         [Require(MinVersion = "3.0")]
         private static readonly glGetTexParameterIuivDelegate glGetTexParameterIuiv = null;
 
-        public static void GetTexParameterIuiv(uint target, uint pname, uint* @params) { glGetTexParameterIuiv(target, pname, @params); }
+        public static void GetTexParameterIuiv(uint target, uint pname, uint* @params) { glGetTexParameterIuiv(target, pname, (IntPtr)@params); }
 
-        private delegate void glClearBufferivDelegate(uint buffer, int drawBuffer, int* value);
+        [MonoNativeFunctionWrapper]
+        private delegate void glClearBufferivDelegate(uint buffer, int drawBuffer, IntPtr value);
         [Require(MinVersion = "3.0")]
         private static readonly glClearBufferivDelegate glClearBufferiv = null;
 
-        public static void ClearBufferiv(uint buffer, int drawBuffer, int* value) { glClearBufferiv(buffer, drawBuffer, value); }
+        public static void ClearBufferiv(uint buffer, int drawBuffer, int* value) { glClearBufferiv(buffer, drawBuffer, (IntPtr)value); }
 
-        private delegate void glClearBufferuivDelegate(uint buffer, int drawBuffer, uint* value);
+        [MonoNativeFunctionWrapper]
+        private delegate void glClearBufferuivDelegate(uint buffer, int drawBuffer, IntPtr value);
         [Require(MinVersion = "3.0")]
         private static readonly glClearBufferuivDelegate glClearBufferuiv = null;
 
-        public static void ClearBufferuiv(uint buffer, int drawBuffer, uint* value) { glClearBufferuiv(buffer, drawBuffer, value); }
+        public static void ClearBufferuiv(uint buffer, int drawBuffer, uint* value) { glClearBufferuiv(buffer, drawBuffer, (IntPtr)value); }
 
-        private delegate void glClearBufferfvDelegate(uint buffer, int drawBuffer, float* value);
+        [MonoNativeFunctionWrapper]
+        private delegate void glClearBufferfvDelegate(uint buffer, int drawBuffer, IntPtr value);
         [Require(MinVersion = "3.0")]
         private static readonly glClearBufferfvDelegate glClearBufferfv = null;
 
-        public static void ClearBufferfv(uint buffer, int drawBuffer, float* value) { glClearBufferfv(buffer, drawBuffer, value); }
+        public static void ClearBufferfv(uint buffer, int drawBuffer, float* value) { glClearBufferfv(buffer, drawBuffer, (IntPtr)value); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glClearBufferfiDelegate(uint buffer, int drawBuffer, float depth, int stencil);
         [Require(MinVersion = "3.0")]
         private static readonly glClearBufferfiDelegate glClearBufferfi = null;
 
         public static void ClearBufferfi(uint buffer, int drawBuffer, float depth, int stencil) { glClearBufferfi(buffer, drawBuffer, depth, stencil); }
 
-        private delegate byte* glGetStringiDelegate(uint name, uint index);
+        [MonoNativeFunctionWrapper]
+        private delegate IntPtr glGetStringiDelegate(uint name, uint index);
         [Require(MinVersion = "3.0")]
         private static readonly glGetStringiDelegate glGetStringi = null;
 

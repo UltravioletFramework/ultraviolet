@@ -1,200 +1,236 @@
 ﻿using System;
 
+#if IOS
+using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapperAttribute;
+#endif
+
 namespace TwistedLogik.Gluon
 {
 	public static unsafe partial class gl
 	{
-		private delegate void glColorSubTableDelegate(uint target, int start, int count, uint format, uint type, void* data);
+		[MonoNativeFunctionWrapper]
+		private delegate void glColorSubTableDelegate(uint target, int start, int count, uint format, uint type, IntPtr data);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glColorSubTableDelegate glColorSubTable = null;
 
-		public static void ColorSubTable(uint target, int start, int count, uint format, uint type, void* data) { glColorSubTable(target, start, count, format, type, data); }
+		public static void ColorSubTable(uint target, int start, int count, uint format, uint type, void* data) { glColorSubTable(target, start, count, format, type, (IntPtr)data); }
 
-		private delegate void glColorTableDelegate(uint target, uint internalformat, int width, uint format, uint type, void* table);
+		[MonoNativeFunctionWrapper]
+		private delegate void glColorTableDelegate(uint target, uint internalformat, int width, uint format, uint type, IntPtr table);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glColorTableDelegate glColorTable = null;
 
-		public static void ColorTable(uint target, uint internalformat, int width, uint format, uint type, void* table) { glColorTable(target, internalformat, width, format, type, table); }
+		public static void ColorTable(uint target, uint internalformat, int width, uint format, uint type, void* table) { glColorTable(target, internalformat, width, format, type, (IntPtr)table); }
 
-		private delegate void glColorTableParameterfvDelegate(uint target, uint pname, float* @params);
+		[MonoNativeFunctionWrapper]
+		private delegate void glColorTableParameterfvDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glColorTableParameterfvDelegate glColorTableParameterfv = null;
 
-		public static void ColorTableParameterfv(uint target, uint pname, float* @params) { glColorTableParameterfv(target, pname, @params); }
+		public static void ColorTableParameterfv(uint target, uint pname, float* @params) { glColorTableParameterfv(target, pname, (IntPtr)@params); }
 
-		private delegate void glColorTableParameterivDelegate(uint target, uint pname, int* @params);
+		[MonoNativeFunctionWrapper]
+		private delegate void glColorTableParameterivDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glColorTableParameterivDelegate glColorTableParameteriv = null;
 
-		public static void ColorTableParameteriv(uint target, uint pname, int* @params) { glColorTableParameteriv(target, pname, @params); }
+		public static void ColorTableParameteriv(uint target, uint pname, int* @params) { glColorTableParameteriv(target, pname, (IntPtr)@params); }
 
-		private delegate void glConvolutionFilter1DDelegate(uint target, uint internalformat, int width, uint format, uint type, void* image);
+		[MonoNativeFunctionWrapper]
+		private delegate void glConvolutionFilter1DDelegate(uint target, uint internalformat, int width, uint format, uint type, IntPtr image);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glConvolutionFilter1DDelegate glConvolutionFilter1D = null;
 
-		public static void ConvolutionFilter1D(uint target, uint internalformat, int width, uint format, uint type, void* image) { glConvolutionFilter1D(target, internalformat, width, format, type, image); }
+		public static void ConvolutionFilter1D(uint target, uint internalformat, int width, uint format, uint type, void* image) { glConvolutionFilter1D(target, internalformat, width, format, type, (IntPtr)image); }
 
-		private delegate void glConvolutionFilter2DDelegate(uint target, uint internalformat, int width, int height, uint format, uint type, void* image);
+		[MonoNativeFunctionWrapper]
+		private delegate void glConvolutionFilter2DDelegate(uint target, uint internalformat, int width, int height, uint format, uint type, IntPtr image);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glConvolutionFilter2DDelegate glConvolutionFilter2D = null;
 
-		public static void ConvolutionFilter2D(uint target, uint internalformat, int width, int height, uint format, uint type, void* image) { glConvolutionFilter2D(target, internalformat, width, height, format, type, image); }
+		public static void ConvolutionFilter2D(uint target, uint internalformat, int width, int height, uint format, uint type, void* image) { glConvolutionFilter2D(target, internalformat, width, height, format, type, (IntPtr)image); }
 
+		[MonoNativeFunctionWrapper]
 		private delegate void glConvolutionParameterfDelegate(uint target, uint pname, float @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glConvolutionParameterfDelegate glConvolutionParameterf = null;
 
 		public static void ConvolutionParameterf(uint target, uint pname, float @params) { glConvolutionParameterf(target, pname, @params); }
 
-		private delegate void glConvolutionParameterfvDelegate(uint target, uint pname, float* @params);
+		[MonoNativeFunctionWrapper]
+		private delegate void glConvolutionParameterfvDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glConvolutionParameterfvDelegate glConvolutionParameterfv = null;
 
-		public static void ConvolutionParameterfv(uint target, uint pname, float* @params) { glConvolutionParameterfv(target, pname, @params); }
+		public static void ConvolutionParameterfv(uint target, uint pname, float* @params) { glConvolutionParameterfv(target, pname, (IntPtr)@params); }
 
+		[MonoNativeFunctionWrapper]
 		private delegate void glConvolutionParameteriDelegate(uint target, uint pname, int @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glConvolutionParameteriDelegate glConvolutionParameteri = null;
 
 		public static void ConvolutionParameteri(uint target, uint pname, int @params) { glConvolutionParameteri(target, pname, @params); }
 
-		private delegate void glConvolutionParameterivDelegate(uint target, uint pname, int* @params);
+		[MonoNativeFunctionWrapper]
+		private delegate void glConvolutionParameterivDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glConvolutionParameterivDelegate glConvolutionParameteriv = null;
 
-		public static void ConvolutionParameteriv(uint target, uint pname, int* @params) { glConvolutionParameteriv(target, pname, @params); }
+		public static void ConvolutionParameteriv(uint target, uint pname, int* @params) { glConvolutionParameteriv(target, pname, (IntPtr)@params); }
 
+		[MonoNativeFunctionWrapper]
 		private delegate void glCopyColorSubTableDelegate(uint target, int start, int x, int y, int width);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glCopyColorSubTableDelegate glCopyColorSubTable = null;
 
 		public static void CopyColorSubTable(uint target, int start, int x, int y, int width) { glCopyColorSubTable(target, start, x, y, width); }
 
+		[MonoNativeFunctionWrapper]
 		private delegate void glCopyColorTableDelegate(uint target, uint internalformat, int x, int y, int width);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glCopyColorTableDelegate glCopyColorTable = null;
 
 		public static void CopyColorTable(uint target, uint internalformat, int x, int y, int width) { glCopyColorTable(target, internalformat, x, y, width); }
 
+		[MonoNativeFunctionWrapper]
 		private delegate void glCopyConvolutionFilter1DDelegate(uint target, uint internalformat, int x, int y, int width);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glCopyConvolutionFilter1DDelegate glCopyConvolutionFilter1D = null;
 
 		public static void CopyConvolutionFilter1D(uint target, uint internalformat, int x, int y, int width) { glCopyConvolutionFilter1D(target, internalformat, x, y, width); }
 
+		[MonoNativeFunctionWrapper]
 		private delegate void glCopyConvolutionFilter2DDelegate(uint target, uint internalformat, int x, int y, int width, int height);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glCopyConvolutionFilter2DDelegate glCopyConvolutionFilter2D = null;
 
 		public static void CopyConvolutionFilter2D(uint target, uint internalformat, int x, int y, int width, int height) { glCopyConvolutionFilter2D(target, internalformat, x, y, width, height); }
 
-		private delegate void glGetColorTableDelegate(uint target, uint format, uint type, void* table);
+		[MonoNativeFunctionWrapper]
+		private delegate void glGetColorTableDelegate(uint target, uint format, uint type, IntPtr table);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glGetColorTableDelegate glGetColorTable = null;
 
-		public static void GetColorTable(uint target, uint format, uint type, void* table) { glGetColorTable(target, format, type, table); }
+		public static void GetColorTable(uint target, uint format, uint type, void* table) { glGetColorTable(target, format, type, (IntPtr)table); }
 
-		private delegate void glGetColorTableParameterfvDelegate(uint target, uint pname, float* @params);
+		[MonoNativeFunctionWrapper]
+		private delegate void glGetColorTableParameterfvDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glGetColorTableParameterfvDelegate glGetColorTableParameterfv = null;
 
-		public static void GetColorTableParameterfv(uint target, uint pname, float* @params) { glGetColorTableParameterfv(target, pname, @params); }
+		public static void GetColorTableParameterfv(uint target, uint pname, float* @params) { glGetColorTableParameterfv(target, pname, (IntPtr)@params); }
 
-		private delegate void glGetColorTableParameterivDelegate(uint target, uint pname, int* @params);
+		[MonoNativeFunctionWrapper]
+		private delegate void glGetColorTableParameterivDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glGetColorTableParameterivDelegate glGetColorTableParameteriv = null;
 
-		public static void GetColorTableParameteriv(uint target, uint pname, int* @params) { glGetColorTableParameteriv(target, pname, @params); }
+		public static void GetColorTableParameteriv(uint target, uint pname, int* @params) { glGetColorTableParameteriv(target, pname, (IntPtr)@params); }
 
-		private delegate void glGetConvolutionFilterDelegate(uint target, uint format, uint type, void* image);
+		[MonoNativeFunctionWrapper]
+		private delegate void glGetConvolutionFilterDelegate(uint target, uint format, uint type, IntPtr image);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glGetConvolutionFilterDelegate glGetConvolutionFilter = null;
 
-		public static void GetConvolutionFilter(uint target, uint format, uint type, void* image) { glGetConvolutionFilter(target, format, type, image); }
+		public static void GetConvolutionFilter(uint target, uint format, uint type, void* image) { glGetConvolutionFilter(target, format, type, (IntPtr)image); }
 
-        private delegate void glGetConvolutionParameterfvDelegate(uint target, uint pname, float* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetConvolutionParameterfvDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
         private static readonly glGetConvolutionParameterfvDelegate glGetConvolutionParameterfv = null;
 
-        public static void GetConvolutionParameterfv(uint target, uint pname, float* @params) { glGetConvolutionParameterfv(target, pname, @params); }
+        public static void GetConvolutionParameterfv(uint target, uint pname, float* @params) { glGetConvolutionParameterfv(target, pname, (IntPtr)@params); }
 
-        private delegate void glGetConvolutionParameterivDelegate(uint target, uint pname, int* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetConvolutionParameterivDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
         private static readonly glGetConvolutionParameterivDelegate glGetConvolutionParameteriv = null;
 
-        public static void GetConvolutionParameteriv(uint target, uint pname, int* @params) { glGetConvolutionParameteriv(target, pname, @params); }
+        public static void GetConvolutionParameteriv(uint target, uint pname, int* @params) { glGetConvolutionParameteriv(target, pname, (IntPtr)@params); }
 
-		private delegate void glGetHistogramDelegate(uint target, bool reset, uint format, uint type, void* values);
+		[MonoNativeFunctionWrapper]
+		private delegate void glGetHistogramDelegate(uint target, bool reset, uint format, uint type, IntPtr values);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glGetHistogramDelegate glGetHistogram = null;
 
-		public static void GetHistogram(uint target, bool reset, uint format, uint type, void* values) { glGetHistogram(target, reset, format, type, values); }
+		public static void GetHistogram(uint target, bool reset, uint format, uint type, void* values) { glGetHistogram(target, reset, format, type, (IntPtr)values); }
 
-		private delegate void glGetHistogramParameterfvDelegate(uint target, uint pname, float* @params);
+		[MonoNativeFunctionWrapper]
+		private delegate void glGetHistogramParameterfvDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glGetHistogramParameterfvDelegate glGetHistogramParameterfv = null;
 
-		public static void GetHistogramParameterfv(uint target, uint pname, float* @params) { glGetHistogramParameterfv(target, pname, @params); }
+		public static void GetHistogramParameterfv(uint target, uint pname, float* @params) { glGetHistogramParameterfv(target, pname, (IntPtr)@params); }
 
-		private delegate void glGetHistogramParameterivDelegate(uint target, uint pname, int* @params);
+		[MonoNativeFunctionWrapper]
+		private delegate void glGetHistogramParameterivDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glGetHistogramParameterivDelegate glGetHistogramParameteriv = null;
 
-		public static void GetHistogramParameteriv(uint target, uint pname, int* @params) { glGetHistogramParameteriv(target, pname, @params); }
+		public static void GetHistogramParameteriv(uint target, uint pname, int* @params) { glGetHistogramParameteriv(target, pname, (IntPtr)@params); }
 
-		private delegate void glGetMinmaxDelegate(uint target, bool reset, uint format, uint types, void* values);
+		[MonoNativeFunctionWrapper]
+		private delegate void glGetMinmaxDelegate(uint target, bool reset, uint format, uint types, IntPtr values);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glGetMinmaxDelegate glGetMinmax = null;
 
-		public static void GetMinmax(uint target, bool reset, uint format, uint types, void* values) { glGetMinmax(target, reset, format, types, values); }
+		public static void GetMinmax(uint target, bool reset, uint format, uint types, void* values) { glGetMinmax(target, reset, format, types, (IntPtr)values); }
 
-		private delegate void glGetMinmaxParameterfvDelegate(uint target, uint pname, float* @params);
+		[MonoNativeFunctionWrapper]
+		private delegate void glGetMinmaxParameterfvDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glGetMinmaxParameterfvDelegate glGetMinmaxParameterfv = null;
 
-		public static void GetMinmaxParameterfv(uint target, uint pname, float* @params) { glGetMinmaxParameterfv(target, pname, @params); }
+		public static void GetMinmaxParameterfv(uint target, uint pname, float* @params) { glGetMinmaxParameterfv(target, pname, (IntPtr)@params); }
 
-		private delegate void glGetMinmaxParameterivDelegate(uint target, uint pname, int* @params);
+		[MonoNativeFunctionWrapper]
+		private delegate void glGetMinmaxParameterivDelegate(uint target, uint pname, IntPtr @params);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glGetMinmaxParameterivDelegate glGetMinmaxParameteriv = null;
 
-		public static void GetMinmaxParameteriv(uint target, uint pname, int* @params) { glGetMinmaxParameteriv(target, pname, @params); }
+		public static void GetMinmaxParameteriv(uint target, uint pname, int* @params) { glGetMinmaxParameteriv(target, pname, (IntPtr)@params); }
 
-		private delegate void glGetSeparableFilterDelegate(uint target, uint format, uint type, void* row, void* column, void* span);
+		[MonoNativeFunctionWrapper]
+		private delegate void glGetSeparableFilterDelegate(uint target, uint format, uint type, IntPtr row, IntPtr column, IntPtr span);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glGetSeparableFilterDelegate glGetSeparableFilter = null;
 
-		public static void GetSeparableFilter(uint target, uint format, uint type, void* row, void* column, void* span) { glGetSeparableFilter(target, format, type, row, column, span); }
+		public static void GetSeparableFilter(uint target, uint format, uint type, void* row, void* column, void* span) { glGetSeparableFilter(target, format, type, (IntPtr)row, (IntPtr)column, (IntPtr)span); }
 
+		[MonoNativeFunctionWrapper]
 		private delegate void glHistogramDelegate(uint target, int width, uint internalformat, bool sink);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glHistogramDelegate glHistogram = null;
 
 		public static void Histogram(uint target, int width, uint internalformat, bool sink) { glHistogram(target, width, internalformat, sink); }
 
+		[MonoNativeFunctionWrapper]
 		private delegate void glMinmaxDelegate(uint target, uint internalformat, bool sink);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glMinmaxDelegate glMinmax = null;
 
 		public static void Minmax(uint target, uint internalformat, bool sink) { glMinmax(target, internalformat, sink); }
 
+		[MonoNativeFunctionWrapper]
 		private delegate void glResetHistogramDelegate(uint target);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glResetHistogramDelegate glResetHistogram = null;
 
 		public static void ResetHistogram(uint target) { glResetHistogram(target); }
 
+		[MonoNativeFunctionWrapper]
 		private delegate void glResetMinmaxDelegate(uint target);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glResetMinmaxDelegate glResetMinmax = null;
 
 		public static void ResetMinmax(uint target) { glResetMinmax(target); }
 
-		private delegate void glSeparableFilter2DDelegate(uint target, uint internalformat, int width, int height, uint format, uint type, void* row, void* column);
+		[MonoNativeFunctionWrapper]
+		private delegate void glSeparableFilter2DDelegate(uint target, uint internalformat, int width, int height, uint format, uint type, IntPtr row, IntPtr column);
 		[Require(Extension = "GL_ARB_imaging")]
 		private static readonly glSeparableFilter2DDelegate glSeparableFilter2D = null;
 
-		public static void SeparableFilter2D(uint target, uint internalformat, int width, int height, uint format, uint type, void* row, void* column) { glSeparableFilter2D(target, internalformat, width, height, format, type, row, column); }
+		public static void SeparableFilter2D(uint target, uint internalformat, int width, int height, uint format, uint type, void* row, void* column) { glSeparableFilter2D(target, internalformat, width, height, format, type, (IntPtr)row, (IntPtr)column); }
 
 		public const UInt32 GL_CONSTANT_COLOR = 0x8001;
 		public const UInt32 GL_ONE_MINUS_CONSTANT_COLOR = 0x8002;

@@ -1,9 +1,14 @@
 ﻿using System;
 
+#if IOS
+using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapperAttribute;
+#endif
+
 namespace TwistedLogik.Gluon
 {
 	public static unsafe partial class gl
     {
+        [MonoNativeFunctionWrapper]
         private delegate void glTexImage2DMultisampleDelegate(uint target, int samples, uint internalformat, int width, int height, bool fixedsamplelocations);
         [Require(MinVersion = "4.5", Extension = "GL_ARB_texture_multisample")]
         private static readonly glTexImage2DMultisampleDelegate glTexImage2DMultisample = null;
@@ -13,6 +18,7 @@ namespace TwistedLogik.Gluon
             glTexImage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
         }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glTexImage3DMultisampleDelegate(uint target, int samples, uint internalformat, int width, int height, int depth, bool fixedsamplelocations);
         [Require(MinVersion = "4.5", Extension = "GL_ARB_texture_multisample")]
         private static readonly glTexImage3DMultisampleDelegate glTexImage3DMultisample = null;
@@ -22,22 +28,24 @@ namespace TwistedLogik.Gluon
             glTexImage3DMultisample(target, samples, internalformat, width, height, depth, fixedsamplelocations);
         }
 
-        private delegate void glGetMultisamplefvDelegate(uint pname, uint index, float* val);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetMultisamplefvDelegate(uint pname, uint index, IntPtr val);
         [Require(MinVersion = "4.5", Extension = "GL_ARB_texture_multisample")]
         private static readonly glGetMultisamplefvDelegate glGetMultisamplefv = null;
 
         public static void GetMultisamplefv(uint pname, uint index, float* val)
         {
-            glGetMultisamplefv(pname, index, val);
+            glGetMultisamplefv(pname, index, (IntPtr)val);
         }
 
         public static float GetMultisamplefv(uint pname, uint index)
         {
             float value;
-            glGetMultisamplefv(pname, index, &value);
+            glGetMultisamplefv(pname, index, (IntPtr)(&value));
             return value;
         }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glSampleMaskiDelegate(uint index, uint mask);
         [Require(MinVersion = "4.5", Extension = "GL_ARB_texture_multisample")]
         private static readonly glSampleMaskiDelegate glSampleMaski = null;

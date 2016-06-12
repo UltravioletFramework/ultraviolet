@@ -1,178 +1,201 @@
 ﻿using System;
 
+#if IOS
+using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapperAttribute;
+#endif
+
 namespace TwistedLogik.Gluon
 {
     public static unsafe partial class gl
     {
-        private delegate void glGenQueriesDelegate(int n, uint* ids);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGenQueriesDelegate(int n, IntPtr ids);
         [Require(MinVersion = "1.5")]
         private static readonly glGenQueriesDelegate glGenQueries = null;
 
-        public static void GenQueries(int n, uint* ids) { glGenQueries(n, ids); }
+        public static void GenQueries(int n, uint* ids) { glGenQueries(n, (IntPtr)ids); }
 
         public static void GenQueries(uint[] ids)
         {
             fixed (uint* pbuffers = ids)
             {
-                glGenQueries(ids.Length, pbuffers);
+                glGenQueries(ids.Length, (IntPtr)pbuffers);
             }
         }
 
         public static uint GenQuery()
         {
             uint id;
-            glGenQueries(1, &id);
+            glGenQueries(1, (IntPtr)(&id));
             return id;
         }
 
-        private delegate void glDeleteQueriesDelegate(int n, uint* ids);
+        [MonoNativeFunctionWrapper]
+        private delegate void glDeleteQueriesDelegate(int n, IntPtr ids);
         [Require(MinVersion = "1.5")]
         private static readonly glDeleteQueriesDelegate glDeleteQueries = null;
 
-        public static void DeleteQueries(int n, uint* ids) { glDeleteQueries(n, ids); }
+        public static void DeleteQueries(int n, uint* ids) { glDeleteQueries(n, (IntPtr)ids); }
 
         public static void DeleteQueries(uint[] ids)
         {
             fixed (uint* pbuffers = ids)
             {
-                glDeleteQueries(ids.Length, pbuffers);
+                glDeleteQueries(ids.Length, (IntPtr)pbuffers);
             }
         }
 
         public static void DeleteQuery(uint id)
         {
-            glDeleteQueries(1, &id);
+            glDeleteQueries(1, (IntPtr)(&id));
         }
 
+        [MonoNativeFunctionWrapper]
         private delegate bool glIsQueryDelegate(uint id);
         [Require(MinVersion = "1.5")]
         private static readonly glIsQueryDelegate glIsQuery = null;
 
         public static bool IsQuery(uint id) { return glIsQuery(id); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glBeginQueryDelegate(uint target, uint id);
         [Require(MinVersion = "1.5")]
         private static readonly glBeginQueryDelegate glBeginQuery = null;
 
         public static void BeginQuery(uint target, uint id) { glBeginQuery(target, id); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glEndQueryDelegate(uint target);
         [Require(MinVersion = "1.5")]
         private static readonly glEndQueryDelegate glEndQuery = null;
 
         public static void EndQuery(uint target) { glEndQuery(target); }
 
-        private delegate void glGetQueryivDelegate(uint target, uint pname, int* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetQueryivDelegate(uint target, uint pname, IntPtr @params);
         [Require(MinVersion = "1.5")]
         private static readonly glGetQueryivDelegate glGetQueryiv = null;
 
-        public static void GetQueryiv(uint target, uint pname, int* @params) { glGetQueryiv(target, pname, @params); }
+        public static void GetQueryiv(uint target, uint pname, int* @params) { glGetQueryiv(target, pname, (IntPtr)@params); }
 
-        private delegate void glGetQueryObjectivDelegate(uint id, uint pname, int* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetQueryObjectivDelegate(uint id, uint pname, IntPtr @params);
         [Require(MinVersion = "1.5")]
         private static readonly glGetQueryObjectivDelegate glGetQueryObjectiv = null;
 
-        public static void GetQueryObjectiv(uint id, uint pname, int* @params) { glGetQueryObjectiv(id, pname, @params); }
+        public static void GetQueryObjectiv(uint id, uint pname, int* @params) { glGetQueryObjectiv(id, pname, (IntPtr)@params); }
 
-        private delegate void glGetQueryObjectuivDelegate(uint id, uint pname, uint* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetQueryObjectuivDelegate(uint id, uint pname, IntPtr @params);
         [Require(MinVersion = "1.5")]
         private static readonly glGetQueryObjectuivDelegate glGetQueryObjectuiv = null;
 
-        public static void GetQueryObjectuiv(uint id, uint pname, uint* @params) { glGetQueryObjectuiv(id, pname, @params); }
+        public static void GetQueryObjectuiv(uint id, uint pname, uint* @params) { glGetQueryObjectuiv(id, pname, (IntPtr)@params); }
 
+        [MonoNativeFunctionWrapper]
         private delegate void glBindBufferDelegate(uint target, uint buffer);
         [Require(MinVersion = "1.5")]
         private static readonly glBindBufferDelegate glBindBuffer = null;
 
         public static void BindBuffer(uint target, uint buffer) { glBindBuffer(target, buffer); }
 
-        private delegate void glDeleteBuffersDelegate(int n, uint* buffers);
+        [MonoNativeFunctionWrapper]
+        private delegate void glDeleteBuffersDelegate(int n, IntPtr buffers);
         [Require(MinVersion = "1.5")]
         private static readonly glDeleteBuffersDelegate glDeleteBuffers = null;
 
-        public static void DeleteBuffers(int n, uint* buffers) { glDeleteBuffers(n, buffers); }
+        public static void DeleteBuffers(int n, uint* buffers) { glDeleteBuffers(n, (IntPtr)buffers); }
 
         public static void DeleteBuffers(uint[] buffers)
         {
             fixed (uint* pbuffers = buffers)
             {
-                glDeleteBuffers(buffers.Length, pbuffers);
+                glDeleteBuffers(buffers.Length, (IntPtr)pbuffers);
             }
         }
 
         public static void DeleteBuffer(uint buffer)
         {
-            glDeleteBuffers(1, &buffer);
+            glDeleteBuffers(1, (IntPtr)(&buffer));
         }
 
-        private delegate void glGenBuffersDelegate(int n, uint* buffers);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGenBuffersDelegate(int n, IntPtr buffers);
         [Require(MinVersion = "1.5")]
         private static readonly glGenBuffersDelegate glGenBuffers = null;
 
-        public static void GenBuffers(int n, uint* buffers) { glGenBuffers(n, buffers); }
+        public static void GenBuffers(int n, uint* buffers) { glGenBuffers(n, (IntPtr)buffers); }
 
         public static void GenBuffers(uint[] buffers)
         {
             fixed (uint* pbuffers = buffers)
             {
-                glGenBuffers(buffers.Length, pbuffers);
+                glGenBuffers(buffers.Length, (IntPtr)pbuffers);
             }
         }
 
         public static uint GenBuffer()
         {
             uint value;
-            glGenBuffers(1, &value);
+            glGenBuffers(1, (IntPtr)(&value));
             return value;
         }
 
+        [MonoNativeFunctionWrapper]
         private delegate bool glIsBufferDelegate(uint buffer);
         [Require(MinVersion = "1.5")]
         private static readonly glIsBufferDelegate glIsBuffer = null;
 
         public static bool IsBuffer(uint buffer) { return glIsBuffer(buffer); }
 
-        private delegate void glBufferDataDelegate(uint target, IntPtr size, void* data, uint usage);
+        [MonoNativeFunctionWrapper]
+        private delegate void glBufferDataDelegate(uint target, IntPtr size, IntPtr data, uint usage);
         [Require(MinVersion = "1.5")]
         private static readonly glBufferDataDelegate glBufferData = null;
 
-        public static void BufferData(uint target, IntPtr size, void* data, uint usage) { glBufferData(target, size, data, usage); }
+        public static void BufferData(uint target, IntPtr size, void* data, uint usage) { glBufferData(target, size, (IntPtr)data, usage); }
 
-        private delegate void glBufferSubDataDelegate(uint target, IntPtr offset, IntPtr size, void* data);
+        [MonoNativeFunctionWrapper]
+        private delegate void glBufferSubDataDelegate(uint target, IntPtr offset, IntPtr size, IntPtr data);
         [Require(MinVersion = "1.5")]
         private static readonly glBufferSubDataDelegate glBufferSubData = null;
 
-        public static void BufferSubData(uint target, IntPtr offset, IntPtr size, void* data) { glBufferSubData(target, offset, size, data); }
+        public static void BufferSubData(uint target, IntPtr offset, IntPtr size, void* data) { glBufferSubData(target, offset, size, (IntPtr)data); }
 
-        private delegate void glGetBufferSubDataDelegate(uint target, IntPtr offset, IntPtr size, void* data);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetBufferSubDataDelegate(uint target, IntPtr offset, IntPtr size, IntPtr data);
         [Require(MinVersion = "1.5")]
         private static readonly glGetBufferSubDataDelegate glGetBufferSubData = null;
 
-        public static void GetBufferSubData(uint target, IntPtr offset, IntPtr size, void* data) { glGetBufferSubData(target, offset, size, data); }
+        public static void GetBufferSubData(uint target, IntPtr offset, IntPtr size, void* data) { glGetBufferSubData(target, offset, size, (IntPtr)data); }
 
-        private delegate void* glMapBufferDelegate(uint target, uint access);
+        [MonoNativeFunctionWrapper]
+        private delegate IntPtr glMapBufferDelegate(uint target, uint access);
         [Require(MinVersion = "1.5")]
         private static readonly glMapBufferDelegate glMapBuffer = null;
 
-        public static void* MapBuffer(uint target, uint access) { return glMapBuffer(target, access); }
+        public static void* MapBuffer(uint target, uint access) { return glMapBuffer(target, access).ToPointer(); }
 
+        [MonoNativeFunctionWrapper]
         private delegate bool glUnmapBufferDelegate(uint target);
         [Require(MinVersion = "1.5")]
         private static readonly glUnmapBufferDelegate glUnmapBuffer = null;
 
         public static bool UnmapBuffer(uint target) { return glUnmapBuffer(target); }
 
-        private delegate void glGetBufferParameterivDelegate(uint target, uint pname, int* @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetBufferParameterivDelegate(uint target, uint pname, IntPtr @params);
         [Require(MinVersion = "1.5")]
         private static readonly glGetBufferParameterivDelegate glGetBufferParameteriv = null;
 
-        public static void GetBufferParameteriv(uint target, uint pname, int* @params) { glGetBufferParameteriv(target, pname, @params); }
+        public static void GetBufferParameteriv(uint target, uint pname, int* @params) { glGetBufferParameteriv(target, pname, (IntPtr)@params); }
 
-        private delegate void glGetBufferPointervDelegate(uint target, uint pname, void** @params);
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetBufferPointervDelegate(uint target, uint pname, IntPtr @params);
         [Require(MinVersion = "1.5")]
         private static readonly glGetBufferPointervDelegate glGetBufferPointerv = null;
 
-        public static void GetBufferPointerv(uint target, uint pname, void** @params) { glGetBufferPointerv(target, pname, @params); }
+        public static void GetBufferPointerv(uint target, uint pname, void** @params) { glGetBufferPointerv(target, pname, (IntPtr)@params); }
 
         public const UInt32 GL_FOG_COORD_SRC = GL_FOG_COORDINATE_SOURCE;
         public const UInt32 GL_FOG_COORD = GL_FOG_COORDINATE;
