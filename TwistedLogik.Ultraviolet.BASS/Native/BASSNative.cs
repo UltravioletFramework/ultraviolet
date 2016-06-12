@@ -13,6 +13,12 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
     [SuppressUnmanagedCodeSecurity]
     internal static unsafe class BASSNative
     {
+#if IOS
+        const String LibraryPath = "__Internal";
+#else
+        const String LibraryPath = "bass";
+#endif
+
         static BASSNative()
         {
             LibraryLoader.Load("bass");
@@ -101,43 +107,43 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
         public const UInt32 BASS_TAG_MUSIC_INST = 0x10100;
         public const UInt32 BASS_TAG_MUSIC_SAMPLE = 0x10300;
 
-        [DllImport("bass", EntryPoint = "BASS_ErrorGetCode")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ErrorGetCode")]
         public static extern Int32 ErrorGetCode();
 
-        [DllImport("bass", EntryPoint = "BASS_Init")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_Init")]
         public static extern Boolean Init(Int32 device, UInt32 freq, UInt32 flags, IntPtr win, IntPtr clsid);
 
-        [DllImport("bass", EntryPoint = "BASS_Free")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_Free")]
         public static extern Boolean Free();
 
-        [DllImport("bass", EntryPoint = "BASS_Update")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_Update")]
         public static extern Boolean Update(UInt32 length);
 
-        [DllImport("bass", EntryPoint = "BASS_PluginLoad", BestFitMapping = false)]
+        [DllImport(LibraryPath, EntryPoint = "BASS_PluginLoad", BestFitMapping = false)]
         public static extern UInt32 PluginLoad([MarshalAs(UnmanagedType.LPStr)] string file, UInt32 flags);
 
-        [DllImport("bass", EntryPoint = "BASS_PluginFree")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_PluginFree")]
         public static extern Boolean PluginFree(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_GetConfig")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_GetConfig")]
         public static extern UInt32 GetConfig(BASSConfig option);
 
-        [DllImport("bass", EntryPoint = "BASS_SetConfig")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_SetConfig")]
         public static extern Boolean SetConfig(BASSConfig option, UInt32 value);
 
-        [DllImport("bass", EntryPoint = "BASS_GetVolume")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_GetVolume")]
         public static extern Single GetVolume();
 
-        [DllImport("bass", EntryPoint = "BASS_SetVolume")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_SetVolume")]
         public static extern Boolean SetVolume(Single volume);
 
-        [DllImport("bass", EntryPoint = "BASS_StreamCreate")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_StreamCreate")]
         public static extern UInt32 StreamCreate(UInt32 freq, UInt32 chans, UInt32 flags, StreamProc proc, IntPtr user);
 
-        [DllImport("bass", EntryPoint = "BASS_StreamCreate")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_StreamCreate")]
         public static extern UInt32 StreamCreate(UInt32 freq, UInt32 chans, UInt32 flags, IntPtr proc, IntPtr user);
 
-        [DllImport("bass", EntryPoint = "BASS_StreamCreateFile")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_StreamCreateFile")]
         private static extern UInt32 StreamCreateFile(Boolean mem, IntPtr file, UInt64 offset, UInt64 length, UInt32 flags);
 
         public static UInt32 StreamCreateFile(String file, UInt32 flags)
@@ -158,73 +164,73 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
             return StreamCreateFile(true, file, offset, length, flags);
         }
 
-        [DllImport("bass", EntryPoint = "BASS_StreamCreateFileUser")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_StreamCreateFileUser")]
         public static extern UInt32 StreamCreateFileUser(UInt32 system, UInt32 flags, BASS_FILEPROCS* procs, IntPtr user);
 
-        [DllImport("bass", EntryPoint = "BASS_StreamPutData")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_StreamPutData")]
         public static extern UInt32 StreamPutData(UInt32 handle, IntPtr buffer, UInt32 length);
 
-        [DllImport("bass", EntryPoint = "BASS_StreamFree")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_StreamFree")]
         public static extern Boolean StreamFree(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelIsActive")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelIsActive")]
         public static extern UInt32 ChannelIsActive(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelIsSliding")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelIsSliding")]
         public static extern Boolean ChannelIsSliding(UInt32 handle, BASSAttrib attrib);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelFlags")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelFlags")]
         public static extern UInt32 ChannelFlags(UInt32 handle, UInt32 flags, UInt32 mask);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelGetInfo")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelGetInfo")]
         public static extern Boolean ChannelGetInfo(UInt32 handle, out BASS_CHANNELINFO info);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelBytes2Seconds")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelBytes2Seconds")]
         public static extern Double ChannelBytes2Seconds(UInt32 handle, UInt64 pos);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelSeconds2Bytes")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelSeconds2Bytes")]
         public static extern UInt64 ChannelSeconds2Bytes(UInt32 handle, Double pos);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelUpdate")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelUpdate")]
         public static extern Boolean ChannelUpdate(UInt32 handle, UInt32 length);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelPlay")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelPlay")]
         public static extern Boolean ChannelPlay(UInt32 handle, Boolean restart);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelStop")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelStop")]
         public static extern Boolean ChannelStop(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelPause")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelPause")]
         public static extern Boolean ChannelPause(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelGetData")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelGetData")]
         public static extern UInt32 ChannelGetData(UInt32 handle, IntPtr buffer, UInt32 length);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelGetAttribute")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelGetAttribute")]
         public static extern Boolean ChannelGetAttribute(UInt32 handle, BASSAttrib attrib, Single* value);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelSetAttribute")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelSetAttribute")]
         public static extern Boolean ChannelSetAttribute(UInt32 handle, BASSAttrib attrib, Single value);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelSlideAttribute")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelSlideAttribute")]
         public static extern Boolean ChannelSlideAttribute(UInt32 handle, BASSAttrib attrib, Single value, UInt32 time);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelGetPosition")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelGetPosition")]
         public static extern UInt64 ChannelGetPosition(UInt32 handle, UInt32 mode);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelSetPosition")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelSetPosition")]
         public static extern Boolean ChannelSetPosition(UInt32 handle, UInt64 pos, UInt32 mode);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelGetLength")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelGetLength")]
         public static extern UInt64 ChannelGetLength(UInt32 handle, UInt32 mode);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelSetSync")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelSetSync")]
         public static extern UInt32 ChannelSetSync(UInt32 handle, BASSSync type, UInt64 param, SyncProc proc, IntPtr user);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelRemoveSync")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelRemoveSync")]
         public static extern Boolean ChannelRemoveSync(UInt32 handle, UInt32 sync);
 
-        [DllImport("bass", EntryPoint = "BASS_ChannelGetTags")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_ChannelGetTags")]
         public static extern void* ChannelGetTags(UInt32 handle, UInt32 tags);
         
         public static Boolean ChannelGetTags_Ogg(UInt32 handle, out IDictionary<String, String> tags)
@@ -261,7 +267,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
             return true;
         }
 
-        [DllImport("bass", EntryPoint = "BASS_SampleLoad")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_SampleLoad")]
         private static extern UInt32 SampleLoad(Boolean mem, IntPtr file, UInt64 offset, UInt32 length, UInt32 max, UInt32 flags);
 
         public static UInt32 SampleLoad(String file, UInt32 max, UInt32 flags)
@@ -285,16 +291,16 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
             }            
         }
 
-        [DllImport("bass", EntryPoint = "BASS_SampleFree")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_SampleFree")]
         public static extern Boolean SampleFree(UInt32 handle);
 
-        [DllImport("bass", EntryPoint = "BASS_SampleGetChannel")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_SampleGetChannel")]
         public static extern UInt32 SampleGetChannel(UInt32 handle, Boolean onlynew);
 
-        [DllImport("bass", EntryPoint = "BASS_SampleGetInfo")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_SampleGetInfo")]
         public static extern Boolean SampleGetInfo(UInt32 handle, out BASS_SAMPLE info);
 
-        [DllImport("bass", EntryPoint = "BASS_SampleGetData")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_SampleGetData")]
         public static extern Boolean SampleGetData(UInt32 handle, IntPtr buffer);
 
         public static Boolean SampleGetData(UInt32 handle, Byte[] buffer)
@@ -305,10 +311,10 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
             }
         }
 
-        [DllImport("bass", EntryPoint = "BASS_Pause")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_Pause")]
         public static extern Boolean Pause();
 
-        [DllImport("bass", EntryPoint = "BASS_Start")]
+        [DllImport(LibraryPath, EntryPoint = "BASS_Start")]
         public static extern Boolean Start();
     }
 }
