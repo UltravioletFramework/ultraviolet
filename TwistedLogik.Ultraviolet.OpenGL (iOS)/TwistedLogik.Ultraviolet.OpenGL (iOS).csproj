@@ -46,9 +46,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
@@ -61,6 +59,72 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius1.tt">
+      <Link>Resources\BlurEffectRadius1.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius11.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius1ES.tt">
+      <Link>Resources\BlurEffectRadius1ES.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius1ES1.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius3.tt">
+      <Link>Resources\BlurEffectRadius3.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius31.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius3ES.tt">
+      <Link>Resources\BlurEffectRadius3ES.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius3ES1.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius5.tt">
+      <Link>Resources\BlurEffectRadius5.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius51.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius5ES.tt">
+      <Link>Resources\BlurEffectRadius5ES.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius5ES1.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius7.tt">
+      <Link>Resources\BlurEffectRadius7.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius71.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius7ES.tt">
+      <Link>Resources\BlurEffectRadius7ES.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius7ES1.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius9.tt">
+      <Link>Resources\BlurEffectRadius9.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius91.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius9ES.tt">
+      <Link>Resources\BlurEffectRadius9ES.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius9ES1.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectUnrolled.tt">
+      <Link>Resources\BlurEffectUnrolled.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectUnrolled.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectUnrolledES.tt">
+      <Link>Resources\BlurEffectUnrolledES.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectUnrolledES.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\uv64.png">
+      <Link>Resources\uv64.png</Link>
+    </EmbeddedResource>
     <Content Include="..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -89,6 +153,180 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffect.frag">
+      <Link>Resources\BasicEffect.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffect.vert">
+      <Link>Resources\BasicEffect.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectColored.frag">
+      <Link>Resources\BasicEffectColored.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectColored.vert">
+      <Link>Resources\BasicEffectColored.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectColoredES.frag">
+      <Link>Resources\BasicEffectColoredES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectColoredES.vert">
+      <Link>Resources\BasicEffectColoredES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectColoredTextured.frag">
+      <Link>Resources\BasicEffectColoredTextured.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectColoredTextured.vert">
+      <Link>Resources\BasicEffectColoredTextured.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectColoredTexturedES.frag">
+      <Link>Resources\BasicEffectColoredTexturedES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectColoredTexturedES.vert">
+      <Link>Resources\BasicEffectColoredTexturedES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectES.frag">
+      <Link>Resources\BasicEffectES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectES.vert">
+      <Link>Resources\BasicEffectES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectTextured.frag">
+      <Link>Resources\BasicEffectTextured.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectTextured.vert">
+      <Link>Resources\BasicEffectTextured.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectTexturedES.frag">
+      <Link>Resources\BasicEffectTexturedES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BasicEffectTexturedES.vert">
+      <Link>Resources\BasicEffectTexturedES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffect.frag">
+      <Link>Resources\BlurEffect.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffect.vert">
+      <Link>Resources\BlurEffect.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectES.frag">
+      <Link>Resources\BlurEffectES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectES.vert">
+      <Link>Resources\BlurEffectES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius1.frag">
+      <Link>Resources\BlurEffectRadius1.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius1ES.frag">
+      <Link>Resources\BlurEffectRadius1ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius3.frag">
+      <Link>Resources\BlurEffectRadius3.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius3ES.frag">
+      <Link>Resources\BlurEffectRadius3ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius5.frag">
+      <Link>Resources\BlurEffectRadius5.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius5ES.frag">
+      <Link>Resources\BlurEffectRadius5ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius7.frag">
+      <Link>Resources\BlurEffectRadius7.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius7ES.frag">
+      <Link>Resources\BlurEffectRadius7ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius9.frag">
+      <Link>Resources\BlurEffectRadius9.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius9ES.frag">
+      <Link>Resources\BlurEffectRadius9ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\SpriteBatchEffect.frag">
+      <Link>Resources\SpriteBatchEffect.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\SpriteBatchEffect.vert">
+      <Link>Resources\SpriteBatchEffect.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\SpriteBatchEffectES.frag">
+      <Link>Resources\SpriteBatchEffectES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\SpriteBatchEffectES.vert">
+      <Link>Resources\SpriteBatchEffectES.vert</Link>
+    </EmbeddedResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius11.frag">
+      <Link>Resources\BlurEffectRadius11.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectRadius1.tt</DependentUpon>
+    </BundleResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius1ES1.frag">
+      <Link>Resources\BlurEffectRadius1ES1.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectRadius1ES.tt</DependentUpon>
+    </BundleResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius31.frag">
+      <Link>Resources\BlurEffectRadius31.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectRadius3.tt</DependentUpon>
+    </BundleResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius3ES1.frag">
+      <Link>Resources\BlurEffectRadius3ES1.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectRadius3ES.tt</DependentUpon>
+    </BundleResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius51.frag">
+      <Link>Resources\BlurEffectRadius51.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectRadius5.tt</DependentUpon>
+    </BundleResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius5ES1.frag">
+      <Link>Resources\BlurEffectRadius5ES1.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectRadius5ES.tt</DependentUpon>
+    </BundleResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius71.frag">
+      <Link>Resources\BlurEffectRadius71.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectRadius7.tt</DependentUpon>
+    </BundleResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius7ES1.frag">
+      <Link>Resources\BlurEffectRadius7ES1.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectRadius7ES.tt</DependentUpon>
+    </BundleResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius91.frag">
+      <Link>Resources\BlurEffectRadius91.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectRadius9.tt</DependentUpon>
+    </BundleResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectRadius9ES1.frag">
+      <Link>Resources\BlurEffectRadius9ES1.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectRadius9ES.tt</DependentUpon>
+    </BundleResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectUnrolled.frag">
+      <Link>Resources\BlurEffectUnrolled.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectUnrolled.tt</DependentUpon>
+    </BundleResource>
+    <BundleResource Include="..\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29\Resources\BlurEffectUnrolledES.frag">
+      <Link>Resources\BlurEffectUnrolledES.frag</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffectUnrolledES.tt</DependentUpon>
+    </BundleResource>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems" Label="Shared" />

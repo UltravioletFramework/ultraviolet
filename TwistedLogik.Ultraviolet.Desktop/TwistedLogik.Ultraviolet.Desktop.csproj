@@ -81,10 +81,6 @@
     <Compile Include="Platform\DesktopScreenOrientationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DesktopFactoryInitializer.cs" />
-    <Compile Include="UltravioletApplication.cs" />
-    <Compile Include="UltravioletApplicationSettings.cs" />
-    <Compile Include="UltravioletApplicationAudioSettings.cs" />
-    <Compile Include="UltravioletApplicationWindowSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !ANDROID
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -12,10 +13,10 @@ namespace TwistedLogik.Ultraviolet
     /// <summary>
     /// Represents an application running on top of the Ultraviolet Framework.
     /// </summary>
-    public abstract class UltravioletApplication :
+    public abstract partial class UltravioletApplication :
         IMessageSubscriber<UltravioletMessageID>,
-        IUltravioletComponent, 
-        IUltravioletHost, 
+        IUltravioletComponent,
+        IUltravioletHost,
         IDisposable
     {
         /// <summary>
@@ -34,11 +35,7 @@ namespace TwistedLogik.Ultraviolet
             this.application = application;
         }
 
-        /// <summary>
-        /// Receives a message that has been published to a queue.
-        /// </summary>
-        /// <param name="type">The type of message that was received.</param>
-        /// <param name="data">The data for the message that was received.</param>
+        /// <inheritdoc/>
         void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
         {
             OnReceivedMessage(type, data);
@@ -94,12 +91,12 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         public UltravioletContext Ultraviolet
         {
-            get 
+            get
             {
                 Contract.EnsureNotDisposed(this, disposed);
                 Contract.Ensure(created, UltravioletStrings.ContextMissing);
 
-                return uv; 
+                return uv;
             }
         }
 
@@ -381,10 +378,7 @@ namespace TwistedLogik.Ultraviolet
         {
             Contract.Require(configuration, nameof(configuration));
 
-            if (this.settings?.Window != null)
-            {
-                configuration.InitialWindowPosition = this.settings.Window.WindowedPosition;
-            }
+            PopulateConfigurationFromSettings(configuration);
         }
 
         /// <summary>
@@ -432,10 +426,7 @@ namespace TwistedLogik.Ultraviolet
             if (uv == null)
                 throw new InvalidOperationException(UltravioletStrings.ContextNotCreated);
 
-            if (this.settings != null)
-            {
-                this.settings.Apply(uv);
-            }
+            ApplySettings();
 
             CreateUltravioletHostCore();
 
@@ -446,7 +437,7 @@ namespace TwistedLogik.Ultraviolet
             this.uv.WindowDrawn += uv_WindowDrawn;
 
             this.uv.GetPlatform().Windows.PrimaryWindowChanging += uv_PrimaryWindowChanging;
-            this.uv.GetPlatform().Windows.PrimaryWindowChanged  += uv_PrimaryWindowChanged;
+            this.uv.GetPlatform().Windows.PrimaryWindowChanged += uv_PrimaryWindowChanged;
             HookPrimaryWindowEvents();
 
             this.created = true;
@@ -457,8 +448,8 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         private void CreateUltravioletHostCore()
         {
-            hostcore                   = new UltravioletHostCore(this);
-            hostcore.IsFixedTimeStep   = this.IsFixedTimeStep;
+            hostcore = new UltravioletHostCore(this);
+            hostcore.IsFixedTimeStep = this.IsFixedTimeStep;
             hostcore.TargetElapsedTime = this.TargetElapsedTime;
             hostcore.InactiveSleepTime = this.InactiveSleepTime;
         }
@@ -472,7 +463,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 primary.Drawing -= uv_Drawing;
             }
-            
+
             primary = uv.GetPlatform().Windows.GetPrimary();
 
             if (primary != null)
@@ -480,39 +471,26 @@ namespace TwistedLogik.Ultraviolet
                 primary.Drawing += uv_Drawing;
             }
         }
-        
+
         /// <summary>
         /// Loads the application's settings.
         /// </summary>
-        private void LoadSettings()
-        {
-            if (!PreserveApplicationSettings)
-                return;
-
-            var path = Path.Combine(GetLocalApplicationSettingsDirectory(), "UltravioletSettings.xml");
-            if (!File.Exists(path))
-                return;
-
-            var settings = UltravioletApplicationSettings.Load(path);
-            if (settings == null)
-                return;
-
-            this.settings = settings;
-        }
+        partial void LoadSettings();
 
         /// <summary>
         /// Saves the application's settings.
         /// </summary>
-        private void SaveSettings()
-        {
-            if (!PreserveApplicationSettings)
-                return;
+        partial void SaveSettings();
 
-            var path = Path.Combine(GetLocalApplicationSettingsDirectory(), "UltravioletSettings.xml");
+        /// <summary>
+        /// Applies the application's settings.
+        /// </summary>
+        partial void ApplySettings();
 
-            this.settings = UltravioletApplicationSettings.FromCurrentSettings(Ultraviolet);
-            UltravioletApplicationSettings.Save(path, settings);
-        }
+        /// <summary>
+        /// Populates the Ultraviolet configuration from the application settings.
+        /// </summary>
+        partial void PopulateConfigurationFromSettings(UltravioletConfiguration configuration);
 
         /// <summary>
         /// Handles the Ultraviolet window manager's PrimaryWindowChanging event.
@@ -588,15 +566,13 @@ namespace TwistedLogik.Ultraviolet
         private IUltravioletWindow primary;
 
         // The application's tick state.
-        private Boolean isFixedTimeStep    = UltravioletHostCore.DefaultIsFixedTimeStep;
+        private Boolean isFixedTimeStep = UltravioletHostCore.DefaultIsFixedTimeStep;
         private TimeSpan targetElapsedTime = UltravioletHostCore.DefaultTargetElapsedTime;
         private TimeSpan inactiveSleepTime = UltravioletHostCore.DefaultInactiveSleepTime;
 
         // The application's name.
         private String company;
         private String application;
-
-        // The application's settings.
-        private UltravioletApplicationSettings settings;
     }
 }
+#endif

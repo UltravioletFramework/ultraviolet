@@ -46,9 +46,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Nucleus %28iOS%29\TwistedLogik.Nucleus %28iOS%29.csproj">
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
@@ -78,6 +76,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
     <Content Include="..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
