@@ -127,8 +127,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (iOS)", "TwistedLogik.Ultraviolet.UI.Presentation (iOS)\TwistedLogik.Ultraviolet.UI.Presentation (iOS).csproj", "{4F741CCA-6FBF-439E-A26A-ABB189619101}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.iOS", "TwistedLogik.Ultraviolet.iOS\TwistedLogik.Ultraviolet.iOS.csproj", "{295EC20A-AF97-4934-822C-8EE7919CEC53}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.iOS.Bindings", "TwistedLogik.Ultraviolet.iOS.Bindings\TwistedLogik.Ultraviolet.iOS.Bindings.csproj", "{76ED0EA8-82EC-43DA-A724-D09991E1905D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (iOS)", "UltravioletGame (iOS)\UltravioletGame (iOS).csproj", "{37B9C072-2799-4C6A-B952-63A848DAAC0A}"
@@ -1611,36 +1609,6 @@ Global
 		{4F741CCA-6FBF-439E-A26A-ABB189619101}.Signed|iPhone.Build.0 = Release|Any CPU
 		{4F741CCA-6FBF-439E-A26A-ABB189619101}.Signed|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{4F741CCA-6FBF-439E-A26A-ABB189619101}.Signed|iPhoneSimulator.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Ad-Hoc|iPhoneSimulator.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.AppStore|Any CPU.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.AppStore|iPhone.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.AppStore|iPhone.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.AppStore|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.AppStore|iPhoneSimulator.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Release|Any CPU.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Release|iPhone.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Signed|Any CPU.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Signed|Any CPU.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Signed|iPhone.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Signed|iPhone.Build.0 = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Signed|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{295EC20A-AF97-4934-822C-8EE7919CEC53}.Signed|iPhoneSimulator.Build.0 = Release|Any CPU
 		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
 		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
 		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU

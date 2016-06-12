@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         {
 
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the OpenGLUltravioletContext class.
         /// </summary>
@@ -82,12 +82,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             PumpEvents();
 
             this.graphics = IsRunningInServiceMode ? (IUltravioletGraphics)(new DummyUltravioletGraphics(this)) : new OpenGLUltravioletGraphics(this, configuration);
-            this.audio    = IsRunningInServiceMode ? new DummyUltravioletAudio(this) : InitializeAudioSubsystem(configuration);
-            this.input    = IsRunningInServiceMode ? (IUltravioletInput)(new DummyUltravioletInput(this)) : new SDL2UltravioletInput(this);
-            this.content  = new UltravioletContent(this);
-            this.ui       = new UltravioletUI(this, configuration);
+            if (!IsRunningInServiceMode)
+                ((OpenGLUltravioletGraphics)graphics).ResetDeviceStates();
 
-            this.content.RegisterImportersAndProcessors(new[] 
+            this.audio = IsRunningInServiceMode ? new DummyUltravioletAudio(this) : InitializeAudioSubsystem(configuration);
+            this.input = IsRunningInServiceMode ? (IUltravioletInput)(new DummyUltravioletInput(this)) : new SDL2UltravioletInput(this);
+            this.content = new UltravioletContent(this);
+            this.ui = new UltravioletUI(this, configuration);
+
+            this.content.RegisterImportersAndProcessors(new[]
             {
                 typeof(SDL2.Native.SDL).Assembly,
                 String.IsNullOrEmpty(configuration.AudioSubsystemAssembly) ? null : Assembly.Load(configuration.AudioSubsystemAssembly),

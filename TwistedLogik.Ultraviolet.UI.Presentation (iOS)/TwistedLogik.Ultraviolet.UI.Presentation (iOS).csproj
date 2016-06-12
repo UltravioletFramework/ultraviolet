@@ -52,6 +52,10 @@
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
       <Name>TwistedLogik.Nucleus %28iOS%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28iOS%29\TwistedLogik.Ultraviolet %28iOS%29.csproj">
+      <Project>{8f9f44fb-e63c-48de-8752-19b745111559}</Project>
+      <Name>TwistedLogik.Ultraviolet %28iOS%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28iOS%29\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28iOS%29.csproj">
       <Project>{6115a978-b4b6-46d3-ad13-f0dc358b8bd3}</Project>
       <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28iOS%29</Name>

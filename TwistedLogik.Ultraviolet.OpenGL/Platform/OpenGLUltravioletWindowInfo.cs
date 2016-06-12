@@ -513,7 +513,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             if (SDL.GL_MakeCurrent(winptr, context) < 0)
                 throw new SDL2Exception();
 
-            if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0)
+            if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0 && Ultraviolet.Platform != UltravioletPlatform.iOS)
             {
                 if (!shuttingDown)
                     throw new SDL2Exception();

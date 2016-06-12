@@ -1195,7 +1195,7 @@ namespace TwistedLogik.Ultraviolet
         {
             try
             {
-                Assembly shim = null;
+                var shim = default(Assembly);
 
                 switch (Platform)
                 {
@@ -1210,7 +1210,7 @@ namespace TwistedLogik.Ultraviolet
                         break;
 
                     case UltravioletPlatform.iOS:
-                        /* All assemblies must be statically linked */
+                        /* On iOS, shim is built into core assembly to avoid linker issues */
                         break;
 
                     default:

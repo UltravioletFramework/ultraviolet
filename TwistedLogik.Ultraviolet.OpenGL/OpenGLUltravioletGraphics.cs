@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 else throw new SDL2Exception();
             }
 
-            if (SDL.GL_SetSwapInterval(1) < 0)
+            if (SDL.GL_SetSwapInterval(1) < 0 && uv.Platform != UltravioletPlatform.iOS)
                 throw new SDL2Exception();
 
             if (gl.Initialized)
@@ -77,8 +77,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
 
             OpenGLState.VerifyCache();
-
-            ResetDeviceStates();
         }
 
         /// <inheritdoc/>
@@ -632,6 +630,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public event UltravioletSubsystemUpdateEventHandler Updating;
         
         /// <summary>
+        /// Resets the device states to their initial values.
+        /// </summary>
+        internal void ResetDeviceStates()
+        {
+            SetBlendState(BlendState.AlphaBlend);
+            SetDepthStencilState(DepthStencilState.Default);
+            SetRasterizerState(RasterizerState.CullCounterClockwise);
+            for (int i = 0; i < maxTextureStages; i++)
+            {
+                SetSamplerState(i, SamplerState.LinearClamp);
+            }
+        }
+
+        /// <summary>
         /// Gets the OpenGL context.
         /// </summary>
         internal IntPtr OpenGLContext
@@ -782,20 +794,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 gl.DebugMessageControl(gl.GL_DONT_CARE, gl.GL_DONT_CARE, gl.DEBUG_SEVERITY_HIGH, 0, IntPtr.Zero, true);
 
             gl.DebugMessageCallback(debugCallbackOpenGL, IntPtr.Zero);
-        }
-
-        /// <summary>
-        /// Resets the device states to their initial values.
-        /// </summary>
-        private void ResetDeviceStates()
-        {
-            SetBlendState(BlendState.AlphaBlend);
-            SetDepthStencilState(DepthStencilState.Default);
-            SetRasterizerState(RasterizerState.CullCounterClockwise);
-            for (int i = 0; i < maxTextureStages; i++)
-            {
-                SetSamplerState(i, SamplerState.LinearClamp);
-            }
         }
 
         /// <summary>

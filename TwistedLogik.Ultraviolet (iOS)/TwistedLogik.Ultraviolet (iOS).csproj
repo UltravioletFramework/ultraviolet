@@ -63,6 +63,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
+    <Compile Include="iOS\Graphics\iOSSurfaceSaver.cs" />
+    <Compile Include="iOS\Graphics\iOSSurfaceSource.cs" />
+    <Compile Include="iOS\Input\iOSSoftwareKeyboardService.cs" />
+    <Compile Include="iOS\iOSFactoryInitializer.cs" />
+    <Compile Include="iOS\Platform\iOSIconLoader.cs" />
+    <Compile Include="iOS\Platform\iOSScreenDensityService.cs" />
+    <Compile Include="iOS\Platform\iOSScreenRotationService.cs" />
     <Compile Include="UltravioletAppDelegate.cs" />
     <Compile Include="UltravioletApplication.cs" />
     <Compile Include="UltravioletApplicationAudioSettings.cs" />
