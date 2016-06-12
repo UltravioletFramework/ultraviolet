@@ -250,7 +250,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         break;
 
                     case UltravioletPlatform.iOS:
-                        throw new NotImplementedException("NYI");
+                        /* All assemblies are statically linked */
+                        break;
 
                     default:
                         throw new NotSupportedException();
