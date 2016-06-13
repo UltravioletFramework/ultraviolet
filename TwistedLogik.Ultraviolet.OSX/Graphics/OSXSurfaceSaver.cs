@@ -95,15 +95,15 @@ namespace TwistedLogik.Ultraviolet.OSX
 					for (int y = 0; y < height; y++)
 					{
 						var pSrc = pData + (y * width);
-						var pDst = (UInt32*)((Byte*)rep.BitmapData + (y * rep.BytesPerRow));
+						var pDst = (Byte*)rep.BitmapData + (y * rep.BytesPerRow);
 
 						for (int x = 0; x < width; x++)
 						{
                             var color = *pSrc++;
-                            *pDst++ = color.B;
-                            *pDst++ = color.G;
-                            *pDst++ = color.R;
-                            *pDst++ = color.A;
+							*pDst++ = color.R;
+							*pDst++ = color.G;
+							*pDst++ = color.B;
+							*pDst++ = color.A;
 						}
 					}
 				}
