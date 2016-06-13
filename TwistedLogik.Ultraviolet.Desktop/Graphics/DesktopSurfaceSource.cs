@@ -59,7 +59,11 @@ namespace TwistedLogik.Ultraviolet.Desktop.Graphics
                 unsafe
                 {
                     var pixel = ((byte*)bmpData.Scan0) + (bmpData.Stride * y) + (x * sizeof(UInt32));
-                    return Color.FromRgba(*(uint*)pixel);
+                    var a = *pixel++;
+                    var r = *pixel++;
+                    var g = *pixel++;
+                    var b = *pixel++;
+                    return new Color(r, g, b, a);
                 }
             }
         }

@@ -94,11 +94,15 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
                     for (int y = 0; y < height; y++)
                     {
                         var pSrc = pData + (y * width);
-                        var pDst = (UInt32*)((Byte*)bmpData + (y * bmp.RowBytes));
+                        var pDst = ((Byte*)bmpData + (y * bmp.RowBytes));
 
                         for (int x = 0; x < width; x++)
                         {
-                            *pDst++ = (*pSrc++).ToArgb();
+                            var color = *pSrc++;
+                            *pDst++ = color.R;
+                            *pDst++ = color.G;
+                            *pDst++ = color.B;
+                            *pDst++ = color.A;
                         }
                     }
                 }

@@ -36,7 +36,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Initializes a new instance of the <see cref="Color"/> structure.
         /// </summary>
-        /// <param name="packedValue">The color's packed value.</param>
+        /// <param name="packedValue">The color's packed value in ABGR format.</param>
         [CLSCompliant(false)]
         public Color(UInt32 packedValue)
         {
@@ -294,7 +294,12 @@ namespace TwistedLogik.Ultraviolet
         [CLSCompliant(false)]
         public static Color FromRgba(UInt32 value)
         {
-            return new Color(value);
+            var r = (byte)(value >> 24);
+            var g = (byte)(value >> 16);
+            var b = (byte)(value >> 8);
+            var a = (byte)(value);
+
+            return new Color((uint)((r) | (g << 8) | (b << 16) | (a << 24)));
         }
 
         /// <summary>
@@ -305,10 +310,10 @@ namespace TwistedLogik.Ultraviolet
         [CLSCompliant(false)]
         public static Color FromBgra(UInt32 value)
         {
-            var a = (byte)(value >> 24);
-            var b = (byte)(value >> 16);
-            var g = (byte)(value >> 8);
-            var r = (byte)(value);
+            var b = (byte)(value >> 24);
+            var g = (byte)(value >> 16);
+            var r = (byte)(value >> 8);
+            var a = (byte)(value);
 
             return new Color((uint)((r) | (g << 8) | (b << 16) | (a << 24)));
         }
@@ -380,7 +385,7 @@ namespace TwistedLogik.Ultraviolet
         [CLSCompliant(false)]
         public UInt32 ToRgba()
         {
-            return packedValue;
+            return (uint)((R << 24) | (G << 16) | (B << 8) | (A));
         }
 
         /// <summary>
@@ -390,7 +395,7 @@ namespace TwistedLogik.Ultraviolet
         [CLSCompliant(false)]
         public UInt32 ToBgra()
         {
-            return (uint)((A << 24) | (B << 16) | (G << 8) | (R));
+            return (uint)((B << 24) | (G << 16) | (R << 8) | (A));
         }
 
         /// <summary>

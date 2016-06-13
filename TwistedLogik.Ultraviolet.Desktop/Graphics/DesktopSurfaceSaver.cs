@@ -96,11 +96,15 @@ namespace TwistedLogik.Ultraviolet.Desktop.Graphics
                     for (int y = 0; y < height; y++)
                     {
                         var pSrc = pData + (y * width);
-                        var pDst = (UInt32*)((Byte*)bmpData.Scan0 + (y * bmpData.Stride));
+                        var pDst = (Byte*)bmpData.Scan0 + (y * bmpData.Stride);
 
                         for (int x = 0; x < width; x++)
                         {
-                            *pDst++ = (*pSrc++).ToArgb();
+                            var color = *pSrc++;
+                            *pDst++ = color.B;
+                            *pDst++ = color.G;
+                            *pDst++ = color.R;
+                            *pDst++ = color.A;
                         }
                     }
                 }

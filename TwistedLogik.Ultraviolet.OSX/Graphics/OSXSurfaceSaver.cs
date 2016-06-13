@@ -99,7 +99,11 @@ namespace TwistedLogik.Ultraviolet.OSX
 
 						for (int x = 0; x < width; x++)
 						{
-							*pDst++ = (*pSrc++).ToArgb();
+                            var color = *pSrc++;
+                            *pDst++ = color.B;
+                            *pDst++ = color.G;
+                            *pDst++ = color.R;
+                            *pDst++ = color.A;
 						}
 					}
 				}

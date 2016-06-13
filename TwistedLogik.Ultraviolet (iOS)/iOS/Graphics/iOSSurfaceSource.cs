@@ -61,8 +61,12 @@ namespace TwistedLogik.Ultraviolet.iOS.Graphics
 
                 unsafe
                 {
-                    var pixel = ((Byte*)bmpData.ToPointer())[y * stride + (x * sizeof(UInt32))];
-                    return Color.FromRgba(*(UInt32*)pixel);
+                    var pixel = ((byte*)bmpData.ToPointer()) + (stride * y) + (x * sizeof(UInt32));
+                    var a = *pixel++;
+                    var r = *pixel++;
+                    var g = *pixel++;
+                    var b = *pixel++;
+                    return new Color(r, g, b, a);
                 }
             }
         }
@@ -120,15 +124,15 @@ namespace TwistedLogik.Ultraviolet.iOS.Graphics
         /// </summary>
         private void ReversePremultiplication()
         {
-            var pBmpData = (UInt32*)bmpData.ToPointer();
+            var pBmpData = (Byte*)bmpData.ToPointer();
             for (int i = 0; i < width * height; i++)
             {
-                var pixel = Color.FromRgba(*pBmpData);
-                var a = pixel.A / 255f;
-                var r = (Int32)(pixel.R / a);
-                var g = (Int32)(pixel.G / a);
-                var b = (Int32)(pixel.B / a);
-                *pBmpData++ = new Color(r, g, b, a).PackedValue;
+                var a = *(pBmpData + 3) / 255f;
+                *(pBmpData + 0) = (Byte)(*(pBmpData + 0) / a);
+                *(pBmpData + 1) = (Byte)(*(pBmpData + 1) / a);
+                *(pBmpData + 2) = (Byte)(*(pBmpData + 2) / a);
+
+                pBmpData += 4;
             }
         }
 

@@ -55,7 +55,11 @@ namespace TwistedLogik.Ultraviolet.OSX
 			get
 			{
 				var pixel = ((byte*)imageRep.BitmapData) + (imageRep.BytesPerRow * y) + (x * sizeof(UInt32));
-				return Color.FromArgb(*(uint*)pixel);
+				var a = *pixel++;
+				var r = *pixel++;
+				var g = *pixel++;
+				var b = *pixel++;
+				return new Color(r, g, b, a);
 			}
 		}
 

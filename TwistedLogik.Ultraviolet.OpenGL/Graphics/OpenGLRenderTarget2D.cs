@@ -518,8 +518,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     var ixSrc = (ySrc * Width) + x;
                     var ixDst = (yDst * Width) + x;
 
-                    var colorSrc = Color.FromRgba(data[ixSrc].PackedValue);
-                    var colorDst = Color.FromRgba(data[ixDst].PackedValue);
+                    var colorSrc = new Color(data[ixSrc].PackedValue);
+                    var colorDst = new Color(data[ixDst].PackedValue);
 
                     data[ixDst] = colorSrc;
                     data[ixSrc] = colorDst;
