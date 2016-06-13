@@ -930,6 +930,8 @@ namespace TwistedLogik.Ultraviolet
                 catch (Exception e2)
                 {
                     var error = new StringBuilder();
+                    error.AppendLine(Assembly.GetEntryAssembly().FullName);
+                    error.AppendLine();
                     error.AppendLine($"An exception occurred while creating the Ultraviolet context, and Ultraviolet failed to cleanly shut down.");
                     error.AppendLine();
                     error.AppendLine($"Exception which occurred during context creation:");
@@ -942,7 +944,9 @@ namespace TwistedLogik.Ultraviolet
 
                     try
                     {
-                        File.WriteAllText($"uv-error-{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.txt", error.ToString());
+                        var errorDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                        var errorPath = $"uv-error-{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.txt";
+                        File.WriteAllText(Path.Combine(errorDir, errorPath), error.ToString());
                     }
                     catch (IOException) { }
                 }
