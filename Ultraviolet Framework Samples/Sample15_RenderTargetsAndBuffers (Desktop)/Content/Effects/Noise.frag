@@ -1,5 +1,5 @@
 ﻿#ifver_gte "1.0" { #version 140 }
-#if GL_ES
+#ifdef GL_ES
     precision mediump float;
     precision mediump int;
     #define SHADER_UNIFORM uniform
