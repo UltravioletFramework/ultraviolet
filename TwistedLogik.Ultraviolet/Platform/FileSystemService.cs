@@ -42,6 +42,44 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Gets the absolute path to the specified file.
+        /// </summary>
+        /// <param name="path">The path for which to retrieve a full path.</param>
+        /// <returns>The absolute path to the specified file.</returns>
+        public virtual String GetFullPath(String path)
+        {
+            return (source == null) ? Path.GetFullPath(path) : path;
+        }
+
+        /// <summary>
+        /// Converts the specified path to a path which is relative to the specified root directory.
+        /// </summary>
+        /// <param name="root">The root directory.</param>
+        /// <param name="path">The path to convert.</param>
+        /// <returns>The converted path.</returns>
+        public virtual String GetRelativePath(String root, String path)
+        {
+            if (String.IsNullOrEmpty(root))
+                return path;
+
+            root = root.EndsWith("/") ? root : root + "/";
+
+            var rootFull = GetFullPath(root);
+            var rootUri = new Uri(rootFull, UriKind.RelativeOrAbsolute);
+
+            if (!rootUri.IsAbsoluteUri && source != null)
+                rootUri = new Uri("file://" + rootFull);
+
+            var pathFull = GetFullPath(path);
+            var pathUri = new Uri(pathFull, UriKind.RelativeOrAbsolute);
+
+            if (!pathUri.IsAbsoluteUri && source != null)
+                pathUri = new Uri("file://" + pathFull);
+
+            return rootUri.MakeRelativeUri(pathUri).ToString();
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the specified path exists and is a file.
         /// </summary>
         /// <param name="path">The path to evaluate.</param>

@@ -387,7 +387,7 @@ namespace TwistedLogik.Ultraviolet.Content
             if (metadata == null)
                 throw new FileNotFoundException(asset);
             
-            return Path.GetFullPath(metadata.AssetFilePath);
+            return fileSystemService.GetFullPath(metadata.AssetFilePath);
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace TwistedLogik.Ultraviolet.Content
             if (metadata == null)
                 throw new FileNotFoundException(assetPath);
 
-            return Path.GetFullPath(metadata.AssetFilePath);
+            return fileSystemService.GetFullPath(metadata.AssetFilePath);
         }
 
         /// <summary>
@@ -542,23 +542,7 @@ namespace TwistedLogik.Ultraviolet.Content
 
             base.Dispose(disposing);
         }
-
-        /// <summary>
-        /// Converts the specified path to a path which is relative to the specified root directory.
-        /// </summary>
-        /// <param name="root">The root directory.</param>
-        /// <param name="path">The path to convert.</param>
-        /// <returns>The converted path.</returns>
-        private static String GetRelativePath(String root, String path)
-        {
-            root = root.EndsWith("/") ? root : root + "/";
-
-            var rootUri = new Uri(Path.GetFullPath(root), UriKind.Absolute);
-            var pathUri = new Uri(Path.GetFullPath(path), UriKind.Absolute);
-
-            return rootUri.MakeRelativeUri(pathUri).ToString();
-        }
-
+        
         /// <summary>
         /// Lists the assets which can serve as substitutions for the specified asset.
         /// </summary>
@@ -578,7 +562,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 let bucketfile = String.Format("{0}-{1}{2}", filename, bucketname, extension)
                 let bucketpath = Path.Combine(directory, bucketfile)
                 where fileSystemService.FileExists(bucketpath)
-                select GetRelativePath(rootDirectory, bucketpath);
+                select fileSystemService.GetRelativePath(rootDirectory, bucketpath);
 
             return substitutions;
         }
@@ -795,7 +779,7 @@ namespace TwistedLogik.Ultraviolet.Content
 
                     processor = (IContentProcessor)Activator.CreateInstance(uvcProcessorType);
                     
-                    var metadata = new AssetMetadata(asset, Path.GetFullPath(path), null, null, true, false);
+                    var metadata = new AssetMetadata(asset, fileSystemService.GetFullPath(path), null, null, true, false);
                     return processor.ImportPreprocessed(this, metadata, reader);
                 }
             }
@@ -1042,7 +1026,7 @@ namespace TwistedLogik.Ultraviolet.Content
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataHasInvalidFilename);
 
                 var directory = Path.GetDirectoryName(filename);
-                var relative = GetRelativePath(rootDirectory, Path.Combine(directory, wrappedFilename));
+                var relative = fileSystemService.GetRelativePath(rootDirectory, Path.Combine(directory, wrappedFilename));
 
                 var wrappedAssetDirectory = String.Empty;
                 wrappedAssetPath = GetAssetPath(relative, Path.GetExtension(relative), out wrappedAssetDirectory);
@@ -1087,16 +1071,17 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="results">The result set to update.</param>
         private void GetAssetsInDirectory(String directory, String path, String searchPattern, Dictionary<String, String> results)
         {
-            var root = String.IsNullOrEmpty(directory) ? fileSystemService.GetCurrentDirectory() : Path.GetFullPath(directory);
+            var root = String.IsNullOrEmpty(directory) ? fileSystemService.GetCurrentDirectory() : fileSystemService.GetFullPath(directory);
 
-            var assetDirectory = Path.GetFullPath(Path.Combine(directory, path ?? ""));
+            var assetRoot = fileSystemService.GetRelativePath(fileSystemService.GetCurrentDirectory(), root);
+            var assetDirectory = Path.Combine(assetRoot, path ?? String.Empty);
             if (!fileSystemService.DirectoryExists(assetDirectory))
                 return;
 
             var assets =
                 from f in fileSystemService.ListFiles(assetDirectory, searchPattern)
-                let relative = GetRelativePath(root, f)
-                let absolute = Path.GetFullPath(Path.Combine(root, relative))
+                let relative = fileSystemService.GetRelativePath(root, f)
+                let absolute = fileSystemService.GetFullPath(Path.Combine(root, relative))
                 select new { RelativePath = relative, AbsolutePath = absolute };
 
             foreach (var asset in assets)
@@ -1114,16 +1099,17 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="results">The result set to update.</param>
         private void GetSubdirectories(String directory, String path, String searchPattern, Dictionary<String, String> results)
         {
-            var root = String.IsNullOrEmpty(directory) ? Directory.GetCurrentDirectory() : Path.GetFullPath(directory);
+            var root = String.IsNullOrEmpty(directory) ? fileSystemService.GetCurrentDirectory() : fileSystemService.GetFullPath(directory);
 
-            var assetDirectory = Path.GetFullPath(Path.Combine(directory, path ?? ""));
+            var assetRoot = fileSystemService.GetRelativePath(fileSystemService.GetCurrentDirectory(), root);
+            var assetDirectory = Path.Combine(assetRoot, path ?? String.Empty);
             if (!fileSystemService.DirectoryExists(assetDirectory))
                 return;
 
             var assets =
                 from d in fileSystemService.ListDirectories(assetDirectory, searchPattern)
-                let relative = GetRelativePath(root, d)
-                let absolute = Path.GetFullPath(Path.Combine(root, relative))
+                let relative = fileSystemService.GetRelativePath(root, d)
+                let absolute = fileSystemService.GetFullPath(Path.Combine(root, relative))
                 select new { RelativePath = relative, AbsolutePath = absolute };
 
             foreach (var asset in assets)
