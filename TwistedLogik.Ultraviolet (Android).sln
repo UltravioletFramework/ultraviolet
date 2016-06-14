@@ -3,25 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Gluon (Android)", "TwistedLogik.Gluon (Android)\TwistedLogik.Gluon (Android).csproj", "{49A66667-2355-4755-A3AD-4EF9CA638534}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Gluon (Android)", "TwistedLogik.Gluon_Android\TwistedLogik.Gluon (Android).csproj", "{49A66667-2355-4755-A3AD-4EF9CA638534}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Nucleus (Android)", "TwistedLogik.Nucleus (Android)\TwistedLogik.Nucleus (Android).csproj", "{7EB671F1-6B46-426D-8A27-730D2B682043}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Nucleus (Android)", "TwistedLogik.Nucleus_Android\TwistedLogik.Nucleus (Android).csproj", "{7EB671F1-6B46-426D-8A27-730D2B682043}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (Android)", "TwistedLogik.Ultraviolet (Android)\TwistedLogik.Ultraviolet (Android).csproj", "{0B17931C-1595-4ADA-9086-F26E5F5A387D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (Android)", "TwistedLogik.Ultraviolet_Android\TwistedLogik.Ultraviolet (Android).csproj", "{0B17931C-1595-4ADA-9086-F26E5F5A387D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.BASS (Android)", "TwistedLogik.Ultraviolet.BASS (Android)\TwistedLogik.Ultraviolet.BASS (Android).csproj", "{381B05EB-E12E-451C-A272-2F5C2FD9C106}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.BASS (Android)", "TwistedLogik.Ultraviolet.BASS_Android\TwistedLogik.Ultraviolet.BASS (Android).csproj", "{381B05EB-E12E-451C-A272-2F5C2FD9C106}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.OpenGL (Android)", "TwistedLogik.Ultraviolet.OpenGL (Android)\TwistedLogik.Ultraviolet.OpenGL (Android).csproj", "{3416AF37-8A39-479D-B78F-88D72CADD458}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.OpenGL (Android)", "TwistedLogik.Ultraviolet.OpenGL_Android\TwistedLogik.Ultraviolet.OpenGL (Android).csproj", "{3416AF37-8A39-479D-B78F-88D72CADD458}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2 (Android)", "TwistedLogik.Ultraviolet.SDL2 (Android)\TwistedLogik.Ultraviolet.SDL2 (Android).csproj", "{B5502009-935A-40BA-B415-ABBF55427CAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2 (Android)", "TwistedLogik.Ultraviolet.SDL2_Android\TwistedLogik.Ultraviolet.SDL2 (Android).csproj", "{B5502009-935A-40BA-B415-ABBF55427CAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (Android)", "UltravioletGame (Android)\UltravioletGame (Android).csproj", "{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (Android)", "UltravioletGame_Android\UltravioletGame (Android).csproj", "{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Android", "TwistedLogik.Ultraviolet.Android\TwistedLogik.Ultraviolet.Android.csproj", "{1EBCAE25-9FC2-420A-8E62-C5B6733BAC9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (Android)", "TwistedLogik.Ultraviolet.UI.Presentation (Android)\TwistedLogik.Ultraviolet.UI.Presentation (Android).csproj", "{35BFCF7E-1756-4FE1-864C-6A0AAFF97799}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (Android)", "TwistedLogik.Ultraviolet.UI.Presentation_Android\TwistedLogik.Ultraviolet.UI.Presentation (Android).csproj", "{35BFCF7E-1756-4FE1-864C-6A0AAFF97799}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (Android)", "UvDebugSandbox (Android)\UvDebugSandbox (Android).csproj", "{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (Android)", "UvDebugSandbox_Android\UvDebugSandbox (Android).csproj", "{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Gluon", "TwistedLogik.Gluon\TwistedLogik.Gluon.shproj", "{F2660B00-B04A-4301-9DFB-226DD9D0798B}"
 EndProject
@@ -41,7 +41,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebugSandbox", "UvDebugSa
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.shproj", "{2DEF7217-0B35-423C-9085-EC46260682C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Android)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Android)\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Android).csproj", "{C9DA531D-4FDC-4C41-8E2C-F3C68DAE5AEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Android)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss_Android\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Android).csproj", "{C9DA531D-4FDC-4C41-8E2C-F3C68DAE5AEA}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

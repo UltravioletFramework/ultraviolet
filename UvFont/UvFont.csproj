@@ -88,17 +88,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Nucleus_Desktop\TwistedLogik.Nucleus %28Desktop%29.csproj">
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>TwistedLogik.Nucleus (Desktop)</Name>
+      <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.Tooling\TwistedLogik.Ultraviolet.Tooling.csproj">
       <Project>{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}</Project>
       <Name>TwistedLogik.Ultraviolet.Tooling</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28Desktop%29\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>TwistedLogik.Ultraviolet (Desktop)</Name>
+      <Name>TwistedLogik.Ultraviolet %28Desktop%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

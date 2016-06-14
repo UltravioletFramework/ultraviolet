@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProjectGuid>{37B9C072-2799-4C6A-B952-63A848DAAC0A}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>UltravioletGame</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>UltravioletGame</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchArch>i386</MtouchArch>
+    <MtouchLink>None</MtouchLink>
+    <MtouchDebug>true</MtouchDebug>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchLink>None</MtouchLink>
+    <MtouchArch>i386</MtouchArch>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;IOS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>True</MtouchDebug>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchProfiling>False</MtouchProfiling>
+    <MtouchFastDev>False</MtouchFastDev>
+    <MtouchUseLlvm>False</MtouchUseLlvm>
+    <MtouchUseThumb>False</MtouchUseThumb>
+    <MtouchEnableBitcode>False</MtouchEnableBitcode>
+    <MtouchUseSGen>False</MtouchUseSGen>
+    <MtouchUseRefCounting>False</MtouchUseRefCounting>
+    <OptimizePNGs>True</OptimizePNGs>
+    <MtouchFloat32>False</MtouchFloat32>
+    <DeviceSpecificBuild>False</DeviceSpecificBuild>
+    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore"</MtouchExtraArgs>
+    <MtouchSdkVersion>9.3</MtouchSdkVersion>
+    <MtouchTlsProvider>Default</MtouchTlsProvider>
+    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\Ad-Hoc</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <BuildIpa>True</BuildIpa>
+    <CodesignProvision>Automatic:AdHoc</CodesignProvision>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AppStore</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignProvision>Automatic:AppStore</CodesignProvision>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SAFE_PROJECT_NAME.Game</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\Dependencies\BASS\iOS\libbass.a">
+      <Link>libbass.a</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\iOS\libbass_fx.a">
+      <Link>libbass_fx.a</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\SDL2\iOS\libSDL2.a">
+      <Link>libSDL2.a</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <BundleResource Include="..\UltravioletGame\Content\Manifests\Global.manifest">
+      <Link>Resources\Content\Manifests\Global.manifest</Link>
+    </BundleResource>
+    <None Include="Info.plist" />
+    <Compile Include="..\UltravioletGame\Assets\GlobalFontID.cs">
+      <Link>Assets\GlobalFontID.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletGame\Game.cs">
+      <Link>Game.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletGame\Input\GameInputActions.cs">
+      <Link>Input\GameInputActions.cs</Link>
+    </Compile>
+    <Compile Include="..\UltravioletGame\Input\IUltravioletInputExtensions.cs">
+      <Link>Input\IUltravioletInputExtensions.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
+    <BundleResource Include="..\UltravioletGame\Content\Localization\GameStrings.xml">
+      <Link>Resources\Content\Localization\GameStrings.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UltravioletGame\Content\Fonts\SegoeUI.xml">
+      <Link>Resources\Content\Fonts\SegoeUI.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UltravioletGame\Content\Fonts\SegoeUITexture.png">
+      <Link>Resources\Content\Fonts\SegoeUITexture.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\UltravioletGame\Content\Cursors\Cursors.xml">
+      <Link>Resources\Content\Cursors\Cursors.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UltravioletGame\Content\Cursors\CursorsImage.png">
+      <Link>Resources\Content\Cursors\CursorsImage.png</Link>
+    </BundleResource>
+    <Content Include="Entitlements.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="TwistedLogik.Ultraviolet.iOS.Bindings, Version=1.0.6006.19297, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\TwistedLogik.Ultraviolet.iOS.Bindings\bin\Debug\TwistedLogik.Ultraviolet.iOS.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.iOS" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwistedLogik.Gluon_iOS\TwistedLogik.Gluon %28iOS%29.csproj">
+      <Project>{65ecb0c3-fd4e-494a-a000-43500b9cb851}</Project>
+      <Name>TwistedLogik.Gluon %28iOS%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Nucleus_iOS\TwistedLogik.Nucleus %28iOS%29.csproj">
+      <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
+      <Name>TwistedLogik.Nucleus %28iOS%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet_iOS\TwistedLogik.Ultraviolet %28iOS%29.csproj">
+      <Project>{8f9f44fb-e63c-48de-8752-19b745111559}</Project>
+      <Name>TwistedLogik.Ultraviolet %28iOS%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS_iOS\TwistedLogik.Ultraviolet.BASS %28iOS%29.csproj">
+      <Project>{ddc2077d-a8e5-4866-8c74-5ebb1ca7f8e1}</Project>
+      <Name>TwistedLogik.Ultraviolet.BASS %28iOS%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL_iOS\TwistedLogik.Ultraviolet.OpenGL %28iOS%29.csproj">
+      <Project>{480c60a0-20c2-4bbc-8d87-e5383ee66ff8}</Project>
+      <Name>TwistedLogik.Ultraviolet.OpenGL %28iOS%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2_iOS\TwistedLogik.Ultraviolet.SDL2 %28iOS%29.csproj">
+      <Project>{6355ebda-2aee-47d2-a74f-efb38054fabd}</Project>
+      <Name>TwistedLogik.Ultraviolet.SDL2 %28iOS%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+</Project>

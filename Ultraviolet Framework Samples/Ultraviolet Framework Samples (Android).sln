@@ -63,47 +63,47 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample12_UPF", "Sample12_UP
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample13_UPFAdvanced", "Sample13_UPFAdvanced\Sample13_UPFAdvanced.shproj", "{9D1BFE26-E1AA-4270-BFCB-6511768414D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample1_CreatingAnApplication (Android)", "Sample1_CreatingAnApplication (Android)\Sample1_CreatingAnApplication (Android).csproj", "{677767F0-C665-4A84-A1D2-3FFBA90D25B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample1_CreatingAnApplication (Android)", "Sample1_CreatingAnApplication_Android\Sample1_CreatingAnApplication (Android).csproj", "{677767F0-C665-4A84-A1D2-3FFBA90D25B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2_HandlingInput (Android)", "Sample2_HandlingInput (Android)\Sample2_HandlingInput (Android).csproj", "{04F40541-38E9-4730-8F21-25B745621184}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2_HandlingInput (Android)", "Sample2_HandlingInput_Android\Sample2_HandlingInput (Android).csproj", "{04F40541-38E9-4730-8F21-25B745621184}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample3_RenderingGeometry (Android)", "Sample3_RenderingGeometry (Android)\Sample3_RenderingGeometry (Android).csproj", "{3E90954A-0BD4-4855-AE3D-698761D95E5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample3_RenderingGeometry (Android)", "Sample3_RenderingGeometry_Android\Sample3_RenderingGeometry (Android).csproj", "{3E90954A-0BD4-4855-AE3D-698761D95E5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample4_ContentManagement (Android)", "Sample4_ContentManagement (Android)\Sample4_ContentManagement (Android).csproj", "{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample4_ContentManagement (Android)", "Sample4_ContentManagement_Android\Sample4_ContentManagement (Android).csproj", "{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample5_RenderingSprites (Android)", "Sample5_RenderingSprites (Android)\Sample5_RenderingSprites (Android).csproj", "{32E5ED1F-0378-430F-98EC-173A80C10213}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample5_RenderingSprites (Android)", "Sample5_RenderingSprites_Android\Sample5_RenderingSprites (Android).csproj", "{32E5ED1F-0378-430F-98EC-173A80C10213}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample6_RenderingText (Android)", "Sample6_RenderingText (Android)\Sample6_RenderingText (Android).csproj", "{DF1DE1B8-4FF9-4001-9541-73B4F7858BC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample6_RenderingText (Android)", "Sample6_RenderingText_Android\Sample6_RenderingText (Android).csproj", "{DF1DE1B8-4FF9-4001-9541-73B4F7858BC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample7_PlayingMusic (Android)", "Sample7_PlayingMusic (Android)\Sample7_PlayingMusic (Android).csproj", "{E02E7F67-AF9F-480D-94DA-CBC6D1D53019}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample7_PlayingMusic (Android)", "Sample7_PlayingMusic_Android\Sample7_PlayingMusic (Android).csproj", "{E02E7F67-AF9F-480D-94DA-CBC6D1D53019}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample8_PlayingSoundEffects (Android)", "Sample8_PlayingSoundEffects (Android)\Sample8_PlayingSoundEffects (Android).csproj", "{B0D5ECE3-C07D-40DB-90E6-92D16C3800FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample8_PlayingSoundEffects (Android)", "Sample8_PlayingSoundEffects_Android\Sample8_PlayingSoundEffects (Android).csproj", "{B0D5ECE3-C07D-40DB-90E6-92D16C3800FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample9_ManagingStateWithUIScreens (Android)", "Sample9_ManagingStateWithUIScreens (Android)\Sample9_ManagingStateWithUIScreens (Android).csproj", "{FE4CC454-0475-4F11-8E04-D9674B5A811F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample9_ManagingStateWithUIScreens (Android)", "Sample9_ManagingStateWithUIScreens_Android\Sample9_ManagingStateWithUIScreens (Android).csproj", "{FE4CC454-0475-4F11-8E04-D9674B5A811F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample11_GamePads (Android)", "Sample11_GamePads (Android)\Sample11_GamePads (Android).csproj", "{5CC7C3F8-D523-4ED2-A2B1-1957699C7907}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample11_GamePads (Android)", "Sample11_GamePads_Android\Sample11_GamePads (Android).csproj", "{5CC7C3F8-D523-4ED2-A2B1-1957699C7907}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample12_UPF (Android)", "Sample12_UPF (Android)\Sample12_UPF (Android).csproj", "{AE5864B1-81FA-49C6-B0B6-F70F68175054}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample12_UPF (Android)", "Sample12_UPF_Android\Sample12_UPF (Android).csproj", "{AE5864B1-81FA-49C6-B0B6-F70F68175054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample13_UPFAdvanced (Android)", "Sample13_UPFAdvanced (Android)\Sample13_UPFAdvanced (Android).csproj", "{2DCB1219-E0EE-44F0-A4C2-AC120D0CA386}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample13_UPFAdvanced (Android)", "Sample13_UPFAdvanced_Android\Sample13_UPFAdvanced (Android).csproj", "{2DCB1219-E0EE-44F0-A4C2-AC120D0CA386}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample14_LoadingImageDataWithSurfaces", "Sample14_LoadingImageDataWithSurfaces\Sample14_LoadingImageDataWithSurfaces.shproj", "{013EE98F-8DE7-48E9-8F2B-C39F056C0615}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample14_LoadingImageDataWithSurfaces (Android)", "Sample14_LoadingImageDataWithSurfaces (Android)\Sample14_LoadingImageDataWithSurfaces (Android).csproj", "{D5E143AC-BD19-4136-99C4-056F278E7AD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample14_LoadingImageDataWithSurfaces (Android)", "Sample14_LoadingImageDataWithSurfaces_Android\Sample14_LoadingImageDataWithSurfaces (Android).csproj", "{D5E143AC-BD19-4136-99C4-056F278E7AD0}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample15_RenderTargetsAndBuffers", "Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.shproj", "{06B65153-1D88-4805-B2FD-A5B3BCAB3587}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBuffers (Android)", "Sample15_RenderTargetsAndBuffers (Android)\Sample15_RenderTargetsAndBuffers (Android).csproj", "{7377B092-0887-4180-A7DC-83EB29C48825}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBuffers (Android)", "Sample15_RenderTargetsAndBuffers_Android\Sample15_RenderTargetsAndBuffers (Android).csproj", "{7377B092-0887-4180-A7DC-83EB29C48825}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SampleSharedLib", "SampleSharedLib\SampleSharedLib.shproj", "{F07C30F1-B571-4516-9019-D9F5F8EFA15B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSharedLib (Android)", "SampleSharedLib (Android)\SampleSharedLib (Android).csproj", "{B238A15B-E99B-45F5-99FC-DA32CE11EF4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSharedLib (Android)", "SampleSharedLib_Android\SampleSharedLib (Android).csproj", "{B238A15B-E99B-45F5-99FC-DA32CE11EF4D}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample16_CustomTextLayoutCommands", "Sample16_CustomTextLayoutCommands\Sample16_CustomTextLayoutCommands.shproj", "{D11DDE73-67C6-4D43-8270-67ACAF9ACC10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample16_CustomTextLayoutCommands (Android)", "Sample16_CustomTextLayoutCommands (Android)\Sample16_CustomTextLayoutCommands (Android).csproj", "{16B24506-8FDD-4E65-9C82-6B5076A3517F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample16_CustomTextLayoutCommands (Android)", "Sample16_CustomTextLayoutCommands_Android\Sample16_CustomTextLayoutCommands (Android).csproj", "{16B24506-8FDD-4E65-9C82-6B5076A3517F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample10_AsynchronousContentLoading (Android)", "Sample10_AsynchronousContentLoading (Android)\Sample10_AsynchronousContentLoading (Android).csproj", "{156C7E00-6FF0-4A2B-AA84-844F4E7ACDF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample10_AsynchronousContentLoading (Android)", "Sample10_AsynchronousContentLoading_Android\Sample10_AsynchronousContentLoading (Android).csproj", "{156C7E00-6FF0-4A2B-AA84-844F4E7ACDF2}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

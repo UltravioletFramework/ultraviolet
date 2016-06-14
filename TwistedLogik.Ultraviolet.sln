@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (Desktop)", "TwistedLogik.Ultraviolet (Desktop)\TwistedLogik.Ultraviolet (Desktop).csproj", "{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (Desktop)", "TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet (Desktop).csproj", "{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Nucleus (Desktop)", "TwistedLogik.Nucleus (Desktop)\TwistedLogik.Nucleus (Desktop).csproj", "{7DA6158B-A0B9-4100-904E-22FD86949608}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Nucleus (Desktop)", "TwistedLogik.Nucleus_Desktop\TwistedLogik.Nucleus (Desktop).csproj", "{7DA6158B-A0B9-4100-904E-22FD86949608}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.WindowsForms", "TwistedLogik.Ultraviolet.WindowsForms\TwistedLogik.Ultraviolet.WindowsForms.csproj", "{6C5385CC-D39D-403A-BC91-08E775AA7AD3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet Tests", "TwistedLogik.Ultraviolet Tests\TwistedLogik.Ultraviolet Tests.csproj", "{0447F779-E020-4E82-BF73-EB87C0E420D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.OpenGL (Desktop)", "TwistedLogik.Ultraviolet.OpenGL (Desktop)\TwistedLogik.Ultraviolet.OpenGL (Desktop).csproj", "{40D272DB-90E1-4332-A32F-6EFFEB44FE87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.OpenGL (Desktop)", "TwistedLogik.Ultraviolet.OpenGL_Desktop\TwistedLogik.Ultraviolet.OpenGL (Desktop).csproj", "{40D272DB-90E1-4332-A32F-6EFFEB44FE87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2 (Desktop)", "TwistedLogik.Ultraviolet.SDL2 (Desktop)\TwistedLogik.Ultraviolet.SDL2 (Desktop).csproj", "{50AEFA93-FE53-414A-89FC-C061C165C673}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2 (Desktop)", "TwistedLogik.Ultraviolet.SDL2_Desktop\TwistedLogik.Ultraviolet.SDL2 (Desktop).csproj", "{50AEFA93-FE53-414A-89FC-C061C165C673}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame", "UltravioletGame\UltravioletGame.csproj", "{F6C64886-59BF-4DFD-AF10-53C1700EE20D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletTool", "UltravioletTool\UltravioletTool.csproj", "{CE278CD0-2D1A-460D-9567-6FD01FFB1198}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.BASS (Desktop)", "TwistedLogik.Ultraviolet.BASS (Desktop)\TwistedLogik.Ultraviolet.BASS (Desktop).csproj", "{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.BASS (Desktop)", "TwistedLogik.Ultraviolet.BASS_Desktop\TwistedLogik.Ultraviolet.BASS (Desktop).csproj", "{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Nucleus Tests", "TwistedLogik.Nucleus Tests\TwistedLogik.Nucleus Tests.csproj", "{535D248F-F774-4DC0-B314-A15FA25026C8}"
 EndProject
@@ -35,19 +35,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvFont", "UvFont\UvFont.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Desktop", "TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj", "{073CAFC1-86CB-414D-A71E-46440E25A3F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Gluon (Android)", "TwistedLogik.Gluon (Android)\TwistedLogik.Gluon (Android).csproj", "{49A66667-2355-4755-A3AD-4EF9CA638534}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Gluon (Android)", "TwistedLogik.Gluon_Android\TwistedLogik.Gluon (Android).csproj", "{49A66667-2355-4755-A3AD-4EF9CA638534}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Nucleus (Android)", "TwistedLogik.Nucleus (Android)\TwistedLogik.Nucleus (Android).csproj", "{7EB671F1-6B46-426D-8A27-730D2B682043}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Nucleus (Android)", "TwistedLogik.Nucleus_Android\TwistedLogik.Nucleus (Android).csproj", "{7EB671F1-6B46-426D-8A27-730D2B682043}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (Android)", "TwistedLogik.Ultraviolet (Android)\TwistedLogik.Ultraviolet (Android).csproj", "{0B17931C-1595-4ADA-9086-F26E5F5A387D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (Android)", "TwistedLogik.Ultraviolet_Android\TwistedLogik.Ultraviolet (Android).csproj", "{0B17931C-1595-4ADA-9086-F26E5F5A387D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.BASS (Android)", "TwistedLogik.Ultraviolet.BASS (Android)\TwistedLogik.Ultraviolet.BASS (Android).csproj", "{381B05EB-E12E-451C-A272-2F5C2FD9C106}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.BASS (Android)", "TwistedLogik.Ultraviolet.BASS_Android\TwistedLogik.Ultraviolet.BASS (Android).csproj", "{381B05EB-E12E-451C-A272-2F5C2FD9C106}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.OpenGL (Android)", "TwistedLogik.Ultraviolet.OpenGL (Android)\TwistedLogik.Ultraviolet.OpenGL (Android).csproj", "{3416AF37-8A39-479D-B78F-88D72CADD458}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.OpenGL (Android)", "TwistedLogik.Ultraviolet.OpenGL_Android\TwistedLogik.Ultraviolet.OpenGL (Android).csproj", "{3416AF37-8A39-479D-B78F-88D72CADD458}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2 (Android)", "TwistedLogik.Ultraviolet.SDL2 (Android)\TwistedLogik.Ultraviolet.SDL2 (Android).csproj", "{B5502009-935A-40BA-B415-ABBF55427CAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2 (Android)", "TwistedLogik.Ultraviolet.SDL2_Android\TwistedLogik.Ultraviolet.SDL2 (Android).csproj", "{B5502009-935A-40BA-B415-ABBF55427CAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (Android)", "UltravioletGame (Android)\UltravioletGame (Android).csproj", "{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (Android)", "UltravioletGame_Android\UltravioletGame (Android).csproj", "{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7} = {40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}
 	EndProjectSection
@@ -58,13 +58,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvArchive", "UvArchive\UvAr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Tooling", "TwistedLogik.Ultraviolet.Tooling\TwistedLogik.Ultraviolet.Tooling.csproj", "{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (Desktop)", "UvDebugSandbox (Desktop)\UvDebugSandbox (Desktop).csproj", "{A8C85C23-03C2-41C6-8331-48835D257634}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (Desktop)", "UvDebugSandbox_Desktop\UvDebugSandbox (Desktop).csproj", "{A8C85C23-03C2-41C6-8331-48835D257634}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (Desktop)", "TwistedLogik.Ultraviolet.UI.Presentation (Desktop)\TwistedLogik.Ultraviolet.UI.Presentation (Desktop).csproj", "{7379D9E1-BB01-4B05-B4F7-5D39B393348F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (Desktop)", "TwistedLogik.Ultraviolet.UI.Presentation_Desktop\TwistedLogik.Ultraviolet.UI.Presentation (Desktop).csproj", "{7379D9E1-BB01-4B05-B4F7-5D39B393348F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (Android)", "TwistedLogik.Ultraviolet.UI.Presentation (Android)\TwistedLogik.Ultraviolet.UI.Presentation (Android).csproj", "{35BFCF7E-1756-4FE1-864C-6A0AAFF97799}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (Android)", "TwistedLogik.Ultraviolet.UI.Presentation_Android\TwistedLogik.Ultraviolet.UI.Presentation (Android).csproj", "{35BFCF7E-1756-4FE1-864C-6A0AAFF97799}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (Android)", "UvDebugSandbox (Android)\UvDebugSandbox (Android).csproj", "{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (Android)", "UvDebugSandbox_Android\UvDebugSandbox (Android).csproj", "{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A8C85C23-03C2-41C6-8331-48835D257634} = {A8C85C23-03C2-41C6-8331-48835D257634}
 	EndProjectSection
@@ -87,15 +87,15 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.SD
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI.Presentation", "TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.shproj", "{4E921721-BE4A-4F69-BEE4-61E8A18E0774}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Gluon (Desktop)", "TwistedLogik.Gluon (Desktop)\TwistedLogik.Gluon (Desktop).csproj", "{08B2B8D5-152F-45FB-B4EB-8C09010A9908}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Gluon (Desktop)", "TwistedLogik.Gluon_Desktop\TwistedLogik.Gluon (Desktop).csproj", "{08B2B8D5-152F-45FB-B4EB-8C09010A9908}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebugSandbox", "UvDebugSandbox\UvDebugSandbox.shproj", "{41B16059-BFE0-4704-8EEE-44339B3834C5}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace", "TwistedLogik.Ultraviolet.Profiler.dotTrace\TwistedLogik.Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace (Desktop)", "TwistedLogik.Ultraviolet.Profiler.dotTrace (Desktop)\TwistedLogik.Ultraviolet.Profiler.dotTrace (Desktop).csproj", "{E1CD102C-6D6D-4EB2-ABED-1FAD59C9730F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace (Desktop)", "TwistedLogik.Ultraviolet.Profiler.dotTrace_Desktop\TwistedLogik.Ultraviolet.Profiler.dotTrace (Desktop).csproj", "{E1CD102C-6D6D-4EB2-ABED-1FAD59C9730F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace (Android)", "TwistedLogik.Ultraviolet.Profiler.dotTrace (Android)\TwistedLogik.Ultraviolet.Profiler.dotTrace (Android).csproj", "{003BE843-DB95-40D7-A4D9-E50F599E59E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace (Android)", "TwistedLogik.Ultraviolet.Profiler.dotTrace_Android\TwistedLogik.Ultraviolet.Profiler.dotTrace (Android).csproj", "{003BE843-DB95-40D7-A4D9-E50F599E59E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Versioning", "Versioning", "{903EB0FA-C534-4717-B659-85635CE51A55}"
 	ProjectSection(SolutionItems) = preProject
@@ -105,35 +105,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Versioning", "Versioning", 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.shproj", "{2DEF7217-0B35-423C-9085-EC46260682C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop).csproj", "{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss_Desktop\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop).csproj", "{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Android)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Android)\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Android).csproj", "{C9DA531D-4FDC-4C41-8E2C-F3C68DAE5AEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Android)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss_Android\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Android).csproj", "{C9DA531D-4FDC-4C41-8E2C-F3C68DAE5AEA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests\TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests.csproj", "{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing.csproj", "{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Nucleus (iOS)", "TwistedLogik.Nucleus (iOS)\TwistedLogik.Nucleus (iOS).csproj", "{4628DF73-2C5C-4CD1-AB2C-197F6233504F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Nucleus (iOS)", "TwistedLogik.Nucleus_iOS\TwistedLogik.Nucleus (iOS).csproj", "{4628DF73-2C5C-4CD1-AB2C-197F6233504F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Gluon (iOS)", "TwistedLogik.Gluon (iOS)\TwistedLogik.Gluon (iOS).csproj", "{65ECB0C3-FD4E-494A-A000-43500B9CB851}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Gluon (iOS)", "TwistedLogik.Gluon_iOS\TwistedLogik.Gluon (iOS).csproj", "{65ECB0C3-FD4E-494A-A000-43500B9CB851}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.BASS (iOS)", "TwistedLogik.Ultraviolet.BASS (iOS)\TwistedLogik.Ultraviolet.BASS (iOS).csproj", "{DDC2077D-A8E5-4866-8C74-5EBB1CA7F8E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.BASS (iOS)", "TwistedLogik.Ultraviolet.BASS_iOS\TwistedLogik.Ultraviolet.BASS (iOS).csproj", "{DDC2077D-A8E5-4866-8C74-5EBB1CA7F8E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2 (iOS)", "TwistedLogik.Ultraviolet.SDL2 (iOS)\TwistedLogik.Ultraviolet.SDL2 (iOS).csproj", "{6355EBDA-2AEE-47D2-A74F-EFB38054FABD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2 (iOS)", "TwistedLogik.Ultraviolet.SDL2_iOS\TwistedLogik.Ultraviolet.SDL2 (iOS).csproj", "{6355EBDA-2AEE-47D2-A74F-EFB38054FABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace (iOS)", "TwistedLogik.Ultraviolet.Profiler.dotTrace (iOS)\TwistedLogik.Ultraviolet.Profiler.dotTrace (iOS).csproj", "{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace (iOS)", "TwistedLogik.Ultraviolet.Profiler.dotTrace_iOS\TwistedLogik.Ultraviolet.Profiler.dotTrace (iOS).csproj", "{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS)\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS).csproj", "{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss_iOS\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS).csproj", "{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (iOS)", "TwistedLogik.Ultraviolet.UI.Presentation (iOS)\TwistedLogik.Ultraviolet.UI.Presentation (iOS).csproj", "{4F741CCA-6FBF-439E-A26A-ABB189619101}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (iOS)", "TwistedLogik.Ultraviolet.UI.Presentation_iOS\TwistedLogik.Ultraviolet.UI.Presentation (iOS).csproj", "{4F741CCA-6FBF-439E-A26A-ABB189619101}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.iOS.Bindings", "TwistedLogik.Ultraviolet.iOS.Bindings\TwistedLogik.Ultraviolet.iOS.Bindings.csproj", "{76ED0EA8-82EC-43DA-A724-D09991E1905D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (iOS)", "UltravioletGame (iOS)\UltravioletGame (iOS).csproj", "{37B9C072-2799-4C6A-B952-63A848DAAC0A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (iOS)", "UltravioletGame_iOS\UltravioletGame (iOS).csproj", "{37B9C072-2799-4C6A-B952-63A848DAAC0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.OpenGL (iOS)", "TwistedLogik.Ultraviolet.OpenGL (iOS)\TwistedLogik.Ultraviolet.OpenGL (iOS).csproj", "{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.OpenGL (iOS)", "TwistedLogik.Ultraviolet.OpenGL_iOS\TwistedLogik.Ultraviolet.OpenGL (iOS).csproj", "{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (iOS)", "TwistedLogik.Ultraviolet (iOS)\TwistedLogik.Ultraviolet (iOS).csproj", "{8F9F44FB-E63C-48DE-8752-19B745111559}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (iOS)", "TwistedLogik.Ultraviolet_iOS\TwistedLogik.Ultraviolet (iOS).csproj", "{8F9F44FB-E63C-48DE-8752-19B745111559}"
 	ProjectSection(ProjectDependencies) = postProject
 		{76ED0EA8-82EC-43DA-A724-D09991E1905D} = {76ED0EA8-82EC-43DA-A724-D09991E1905D}
 	EndProjectSection

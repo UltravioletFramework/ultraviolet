@@ -77,9 +77,9 @@
     <Compile Include="LocalizedStringREsult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Nucleus_Desktop\TwistedLogik.Nucleus %28Desktop%29.csproj">
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>TwistedLogik.Nucleus (Desktop)</Name>
+      <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

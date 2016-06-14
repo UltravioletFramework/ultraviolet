@@ -160,11 +160,11 @@
     <Compile Include="UltravioletTickMode.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Nucleus_Desktop\TwistedLogik.Nucleus %28Desktop%29.csproj">
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
       <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet %28Desktop%29\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
       <Name>TwistedLogik.Ultraviolet %28Desktop%29</Name>
     </ProjectReference>

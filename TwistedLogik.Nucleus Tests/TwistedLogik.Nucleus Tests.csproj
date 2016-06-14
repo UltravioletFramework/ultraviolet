@@ -195,9 +195,9 @@
     <Compile Include="Text\TokenizerTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus %28Desktop%29\TwistedLogik.Nucleus %28Desktop%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Nucleus_Desktop\TwistedLogik.Nucleus %28Desktop%29.csproj">
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>TwistedLogik.Nucleus (Desktop)</Name>
+      <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Nucleus.Testing\TwistedLogik.Nucleus.Testing.csproj">
       <Project>{6A17D1A8-AC32-4BB4-8446-D76F6B160246}</Project>
