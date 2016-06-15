@@ -752,6 +752,38 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <summary>
+        /// Represents a thunk which allows the native OpenGL driver to call into the managed debug callback.
+        /// </summary>
+#if IOS
+        [ObjCRuntime.MonoPInvokeCallback(typeof(gl.DebugProc))]
+#endif
+        private static void DebugCallbackThunk(UInt32 source, UInt32 type, UInt32 id, UInt32 severity, Int32 length, IntPtr message, IntPtr userParam)
+        {
+            var messageString = Marshal.PtrToStringAnsi(message, length);
+            var messageLevel = DebugLevels.Info;
+            switch (severity)
+            {
+                case gl.DEBUG_SEVERITY_MEDIUM:
+                    messageLevel = DebugLevels.Warning;
+                    break;
+
+                case gl.DEBUG_SEVERITY_HIGH:
+                    messageLevel = DebugLevels.Error;
+                    break;
+            }
+
+            var uv = UltravioletContext.RequestCurrent();
+            if (uv == null)
+                return;
+
+            var gfx = uv.GetGraphics() as OpenGLUltravioletGraphics;
+            if (gfx == null)
+                return;
+
+            gfx.debugCallback?.Invoke(uv, messageLevel, messageString);
+        }
+
+        /// <summary>
         /// Initializes debug output for this context.
         /// </summary>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
@@ -764,22 +796,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
 
             debugCallback = configuration.DebugCallback;
-            debugCallbackOpenGL = (source, type, id, severity, length, message, userParam) =>
-            {
-                var messageString = Marshal.PtrToStringAnsi(message, length);
-                var messageLevel = DebugLevels.Info;
-                switch (severity)
-                {
-                    case gl.DEBUG_SEVERITY_MEDIUM:
-                        messageLevel = DebugLevels.Warning;
-                        break;
-
-                    case gl.DEBUG_SEVERITY_HIGH:
-                        messageLevel = DebugLevels.Error;
-                        break;
-                }
-                debugCallback(Ultraviolet, messageLevel, messageString);
-            };
+            debugCallbackOpenGL = DebugCallbackThunk;
 
             gl.DebugMessageControl(gl.GL_DONT_CARE, gl.GL_DONT_CARE, gl.GL_DONT_CARE, 0, IntPtr.Zero, false);
 
