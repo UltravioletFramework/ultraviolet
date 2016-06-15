@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Reflection;
+
+#if CODE_GEN_ENABLED
+using System.Linq.Expressions;
+#endif
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -35,26 +38,44 @@ namespace TwistedLogik.Ultraviolet
         /// <typeparam name="T">The type for which to register a default interpolator.</typeparam>
         public void RegisterDefault<T>()
         {
+            var interpolator = default(Interpolator<T>);
+
+#if CODE_GEN_ENABLED
             var interpolateMethod = typeof(T).GetMethod("Interpolate",
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(T), typeof(Single) }, null);
-
-            if (interpolateMethod == null)
+            if (interpolateMethod != null)
             {
-                Register<T>(null);
-                return;
+                var paramValueStart = Expression.Parameter(typeof(T), "valueStart");
+                var paramValueEnd = Expression.Parameter(typeof(T), "valueEnd");
+                var paramFn = Expression.Parameter(typeof(EasingFunction), "fn");
+                var paramT = Expression.Parameter(typeof(Single), "t");
+
+                var expInvokeFn = Expression.Invoke(Expression.Coalesce(paramFn, Expression.Constant(Easings.EaseInLinear)), paramT);
+                var expLambdaBody = Expression.Call(paramValueStart, interpolateMethod, paramValueEnd, expInvokeFn);
+
+                interpolator = Expression.Lambda<Interpolator<T>>(expLambdaBody, paramValueStart, paramValueEnd, paramFn, paramT).Compile();
             }
+#else
+            if (typeof(IInterpolatable<T>).IsAssignableFrom(typeof(T)))
+            {
+                // Invoke through interface
+                interpolator = (valueStart, valueEnd, fn, t) =>
+                    ((IInterpolatable<T>)valueStart).Interpolate(valueEnd, (fn ?? Easings.EaseInLinear)(t));
+            }
+            else
+            {
+                // Invoke through pattern
+                var interpolateMethod = typeof(T).GetMethod("Interpolate",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(T), typeof(Single) }, null);
+                if (interpolateMethod != null)
+                {
+                    interpolator = (valueStart, valueEnd, fn, t) =>
+                        (T)interpolateMethod.Invoke(valueStart, new Object[] { valueEnd, fn, t });
+                }
+            }
+#endif
 
-            var paramValueStart = Expression.Parameter(typeof(T), "valueStart");
-            var paramValueEnd   = Expression.Parameter(typeof(T), "valueEnd");
-            var paramFn         = Expression.Parameter(typeof(EasingFunction), "fn");
-            var paramT          = Expression.Parameter(typeof(Single), "t");
-
-            var expInvokeFn   = Expression.Invoke(Expression.Coalesce(paramFn, Expression.Constant(Easings.EaseInLinear)), paramT);
-            var expLambdaBody = Expression.Call(paramValueStart, interpolateMethod, paramValueEnd, expInvokeFn);
-
-            var interpolator = Expression.Lambda<Interpolator<T>>(expLambdaBody, paramValueStart, paramValueEnd, paramFn, paramT).Compile();
-
-            Register<T>(interpolator);
+            Register(interpolator);
         }
 
         /// <summary>
@@ -143,7 +164,7 @@ namespace TwistedLogik.Ultraviolet
                 interpolators[typeof(T?)] = nullableInterpolator;
             }
         }
-
+        
         // State values.
         private readonly MethodInfo miRegisterNullable;
         private readonly Dictionary<Type, Object> interpolators = 

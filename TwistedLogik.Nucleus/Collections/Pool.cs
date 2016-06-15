@@ -1,5 +1,8 @@
 ﻿using System;
+
+#if CODE_GEN_ENABLED
 using System.Linq.Expressions;
+#endif
 
 namespace TwistedLogik.Nucleus.Collections
 {
@@ -72,7 +75,11 @@ namespace TwistedLogik.Nucleus.Collections
             if (ctor == null)
                 throw new InvalidOperationException(NucleusStrings.MissingDefaultCtor.Format(typeof(T).FullName));
 
+#if CODE_GEN_ENABLED
             return Expression.Lambda<Func<T>>(Expression.New(typeof(T))).Compile();
+#else
+            return () => (T)ctor.Invoke(null);
+#endif
         }
 
         /// <summary>
