@@ -60,30 +60,6 @@ namespace TwistedLogik.Ultraviolet
         IDisposable
     {
         /// <summary>
-        /// Contains native method declarations.
-        /// </summary>
-        private static class Native
-        {
-            #region Native Methods
-
-            [StructLayout(LayoutKind.Sequential)]
-            public struct utsname
-            {
-                public IntPtr sysname;
-                public IntPtr nodename;
-                public IntPtr release;
-                public IntPtr version;
-                public IntPtr machine;
-                public IntPtr domainname;
-            }
-
-            [DllImport("libc")]
-            public static extern int uname(IntPtr buf);
-
-            #endregion
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="UltravioletContext"/> class.
         /// </summary>
         /// <param name="host">The object that is hosting the Ultraviolet context.</param>
@@ -1339,7 +1315,7 @@ namespace TwistedLogik.Ultraviolet
                         try
                         {
                             buf = Marshal.AllocHGlobal(8192);
-                            if (Native.uname(buf) == 0)
+                            if (UltravioletNative.uname(buf) == 0)
                             {
                                 var os = Marshal.PtrToStringAnsi(buf);
                                 if (String.Equals("Darwin", os, StringComparison.OrdinalIgnoreCase))

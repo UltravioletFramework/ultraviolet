@@ -560,4 +560,9 @@
       <Variant>The text parser has too many custom commands. The maximum number of custom commands which can be registered is 128.</Variant>
     </en-US>
   </String>
+  <String Key="UNABLE_TO_RETRIEVE_DEVICE_NAME">
+    <en-US>
+      <Variant>Unable to retrieve device name using uname().</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

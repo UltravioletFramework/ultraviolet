@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using TwistedLogik.Ultraviolet.Platform;
+using UIKit;
 
 namespace TwistedLogik.Ultraviolet.iOS.Platform
 {
@@ -12,49 +14,176 @@ namespace TwistedLogik.Ultraviolet.iOS.Platform
         /// Initializes a new instance of the <see cref="iOSScreenDensityService"/> class.
         /// </summary>
         /// <param name="display">The <see cref="IUltravioletDisplay"/> for which to retrieve density information.</param>
-        public iOSScreenDensityService(IUltravioletDisplay display)
+        public unsafe iOSScreenDensityService(IUltravioletDisplay display)
             : base(display)
         {
-        }
-
-        /// <inheritdoc/>
-        public override Single DensityScale
-        {
-            get
+            var buf = IntPtr.Zero;
+            try
             {
-                // TODO
-                return 1f;
+                buf = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(UltravioletNative.utsname_darwin)));
+                if (UltravioletNative.uname(buf) < 0)
+                    throw new InvalidOperationException(UltravioletStrings.UnableToRetrieveDeviceName);
+
+                var deviceInfo = Marshal.PtrToStructure<UltravioletNative.utsname_darwin>(buf);
+                var deviceID = deviceInfo.machine;
+                var deviceScale = UIScreen.MainScreen.Scale;
+
+                switch (deviceID)
+                {
+                    // Simulator
+                    case "i386":
+                    case "x86_64":
+                        if (deviceScale == 1.0f)
+                        {
+                            densityX = densityY = 72;
+                            densityBucket = ScreenDensityBucket.Desktop;
+                        }
+                        else if (deviceScale == 3.0f)
+                        {
+                            densityX = densityY = 144;
+                            densityBucket = ScreenDensityBucket.Retina;
+                        }
+                        else if (deviceScale == 2.0f)
+                        {
+                            densityX = densityY = 216;
+                            densityBucket = ScreenDensityBucket.RetinaHD;
+                        }
+                        else
+                        {
+                            densityX = densityX = 288;
+                            densityBucket = ScreenDensityBucket.High;
+                        }
+                        densityScale = (Single)deviceScale;
+                        break;
+
+                    // iPod Touch 1st-3rd Gen
+                    case "iPod1,1":
+                    case "iPod2,1":
+                    case "iPod3,1":
+                        densityX = densityY = 163;
+                        densityBucket = ScreenDensityBucket.Medium;
+                        densityScale = densityX / 96f;
+                        break;
+
+                    // iPod Touch 4th-6th Gen
+                    case "iPod4,1":
+                    case "iPod5,1":
+                    case "iPod7,1":
+                        densityX = densityY = 326;
+                        densityBucket = ScreenDensityBucket.ExtraHigh;
+                        densityScale = densityX / 96f;
+                        break;
+
+                    // iPhone, 3G, 3GS
+                    case "iPhone1,1":
+                    case "iPhone1,2":
+                    case "iPhone2,1":
+                        densityX = densityY = 163;
+                        densityBucket = ScreenDensityBucket.Medium;
+                        densityScale = densityX / 96f;
+                        break;
+
+                    // iPhone 4-6, SE
+                    case "iPhone3,3":
+                    case "iPhone3,1":
+                    case "iPhone4,1":
+                    case "iPhone5,1":
+                    case "iPhone5,2":
+                    case "iPhone5,3":
+                    case "iPhone5,4":
+                    case "iPhone6,1":
+                    case "iPhone6,2":
+                    case "iPhone7,2":
+                    case "iPhone8,1":
+                    case "iPhone8,4":
+                        densityX = densityY = 326;
+                        densityBucket = ScreenDensityBucket.ExtraHigh;
+                        densityScale = densityX / 96f;
+                        break;
+
+                    // iPhone 6 Plus, 6S Plus
+                    case "iPhone7,1":
+                    case "iPhone8,2":
+                        densityX = densityY = 401;
+                        densityBucket = ScreenDensityBucket.ExtraHigh;
+                        densityScale = densityX / 96f;
+                        break;
+
+                    // iPad
+                    case "iPad1,1":
+                    case "iPad2,1":
+                        densityX = densityY = 132;
+                        densityBucket = ScreenDensityBucket.Retina;
+                        densityScale = densityX / 96f;
+                        break;
+
+                    // iPad 3rd Gen, iPad Air
+                    case "iPad3,1":
+                    case "iPad3,4":
+                    case "iPad4,1":
+                    case "iPad4,2":
+                        densityX = densityY = 264;
+                        densityBucket = ScreenDensityBucket.High;
+                        densityScale = densityX / 96f;
+                        break;
+
+                    // iPad Mini
+                    case "iPad2,5":
+                        densityX = densityY = 163;
+                        densityBucket = ScreenDensityBucket.Medium;
+                        densityScale = densityX / 96f;
+                        break;
+
+                    // iPad Mini 2, Mini 3, Mini 4
+                    case "iPad4,4":
+                    case "iPad4,5":
+                    case "iPad4,7":
+                    case "iPad5,1":
+                    case "iPad5,2":
+                        densityX = densityY = 326;
+                        densityBucket = ScreenDensityBucket.ExtraHigh;
+                        densityScale = densityX / 96f;
+                        break;
+
+                    // iPad Pro
+                    case "iPad6,3":
+                    case "iPad6,8":
+                        densityX = densityY = 264;
+                        densityBucket = ScreenDensityBucket.High;
+                        densityScale = densityX / 96f;
+                        break;
+
+                    // We don't know what this is so just blindly assume 326ppi
+                    default:
+                        densityX = densityY = 326;
+                        densityBucket = ScreenDensityBucket.ExtraHigh;
+                        densityScale = densityX / 96f;
+                        break;
+                }
+            }
+            finally
+            {
+                if (buf != IntPtr.Zero)
+                    Marshal.FreeHGlobal(buf);
             }
         }
 
         /// <inheritdoc/>
-        public override Single DensityX
-        {
-            get
-            {
-                // TODO
-                return 96f;
-            }
-        }
+        public override Single DensityScale => densityScale;
 
         /// <inheritdoc/>
-        public override Single DensityY
-        {
-            get
-            {
-                // TODO
-                return 96f;
-            }
-        }
+        public override Single DensityX => densityX;
 
         /// <inheritdoc/>
-        public override ScreenDensityBucket DensityBucket
-        {
-            get
-            {
-                // TODO
-                return ScreenDensityBucket.Desktop;
-            }
-        }
+        public override Single DensityY => densityY;
+
+        /// <inheritdoc/>
+        public override ScreenDensityBucket DensityBucket => densityBucket;
+
+        // Property values.
+        private readonly Single densityScale;
+        private readonly Single densityX;
+        private readonly Single densityY;
+        private readonly ScreenDensityBucket densityBucket;
     }
 }
