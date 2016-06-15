@@ -26,4 +26,17 @@ namespace TwistedLogik.Ultraviolet.iOS.Bindings
         [Export("hideLaunchScreen")]
         void HideLaunchScreen();
     }
+
+    // @interface SDL_uikitviewcontroller : UIViewController <UITextFieldDelegate>
+    [BaseType(typeof(UIViewController))]
+    interface SDL_uikitviewcontroller : IUITextFieldDelegate
+    {
+        // -(void)showKeyboard;
+        [Export("showKeyboard")]
+        void ShowKeyboard();
+
+        // -(void)hideKeyboard;
+        [Export("hideKeyboard")]
+        void HideKeyboard();
+    }
 }
