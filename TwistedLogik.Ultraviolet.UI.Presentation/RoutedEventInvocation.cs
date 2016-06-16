@@ -327,12 +327,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var evtInvoke = evt.DelegateType.GetMethod("Invoke");
             var evtParams = evtInvoke.GetParameters().ToArray();
 
-            var expParams = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
-            var expParamElement = expParams.First();
-            var expParamData = expParams.Last();
-
             var implMethod = typeof(RoutedEventInvocation).GetMethod(method, BindingFlags.NonPublic | BindingFlags.Static);
 
+            var expParams = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
             var expImplParameters = expParams.Select(x => Expression.Convert(x, typeof(Object)));
             var expImplMethodCall = Expression.Call(implMethod, Expression.Constant(evt),
                 Expression.NewArrayInit(typeof(Object), expImplParameters));
