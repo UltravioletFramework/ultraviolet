@@ -348,7 +348,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var index = 0;
             var handler = default(RoutedEventHandlerMetadata);
             var element = (DependencyObject)parameters[0];
-            var current = element;
+            var current = default(DependencyObject);
             var data = (RoutedEventData)parameters[parameters.Length - 1];
 
             while (ShouldContinueBubbling(element, ref current))
@@ -358,6 +358,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     if (ShouldEventBeRaisedForElement(data, handler.HandledEventsToo))
                     {
+                        parameters[0] = current;
                         handler.Handler.DynamicInvoke(parameters);
                     }
                 }
@@ -404,7 +405,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var index = 0;
             var handler = default(RoutedEventHandlerMetadata);
             var element = (DependencyObject)parameters[0];
-            var current = element;
+            var current = default(DependencyObject);
             var data = (RoutedEventData)parameters[parameters.Length - 1];
 
             while (ShouldContinueTunnelling(element, ref current))
@@ -414,6 +415,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     if (ShouldEventBeRaisedForElement(data, handler.HandledEventsToo))
                     {
+                        parameters[0] = current;
                         handler.Handler.DynamicInvoke(parameters);
                     }
                 }
