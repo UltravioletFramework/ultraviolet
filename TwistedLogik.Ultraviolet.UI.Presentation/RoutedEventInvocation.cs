@@ -65,14 +65,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * 
              * void fn(DependencyObject element, p1, p2, ..., pN, RoutedEventData data)
              * {
-             *      var index   = 0;
+             *      var index = 0;
              *      var handler = default(RoutedEventHandlerMetadata);
              *      var current = element;
              *      
              *      while (ShouldContinueBubbling(element, ref current))
              *      {
              *          index = 0;
-             *          while (GetEventHandler(current, RoutedEventID, index, out handler))
+             *          while (GetEventHandler(current, RoutedEventID, ref index, ref handler))
              *          {
              *              if (ShouldEventBeRaisedForElement(data, handler.HandledEventsToo))
              *              {
@@ -88,6 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * }
              */
 
+#if CODE_GEN_ENABLED
             var evtInvoke = evt.DelegateType.GetMethod("Invoke");
             var evtParams = evtInvoke.GetParameters().ToArray();
 
@@ -142,6 +143,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Expression.Call(expParamData, nameof(RoutedEventData.Release), null)));
 
             return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
+#else
+            return CreateDelegateForReflectionBasedImplementation(evt, nameof(ReflectionBasedImplementationForBubbleStrategy));
+#endif
         }
 
         /// <summary>
@@ -157,10 +161,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * 
              * void fn(DependencyObject element, p1, p2, ..., pN, RoutedEventData data)
              * {
-             *      var index   = 0;
+             *      var index = 0;
              *      var handler = default(RoutedEventHandlerMetadata);      
              * 
-             *      while (GetEventHandler(current, RoutedEventID, index, out handler))
+             *      while (GetEventHandler(element, RoutedEventID, ref index, ref handler))
              *      {
              *          if (ShouldEventBeRaisedForElement(data, handler.HandledEventsToo))
              *          {
@@ -175,6 +179,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * }
              */
 
+#if CODE_GEN_ENABLED
             var evtInvoke = evt.DelegateType.GetMethod("Invoke");
             var evtParams = evtInvoke.GetParameters().ToArray();
 
@@ -212,6 +217,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Expression.Call(expParamData, nameof(RoutedEventData.Release), null)));
 
             return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
+#else
+            return CreateDelegateForReflectionBasedImplementation(evt, nameof(ReflectionBasedImplementationForDirectStrategy));
+#endif
         }
 
         /// <summary>
@@ -250,6 +258,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              * }
              */
 
+#if CODE_GEN_ENABLED
             var evtInvoke = evt.DelegateType.GetMethod("Invoke");
             var evtParams = evtInvoke.GetParameters().ToArray();
 
@@ -304,7 +313,119 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Expression.Call(expParamData, nameof(RoutedEventData.Release), null)));
 
             return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
+#else
+            return CreateDelegateForReflectionBasedImplementation(evt, nameof(ReflectionBasedImplementationForTunnelStrategy));
+#endif
         }
+
+#if !CODE_GEN_ENABLED
+        /// <summary>
+        /// Creates a delegate which wraps a reflection-based routing implementation.
+        /// </summary>
+        private static Delegate CreateDelegateForReflectionBasedImplementation(RoutedEvent evt, String method)
+        {
+            var evtInvoke = evt.DelegateType.GetMethod("Invoke");
+            var evtParams = evtInvoke.GetParameters().ToArray();
+
+            var expParams = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
+            var expParamElement = expParams.First();
+            var expParamData = expParams.Last();
+
+            var implMethod = typeof(RoutedEventInvocation).GetMethod(method, BindingFlags.NonPublic | BindingFlags.Static);
+
+            var expImplParameters = expParams.Select(x => Expression.Convert(x, typeof(Object)));
+            var expImplMethodCall = Expression.Call(implMethod, Expression.Constant(evt),
+                Expression.NewArrayInit(typeof(Object), expImplParameters));
+
+            return Expression.Lambda(evt.DelegateType, expImplMethodCall, expParams).Compile();
+        }
+
+        /// <summary>
+        /// An implementation of the bubble routing strategy which uses reflection rather than
+        /// dynamic runtime code generation.
+        /// </summary>
+        private static void ReflectionBasedImplementationForBubbleStrategy(RoutedEvent evt, Object[] parameters)
+        {
+            var index = 0;
+            var handler = default(RoutedEventHandlerMetadata);
+            var element = (DependencyObject)parameters[0];
+            var current = element;
+            var data = (RoutedEventData)parameters[parameters.Length - 1];
+
+            while (ShouldContinueBubbling(element, ref current))
+            {
+                index = 0;
+                while (GetEventHandler(current, evt, ref index, ref handler))
+                {
+                    if (ShouldEventBeRaisedForElement(data, handler.HandledEventsToo))
+                    {
+                        handler.Handler.DynamicInvoke(parameters);
+                    }
+                }
+
+                evt.RaiseRaisedNotification(current, data);
+            }
+
+            if (data.AutoRelease)
+                data.Release();
+        }
+
+        /// <summary>
+        /// An implementation of the direct routing strategy which uses reflection rather than
+        /// dynamic runtime code generation.
+        /// </summary>
+        private static void ReflectionBasedImplementationForDirectStrategy(RoutedEvent evt, Object[] parameters)
+        {
+            var index = 0;
+            var handler = default(RoutedEventHandlerMetadata);
+
+            var element = (DependencyObject)parameters[0];
+            var data = (RoutedEventData)parameters[parameters.Length - 1];
+
+            while (GetEventHandler(element, evt, ref index, ref handler))
+            {
+                if (ShouldEventBeRaisedForElement(data, handler.HandledEventsToo))
+                {
+                    handler.Handler.DynamicInvoke(parameters);
+                }
+            }
+
+            evt.RaiseRaisedNotification(element, data);
+
+            if (data.AutoRelease)
+                data.Release();
+        }
+
+        /// <summary>
+        /// An implementation of the tunnel routing strategy which uses reflection rather than
+        /// dynamic runtime code generation.
+        /// </summary>
+        private static void ReflectionBasedImplementationForTunnelStrategy(RoutedEvent evt, Object[] parameters)
+        {
+            var index = 0;
+            var handler = default(RoutedEventHandlerMetadata);
+            var element = (DependencyObject)parameters[0];
+            var current = element;
+            var data = (RoutedEventData)parameters[parameters.Length - 1];
+
+            while (ShouldContinueTunnelling(element, ref current))
+            {
+                index = 0;
+                while (GetEventHandler(current, evt, ref index, ref handler))
+                {
+                    if (ShouldEventBeRaisedForElement(data, handler.HandledEventsToo))
+                    {
+                        handler.Handler.DynamicInvoke(parameters);
+                    }
+                }
+
+                evt.RaiseRaisedNotification(current, data);
+            }
+
+            if (data.AutoRelease)
+                data.Release();
+        }
+#endif
 
         /// <summary>
         /// Gets a value indicating whether the specified type represents a valid routed event delegate.
