@@ -37,7 +37,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced.UI.Screens
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        public void HandleViewOpened(DependencyObject dobj, ref RoutedEventData data)
+        public void HandleViewOpened(DependencyObject dobj, RoutedEventData data)
         {
             if (container != null)
                 container.Focus();
@@ -51,7 +51,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced.UI.Screens
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
         /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        public void HandleKeyDown(DependencyObject dobj, KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        public void HandleKeyDown(DependencyObject dobj, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             switch (key)
             {

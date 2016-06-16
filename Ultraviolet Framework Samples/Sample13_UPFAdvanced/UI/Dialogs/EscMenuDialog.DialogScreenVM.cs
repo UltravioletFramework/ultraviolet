@@ -25,7 +25,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced.UI.Dialogs
             /// <summary>
             /// Handles the "Resume" button being clicked.
             /// </summary>
-            public void HandleClickResume(DependencyObject dobj, ref RoutedEventData data)
+            public void HandleClickResume(DependencyObject dobj, RoutedEventData data)
             {
                 screen.Dialog.Close(false);
             }
@@ -33,7 +33,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced.UI.Dialogs
             /// <summary>
             /// Handles the "Exit" button being clicked.
             /// </summary>
-            public void HandleClickExit(DependencyObject dobj, ref RoutedEventData data)
+            public void HandleClickExit(DependencyObject dobj, RoutedEventData data)
             {
                 screen.Dialog.Close(true, TimeSpan.Zero);
             }
@@ -41,7 +41,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced.UI.Dialogs
             /// <summary>
             /// Handles the "Exit to Desktop" button being clicked.
             /// </summary>
-            public void HandleClickExitToDesktop(DependencyObject dobj, ref RoutedEventData data)
+            public void HandleClickExitToDesktop(DependencyObject dobj, RoutedEventData data)
             {
                 screen.Dialog.Screen.Ultraviolet.Host.Exit();
             }

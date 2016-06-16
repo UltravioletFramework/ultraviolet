@@ -12,17 +12,17 @@ namespace UltravioletSample.Sample12_UPF.UI.Screens
             this.uv = uv;
         }
 
-        public void Exit(DependencyObject element, ref RoutedEventData data)
+        public void Exit(DependencyObject element, RoutedEventData data)
         {
             uv.Host.Exit();
         }
 
-        public void Reset(DependencyObject element, ref RoutedEventData data)
+        public void Reset(DependencyObject element, RoutedEventData data)
         {
             this.Message = "Hello, world!";
         }
 
-        public void ButtonClick(DependencyObject element, ref RoutedEventData data)
+        public void ButtonClick(DependencyObject element, RoutedEventData data)
         {
             this.Message = "You clicked " + ((Button)element).Content;
         }
