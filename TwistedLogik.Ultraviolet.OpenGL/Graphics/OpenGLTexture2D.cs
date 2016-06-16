@@ -565,18 +565,40 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             using (OpenGLState.ScopedBindTexture2D(texture))
             {
-                gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, stride);
-                gl.ThrowIfError();
+                var rowLengthSupported = (!gl.IsGLES2 || gl.IsExtensionSupported("GL_EXT_unpack_subimage"));
+                var rowLengthFallbackRequired = (stride != 0 && !rowLengthSupported);
+                if (rowLengthFallbackRequired)
+                {
+                    var ptr = (Byte*)data.ToPointer();
+                    for (int i = 0; i < height; i++)
+                    {
+                        gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, region.X, region.Y + i, region.Width, 1,
+                            GetOpenGLTextureFormat(format), gl.GL_UNSIGNED_BYTE, ptr);
+                        
+                        ptr += stride * 4;
+                    }
+                }
+                else
+                {
+                    if (rowLengthSupported)
+                    {
+                        gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, stride);
+                        gl.ThrowIfError();
+                    }
 
-                gl.PixelStorei(gl.GL_UNPACK_ALIGNMENT, 1);
-                gl.ThrowIfError();
+                    gl.PixelStorei(gl.GL_UNPACK_ALIGNMENT, 1);
+                    gl.ThrowIfError();
 
-                gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, region.X, region.Y, region.Width, region.Height, 
-                    GetOpenGLTextureFormat(format), gl.GL_UNSIGNED_BYTE, data.ToPointer());
-                gl.ThrowIfError();
+                    gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, region.X, region.Y, region.Width, region.Height,
+                        GetOpenGLTextureFormat(format), gl.GL_UNSIGNED_BYTE, data.ToPointer());
+                    gl.ThrowIfError();
 
-                gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, 0);
-                gl.ThrowIfError();
+                    if (rowLengthSupported)
+                    {
+                        gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, 0);
+                        gl.ThrowIfError();
+                    }
+                }
             }
         }
 
