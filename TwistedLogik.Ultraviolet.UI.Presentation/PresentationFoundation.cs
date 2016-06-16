@@ -246,11 +246,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         break;
 
                     case UltravioletPlatform.Android:
-                        compiledExpressionsAssembly = Assembly.Load(CompiledExpressionsAssemblyName);
-                        break;
-
                     case UltravioletPlatform.iOS:
-                        /* All assemblies are statically linked */
+                        compiledExpressionsAssembly = Assembly.Load(CompiledExpressionsAssemblyName);
                         break;
 
                     default:
