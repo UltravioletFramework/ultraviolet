@@ -73,6 +73,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextEditor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextEntryValidationRoutedEventData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ScrollChangedInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ScrollChangedRoutedEventData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TabItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBoxItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ContentControl.cs" />

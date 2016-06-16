@@ -10,9 +10,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// Represents the method that is called in response to a <see cref="ScrollViewer.ScrollChanged"/> routed event.
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
-    /// <param name="scrollInfo">A <see cref="ScrollChangedInfo"/> structure that describes the changes to the scrolling state.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfScrollChangedEventHandler(DependencyObject element, ref ScrollChangedInfo scrollInfo, RoutedEventData data);
+    public delegate void UpfScrollChangedEventHandler(DependencyObject element, ScrollChangedRoutedEventData data);
 
     /// <summary>
     /// Represents a control which provides a scrollable view of its content.
@@ -502,9 +501,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             if (scrollChanged)
             {
-                var evtDelegate = EventManager.GetInvocationDelegate<UpfScrollChangedEventHandler>(ScrollChangedEvent);
-                var evtData = RoutedEventData.Retrieve(this);
-
                 var scrollInfo = new ScrollChangedInfo(
                     newHorizontalOffset, newHorizontalOffset - oldHorizontalOffset,
                     newVerticalOffset, newVerticalOffset - oldVerticalOffset,
@@ -520,7 +516,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 oldViewportWidth = newViewportWidth;
                 oldViewportHeight = newViewportHeight;
 
-                evtDelegate(this, ref scrollInfo, evtData);
+                var evtDelegate = EventManager.GetInvocationDelegate<UpfScrollChangedEventHandler>(ScrollChangedEvent);
+                var evtData = ScrollChangedRoutedEventData.Retrieve(this, scrollInfo);
+                evtDelegate(this, evtData);
             }
 
             base.PositionOverride();

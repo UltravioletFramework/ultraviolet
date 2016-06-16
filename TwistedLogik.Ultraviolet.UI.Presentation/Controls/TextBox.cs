@@ -722,9 +722,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the control handles a <see cref="ScrollViewer.ScrollChangedEvent"/> routed event.
         /// </summary>
-        private static void HandleScrollChanged(DependencyObject dobj, ref ScrollChangedInfo scrollInfo, RoutedEventData data)
+        private static void HandleScrollChanged(DependencyObject dobj, ScrollChangedRoutedEventData data)
         {
-            if (!MathUtil.IsApproximatelyZero(scrollInfo.ViewportHeightChange))
+            if (!MathUtil.IsApproximatelyZero(data.ViewportHeightChange))
             {
                 ((TextBox)dobj).UpdateScrollViewerSize();
             }
