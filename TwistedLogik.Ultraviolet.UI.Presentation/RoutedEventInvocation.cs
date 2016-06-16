@@ -18,11 +18,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         static RoutedEventInvocation()
         {
+#if CODE_GEN_ENABLED
             miShouldEventBeRaisedForElement = typeof(RoutedEventInvocation).GetMethod("ShouldEventBeRaisedForElement", BindingFlags.NonPublic | BindingFlags.Static);
             miShouldContinueBubbling = typeof(RoutedEventInvocation).GetMethod("ShouldContinueBubbling", BindingFlags.NonPublic | BindingFlags.Static);
             miShouldContinueTunnelling = typeof(RoutedEventInvocation).GetMethod("ShouldContinueTunnelling", BindingFlags.NonPublic | BindingFlags.Static);
             miGetEventHandler = typeof(RoutedEventInvocation).GetMethod("GetEventHandler", BindingFlags.NonPublic | BindingFlags.Static);
             miRaiseRaisedNotification = typeof(RoutedEvent).GetMethod("RaiseRaisedNotification", BindingFlags.NonPublic | BindingFlags.Instance);
+#endif
         }
 
         /// <summary>
@@ -579,12 +581,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
         }
 
+#if CODE_GEN_ENABLED
         // Cached method info for methods used by invocation delegates.
         private static readonly MethodInfo miShouldEventBeRaisedForElement;
         private static readonly MethodInfo miShouldContinueBubbling;
         private static readonly MethodInfo miShouldContinueTunnelling;
         private static readonly MethodInfo miGetEventHandler;
         private static readonly MethodInfo miRaiseRaisedNotification;
+#endif
 
         // The stack used to track the tunnelling path for tunnelled events.
         [ThreadStatic]
