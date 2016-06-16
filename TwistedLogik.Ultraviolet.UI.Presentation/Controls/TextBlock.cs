@@ -105,39 +105,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
             LinkUtil.UpdateLinkCursor(textLayoutCommands, this, Mouse.GetPosition(this));
 
-            base.OnMouseMove(device, x, y, dx, dy, ref data);
+            base.OnMouseMove(device, x, y, dx, dy, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseLeave(MouseDevice device, ref RoutedEventData data)
+        protected override void OnMouseLeave(MouseDevice device, RoutedEventData data)
         {
             LinkUtil.UpdateLinkCursor(textLayoutCommands, this, Mouse.GetPosition(this));
 
-            base.OnMouseLeave(device, ref data);
+            base.OnMouseLeave(device, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
-                LinkUtil.ActivateTextLink(textLayoutCommands, this, ref data);
+                LinkUtil.ActivateTextLink(textLayoutCommands, this, data);
             }
-            base.OnMouseDown(device, button, ref data);
+            base.OnMouseDown(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
-                LinkUtil.ExecuteTextLink(textLayoutCommands, this, ref data);
+                LinkUtil.ExecuteTextLink(textLayoutCommands, this, data);
             }
-            base.OnMouseUp(device, button, ref data);
+            base.OnMouseUp(device, button, data);
         }
 
         /// <inheritdoc/>
@@ -149,14 +149,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, ref RoutedEventData data)
+        protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, RoutedEventData data)
         {
             if (fingerID == 0)
             {
                 LinkUtil.DeactivateTextLink(textLayoutCommands, this);
                 LinkUtil.UpdateLinkCursor(textLayoutCommands, this, null);
             }
-            base.OnFingerUp(device, fingerID, x, y, pressure, ref data);
+            base.OnFingerUp(device, fingerID, x, y, pressure, data);
         }
 
         /// <inheritdoc/>

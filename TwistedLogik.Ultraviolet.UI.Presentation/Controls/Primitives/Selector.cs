@@ -505,7 +505,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Represents the <see cref="Selector"/> class' class handler for the <see cref="SelectedEvent"/> routed event.
         /// </summary>
-        private static void HandleSelected(DependencyObject dobj, ref RoutedEventData data)
+        private static void HandleSelected(DependencyObject dobj, RoutedEventData data)
         {
             var selector = (Selector)dobj;
             var container = data.OriginalSource as DependencyObject;
@@ -519,7 +519,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Represents the <see cref="Selector"/> class' class handler for the <see cref="UnselectedEvent"/> routed event.
         /// </summary>
-        private static void HandleUnselected(DependencyObject dobj, ref RoutedEventData data)
+        private static void HandleUnselected(DependencyObject dobj, RoutedEventData data)
         {
             var selector = (Selector)dobj;
             var container = data.OriginalSource as DependencyObject;
@@ -533,7 +533,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Represents the <see cref="Selector"/> class' class handler for the <see cref="SelectionChanged"/> routed event.
         /// </summary>
-        private static void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
+        private static void HandleSelectionChanged(DependencyObject dobj, RoutedEventData data)
         {
             if (data.OriginalSource == dobj)
             {
@@ -576,8 +576,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 return;
 
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
-            var evtData     = new RoutedEventData(this);
-            evtDelegate(this, ref evtData);
+            var evtData = RoutedEventData.Retrieve(this);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>

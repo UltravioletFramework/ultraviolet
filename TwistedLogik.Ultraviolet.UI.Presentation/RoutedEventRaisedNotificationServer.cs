@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="target">The target object for which to raise a notification.</param>
         /// <param name="data">The routed event data.</param>
-        public void Notify(DependencyObject target, ref RoutedEventData data)
+        public void Notify(DependencyObject target, RoutedEventData data)
         {
             lock (subscriptions)
             {
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 for (var current = subscribers.First; current != null; current = current.Next)
                 {
-                    current.Value.ReceiveRoutedEventRaisedNotification(target, routedEvent, ref data);
+                    current.Value.ReceiveRoutedEventRaisedNotification(target, routedEvent, data);
                 }
             }
         }

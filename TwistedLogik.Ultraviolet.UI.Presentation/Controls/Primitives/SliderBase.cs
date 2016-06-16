@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="Mouse.PreviewMouseDownEvent"/>.
         /// </summary>
-        private static void HandlePreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        private static void HandlePreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {

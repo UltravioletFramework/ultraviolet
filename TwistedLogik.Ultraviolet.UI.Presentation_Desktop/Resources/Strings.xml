@@ -157,7 +157,7 @@
   </String>
   <String Key="INVALID_ROUTED_EVENT_DELEGATE">
     <en-US>
-      <Variant>The specified delegate type '{0}' is not valid for routed events. Routed event delegates must take a DependencyObject as their first parameter and a by-ref RoutedEventData as their final parameter, and must return void.</Variant>
+      <Variant>The specified delegate type '{0}' is not valid for routed events. Routed event delegates must take a DependencyObject as their first parameter and a by-RoutedEventData as their final parameter, and must return void.</Variant>
     </en-US>
   </String>
   <String Key="INVALID_ROUTING_STRATEGY">
@@ -368,6 +368,11 @@
   <String Key="COLLECTION_CONTAINS_INVALID_RESOURCES">
     <en-US>
       <Variant>The specified resource collection contains an invalid asset identifier.</Variant>
+    </en-US>
+  </String>
+  <String Key="POOLED_RESOURCE_ALREADY_RELEASED">
+    <en-US>
+      <Variant>Attempted to release a pooled resource which has already been released.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

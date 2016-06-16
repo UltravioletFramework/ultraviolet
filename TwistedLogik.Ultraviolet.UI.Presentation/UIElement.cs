@@ -1877,9 +1877,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Invoked by the <see cref="Mouse.QueryCursorEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The mouse device.</param>
-        /// <param name="cursor">The cursor to display.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnQueryCursor(MouseDevice device, ref Cursor cursor, ref RoutedEventData data)
+        protected virtual void OnQueryCursor(MouseDevice device, CursorQueryRoutedEventData data)
         {
 
         }
@@ -2598,15 +2597,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invokes the <see cref="OnQueryCursor"/> method.
         /// </summary>
-        private static void OnQueryCursorProxy(DependencyObject element, MouseDevice device, ref Cursor cursor, ref RoutedEventData data)
+        private static void OnQueryCursorProxy(DependencyObject element, MouseDevice device, CursorQueryRoutedEventData data)
         {
-            ((UIElement)element).OnQueryCursor(device, ref cursor, ref data);
+            ((UIElement)element).OnQueryCursor(device, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnViewModelChanged"/> method.
         /// </summary>
-        private static void OnViewModelChangedProxy(DependencyObject element, ref RoutedEventData data)
+        private static void OnViewModelChangedProxy(DependencyObject element, RoutedEventData data)
         {
             ((UIElement)element).OnViewModelChanged();
         }
@@ -2648,13 +2647,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (newValue)
             {
-                var data = new RoutedEventData(dobj);
-                uiElement.OnGotFocus(ref data);
+                var data = RoutedEventData.Retrieve(dobj);
+                uiElement.OnGotFocus(data);
             }
             else
             {
-                var data = new RoutedEventData(dobj);
-                uiElement.OnLostFocus(ref data);
+                var data = RoutedEventData.Retrieve(dobj);
+                uiElement.OnLostFocus(data);
             }
         }
 

@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
 {
     public class UPF_Adorner_DrawsCorrectly_VM
     {
-        public void HandleViewLoaded(DependencyObject dobj, ref RoutedEventData data)
+        public void HandleViewLoaded(DependencyObject dobj, RoutedEventData data)
         {
             var adornerLayer = AdornerLayer.GetAdornerLayer(button);
             adornerLayer.Add(new ExampleBoxesAdorner(button));

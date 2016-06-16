@@ -27,7 +27,7 @@ namespace UvDebugSandbox.UI.Screens
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        public void HandleViewOpened(DependencyObject dobj, ref RoutedEventData data)
+        public void HandleViewOpened(DependencyObject dobj, RoutedEventData data)
         {
             if (container != null)
                 container.Focus();
@@ -41,7 +41,7 @@ namespace UvDebugSandbox.UI.Screens
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
         /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        public void HandleKeyDown(DependencyObject dobj, KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        public void HandleKeyDown(DependencyObject dobj, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             switch (key)
             {
@@ -57,7 +57,7 @@ namespace UvDebugSandbox.UI.Screens
         /// <summary>
         /// Handles the Click event for the "Start" button.
         /// </summary>
-        public void Click_Start(DependencyObject element, ref RoutedEventData data)
+        public void Click_Start(DependencyObject element, RoutedEventData data)
         {
             var playScreen = owner.UIScreenService.Get<GamePlayScreen>();
             owner.Ultraviolet.GetUI().GetScreens().CloseThenOpen(owner, playScreen);
@@ -66,7 +66,7 @@ namespace UvDebugSandbox.UI.Screens
         /// <summary>
         /// Handles the Click event for the "Exit" button.
         /// </summary>
-        public void Click_Exit(DependencyObject element, ref RoutedEventData data)
+        public void Click_Exit(DependencyObject element, RoutedEventData data)
         {
             owner.Ultraviolet.Host.Exit();
         }

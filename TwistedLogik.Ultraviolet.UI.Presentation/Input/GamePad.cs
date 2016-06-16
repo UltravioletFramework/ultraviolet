@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="axis">The game pad axis that was changed.</param>
     /// <param name="value">The game pad axis value after the change.</param>
     /// <param name="data">The routed event data.</param>
-    public delegate void UpfGamePadAxisChangedEventHandler(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, ref RoutedEventData data);
+    public delegate void UpfGamePadAxisChangedEventHandler(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a UI element receives a axis press event from a game pad device.
@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="value">The game pad axis value.</param>
     /// <param name="repeat">A value indicating whether this is a repeated axis press.</param>
     /// <param name="data">The routed event data.</param>
-    public delegate void UpfGamePadAxisDownEventHandler(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data);
+    public delegate void UpfGamePadAxisDownEventHandler(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a UI element receives a axis release event from a game pad device.
@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="device">The game pad device.</param>
     /// <param name="axis">The game pad axis that was released.</param>
     /// <param name="data">The routed event data.</param>
-    public delegate void UpfGamePadAxisUpEventHandler(DependencyObject element, GamePadDevice device, GamePadAxis axis, ref RoutedEventData data);
+    public delegate void UpfGamePadAxisUpEventHandler(DependencyObject element, GamePadDevice device, GamePadAxis axis, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a UI element receives a button press event from a game pad device.
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="button">The game pad button that was pressed.</param>
     /// <param name="repeat">A value indicating whether this is a repeated button press.</param>
     /// <param name="data">The routed event data.</param>
-    public delegate void UpfGamePadButtonDownEventHandler(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data);
+    public delegate void UpfGamePadButtonDownEventHandler(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a UI element receives a button release event from a game pad device.
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="device">The game pad device.</param>
     /// <param name="button">The game pad button that was released.</param>
     /// <param name="data">The routed event data.</param>
-    public delegate void UpfGamePadButtonUpEventHandler(DependencyObject element, GamePadDevice device, GamePadButton button, ref RoutedEventData data);
+    public delegate void UpfGamePadButtonUpEventHandler(DependencyObject element, GamePadDevice device, GamePadButton button, RoutedEventData data);
 
     /// <summary>
     /// Represents the primary game pad device.
@@ -699,91 +699,91 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/> attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewAxisChanged(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, ref RoutedEventData data)
+        internal static void RaisePreviewAxisChanged(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisChangedEventHandler>(PreviewAxisChangedEvent);
-            evt?.Invoke(element, device, axis, value, ref data);
+            evt?.Invoke(element, device, axis, value, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/> attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewAxisDown(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        internal static void RaisePreviewAxisDown(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisDownEventHandler>(PreviewAxisDownEvent);
-            evt?.Invoke(element, device, axis, value, repeat, ref data);
+            evt?.Invoke(element, device, axis, value, repeat, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisUp"/> attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewAxisUp(DependencyObject element, GamePadDevice device, GamePadAxis axis, ref RoutedEventData data)
+        internal static void RaisePreviewAxisUp(DependencyObject element, GamePadDevice device, GamePadAxis axis, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisUpEventHandler>(PreviewAxisUpEvent);
-            evt?.Invoke(element, device, axis, ref data);
+            evt?.Invoke(element, device, axis, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/> attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewButtonDown(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        internal static void RaisePreviewButtonDown(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGamePadButtonDownEventHandler>(PreviewButtonDownEvent);
-            evt?.Invoke(element, device, button, repeat, ref data);
+            evt?.Invoke(element, device, button, repeat, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonUp"/> attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewButtonUp(DependencyObject element, GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        internal static void RaisePreviewButtonUp(DependencyObject element, GamePadDevice device, GamePadButton button, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGamePadButtonUpEventHandler>(PreviewButtonUpEvent);
-            evt?.Invoke(element, device, button, ref data);
+            evt?.Invoke(element, device, button, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisChanged"/> attached event for the specified element.
         /// </summary>
-        internal static void RaiseAxisChanged(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, ref RoutedEventData data)
+        internal static void RaiseAxisChanged(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisChangedEventHandler>(AxisChangedEvent);
-            evt?.Invoke(element, device, axis, value, ref data);
+            evt?.Invoke(element, device, axis, value, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisDown"/> attached event for the specified element.
         /// </summary>
-        internal static void RaiseAxisDown(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        internal static void RaiseAxisDown(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisDownEventHandler>(AxisDownEvent);
-            evt?.Invoke(element, device, axis, value, repeat, ref data);
+            evt?.Invoke(element, device, axis, value, repeat, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisUp"/> attached event for the specified element.
         /// </summary>
-        internal static void RaiseAxisUp(DependencyObject element, GamePadDevice device, GamePadAxis axis, ref RoutedEventData data)
+        internal static void RaiseAxisUp(DependencyObject element, GamePadDevice device, GamePadAxis axis, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGamePadAxisUpEventHandler>(AxisUpEvent);
-            evt?.Invoke(element, device, axis, ref data);
+            evt?.Invoke(element, device, axis, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonDown"/> attached event for the specified element.
         /// </summary>
-        internal static void RaiseButtonDown(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        internal static void RaiseButtonDown(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGamePadButtonDownEventHandler>(ButtonDownEvent);
-            evt?.Invoke(element, device, button, repeat, ref data);
+            evt?.Invoke(element, device, button, repeat, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonUp"/> attached event for the specified element.
         /// </summary>
-        internal static void RaiseButtonUp(DependencyObject element, GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        internal static void RaiseButtonUp(DependencyObject element, GamePadDevice device, GamePadButton button, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGamePadButtonUpEventHandler>(ButtonUpEvent);
-            evt?.Invoke(element, device, button, ref data);
+            evt?.Invoke(element, device, button, data);
         }
     }
 }

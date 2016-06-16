@@ -101,27 +101,27 @@ namespace UvDebugSandbox.Content.UI.Controls
             new PropertyMetadata<Color>(Color.White, PropertyMetadataOptions.None, HandleVertexColorChanged));
 
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
                 View.CaptureMouse(this, CaptureMode.Element);
             }
-            base.OnMouseDown(device, button, ref data);
+            base.OnMouseDown(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left && IsMouseCaptured)
             {
                 View.ReleaseMouse();
             }
-            base.OnMouseUp(device, button, ref data);
+            base.OnMouseUp(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
             if (device.IsButtonDown(MouseButton.Left))
             {
@@ -129,15 +129,15 @@ namespace UvDebugSandbox.Content.UI.Controls
                 var delta = twopi * (Single)(dx / ActualWidth);
                 TriangleRotation = Math.Max(0, Math.Min(twopi, TriangleRotation + delta));
             }
-            base.OnMouseMove(device, x, y, dx, dy, ref data);
+            base.OnMouseMove(device, x, y, dx, dy, data);
         }
         
         /// <inheritdoc/>
-        protected override void OnMouseWheel(MouseDevice device, Double x, Double y, ref RoutedEventData data)
+        protected override void OnMouseWheel(MouseDevice device, Double x, Double y, RoutedEventData data)
         {
             TriangleZoom = (Single)Math.Max(0, Math.Min(1, TriangleZoom + (y * 0.1f)));
 
-            base.OnMouseWheel(device, x, y, ref data);
+            base.OnMouseWheel(device, x, y, data);
         }
 
         /// <inheritdoc/>

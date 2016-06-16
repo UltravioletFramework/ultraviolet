@@ -290,4 +290,7 @@
   <PropertyGroup>
     <PostBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">if not $(ConfigurationName)==Signed ( UvDebugSandbox.exe -resolve:content -compile:content -compile:expressions )</PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>REM if not $(ConfigurationName)==Signed ( UvDebugSandbox.exe -resolve:content -compile:content -compile:expressions )</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -88,48 +88,48 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty HighlightOpacityProperty = HighlightOpacityPropertyKey.DependencyProperty;
 
         /// <inheritdoc/>
-        protected override void OnGenericInteraction(UltravioletResource device, ref RoutedEventData data)
+        protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
         {
             if (!data.Handled)
             {
                 Select();
                 data.Handled = true;
             }
-            base.OnGenericInteraction(device, ref data);
+            base.OnGenericInteraction(device, data);
         }
         
         /// <inheritdoc/>
-        protected override void OnMouseEnter(MouseDevice device, ref RoutedEventData data)
+        protected override void OnMouseEnter(MouseDevice device, RoutedEventData data)
         {
             if (HighlightOnMouseOver)
             {
                 HighlightOpacity = 1.0;
             }
-            base.OnMouseEnter(device, ref data);
+            base.OnMouseEnter(device, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseLeave(MouseDevice device, ref RoutedEventData data)
+        protected override void OnMouseLeave(MouseDevice device, RoutedEventData data)
         {
             if (HighlightOnMouseOver)
             {
                 HighlightOpacity = 0.0;
             }
-            base.OnMouseLeave(device, ref data);
+            base.OnMouseLeave(device, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnFingerDown(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, ref RoutedEventData data)
+        protected override void OnFingerDown(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, RoutedEventData data)
         {
             HighlightOpacity = 1.0;
-            base.OnFingerDown(device, fingerID, x, y, pressure, ref data);
+            base.OnFingerDown(device, fingerID, x, y, pressure, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, ref RoutedEventData data)
+        protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, RoutedEventData data)
         {
             HighlightOpacity = (HighlightOnSelect && IsSelected) || (HighlightOnMouseOver && IsMouseDirectlyOver) ? 1.0 : 0.0;
-            base.OnFingerUp(device, fingerID, x, y, pressure, ref data);
+            base.OnFingerUp(device, fingerID, x, y, pressure, data);
         }
 
         /// <summary>
@@ -159,16 +159,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (item.IsSelected)
             {
                 var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(Selector.SelectedEvent);
-                var evtData     = new RoutedEventData(dobj);
-
-                evtDelegate(dobj, ref evtData);
+                var evtData = RoutedEventData.Retrieve(dobj);
+                evtDelegate(dobj, evtData);
             }
             else
             {
                 var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(Selector.UnselectedEvent);
-                var evtData     = new RoutedEventData(dobj);
-
-                evtDelegate(dobj, ref evtData);
+                var evtData = RoutedEventData.Retrieve(dobj);
+                evtDelegate(dobj, evtData);
             }
 
             if (item.HighlightOnSelect)

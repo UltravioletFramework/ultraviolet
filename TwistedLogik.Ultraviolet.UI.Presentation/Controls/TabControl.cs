@@ -142,7 +142,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             var target = default(UIElement);
 
@@ -182,7 +182,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 data.Handled = target.Focus();
             }
 
-            base.OnKeyDown(device, key, modifiers, ref data);
+            base.OnKeyDown(device, key, modifiers, data);
         }
 
         /// <summary>

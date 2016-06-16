@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             switch (key)
             {
@@ -48,11 +48,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
             }
 
-            base.OnKeyDown(device, key, modifiers, ref data);
+            base.OnKeyDown(device, key, modifiers, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
             if (GamePad.UseAxisForDirectionalNavigation)
             {
@@ -70,11 +70,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         break;
                 }
             }
-            base.OnGamePadAxisDown(device, axis, value, repeat, ref data);
+            base.OnGamePadAxisDown(device, axis, value, repeat, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             if (!GamePad.UseAxisForDirectionalNavigation)
             {
@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         break;
                 }
             }
-            base.OnGamePadButtonDown(device, button, repeat, ref data);
+            base.OnGamePadButtonDown(device, button, repeat, data);
         }
 
         // Component references.

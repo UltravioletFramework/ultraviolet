@@ -270,16 +270,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(PasswordBox));
 
         /// <inheritdoc/>
-        protected override void OnGenericInteraction(UltravioletResource device, ref RoutedEventData data)
+        protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
         {
             Ultraviolet.GetInput().ShowSoftwareKeyboard();
             data.Handled = true;
 
-            base.OnGenericInteraction(device, ref data);
+            base.OnGenericInteraction(device, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
@@ -288,14 +288,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             if (PART_Editor != null && IsMouseWithinEditor())
-                PART_Editor.HandleMouseDown(device, button, ref data);
+                PART_Editor.HandleMouseDown(device, button, data);
 
             data.Handled = true;
-            base.OnMouseDown(device, button, ref data);
+            base.OnMouseDown(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
@@ -303,43 +303,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             if (PART_Editor != null && IsMouseWithinEditor())
-                PART_Editor.HandleMouseUp(device, button, ref data);
+                PART_Editor.HandleMouseUp(device, button, data);
 
             data.Handled = true;
-            base.OnMouseUp(device, button, ref data);
+            base.OnMouseUp(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnMouseDoubleClick(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (PART_Editor != null && IsMouseWithinEditor())
-                PART_Editor.HandleMouseDoubleClick(device, button, ref data);
+                PART_Editor.HandleMouseDoubleClick(device, button, data);
 
-            base.OnMouseDoubleClick(device, button, ref data);
+            base.OnMouseDoubleClick(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
             if (PART_Editor != null)
-                PART_Editor.HandleMouseMove(device, ref data);
+                PART_Editor.HandleMouseMove(device, data);
 
             data.Handled = true;
-            base.OnMouseMove(device, x, y, dx, dy, ref data);
+            base.OnMouseMove(device, x, y, dx, dy, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostMouseCapture(ref RoutedEventData data)
+        protected override void OnLostMouseCapture(RoutedEventData data)
         {
             if (PART_Editor != null)
                 PART_Editor.HandleLostMouseCapture();
 
             data.Handled = true;
-            base.OnLostMouseCapture(ref data);
+            base.OnLostMouseCapture(data);
         }
 
         /// <inheritdoc/>
-        protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
             Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode.Text);
 
@@ -348,11 +348,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             UpdateIsSelectionActive();
 
-            base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
+            base.OnGotKeyboardFocus(device, oldFocus, newFocus, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
             Ultraviolet.GetInput().HideSoftwareKeyboard();
 
@@ -361,40 +361,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             UpdateIsSelectionActive();
 
-            base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
+            base.OnLostKeyboardFocus(device, oldFocus, newFocus, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             if (PART_Editor != null)
-                PART_Editor.HandleKeyDown(device, key, modifiers, ref data);
+                PART_Editor.HandleKeyDown(device, key, modifiers, data);
 
-            base.OnKeyDown(device, key, modifiers, ref data);
+            base.OnKeyDown(device, key, modifiers, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnTextInput(KeyboardDevice device, ref RoutedEventData data)
+        protected override void OnTextInput(KeyboardDevice device, RoutedEventData data)
         {
             if (PART_Editor != null)
-                PART_Editor.HandleTextInput(device, ref data);
+                PART_Editor.HandleTextInput(device, data);
 
-            base.OnTextInput(device, ref data);
+            base.OnTextInput(device, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnTextEditing(KeyboardDevice device, ref RoutedEventData data)
+        protected override void OnTextEditing(KeyboardDevice device, RoutedEventData data)
         {
             if (PART_Editor != null)
-                PART_Editor.HandleTextEditing(device, ref data);
+                PART_Editor.HandleTextEditing(device, data);
 
-            base.OnTextEditing(device, ref data);
+            base.OnTextEditing(device, data);
         }
 
         /// <summary>
         /// Occurs when the control handles a <see cref="TextBoxBase.SelectionChangedEvent"/> routed event.
         /// </summary>
-        private static void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
+        private static void HandleSelectionChanged(DependencyObject dobj, RoutedEventData data)
         {
             var passwordBox = (PasswordBox)dobj;
             passwordBox.UpdateIsSelectionActive();

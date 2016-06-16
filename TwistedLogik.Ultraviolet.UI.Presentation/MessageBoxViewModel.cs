@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
         /// <param name="data">The routed event data for this event invocation.</param>
-        public void HandleClickYes(DependencyObject dobj, ref RoutedEventData data)
+        public void HandleClickYes(DependencyObject dobj, RoutedEventData data)
         {
             MessageBoxResult = MessageBoxResult.Yes;
         }
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
         /// <param name="data">The routed event data for this event invocation.</param>
-        public void HandleClickNo(DependencyObject dobj, ref RoutedEventData data)
+        public void HandleClickNo(DependencyObject dobj, RoutedEventData data)
         {
             MessageBoxResult = MessageBoxResult.No;
         }
@@ -52,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
         /// <param name="data">The routed event data for this event invocation.</param>
-        public void HandleClickOK(DependencyObject dobj, ref RoutedEventData data)
+        public void HandleClickOK(DependencyObject dobj, RoutedEventData data)
         {
             MessageBoxResult = MessageBoxResult.OK;
         }
@@ -62,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dobj">The object that raised the event.</param>
         /// <param name="data">The routed event data for this event invocation.</param>
-        public void HandleClickCancel(DependencyObject dobj, ref RoutedEventData data)
+        public void HandleClickCancel(DependencyObject dobj, RoutedEventData data)
         {
             MessageBoxResult = MessageBoxResult.Cancel;
         }

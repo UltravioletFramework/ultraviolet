@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The input device.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfGenericInteractionEventHandler(DependencyObject element, UltravioletResource device, ref RoutedEventData data);
+    public delegate void UpfGenericInteractionEventHandler(DependencyObject element, UltravioletResource device, RoutedEventData data);
 
     /// <summary>
     /// Contains generic input events which are not associated with any particular class of device.
@@ -143,20 +143,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.PreviewGenericInteraction"/> 
         /// attached routed event.</value>
-        internal static void RaisePreviewGenericInteraction(DependencyObject element, UltravioletResource device, ref RoutedEventData data)
+        internal static void RaisePreviewGenericInteraction(DependencyObject element, UltravioletResource device, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGenericInteractionEventHandler>(PreviewGenericInteractionEvent);
-            evt?.Invoke(element, device, ref data);
+            evt?.Invoke(element, device, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Generic.GenericInteraction"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaiseGenericInteraction(DependencyObject element, UltravioletResource device, ref RoutedEventData data)
+        internal static void RaiseGenericInteraction(DependencyObject element, UltravioletResource device, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfGenericInteractionEventHandler>(GenericInteractionEvent);
-            evt?.Invoke(element, device, ref data);
+            evt?.Invoke(element, device, data);
         }
     }
 }

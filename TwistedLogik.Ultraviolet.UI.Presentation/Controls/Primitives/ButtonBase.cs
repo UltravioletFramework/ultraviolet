@@ -151,24 +151,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
-        protected override void OnLostMouseCapture(ref RoutedEventData data)
+        protected override void OnLostMouseCapture(RoutedEventData data)
         {
             IsPressed = false;
-            base.OnLostMouseCapture(ref data);
+            base.OnLostMouseCapture(data);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
             if (IsPressed)
             {
                 IsPressed = false;
             }
-            base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
+            base.OnLostKeyboardFocus(device, oldFocus, newFocus, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
             if (ClickMode != ClickMode.Hover)
             {
@@ -178,84 +178,84 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                     IsPressed = Bounds.Contains(position);
                 }
             }
-            base.OnMouseMove(device, x, y, dx, dy, ref data);
+            base.OnMouseMove(device, x, y, dx, dy, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
                 HandlePressed();
                 data.Handled = true;
             }
-            base.OnMouseDown(device, button, ref data);
+            base.OnMouseDown(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
                 HandleReleased();
                 data.Handled = true;
             }
-            base.OnMouseUp(device, button, ref data);
+            base.OnMouseUp(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseEnter(MouseDevice device, ref RoutedEventData data)
+        protected override void OnMouseEnter(MouseDevice device, RoutedEventData data)
         {
             if (ClickMode == ClickMode.Hover)
             {
                 OnClick();
                 OnClickByUser();
             }
-            base.OnMouseEnter(device, ref data);
+            base.OnMouseEnter(device, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             if (key == Key.Return || key == Key.Space)
             {
                 HandlePressed();
                 data.Handled = true;
             }
-            base.OnKeyDown(device, key, modifiers, ref data);
+            base.OnKeyDown(device, key, modifiers, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyUp(KeyboardDevice device, Key key, ref RoutedEventData data)
+        protected override void OnKeyUp(KeyboardDevice device, Key key, RoutedEventData data)
         {
             if (key == Key.Return || key == Key.Space)
             {
                 HandleReleased(false);
                 data.Handled = true;
             }
-            base.OnKeyUp(device, key, ref data);
+            base.OnKeyUp(device, key, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             if (GamePad.ConfirmButton == button && !repeat)
             {
                 HandlePressed();
                 data.Handled = true;
             }
-            base.OnGamePadButtonDown(device, button, repeat, ref data);
+            base.OnGamePadButtonDown(device, button, repeat, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnGamePadButtonUp(GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        protected override void OnGamePadButtonUp(GamePadDevice device, GamePadButton button, RoutedEventData data)
         {
             if (GamePad.ConfirmButton == button)
             {
                 HandleReleased(false);
                 data.Handled = true;
             }
-            base.OnGamePadButtonUp(device, button, ref data);
+            base.OnGamePadButtonUp(device, button, data);
         }
 
         /// <summary>
@@ -263,9 +263,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnClick()
         {
-            var evtData = new RoutedEventData(this);
+            var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(ClickEvent);
-            evtDelegate(this, ref evtData);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>
@@ -273,9 +273,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnClickByUser()
         {
-            var evtData = new RoutedEventData(this);
+            var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(ClickByUserEvent);
-            evtDelegate(this, ref evtData);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>

@@ -290,9 +290,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnChecked()
         {
-            var evtData = new RoutedEventData(this);
+            var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(CheckedEvent);
-            evtDelegate(this, ref evtData);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>
@@ -300,9 +300,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnCheckedByUser()
         {
-            var evtData = new RoutedEventData(this);
+            var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(CheckedByUserEvent);
-            evtDelegate(this, ref evtData);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>
@@ -310,9 +310,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnUnchecked()
         {
-            var evtData = new RoutedEventData(this);
+            var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(UncheckedEvent);
-            evtDelegate(this, ref evtData);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>
@@ -320,9 +320,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnUncheckedByUser()
         {
-            var evtData = new RoutedEventData(this);
+            var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(UncheckedByUserEvent);
-            evtDelegate(this, ref evtData);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>
@@ -330,9 +330,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnIndeterminate()
         {
-            var evtData = new RoutedEventData(this);
+            var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(IndeterminateEvent);
-            evtDelegate(this, ref evtData);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>
@@ -340,9 +340,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnIndeterminateByUser()
         {
-            var evtData = new RoutedEventData(this);
+            var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(IndeterminateByUserEvent);
-            evtDelegate(this, ref evtData);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>

@@ -186,9 +186,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private void RaisePasswordChanged(PasswordBox target)
         {
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(PasswordBox.PasswordChangedEvent);
-            var evtData = new RoutedEventData(target);
-
-            evtDelegate(target, ref evtData);
+            var evtData = RoutedEventData.Retrieve(target);
+            evtDelegate(target, evtData);
         }
 
         // The secure string buffer that contains the user's password.

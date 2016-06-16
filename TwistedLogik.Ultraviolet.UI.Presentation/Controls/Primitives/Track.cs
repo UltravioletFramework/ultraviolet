@@ -363,7 +363,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for the decrease button.
         /// </summary>
-        private void HandleDecreaseButtonClick(DependencyObject element, ref RoutedEventData data)
+        private void HandleDecreaseButtonClick(DependencyObject element, RoutedEventData data)
         {
             var owner = TemplatedParent as RangeBase;
             if (owner != null)
@@ -381,7 +381,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for the increase button.
         /// </summary>
-        private void HandleIncreaseButtonClick(DependencyObject element, ref RoutedEventData data)
+        private void HandleIncreaseButtonClick(DependencyObject element, RoutedEventData data)
         {
             var owner = TemplatedParent as RangeBase;
             if (owner != null)
@@ -399,7 +399,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="Mouse.PreviewMouseMoveEvent"/> routed event for the Thumb button.
         /// </summary>
-        private void HandleThumbPreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        private void HandleThumbPreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
             var button = element as Button;
             if (button != null && button.IsMouseCaptured)
@@ -432,7 +432,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="Mouse.PreviewMouseDownEvent"/> routed event for the Thumb button.
         /// </summary>
-        private void HandleThumbPreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton pressed, ref RoutedEventData data)
+        private void HandleThumbPreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton pressed, RoutedEventData data)
         {
             var relativeMousePosition = Mouse.GetPosition(Thumb);
 
@@ -451,7 +451,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="Mouse.PreviewMouseUpEvent"/> routed event for the Thumb button.
         /// </summary>
-        private void HandleThumbPreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton pressed, ref RoutedEventData data)
+        private void HandleThumbPreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton pressed, RoutedEventData data)
         {
             if (!thumbDragging)
                 return;

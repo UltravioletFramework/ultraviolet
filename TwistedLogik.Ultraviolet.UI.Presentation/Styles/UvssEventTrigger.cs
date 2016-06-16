@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 		}
 
         /// <inheritdoc/>
-        void IRoutedEventRaisedNotificationSubscriber.ReceiveRoutedEventRaisedNotification(DependencyObject dobj, RoutedEvent evt, ref RoutedEventData data)
+        void IRoutedEventRaisedNotificationSubscriber.ReceiveRoutedEventRaisedNotification(DependencyObject dobj, RoutedEvent evt, RoutedEventData data)
         {
             if (!data.Handled || handled)
             {

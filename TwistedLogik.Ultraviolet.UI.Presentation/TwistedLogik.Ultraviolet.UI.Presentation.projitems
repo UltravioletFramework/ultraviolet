@@ -71,6 +71,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\ProgressBarFill.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextBoxBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextEntryValidationRoutedEventData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ScrollChangedInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\TabItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBoxItem.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IIndexable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IInputElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CaptureMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\CursorQueryData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\FocusManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\FocusNavigationDirection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\GamePad.cs" />

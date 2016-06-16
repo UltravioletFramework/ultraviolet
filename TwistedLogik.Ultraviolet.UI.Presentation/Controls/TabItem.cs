@@ -61,14 +61,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsSelectedChanged));
 
         /// <inheritdoc/>
-        protected override void OnGenericInteraction(UltravioletResource device, ref RoutedEventData data)
+        protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
         {
             if (!data.Handled)
             {
                 Focus();
                 data.Handled = true;
             }
-            base.OnGenericInteraction(device, ref data);
+            base.OnGenericInteraction(device, data);
         }
 
         /// <inheritdoc/>
@@ -83,13 +83,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnPreviewGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected override void OnPreviewGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
             if (!data.Handled && newFocus == this)
             {
                 Select();
             }
-            base.OnPreviewGotKeyboardFocus(device, oldFocus, newFocus, ref data);
+            base.OnPreviewGotKeyboardFocus(device, oldFocus, newFocus, data);
         }
 
         /// <summary>
@@ -103,18 +103,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 item.Classes.Set("selected");
 
                 var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(Selector.SelectedEvent);
-                var evtData = new RoutedEventData(dobj);
-
-                evtDelegate(dobj, ref evtData);
+                var evtData = RoutedEventData.Retrieve(dobj);
+                evtDelegate(dobj, evtData);
             }
             else
             {
                 item.Classes.Remove("selected");
 
                 var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(Selector.UnselectedEvent);
-                var evtData = new RoutedEventData(dobj);
-
-                evtDelegate(dobj, ref evtData);
+                var evtData = RoutedEventData.Retrieve(dobj);
+                evtDelegate(dobj, evtData);
             }
         }
 

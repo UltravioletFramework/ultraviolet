@@ -498,20 +498,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Invoked when the <see cref="FocusManager.GotFocusEvent"/> attached routed event occurs.
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGotFocus(ref RoutedEventData data)
+        protected virtual void OnGotFocus(RoutedEventData data)
         {
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(GotFocusEvent);
-            evtDelegate(this, ref data);
+            evtDelegate(this, data);
         }
 
         /// <summary>
         /// Invoked when the <see cref="FocusManager.LostFocusEvent"/> attached routed event occurs.
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnLostFocus(ref RoutedEventData data)
+        protected virtual void OnLostFocus(RoutedEventData data)
         {
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(LostFocusEvent);
-            evtDelegate(this, ref data);
+            evtDelegate(this, data);
         }
 
         /// <summary>
@@ -521,7 +521,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="oldFocus">The element that previously had focus.</param>
         /// <param name="newFocus">The element that currently has focus.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnPreviewGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected virtual void OnPreviewGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
 
         }
@@ -533,7 +533,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="oldFocus">The element that previously had focus.</param>
         /// <param name="newFocus">The element that currently has focus.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnPreviewLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected virtual void OnPreviewLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
 
         }
@@ -545,7 +545,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="oldFocus">The element that previously had focus.</param>
         /// <param name="newFocus">The element that currently has focus.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected virtual void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
 
         }
@@ -557,7 +557,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="oldFocus">The element that previously had focus.</param>
         /// <param name="newFocus">The element that currently has focus.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected virtual void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
 
         }
@@ -569,7 +569,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
         /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        protected virtual void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
 
         }
@@ -580,7 +580,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnKeyUp(KeyboardDevice device, Key key, ref RoutedEventData data)
+        protected virtual void OnKeyUp(KeyboardDevice device, Key key, RoutedEventData data)
         {
 
         }
@@ -590,7 +590,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnTextInput(KeyboardDevice device, ref RoutedEventData data)
+        protected virtual void OnTextInput(KeyboardDevice device, RoutedEventData data)
         {
 
         }
@@ -600,7 +600,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnTextEditing(KeyboardDevice device, ref RoutedEventData data)
+        protected virtual void OnTextEditing(KeyboardDevice device, RoutedEventData data)
         {
 
         }
@@ -609,7 +609,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Invoked by the <see cref="Mouse.GotMouseCaptureEvent"/> attached routed event.
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGotMouseCapture(ref RoutedEventData data)
+        protected virtual void OnGotMouseCapture(RoutedEventData data)
         {
 
         }
@@ -618,7 +618,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Invoked by the <see cref="Mouse.LostMouseCaptureEvent"/> attached routed event.
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnLostMouseCapture(ref RoutedEventData data)
+        protected virtual void OnLostMouseCapture(RoutedEventData data)
         {
 
         }
@@ -634,7 +634,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="dy">The difference between the y-coordinate of the mouse's 
         /// current position and the y-coordinate of the mouse's previous position.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        protected virtual void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
 
         }
@@ -644,7 +644,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnMouseEnter(MouseDevice device, ref RoutedEventData data)
+        protected virtual void OnMouseEnter(MouseDevice device, RoutedEventData data)
         {
 
         }
@@ -654,7 +654,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The mouse device.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnMouseLeave(MouseDevice device, ref RoutedEventData data)
+        protected virtual void OnMouseLeave(MouseDevice device, RoutedEventData data)
         {
 
         }
@@ -665,7 +665,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected virtual void OnMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
         {
 
         }
@@ -676,7 +676,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected virtual void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
 
         }
@@ -687,7 +687,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnMouseClick(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected virtual void OnMouseClick(MouseDevice device, MouseButton button, RoutedEventData data)
         {
 
         }
@@ -698,7 +698,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The mouse device.</param>
         /// <param name="button">The mouse button that was pressed or released.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnMouseDoubleClick(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected virtual void OnMouseDoubleClick(MouseDevice device, MouseButton button, RoutedEventData data)
         {
 
         }
@@ -710,7 +710,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="x">The amount that the wheel was scrolled along the x-axis.</param>
         /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnMouseWheel(MouseDevice device, Double x, Double y, ref RoutedEventData data)
+        protected virtual void OnMouseWheel(MouseDevice device, Double x, Double y, RoutedEventData data)
         {
 
         }
@@ -724,7 +724,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="y">The y-coordinate of the touch.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
         protected virtual void OnTap(TouchDevice device, Int64 fingerID,
-            Double x, Double y, ref RoutedEventData data)
+            Double x, Double y, RoutedEventData data)
         {
 
         }
@@ -739,7 +739,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="pressure">The normalized pressure value of the touch.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
         protected virtual void OnFingerDown(TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Single pressure, RoutedEventData data)
         {
 
         }
@@ -754,7 +754,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="pressure">The normalized pressure value of the touch.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
         protected virtual void OnFingerUp(TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Single pressure, RoutedEventData data)
         {
         }
 
@@ -770,7 +770,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="pressure">The normalized pressure value of the touch.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
         protected virtual void OnFingerMotion(TouchDevice device, Int64 fingerID,
-            Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
         {
 
         }
@@ -782,7 +782,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="axis">The axis that was changed.</param>
         /// <param name="value">The value to which the axis was changed.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGamePadAxisChanged(GamePadDevice device, GamePadAxis axis, Single value, ref RoutedEventData data)
+        protected virtual void OnGamePadAxisChanged(GamePadDevice device, GamePadAxis axis, Single value, RoutedEventData data)
         {
 
         }
@@ -795,7 +795,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="value">The axis' value when it was pressed.</param>
         /// <param name="repeat">A value indicating whether this is a repeated axis press.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        protected virtual void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
 
         }
@@ -806,7 +806,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The game pad device.</param>
         /// <param name="axis">The axis that was released.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGamePadAxisUp(GamePadDevice device, GamePadAxis axis, ref RoutedEventData data)
+        protected virtual void OnGamePadAxisUp(GamePadDevice device, GamePadAxis axis, RoutedEventData data)
         {
 
         }
@@ -818,7 +818,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="button">The button that was pressed.</param>
         /// <param name="repeat">A value indicating whether this is a repeated button press.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        protected virtual void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
 
         }
@@ -829,7 +829,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="device">The game pad device.</param>
         /// <param name="button">The button that was released.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGamePadButtonUp(GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        protected virtual void OnGamePadButtonUp(GamePadDevice device, GamePadButton button, RoutedEventData data)
         {
 
         }
@@ -839,7 +839,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="device">The input device.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGenericInteraction(UltravioletResource device, ref RoutedEventData data)
+        protected virtual void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
         {
 
         }
@@ -888,231 +888,231 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invokes the <see cref="OnPreviewGotKeyboardFocus"/> method.
         /// </summary>
-        private static void OnPreviewGotKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        private static void OnPreviewGotKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
-            ((UIElement)element).OnPreviewGotKeyboardFocus(device, oldFocus, newFocus, ref data);
+            ((UIElement)element).OnPreviewGotKeyboardFocus(device, oldFocus, newFocus, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnPreviewGotKeyboardFocus"/> method.
         /// </summary>
-        private static void OnPreviewLostKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        private static void OnPreviewLostKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
-            ((UIElement)element).OnPreviewLostKeyboardFocus(device, oldFocus, newFocus, ref data);
+            ((UIElement)element).OnPreviewLostKeyboardFocus(device, oldFocus, newFocus, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGotKeyboardFocus"/> method.
         /// </summary>
-        private static void OnGotKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        private static void OnGotKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
-            ((UIElement)element).OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
+            ((UIElement)element).OnGotKeyboardFocus(device, oldFocus, newFocus, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnLostKeyboardFocus"/> method.
         /// </summary>
-        private static void OnLostKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        private static void OnLostKeyboardFocusProxy(DependencyObject element, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
-            ((UIElement)element).OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
+            ((UIElement)element).OnLostKeyboardFocus(device, oldFocus, newFocus, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnKeyDown"/> method.
         /// </summary>
-        private static void OnKeyDownProxy(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        private static void OnKeyDownProxy(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
-            ((UIElement)element).OnKeyDown(device, key, modifiers, ref data);
+            ((UIElement)element).OnKeyDown(device, key, modifiers, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnKeyUp"/> method.
         /// </summary>
-        private static void OnKeyUpProxy(DependencyObject element, KeyboardDevice device, Key key, ref RoutedEventData data)
+        private static void OnKeyUpProxy(DependencyObject element, KeyboardDevice device, Key key, RoutedEventData data)
         {
-            ((UIElement)element).OnKeyUp(device, key, ref data);
+            ((UIElement)element).OnKeyUp(device, key, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnTextInput"/> method.
         /// </summary>
-        private static void OnTextInputProxy(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
+        private static void OnTextInputProxy(DependencyObject element, KeyboardDevice device, RoutedEventData data)
         {
-            ((UIElement)element).OnTextInput(device, ref data);
+            ((UIElement)element).OnTextInput(device, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnTextEditing"/> method.
         /// </summary>
-        private static void OnTextEditingProxy(DependencyObject element, KeyboardDevice device, ref RoutedEventData data)
+        private static void OnTextEditingProxy(DependencyObject element, KeyboardDevice device, RoutedEventData data)
         {
-            ((UIElement)element).OnTextEditing(device, ref data);
+            ((UIElement)element).OnTextEditing(device, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGotMouseCapture"/> method.
         /// </summary>
-        private static void OnGotMouseCaptureProxy(DependencyObject element, ref RoutedEventData data)
+        private static void OnGotMouseCaptureProxy(DependencyObject element, RoutedEventData data)
         {
-            ((UIElement)element).OnGotMouseCapture(ref data);
+            ((UIElement)element).OnGotMouseCapture(data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnLostMouseCapture"/> method.
         /// </summary>
-        private static void OnLostMouseCaptureProxy(DependencyObject element, ref RoutedEventData data)
+        private static void OnLostMouseCaptureProxy(DependencyObject element, RoutedEventData data)
         {
-            ((UIElement)element).OnLostMouseCapture(ref data);
+            ((UIElement)element).OnLostMouseCapture(data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnMouseEnter"/> method.
         /// </summary>
-        private static void OnMouseEnterProxy(DependencyObject element, MouseDevice device, ref RoutedEventData data)
+        private static void OnMouseEnterProxy(DependencyObject element, MouseDevice device, RoutedEventData data)
         {
             var uiElement = ((UIElement)element);
-            uiElement.OnMouseEnter(device, ref data);
+            uiElement.OnMouseEnter(device, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnMouseLeave"/> method.
         /// </summary>
-        private static void OnMouseLeaveProxy(DependencyObject element, MouseDevice device, ref RoutedEventData data)
+        private static void OnMouseLeaveProxy(DependencyObject element, MouseDevice device, RoutedEventData data)
         {
             var uiElement = ((UIElement)element);
-            uiElement.OnMouseLeave(device, ref data);
+            uiElement.OnMouseLeave(device, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnMouseMove"/> method.
         /// </summary>
-        private static void OnMouseMoveProxy(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        private static void OnMouseMoveProxy(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
-            ((UIElement)element).OnMouseMove(device, x, y, dx, dy, ref data);
+            ((UIElement)element).OnMouseMove(device, x, y, dx, dy, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnMouseDown"/> method.
         /// </summary>
-        private static void OnMouseDownProxy(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        private static void OnMouseDownProxy(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            ((UIElement)element).OnMouseDown(device, button, ref data);
+            ((UIElement)element).OnMouseDown(device, button, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnMouseUp"/> method.
         /// </summary>
-        private static void OnMouseUpProxy(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        private static void OnMouseUpProxy(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            ((UIElement)element).OnMouseUp(device, button, ref data);
+            ((UIElement)element).OnMouseUp(device, button, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnMouseClick"/> method.
         /// </summary>
-        private static void OnMouseClickProxy(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        private static void OnMouseClickProxy(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            ((UIElement)element).OnMouseClick(device, button, ref data);
+            ((UIElement)element).OnMouseClick(device, button, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnMouseDoubleClick"/> method.
         /// </summary>
-        private static void OnMouseDoubleClickProxy(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        private static void OnMouseDoubleClickProxy(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            ((UIElement)element).OnMouseDoubleClick(device, button, ref data);
+            ((UIElement)element).OnMouseDoubleClick(device, button, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnMouseWheel"/> method.
         /// </summary>
-        private static void OnMouseWheelProxy(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
+        private static void OnMouseWheelProxy(DependencyObject element, MouseDevice device, Double x, Double y, RoutedEventData data)
         {
-            ((UIElement)element).OnMouseWheel(device, x, y, ref data);
+            ((UIElement)element).OnMouseWheel(device, x, y, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnTap"/> method.
         /// </summary>
         private static void OnTapProxy(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, ref RoutedEventData data)
+            Double x, Double y, RoutedEventData data)
         {
-            ((UIElement)element).OnTap(device, fingerID, x, y, ref data);
+            ((UIElement)element).OnTap(device, fingerID, x, y, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnFingerDown"/> method.
         /// </summary>
         private static void OnFingerDownProxy(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Single pressure, RoutedEventData data)
         {
-            ((UIElement)element).OnFingerDown(device, fingerID, x, y, pressure, ref data);
+            ((UIElement)element).OnFingerDown(device, fingerID, x, y, pressure, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnFingerUp"/> method.
         /// </summary>
         private static void OnFingerUpProxy(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Single pressure, RoutedEventData data)
         {
-            ((UIElement)element).OnFingerUp(device, fingerID, x, y, pressure, ref data);
+            ((UIElement)element).OnFingerUp(device, fingerID, x, y, pressure, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnFingerMotion"/> method.
         /// </summary>
         private static void OnFingerMotionProxy(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
         {
-            ((UIElement)element).OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, ref data);
+            ((UIElement)element).OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGamePadAxisChanged"/> method.
         /// </summary>
-        private static void OnGamePadAxisChangedProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, ref RoutedEventData data)
+        private static void OnGamePadAxisChangedProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, RoutedEventData data)
         {
-            ((UIElement)element).OnGamePadAxisChanged(device, axis, value, ref data);
+            ((UIElement)element).OnGamePadAxisChanged(device, axis, value, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGamePadAxisDown"/> method.
         /// </summary>
-        private static void OnGamePadAxisDownProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        private static void OnGamePadAxisDownProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
-            ((UIElement)element).OnGamePadAxisDown(device, axis, value, repeat, ref data);
+            ((UIElement)element).OnGamePadAxisDown(device, axis, value, repeat, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGamePadAxisUp"/> method.
         /// </summary>
-        private static void OnGamePadAxisUpProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, ref RoutedEventData data)
+        private static void OnGamePadAxisUpProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, RoutedEventData data)
         {
-            ((UIElement)element).OnGamePadAxisUp(device, axis, ref data);
+            ((UIElement)element).OnGamePadAxisUp(device, axis, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGamePadButtonDown"/> method.
         /// </summary>
-        private static void OnGamePadButtonDownProxy(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        private static void OnGamePadButtonDownProxy(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
-            ((UIElement)element).OnGamePadButtonDown(device, button, repeat, ref data);
+            ((UIElement)element).OnGamePadButtonDown(device, button, repeat, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGamePadButtonUp"/> method.
         /// </summary>
-        private static void OnGamePadButtonUpProxy(DependencyObject element, GamePadDevice device, GamePadButton button, ref RoutedEventData data)
+        private static void OnGamePadButtonUpProxy(DependencyObject element, GamePadDevice device, GamePadButton button, RoutedEventData data)
         {
-            ((UIElement)element).OnGamePadButtonUp(device, button, ref data);
+            ((UIElement)element).OnGamePadButtonUp(device, button, data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnGenericInteraction"/> method.
         /// </summary>
-        private static void OnGenericInteractionProxy(DependencyObject element, UltravioletResource device, ref RoutedEventData data)
+        private static void OnGenericInteractionProxy(DependencyObject element, UltravioletResource device, RoutedEventData data)
         {
-            ((UIElement)element).OnGenericInteraction(device, ref data);
+            ((UIElement)element).OnGenericInteraction(device, data);
         }
 
         /// <summary>

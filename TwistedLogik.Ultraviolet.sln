@@ -138,6 +138,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (i
 		{76ED0EA8-82EC-43DA-A724-D09991E1905D} = {76ED0EA8-82EC-43DA-A724-D09991E1905D}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (iOS)", "UvDebugSandbox_iOS\UvDebugSandbox (iOS).csproj", "{00DFA15E-9CB3-4EBB-91C1-4837335B083C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems*{4f741cca-6fbf-439e-a26a-abb189619101}*SharedItemsImports = 4
@@ -154,6 +156,7 @@ Global
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{40d272db-90e1-4332-a32f-6effeb44fe87}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
+		UvDebugSandbox\UvDebugSandbox.projitems*{00dfa15e-9cb3-4ebb-91c1-4837335b083c}*SharedItemsImports = 4
 		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{65ecb0c3-fd4e-494a-a000-43500b9cb851}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}*SharedItemsImports = 4
 		UvDebugSandbox\UvDebugSandbox.projitems*{a8c85c23-03c2-41c6-8331-48835d257634}*SharedItemsImports = 4
@@ -1725,6 +1728,32 @@ Global
 		{8F9F44FB-E63C-48DE-8752-19B745111559}.Signed|iPhone.Build.0 = Release|Any CPU
 		{8F9F44FB-E63C-48DE-8752-19B745111559}.Signed|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{8F9F44FB-E63C-48DE-8752-19B745111559}.Signed|iPhoneSimulator.Build.0 = Release|Any CPU
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Ad-Hoc|Any CPU.ActiveCfg = Ad-Hoc|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Ad-Hoc|iPhoneSimulator
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Ad-Hoc|iPhoneSimulator.Build.0 = Ad-Hoc|iPhoneSimulator
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.AppStore|Any CPU.ActiveCfg = AppStore|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.AppStore|iPhone.Build.0 = AppStore|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.AppStore|iPhoneSimulator.ActiveCfg = AppStore|iPhoneSimulator
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.AppStore|iPhoneSimulator.Build.0 = AppStore|iPhoneSimulator
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Debug|Any CPU.ActiveCfg = Debug|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Debug|iPhone.Build.0 = Debug|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Release|Any CPU.ActiveCfg = Release|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Release|iPhone.ActiveCfg = Release|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Release|iPhone.Build.0 = Release|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Signed|Any CPU.ActiveCfg = AppStore|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Signed|Any CPU.Build.0 = AppStore|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Signed|iPhone.ActiveCfg = AppStore|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Signed|iPhone.Build.0 = AppStore|iPhone
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Signed|iPhoneSimulator.ActiveCfg = AppStore|iPhoneSimulator
+		{00DFA15E-9CB3-4EBB-91C1-4837335B083C}.Signed|iPhoneSimulator.Build.0 = AppStore|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

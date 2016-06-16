@@ -408,9 +408,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var routedEvent = loaded ? LoadedEvent : UnloadedEvent;
 
-            var evt = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(routedEvent);
-            var evtData = new RoutedEventData(this);
-            evt(this, ref evtData);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(routedEvent);
+            var evtData = RoutedEventData.Retrieve(this);
+            evtDelegate(this, evtData);
 
             VisualTreeHelper.ForEachChild<FrameworkElement>(this, CommonBoxedValues.Boolean.FromValue(loaded), (child, state) =>
             {
@@ -823,23 +823,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        protected override void OnGotFocus(ref RoutedEventData data)
+        protected override void OnGotFocus(RoutedEventData data)
         {
             if (data.OriginalSource == this)
             {
                 VisualStateGroups.GoToState("focus", "focused");
             }
-            base.OnGotFocus(ref data);
+            base.OnGotFocus(data);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostFocus(ref RoutedEventData data)
+        protected override void OnLostFocus(RoutedEventData data)
         {
             if (data.OriginalSource == this)
             {
                 VisualStateGroups.GoToState("focus", "blurred");
             }
-            base.OnLostFocus(ref data);
+            base.OnLostFocus(data);
         }
 
         /// <summary>
@@ -985,7 +985,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the control's tool tip is opened.
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnToolTipOpening(ref RoutedEventData data)
+        protected virtual void OnToolTipOpening(RoutedEventData data)
         {
 
         }
@@ -994,7 +994,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the control's tool tip is closed.
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnToolTipClosing(ref RoutedEventData data)
+        protected virtual void OnToolTipClosing(RoutedEventData data)
         {
 
         }
@@ -1142,14 +1142,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the <see cref="Mouse.QueryCursorEvent"/> attached event is raised on an instance of <see cref="FrameworkElement"/>.
         /// </summary>
-        private static void HandleQueryCursor(DependencyObject dobj, MouseDevice device, ref Cursor cursor, ref RoutedEventData data)
+        private static void HandleQueryCursor(DependencyObject dobj, MouseDevice device, CursorQueryRoutedEventData data)
         {
             var element = (FrameworkElement)dobj;
 
             var elementCursor = element.Cursor;
             if (elementCursor.IsLoaded && (element.ForceCursor || !data.Handled))
             {
-                cursor = elementCursor.Resource.Cursor;
+                data.Cursor = elementCursor.Resource.Cursor;
                 data.Handled = true;
             }
         }
@@ -1157,7 +1157,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the <see cref="Keyboard.PreviewGotKeyboardFocusEvent"/> attached event is raised on an instance of <see cref="FrameworkElement"/>.
         /// </summary>
-        private static void HandlePreviewGotKeyboardFocus(DependencyObject dobj, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        private static void HandlePreviewGotKeyboardFocus(DependencyObject dobj, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
             if (data.OriginalSource != dobj)
                 return;
@@ -1217,17 +1217,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Invokes the <see cref="OnToolTipOpening"/> method.
         /// </summary>
-        private static void OnToolTipOpeningProxy(DependencyObject dobj, ref RoutedEventData data)
+        private static void OnToolTipOpeningProxy(DependencyObject dobj, RoutedEventData data)
         {
-            ((FrameworkElement)dobj).OnToolTipOpening(ref data);
+            ((FrameworkElement)dobj).OnToolTipOpening(data);
         }
 
         /// <summary>
         /// Invokes the <see cref="OnToolTipClosing"/> method.
         /// </summary>
-        private static void OnToolTipClosingProxy(DependencyObject dobj, ref RoutedEventData data)
+        private static void OnToolTipClosingProxy(DependencyObject dobj, RoutedEventData data)
         {
-            ((FrameworkElement)dobj).OnToolTipClosing(ref data);
+            ((FrameworkElement)dobj).OnToolTipClosing(data);
         }
 
         // Standard visual state groups.

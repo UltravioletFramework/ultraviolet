@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfRoutedEventHandler(DependencyObject element, ref RoutedEventData data);
+    public delegate void UpfRoutedEventHandler(DependencyObject element, RoutedEventData data);
 
     /// <summary>
     /// Represents the identifier of a routed event.
@@ -89,9 +89,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
         /// <param name="data">The routed event's metadata.</param>
-        internal void RaiseRaisedNotification(DependencyObject dobj, ref RoutedEventData data)
+        internal void RaiseRaisedNotification(DependencyObject dobj, RoutedEventData data)
         {
-            raisedNotificationServer.Notify(dobj, ref data);
+            raisedNotificationServer.Notify(dobj, data);
         }
 
         /// <summary>

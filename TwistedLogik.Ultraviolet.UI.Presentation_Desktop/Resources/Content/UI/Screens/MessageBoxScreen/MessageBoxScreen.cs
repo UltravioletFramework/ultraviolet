@@ -27,19 +27,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         #region Methods
         public void HandleClickYes(TwistedLogik.Ultraviolet.UI.Presentation.DependencyObject dobj, ref TwistedLogik.Ultraviolet.UI.Presentation.RoutedEventData data)
         {
-            dataSource.HandleClickYes(dobj, ref data);
+            dataSource.HandleClickYes(dobj, data);
         }
         public void HandleClickNo(TwistedLogik.Ultraviolet.UI.Presentation.DependencyObject dobj, ref TwistedLogik.Ultraviolet.UI.Presentation.RoutedEventData data)
         {
-            dataSource.HandleClickNo(dobj, ref data);
+            dataSource.HandleClickNo(dobj, data);
         }
         public void HandleClickOK(TwistedLogik.Ultraviolet.UI.Presentation.DependencyObject dobj, ref TwistedLogik.Ultraviolet.UI.Presentation.RoutedEventData data)
         {
-            dataSource.HandleClickOK(dobj, ref data);
+            dataSource.HandleClickOK(dobj, data);
         }
         public void HandleClickCancel(TwistedLogik.Ultraviolet.UI.Presentation.DependencyObject dobj, ref TwistedLogik.Ultraviolet.UI.Presentation.RoutedEventData data)
         {
-            dataSource.HandleClickCancel(dobj, ref data);
+            dataSource.HandleClickCancel(dobj, data);
         }
         #endregion
         

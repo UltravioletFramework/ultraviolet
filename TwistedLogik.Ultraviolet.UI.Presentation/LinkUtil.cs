@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="element">The element that owns the command stream.</param>
         /// <param name="data">The event metadata for the routed event which prompted the link activation.</param>
         /// <returns><see langword="true"/> if the command stream's link was deactivated; otherwise, <see langword="false"/>.</returns>
-        public static Boolean ActivateTextLink(TextLayoutCommandStream stream, UIElement element, ref RoutedEventData data)
+        public static Boolean ActivateTextLink(TextLayoutCommandStream stream, UIElement element, RoutedEventData data)
         {
             Contract.Require(element, nameof(element));
 
@@ -80,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="stream">The command stream to update.</param>
         /// <param name="element">The element that owns the command stream.</param>
         /// <param name="data">The event metadata for the routed event which prompted the link execution.</param>
-        public static Boolean ExecuteTextLink(TextLayoutCommandStream stream, UIElement element, ref RoutedEventData data)
+        public static Boolean ExecuteTextLink(TextLayoutCommandStream stream, UIElement element, RoutedEventData data)
         {
             Contract.Require(element, nameof(element));
 

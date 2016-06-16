@@ -302,59 +302,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
-            OnKeyDown_General(device, key, modifiers, ref data);
+            OnKeyDown_General(device, key, modifiers, data);
 
             if (!data.Handled)
             {
                 if (IsDropDownOpen)
                 {
-                    OnKeyDown_DropDownOpen(device, key, modifiers, ref data);
+                    OnKeyDown_DropDownOpen(device, key, modifiers, data);
                 }
                 else
                 {
-                    OnKeyDown_DropDownClosed(device, key, modifiers, ref data);
+                    OnKeyDown_DropDownClosed(device, key, modifiers, data);
                 }
             }
 
-            base.OnKeyDown(device, key, modifiers, ref data);
+            base.OnKeyDown(device, key, modifiers, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
             if (IsDropDownOpen)
             {
-                OnGamePadAxisDown_DropDownOpen(device, axis, value, repeat, ref data);
+                OnGamePadAxisDown_DropDownOpen(device, axis, value, repeat, data);
             }
             else
             {
-                OnGamePadAxisDown_DropDownClosed(device, axis, value, repeat, ref data);
+                OnGamePadAxisDown_DropDownClosed(device, axis, value, repeat, data);
             }
 
-            base.OnGamePadAxisDown(device, axis, value, repeat, ref data);
+            base.OnGamePadAxisDown(device, axis, value, repeat, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             if (IsDropDownOpen)
             {
-                OnGamePadButtonDown_DropDownOpen(device, button, repeat, ref data);
+                OnGamePadButtonDown_DropDownOpen(device, button, repeat, data);
             }
             else
             {
-                OnGamePadButtonDown_DropDownClosed(device, button, repeat, ref data);
+                OnGamePadButtonDown_DropDownClosed(device, button, repeat, data);
             }
 
-            base.OnGamePadButtonDown(device, button, repeat, ref data);
+            base.OnGamePadButtonDown(device, button, repeat, data);
         }
         
         /// <summary>
         /// Handles <see cref="Keyboard.KeyDownEvent"/> both when the drop down is open and when it is closed.
         /// </summary>
-        private void OnKeyDown_General(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        private void OnKeyDown_General(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             switch (key)
             {
@@ -371,7 +371,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles <see cref="Keyboard.KeyDownEvent"/> when the drop down is open.
         /// </summary>
-        private void OnKeyDown_DropDownOpen(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        private void OnKeyDown_DropDownOpen(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             switch (key)
             {
@@ -441,7 +441,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 case Key.Right:
                     if (PART_ScrollViewer != null)
                     {
-                        PART_ScrollViewer.HandleKeyScrolling(key, modifiers, ref data);
+                        PART_ScrollViewer.HandleKeyScrolling(key, modifiers, data);
                     }
                     data.Handled = true;
                     break;
@@ -451,7 +451,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles <see cref="Keyboard.KeyDownEvent"/> both when the drop down is closed and when it is closed.
         /// </summary>
-        private void OnKeyDown_DropDownClosed(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        private void OnKeyDown_DropDownClosed(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             switch (key)
             {
@@ -480,7 +480,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles <see cref="GamePad.AxisDownEvent"/> when the drop down is open.
         /// </summary>
-        private void OnGamePadAxisDown_DropDownOpen(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        private void OnGamePadAxisDown_DropDownOpen(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
             if (GamePad.UseAxisForDirectionalNavigation)
             {
@@ -500,14 +500,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         case GamePadJoystickDirection.Left:
                             if (PART_ScrollViewer != null)
                             {
-                                PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, data);
                             }
                             break;
                             
                         case GamePadJoystickDirection.Right:
                             if (PART_ScrollViewer != null)
                             {
-                                PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, data);
                             }
                             break;
                     }
@@ -519,7 +519,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles <see cref="GamePad.AxisDownEvent"/> when the drop down is closed.
         /// </summary>
-        private void OnGamePadAxisDown_DropDownClosed(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        private void OnGamePadAxisDown_DropDownClosed(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
             if (GamePad.UseAxisForDirectionalNavigation)
             {
@@ -546,7 +546,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles <see cref="GamePad.ButtonDownEvent"/> when the drop down is open.
         /// </summary>
-        private void OnGamePadButtonDown_DropDownOpen(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        private void OnGamePadButtonDown_DropDownOpen(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             if (GamePad.ConfirmButton == button)
             {
@@ -586,14 +586,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         case GamePadButton.DPadLeft:
                             if (PART_ScrollViewer != null)
                             {
-                                PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, data);
                             }
                             break;
 
                         case GamePadButton.DPadRight:
                             if (PART_ScrollViewer != null)
                             {
-                                PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                                PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, data);
                             }
                             break;
                     }
@@ -605,7 +605,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles <see cref="GamePad.ButtonDownEvent"/> when the drop down is closed.
         /// </summary>
-        private void OnGamePadButtonDown_DropDownClosed(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        private void OnGamePadButtonDown_DropDownClosed(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             if (GamePad.ConfirmButton == button)
             {
@@ -719,7 +719,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the control handles a <see cref="FrameworkElement.Loaded"/> routed event.
         /// </summary>
-        private static void HandleLoaded(DependencyObject dobj, ref RoutedEventData data)
+        private static void HandleLoaded(DependencyObject dobj, RoutedEventData data)
         {
             var comboBox = (ComboBox)dobj;
             comboBox.viewSize = (comboBox.View == null) ? Size2.Zero : comboBox.View.Area.Size;
@@ -730,7 +730,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the control handles a <see cref="Mouse.MouseDownEvent"/> routed event.
         /// </summary>
-        private static void HandleMouseDown(DependencyObject dobj, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        private static void HandleMouseDown(DependencyObject dobj, MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button != MouseButton.Left)
                 return;
@@ -745,7 +745,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Occurs when the control handles a <see cref="Mouse.LostMouseCaptureEvent"/> routed event.
         /// </summary>
-        private static void HandleLostMouseCapture(DependencyObject dobj, ref RoutedEventData data)
+        private static void HandleLostMouseCapture(DependencyObject dobj, RoutedEventData data)
         {
             var comboBox = (ComboBox)dobj;
             if (comboBox != data.OriginalSource)

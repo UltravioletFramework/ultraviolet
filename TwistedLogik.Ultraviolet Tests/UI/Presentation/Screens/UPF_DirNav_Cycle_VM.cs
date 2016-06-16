@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
 {
     public class UPF_DirNav_Cycle_VM
     {
-        public void HandleViewOpening(DependencyObject dobj, ref RoutedEventData data)
+        public void HandleViewOpening(DependencyObject dobj, RoutedEventData data)
         {
             btnL.Focus();
         }

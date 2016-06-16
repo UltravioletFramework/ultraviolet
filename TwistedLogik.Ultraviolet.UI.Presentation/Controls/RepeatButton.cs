@@ -89,16 +89,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnLostMouseCapture(ref RoutedEventData data)
+        protected override void OnLostMouseCapture(RoutedEventData data)
         {
             repeating   = false;
             repeatTimer = 0;
 
-            base.OnLostMouseCapture(ref data);
+            base.OnLostMouseCapture(data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
@@ -107,7 +107,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 data.Handled = true;
             }
-            base.OnMouseDown(device, button, ref data);
+            base.OnMouseDown(device, button, data);
         }
         
         /// <summary>

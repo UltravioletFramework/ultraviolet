@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <param name="element">The element that raised the event.</param>
     /// <param name="scrollInfo">A <see cref="ScrollChangedInfo"/> structure that describes the changes to the scrolling state.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfScrollChangedEventHandler(DependencyObject element, ref ScrollChangedInfo scrollInfo, ref RoutedEventData data);
+    public delegate void UpfScrollChangedEventHandler(DependencyObject element, ref ScrollChangedInfo scrollInfo, RoutedEventData data);
 
     /// <summary>
     /// Represents a control which provides a scrollable view of its content.
@@ -358,7 +358,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
         /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        internal void HandleKeyScrolling(Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        internal void HandleKeyScrolling(Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             switch (key)
             {
@@ -503,7 +503,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (scrollChanged)
             {
                 var evtDelegate = EventManager.GetInvocationDelegate<UpfScrollChangedEventHandler>(ScrollChangedEvent);
-                var evtData = new RoutedEventData(this);
+                var evtData = RoutedEventData.Retrieve(this);
 
                 var scrollInfo = new ScrollChangedInfo(
                     newHorizontalOffset, newHorizontalOffset - oldHorizontalOffset,
@@ -520,14 +520,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 oldViewportWidth = newViewportWidth;
                 oldViewportHeight = newViewportHeight;
 
-                evtDelegate(this, ref scrollInfo, ref evtData);
+                evtDelegate(this, ref scrollInfo, evtData);
             }
 
             base.PositionOverride();
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseWheel(MouseDevice device, Double x, Double y, ref RoutedEventData data)
+        protected override void OnMouseWheel(MouseDevice device, Double x, Double y, RoutedEventData data)
         {
             if (!data.Handled)
             {
@@ -541,23 +541,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
                 data.Handled = true;
             }
-            base.OnMouseWheel(device, x, y, ref data);
+            base.OnMouseWheel(device, x, y, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             var templatedParent = TemplatedParent as Control;
             if (templatedParent == null || !templatedParent.HandlesScrolling)
             {
-                HandleKeyScrolling(key, modifiers, ref data);
+                HandleKeyScrolling(key, modifiers, data);
             }
 
-            base.OnKeyDown(device, key, modifiers, ref data);
+            base.OnKeyDown(device, key, modifiers, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
             var templatedParent = TemplatedParent as Control;
             if (templatedParent == null || !templatedParent.HandlesScrolling)
@@ -568,30 +568,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     switch (direction)
                     {
                         case GamePadJoystickDirection.Up:
-                            HandleKeyScrolling(Key.Up, ModifierKeys.None, ref data);
+                            HandleKeyScrolling(Key.Up, ModifierKeys.None, data);
                             break;
 
                         case GamePadJoystickDirection.Down:
-                            HandleKeyScrolling(Key.Down, ModifierKeys.None, ref data);
+                            HandleKeyScrolling(Key.Down, ModifierKeys.None, data);
                             break;
 
                         case GamePadJoystickDirection.Left:
-                            HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                            HandleKeyScrolling(Key.Left, ModifierKeys.None, data);
                             break;
 
                         case GamePadJoystickDirection.Right:
-                            HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                            HandleKeyScrolling(Key.Right, ModifierKeys.None, data);
                             break;
                     }
                     data.Handled = true;
                 }
             }
             
-            base.OnGamePadAxisDown(device, axis, value, repeat, ref data);
+            base.OnGamePadAxisDown(device, axis, value, repeat, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             var templatedParent = TemplatedParent as Control;
             if (templatedParent == null || !templatedParent.HandlesScrolling)
@@ -601,30 +601,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     switch (button)
                     {
                         case GamePadButton.DPadUp:
-                            HandleKeyScrolling(Key.Up, ModifierKeys.None, ref data);
+                            HandleKeyScrolling(Key.Up, ModifierKeys.None, data);
                             break;
 
                         case GamePadButton.DPadDown:
-                            HandleKeyScrolling(Key.Down, ModifierKeys.None, ref data);
+                            HandleKeyScrolling(Key.Down, ModifierKeys.None, data);
                             break;
 
                         case GamePadButton.DPadLeft:
-                            HandleKeyScrolling(Key.Left, ModifierKeys.None, ref data);
+                            HandleKeyScrolling(Key.Left, ModifierKeys.None, data);
                             break;
 
                         case GamePadButton.DPadRight:
-                            HandleKeyScrolling(Key.Right, ModifierKeys.None, ref data);
+                            HandleKeyScrolling(Key.Right, ModifierKeys.None, data);
                             break;
                     }
                     data.Handled = true;
                 }
             }
 
-            base.OnGamePadButtonDown(device, button, repeat, ref data);
+            base.OnGamePadButtonDown(device, button, repeat, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
+        protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
         {
             if (!data.Handled && fingerID == 0)
             {
@@ -638,7 +638,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
                 data.Handled = true;
             }
-            base.OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, ref data);
+            base.OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, data);
         }
 
         /// <summary>
@@ -654,7 +654,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles the <see cref="RangeBase.ValueChanged"/> event for the scroll viewer's scroll bars.
         /// </summary>
-        private static void HandleScrollBarValueChanged(DependencyObject element, ref RoutedEventData data)
+        private static void HandleScrollBarValueChanged(DependencyObject element, RoutedEventData data)
         {
             var scrollViewer = (ScrollViewer)element;
             if (scrollViewer.PART_HScroll == data.OriginalSource || scrollViewer.PART_VScroll == data.OriginalSource)

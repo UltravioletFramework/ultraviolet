@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The mouse device.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfMouseEventHandler(DependencyObject element, MouseDevice device, ref RoutedEventData data);
+    public delegate void UpfMouseEventHandler(DependencyObject element, MouseDevice device, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a button is pressed or released while an interface element is under the mouse.
@@ -21,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="device">The mouse device.</param>
     /// <param name="button">The mouse button that was pressed or released.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfMouseButtonEventHandler(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data);
+    public delegate void UpfMouseButtonEventHandler(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when the mouse moves over an interface element.
@@ -35,7 +35,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="dy">The difference between the y-coordinate of the mouse's 
     /// current position and the y-coordinate of the mouse's previous position.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfMouseMoveEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data);
+    public delegate void UpfMouseMoveEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when the mouse wheel is scrolled over an interface element.
@@ -45,16 +45,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="x">The amount that the wheel was scrolled along the x-axis.</param>
     /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfMouseWheelEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data);
+    public delegate void UpfMouseWheelEventHandler(DependencyObject element, MouseDevice device, Double x, Double y, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called to determine which cursor to display.
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
     /// <param name="device">The mouse device.</param>
-    /// <param name="cursor">The cursor to display.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfQueryCursorEventHandler(DependencyObject element, MouseDevice device, ref Cursor cursor, ref RoutedEventData data);
+    public delegate void UpfQueryCursorEventHandler(DependencyObject element, MouseDevice device, CursorQueryRoutedEventData data);
 
     /// <summary>
     /// Represents the mouse device.
@@ -1129,160 +1128,160 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.GotMouseCapture"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaiseGotMouseCapture(DependencyObject element, ref RoutedEventData data)
+        internal static void RaiseGotMouseCapture(DependencyObject element, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(GotMouseCaptureEvent);
-            evt?.Invoke(element, ref data);
+            evt?.Invoke(element, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.LostMouseCapture"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaiseLostMouseCapture(DependencyObject element, ref RoutedEventData data)
+        internal static void RaiseLostMouseCapture(DependencyObject element, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(LostMouseCaptureEvent);
-            evt?.Invoke(element, ref data);
+            evt?.Invoke(element, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseMove"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        internal static void RaisePreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseMoveEventHandler>(PreviewMouseMoveEvent);
-            evt?.Invoke(element, device, x, y, dx, dy, ref data);
+            evt?.Invoke(element, device, x, y, dx, dy, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDown"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        internal static void RaisePreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseDownEvent);
-            evt?.Invoke(element, device, button, ref data);
+            evt?.Invoke(element, device, button, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseUp"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        internal static void RaisePreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseUpEvent);
-            evt?.Invoke(element, device, button, ref data);
+            evt?.Invoke(element, device, button, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseClick"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        internal static void RaisePreviewMouseClick(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseClickEvent);
-            evt?.Invoke(element, device, button, ref data);
+            evt?.Invoke(element, device, button, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDoubleClick"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        internal static void RaisePreviewMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(PreviewMouseDoubleClickEvent);
-            evt?.Invoke(element, device, button, ref data);
+            evt?.Invoke(element, device, button, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseWheel"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaisePreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
+        internal static void RaisePreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseWheelEventHandler>(PreviewMouseWheelEvent);
-            evt?.Invoke(element, device, x, y, ref data);
+            evt?.Invoke(element, device, x, y, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseMove"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, ref RoutedEventData data)
+        internal static void RaiseMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseMoveEventHandler>(MouseMoveEvent);
-            evt?.Invoke(element, device, x, y, dx, dy, ref data);
+            evt?.Invoke(element, device, x, y, dx, dy, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseEnter(DependencyObject element, MouseDevice device, ref RoutedEventData data)
+        internal static void RaiseMouseEnter(DependencyObject element, MouseDevice device, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseEventHandler>(MouseEnterEvent);
-            evt?.Invoke(element, device, ref data);
+            evt?.Invoke(element, device, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseLeave(DependencyObject element, MouseDevice device, ref RoutedEventData data)
+        internal static void RaiseMouseLeave(DependencyObject element, MouseDevice device, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseEventHandler>(MouseLeaveEvent);
-            evt?.Invoke(element, device, ref data);
+            evt?.Invoke(element, device, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDown"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseDown(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        internal static void RaiseMouseDown(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseDownEvent);
-            evt?.Invoke(element, device, button, ref data);
+            evt?.Invoke(element, device, button, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseUp"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseUp(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        internal static void RaiseMouseUp(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseUpEvent);
-            evt?.Invoke(element, device, button, ref data);
+            evt?.Invoke(element, device, button, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseClick"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        internal static void RaiseMouseClick(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseClickEvent);
-            evt?.Invoke(element, device, button, ref data);
+            evt?.Invoke(element, device, button, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDoubleClick"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, ref RoutedEventData data)
+        internal static void RaiseMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseButtonEventHandler>(MouseDoubleClickEvent);
-            evt?.Invoke(element, device, button, ref data);
+            evt?.Invoke(element, device, button, data);
         }
 
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseWheel"/>
         /// attached event for the specified element.
         /// </summary>
-        internal static void RaiseMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
+        internal static void RaiseMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfMouseWheelEventHandler>(MouseWheelEvent);
-            evt?.Invoke(element, device, x, y, ref data);
+            evt?.Invoke(element, device, x, y, data);
         }
 
         // Represents the device state of the current Ultraviolet context.

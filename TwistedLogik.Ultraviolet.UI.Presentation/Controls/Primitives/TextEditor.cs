@@ -16,10 +16,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <param name="text">The editor's current text.</param>
     /// <param name="offset">The offset at which the character is being inserted into the text.</param>
     /// <param name="character">The character being inserted into the text.</param>
-    /// <param name="valid">A value indicating whether the character is considered valid for entry.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfTextEntryValidationHandler(DependencyObject element, 
-        StringSegment text, Int32 offset, Char character, ref Boolean valid, ref RoutedEventData data);
+        StringSegment text, Int32 offset, Char character, TextEntryValidationRoutedEventData data);
 
     /// <summary>
     /// Represents the component of a <see cref="TextBox"/> which is responsible for performing text editing.
@@ -997,7 +996,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="device">The <see cref="MouseDevice"/> that raised the event.</param>
         /// <param name="button">The <see cref="MouseButton"/> value that corresponds to the button that was pressed.</param>
         /// <param name="data">The routed event metadata for this event.</param>
-        internal void HandleMouseDown(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        internal void HandleMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (textLayoutStream.Count == 0)
                 return;
@@ -1022,7 +1021,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="device">The <see cref="MouseDevice"/> that raised the event.</param>
         /// <param name="button">The <see cref="MouseButton"/> value that corresponds to the button that was released.</param>
         /// <param name="data">The routed event metadata for this event.</param>
-        internal void HandleMouseUp(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        internal void HandleMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (textLayoutStream.Count == 0)
                 return;
@@ -1039,7 +1038,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="device">The <see cref="MouseDevice"/> that raised the event.</param>
         /// <param name="button">The <see cref="MouseButton"/> value that corresponds to the button that was clicked.</param>
         /// <param name="data">The routed event metadata for this event.</param>
-        internal void HandleMouseDoubleClick(MouseDevice device, MouseButton button, ref RoutedEventData data)
+        internal void HandleMouseDoubleClick(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
             {
@@ -1053,7 +1052,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <param name="device">The <see cref="MouseDevice"/> that raised the event.</param>
         /// <param name="data">The routed event metadata for this event.</param>
-        internal void HandleMouseMove(MouseDevice device, ref RoutedEventData data)
+        internal void HandleMouseMove(MouseDevice device, RoutedEventData data)
         {
             if (selectionFollowingMouse)
             {
@@ -1093,7 +1092,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
         /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        internal void HandleKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        internal void HandleKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             var owner = TemplatedParent as Control;
             var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyProperty));
@@ -1238,7 +1237,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="data">The routed event metadata for this event.</param>
-        internal void HandleTextInput(KeyboardDevice device, ref RoutedEventData data)
+        internal void HandleTextInput(KeyboardDevice device, RoutedEventData data)
         {
             var owner = TemplatedParent as Control;
 
@@ -1262,7 +1261,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="data">The routed event metadata for this event.</param>
-        internal void HandleTextEditing(KeyboardDevice device, ref RoutedEventData data)
+        internal void HandleTextEditing(KeyboardDevice device, RoutedEventData data)
         {
             var owner = TemplatedParent as Control;
 
@@ -1381,11 +1380,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 return true;
 
             var evtDelegate = EventManager.GetInvocationDelegate<UpfTextEntryValidationHandler>(TextEntryValidationEvent);
-            var evtData = new RoutedEventData(TemplatedParent);
+            var evtData = TextEntryValidationRoutedEventData.Retrieve(TemplatedParent, autorelease: false);
 
             var text = new StringSegment((StringBuilder)bufferText);
-            var valid = true;
-            evtDelegate(TemplatedParent, text, offset, character, ref valid, ref evtData);
+            evtDelegate(TemplatedParent, text, offset, character, evtData);
+            var valid = evtData.Valid;
+            evtData.Release();
 
             return valid;
         }
@@ -2695,9 +2695,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private void RaiseSelectionChanged()
         {
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(TextBoxBase.SelectionChangedEvent);
-            var evtData = new RoutedEventData(this);
-
-            evtDelegate(this, ref evtData);
+            var evtData = RoutedEventData.Retrieve(this);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>

@@ -97,6 +97,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource InvalidLinkStateEvaluator            = new StringResource(StringDatabase, "INVALID_LINK_STATE_EVALUATOR");
         public static readonly StringResource InvalidLinkClickHandler              = new StringResource(StringDatabase, "INVALID_LINK_CLICK_HANDLER");
         public static readonly StringResource CollectionContainsInvalidResources   = new StringResource(StringDatabase, "COLLECTION_CONTAINS_INVALID_RESOURCES");
+        public static readonly StringResource PooledResourceAlreadyReleased        = new StringResource(StringDatabase, "POOLED_RESOURCE_ALREADY_RELEASED");
 #pragma warning restore 1591
     }
 }

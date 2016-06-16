@@ -268,8 +268,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (uiElementUnderMouse != null)
             {
                 var evtDelegate = EventManager.GetInvocationDelegate<UpfQueryCursorEventHandler>(Mouse.QueryCursorEvent);
-                var evtData = new RoutedEventData(uiElementUnderMouse);
-                evtDelegate(uiElementUnderMouse, Mouse.PrimaryDevice, ref cursor, ref evtData);
+                var evtData = CursorQueryRoutedEventData.Retrieve(uiElementUnderMouse, autorelease: false);
+                evtDelegate(uiElementUnderMouse, Mouse.PrimaryDevice, evtData);
+                cursor = evtData.Cursor;
+                evtData.Release();
             }
 
             if (cursor == null && Resources.Cursor.IsLoaded)
@@ -297,8 +299,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var elementWithFocusAgreesToChange = true;
             if (elementWithFocus != null)
             {
-                var data = new RoutedEventData((DependencyObject)elementWithFocus);
-                Keyboard.RaisePreviewLostKeyboardFocus((DependencyObject)elementWithFocus, keyboard, oldFocus, newFocus, ref data);
+                var data = RoutedEventData.Retrieve((DependencyObject)elementWithFocus);
+                Keyboard.RaisePreviewLostKeyboardFocus((DependencyObject)elementWithFocus, keyboard, oldFocus, newFocus, data);
 
                 if (data.Handled)
                     elementWithFocusAgreesToChange = false;
@@ -307,8 +309,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var elementAgreesToChange = true;
             if (element != null)
             {
-                var data = new RoutedEventData((DependencyObject)element);
-                Keyboard.RaisePreviewGotKeyboardFocus((DependencyObject)element, keyboard, oldFocus, newFocus, ref data);
+                var data = RoutedEventData.Retrieve((DependencyObject)element);
+                Keyboard.RaisePreviewGotKeyboardFocus((DependencyObject)element, keyboard, oldFocus, newFocus, data);
 
                 if (data.Handled)
                     elementAgreesToChange = false;
@@ -338,8 +340,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dobj = elementWithFocus as DependencyObject;
             if (dobj != null)
             {
-                var gotFocusData = new RoutedEventData(dobj);
-                Keyboard.RaiseGotKeyboardFocus(dobj, keyboard, oldFocus, newFocus, ref gotFocusData);
+                var gotFocusData = RoutedEventData.Retrieve(dobj);
+                Keyboard.RaiseGotKeyboardFocus(dobj, keyboard, oldFocus, newFocus, gotFocusData);
             }
 
             UpdateIsDefaulted();
@@ -370,8 +372,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var keyboard = Ultraviolet.GetInput().GetKeyboard();
 
-                var lostFocusData = new RoutedEventData(dobj);
-                Keyboard.RaiseLostKeyboardFocus(dobj, keyboard, elementWithFocusOld, null, ref lostFocusData);
+                var lostFocusData = RoutedEventData.Retrieve(dobj);
+                Keyboard.RaiseLostKeyboardFocus(dobj, keyboard, elementWithFocusOld, null, lostFocusData);
             }
 
             UpdateIsDefaulted();
@@ -402,8 +404,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dobj = elementHadMouseCapture as DependencyObject;
             if (dobj != null)
             {
-                var lostMouseCaptureData = new RoutedEventData(dobj);
-                Mouse.RaiseLostMouseCapture(dobj, ref lostMouseCaptureData);
+                var lostMouseCaptureData = RoutedEventData.Retrieve(dobj);
+                Mouse.RaiseLostMouseCapture(dobj, lostMouseCaptureData);
             }
         }
 
@@ -448,8 +450,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var dobj = elementWithMouseCapture as DependencyObject;
             if (dobj != null)
             {
-                var gotMouseCaptureData = new RoutedEventData(dobj);
-                Mouse.RaiseGotMouseCapture(dobj, ref gotMouseCaptureData);
+                var gotMouseCaptureData = RoutedEventData.Retrieve(dobj);
+                Mouse.RaiseGotMouseCapture(dobj, gotMouseCaptureData);
             }
 
             return true;
@@ -1069,8 +1071,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void RaiseViewLifecycleEvent(DependencyObject dobj, RoutedEvent evt)
         {
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(evt);
-            var evtData = new RoutedEventData(dobj);
-            evtDelegate(dobj, ref evtData);
+            var evtData = RoutedEventData.Retrieve(dobj);
+            evtDelegate(dobj, evtData);
 
             VisualTreeHelper.ForEachChild(dobj, evt, (child, state) =>
             {
@@ -1085,8 +1087,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void RaiseViewModelChangedEvent(DependencyObject dobj)
         {
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(View.ViewModelChangedEvent);
-            var evtData = new RoutedEventData(dobj);
-            evtDelegate(dobj, ref evtData);
+            var evtData = RoutedEventData.Retrieve(dobj);
+            evtDelegate(dobj, evtData);
 
             VisualTreeHelper.ForEachChild(dobj, null, (child, state) =>
             {
@@ -1473,8 +1475,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             var dobj = uiElement as DependencyObject;
                             if (dobj != null)
                             {
-                                var mouseEnterData = new RoutedEventData(dobj);
-                                Mouse.RaiseMouseEnter(dobj, mouse, ref mouseEnterData);
+                                var mouseEnterData = RoutedEventData.Retrieve(dobj);
+                                Mouse.RaiseMouseEnter(dobj, mouse, mouseEnterData);
                             }
                         }
                         else
@@ -1482,8 +1484,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             var dobj = uiElement as DependencyObject;
                             if (dobj != null)
                             {
-                                var mouseLeaveData = new RoutedEventData(dobj);
-                                Mouse.RaiseMouseLeave(dobj, mouse, ref mouseLeaveData);
+                                var mouseLeaveData = RoutedEventData.Retrieve(dobj);
+                                Mouse.RaiseMouseLeave(dobj, mouse, mouseLeaveData);
                             }
                         }
                     }
@@ -2048,11 +2050,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dobj = elementWithFocus as DependencyObject;
                 if (dobj != null)
                 {
-                    var keyDownData = new RoutedEventData(dobj);
-                    Keyboard.RaisePreviewKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownData);
-                    Keyboard.RaiseKeyDown(dobj, device, key, ctrl, alt, shift, repeat, ref keyDownData);
+                    var keyDownData = RoutedEventData.Retrieve(dobj, autorelease: false);
+                    Keyboard.RaisePreviewKeyDown(dobj, device, key, ctrl, alt, shift, repeat, keyDownData);
+                    Keyboard.RaiseKeyDown(dobj, device, key, ctrl, alt, shift, repeat, keyDownData);
 
                     performKeyNav = !keyDownData.Handled;
+
+                    keyDownData.Release();
                 }
             }
 
@@ -2092,9 +2096,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dobj = elementWithFocus as DependencyObject;
                 if (dobj != null)
                 {
-                    var keyUpData = new RoutedEventData(dobj);
-                    Keyboard.RaisePreviewKeyUp(dobj, device, key, ref keyUpData);
-                    Keyboard.RaiseKeyUp(dobj, device, key, ref keyUpData);
+                    var keyUpData = RoutedEventData.Retrieve(dobj, autorelease: false);
+                    Keyboard.RaisePreviewKeyUp(dobj, device, key, keyUpData);
+                    Keyboard.RaiseKeyUp(dobj, device, key, keyUpData);
+                    keyUpData.Release();
                 }
 
                 if (originalFocus != elementWithFocus)
@@ -2117,9 +2122,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dobj = elementWithFocus as DependencyObject;
                 if (dobj != null)
                 {
-                    var textInputData = new RoutedEventData(dobj);
-                    Keyboard.RaisePreviewTextInput(dobj, device, ref textInputData);
-                    Keyboard.RaiseTextInput(dobj, device, ref textInputData);
+                    var textInputData = RoutedEventData.Retrieve(dobj, autorelease: false);
+                    Keyboard.RaisePreviewTextInput(dobj, device, textInputData);
+                    Keyboard.RaiseTextInput(dobj, device, textInputData);
+                    textInputData.Release();
                 }
 
                 if (originalFocus != elementWithFocus)
@@ -2142,9 +2148,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dobj = elementWithFocus as DependencyObject;
                 if (dobj != null)
                 {
-                    var textEditingData = new RoutedEventData(dobj);
-                    Keyboard.RaisePreviewTextEditing(dobj, device, ref textEditingData);
-                    Keyboard.RaiseTextEditing(dobj, device, ref textEditingData);
+                    var textEditingData = RoutedEventData.Retrieve(dobj, autorelease: false);
+                    Keyboard.RaisePreviewTextEditing(dobj, device, textEditingData);
+                    Keyboard.RaiseTextEditing(dobj, device, textEditingData);
+                    textEditingData.Release();
                 }
 
                 if (originalFocus != elementWithFocus)
@@ -2173,9 +2180,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    var mouseMoveData = new RoutedEventData(dobj);
-                    Mouse.RaisePreviewMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveData);
-                    Mouse.RaiseMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, ref mouseMoveData);
+                    var mouseMoveData = RoutedEventData.Retrieve(dobj, autorelease: false);
+                    Mouse.RaisePreviewMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, mouseMoveData);
+                    Mouse.RaiseMouseMove(dobj, device, dipsX, dipsY, dipsDeltaX, dipsDeltaY, mouseMoveData);
+                    mouseMoveData.Release();
                 }
 
                 if (originalFocus != elementWithFocus)
@@ -2206,21 +2214,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    var mouseDownData = new RoutedEventData(dobj);
-                    Mouse.RaisePreviewMouseDown(dobj, device, button, ref mouseDownData);
-                    Mouse.RaiseMouseDown(dobj, device, button, ref mouseDownData);
+                    var mouseDownData = RoutedEventData.Retrieve(dobj, autorelease: false);
+                    Mouse.RaisePreviewMouseDown(dobj, device, button, mouseDownData);
+                    Mouse.RaiseMouseDown(dobj, device, button, mouseDownData);
+                    mouseDownData.Release();
 
                     if (mouseDownData.Handled)
                         handled = true;
 
                     if (!Generic.IsTouchDeviceAvailable && button == MouseButton.Left)
                     {
-                        var genericInteractionData = new RoutedEventData(dobj) { Handled = handled };
-                        Generic.RaisePreviewGenericInteraction(dobj, device, ref genericInteractionData);
-                        Generic.RaiseGenericInteraction(dobj, device, ref genericInteractionData);
-
+                        var genericInteractionData = RoutedEventData.Retrieve(dobj, handled, autorelease: false);
+                        Generic.RaisePreviewGenericInteraction(dobj, device, genericInteractionData);
+                        Generic.RaiseGenericInteraction(dobj, device, genericInteractionData);
+                        
                         if (genericInteractionData.Handled)
                             handled = true;
+
+                        genericInteractionData.Release();
                     }
                 }
 
@@ -2248,9 +2259,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    var mouseUpData = new RoutedEventData(dobj);
-                    Mouse.RaisePreviewMouseUp(dobj, device, button, ref mouseUpData);
-                    Mouse.RaiseMouseUp(dobj, device, button, ref mouseUpData);
+                    var mouseUpData = RoutedEventData.Retrieve(dobj, autorelease: false);
+                    Mouse.RaisePreviewMouseUp(dobj, device, button, mouseUpData);
+                    Mouse.RaiseMouseUp(dobj, device, button, mouseUpData);
+                    mouseUpData.Release();
                 }
 
                 if (originalFocus != elementWithFocus)
@@ -2274,9 +2286,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    var mouseClickData = new RoutedEventData(dobj);
-                    Mouse.RaisePreviewMouseClick(dobj, device, button, ref mouseClickData);
-                    Mouse.RaiseMouseClick(dobj, device, button, ref mouseClickData);
+                    var mouseClickData = RoutedEventData.Retrieve(dobj, autorelease: false);
+                    Mouse.RaisePreviewMouseClick(dobj, device, button, mouseClickData);
+                    Mouse.RaiseMouseClick(dobj, device, button, mouseClickData);
+                    mouseClickData.Release();
                 }
 
                 if (originalFocus != elementWithFocus)
@@ -2300,9 +2313,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    var mouseDoubleClickData = new RoutedEventData(dobj);
-                    Mouse.RaisePreviewMouseDoubleClick(dobj, device, button, ref mouseDoubleClickData);
-                    Mouse.RaiseMouseDoubleClick(dobj, device, button, ref mouseDoubleClickData);
+                    var mouseDoubleClickData = RoutedEventData.Retrieve(dobj, autorelease: false);
+                    Mouse.RaisePreviewMouseDoubleClick(dobj, device, button, mouseDoubleClickData);
+                    Mouse.RaiseMouseDoubleClick(dobj, device, button, mouseDoubleClickData);
+                    mouseDoubleClickData.Release();
                 }
 
                 if (originalFocus != elementWithFocus)
@@ -2329,9 +2343,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var dobj = recipient as DependencyObject;
                 if (dobj != null)
                 {
-                    var mouseWheelData = new RoutedEventData(dobj);
-                    Mouse.RaisePreviewMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelData);
-                    Mouse.RaiseMouseWheel(dobj, device, dipsX, dipsY, ref mouseWheelData);
+                    var mouseWheelData = RoutedEventData.Retrieve(dobj, autorelease: false);
+                    Mouse.RaisePreviewMouseWheel(dobj, device, dipsX, dipsY, mouseWheelData);
+                    Mouse.RaiseMouseWheel(dobj, device, dipsX, dipsY, mouseWheelData);
+                    mouseWheelData.Release();
                 }
 
                 if (originalFocus != elementWithFocus)
@@ -2355,18 +2370,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var originalFocus = elementWithFocus;
 
-                var tapData = new RoutedEventData(recipient);
-                Touch.RaisePreviewTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
-                Touch.RaiseTap(recipient, device, fingerID, position.X, position.Y, ref tapData);
+                var tapData = RoutedEventData.Retrieve(recipient, autorelease: false);
+                Touch.RaisePreviewTap(recipient, device, fingerID, position.X, position.Y, tapData);
+                Touch.RaiseTap(recipient, device, fingerID, position.X, position.Y, tapData);
+                tapData.Release();
 
                 if (tapData.Handled)
                     handled = true;
 
                 if (fingerID == 0)
                 {
-                    var genericInteractionData = new RoutedEventData(recipient) { Handled = handled };
-                    Generic.RaisePreviewGenericInteraction(recipient, device, ref genericInteractionData);
-                    Generic.RaiseGenericInteraction(recipient, device, ref genericInteractionData);
+                    var genericInteractionData = RoutedEventData.Retrieve(recipient, handled, false);
+                    Generic.RaisePreviewGenericInteraction(recipient, device, genericInteractionData);
+                    Generic.RaiseGenericInteraction(recipient, device, genericInteractionData);
+                    genericInteractionData.Release();
 
                     if (genericInteractionData.Handled)
                         handled = true;
@@ -2395,9 +2412,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var originalFocus = elementWithFocus;
 
-                var fingerDownData = new RoutedEventData(recipient);
-                Touch.RaisePreviewFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerDownData);
-                Touch.RaiseFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerDownData);
+                var fingerDownData = RoutedEventData.Retrieve(recipient, autorelease: false);
+                Touch.RaisePreviewFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, fingerDownData);
+                Touch.RaiseFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, fingerDownData);
+                fingerDownData.Release();
 
                 elementLastTouched = recipient as IInputElement;
 
@@ -2421,9 +2439,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var originalFocus = elementWithFocus;
 
-                var fingerUpData = new RoutedEventData(recipient);
-                Touch.RaisePreviewFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerUpData);
-                Touch.RaiseFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, ref fingerUpData);
+                var fingerUpData = RoutedEventData.Retrieve(recipient, autorelease: false);
+                Touch.RaisePreviewFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, fingerUpData);
+                Touch.RaiseFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, fingerUpData);
+                fingerUpData.Release();
 
                 elementLastTouched = null;
 
@@ -2449,9 +2468,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 var delta = GetTouchDelta(dx, dy);
 
-                var fingerMotionData = new RoutedEventData(recipient);
-                Touch.RaisePreviewFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, ref fingerMotionData);
-                Touch.RaiseFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, ref fingerMotionData);
+                var fingerMotionData = RoutedEventData.Retrieve(recipient, autorelease: false);
+                Touch.RaisePreviewFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, fingerMotionData);
+                Touch.RaiseFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, fingerMotionData);
+                fingerMotionData.Release();
 
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
@@ -2493,9 +2513,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var originalFocus = elementWithFocus;
 
-                var gamePadAxisChangedData = new RoutedEventData(recipient);
-                GamePad.RaisePreviewAxisChanged(recipient, device, axis, value, ref gamePadAxisChangedData);
-                GamePad.RaiseAxisChanged(recipient, device, axis, value, ref gamePadAxisChangedData);
+                var gamePadAxisChangedData = RoutedEventData.Retrieve(recipient, autorelease: false);
+                GamePad.RaisePreviewAxisChanged(recipient, device, axis, value, gamePadAxisChangedData);
+                GamePad.RaiseAxisChanged(recipient, device, axis, value, gamePadAxisChangedData);
+                gamePadAxisChangedData.Release();
 
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
@@ -2516,9 +2537,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithFocus as DependencyObject;
             if (recipient != null)
             {
-                var gamePadAxisPressedData = new RoutedEventData(recipient);
-                GamePad.RaisePreviewAxisDown(recipient, device, axis, value, repeat, ref gamePadAxisPressedData);
-                GamePad.RaiseAxisDown(recipient, device, axis, value, repeat, ref gamePadAxisPressedData);
+                var gamePadAxisPressedData = RoutedEventData.Retrieve(recipient, autorelease: false);
+                GamePad.RaisePreviewAxisDown(recipient, device, axis, value, repeat, gamePadAxisPressedData);
+                GamePad.RaiseAxisDown(recipient, device, axis, value, repeat, gamePadAxisPressedData);
+                gamePadAxisPressedData.Release();
 
                 performGamePadNav = !gamePadAxisPressedData.Handled;
             }
@@ -2543,9 +2565,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var originalFocus = elementWithFocus;
 
-                var gamePadAxisPressedData = new RoutedEventData(recipient);
-                GamePad.RaisePreviewAxisUp(recipient, device, axis, ref gamePadAxisPressedData);
-                GamePad.RaiseAxisUp(recipient, device, axis, ref gamePadAxisPressedData);
+                var gamePadAxisPressedData = RoutedEventData.Retrieve(recipient, autorelease: false);
+                GamePad.RaisePreviewAxisUp(recipient, device, axis, gamePadAxisPressedData);
+                GamePad.RaiseAxisUp(recipient, device, axis, gamePadAxisPressedData);
+                gamePadAxisPressedData.Release();
 
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
@@ -2566,9 +2589,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithFocus as DependencyObject;
             if (recipient != null)
             {
-                var gamePadAxisChangedData = new RoutedEventData(recipient);
-                GamePad.RaisePreviewButtonDown(recipient, device, button, repeat, ref gamePadAxisChangedData);
-                GamePad.RaiseButtonDown(recipient, device, button, repeat, ref gamePadAxisChangedData);
+                var gamePadAxisChangedData = RoutedEventData.Retrieve(recipient, autorelease: false);
+                GamePad.RaisePreviewButtonDown(recipient, device, button, repeat, gamePadAxisChangedData);
+                GamePad.RaiseButtonDown(recipient, device, button, repeat, gamePadAxisChangedData);
+                gamePadAxisChangedData.Release();
 
                 suppressGamePadNav = gamePadAxisChangedData.Handled;
             }
@@ -2608,9 +2632,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var originalFocus = elementWithFocus;
 
-                var gamePadAxisChangedData = new RoutedEventData(recipient);
-                GamePad.RaisePreviewButtonUp(recipient, device, button, ref gamePadAxisChangedData);
-                GamePad.RaiseButtonUp(recipient, device, button, ref gamePadAxisChangedData);
+                var gamePadAxisChangedData = RoutedEventData.Retrieve(recipient, autorelease: false);
+                GamePad.RaisePreviewButtonUp(recipient, device, button, gamePadAxisChangedData);
+                GamePad.RaiseButtonUp(recipient, device, button, gamePadAxisChangedData);
+                gamePadAxisChangedData.Release();
 
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = true;

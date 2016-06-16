@@ -603,19 +603,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
-        protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
             UpdateIsSelectionActive();
 
-            base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
+            base.OnGotKeyboardFocus(device, oldFocus, newFocus, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
             UpdateIsSelectionActive();
 
-            base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
+            base.OnLostKeyboardFocus(device, oldFocus, newFocus, data);
         }
 
         /// <summary>
@@ -624,8 +624,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected virtual void OnSelectionChanged()
         {
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectionChangedEvent);
-            var evtData = new RoutedEventData(this);
-            evtDelegate(this, ref evtData);
+            var evtData = RoutedEventData.Retrieve(this);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>
@@ -634,14 +634,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected virtual void OnTextChanged()
         {
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(TextChangedEvent);
-            var evtData = new RoutedEventData(this);
-            evtDelegate(this, ref evtData);
+            var evtData = RoutedEventData.Retrieve(this);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>
         /// Occurs when the control handles a <see cref="SelectionChangedEvent"/> routed event.
         /// </summary>
-        private static void HandleSelectionChanged(DependencyObject dobj, ref RoutedEventData data)
+        private static void HandleSelectionChanged(DependencyObject dobj, RoutedEventData data)
         {
             var textBox = (TextBoxBase)dobj;
             textBox.UpdateIsSelectionActive();

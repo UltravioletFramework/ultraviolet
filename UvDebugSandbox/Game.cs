@@ -31,7 +31,14 @@ namespace UvDebugSandbox
         /// <summary>
         /// Initializes a new instance of the Game 
         /// </summary>
-        public Game() : base("YOUR_COMPANY_NAME", "ProjectName") { }
+        public Game() : base("YOUR_COMPANY_NAME", "ProjectName")
+        {
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#if IOS
+            // TODO: Make the compiled expressions assembly expose some common type for this purpose
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.UvDebugSandbox_UI_Controls_TriangleColorSelector_Template_Impl>();
+#endif
+        }
 
         /// <summary>
         /// The application's entry point.

@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <param name="element">The element that raised the event.</param>
     /// <param name="type">The scroll event type.</param>
     /// <param name="data">The routed event data.</param>
-    public delegate void UpfScrollEventHandler(DependencyObject element, ScrollEventType type, ref RoutedEventData data);
+    public delegate void UpfScrollEventHandler(DependencyObject element, ScrollEventType type, RoutedEventData data);
 
     /// <summary>
     /// Represents the base class for scroll bars.
@@ -127,11 +127,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
-        protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
+        protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
         {
             data.Handled = true;
 
-            base.OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, ref data);
+            base.OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, data);
         }
 
         /// <summary>
@@ -140,9 +140,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="type">The scroll event type.</param>
         protected internal void RaiseScrollEvent(ScrollEventType type)
         {
-            var evtData     = new RoutedEventData(this);
+            var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfScrollEventHandler>(ScrollEvent);
-            evtDelegate(this, type, ref evtData);
+            evtDelegate(this, type, evtData);
         }
 
         // Component references.

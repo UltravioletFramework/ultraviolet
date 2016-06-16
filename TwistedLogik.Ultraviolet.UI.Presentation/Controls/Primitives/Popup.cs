@@ -573,7 +573,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// An event handler which is used to defer the opening of a popup until after it has
         /// been fully loaded, in order to ensure proper positioning.
         /// </summary>
-        private static void OpenDeferred(DependencyObject element, ref RoutedEventData data)
+        private static void OpenDeferred(DependencyObject element, RoutedEventData data)
         {
             var popup = (Popup)element;
             popup.loadingDeferred = false;

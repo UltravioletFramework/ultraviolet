@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnGenericInteraction(UltravioletResource device, ref RoutedEventData data)
+        protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
         {
             if (!data.Handled)
             {
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
                 data.Handled = true;
             }
-            base.OnGenericInteraction(device, ref data);
+            base.OnGenericInteraction(device, data);
         }
         
         /// <inheritdoc/>

@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="y">The y-coordinate of the touch.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfTouchTapEventHandler(DependencyObject element, TouchDevice device, Int64 fingerID,
-        Double x, Double y, ref RoutedEventData data);
+        Double x, Double y, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a UI element receives an event from a touch device.
@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="pressure">The normalized pressure value of the touch.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfTouchEventHandler(DependencyObject element, TouchDevice device, Int64 fingerID,
-        Double x, Double y, Single pressure, ref RoutedEventData data);
+        Double x, Double y, Single pressure, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a UI element receives an event from a touch device.
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="pressure">The normalized pressure value of the touch.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
     public delegate void UpfTouchMotionEventHandler(DependencyObject element, TouchDevice device, Int64 fingerID,
-        Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data);
+        Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data);
 
     /// <summary>
     /// Represents a touch device.
@@ -511,10 +511,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewTap(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, ref RoutedEventData data)
+            Double x, Double y, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfTouchTapEventHandler>(PreviewTapEvent);
-            evt?.Invoke(element, device, fingerID, x, y, ref data);
+            evt?.Invoke(element, device, fingerID, x, y, data);
         }
 
         /// <summary>
@@ -522,10 +522,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewFingerUp(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Single pressure, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfTouchEventHandler>(PreviewFingerUpEvent);
-            evt?.Invoke(element, device, fingerID, x, y, pressure, ref data);
+            evt?.Invoke(element, device, fingerID, x, y, pressure, data);
         }
 
         /// <summary>
@@ -533,10 +533,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewFingerDown(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Single pressure, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfTouchEventHandler>(PreviewFingerDownEvent);
-            evt?.Invoke(element, device, fingerID, x, y, pressure, ref data);
+            evt?.Invoke(element, device, fingerID, x, y, pressure, data);
         }
 
         /// <summary>
@@ -544,10 +544,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewFingerMotion(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfTouchMotionEventHandler>(PreviewFingerMotionEvent);
-            evt?.Invoke(element, device, fingerID, x, y, dx, dy, pressure, ref data);
+            evt?.Invoke(element, device, fingerID, x, y, dx, dy, pressure, data);
         }
 
         /// <summary>
@@ -555,10 +555,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseTap(DependencyObject element, TouchDevice device, Int64 fingerID, 
-            Double x, Double y, ref RoutedEventData data)
+            Double x, Double y, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfTouchTapEventHandler>(TapEvent);
-            evt?.Invoke(element, device, fingerID, x, y, ref data);
+            evt?.Invoke(element, device, fingerID, x, y, data);
         }
 
         /// <summary>
@@ -566,10 +566,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseFingerUp(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Single pressure, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfTouchEventHandler>(FingerUpEvent);
-            evt?.Invoke(element, device, fingerID, x, y, pressure, ref data);
+            evt?.Invoke(element, device, fingerID, x, y, pressure, data);
         }
 
         /// <summary>
@@ -577,10 +577,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseFingerDown(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Single pressure, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfTouchEventHandler>(FingerDownEvent);
-            evt?.Invoke(element, device, fingerID, x, y, pressure, ref data);
+            evt?.Invoke(element, device, fingerID, x, y, pressure, data);
         }
 
         /// <summary>
@@ -588,10 +588,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseFingerMotion(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Double dx, Double dy, Single pressure, ref RoutedEventData data)
+            Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfTouchMotionEventHandler>(FingerMotionEvent);
-            evt?.Invoke(element, device, fingerID, x, y, dx, dy, pressure, ref data);
+            evt?.Invoke(element, device, fingerID, x, y, dx, dy, pressure, data);
         }
 
         // Represents the device state of the current Ultraviolet context.

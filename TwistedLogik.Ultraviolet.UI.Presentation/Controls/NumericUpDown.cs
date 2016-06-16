@@ -75,28 +75,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
             if (PART_Input != null)
             {
                 PART_Input.Focus();
             }
-            base.OnGotKeyboardFocus(device, oldFocus, newFocus, ref data);
+            base.OnGotKeyboardFocus(device, oldFocus, newFocus, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, ref RoutedEventData data)
+        protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
             if (PART_Input != null)
             {
                 PART_Input.InvalidateDisplayCache(TextBox.TextProperty);
                 PART_Input.CaretIndex = 0;
             }
-            base.OnLostKeyboardFocus(device, oldFocus, newFocus, ref data);
+            base.OnLostKeyboardFocus(device, oldFocus, newFocus, data);
         }
         
         /// <inheritdoc/>
-        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, ref RoutedEventData data)
+        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
             if (GamePad.UseAxisForDirectionalNavigation)
             {
@@ -115,11 +115,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
             }
 
-            base.OnGamePadAxisDown(device, axis, value, repeat, ref data);
+            base.OnGamePadAxisDown(device, axis, value, repeat, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, ref RoutedEventData data)
+        protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             if (!GamePad.UseAxisForDirectionalNavigation)
             {
@@ -136,7 +136,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         break;
                 }
             }
-            base.OnGamePadButtonDown(device, button, repeat, ref data);
+            base.OnGamePadButtonDown(device, button, repeat, data);
         }
         
         /// <summary>
@@ -151,7 +151,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Called when the ButtonUp component is clicked.
         /// </summary>
-        private void Increment(DependencyObject element, ref RoutedEventData data)
+        private void Increment(DependencyObject element, RoutedEventData data)
         {
             IncreaseSmall();
         }
@@ -159,7 +159,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Called when the ButtonDown component is clicked.
         /// </summary>
-        private void Decrement(DependencyObject element, ref RoutedEventData data)
+        private void Decrement(DependencyObject element, RoutedEventData data)
         {
             DecreaseSmall();
         }
@@ -179,7 +179,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles the <see cref="Mouse.PreviewMouseWheelEvent"/> routed event.
         /// </summary>
-        private static void HandlePreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, ref RoutedEventData data)
+        private static void HandlePreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, RoutedEventData data)
         {
             var numericUpDown = (NumericUpDown)element;
             if (numericUpDown.PART_Input.IsKeyboardFocused)
@@ -191,7 +191,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles the <see cref="Keyboard.PreviewKeyDownEvent"/> routed event.
         /// </summary>
-        private static void HandlePreviewKeyDown(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, ref RoutedEventData data)
+        private static void HandlePreviewKeyDown(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             var numericUpDown = (NumericUpDown)element;
             if (numericUpDown.PART_Input == data.OriginalSource)
@@ -214,7 +214,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Handles text entry validation for the updown's text editor.
         /// </summary>
-        private static void HandleTextEntryValidation(DependencyObject element, StringSegment text, Int32 offset, Char character, ref Boolean valid, ref RoutedEventData data)
+        private static void HandleTextEntryValidation(DependencyObject element, StringSegment text, Int32 offset, Char character, TextEntryValidationRoutedEventData data)
         {
             var numericUpDown = (NumericUpDown)element;
             if (numericUpDown.PART_Input != data.OriginalSource)
@@ -227,7 +227,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (character == '-')
             {
                 if (offset > 0 || numericUpDown.Minimum >= 0)
-                    valid = false;
+                    data.Valid = false;
 
                 return;
             }
@@ -236,7 +236,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var negativeSignPos = text.IndexOf('-');
             if (negativeSignPos >= 0 && offset < 1)
             {
-                valid = false;
+                data.Valid = false;
                 return;
             }
             
@@ -247,13 +247,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 if (decimalSeparatorPos >= 0 || numericUpDown.DecimalPlaces == 0)
                 {
-                    valid = false;
+                    data.Valid = false;
                     return;
                 }
 
                 var decimalsIntroduced = text.Length - offset;
                 if (decimalsIntroduced > numericUpDown.DecimalPlaces)
-                    valid = false;
+                    data.Valid = false;
 
                 return;
             }
@@ -261,7 +261,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             // Non-digit characters cannot be inserted.
             if (!Char.IsDigit(character))
             {
-                valid = false;
+                data.Valid = false;
                 return;
             }
 
@@ -269,7 +269,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var decimalCount = (decimalSeparatorPos < 0) ? 0 : text.Length - (decimalSeparatorPos + 1);
             if (decimalSeparatorPos >= 0 && decimalSeparatorPos < offset && decimalCount >= numericUpDown.DecimalPlaces)
             {
-                valid = false;
+                data.Valid = false;
                 return;
             }
         }

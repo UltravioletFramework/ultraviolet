@@ -9,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// </summary>
     /// <param name="dobj">The tool tip that was opened or closed.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfToolTipEventHandler(DependencyObject dobj, ref RoutedEventData data);
+    public delegate void UpfToolTipEventHandler(DependencyObject dobj, RoutedEventData data);
 
     /// <summary>
     /// Contains attached properties and events relating to tool tips.
@@ -718,7 +718,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         internal static void RaiseToolTipOpening(DependencyObject element, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfToolTipEventHandler>(ToolTipOpeningEvent);
-            evt?.Invoke(element, ref data);
+            evt?.Invoke(element, data);
         }
 
         /// <summary>
@@ -728,7 +728,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         internal static void RaiseToolTipClosing(DependencyObject element, RoutedEventData data)
         {
             var evt = EventManager.GetInvocationDelegate<UpfToolTipEventHandler>(ToolTipClosingEvent);
-            evt?.Invoke(element, ref data);
+            evt?.Invoke(element, data);
         }
     }
 }

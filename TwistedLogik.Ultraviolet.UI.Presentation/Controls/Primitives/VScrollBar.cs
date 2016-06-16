@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for LineUpButton.
         /// </summary>
-        private void HandleClickLineUp(DependencyObject element, ref RoutedEventData data)
+        private void HandleClickLineUp(DependencyObject element, RoutedEventData data)
         {
             DecreaseSmall();
             RaiseScrollEvent(ScrollEventType.SmallDecrement);
@@ -31,7 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for LineDownButton.
         /// </summary>
-        private void HandleClickLineDown(DependencyObject element, ref RoutedEventData data)
+        private void HandleClickLineDown(DependencyObject element, RoutedEventData data)
         {
             IncreaseSmall();
             RaiseScrollEvent(ScrollEventType.SmallIncrement);

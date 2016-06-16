@@ -210,9 +210,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected virtual void OnValueChanged()
         {
-            var evtData = new RoutedEventData(this);
+            var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(ValueChangedEvent);
-            evtDelegate(this, ref evtData);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>
