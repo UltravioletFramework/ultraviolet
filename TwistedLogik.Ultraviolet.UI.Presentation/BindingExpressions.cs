@@ -280,6 +280,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     {
                         typeComparer = GetReferenceComparisonFunction(type);
                     }
+#if CODE_GEN_ENABLED
                     else if (type.GetInterfaces().Where(x => x == typeof(IEquatable<>).MakeGenericType(type)).Any())
                     {
                         typeComparer = GetIEquatableComparisonFunction(type);
@@ -288,6 +289,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     {
                         typeComparer = GetNullableComparisonFunction(type);
                     }
+#endif
                     else if (type.IsEnum)
                     {
                         typeComparer = GetEnumComparisonFunction(type);
@@ -367,6 +369,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return Expression.Lambda(delegateType, delegateBody, param1, param2).Compile();
         }
 
+#if CODE_GEN_ENABLED
         /// <summary>
         /// Gets a comparison function for value types which implement <see cref="IEquatable{T}"/>.
         /// </summary>
@@ -399,6 +402,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var delegateType = typeof(DataBindingComparer<>).MakeGenericType(type);
             return Expression.Lambda(delegateType, Expression.Call(nullableEqualsMethod, arg1, arg2), arg1, arg2).Compile();
         }
+#endif
 
         /// <summary>
         /// Gets a comparison function for enumeration types.
@@ -423,11 +427,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var param1 = Expression.Parameter(type, "o1");
             var param2 = Expression.Parameter(type, "o2");
-            var arg1   = param1;
-            var arg2   = Expression.Convert(param2, typeof(Object));
+            var arg1 = param1;
+            var arg2 = Expression.Convert(param2, typeof(Object));
 
             var delegateType = typeof(DataBindingComparer<>).MakeGenericType(type);
-            return Expression.Lambda(delegateType, Expression.Call(miObjectEquals, arg1, arg2), param1, param2).Compile();
+            return Expression.Lambda(delegateType, Expression.Call(miObjectEquals,
+                Expression.Convert(arg1, typeof(Object)), Expression.Convert(arg2, typeof(Object))), param1, param2).Compile();
         }
 
         /// <summary>
