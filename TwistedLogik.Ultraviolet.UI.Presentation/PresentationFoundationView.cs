@@ -2378,15 +2378,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (tapData.Handled)
                     handled = true;
 
-				if (device.GetIndexFromFingerID(fingerID) == 0)
+                if (device.GetIndexFromFingerID(fingerID) == 0)
                 {
                     var genericInteractionData = RoutedEventData.Retrieve(recipient, handled, false);
                     Generic.RaisePreviewGenericInteraction(recipient, device, genericInteractionData);
                     Generic.RaiseGenericInteraction(recipient, device, genericInteractionData);
-                    genericInteractionData.Release();
 
                     if (genericInteractionData.Handled)
                         handled = true;
+
+                    genericInteractionData.Release();
                 }
 
                 if (originalFocus != elementWithFocus)
