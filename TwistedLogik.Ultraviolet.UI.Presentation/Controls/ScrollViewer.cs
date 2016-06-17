@@ -624,7 +624,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
         {
-            if (!data.Handled && fingerID == 0)
+			if (!data.Handled && device.GetIndexFromFingerID(fingerID) == 0)
             {
                 if (dx != 0 && PART_HScroll != null)
                 {

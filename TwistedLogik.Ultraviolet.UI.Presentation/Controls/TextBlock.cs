@@ -151,7 +151,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, RoutedEventData data)
         {
-            if (fingerID == 0)
+			if (device.GetIndexFromFingerID(fingerID) == 0)
             {
                 LinkUtil.DeactivateTextLink(textLayoutCommands, this);
                 LinkUtil.UpdateLinkCursor(textLayoutCommands, this, null);
