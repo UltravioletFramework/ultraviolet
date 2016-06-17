@@ -63,9 +63,9 @@ namespace TwistedLogik.Ultraviolet.iOS.Graphics
                 {
                     var pixel = ((byte*)bmpData.ToPointer()) + (stride * y) + (x * sizeof(UInt32));
                     var a = *pixel++;
-                    var r = *pixel++;
-                    var g = *pixel++;
                     var b = *pixel++;
+                    var g = *pixel++;
+                    var r = *pixel++;
                     return new Color(r, g, b, a);
                 }
             }
@@ -116,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.iOS.Graphics
         }
 
         /// <inheritdoc/>
-        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.RGBA;
+        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.BGRA;
 
         /// <summary>
         /// Reverses the premultiplication which is automatically applied by the iOS API's...

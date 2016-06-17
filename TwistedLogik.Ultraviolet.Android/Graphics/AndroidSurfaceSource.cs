@@ -53,8 +53,12 @@ namespace TwistedLogik.Ultraviolet.Android.Graphics
 
                 unsafe
                 {
-                    fixed (Byte* pixel = &bmpData[y * stride + (x * sizeof(UInt32))])
-                        return Color.FromArgb(*(UInt32*)pixel);
+                    var pixel = ((byte*)Data.ToPointer()) + (stride * y) + (x * sizeof(UInt32));
+                    var a = *pixel++;
+                    var b = *pixel++;
+                    var g = *pixel++;
+                    var r = *pixel++;
+                    return new Color(r, g, b, a);
                 }
             }
         }
