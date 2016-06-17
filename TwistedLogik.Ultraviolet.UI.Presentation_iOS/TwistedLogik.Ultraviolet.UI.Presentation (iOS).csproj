@@ -79,6 +79,75 @@
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Resources\Strings.xml">
       <Link>Resources\Strings.xml</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Resources\Content\Fonts\SegoeUITexture.png">
+      <Link>Resources\Content\Fonts\SegoeUITexture.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml">
+      <Link>Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Primitives\Templates\HScrollBar.xml">
+      <Link>Controls\Primitives\Templates\HScrollBar.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Primitives\Templates\ToggleButton.xml">
+      <Link>Controls\Primitives\Templates\ToggleButton.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Primitives\Templates\VScrollBar.xml">
+      <Link>Controls\Primitives\Templates\VScrollBar.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\Button.xml">
+      <Link>Controls\Templates\Button.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\CheckBox.xml">
+      <Link>Controls\Templates\CheckBox.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\ComboBox.xml">
+      <Link>Controls\Templates\ComboBox.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\ComboBoxItem.xml">
+      <Link>Controls\Templates\ComboBoxItem.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\HSlider.xml">
+      <Link>Controls\Templates\HSlider.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\ListBox.xml">
+      <Link>Controls\Templates\ListBox.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\ListBoxItem.xml">
+      <Link>Controls\Templates\ListBoxItem.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\NumericUpDown.xml">
+      <Link>Controls\Templates\NumericUpDown.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\PasswordBox.xml">
+      <Link>Controls\Templates\PasswordBox.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\ProgressBar.xml">
+      <Link>Controls\Templates\ProgressBar.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\RadioButton.xml">
+      <Link>Controls\Templates\RadioButton.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\RepeatButton.xml">
+      <Link>Controls\Templates\RepeatButton.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\ScrollViewer.xml">
+      <Link>Controls\Templates\ScrollViewer.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\TabControl.xml">
+      <Link>Controls\Templates\TabControl.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\TabItem.xml">
+      <Link>Controls\Templates\TabItem.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\TextBox.xml">
+      <Link>Controls\Templates\TextBox.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\ToolTip.xml">
+      <Link>Controls\Templates\ToolTip.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Controls\Templates\VSlider.xml">
+      <Link>Controls\Templates\VSlider.xml</Link>
+    </EmbeddedResource>
     <Content Include="..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
