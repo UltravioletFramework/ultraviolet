@@ -2217,10 +2217,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var mouseDownData = RoutedEventData.Retrieve(dobj, autorelease: false);
                     Mouse.RaisePreviewMouseDown(dobj, device, button, mouseDownData);
                     Mouse.RaiseMouseDown(dobj, device, button, mouseDownData);
-                    mouseDownData.Release();
 
                     if (mouseDownData.Handled)
                         handled = true;
+
+                    mouseDownData.Release();
 
                     if (!Generic.IsTouchDeviceAvailable && button == MouseButton.Left)
                     {
