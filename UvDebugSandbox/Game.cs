@@ -33,10 +33,9 @@ namespace UvDebugSandbox
         /// </summary>
         public Game() : base("YOUR_COMPANY_NAME", "ProjectName")
         {
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
 #if IOS
-            // TODO: Make the compiled expressions assembly expose some common type for this purpose
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.UvDebugSandbox_UI_Controls_TriangleColorSelector_Template_Impl>();
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.CompilerMetadata>();
 #endif
         }
 

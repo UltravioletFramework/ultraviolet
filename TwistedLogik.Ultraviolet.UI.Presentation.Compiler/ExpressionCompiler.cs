@@ -283,6 +283,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             options.ReferencedAssemblies.AddRange(references.Distinct().ToArray());
 
             var files = new List<String>();
+            files.Add(WriteCompilerMetadataFile());
 
             foreach (var info in infos)
             {
@@ -955,6 +956,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 return "ref " + parameter.Name;
             }
             return parameter.Name;
+        }
+
+        /// <summary>
+        /// Builds the source code for the CompilerMetadata class and writes it to a file.
+        /// </summary>
+        /// <returns>The path to the file to which the class was written.</returns>
+        private static String WriteCompilerMetadataFile()
+        {
+            var writer = new DataSourceWrapperWriter();
+            var version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
+            writer.WriteLine("using System;");
+            writer.WriteLine();
+            writer.WriteLine("namespace " + PresentationFoundationView.DataSourceWrapperNamespaceForViews);
+            writer.WriteLine("{");
+            writer.WriteLine("#pragma warning disable 1591");
+            writer.WriteLine("#pragma warning disable 0184");
+            writer.WriteLine("[System.CLSCompliant(false)]");
+            writer.WriteLine("[System.CodeDom.Compiler.GeneratedCode(\"UPF Binding Expression Compiler\", \"{0}\")]", version);
+            writer.WriteLine("public sealed class CompilerMetadata");
+            writer.WriteLine("{");
+            writer.WriteLine("public static String Version {{ get {{ return \"{0}\"; }} }}", version);
+            writer.WriteLine("}");
+            writer.WriteLine("#pragma warning restore 1591");
+            writer.WriteLine("#pragma warning restore 0184");
+            writer.WriteLine("}");
+
+            var path = Path.Combine(Path.GetTempPath(), "CompilerMetadata.cs");
+            File.WriteAllText(path, writer.ToString());
+
+            return path;
         }
 
         /// <summary>
