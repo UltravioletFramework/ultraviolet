@@ -2378,7 +2378,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (tapData.Handled)
                     handled = true;
 
-                if (fingerID == 0)
+				if (device.GetIndexFromFingerID(fingerID) == 0)
                 {
                     var genericInteractionData = RoutedEventData.Retrieve(recipient, handled, false);
                     Generic.RaisePreviewGenericInteraction(recipient, device, genericInteractionData);
