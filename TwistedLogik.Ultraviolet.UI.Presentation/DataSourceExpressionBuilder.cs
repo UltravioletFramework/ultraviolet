@@ -34,9 +34,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 reference = Expression.PropertyOrField(current, component);
             }
-            catch (ArgumentException e) 
-            { 
-                throw new InvalidOperationException(PresentationStrings.CannotResolveBindingExpression.Format(bindingExpression), e); 
+            catch (ArgumentException e)
+            {
+                throw new InvalidOperationException(PresentationStrings.CannotResolveBindingExpression.Format(bindingExpression), e);
             }
 
             if (conversion != null)
@@ -44,7 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 reference = Expression.Convert(reference, conversion);
             }
 
-            var variable  = Expression.Variable(reference.Type, "var" + variables.Count);
+            var variable = Expression.Variable(reference.Type, "var" + variables.Count);
             variables.Add(variable);
 
             var assignment = Expression.Assign(variable, reference);
@@ -76,8 +76,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected void CreateReturnTarget()
         {
-            exitTarget       = Expression.Label("exit");
-            exitLabel        = Expression.Label(exitTarget);
+            exitTarget = Expression.Label("exit");
+            exitLabel = Expression.Label(exitTarget);
             defaultReturnExpression = Expression.Return(exitTarget);
         }
 
@@ -87,8 +87,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="type">The target's type.</param>
         protected void CreateReturnTarget(Type type)
         {
-            exitTarget       = Expression.Label(type, "exit");
-            exitLabel        = Expression.Label(exitTarget, Expression.Default(type));
+            exitTarget = Expression.Label(type, "exit");
+            exitLabel = Expression.Label(exitTarget, Expression.Default(type));
             defaultReturnExpression = Expression.Return(exitTarget, Expression.Default(type));
         }
 
@@ -120,7 +120,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // State values.
         protected readonly Type dataSourceType;
         protected readonly List<Expression> expressions = new List<Expression>();
-        protected readonly List<ParameterExpression> variables  = new List<ParameterExpression>();
+        protected readonly List<ParameterExpression> variables = new List<ParameterExpression>();
         protected readonly List<ParameterExpression> parameters = new List<ParameterExpression>();
         private LabelTarget exitTarget;
         private LabelExpression exitLabel;

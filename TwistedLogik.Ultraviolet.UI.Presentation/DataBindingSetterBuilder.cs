@@ -21,6 +21,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.boundType = expressionType;
             this.delegateType = typeof(DataBindingSetter<>).MakeGenericType(expressionType);
 
+#if CODE_GEN_ENABLED
             CreateReturnTarget();
 
             var path = BindingExpressions.GetBindingMemberPathPart(expression);
@@ -42,17 +43,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var lambda = Expression.Lambda(delegateType, lambdaBody, parameters);
 
             lambdaExpression = lambda;
+#else
+            var expParamDataSource = Expression.Parameter(typeof(Object), "dataSource");
+            var expParamValue = Expression.Parameter(boundType, "value");
+
+            var implMethod = typeof(DataBindingSetterBuilder).GetMethod(nameof(ReflectionBasedImplementation),
+                BindingFlags.NonPublic | BindingFlags.Static);
+
+            var path = BindingExpressions.GetBindingMemberPathPart(expression);
+            var property = dataSourceType.GetProperty(path);
+
+            if (!property.CanWrite)
+                return;
+
+            var expImplMethodCall = Expression.Call(implMethod,
+                Expression.Constant(property),
+                Expression.Convert(expParamDataSource, typeof(Object)),
+                Expression.Convert(expParamValue, typeof(Object)));
+
+            lambdaExpression = Expression.Lambda(delegateType, expImplMethodCall, expParamDataSource, expParamValue);
+#endif
         }
 
         /// <summary>
         /// Compiles a new instance of the <see cref="DataBindingSetter{T}"/> delegate type.
         /// </summary>
-        /// <returns>The <see cref="DataBindingGetter{T}"/> that was compiled.</returns>
+        /// <returns>The <see cref="DataBindingSetter{T}"/> that was compiled.</returns>
         public Delegate Compile()
         {
             return (lambdaExpression == null) ? null : lambdaExpression.Compile();
         }
 
+#if !CODE_GEN_ENABLED
+        /// <summary>
+        /// Represents a reflection-based implementation of a binding expression setter which is
+        /// used on platforms that don't support runtime code generation.
+        /// </summary>
+        private static void ReflectionBasedImplementation(PropertyInfo property, Object dataSource, Object value)
+        {
+            if (dataSource == null)
+                return;
+
+            var convertedValue = Convert.ChangeType(value, property.PropertyType);
+            property.SetValue(dataSource, convertedValue, null);
+        }
+#else
         /// <summary>
         /// Adds a reference to the data source. If accessing the data source would
         /// result in a <see cref="NullReferenceException"/>, the getter will return a default value.
@@ -108,6 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             expressions.Add(Expression.Assign(memberExpression, Expression.Convert(value, memberExpression.Type)));
             return true;
         }
+#endif
 
         // State values.
         private readonly Type boundType;

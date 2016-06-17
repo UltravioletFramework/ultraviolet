@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -19,6 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             this.delegateType = typeof(DataBindingGetter<>).MakeGenericType(expressionType);
 
+#if CODE_GEN_ENABLED
             CreateReturnTarget(expressionType);
 
             var path = BindingExpressions.GetBindingMemberPathPart(expression);
@@ -35,6 +37,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var lambda = Expression.Lambda(delegateType, lambdaBody, parameters);
 
             lambdaExpression = lambda;
+#else
+            var expParamDataSource = Expression.Parameter(typeof(Object), "dataSource");
+
+            var implMethod = typeof(DataBindingGetterBuilder).GetMethod(nameof(ReflectionBasedImplementation),
+                BindingFlags.NonPublic | BindingFlags.Static);
+
+            var path = BindingExpressions.GetBindingMemberPathPart(expression);
+            var property = dataSourceType.GetProperty(path);
+
+            if (!property.CanRead)
+                return;
+
+            var expImplMethodCall = Expression.Call(implMethod,
+                Expression.Constant(property),
+                Expression.Convert(expParamDataSource, typeof(Object)));
+
+            lambdaExpression = Expression.Lambda(delegateType,
+                Expression.Convert(
+                    Expression.Convert(expImplMethodCall, property.PropertyType),
+                expressionType), expParamDataSource);
+#endif
         }
 
         /// <summary>
@@ -46,6 +69,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return (lambdaExpression == null) ? null : lambdaExpression.Compile();
         }
 
+#if !CODE_GEN_ENABLED
+        /// <summary>
+        /// Represents a reflection-based implementation of a binding expression setter which is
+        /// used on platforms that don't support runtime code generation.
+        /// </summary>
+        private static Object ReflectionBasedImplementation(PropertyInfo property, Object dataSource)
+        {
+            if (dataSource == null)
+                return null;
+
+            return property.GetValue(dataSource, null);
+        }
+#else
         /// <summary>
         /// Adds a reference to the data source. If accessing the data source would
         /// result in a <see cref="NullReferenceException"/>, the getter will return a default value.
@@ -66,6 +102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return variable;
         }
+#endif
 
         // State values.
         private readonly Type delegateType;
