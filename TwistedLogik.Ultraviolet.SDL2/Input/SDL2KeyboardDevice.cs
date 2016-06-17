@@ -27,13 +27,26 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             this.states = new InternalButtonState[numkeys];
 
             uv.Messages.Subscribe(this,
+                UltravioletMessages.SoftwareKeyboardShown);
+            uv.Messages.Subscribe(this,
+                UltravioletMessages.SoftwareKeyboardHidden);
+
+            uv.Messages.Subscribe(this,
                 SDL2UltravioletMessages.SDLEvent);
         }
 
         /// <inheritdoc/>
         void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
         {
-            if (type == SDL2UltravioletMessages.SDLEvent)
+            if (type == UltravioletMessages.SoftwareKeyboardShown)
+            {
+                SDL.StartTextInput();
+            }
+            else if (type == UltravioletMessages.SoftwareKeyboardHidden)
+            {
+                SDL.StopTextInput();
+            }
+            else if (type == SDL2UltravioletMessages.SDLEvent)
             {
                 var evt = ((SDL2EventMessageData)data).Event;
                 switch (evt.type)

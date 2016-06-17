@@ -89,10 +89,6 @@
       <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
       <Name>TwistedLogik.Ultraviolet %28Android%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2_Android\TwistedLogik.Ultraviolet.SDL2 %28Android%29.csproj">
-      <Project>{b5502009-935a-40ba-b415-abbf55427cad}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2 %28Android%29</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Version.tt">

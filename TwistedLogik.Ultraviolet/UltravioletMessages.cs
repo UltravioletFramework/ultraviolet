@@ -25,5 +25,15 @@ namespace TwistedLogik.Ultraviolet
         /// An event indicating that the application was resumed after being suspended.
         /// </summary>
         public static readonly UltravioletMessageID ApplicationResumed = UltravioletMessageID.Acquire("ApplicationResumed");
+
+        /// <summary>
+        /// An event indicating that the software keyboard was shown.
+        /// </summary>
+        public static readonly UltravioletMessageID SoftwareKeyboardShown = UltravioletMessageID.Acquire("SoftwareKeyboardShown");
+
+        /// <summary>
+        /// An event indicating that the software keyboard was hidden.
+        /// </summary>
+        public static readonly UltravioletMessageID SoftwareKeyboardHidden = UltravioletMessageID.Acquire("SoftwareKeyboardHidden");
     }
 }

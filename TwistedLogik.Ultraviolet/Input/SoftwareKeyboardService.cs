@@ -25,5 +25,25 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <returns><see langword="true"/> if the software keyboard was hidden; otherwise, false.</returns>
         public abstract Boolean HideSoftwareKeyboard();
+
+        /// <summary>
+        /// Informs the Ultraviolet context that the software keyboard is being shown by publishing
+        /// a <see cref="UltravioletMessages.SoftwareKeyboardShown"/> message.
+        /// </summary>
+        protected void OnShowingSoftwareKeyboard()
+        {
+            var uv = UltravioletContext.DemandCurrent();
+            uv.Messages.Publish(UltravioletMessages.SoftwareKeyboardShown, null);
+        }
+
+        /// <summary>
+        /// Informs the Ultraviolet context that the software keyboard is being hidden by publishing
+        /// a <see cref="UltravioletMessages.SoftwareKeyboardHidden"/> message.
+        /// </summary>
+        protected void OnHidingSoftwareKeyboard()
+        {
+            var uv = UltravioletContext.DemandCurrent();
+            uv.Messages.Publish(UltravioletMessages.SoftwareKeyboardHidden, null);
+        }
     }
 }

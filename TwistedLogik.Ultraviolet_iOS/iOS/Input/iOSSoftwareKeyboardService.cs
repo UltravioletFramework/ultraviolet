@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.SDL2;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.iOS.Bindings;
 using UIKit;
@@ -13,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.iOS.Input
             var controller = (SDL_uikitviewcontroller)UIApplication.SharedApplication?.KeyWindow?.RootViewController;
             if (controller == null)
                 return false;
-
+            
             var textField = (UITextField)controller.View.Subviews[0];
             switch (mode)
             {
@@ -39,6 +40,8 @@ namespace TwistedLogik.Ultraviolet.iOS.Input
             }
 
             controller.ShowKeyboard();
+            OnShowingSoftwareKeyboard();
+
             return true;
         }
 
@@ -50,6 +53,8 @@ namespace TwistedLogik.Ultraviolet.iOS.Input
                 return false;
 
             controller.HideKeyboard();
+            OnHidingSoftwareKeyboard();
+
             return true;
         }
     }
