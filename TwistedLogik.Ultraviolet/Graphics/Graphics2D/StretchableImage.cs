@@ -5,7 +5,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents an image made of segments and designed to be stretched over an arbitrary area.
     /// </summary>
-    public abstract class StretchableImage : TextureImage
+    public abstract partial class StretchableImage : TextureImage
     {
         /// <summary>
         /// Represents the axes along which an image can be tiled.
@@ -89,30 +89,27 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <typeparam name="VertexType">The type of vertex used to render the batch's sprites.</typeparam>
         /// <typeparam name="SpriteData">The type of data object associated with each of the batch's sprite instances.</typeparam>
-        /// <param name="mode">A <see cref="TilingMode"/> value which specifies how to tile the image.</param>
         /// <param name="spriteBatch">The sprite batch with which to draw the segment.</param>
-        /// <param name="texture">The segment's texture.</param>
-        /// <param name="position">The segment's position in screen coordinates.</param>
-        /// <param name="destinationRectangle">A rectangle which indicates where on the screen the segment will be drawn.</param>
-        /// <param name="sourceRectangle">The segment's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
-        /// <param name="color">The segment's tint color.</param>
-        /// <param name="rotation">The segment's rotation in radians.</param>
-        /// <param name="origin">The segment's origin point.</param>
-        /// <param name="effects">The segment's rendering effects.</param>
-        /// <param name="layerDepth">The segment's layer depth.</param>
-        /// <param name="data">The segment's custom data.</param>
-        protected static void TileImageSegment<VertexType, SpriteData>(TilingMode mode, SpriteBatchBase<VertexType, SpriteData> spriteBatch,
-            Texture2D texture, Vector2 position, RectangleF destinationRectangle, Rectangle sourceRectangle, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
+        /// <param name="tilingMode">A <see cref="TilingMode"/> value which specifies how to tile the image.</param>
+        /// <param name="tilingData">A <see cref="TilingData"/> structure which contains the tiling parameters.</param>
+        /// <param name="spriteData">The segment's custom sprite data.</param>
+        protected static void TileImageSegment<VertexType, SpriteData>(
+            SpriteBatchBase<VertexType, SpriteData> spriteBatch, TilingMode tilingMode, ref TilingData tilingData, SpriteData spriteData)
             where VertexType : struct, IVertexType
             where SpriteData : struct
         {
-            var tileHorizontally = (mode & TilingMode.Horizontal) == TilingMode.Horizontal;
-            var tileVertically   = (mode & TilingMode.Vertical) == TilingMode.Vertical;
+            var position = tilingData.Position;
+            var origin = tilingData.Origin;
+            var destinationRectangle = tilingData.DestinationRectangle;
+            var sourceRectangle = tilingData.SourceRectangle;
 
-            var tileCountX = tileHorizontally ?                
+            var tileHorizontally = (tilingMode & TilingMode.Horizontal) == TilingMode.Horizontal;
+            var tileVertically = (tilingMode & TilingMode.Vertical) == TilingMode.Vertical;
+
+            var tileCountX = tileHorizontally ?
                 (Int32)Math.Ceiling(destinationRectangle.Width / sourceRectangle.Width) : 1;
 
-            var tileCountY = tileVertically ?                
+            var tileCountY = tileVertically ?
                 (Int32)Math.Ceiling(destinationRectangle.Height / sourceRectangle.Height) : 1;
 
             var cx = 0f;
@@ -122,17 +119,18 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             {
                 for (int x = 0; x < tileCountX; x++)
                 {
-                    var srcTileWidth  = Math.Min(sourceRectangle.Width, destinationRectangle.Width - cx);
+                    var srcTileWidth = Math.Min(sourceRectangle.Width, destinationRectangle.Width - cx);
                     var srcTileHeight = Math.Min(sourceRectangle.Height, destinationRectangle.Height - cy);
 
-                    var dstTileWidth  = tileHorizontally ? srcTileWidth : destinationRectangle.Width;
+                    var dstTileWidth = tileHorizontally ? srcTileWidth : destinationRectangle.Width;
                     var dstTileHeight = tileVertically ? srcTileHeight : destinationRectangle.Height;
 
-                    var tileRegion   = new RectangleF(destinationRectangle.X, destinationRectangle.Y, dstTileWidth, dstTileHeight);
-                    var tileSource   = new Rectangle(sourceRectangle.X, sourceRectangle.Y, (Int32)srcTileWidth, (Int32)srcTileHeight);
+                    var tileRegion = new RectangleF(destinationRectangle.X, destinationRectangle.Y, dstTileWidth, dstTileHeight);
+                    var tileSource = new Rectangle(sourceRectangle.X, sourceRectangle.Y, (Int32)srcTileWidth, (Int32)srcTileHeight);
                     var tilePosition = new Vector2(position.X + cx, position.Y + cy);
-                    var tileOrigin   = origin - tilePosition;
-                    spriteBatch.Draw(texture, tileRegion, tileSource, color, rotation, tileOrigin, effects, layerDepth, data);
+                    var tileOrigin = origin - tilePosition;
+                    spriteBatch.Draw(tilingData.Texture,
+                        tileRegion, tileSource, tilingData.Color, tilingData.Rotation, tileOrigin, tilingData.Effects, tilingData.LayerDepth, spriteData);
 
                     cx = cx + sourceRectangle.Width;
                 }

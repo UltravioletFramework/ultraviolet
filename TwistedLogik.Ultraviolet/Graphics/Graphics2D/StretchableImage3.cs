@@ -45,11 +45,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The new instance of <see cref="StretchableImage3"/> that was created.</returns>
         public static StretchableImage3 Create(AssetID texture, Int32 x, Int32 y, Int32 width, Int32 height, Int32 left, Int32 right)
         {
-            var img           = new StretchableImage3();
-            img.TextureID     = texture;
+            var img = new StretchableImage3();
+            img.TextureID = texture;
             img.TextureRegion = new Rectangle(x, y, width, height);
-            img.Left          = left;
-            img.Right         = right;
+            img.Left = left;
+            img.Right = right;
             return img;
         }
 
@@ -149,16 +149,16 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
 
-            var texture    = AssetID.Invalid;
-            var x          = 0;
-            var y          = 0;
-            var width      = 0;
-            var height     = 0;
-            var left       = 0;
-            var right      = 0;
+            var texture = AssetID.Invalid;
+            var x = 0;
+            var y = 0;
+            var width = 0;
+            var height = 0;
+            var left = 0;
+            var right = 0;
             var tileCenter = false;
-            var tileEdges  = false;
-            var vertical   = false;
+            var tileEdges = false;
+            var vertical = false;
 
             image = null;
 
@@ -203,10 +203,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                     return false;
             }
 
-            image            = Create(texture, x, y, width, height, left, right);
+            image = Create(texture, x, y, width, height, left, right);
             image.TileCenter = tileCenter;
-            image.TileEdges  = tileEdges;
-            image.Vertical   = vertical;
+            image.TileEdges = tileEdges;
+            image.Vertical = vertical;
             return true;
         }
 
@@ -263,8 +263,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public Boolean Vertical
         {
             get { return vertical; }
-            set 
-            { 
+            set
+            {
                 vertical = value;
                 UpdateMinimumRecommendedSize();
             }
@@ -292,32 +292,44 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             where VertexType : struct, IVertexType
             where SpriteData : struct
         {
-            var srcTop    = this.Left;
+            var tilingData = new TilingData()
+            {
+                Texture = this.Texture,
+                Color = color,
+                Rotation = rotation,
+                Origin = origin,
+                Effects = effects,
+                LayerDepth = layerDepth
+            };
+
+            var srcTop = this.Left;
             var srcBottom = this.Right;
-            var dstTop    = srcTop;
+            var dstTop = srcTop;
             var dstBottom = srcBottom;
 
             if (height < MinimumRecommendedSize.Height)
             {
                 var scale = height / MinimumRecommendedSize.Height;
-                dstTop    = (Int32)Math.Floor(dstTop * scale);
+                dstTop = (Int32)Math.Floor(dstTop * scale);
                 dstBottom = (Int32)Math.Ceiling(dstBottom * scale);
             }
 
-            var srcStretchableWidth  = this.TextureRegion.Width;
+            var srcStretchableWidth = this.TextureRegion.Width;
             var srcStretchableHeight = this.TextureRegion.Height - (srcTop + srcBottom);
 
-            var dstStretchableWidth  = width;
+            var dstStretchableWidth = width;
             var dstStretchableHeight = height - (dstTop + dstBottom);
 
             // Center
-            var centerSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top + srcTop, srcStretchableWidth, srcStretchableHeight);
-            var centerRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstStretchableHeight);
+            var centerSource = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top + srcTop, srcStretchableWidth, srcStretchableHeight);
+            var centerRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, dstStretchableHeight);
             var centerPosition = new Vector2(0, dstTop);
             if (this.TileCenter)
             {
-                TileImageSegment(TilingMode.Vertical,
-                    spriteBatch, this.Texture, centerPosition, centerRegion, centerSource, color, rotation, origin, effects, layerDepth, data);
+                tilingData.Position = centerPosition;
+                tilingData.DestinationRectangle = centerRegion;
+                tilingData.SourceRectangle = centerSource;
+                TileImageSegment(spriteBatch, TilingMode.Vertical, ref tilingData, data);
             }
             else
             {
@@ -326,20 +338,25 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
 
             // Edges
-            var topSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, srcStretchableWidth, srcTop);
-            var topRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstTop);
+            var topSource = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, srcStretchableWidth, srcTop);
+            var topRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, dstTop);
             var topPosition = new Vector2(0, 0);
 
-            var bottomSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Bottom - srcBottom, srcStretchableWidth, srcBottom);
-            var bottomRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstBottom);
+            var bottomSource = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Bottom - srcBottom, srcStretchableWidth, srcBottom);
+            var bottomRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, dstBottom);
             var bottomPosition = new Vector2(0, height - dstBottom);
 
             if (this.TileEdges)
             {
-                TileImageSegment(TilingMode.Vertical,
-                    spriteBatch, this.Texture, topPosition, topRegion, topSource, color, rotation, origin, effects, layerDepth, data);
-                TileImageSegment(TilingMode.Vertical,
-                    spriteBatch, this.Texture, bottomPosition, bottomRegion, bottomSource, color, rotation, origin, effects, layerDepth, data);
+                tilingData.Position = topPosition;
+                tilingData.DestinationRectangle = topRegion;
+                tilingData.SourceRectangle = topSource;
+                TileImageSegment(spriteBatch, TilingMode.Vertical, ref tilingData, data);
+
+                tilingData.Position = centerPosition;
+                tilingData.DestinationRectangle = centerRegion;
+                tilingData.SourceRectangle = centerSource;
+                TileImageSegment(spriteBatch, TilingMode.Vertical, ref tilingData, data);
             }
             else
             {
@@ -357,32 +374,44 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             where VertexType : struct, IVertexType
             where SpriteData : struct
         {
-            var srcLeft  = this.Left;
+            var tilingData = new TilingData()
+            {
+                Texture = this.Texture,
+                Color = color,
+                Rotation = rotation,
+                Origin = origin,
+                Effects = effects,
+                LayerDepth = layerDepth
+            };
+
+            var srcLeft = this.Left;
             var srcRight = this.Right;
-            var dstLeft  = srcLeft;
+            var dstLeft = srcLeft;
             var dstRight = srcRight;
 
             if (width < MinimumRecommendedSize.Width)
             {
                 var scale = width / MinimumRecommendedSize.Width;
-                dstLeft   = (Int32)Math.Floor(dstLeft * scale);
-                dstRight  = (Int32)Math.Ceiling(dstRight * scale);
+                dstLeft = (Int32)Math.Floor(dstLeft * scale);
+                dstRight = (Int32)Math.Ceiling(dstRight * scale);
             }
 
-            var srcStretchableWidth  = this.TextureRegion.Width - (srcLeft + srcRight);
+            var srcStretchableWidth = this.TextureRegion.Width - (srcLeft + srcRight);
             var srcStretchableHeight = this.TextureRegion.Height;
 
-            var dstStretchableWidth  = width - (dstLeft + dstRight);
+            var dstStretchableWidth = width - (dstLeft + dstRight);
             var dstStretchableHeight = height;
 
             // Center
-            var centerSource   = new Rectangle(this.TextureRegion.Left + srcLeft, this.TextureRegion.Top, srcStretchableWidth, srcStretchableHeight);
-            var centerRegion   = new RectangleF(position.X, position.Y, dstStretchableWidth, dstStretchableHeight);
+            var centerSource = new Rectangle(this.TextureRegion.Left + srcLeft, this.TextureRegion.Top, srcStretchableWidth, srcStretchableHeight);
+            var centerRegion = new RectangleF(position.X, position.Y, dstStretchableWidth, dstStretchableHeight);
             var centerPosition = new Vector2(dstLeft, 0);
             if (this.TileCenter)
             {
-                TileImageSegment(TilingMode.Horizontal,
-                    spriteBatch, this.Texture, centerPosition, centerRegion, centerSource, color, rotation, origin, effects, layerDepth, data);
+                tilingData.Position = centerPosition;
+                tilingData.DestinationRectangle = centerRegion;
+                tilingData.SourceRectangle = centerSource;
+                TileImageSegment(spriteBatch, TilingMode.Horizontal, ref tilingData, data);
             }
             else
             {
@@ -391,21 +420,25 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
 
             // Edges
-            var leftSource   = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, srcLeft, srcStretchableHeight);
-            var leftRegion   = new RectangleF(position.X, position.Y, dstLeft, dstStretchableHeight);
+            var leftSource = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, srcLeft, srcStretchableHeight);
+            var leftRegion = new RectangleF(position.X, position.Y, dstLeft, dstStretchableHeight);
             var leftPosition = new Vector2(0, 0);
 
-            var rightSource   = new Rectangle(this.TextureRegion.Right - srcRight, this.TextureRegion.Top, srcRight, srcStretchableHeight);
-            var rightRegion   = new RectangleF(position.X, position.Y, dstRight, dstStretchableHeight);
+            var rightSource = new Rectangle(this.TextureRegion.Right - srcRight, this.TextureRegion.Top, srcRight, srcStretchableHeight);
+            var rightRegion = new RectangleF(position.X, position.Y, dstRight, dstStretchableHeight);
             var rightPosition = new Vector2(width - dstRight, 0);
 
             if (this.TileEdges)
             {
-                TileImageSegment(TilingMode.Horizontal,
-                    spriteBatch, this.Texture, leftPosition, leftRegion, leftSource, color, rotation, origin, effects, layerDepth, data);
+                tilingData.Position = leftPosition;
+                tilingData.DestinationRectangle = leftRegion;
+                tilingData.SourceRectangle = leftSource;
+                TileImageSegment(spriteBatch, TilingMode.Horizontal, ref tilingData, data);
 
-                TileImageSegment(TilingMode.Horizontal,
-                    spriteBatch, this.Texture, rightPosition, rightRegion, rightSource, color, rotation, origin, effects, layerDepth, data);
+                tilingData.Position = rightPosition;
+                tilingData.DestinationRectangle = rightRegion;
+                tilingData.SourceRectangle = rightSource;
+                TileImageSegment(spriteBatch, TilingMode.Horizontal, ref tilingData, data);
             }
             else
             {
@@ -435,7 +468,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 vertical = true;
                 return true;
             }
-            return StretchableImage.ParseTilingParameter(parameter, ref tileCenter, ref tileEdges);
+            return ParseTilingParameter(parameter, ref tileCenter, ref tileEdges);
         }
 
         /// <summary>
