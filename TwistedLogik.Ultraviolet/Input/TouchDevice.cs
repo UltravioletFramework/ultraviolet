@@ -73,13 +73,13 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <returns><see langword="true"/> if the device was tapped; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean WasTapped();
 
-		/// <summary>
-		/// Gets a value indicating whether the device was tapped anywhere on its surface
-		/// during the previous frame by the finger with the specified index.
-		/// </summary>
-		/// <param name="index">The index of the finger to evaluate.</param>
-		/// <returns><see langword="true"/> if the device was tapped; otherwise, <see langword="false"/>.</returns>
-		public abstract Boolean WasTappedBy(Int32 index);
+        /// <summary>
+        /// Gets a value indicating whether the device was tapped anywhere on its surface
+        /// during the previous frame by the finger with the specified index.
+        /// </summary>
+        /// <param name="index">The index of the finger to evaluate.</param>
+        /// <returns><see langword="true"/> if the device was tapped; otherwise, <see langword="false"/>.</returns>
+        public abstract Boolean WasTappedBy(Int32 index);
 
         /// <summary>
         /// Gets a value indicating whether the device was tapped anywhere in the specified
@@ -90,42 +90,42 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <returns><see langword="true"/> if the device was tapped; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean WasTapped(RectangleF area);
 
-		/// <summary>
-		/// Gets a value indicating whether the device was tapped anywhere in the specified
-		/// area on its surface during the previous frame by the finger with the specified index.
-		/// </summary>
-		/// <param name="index">The index of the finger to evaluate.</param>
-		/// <param name="area">A <see cref="RectangleF"/> structure containing the area to 
-		/// evaluate, specified in normalized coordinates.</param>
-		/// <returns><see langword="true"/> if the device was tapped; otherwise, <see langword="false"/>.</returns>
-		public abstract Boolean WasTappedBy(Int32 index, RectangleF area);
+        /// <summary>
+        /// Gets a value indicating whether the device was tapped anywhere in the specified
+        /// area on its surface during the previous frame by the finger with the specified index.
+        /// </summary>
+        /// <param name="index">The index of the finger to evaluate.</param>
+        /// <param name="area">A <see cref="RectangleF"/> structure containing the area to 
+        /// evaluate, specified in normalized coordinates.</param>
+        /// <returns><see langword="true"/> if the device was tapped; otherwise, <see langword="false"/>.</returns>
+        public abstract Boolean WasTappedBy(Int32 index, RectangleF area);
 
-		/// <summary>
-		/// Gets the current values for the specified active touch event.
-		/// </summary>
-		/// <param name="index">The index of the touch to retrieve.</param>
-		/// <param name="info">The touch information.</param>
-		/// <returns><see langword="true"/> if there is an active touch with the specified index;
-		/// otherwise, <see langword="false"/>.</returns>
-		public abstract Boolean GetActiveTouch(Int32 index, out TouchInfo info);
+        /// <summary>
+        /// Gets the current values for the specified active touch event.
+        /// </summary>
+        /// <param name="index">The index of the touch to retrieve.</param>
+        /// <param name="info">The touch information.</param>
+        /// <returns><see langword="true"/> if there is an active touch with the specified index;
+        /// otherwise, <see langword="false"/>.</returns>
+        public abstract Boolean GetActiveTouch(Int32 index, out TouchInfo info);
 
-		/// <summary>
-		/// Gets the identifier of the finger which started the touch with the
-		/// specified index.
-		/// </summary>
-		/// <param name="index">The index of the touch for which to retrieve a finger identifier.</param>
-		/// <returns>The finger identifier of the touch, or <see langword="null"/> if there is no
-		/// active touch with the specified index.</returns>
-		public abstract Int64? GetFingerIDFromIndex(Int32 index);
+        /// <summary>
+        /// Gets the identifier of the finger which started the touch with the
+        /// specified index.
+        /// </summary>
+        /// <param name="index">The index of the touch for which to retrieve a finger identifier.</param>
+        /// <returns>The finger identifier of the touch, or <see langword="null"/> if there is no
+        /// active touch with the specified index.</returns>
+        public abstract Int64? GetFingerIDFromIndex(Int32 index);
 
-		/// <summary>
-		/// Gets the index of the touch started by the finger with the
-		/// specified identifier.
-		/// </summary>
-		/// <param name="fingerID">The identifier of the finger for which to retrieve a touch index.</param>
-		/// <returns>The index of the touch, or <see langword="null"/> if there is no
-		/// active touch with the specified identifier.</returns>
-		public abstract Int32? GetIndexFromFingerID(Int64 fingerID);
+        /// <summary>
+        /// Gets the index of the touch started by the finger with the
+        /// specified identifier.
+        /// </summary>
+        /// <param name="fingerID">The identifier of the finger for which to retrieve a touch index.</param>
+        /// <returns>The index of the touch, or <see langword="null"/> if there is no
+        /// active touch with the specified identifier.</returns>
+        public abstract Int32? GetIndexFromFingerID(Int64 fingerID);
 
         /// <summary>
         /// Gets the maximum distance that a finger can move between its up and down events in order

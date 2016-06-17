@@ -56,12 +56,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                         if (evt.tfinger.touchId != sdlTouchID)
                             return;
 
-						var tapIndex = default(Int32?);
-						EndTap(evt.tfinger.fingerId, evt.tfinger.x, evt.tfinger.y, out tapIndex);
+                        var tapIndex = default(Int32?);
+                        EndTap(evt.tfinger.fingerId, evt.tfinger.x, evt.tfinger.y, out tapIndex);
                         OnFingerUp(evt.tfinger.fingerId, evt.tfinger.x, evt.tfinger.y, evt.tfinger.pressure);
 
-						if (tapIndex.HasValue)
-							RemoveTap(tapIndex.Value);
+                        if (tapIndex.HasValue)
+                            RemoveTap(tapIndex.Value);
                     }
                     break;
 
@@ -122,56 +122,56 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             return false;
         }
 
-		/// <inheritdoc/>
-		public override bool WasTappedBy(int index)
-		{
-			throw new NotImplementedException();
-		}
+        /// <inheritdoc/>
+        public override bool WasTappedBy(int index)
+        {
+            throw new NotImplementedException();
+        }
 
-		/// <inheritdoc/>
-		public override Boolean GetActiveTouch(Int32 index, out TouchInfo info)
-		{
-			unsafe
-			{	
-				var finger = SDL.GetTouchFinger(sdlTouchID, index);
-				if (finger == null)
-				{
-					info = default(TouchInfo);
-					return false;
-				}
+        /// <inheritdoc/>
+        public override Boolean GetActiveTouch(Int32 index, out TouchInfo info)
+        {
+            unsafe
+            {	
+                var finger = SDL.GetTouchFinger(sdlTouchID, index);
+                if (finger == null)
+                {
+                    info = default(TouchInfo);
+                    return false;
+                }
 
-				info = new TouchInfo(finger->id, finger->x, finger->y, finger->pressure);
-				return true;
-			}
-		}
+                info = new TouchInfo(finger->id, finger->x, finger->y, finger->pressure);
+                return true;
+            }
+        }
 
-		/// <inheritdoc/>
-		public override bool WasTappedBy(int index, RectangleF area)
-		{
-			throw new NotImplementedException();
-		}
+        /// <inheritdoc/>
+        public override bool WasTappedBy(int index, RectangleF area)
+        {
+            throw new NotImplementedException();
+        }
 
-		/// <inheritdoc/>
-		public override Int64? GetFingerIDFromIndex(Int32 index)
-		{
-			for (int i = 0; i < tapsInProgress.Count; i++)
-			{
-				if (tapsInProgress[i].FingerIndex == index)
-					return tapsInProgress[i].FingerID;
-			}
-			return null;
-		}
+        /// <inheritdoc/>
+        public override Int64? GetFingerIDFromIndex(Int32 index)
+        {
+            for (int i = 0; i < tapsInProgress.Count; i++)
+            {
+                if (tapsInProgress[i].FingerIndex == index)
+                    return tapsInProgress[i].FingerID;
+            }
+            return null;
+        }
 
-		/// <inheritdoc/>
-		public override Int32? GetIndexFromFingerID(Int64 fingerID)
-		{
-			for (int i = 0; i < tapsInProgress.Count; i++)
-			{
-				if (tapsInProgress[i].FingerID == fingerID)
-					return tapsInProgress[i].FingerIndex;
-			}
-			return null;
-		}
+        /// <inheritdoc/>
+        public override Int32? GetIndexFromFingerID(Int64 fingerID)
+        {
+            for (int i = 0; i < tapsInProgress.Count; i++)
+            {
+                if (tapsInProgress[i].FingerID == fingerID)
+                    return tapsInProgress[i].FingerIndex;
+            }
+            return null;
+        }
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
@@ -194,9 +194,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <param name="y">The y-coordinate at which the finger was pressed.</param>
         private void BeginTap(Int64 fingerID, Single x, Single y)
         {
-			var fingerIndex = tapsInProgress.Count;
-			var fingerData = new TouchTapData(fingerID, fingerIndex, x, y, timestamp);
-			tapsInProgress.Add(fingerData);
+            var fingerIndex = tapsInProgress.Count;
+            var fingerData = new TouchTapData(fingerID, fingerIndex, x, y, timestamp);
+            tapsInProgress.Add(fingerData);
         }
 
         /// <summary>
@@ -205,14 +205,14 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <param name="fingerID">The identifier of the finger that was released.</param>
         /// <param name="x">The x-coordinate at which the finger was released.</param>
         /// <param name="y">The y-coordinate at which the finger was released.</param>
-		/// <param name="index">The index of the tap that was ended.</param>
-		private void EndTap(Int64 fingerID, Single x, Single y, out Int32? index)
+        /// <param name="index">The index of the tap that was ended.</param>
+        private void EndTap(Int64 fingerID, Single x, Single y, out Int32? index)
         {
-			index = GetIndexFromFingerID(fingerID);
-			if (index == null)
-				return;
+            index = GetIndexFromFingerID(fingerID);
+            if (index == null)
+                return;
 
-			var data = tapsInProgress[index.Value];
+            var data = tapsInProgress[index.Value];
 
             var dx = Math.Abs(x - data.X);
             if (dx > MaximumTapDistance)
@@ -225,20 +225,20 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             var dt = timestamp - data.Timestamp;
             if (dt > MaximumTapDelay)
                 return;
-			
+            
             OnTap(fingerID, data.X, data.Y);
         }
 
-		/// <summary>
-		/// Removes a tap event from the device's list.
-		/// </summary>
-		/// <param name="index">The index of the tap event to remove.</param>
-		private void RemoveTap(Int32 index)
-		{
-			var tap = tapsInProgress[index];
-			tapsInProgress.RemoveAt(index);
-			tapsLastFrame.Add(tap);
-		}
+        /// <summary>
+        /// Removes a tap event from the device's list.
+        /// </summary>
+        /// <param name="index">The index of the tap event to remove.</param>
+        private void RemoveTap(Int32 index)
+        {
+            var tap = tapsInProgress[index];
+            tapsInProgress.RemoveAt(index);
+            tapsLastFrame.Add(tap);
+        }
 
         // State values.
         private readonly Int64 sdlTouchID;

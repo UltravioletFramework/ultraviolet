@@ -293,6 +293,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\Scancode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\SoftwareKeyboardService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\TouchDevice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\TouchInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InvalidCompatibilityShimException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletAudio.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletComponent.cs" />
@@ -390,7 +391,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Vector2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector4.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\TouchInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Content\ContentManifest.json" />
