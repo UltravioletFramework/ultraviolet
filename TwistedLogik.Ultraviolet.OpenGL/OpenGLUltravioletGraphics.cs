@@ -665,8 +665,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (Disposed)
                 return;
 
-            for (int i = 0; i < samplerObjects.Length; i++)
-                SafeDispose.Dispose(samplerObjects[i]);
+            if (samplerObjects != null)
+            {
+                for (int i = 0; i < samplerObjects.Length; i++)
+                    SafeDispose.Dispose(samplerObjects[i]);
+            }
 
             if (gl.Initialized)
                 gl.Uninitialize();
