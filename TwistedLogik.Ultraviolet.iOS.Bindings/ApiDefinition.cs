@@ -9,8 +9,8 @@ using UIKit;
 namespace TwistedLogik.Ultraviolet.iOS.Bindings
 {
     // @interface SDLUIKitDelegate : NSObject <UIApplicationDelegate>
-    [BaseType(typeof(NSObject))]
-    interface SDLUIKitDelegate : IUIApplicationDelegate
+    [BaseType(typeof(UIApplicationDelegate))]
+    interface SDLUIKitDelegate
     {
         // +(id)sharedAppDelegate;
         [Static]

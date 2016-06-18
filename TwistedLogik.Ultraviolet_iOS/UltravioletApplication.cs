@@ -1,6 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
+using Foundation;
 using ObjCRuntime;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Messages;
 using UIKit;
 
 namespace TwistedLogik.Ultraviolet
@@ -64,7 +67,21 @@ namespace TwistedLogik.Ultraviolet
 
                 Native.SDL_UV_SetMainProc(mainProcPtr);
             }
+
             UIApplication.Main(new String[0], null, nameof(UltravioletAppDelegate));
+        }
+
+        /// <summary>
+        /// Initializes the application's context after it has been acquired.
+        /// </summary>
+        partial void InitializeContext()
+        {
+            orientationDidChangeNotification = UIDevice.Notifications.ObserveOrientationDidChange((sender, args) =>
+            {
+                var messageData = Ultraviolet.Messages.CreateMessageData<OrientationChangedMessageData>();
+                messageData.Display = Ultraviolet.GetPlatform().Displays[0];
+                Ultraviolet.Messages.Publish(UltravioletMessages.OrientationChanged, messageData);
+            });
         }
 
         /// <summary>
@@ -81,7 +98,8 @@ namespace TwistedLogik.Ultraviolet
                 mainProcDelegate = null;
                 mainProcPtr = IntPtr.Zero;
             }
-            throw new NotImplementedException();
+
+            SafeDispose.DisposeRef(ref orientationDidChangeNotification);
         }
 
         /// <summary>
@@ -123,5 +141,8 @@ namespace TwistedLogik.Ultraviolet
 
         // The application's settings.
         private UltravioletApplicationSettings settings;
+
+        // Notifications.
+        private NSObject orientationDidChangeNotification;
     }
 }

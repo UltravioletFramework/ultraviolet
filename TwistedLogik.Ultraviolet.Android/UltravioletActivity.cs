@@ -10,7 +10,6 @@ using TwistedLogik.Nucleus.Messages;
 using TwistedLogik.Ultraviolet.Android.Input;
 using TwistedLogik.Ultraviolet.Android.Platform;
 using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Messages;
 using TwistedLogik.Ultraviolet.Platform;
 
@@ -125,7 +124,7 @@ namespace TwistedLogik.Ultraviolet
         {
             if (Ultraviolet != null && !Ultraviolet.Disposed)
             {
-                var display  = Ultraviolet.GetPlatform().Displays.First();
+                var display  = Ultraviolet.GetPlatform().Displays[0];
                 var rotation = (ScreenRotation)WindowManager.DefaultDisplay.Rotation;
 
                 if (rotation != display.Rotation)
@@ -181,9 +180,7 @@ namespace TwistedLogik.Ultraviolet
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the application's primary window is currently active.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean IsActive
         {
             get
@@ -197,9 +194,18 @@ namespace TwistedLogik.Ultraviolet
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the application is running on a fixed time step.
-        /// </summary>
+        /// <inheritdoc/>
+        public Boolean IsSuspended
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, disposed);
+
+                return suspended;
+            }
+        }
+
+        /// <inheritdoc/>
         public Boolean IsFixedTimeStep
         {
             get
@@ -220,9 +226,7 @@ namespace TwistedLogik.Ultraviolet
             }
         }
 
-        /// <summary>
-        /// Gets or sets the target time between frames when the application is running on a fixed time step.
-        /// </summary>
+        /// <inheritdoc/>
         public TimeSpan TargetElapsedTime
         {
             get
@@ -244,10 +248,7 @@ namespace TwistedLogik.Ultraviolet
             }
         }
 
-        /// <summary>
-        /// Gets or sets the amount of time to sleep every frame when
-        /// the application's primary window is inactive.
-        /// </summary>
+        /// <inheritdoc/>
         public TimeSpan InactiveSleepTime
         {
             get

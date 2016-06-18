@@ -107,10 +107,13 @@ namespace TwistedLogik.Ultraviolet
                         return;
                     }
 
-                    var uvTimeDraw = timeTrackerDraw.Increment(targetElapsedTime, isRunningSlowly);
-                    using (UltravioletProfiler.Section(UltravioletProfilerSections.Draw))
+                    if (!host.IsSuspended)
                     {
-                        uv.Draw(uvTimeDraw);
+                        var uvTimeDraw = timeTrackerDraw.Increment(targetElapsedTime, isRunningSlowly);
+                        using (UltravioletProfiler.Section(UltravioletProfilerSections.Draw))
+                        {
+                            uv.Draw(uvTimeDraw);
+                        }
                     }
 
                     uv.HandleFrameEnd();
@@ -143,10 +146,13 @@ namespace TwistedLogik.Ultraviolet
                     return;
                 }
 
-                var uvTimeDraw = uvTimeUpdate;
-                using (UltravioletProfiler.Section(UltravioletProfilerSections.Draw))
+                if (!host.IsSuspended)
                 {
-                    uv.Draw(uvTimeDraw);
+                    var uvTimeDraw = uvTimeUpdate;
+                    using (UltravioletProfiler.Section(UltravioletProfilerSections.Draw))
+                    {
+                        uv.Draw(uvTimeDraw);
+                    }
                 }
 
                 uv.HandleFrameEnd();

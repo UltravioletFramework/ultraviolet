@@ -98,9 +98,7 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the form is currently active.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean IsActive
         {
             get
@@ -111,9 +109,18 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the application is running on a fixed time step.
-        /// </summary>
+        /// <inheritdoc/>
+        public Boolean IsSuspended
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, IsDisposed);
+
+                return false;
+            }
+        }
+
+        /// <inheritdoc/>
         public Boolean IsFixedTimeStep
         {
             get
@@ -134,9 +141,7 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
             }
         }
 
-        /// <summary>
-        /// Gets or sets the target time between frames when the application is running on a fixed time step.
-        /// </summary>
+        /// <inheritdoc/>
         public TimeSpan TargetElapsedTime
         {
             get
@@ -158,10 +163,7 @@ namespace TwistedLogik.Ultraviolet.WindowsForms
             }
         }
 
-        /// <summary>
-        /// Gets or sets the amount of time to sleep every frame when
-        /// the application's primary window is inactive.
-        /// </summary>
+        /// <inheritdoc/>
         public TimeSpan InactiveSleepTime
         {
             get

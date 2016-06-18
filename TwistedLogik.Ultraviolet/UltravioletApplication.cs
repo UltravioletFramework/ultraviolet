@@ -128,9 +128,7 @@ namespace TwistedLogik.Ultraviolet
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the application's primary window is currently active.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean IsActive
         {
             get
@@ -140,13 +138,22 @@ namespace TwistedLogik.Ultraviolet
                 if (primary == null)
                     return false;
 
-                return primary.Active;
+                return primary.Active && !suspended;
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the application is running on a fixed time step.
-        /// </summary>
+        /// <inheritdoc/>
+        public Boolean IsSuspended
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, disposed);
+
+                return suspended;
+            }
+        }
+
+        /// <inheritdoc/>
         public Boolean IsFixedTimeStep
         {
             get
@@ -167,9 +174,7 @@ namespace TwistedLogik.Ultraviolet
             }
         }
 
-        /// <summary>
-        /// Gets or sets the target time between frames when the application is running on a fixed time step.
-        /// </summary>
+        /// <inheritdoc/>
         public TimeSpan TargetElapsedTime
         {
             get
@@ -191,10 +196,7 @@ namespace TwistedLogik.Ultraviolet
             }
         }
 
-        /// <summary>
-        /// Gets or sets the amount of time to sleep every frame when
-        /// the application's primary window is inactive.
-        /// </summary>
+        /// <inheritdoc/>
         public TimeSpan InactiveSleepTime
         {
             get
@@ -331,7 +333,15 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="data">The message data.</param>
         protected virtual void OnReceivedMessage(UltravioletMessageID type, MessageData data)
         {
-            if (type == UltravioletMessages.Quit)
+            if (type == UltravioletMessages.ApplicationSuspended)
+            {
+                suspended = true;
+            }
+            else if (type == UltravioletMessages.ApplicationResumed)
+            {
+                suspended = false;
+            }
+            else if (type == UltravioletMessages.Quit)
             {
                 running = false;
             }
@@ -435,6 +445,11 @@ namespace TwistedLogik.Ultraviolet
         partial void InitializeApplication();
 
         /// <summary>
+        /// Initializes the application's context after it has been acquired.
+        /// </summary>
+        partial void InitializeContext();
+
+        /// <summary>
         /// Disposes any platform-specific resources.
         /// </summary>
         partial void DisposePlatformResources();
@@ -454,6 +469,8 @@ namespace TwistedLogik.Ultraviolet
 
             CreateUltravioletHostCore();
 
+            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspended);
+            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
             this.uv.Messages.Subscribe(this, UltravioletMessages.Quit);
             this.uv.Updating += uv_Updating;
             this.uv.Shutdown += uv_Shutdown;
@@ -465,6 +482,8 @@ namespace TwistedLogik.Ultraviolet
             HookPrimaryWindowEvents();
 
             this.created = true;
+
+            InitializeContext();
         }
 
         /// <summary>
@@ -586,6 +605,7 @@ namespace TwistedLogik.Ultraviolet
         private UltravioletHostCore hostcore;
         private Boolean created;
         private Boolean running;
+        private Boolean suspended;
         private Boolean disposed;
         private IUltravioletWindow primary;
 

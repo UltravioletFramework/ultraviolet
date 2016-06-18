@@ -29,6 +29,14 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets a value indicating whether the application has been suspended.
+        /// </summary>
+        Boolean IsSuspended
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the application is running on a fixed time step.
         /// </summary>
         Boolean IsFixedTimeStep
