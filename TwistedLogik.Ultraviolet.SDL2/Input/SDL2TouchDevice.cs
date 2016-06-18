@@ -185,7 +185,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             }
             base.Dispose(disposing);
         }
-
+        
         /// <summary>
         /// Begins a tap event.
         /// </summary>
@@ -208,7 +208,17 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <param name="index">The index of the tap that was ended.</param>
         private void EndTap(Int64 fingerID, Single x, Single y, out Int32? index)
         {
-            index = GetIndexFromFingerID(fingerID);
+            index = null;
+
+            for (int i = 0; i < tapsInProgress.Count; i++)
+            {
+                if (tapsInProgress[i].FingerID == fingerID)
+                {
+                    index = i;
+                    break;
+                }
+            }
+
             if (index == null)
                 return;
 
