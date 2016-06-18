@@ -133,6 +133,14 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Processes the context's message queue.
+        /// </summary>
+        public void ProcessMessages()
+        {
+            messages.Process();
+        }
+
+        /// <summary>
         /// Processes a single queued work item, if any work items have been queued.
         /// </summary>
         public void ProcessSingleWorkItem()
@@ -1118,14 +1126,6 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         protected virtual void OnShutdown() =>
             Shutdown?.Invoke(this);
-
-        /// <summary>
-        /// Processes the context's message queue.
-        /// </summary>
-        protected virtual void ProcessMessages()
-        {
-            messages.Process();
-        }
 
         /// <summary>
         /// Gets the context's object factory.

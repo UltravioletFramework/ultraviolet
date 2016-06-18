@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
@@ -110,7 +111,11 @@ namespace TwistedLogik.Ultraviolet
             if (!PreserveApplicationSettings)
                 return;
 
-            // TODO
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "UltravioletSettings.xml");
+            if (!File.Exists(path))
+                return;
+
+            this.settings = UltravioletApplicationSettings.Load(path);
         }
 
         /// <summary>
@@ -121,7 +126,10 @@ namespace TwistedLogik.Ultraviolet
             if (!PreserveApplicationSettings)
                 return;
 
-            // TODO
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "UltravioletSettings.xml");
+
+            this.settings = UltravioletApplicationSettings.FromCurrentSettings(Ultraviolet);
+            UltravioletApplicationSettings.Save(path, settings);
         }
 
         /// <summary>

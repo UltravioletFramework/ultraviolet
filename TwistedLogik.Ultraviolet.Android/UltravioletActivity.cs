@@ -187,10 +187,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                if (primary == null)
-                    return false;
-
-                return primary.Active;
+                return active && !suspended;
             }
         }
 
@@ -371,6 +368,22 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Called when the application is suspended.
+        /// </summary>
+        protected virtual void OnSuspended()
+        {
+            SaveSettings();
+        }
+
+        /// <summary>
+        /// Called when the application is resumed.
+        /// </summary>
+        protected virtual void OnResumed()
+        {
+
+        }
+
+        /// <summary>
         /// Called when the application is being shut down.
         /// </summary>
         protected virtual void OnShutdown()
@@ -385,7 +398,21 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="data">The message data.</param>
         protected virtual void OnReceivedMessage(UltravioletMessageID type, MessageData data)
         {
-            if (type == UltravioletMessages.Quit)
+            if (type == UltravioletMessages.ApplicationSuspended)
+            {
+                suspended = true;
+                OnSuspended();
+            }
+            else if (type == UltravioletMessages.ApplicationResumed)
+            {
+                suspended = false;
+
+                if (hostcore != null)
+                    hostcore.ResetElapsed();
+
+                OnResumed();
+            }
+            else if (type == UltravioletMessages.Quit)
             {
                 running = false;
             }
@@ -394,8 +421,6 @@ namespace TwistedLogik.Ultraviolet
         /// <inheritdoc/>
         protected override void OnCreate(global::Android.OS.Bundle savedInstanceState)
         {
-            ResumeActivity();
-
             base.OnCreate(savedInstanceState);
 
             AndroidScreenDensityService.Activity = this;
@@ -406,15 +431,39 @@ namespace TwistedLogik.Ultraviolet
         protected override void OnDestroy()
         {
             suspended = false;
-            running   = false;
+            running = false;
 
             base.OnDestroy();
         }
 
         /// <inheritdoc/>
+        protected override void OnStart()
+        {
+            var uv = Ultraviolet;
+            if (uv != null && !uv.Disposed)
+            {
+                uv.Messages.Publish(UltravioletMessages.ApplicationResumed, null);
+                uv.ProcessMessages();
+            }
+            base.OnStart();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnStop()
+        {
+            var uv = Ultraviolet;
+            if (uv != null && !uv.Disposed)
+            {
+                uv.Messages.Publish(UltravioletMessages.ApplicationSuspended, null);
+                uv.ProcessMessages();
+            }
+            base.OnStop();
+        }
+
+        /// <inheritdoc/>
         protected override void OnPause()
         {
-            SuspendActivity();
+            active = false;
 
             base.OnPause();
         }
@@ -422,25 +471,9 @@ namespace TwistedLogik.Ultraviolet
         /// <inheritdoc/>
         protected override void OnResume()
         {
-            ResumeActivity();
+            active = true;
 
             base.OnResume();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnStop()
-        {
-            SuspendActivity();
-
-            base.OnStop();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnRestart()
-        {
-            ResumeActivity();
-
-            base.OnRestart();
         }
 
         /// <summary>
@@ -551,6 +584,8 @@ namespace TwistedLogik.Ultraviolet
 
             CreateUltravioletHostCore();
 
+            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspended);
+            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
             this.uv.Messages.Subscribe(this, UltravioletMessages.Quit);
             this.uv.Updating += uv_Updating;
             this.uv.Shutdown += uv_Shutdown;
@@ -701,35 +736,7 @@ namespace TwistedLogik.Ultraviolet
 
             return 0;
         }
-
-        /// <summary>
-        /// Suspends updates while the activity is inactive.
-        /// </summary>
-        private void SuspendActivity()
-        {
-            suspended = true;
-            if (uv != null && !uv.Disposed)
-            {
-                uv.Messages.Publish(UltravioletMessages.ApplicationSuspended, null);
-            }
-        }
-
-        /// <summary>
-        /// Resumes updates after a call to <see cref="SuspendActivity()"/>.
-        /// </summary>
-        private void ResumeActivity()
-        {
-            suspended = false;
-            if (hostcore != null)
-            {
-                hostcore.ResetElapsed();
-            }
-            if (uv != null && !uv.Disposed)
-            {
-                uv.Messages.Publish(UltravioletMessages.ApplicationResumed, null);
-            }
-        }
-
+        
         /// <summary>
         /// Writes a warning to the debug output if no file system source has been specified.
         /// </summary>
@@ -750,6 +757,7 @@ namespace TwistedLogik.Ultraviolet
         private Boolean created;
         private Boolean running;
         private Boolean finished;
+        private Boolean active;
         private Boolean suspended;
         private Boolean disposed;
         private IUltravioletWindow primary;

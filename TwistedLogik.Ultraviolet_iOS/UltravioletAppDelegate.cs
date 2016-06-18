@@ -13,15 +13,19 @@ namespace TwistedLogik.Ultraviolet
         /// <inheritdoc/>
         public override void DidEnterBackground(UIApplication application)
         {
-            UltravioletContext.DemandCurrent().Messages.Publish(
-                UltravioletMessages.ApplicationSuspended, null);
+            var uv = UltravioletContext.DemandCurrent();
+
+            uv.Messages.Publish(UltravioletMessages.ApplicationSuspended, null);
+            uv.ProcessMessages();
         }
 
         /// <inheritdoc/>
         public override void WillEnterForeground(UIApplication application)
         {
-            UltravioletContext.DemandCurrent().Messages.Publish(
-                UltravioletMessages.ApplicationResumed, null);
-        }        
+            var uv = UltravioletContext.DemandCurrent();
+
+            uv.Messages.Publish(UltravioletMessages.ApplicationResumed, null);
+            uv.ProcessMessages();
+        }
     }
 }

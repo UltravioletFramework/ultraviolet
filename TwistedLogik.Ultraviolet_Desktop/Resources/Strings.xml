@@ -565,4 +565,9 @@
       <Variant>Unable to retrieve device name using uname().</Variant>
     </en-US>
   </String>
+  <String Key="CANNOT_QUIT_ON_IOS">
+    <en-US>
+      <Variant>WARNING: The application received an instruction to quit, but this is not valid on iOS. Applications can only be terminated by the operating system or the user.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

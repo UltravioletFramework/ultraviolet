@@ -139,6 +139,7 @@ namespace TwistedLogik.Ultraviolet
         public static readonly StringResource LayoutEngineHasTooManyStringSources  = new StringResource(StringDatabase, "LAYOUT_ENGINE_HAS_TOO_MANY_STRING_SOURCES");
         public static readonly StringResource TextParserHasTooManyCommands         = new StringResource(StringDatabase, "TEXT_ENGINE_HAS_TOO_MANY_COMMANDS");
         public static readonly StringResource UnableToRetrieveDeviceName           = new StringResource(StringDatabase, "UNABLE_TO_RETRIEVE_DEVICE_NAME");
+        public static readonly StringResource CannotQuitOniOS                      = new StringResource(StringDatabase, "CANNOT_QUIT_ON_IOS");
 #pragma warning restore 1591
     }
 }

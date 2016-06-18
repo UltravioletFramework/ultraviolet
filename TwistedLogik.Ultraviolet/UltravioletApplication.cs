@@ -85,7 +85,11 @@ namespace TwistedLogik.Ultraviolet
         {
             Contract.EnsureNotDisposed(this, disposed);
 
+#if IOS
+            System.Diagnostics.Debug.WriteLine(UltravioletStrings.CannotQuitOniOS);
+#else
             running = false;
+#endif
         }
 
         /// <summary>
@@ -317,6 +321,22 @@ namespace TwistedLogik.Ultraviolet
         {
 
         }
+        
+        /// <summary>
+        /// Called when the application is suspended.
+        /// </summary>
+        protected virtual void OnSuspended()
+        {
+            SaveSettings();
+        }
+
+        /// <summary>
+        /// Called when the application is resumed.
+        /// </summary>
+        protected virtual void OnResumed()
+        {
+
+        }
 
         /// <summary>
         /// Called when the application is being shut down.
@@ -336,14 +356,24 @@ namespace TwistedLogik.Ultraviolet
             if (type == UltravioletMessages.ApplicationSuspended)
             {
                 suspended = true;
+                OnSuspended();
             }
             else if (type == UltravioletMessages.ApplicationResumed)
             {
                 suspended = false;
+
+                if (hostcore != null)
+                    hostcore.ResetElapsed();
+
+                OnResumed();
             }
             else if (type == UltravioletMessages.Quit)
             {
+#if IOS
+                System.Diagnostics.Debug.WriteLine(UltravioletStrings.CannotQuitOniOS);
+#else
                 running = false;
+#endif
             }
         }
 
