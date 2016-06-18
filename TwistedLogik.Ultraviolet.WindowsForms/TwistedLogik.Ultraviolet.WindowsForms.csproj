@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Binaries\AnyCPU\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,13 +29,13 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Binaries\AnyCPU\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <CodeAnalysisRuleSet>..\UltravioletStyleRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\Binaries\AnyCPU\Release\TwistedLogik.Ultraviolet.WindowsForms.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TwistedLogik.Ultraviolet.WindowsForms.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
@@ -88,9 +88,9 @@
     <DocumentationFile>..\Binaries\x86\Release\TwistedLogik.Ultraviolet.WindowsForms.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
-    <OutputPath>..\Binaries\AnyCPU\Signed\</OutputPath>
+    <OutputPath>bin\Signed\</OutputPath>
     <DefineConstants>TRACE;SIGNED</DefineConstants>
-    <DocumentationFile>..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.WindowsForms.XML</DocumentationFile>
+    <DocumentationFile>bin\Signed\TwistedLogik.Ultraviolet.WindowsForms.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>

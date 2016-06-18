@@ -6,6 +6,9 @@ using UIKit;
 
 namespace TwistedLogik.Ultraviolet.iOS.Input
 {
+    /// <summary>
+    /// Represents an implementation of the <see cref="SoftwareKeyboardService"/> class for the iOS platform.
+    /// </summary>
     public sealed class iOSSoftwareKeyboardService : SoftwareKeyboardService
     {
         /// <inheritdoc/>

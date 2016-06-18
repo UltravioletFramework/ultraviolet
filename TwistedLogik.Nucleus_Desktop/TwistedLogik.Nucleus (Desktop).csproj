@@ -17,26 +17,26 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Binaries\AnyCPU\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CODE_GEN_ENABLED</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <CodeAnalysisRuleSet>..\UltravioletStyleRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\Binaries\AnyCPU\Debug\TwistedLogik.Nucleus.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TwistedLogik.Nucleus.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Binaries\AnyCPU\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;CODE_GEN_ENABLED</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <CodeAnalysisRuleSet>..\UltravioletStyleRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\Binaries\AnyCPU\Release\TwistedLogik.Nucleus.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TwistedLogik.Nucleus.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
@@ -93,10 +93,10 @@
     <DocumentationFile>..\Binaries\AnyCPU\Release\TwistedLogik.Nucleus.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
-    <OutputPath>..\Binaries\AnyCPU\Signed\</OutputPath>
+    <OutputPath>bin\Signed\</OutputPath>
     <DefineConstants>TRACE;SIGNED;CODE_GEN_ENABLED</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.XML</DocumentationFile>
+    <DocumentationFile>bin\Signed\TwistedLogik.Nucleus.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
