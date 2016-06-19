@@ -6,11 +6,11 @@ using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapper
 
 namespace TwistedLogik.Gluon
 {
-	public static unsafe partial class gl
-	{
+    public static unsafe partial class gl
+    {
         [MonoNativeFunctionWrapper]
         private delegate void glTexStorage1DDelegate(uint target, int levels, uint internalformat, int width);
-		[Require(MinVersion = "4.2", Extension = "GL_ARB_texture_storage")]
+        [Require(MinVersion = "4.2", Extension = "GL_ARB_texture_storage")]
         private static readonly glTexStorage1DDelegate glTexStorage1D = null;
 
         public static void TexStorage1D(uint target, int levels, uint internalformat, int width)
@@ -20,7 +20,7 @@ namespace TwistedLogik.Gluon
 
         [MonoNativeFunctionWrapper]
         private delegate void glTexStorage2DDelegate(uint target, int levels, uint internalformat, int width, int height);
-		[Require(MinVersion = "4.2", Extension = "GL_ARB_texture_storage")]
+        [Require(MinVersion = "4.2", Extension = "GL_ARB_texture_storage")]
         private static readonly glTexStorage2DDelegate glTexStorage2D = null;
 
         public static void TexStorage2D(uint target, int levels, uint internalformat, int width, int height)

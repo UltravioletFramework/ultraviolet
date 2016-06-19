@@ -2,7 +2,7 @@
 
 namespace TwistedLogik.Gluon
 {
-	public static partial class gl
+    public static partial class gl
     {        
         public const UInt32 GL_R8             = 0x8229;
         public const UInt32 GL_R16            = 0x822A;

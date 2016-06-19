@@ -6,7 +6,7 @@ using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapper
 
 namespace TwistedLogik.Gluon
 {
-	public static unsafe partial class gl
+    public static unsafe partial class gl
     {
         [MonoNativeFunctionWrapper]
         private delegate void glTexImage2DMultisampleDelegate(uint target, int samples, uint internalformat, int width, int height, bool fixedsamplelocations);
