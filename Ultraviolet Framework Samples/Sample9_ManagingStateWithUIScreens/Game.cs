@@ -21,7 +21,9 @@ namespace UltravioletSample.Sample9_ManagingStateWithUIScreens
         public Game()
             : base("TwistedLogik", "Sample 9 - Managing State with UI Screens", uv => uv.GetInput().GetActions())
         {
-
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#endif
         }
 
         public static void Main(String[] args)

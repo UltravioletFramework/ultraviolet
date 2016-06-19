@@ -21,7 +21,9 @@ namespace UltravioletSample.Sample10_AsynchronousContentLoading
         public Game()
             : base("TwistedLogik", "Sample 10 - Asynchronous Content Loading", uv => uv.GetInput().GetActions())
         {
-
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#endif
         }
 
         public static void Main(String[] args)

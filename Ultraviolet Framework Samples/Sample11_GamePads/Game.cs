@@ -25,7 +25,9 @@ namespace UltravioletSample.Sample11_GamePads
         public Game()
             : base("TwistedLogik", "Sample 11 - Game Pads", uv => uv.GetInput().GetActions())
         {
-
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#endif
         }
 
         public static void Main(String[] args)

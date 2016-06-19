@@ -48,7 +48,7 @@ namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.UI.Screens
         {
             spriteBatch.Draw(blankTexture, new RectangleF(0, 0, Width, Height), new Color(180, 0, 0));
 
-#if ANDROID
+#if ANDROID || IOS
             var text = "This is SampleScreen1\nTap to open SampleScreen2";
 #else
             var text = "This is SampleScreen1\nPress right arrow key to open SampleScreen2";
