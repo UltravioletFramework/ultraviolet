@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Audio;
 using TwistedLogik.Ultraviolet.BASS.Native;
+
+#if IOS
+using ObjCRuntime;
+#endif
 
 namespace TwistedLogik.Ultraviolet.BASS.Audio
 {
@@ -17,7 +22,15 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         public BASSSongPlayer(UltravioletContext uv)
             : base(uv)
         {
+            gcHandle = GCHandle.Alloc(this, GCHandleType.Normal);
+        }
 
+        /// <summary>
+        /// Finalizes the object by releasing unmanaged resources.
+        /// </summary>
+        ~BASSSongPlayer()
+        {
+            Dispose(false);
         }
 
         /// <inheritdoc/>
@@ -314,10 +327,36 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
-            if (disposing)
-                StopInternal();
+            StopInternal();
+
+            if (gcHandle.IsAllocated)
+                gcHandle.Free();
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Performs custom looping when a loop range is specified.
+        /// </summary>
+#if IOS
+        [MonoPInvokeCallback(typeof(SyncProc))]
+#endif
+        private static void SyncLoopThunk(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
+        {
+            if (!BASSNative.ChannelSetPosition(channel, (UInt32)user, 0))
+                throw new BASSException();
+        }
+
+        /// <summary>
+        /// Raises a callback when a song ends.
+        /// </summary>
+#if IOS
+        [MonoPInvokeCallback(typeof(SyncProc))]
+#endif
+        private static void SyncEndThunk(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
+        {
+            var gcHandle = GCHandle.FromIntPtr(user);
+            ((BASSSongPlayer)gcHandle.Target).SyncEnd(handle, channel, data, IntPtr.Zero);
         }
 
         /// <summary>
@@ -349,14 +388,14 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
             {
                 var loopStartInBytes = BASSNative.ChannelSeconds2Bytes(stream, loopStart.Value.TotalSeconds);
                 var loopEndInBytes = BASSNative.ChannelSeconds2Bytes(stream, (loopStart + loopLength).Value.TotalSeconds);
-                syncLoopDelegate = SyncLoop;
+                syncLoopDelegate = SyncLoopThunk;
                 syncLoop = BASSNative.ChannelSetSync(stream, BASSSync.SYNC_POS, loopEndInBytes, syncLoopDelegate, new IntPtr((Int32)loopStartInBytes));
                 if (syncLoop == 0)
                     throw new BASSException();
             }
 
-            syncEndDelegate = SyncEnd;
-            syncEnd = BASSNative.ChannelSetSync(stream, BASSSync.SYNC_END, 0, syncEndDelegate, IntPtr.Zero);
+            syncEndDelegate = SyncEndThunk;
+            syncEnd = BASSNative.ChannelSetSync(stream, BASSSync.SYNC_END, 0, syncEndDelegate, GCHandle.ToIntPtr(gcHandle));
             if (syncEnd == 0)
                 throw new BASSException();
 
@@ -403,15 +442,6 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         }
 
         /// <summary>
-        /// Performs custom looping when a loop range is specified.
-        /// </summary>
-        private void SyncLoop(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
-        {
-            if (!BASSNative.ChannelSetPosition(channel, (UInt32)user, 0))
-                throw new BASSException();
-        }
-
-        /// <summary>
         /// Raises a callback when a song ends.
         /// </summary>
         private void SyncEnd(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
@@ -436,6 +466,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         }
 
         // State values.
+        private GCHandle gcHandle;
         private UInt32 stream;
         private UInt32 syncLoop;
         private UInt32 syncEnd;
