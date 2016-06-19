@@ -110,8 +110,8 @@
 		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_WindowsForms)" DestinationFiles="@(TwistedLogik_Ultraviolet_WindowsForms->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>	
 	</Target>
 	<Target Name="CopyDesktopSampleDependencies">
-		<CreateItem Include="Binaries/Android/$(Configuration)/*.*">
-			<Output TaskParameter="Include" ItemName="SampleDependencies_Android"/>
+		<CreateItem Include="Binaries/AnyCPU/$(Configuration)/*.*">
+			<Output TaskParameter="Include" ItemName="SampleDependencies_Desktop"/>
 		</CreateItem>
 		<Copy SourceFiles="@(SampleDependencies_Desktop)" DestinationFiles="@(SampleDependencies_Desktop->'Ultraviolet Framework Samples/Dependencies/%(RecursiveDir)%(Filename)%(Extension)')"/>	
 	</Target>
