@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Sample1_CreatingAnApplication</string>
+	<string>Sample3_RenderingGeometry</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.twistedlogik.Sample1_CreatingAnApplication</string>
+	<string>net.twistedlogik.Sample3_RenderingGeometry_iOS</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

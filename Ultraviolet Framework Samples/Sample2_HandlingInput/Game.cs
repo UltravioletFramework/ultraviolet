@@ -19,7 +19,9 @@ namespace UltravioletSample.Sample2_HandlingInput
         public Game()
             : base("TwistedLogik", "Sample 2 - Handling Input")
         {
-
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#endif
         }
 
         public static void Main(String[] args)

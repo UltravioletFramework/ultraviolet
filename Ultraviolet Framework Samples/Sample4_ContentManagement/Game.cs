@@ -20,7 +20,9 @@ namespace UltravioletSample.Sample4_ContentManagement
         public Game()
             : base("TwistedLogik", "Sample 4 - Content Management", uv => uv.GetInput().GetActions())
         {
-
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#endif
         }
 
         public static void Main(String[] args)
