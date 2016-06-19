@@ -384,7 +384,7 @@ namespace TwistedLogik.Ultraviolet
         /// <typeparam name="T">One of the types defined by the assembly to link.</typeparam>
         protected void EnsureAssemblyIsLinked<T>()
         {
-            /* do nothing */
+            Console.WriteLine("Touching '" + typeof(T).Assembly.FullName + "' to ensure linkage...");
         }
 
         /// <summary>
