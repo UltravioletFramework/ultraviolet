@@ -42,6 +42,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             glCachedIntegers = typeof(OpenGLState).GetFields(BindingFlags.NonPublic | BindingFlags.Static)
                 .Where(x => x.FieldType == typeof(OpenGLStateInteger))
                 .Select(x => (OpenGLStateInteger)x.GetValue(null)).ToArray();
+
+            GL_FRAMEBUFFER_BINDING.Update(gl.DefaultFramebuffer);
+            VerifyCache();
         }
 
         /// <summary>
@@ -638,7 +641,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             OpenGLState.VerifyCache();
         }
-
+        
         private void Apply_ActiveTexture()
         {
             gl.ActiveTexture(newGL_ACTIVE_TEXTURE);

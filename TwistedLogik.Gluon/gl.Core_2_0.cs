@@ -18,7 +18,7 @@ namespace TwistedLogik.Gluon
 
         [MonoNativeFunctionWrapper]
         private delegate void glDrawBuffersDelegate(int n, IntPtr bufs);
-        [Require(MinVersion = "2.0")]
+        [Require(MinVersion = "2.0", MinVersionES = "3.0", Extension = "GL_ARB_draw_buffers", ExtensionFunction = "DrawBuffersARB")]
         private static readonly glDrawBuffersDelegate glDrawBuffers = null;
 
         public static void DrawBuffers(int n, uint* bufs) { glDrawBuffers(n, (IntPtr)bufs); }

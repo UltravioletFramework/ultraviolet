@@ -867,7 +867,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             var oglRenderTarget = (OpenGLRenderTarget2D)renderTarget;
             if (oglRenderTarget != this.renderTarget)
             {
-                var targetName = 0u;
+                var targetName = gl.DefaultFramebuffer;
                 var targetSize = Size2.Zero;
 
                 if (oglRenderTarget != null)

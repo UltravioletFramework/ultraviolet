@@ -54,6 +54,11 @@ namespace TwistedLogik.Gluon
                     VerboseLog(GluonStrings.CouldNotLoadFunction.Format(function));
                 }
             }
+            
+            Int32 defaultFramebuffer;
+            gl.GetIntegerv(gl.GL_FRAMEBUFFER_BINDING, &defaultFramebuffer);
+            gl.ThrowIfError();
+            gl.DefaultFramebuffer = (UInt32)defaultFramebuffer;
 
             Debug.WriteLine(GluonStrings.LoadedOpenGLVersion.Format(GetString(GL_VERSION), GetString(GL_VENDOR)));
 
@@ -67,6 +72,8 @@ namespace TwistedLogik.Gluon
         public static void Uninitialize()
         {
             Contract.Ensure(initialized, GluonStrings.OpenGLNotInitialized);
+
+            gl.DefaultFramebuffer = 0;
 
             gl.isGLES = false;
             gl.isEmulated = false;
@@ -275,6 +282,15 @@ namespace TwistedLogik.Gluon
         public static Boolean IsEmulated
         {
             get { return isEmulated; }
+        }
+
+        /// <summary>
+        /// Gets the resource name for the context's default framebuffer.
+        /// </summary>
+        public static UInt32 DefaultFramebuffer
+        {
+            get;
+            private set;
         }
 
         /// <summary>

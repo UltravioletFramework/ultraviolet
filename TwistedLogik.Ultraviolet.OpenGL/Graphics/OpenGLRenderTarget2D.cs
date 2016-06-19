@@ -29,6 +29,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             // NOTE: If we're in an older version of GLES, we need to use glFramebufferTexture2D()
             glFramebufferTextureIsSupported = !gl.IsGLES || gl.IsVersionAtLeast(3, 2);
 
+            glDrawBuffersIsSupported = !gl.IsGLES2 || gl.IsExtensionSupported("GL_ARB_draw_buffers");
+            glDrawBufferIsSupported = !gl.IsGLES;
+
             var framebuffer = 0u;
 
             uv.QueueWorkItemAndWait(() =>
@@ -532,7 +535,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         private unsafe void UpdateDrawBuffers()
         {
-            if (colorAttachments == 0)
+            if (!glDrawBuffersIsSupported)
+                return;
+
+            if (colorAttachments == 0 && glDrawBufferIsSupported)
             {
                 gl.NamedFramebufferDrawBuffer(framebuffer, gl.GL_NONE);
             }
@@ -553,6 +559,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         // State values.
         private readonly Boolean glFramebufferTextureIsSupported;
+        private readonly Boolean glDrawBufferIsSupported;
+        private readonly Boolean glDrawBuffersIsSupported;
         private readonly UInt32 framebuffer;
         private Int32 colorAttachments;
         private Int32 depthAttachments;
