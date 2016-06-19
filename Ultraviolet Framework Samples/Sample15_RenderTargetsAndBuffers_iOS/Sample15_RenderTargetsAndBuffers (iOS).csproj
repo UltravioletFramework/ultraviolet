@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>{E1657C38-0E22-4A7E-879E-E59A6DBD3594}</ProjectGuid>
+    <ProjectGuid>{E6766408-B862-4C60-948C-96809811B157}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample12_UPF</RootNamespace>
+    <RootNamespace>Ultraviolet.Sample15_RenderTargetsAndBuffers</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>Sample12_UPF</AssemblyName>
+    <AssemblyName>Sample15_RenderTargetsAndBuffers</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,16 +46,19 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>True</MtouchDebug>
+    <MtouchSdkVersion>9.3</MtouchSdkVersion>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore" --xml=XamarinLinkDescription.xml</MtouchExtraArgs>
+    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore"</MtouchExtraArgs>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
     <MtouchUseSGen>False</MtouchUseSGen>
     <MtouchUseRefCounting>False</MtouchUseRefCounting>
     <OptimizePNGs>True</OptimizePNGs>
+    <MtouchTlsProvider>Default</MtouchTlsProvider>
+    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchFloat32>False</MtouchFloat32>
     <DeviceSpecificBuild>False</DeviceSpecificBuild>
   </PropertyGroup>
@@ -74,7 +77,7 @@
     <MtouchDebug>False</MtouchDebug>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore" --xml=XamarinLinkDescription.xml</MtouchExtraArgs>
+    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore"</MtouchExtraArgs>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
@@ -103,7 +106,7 @@
     <MtouchDebug>False</MtouchDebug>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore" --xml=XamarinLinkDescription.xml</MtouchExtraArgs>
+    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore"</MtouchExtraArgs>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
@@ -131,7 +134,7 @@
     <MtouchDebug>False</MtouchDebug>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore" --xml=XamarinLinkDescription.xml</MtouchExtraArgs>
+    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore"</MtouchExtraArgs>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
@@ -144,18 +147,6 @@
     <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;IOS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\Manifests\Global.manifest">
-      <Link>Content\Manifests\Global.manifest</Link>
-    </BundleResource>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\UI\DefaultUIStyles-mdpi.uvss">
-      <Link>Content\UI\DefaultUIStyles-mdpi.uvss</Link>
-    </BundleResource>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\UI\DefaultUIStyles.uvss">
-      <Link>Content\UI\DefaultUIStyles.uvss</Link>
-    </BundleResource>
-    <None Include="XamarinLinkDescription.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\Dependencies\iOS\libbass.a">
       <Link>libbass.a</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -168,38 +159,32 @@
       <Link>libSDL2.a</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <BundleResource Include="..\Sample15_RenderTargetsAndBuffers_Desktop\Content\Effects\Noise.frag">
+      <Link>Content\Effects\Noise.frag</Link>
+    </BundleResource>
+    <BundleResource Include="..\Sample15_RenderTargetsAndBuffers_Desktop\Content\Effects\Noise.vert">
+      <Link>Content\Effects\Noise.vert</Link>
+    </BundleResource>
+    <BundleResource Include="..\Sample15_RenderTargetsAndBuffers_Desktop\Content\Effects\NoiseEffect.json">
+      <Link>Content\Effects\NoiseEffect.json</Link>
+    </BundleResource>
+    <BundleResource Include="..\Sample15_RenderTargetsAndBuffers_Desktop\Content\Manifests\Global.manifest">
+      <Link>Content\Manifests\Global.manifest</Link>
+    </BundleResource>
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\UI\DefaultUI.png">
-      <Link>Content\UI\DefaultUI.png</Link>
+    <BundleResource Include="..\Sample15_RenderTargetsAndBuffers_Desktop\Content\Fonts\SegoeUI.xml">
+      <Link>Content\Fonts\SegoeUI.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\UI\DefaultUIBackground.png">
-      <Link>Content\UI\DefaultUIBackground.png</Link>
+    <BundleResource Include="..\Sample15_RenderTargetsAndBuffers_Desktop\Content\Fonts\SegoeUITexture.png">
+      <Link>Content\Fonts\SegoeUITexture.png</Link>
     </BundleResource>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\UI\DefaultUI-mdpi.png">
-      <Link>Content\UI\DefaultUI-mdpi.png</Link>
+    <BundleResource Include="..\Sample15_RenderTargetsAndBuffers_Desktop\Content\SoundEffects\Shutter.wav">
+      <Link>Content\SoundEffects\Shutter.wav</Link>
     </BundleResource>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\Cursors\Cursors.xml">
-      <Link>Content\Cursors\Cursors.xml</Link>
-    </BundleResource>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\Cursors\CursorsImage.png">
-      <Link>Content\Cursors\CursorsImage.png</Link>
-    </BundleResource>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\SoundEffects\Click1.wav">
-      <Link>Content\SoundEffects\Click1.wav</Link>
-    </BundleResource>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\SoundEffects\rollover3.wav">
-      <Link>Content\SoundEffects\rollover3.wav</Link>
-    </BundleResource>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\UI\DefaultUIFont-mdpi.xml">
-      <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
-    </BundleResource>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\UI\DefaultUIFont.xml">
-      <Link>Content\UI\DefaultUIFont.xml</Link>
-    </BundleResource>
-    <BundleResource Include="..\Sample12_UPF_Desktop\Content\UI\Screens\ExampleScreen\ExampleScreen.xml">
-      <Link>Content\UI\Screens\ExampleScreen\ExampleScreen.xml</Link>
+    <BundleResource Include="..\Sample15_RenderTargetsAndBuffers_Desktop\Content\Textures\Blank.png">
+      <Link>Content\Textures\Blank.png</Link>
     </BundleResource>
     <Content Include="Entitlements.plist" />
   </ItemGroup>
@@ -231,19 +216,9 @@
     <Reference Include="TwistedLogik.Ultraviolet.SDL2">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.UI.Presentation.dll</HintPath>
-    </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions">
-      <HintPath>Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll</HintPath>
-    </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.Uvss">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="..\Sample12_UPF\Sample12_UPF.projitems" Label="Shared" />
   <Import Project="..\SampleSharedLib\SampleSharedLib.projitems" Label="Shared" />
+  <Import Project="..\Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

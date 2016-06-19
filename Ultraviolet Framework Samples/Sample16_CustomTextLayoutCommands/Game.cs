@@ -22,7 +22,9 @@ namespace UltravioletSample.Sample16_CustomTextLayoutCommands
         public Game()
             : base("TwistedLogik", "Sample 16 - Custom Text Layout Commands", uv => uv.GetInput().GetActions())
         {
-
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#endif
         }
 
         public static void Main(String[] args)
@@ -85,7 +87,7 @@ namespace UltravioletSample.Sample16_CustomTextLayoutCommands
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
             var settings = new TextLayoutSettings(spriteFont, null, null, TextFlags.Standard);
-            if (Ultraviolet.Platform == UltravioletPlatform.Android)
+            if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
             {
                 textRenderer.Draw(spriteBatch, "Tap the screen to reset the scrolling text.", 
                     Vector2.One * 8f, Color.White, settings);

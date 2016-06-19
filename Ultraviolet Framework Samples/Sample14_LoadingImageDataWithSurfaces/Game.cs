@@ -21,7 +21,9 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
         public Game()
             : base("TwistedLogik", "Sample 14 - Loading Image Data with Surfaces", uv => uv.GetInput().GetActions())
         {
-
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#endif
         }
 
         public static void Main(String[] args)
