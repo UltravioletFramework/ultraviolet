@@ -24,7 +24,9 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
         public Game()
             : base("TwistedLogik", "Sample 8 - Playing Sound Effects", uv => uv.GetInput().GetActions())
         {
-
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#endif
         }
 
         public static void Main(String[] args)
@@ -105,7 +107,7 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
-            var instruction = Ultraviolet.Platform == UltravioletPlatform.Android ?
+            var instruction = Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS ?
                 "|c:FFFFFF00|Tap the screen|c| to activate one of the sound effect players." :
                 "Press the |c:FFFFFF00|1-8 number keys|c| to activate one of the sound effect players.";
             var attribution = 

@@ -25,7 +25,9 @@ namespace UltravioletSample.Sample7_PlayingMusic
         public Game()
             : base("TwistedLogik", "Sample 7 - Playing Music", uv => uv.GetInput().GetActions())
         {
-
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#endif
         }
 
         public static void Main(String[] args)
