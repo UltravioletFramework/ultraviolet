@@ -29,7 +29,12 @@ namespace UltravioletSample.Sample13_UPFAdvanced
         /// </summary>
         public Game() 
             : base("TwistedLogik", "Sample 13 - UPF Advanced", uv => uv.GetInput().GetActions())
-        { }
+        {
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.CompilerMetadata>();
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#endif
+        }
 
         /// <summary>
         /// The application's entry point.
@@ -166,7 +171,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
         {
             if (ShouldCompileContent())
             {
-                if (Ultraviolet.Platform == UltravioletPlatform.Android)
+                if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
                     throw new NotSupportedException();
 
                 var archive = ContentArchive.FromFileSystem(new[] { "Content" });

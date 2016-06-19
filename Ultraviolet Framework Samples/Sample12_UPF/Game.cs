@@ -22,7 +22,10 @@ namespace UltravioletSample.Sample12_UPF
         public Game()
             : base("TwistedLogik", "Sample 12 - UPF", uv => uv.GetInput().GetActions())
         {
-
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.CompilerMetadata>();
+#endif
         }
 
         public static void Main(String[] args)
