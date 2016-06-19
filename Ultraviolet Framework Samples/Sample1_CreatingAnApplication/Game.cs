@@ -17,7 +17,9 @@ namespace UltravioletSample.Sample1_CreatingAnApplication
         public Game()
             : base("TwistedLogik", "Sample 1 - Creating an Application")
         {
-
+#if IOS
+            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+#endif
         }
 
         public static void Main(String[] args)
