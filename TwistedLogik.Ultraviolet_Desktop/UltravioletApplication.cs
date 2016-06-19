@@ -13,15 +13,19 @@ namespace TwistedLogik.Ultraviolet
             if (!PreserveApplicationSettings)
                 return;
 
-            var path = Path.Combine(GetLocalApplicationSettingsDirectory(), "UltravioletSettings.xml");
-            if (!File.Exists(path))
-                return;
+            var directory = GetLocalApplicationSettingsDirectory();
+            var path = Path.Combine(directory, "UltravioletSettings.xml");
 
-            var settings = UltravioletApplicationSettings.Load(path);
-            if (settings == null)
-                return;
+            try
+            {
+                var settings = UltravioletApplicationSettings.Load(path);
+                if (settings == null)
+                    return;
 
-            this.settings = settings;
+                this.settings = settings;
+            }
+            catch (FileNotFoundException) { }
+            catch (DirectoryNotFoundException) { }
         }
 
         /// <summary>
@@ -32,7 +36,8 @@ namespace TwistedLogik.Ultraviolet
             if (!PreserveApplicationSettings)
                 return;
 
-            var path = Path.Combine(GetLocalApplicationSettingsDirectory(), "UltravioletSettings.xml");
+            var directory = GetLocalApplicationSettingsDirectory();
+            var path = Path.Combine(directory, "UltravioletSettings.xml");
 
             this.settings = UltravioletApplicationSettings.FromCurrentSettings(Ultraviolet);
             UltravioletApplicationSettings.Save(path, settings);
