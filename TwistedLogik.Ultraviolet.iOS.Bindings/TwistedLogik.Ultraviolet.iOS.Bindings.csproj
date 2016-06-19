@@ -29,10 +29,11 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>__MOBILE__;__IOS__;__UNIFIED__;IOS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
-    <DefineConstants>__MOBILE__;__IOS__;__UNIFIED__;</DefineConstants>
+    <DefineConstants>__MOBILE__;__IOS__;__UNIFIED__;IOS</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <DebugType>full</DebugType>
