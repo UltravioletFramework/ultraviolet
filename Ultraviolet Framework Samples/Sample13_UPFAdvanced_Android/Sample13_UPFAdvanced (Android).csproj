@@ -118,8 +118,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Sample13_UPFAdvanced_Desktop\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
     <Compile Include="Resources\Resource.Designer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi-v7a\libbass.so">

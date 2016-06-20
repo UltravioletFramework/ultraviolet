@@ -177,7 +177,7 @@
     <BundleResource Include="..\Sample13_UPFAdvanced_Desktop\Content\UI\DefaultUIBackground.png">
       <Link>Content\UI\DefaultUIBackground.png</Link>
     </BundleResource>
-    <BundleResource Include="..\Sample13_UPFAdvanced_Desktop\Content\UI\DefaultUI-mdpi.png"> 
+    <BundleResource Include="..\Sample13_UPFAdvanced_Desktop\Content\UI\DefaultUI-mdpi.png">
       <Link>Content\UI\DefaultUI-mdpi.png</Link>
     </BundleResource>
     <BundleResource Include="..\Sample13_UPFAdvanced_Desktop\Content\UI\DefaultUIFont-mdpi.xml">
@@ -232,7 +232,6 @@
       <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss</Link>
     </BundleResource>
     <None Include="Info.plist" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <Content Include="Entitlements.plist" />
   </ItemGroup>
@@ -276,6 +275,14 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Compile Include="..\Sample13_UPFAdvanced_Desktop\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
+  </ItemGroup>
   <Import Project="..\SampleSharedLib\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="..\Sample13_UPFAdvanced\Sample13_UPFAdvanced.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

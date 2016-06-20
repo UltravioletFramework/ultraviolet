@@ -172,7 +172,6 @@
       <Link>Content\Manifests\Global.manifest</Link>
     </BundleResource>
     <None Include="Info.plist" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <BundleResource Include="..\Sample15_RenderTargetsAndBuffers_Desktop\Content\Fonts\SegoeUI.xml">
       <Link>Content\Fonts\SegoeUI.xml</Link>
@@ -217,6 +216,14 @@
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Sample15_RenderTargetsAndBuffers_Desktop\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="..\SampleSharedLib\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="..\Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.projitems" Label="Shared" />

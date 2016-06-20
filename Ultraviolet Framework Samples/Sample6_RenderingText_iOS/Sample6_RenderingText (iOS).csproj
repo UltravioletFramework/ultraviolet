@@ -172,7 +172,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
     <None Include="Info.plist" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <BundleResource Include="..\Sample6_RenderingText_Desktop\Content\Sprites\Textures\Cancel.png">
       <Link>Content\Sprites\Textures\Cancel.png</Link>
@@ -230,7 +229,14 @@
     </Reference>
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="..\Sample6_RenderingText_Desktop\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
+  </ItemGroup>
   <Import Project="..\SampleSharedLib\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="..\Sample6_RenderingText\Sample6_RenderingText.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

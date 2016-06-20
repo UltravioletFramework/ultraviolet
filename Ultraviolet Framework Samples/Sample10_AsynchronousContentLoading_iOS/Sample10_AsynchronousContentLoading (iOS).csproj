@@ -166,7 +166,6 @@
       <Link>Content\UI\Screens\LoadingScreen\Spinner.sprite</Link>
     </BundleResource>
     <None Include="Info.plist" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <BundleResource Include="..\Sample10_AsynchronousContentLoading_Desktop\Content\Fonts\SegoeUI.xml">
       <Link>Content\Fonts\SegoeUI.xml</Link>
@@ -220,6 +219,15 @@
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="..\Sample10_AsynchronousContentLoading_Desktop\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="..\Sample10_AsynchronousContentLoading\Sample10_AsynchronousContentLoading.projitems" Label="Shared" />
   <Import Project="..\SampleSharedLib\SampleSharedLib.projitems" Label="Shared" />

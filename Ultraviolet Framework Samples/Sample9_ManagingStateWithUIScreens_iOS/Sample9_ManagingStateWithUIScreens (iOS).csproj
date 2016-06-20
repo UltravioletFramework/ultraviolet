@@ -163,7 +163,6 @@
       <Link>Content\Manifests\Global.manifest</Link>
     </BundleResource>
     <None Include="Info.plist" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <BundleResource Include="..\Sample9_ManagingStateWithUIScreens_Desktop\Content\UI\Screens\SampleScreen1\SampleScreen1.xml">
       <Link>Content\UI\Screens\SampleScreen1\SampleScreen1.xml</Link>
@@ -219,6 +218,14 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Compile Include="..\Sample9_ManagingStateWithUIScreens_Desktop\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
+  </ItemGroup>
   <Import Project="..\SampleSharedLib\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="..\Sample9_ManagingStateWithUIScreens\Sample9_ManagingStateWithUIScreens.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

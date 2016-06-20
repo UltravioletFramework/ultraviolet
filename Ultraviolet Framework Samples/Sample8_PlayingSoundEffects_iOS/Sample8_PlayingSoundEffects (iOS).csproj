@@ -163,7 +163,6 @@
       <Link>Content\Manifests\Global.manifest</Link>
     </BundleResource>
     <None Include="Info.plist" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <BundleResource Include="..\Sample8_PlayingSoundEffects_Desktop\Content\Fonts\SegoeUI.xml">
       <Link>Content\Fonts\SegoeUI.xml</Link>
@@ -206,7 +205,14 @@
     </Reference>
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="..\Sample8_PlayingSoundEffects_Desktop\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
+  </ItemGroup>
   <Import Project="..\SampleSharedLib\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="..\Sample8_PlayingSoundEffects\Sample8_PlayingSoundEffects.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
