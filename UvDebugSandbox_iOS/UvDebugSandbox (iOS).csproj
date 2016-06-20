@@ -189,9 +189,87 @@
       <Link>libSDL2.a</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Manifests\Global.manifest">
+      <Link>Content\Manifests\Global.manifest</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Sprites\InterfaceIcons.sprite">
+      <Link>Content\Sprites\InterfaceIcons.sprite</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUIStyles-mdpi.uvss">
+      <Link>Content\UI\DefaultUIStyles-mdpi.uvss</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUIStyles.uvss">
+      <Link>Content\UI\DefaultUIStyles.uvss</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss">
+      <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\GameStyles.uvss">
+      <Link>Content\UI\GameStyles.uvss</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
+      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
+      <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss</Link>
+    </BundleResource>
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUI.png">
+      <Link>Content\UI\DefaultUI.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUIBackground.png">
+      <Link>Content\UI\DefaultUIBackground.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUI-mdpi.png">
+      <Link>Content\UI\DefaultUI-mdpi.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Textures\Logo.png">
+      <Link>Content\Textures\Logo.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Cursors\Cursors.xml">
+      <Link>Content\Cursors\Cursors.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Cursors\CursorsImage.png">
+      <Link>Content\Cursors\CursorsImage.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Fonts\SegoeUI.xml">
+      <Link>Content\Fonts\SegoeUI.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Fonts\SegoeUITexture.png">
+      <Link>Content\Fonts\SegoeUITexture.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Localization\GameStrings.xml">
+      <Link>Content\Localization\GameStrings.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\SoundEffects\Click1.wav">
+      <Link>Content\SoundEffects\Click1.wav</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\SoundEffects\rollover1.wav">
+      <Link>Content\SoundEffects\rollover1.wav</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\SoundEffects\rollover2.wav">
+      <Link>Content\SoundEffects\rollover2.wav</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\SoundEffects\rollover3.wav">
+      <Link>Content\SoundEffects\rollover3.wav</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUIFont-mdpi.xml">
+      <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUIFont.xml">
+      <Link>Content\UI\DefaultUIFont.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
+      <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
+      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
+      <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml</Link>
+    </BundleResource>
     <Content Include="Entitlements.plist" />
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +316,7 @@
       <Name>TwistedLogik.Ultraviolet %28iOS%29</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
