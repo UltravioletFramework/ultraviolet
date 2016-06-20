@@ -24,7 +24,7 @@
             <Rectangle Name="mainmenu-panel-background"/>
             <StackPanel Name="mainmenu-panel-options">
               <Button Name="btn-start" Click="Click_Start">Start</Button>
-              <Button Name="btn-exit" Click="Click_Exit">Exit</Button>
+              <Button Name="btn-exit" Click="Click_Exit" Visibility="{{IsExitButtonVisible ? Visibility.Visible : Visibility.Collapsed}}">Exit</Button>
             </StackPanel>
           </Grid>
         </Border>

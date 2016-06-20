@@ -24,7 +24,7 @@
       <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center">
         <TextBlock HorizontalAlignment="Center" HorizontalContentAlignment="Center">{{Message}}</TextBlock>
         <Button HorizontalAlignment="Center" Click="Reset">Reset Message</Button>
-        <Button HorizontalAlignment="Center" Click="Exit">Exit Sample</Button>
+        <Button HorizontalAlignment="Center" Click="Exit" Visibility="{{IsExitButtonVisible ? Visibility.Visible : Visibility.Collapsed}}">Exit Sample</Button>
       </StackPanel>
 
     </Grid>

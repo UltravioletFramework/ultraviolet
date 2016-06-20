@@ -33,6 +33,11 @@ namespace UltravioletSample.Sample12_UPF.UI.Screens
             set { message = value; }
         }
 
+        public Boolean IsExitButtonVisible
+        {
+            get { return uv?.Platform != UltravioletPlatform.iOS; }
+        }
+
         private readonly UltravioletContext uv;
         private String message = "Hello, world!";
     }

@@ -1,4 +1,6 @@
-﻿using TwistedLogik.Nucleus;
+﻿using System;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
@@ -77,6 +79,14 @@ namespace UltravioletSample.Sample13_UPFAdvanced.UI.Screens
         public GameMenuScreen Owner
         {
             get { return owner; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the screen's exit button is visible.
+        /// </summary>
+        public Boolean IsExitButtonVisible
+        {
+            get { return owner.Ultraviolet.Platform != UltravioletPlatform.iOS; }
         }
 
         // Property values.
