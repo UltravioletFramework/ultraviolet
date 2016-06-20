@@ -102,8 +102,8 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
         protected override void OnDrawing(UltravioletTime time)
         {
             var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            var width  = window.ClientSize.Width;
-            var height = window.ClientSize.Height;
+            var width  = window.DrawableSize.Width;
+            var height = window.DrawableSize.Height;
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 

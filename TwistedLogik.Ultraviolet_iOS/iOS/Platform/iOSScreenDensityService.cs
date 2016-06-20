@@ -23,37 +23,18 @@ namespace TwistedLogik.Ultraviolet.iOS.Platform
                 buf = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(UltravioletNative.utsname_darwin)));
                 if (UltravioletNative.uname(buf) < 0)
                     throw new InvalidOperationException(UltravioletStrings.UnableToRetrieveDeviceName);
-
+                
                 var deviceInfo = Marshal.PtrToStructure<UltravioletNative.utsname_darwin>(buf);
                 var deviceID = deviceInfo.machine;
-                var deviceScale = UIScreen.MainScreen.Scale;
+
+                deviceScale = (Single)UIScreen.MainScreen.Scale;                
 
                 switch (deviceID)
                 {
                     // Simulator
                     case "i386":
                     case "x86_64":
-                        if (deviceScale == 1.0f)
-                        {
-                            densityX = densityY = 72;
-                            densityBucket = ScreenDensityBucket.Desktop;
-                        }
-                        else if (deviceScale == 3.0f)
-                        {
-                            densityX = densityY = 144;
-                            densityBucket = ScreenDensityBucket.Retina;
-                        }
-                        else if (deviceScale == 2.0f)
-                        {
-                            densityX = densityY = 216;
-                            densityBucket = ScreenDensityBucket.RetinaHD;
-                        }
-                        else
-                        {
-                            densityX = densityX = 288;
-                            densityBucket = ScreenDensityBucket.High;
-                        }
-                        densityScale = (Single)deviceScale;
+                        densityX = densityY = (Int32)(72 * deviceScale);
                         break;
 
                     // iPod Touch 1st-3rd Gen
@@ -61,8 +42,6 @@ namespace TwistedLogik.Ultraviolet.iOS.Platform
                     case "iPod2,1":
                     case "iPod3,1":
                         densityX = densityY = 163;
-                        densityBucket = ScreenDensityBucket.Medium;
-                        densityScale = densityX / 96f;
                         break;
 
                     // iPod Touch 4th-6th Gen
@@ -70,8 +49,6 @@ namespace TwistedLogik.Ultraviolet.iOS.Platform
                     case "iPod5,1":
                     case "iPod7,1":
                         densityX = densityY = 326;
-                        densityBucket = ScreenDensityBucket.ExtraHigh;
-                        densityScale = densityX / 96f;
                         break;
 
                     // iPhone, 3G, 3GS
@@ -79,8 +56,6 @@ namespace TwistedLogik.Ultraviolet.iOS.Platform
                     case "iPhone1,2":
                     case "iPhone2,1":
                         densityX = densityY = 163;
-                        densityBucket = ScreenDensityBucket.Medium;
-                        densityScale = densityX / 96f;
                         break;
 
                     // iPhone 4-6, SE
@@ -97,24 +72,18 @@ namespace TwistedLogik.Ultraviolet.iOS.Platform
                     case "iPhone8,1":
                     case "iPhone8,4":
                         densityX = densityY = 326;
-                        densityBucket = ScreenDensityBucket.ExtraHigh;
-                        densityScale = densityX / 96f;
                         break;
 
                     // iPhone 6 Plus, 6S Plus
                     case "iPhone7,1":
                     case "iPhone8,2":
                         densityX = densityY = 401;
-                        densityBucket = ScreenDensityBucket.ExtraHigh;
-                        densityScale = densityX / 96f;
                         break;
 
                     // iPad
                     case "iPad1,1":
                     case "iPad2,1":
                         densityX = densityY = 132;
-                        densityBucket = ScreenDensityBucket.Retina;
-                        densityScale = densityX / 96f;
                         break;
 
                     // iPad 3rd Gen, iPad Air
@@ -123,15 +92,11 @@ namespace TwistedLogik.Ultraviolet.iOS.Platform
                     case "iPad4,1":
                     case "iPad4,2":
                         densityX = densityY = 264;
-                        densityBucket = ScreenDensityBucket.High;
-                        densityScale = densityX / 96f;
                         break;
 
                     // iPad Mini
                     case "iPad2,5":
                         densityX = densityY = 163;
-                        densityBucket = ScreenDensityBucket.Medium;
-                        densityScale = densityX / 96f;
                         break;
 
                     // iPad Mini 2, Mini 3, Mini 4
@@ -141,25 +106,32 @@ namespace TwistedLogik.Ultraviolet.iOS.Platform
                     case "iPad5,1":
                     case "iPad5,2":
                         densityX = densityY = 326;
-                        densityBucket = ScreenDensityBucket.ExtraHigh;
-                        densityScale = densityX / 96f;
                         break;
 
                     // iPad Pro
                     case "iPad6,3":
                     case "iPad6,8":
                         densityX = densityY = 264;
-                        densityBucket = ScreenDensityBucket.High;
-                        densityScale = densityX / 96f;
                         break;
 
                     // We don't know what this is so just blindly assume 326ppi
                     default:
                         densityX = densityY = 326;
-                        densityBucket = ScreenDensityBucket.ExtraHigh;
-                        densityScale = densityX / 96f;
                         break;
                 }
+
+                densityX *= 96f / 72f;
+                densityY *= 96f / 72f;
+
+                var displayIsScaled = !UltravioletContext.DemandCurrent().SupportsHighDensityDisplayModes;
+                if (displayIsScaled)
+                {
+                    densityX /= deviceScale;
+                    densityY /= deviceScale;
+                }
+
+                densityScale = densityX / 96f;
+                densityBucket = GuessBucketFromDensityScale(densityScale);
             }
             finally
             {
@@ -167,6 +139,9 @@ namespace TwistedLogik.Ultraviolet.iOS.Platform
                     Marshal.FreeHGlobal(buf);
             }
         }
+
+        /// <inheritdoc/>
+        public override Single DeviceScale => deviceScale;
 
         /// <inheritdoc/>
         public override Single DensityScale => densityScale;
@@ -180,7 +155,34 @@ namespace TwistedLogik.Ultraviolet.iOS.Platform
         /// <inheritdoc/>
         public override ScreenDensityBucket DensityBucket => densityBucket;
 
+        /// <summary>
+        /// Attempts to guess at the appropriate <see cref="ScreenDensityBucket"/> for the specified density scale.
+        /// </summary>
+        private static ScreenDensityBucket GuessBucketFromDensityScale(Single scale)
+        {
+            if (scale >= 6f)
+                return ScreenDensityBucket.ExtraExtraExtraHigh;
+
+            if (scale >= 5f)
+                return ScreenDensityBucket.ExtraExtraHigh;
+
+            if (scale >= 3f)
+                return ScreenDensityBucket.ExtraHigh;
+
+            if (scale >= 2.5f)
+                return ScreenDensityBucket.High;
+
+            if (scale >= 1.5f)
+                return ScreenDensityBucket.Medium;
+
+            if (scale >= 1.25f)
+                return ScreenDensityBucket.Low;
+
+            return ScreenDensityBucket.Desktop;
+        }
+
         // Property values.
+        private readonly Single deviceScale;
         private readonly Single densityScale;
         private readonly Single densityX;
         private readonly Single densityY;

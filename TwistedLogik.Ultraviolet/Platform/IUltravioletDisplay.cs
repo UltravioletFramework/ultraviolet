@@ -281,6 +281,15 @@ namespace TwistedLogik.Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Gets the number of physical pixels per logical pixel on devices with high density display modes
+        /// like Retina or Retina HD.
+        /// </summary>
+        Single DeviceScale
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the scaling factor for device independent pixels.
         /// </summary>
         Single DensityScale

@@ -117,6 +117,15 @@ namespace TwistedLogik.Ultraviolet.Platform
             get;
             set;
         }
+        
+        /// <summary>
+        /// Gets the window's drawable size. On high-density displays, this value may be larger than the value
+        /// of <see cref="ClientSize"/> due to the distinction between logical and virtual pixels.
+        /// </summary>
+        Size2 DrawableSize
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets or sets the window's client size.

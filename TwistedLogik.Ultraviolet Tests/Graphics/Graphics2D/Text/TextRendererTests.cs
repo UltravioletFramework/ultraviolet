@@ -444,7 +444,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         if (line.HasValue)
                         {
                             var bounds = new Rectangle(0, line.Value * content.SpriteFont.Regular.LineSpacing,
-                                window.ClientSize.Width, content.SpriteFont.Regular.LineSpacing);
+                                window.DrawableSize.Width, content.SpriteFont.Regular.LineSpacing);
                             content.SpriteBatch.Draw(content.BlankTexture, bounds, colors[i] * 0.5f);
                         }
                     }
@@ -497,7 +497,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         if (line.HasValue)
                         {
                             var bounds = new Rectangle(0, line.Value * content.SpriteFont.Regular.LineSpacing,
-                                window.ClientSize.Width, content.SpriteFont.Regular.LineSpacing);
+                                window.DrawableSize.Width, content.SpriteFont.Regular.LineSpacing);
                             content.SpriteBatch.Draw(content.BlankTexture, bounds, colors[i] * 0.5f);
                         }
                     }
@@ -550,7 +550,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                         if (line.HasValue)
                         {
                             var bounds = new Rectangle(0, line.Value * content.SpriteFont.Regular.LineSpacing,
-                                window.ClientSize.Width, content.SpriteFont.Regular.LineSpacing);
+                                window.DrawableSize.Width, content.SpriteFont.Regular.LineSpacing);
                             content.SpriteBatch.Draw(content.BlankTexture, bounds, colors[i] * 0.5f);
                         }
                     }
@@ -1099,8 +1099,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
                     var window = uv.GetPlatform().Windows.GetCurrent();
-                    var width = window.ClientSize.Width;
-                    var height = window.ClientSize.Height;
+                    var width = window.DrawableSize.Width;
+                    var height = window.DrawableSize.Height;
 
                     textRenderer.LinkStateEvaluator = (target) => String.Equals(target, "visited", StringComparison.InvariantCulture);
 
@@ -1147,8 +1147,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
                     var window = uv.GetPlatform().Windows.GetCurrent();
-                    var width = window.ClientSize.Width;
-                    var height = window.ClientSize.Height;
+                    var width = window.DrawableSize.Width;
+                    var height = window.DrawableSize.Height;
 
                     textRenderer.LinkColorizer = (target, visited, hovering, active, currentColor) =>
                     {

@@ -74,14 +74,14 @@ namespace UltravioletSample.Sample11_GamePads
             }
             base.OnUpdating(time);
         }
-        
+
         protected override void OnDrawing(UltravioletTime time)
         {
-            var winSize = Ultraviolet.GetPlatform().Windows.GetPrimary().ClientSize;
+            var winSize = Ultraviolet.GetPlatform().Windows.GetPrimary().DrawableSize;
 
-            var x      = 0;
-            var y      = 0;
-            var width  = winSize.Width / 4;
+            var x = 0;
+            var y = 0;
+            var width = winSize.Width / 4;
             var height = winSize.Height;
 
             for (int i = 0; i < 4; i++)

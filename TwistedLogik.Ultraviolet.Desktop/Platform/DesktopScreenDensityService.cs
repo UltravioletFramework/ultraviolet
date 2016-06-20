@@ -34,10 +34,10 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
 
             var rect = new Win32.RECT
             {
-                left   = display.Bounds.Left,
-                top    = display.Bounds.Top,
-                right  = display.Bounds.Right,
-                bottom = display.Bounds.Bottom 
+                left = display.Bounds.Left,
+                top = display.Bounds.Top,
+                right = display.Bounds.Right,
+                bottom = display.Bounds.Bottom
             };
 
             var hmonitor = IntPtr.Zero;
@@ -57,9 +57,9 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
             UInt32 x, y;
             Win32.GetDpiForMonitor(hmonitor, 0, out x, out y);
 
-            this.densityX      = x;
-            this.densityY      = y;
-            this.densityScale  = x / 96f;
+            this.densityX = x;
+            this.densityY = y;
+            this.densityScale = x / 96f;
             this.densityBucket = GuessBucketFromDensityScale(densityScale);
 
             return true;
@@ -73,8 +73,8 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
             if (uv.Platform != UltravioletPlatform.OSX)
                 return false;
 
-            this.densityX     = 72f;
-            this.densityY     = 72f;
+            this.densityX = 96f;
+            this.densityY = 96f;
             this.densityScale = 1.0f;
 
             return true;
@@ -87,12 +87,18 @@ namespace TwistedLogik.Ultraviolet.Desktop.Platform
         {
             using (var graphics = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
             {
-                this.densityX      = graphics.DpiX;
-                this.densityY      = graphics.DpiY;
-                this.densityScale  = graphics.DpiX / 96f;
+                this.densityX = graphics.DpiX;
+                this.densityY = graphics.DpiY;
+                this.densityScale = graphics.DpiX / 96f;
                 this.densityBucket = GuessBucketFromDensityScale(densityScale);
             }
             return true;
+        }
+
+        /// <inheritdoc/>
+        public override Single DeviceScale
+        {
+            get { return 1f; }
         }
 
         /// <inheritdoc/>

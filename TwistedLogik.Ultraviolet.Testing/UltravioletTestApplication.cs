@@ -240,8 +240,8 @@ namespace TwistedLogik.Ultraviolet.Testing
             {
                 // HACK: AMD drivers produce weird rasterization artifacts when rendering
                 // to a NPOT render buffer??? So we have to fix it with this stupid hack???
-                var width = MathUtil.FindNextPowerOfTwo(window.ClientSize.Width);
-                var height = MathUtil.FindNextPowerOfTwo(window.ClientSize.Height);
+                var width = MathUtil.FindNextPowerOfTwo(window.DrawableSize.Width);
+                var height = MathUtil.FindNextPowerOfTwo(window.DrawableSize.Height);
 
                 rtargetColorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, width, height);
                 rtargetDepthStencilBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, width, height);
@@ -340,8 +340,8 @@ namespace TwistedLogik.Ultraviolet.Testing
             // to the size of the window.
 
             var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            var windowWidth = window.ClientSize.Width;
-            var windowHeight = window.ClientSize.Height;
+            var windowWidth = window.DrawableSize.Width;
+            var windowHeight = window.DrawableSize.Height;
 
             var data = new Color[rt.Width * rt.Height];
             rt.GetData(data);

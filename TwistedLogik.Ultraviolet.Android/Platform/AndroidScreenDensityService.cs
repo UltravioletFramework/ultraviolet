@@ -41,6 +41,15 @@ namespace TwistedLogik.Ultraviolet.Android.Platform
         }
 
         /// <inheritdoc/>
+        public override Single DeviceScale
+        {
+            get
+            {
+                return 1f;
+            }
+        }
+
+        /// <inheritdoc/>
         public override Single DensityScale
         {
             get

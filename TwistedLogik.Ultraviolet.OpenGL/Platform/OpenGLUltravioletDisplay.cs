@@ -350,6 +350,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <inheritdoc/>
+        public Single DeviceScale
+        {
+            get
+            {
+                return screenDensityService.DeviceScale;
+            }
+        }
+
+        /// <inheritdoc/>
         public Single DensityScale
         {
             get 

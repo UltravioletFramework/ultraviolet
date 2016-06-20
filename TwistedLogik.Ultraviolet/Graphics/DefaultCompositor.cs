@@ -47,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
             var window = Ultraviolet.GetPlatform().Windows.GetCurrent();
             var graphics = Ultraviolet.GetGraphics();
             graphics.SetRenderTarget(null);
-            graphics.SetViewport(new Viewport(0, 0, window.ClientSize.Width, window.ClientSize.Height));
+            graphics.SetViewport(new Viewport(0, 0, window.DrawableSize.Width, window.DrawableSize.Height));
             graphics.Clear(Color.CornflowerBlue, 1.0f, 0);
         }
 
@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return Window.ClientSize;
+                return Window.DrawableSize;
             }
         }
     }

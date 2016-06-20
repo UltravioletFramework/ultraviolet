@@ -31,6 +31,8 @@ using System.Security;
 
 #if IOS
 [assembly: InternalsVisibleTo("TwistedLogik.Ultraviolet.iOS")]
+[assembly: Foundation.Preserve(typeof(Object), AllMembers = true)]
+[assembly: Foundation.Preserve(typeof(Nullable), AllMembers = true)]
 #endif
 
 // General Information about an assembly is controlled through the following 

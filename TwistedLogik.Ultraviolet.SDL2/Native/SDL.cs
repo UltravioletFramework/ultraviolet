@@ -287,6 +287,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_SetSwapInterval")]
         public static extern Int32 GL_SetSwapInterval(Int32 interval);
 
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_GetDrawableSize")]
+        public static extern void GL_GetDrawableSize(IntPtr window, out Int32 w, out Int32 h);
+
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_NumJoysticks")]
         public static extern Int32 NumJoysticks();
 

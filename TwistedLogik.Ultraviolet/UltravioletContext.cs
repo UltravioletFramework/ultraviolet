@@ -73,6 +73,7 @@ namespace TwistedLogik.Ultraviolet
             DetectPlatform();
 
             this.isRunningInServiceMode = configuration.EnableServiceMode;
+            this.supportsHighDensityDisplayModes = configuration.SupportsHighDensityDisplayModes;
 
             this.host = host;
 
@@ -761,6 +762,21 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets a value indicating whether the context supports high-density display modes
+        /// such as Retina and Retina HD. This allows the application to make use of every physical pixel 
+        /// on the screen, rather than being scaled to use logical pixels.
+        /// </summary>
+        public Boolean SupportsHighDensityDisplayModes
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return supportsHighDensityDisplayModes;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the context is currently processing messages
         /// from the physical input devices.
         /// </summary>
@@ -1362,6 +1378,7 @@ namespace TwistedLogik.Ultraviolet
         private readonly UltravioletSynchronizationContext syncContext;
         private readonly UltravioletFactory factory = new UltravioletFactory();
         private readonly Thread thread;
+        private Boolean supportsHighDensityDisplayModes;
         private Boolean isHardwareInputDisabled;
         private Boolean isRunningInServiceMode;
         private Boolean isInitialized;

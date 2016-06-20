@@ -68,8 +68,8 @@ namespace UltravioletSample.Sample16_CustomTextLayoutCommands
             if (window != null)
             {
                 this.textBlock.ChangeSize(
-                    window.ClientSize.Width / 2, 
-                    window.ClientSize.Height / 2);
+                    window.DrawableSize.Width / 2, 
+                    window.DrawableSize.Height / 2);
                 this.textBlock.Update(time);
             }
 
@@ -99,8 +99,8 @@ namespace UltravioletSample.Sample16_CustomTextLayoutCommands
             }
 
             var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            var x = (window.ClientSize.Width - textBlock.Width.Value) / 2;
-            var y = (window.ClientSize.Height - textBlock.Height.Value) / 2;
+            var x = (window.DrawableSize.Width - textBlock.Width.Value) / 2;
+            var y = (window.DrawableSize.Height - textBlock.Height.Value) / 2;
 
             textBlock.Draw(time, spriteBatch, new Vector2(x, y), Color.White);
 

@@ -90,8 +90,8 @@ namespace UltravioletSample.Sample16_CustomTextLayoutCommands
         private void DrawAlignedText()
         {
             var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            var width = window.ClientSize.Width;
-            var height = window.ClientSize.Height;
+            var width = window.DrawableSize.Width;
+            var height = window.DrawableSize.Height;
 
             var settingsTopLeft = new TextLayoutSettings(spriteFontSegoe, width, height, TextFlags.AlignTop | TextFlags.AlignLeft);
             textRenderer.Draw(spriteBatch, "Aligned top left", Vector2.Zero, Color.White, settingsTopLeft);
@@ -115,8 +115,8 @@ namespace UltravioletSample.Sample16_CustomTextLayoutCommands
         private void DrawColoredAndStyledText()
         {
             var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            var width = window.ClientSize.Width;
-            var height = window.ClientSize.Height;
+            var width = window.DrawableSize.Width;
+            var height = window.DrawableSize.Height;
 
             if (textLayoutCommands.Settings.Width != width || textLayoutCommands.Settings.Height != height)
             {

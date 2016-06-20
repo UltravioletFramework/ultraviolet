@@ -1812,7 +1812,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private Point2D GetTouchCoordinates(Single x, Single y)
         {
-            var windowSize = Window.ClientSize;
+            var windowSize = Window.DrawableSize;
 
             var xRelativeToWindow = windowSize.Width * x;
             var yRelativeToWindow = windowSize.Height * y;
@@ -1831,7 +1831,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private Point2D GetTouchDelta(Single x, Single y)
         {
-            var windowSize = Window.ClientSize;
+            var windowSize = Window.DrawableSize;
 
             var xPixels = windowSize.Width * x;
             var yPixels = windowSize.Height * y;

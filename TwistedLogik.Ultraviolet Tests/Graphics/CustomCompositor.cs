@@ -51,8 +51,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
         /// <inheritdoc/>
         public override Point2 PointToWindow(Point2 pt)
         {
-            var xFactor = Window.ClientSize.Width / (Double)BufferWidth;
-            var yFactor = Window.ClientSize.Height / (Double)BufferHeight;
+            var xFactor = Window.DrawableSize.Width / (Double)BufferWidth;
+            var yFactor = Window.DrawableSize.Height / (Double)BufferHeight;
 
             return new Point2((Int32)(pt.X * xFactor), (Int32)(pt.Y * yFactor));
         }
@@ -60,8 +60,8 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
         /// <inheritdoc/>
         public override Point2 WindowToPoint(Point2 pt)
         {
-            var xFactor = BufferWidth / (Double)Window.ClientSize.Width;
-            var yFactor = BufferHeight / (Double)Window.ClientSize.Height;
+            var xFactor = BufferWidth / (Double)Window.DrawableSize.Width;
+            var yFactor = BufferHeight / (Double)Window.DrawableSize.Height;
 
             return new Point2((Int32)(pt.X * xFactor), (Int32)(pt.Y * yFactor));
         }
@@ -164,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics
             gfx.Clear(Color.Black, 1.0f, 0);
 
             var area = new RectangleF(0, 0,
-                Window.ClientSize.Width, Window.ClientSize.Height);
+                Window.DrawableSize.Width, Window.DrawableSize.Height);
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
             spriteBatch.Draw(rtCompositionColor, area, Color.White);

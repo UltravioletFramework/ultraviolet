@@ -77,8 +77,8 @@ namespace UltravioletSample.Sample7_PlayingMusic
         protected override void OnDrawing(UltravioletTime time)
         {
             var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            var width  = window.ClientSize.Width;
-            var height = window.ClientSize.Height;
+            var width  = window.DrawableSize.Width;
+            var height = window.DrawableSize.Height;
 
             stringFormatter.Reset();
             stringFormatter.AddArgument(songPlayer.Position.Minutes);

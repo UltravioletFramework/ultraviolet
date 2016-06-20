@@ -399,6 +399,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         }
 
         /// <inheritdoc/>
+        public Size2 DrawableSize
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                Int32 w, h;
+                SDL.GL_GetDrawableSize(ptr, out w, out h);
+
+                return new Size2(w, h);
+            }
+        }
+
+        /// <inheritdoc/>
         public Size2 ClientSize
         {
             get

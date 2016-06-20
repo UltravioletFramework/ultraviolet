@@ -206,6 +206,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
         {
             var sdlflags = SDL_WindowFlags.OPENGL;
 
+            if (Ultraviolet.SupportsHighDensityDisplayModes)
+                sdlflags |= SDL_WindowFlags.ALLOW_HIGHDPI;
+
             if ((flags & WindowFlags.Resizable) == WindowFlags.Resizable)
                 sdlflags |= SDL_WindowFlags.RESIZABLE;
 
@@ -392,6 +395,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             var masterWidth = 0;
             var masterHeight = 0;
             var masterFlags = SDL_WindowFlags.OPENGL;
+
+            if (Ultraviolet.SupportsHighDensityDisplayModes)
+                masterFlags |= SDL_WindowFlags.ALLOW_HIGHDPI;
 
             if (isRunningOnMobile)
             {

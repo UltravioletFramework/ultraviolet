@@ -292,8 +292,17 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
             this.window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
 
-            this.x = evt.x;
-            this.y = evt.y;
+            if (Ultraviolet.SupportsHighDensityDisplayModes)
+            {
+                var scale = window.Display.DeviceScale;
+                this.x = (Int32)(evt.x * scale);
+                this.y = (Int32)(evt.y * scale);
+            }
+            else
+            {
+                this.x = evt.x;
+                this.y = evt.y;
+            }
 
             OnMoved(window, evt.x, evt.y, evt.xrel, evt.yrel);
         }

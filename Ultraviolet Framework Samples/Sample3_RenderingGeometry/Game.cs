@@ -67,7 +67,7 @@ namespace UltravioletSample.Sample3_RenderingGeometry
         {
             var gfx         = Ultraviolet.GetGraphics();
             var window      = Ultraviolet.GetPlatform().Windows.GetPrimary();
-            var aspectRatio = window.ClientSize.Width / (float)window.ClientSize.Height;
+            var aspectRatio = window.DrawableSize.Width / (float)window.DrawableSize.Height;
 
             effect.World              = Matrix.CreateRotationY((float)(2.0 * Math.PI * time.TotalTime.TotalSeconds));
             effect.View               = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);

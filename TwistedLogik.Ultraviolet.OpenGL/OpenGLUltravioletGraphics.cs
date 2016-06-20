@@ -843,7 +843,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 if (currentWindow == null)
                     return;
 
-                renderTargetHeight = currentWindow.ClientSize.Height;
+                renderTargetHeight = currentWindow.DrawableSize.Height;
             }
 
             y = renderTargetHeight - (height + y);
@@ -881,7 +881,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 {
                     var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
                     if (currentWindow != null)
-                        targetSize = currentWindow.ClientSize;
+                        targetSize = currentWindow.DrawableSize;
                 }
 
                 OpenGLState.BindFramebuffer(targetName);
