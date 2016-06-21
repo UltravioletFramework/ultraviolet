@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Sample11_GamePads</string>
+	<string>Sample 11 - Game Pads</string>
 	<key>CFBundleIdentifier</key>
 	<string>net.twistedlogik.Sample11_GamePads</string>
 	<key>CFBundleShortVersionString</key>
@@ -38,5 +38,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>CFBundleIconFiles</key>
+	<array/>
+	<key>XSAppIconAssets</key>
+	<string>Resources/Media.xcassets/AppIcons.appiconset</string>
 </dict>
 </plist>

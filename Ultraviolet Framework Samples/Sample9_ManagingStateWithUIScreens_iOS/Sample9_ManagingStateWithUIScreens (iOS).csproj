@@ -217,7 +217,14 @@
     </Reference>
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\LaunchImages.launchimage\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Sample9_ManagingStateWithUIScreens_Desktop\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
@@ -225,6 +232,44 @@
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv120.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv152.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv167.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv180.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv29.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv40.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv58.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv76.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv80.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv87.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\LaunchImages.launchimage\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
   </ItemGroup>
   <Import Project="..\SampleSharedLib\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="..\Sample9_ManagingStateWithUIScreens\Sample9_ManagingStateWithUIScreens.projitems" Label="Shared" />
