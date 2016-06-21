@@ -145,21 +145,21 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Gluon_iOS\TwistedLogik.Gluon %28iOS%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Gluon_iOS\TwistedLogik.Gluon (iOS).csproj">
       <Project>{65ecb0c3-fd4e-494a-a000-43500b9cb851}</Project>
-      <Name>TwistedLogik.Gluon %28iOS%29</Name>
+      <Name>TwistedLogik.Gluon (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Nucleus_iOS\TwistedLogik.Nucleus %28iOS%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Nucleus_iOS\TwistedLogik.Nucleus (iOS).csproj">
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
-      <Name>TwistedLogik.Nucleus %28iOS%29</Name>
+      <Name>TwistedLogik.Nucleus (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet_iOS\TwistedLogik.Ultraviolet %28iOS%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet_iOS\TwistedLogik.Ultraviolet (iOS).csproj">
       <Project>{8f9f44fb-e63c-48de-8752-19b745111559}</Project>
-      <Name>TwistedLogik.Ultraviolet %28iOS%29</Name>
+      <Name>TwistedLogik.Ultraviolet (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2_iOS\TwistedLogik.Ultraviolet.SDL2 %28iOS%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2_iOS\TwistedLogik.Ultraviolet.SDL2 (iOS).csproj">
       <Project>{6355ebda-2aee-47d2-a74f-efb38054fabd}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2 %28iOS%29</Name>
+      <Name>TwistedLogik.Ultraviolet.SDL2 (iOS)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

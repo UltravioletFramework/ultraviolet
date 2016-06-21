@@ -43,8 +43,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         static BindingExpressions()
         {
             miReferenceEquals = typeof(Object).GetMethod("ReferenceEquals", new[] { typeof(Object), typeof(Object) });
-            miObjectEquals    = typeof(Object).GetMethod("Equals", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Object), typeof(Object) }, null);
-            miNullableEquals  = typeof(Nullable).GetMethods().Where(x => x.Name == "Equals" && x.IsGenericMethod).Single();
+            miObjectEquals = typeof(Object).GetMethod("Equals", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Object), typeof(Object) }, null);
+#if CODE_GEN_ENABLED
+            miNullableEquals = typeof(Nullable).GetMethods().Where(x => x.Name == "Equals" && x.IsGenericMethod).Single();
+#endif
         }
 
         /// <summary>
@@ -519,7 +521,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // Reflection information for commonly-used methods.
         private static readonly MethodInfo miReferenceEquals;
         private static readonly MethodInfo miObjectEquals;
+#if CODE_GEN_ENABLED
         private static readonly MethodInfo miNullableEquals;
+#endif
 
         // Comparison functions for various types.
         private static readonly Dictionary<Type, Delegate> comparerRegistry = new Dictionary<Type, Delegate>();
