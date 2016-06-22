@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</ProjectGuid>
+    <ProjectGuid>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</ProjectGuid>
     <ProjectTypeGuids>{8FFB629D-F513-41CE-95D2-7ECE97B6EEEC};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>TwistedLogik.Ultraviolet.SDL2</RootNamespace>
-    <AssemblyName>TwistedLogik.Ultraviolet.SDL2</AssemblyName>
+    <RootNamespace>TwistedLogik.Ultraviolet.SDL2.UIKit</RootNamespace>
+    <AssemblyName>TwistedLogik.Ultraviolet.SDL2.UIKit_iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>__MOBILE__;__IOS__;__UNIFIED__;DEBUG;IOS</DefineConstants>
+    <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>__MOBILE__;__IOS__;__UNIFIED__;IOS</DefineConstants>
+    <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -43,32 +43,5 @@
   <ItemGroup>
     <ObjcBindingCoreSource Include="Structs.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <NativeReference Include="..\Dependencies\SDL2\iOS\libSDL2.a">
-      <Kind>Static</Kind>
-      <SmartLink>False</SmartLink>
-      <ForceLoad>True</ForceLoad>
-      <Frameworks>OpenGLES GameController AudioToolbox QuartzCore CoreGraphics CoreMotion</Frameworks>
-    </NativeReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet_iOS\TwistedLogik.Ultraviolet %28iOS%29.csproj">
-      <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
-      <Name>TwistedLogik.Ultraviolet (iOS)</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Nucleus_iOS\TwistedLogik.Nucleus %28iOS%29.csproj">
-      <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
-      <Name>TwistedLogik.Nucleus (iOS)</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.SDL2_Desktop\Resources\Strings.xml">
-      <Link>Resources\Strings.xml</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Import Project="..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems" Label="Shared" Condition="Exists('..\TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />
 </Project>

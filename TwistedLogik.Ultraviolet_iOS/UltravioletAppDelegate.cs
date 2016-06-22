@@ -1,5 +1,5 @@
 ﻿using Foundation;
-using TwistedLogik.Ultraviolet.iOS.Bindings;
+using TwistedLogik.Ultraviolet.SDL2.UIKit;
 using UIKit;
 
 namespace TwistedLogik.Ultraviolet

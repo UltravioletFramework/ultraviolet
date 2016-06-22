@@ -1,7 +1,6 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.SDL2;
 using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.iOS.Bindings;
+using TwistedLogik.Ultraviolet.SDL2.UIKit;
 using UIKit;
 
 namespace TwistedLogik.Ultraviolet.iOS.Input

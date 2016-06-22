@@ -59,9 +59,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="TwistedLogik.Ultraviolet.iOS.Bindings">
-      <HintPath>..\TwistedLogik.Ultraviolet.iOS.Bindings\bin\$(Configuration)\TwistedLogik.Ultraviolet.iOS.Bindings.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup />
@@ -107,6 +104,10 @@
     <ProjectReference Include="..\TwistedLogik.Nucleus_iOS\TwistedLogik.Nucleus (iOS).csproj">
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
       <Name>TwistedLogik.Nucleus (iOS)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2.UIKit_iOS\TwistedLogik.Ultraviolet.SDL2.UIKit %28iOS%29.csproj">
+      <Project>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</Project>
+      <Name>TwistedLogik.Ultraviolet.SDL2.UIKit (iOS)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
