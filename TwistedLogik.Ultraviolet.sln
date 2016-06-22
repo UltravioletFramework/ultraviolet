@@ -113,26 +113,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing.csproj", "{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.iOS.Bindings", "TwistedLogik.Ultraviolet.iOS.Bindings\TwistedLogik.Ultraviolet.iOS.Bindings.csproj", "{76ED0EA8-82EC-43DA-A724-D09991E1905D}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems*{4f741cca-6fbf-439e-a26a-abb189619101}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{b5502009-935a-40ba-b415-abbf55427cad}*SharedItemsImports = 4
-		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{480c60a0-20c2-4bbc-8d87-e5383ee66ff8}*SharedItemsImports = 4
 		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{08b2b8d5-152f-45fb-b4eb-8c09010a9908}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.Profiler.dotTrace\TwistedLogik.Ultraviolet.Profiler.dotTrace.projitems*{e1cd102c-6d6d-4eb2-abed-1fad59c9730f}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems*{7379d9e1-bb01-4b05-b4f7-5d39b393348f}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}*SharedItemsImports = 4
-		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{6355ebda-2aee-47d2-a74f-efb38054fabd}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.Profiler.dotTrace\TwistedLogik.Ultraviolet.Profiler.dotTrace.projitems*{4062c348-1341-4a91-8354-fbb227ad7def}*SharedItemsImports = 13
 		UvDebugSandbox\UvDebugSandbox.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{40d272db-90e1-4332-a32f-6effeb44fe87}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
-		UvDebugSandbox\UvDebugSandbox.projitems*{00dfa15e-9cb3-4ebb-91c1-4837335b083c}*SharedItemsImports = 4
-		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{65ecb0c3-fd4e-494a-a000-43500b9cb851}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}*SharedItemsImports = 4
 		UvDebugSandbox\UvDebugSandbox.projitems*{a8c85c23-03c2-41c6-8331-48835d257634}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{0b17931c-1595-4ada-9086-f26e5f5a387d}*SharedItemsImports = 4
@@ -143,9 +136,7 @@ Global
 		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
 		UvDebugSandbox\UvDebugSandbox.projitems*{fec3b657-42e7-4e8e-8760-9fd7eff1d0e5}*SharedItemsImports = 4
 		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{49a66667-2355-4755-a3ad-4ef9ca638534}*SharedItemsImports = 4
-		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{6115a978-b4b6-46d3-ad13-f0dc358b8bd3}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
-		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{ddc2077d-a8e5-4866-8c74-5ebb1ca7f8e1}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{3416af37-8a39-479d-b78f-88d72cadd458}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{f071abe3-05e5-4df9-a929-cf71b01ec50a}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.Profiler.dotTrace\TwistedLogik.Ultraviolet.Profiler.dotTrace.projitems*{003be843-db95-40d7-a4d9-e50f599e59e1}*SharedItemsImports = 4
@@ -153,10 +144,7 @@ Global
 		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
 		TwistedLogik.Nucleus\TwistedLogik.Nucleus.projitems*{7eb671f1-6b46-426d-8a27-730d2b682043}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{50aefa93-fe53-414a-89fc-c061c165c673}*SharedItemsImports = 4
-		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{8f9f44fb-e63c-48de-8752-19b745111559}*SharedItemsImports = 4
-		TwistedLogik.Nucleus\TwistedLogik.Nucleus.projitems*{4628df73-2c5c-4cd1-ab2c-197f6233504f}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{c9da531d-4fdc-4c41-8e2c-f3c68dae5aea}*SharedItemsImports = 4
-		TwistedLogik.Ultraviolet.Profiler.dotTrace\TwistedLogik.Ultraviolet.Profiler.dotTrace.projitems*{7afdad33-ac46-46a0-80e7-a041a3ba44e8}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
@@ -1377,36 +1365,6 @@ Global
 		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|iPhone.Build.0 = Signed|Any CPU
 		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|iPhoneSimulator.ActiveCfg = Signed|Any CPU
 		{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}.Signed|iPhoneSimulator.Build.0 = Signed|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Ad-Hoc|iPhone.ActiveCfg = Signed|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Ad-Hoc|iPhone.Build.0 = Signed|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Ad-Hoc|iPhoneSimulator.Build.0 = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.AppStore|Any CPU.Build.0 = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.AppStore|iPhone.ActiveCfg = Signed|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.AppStore|iPhone.Build.0 = Signed|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.AppStore|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.AppStore|iPhoneSimulator.Build.0 = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Release|iPhone.Build.0 = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Signed|Any CPU.ActiveCfg = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Signed|Any CPU.Build.0 = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Signed|iPhone.ActiveCfg = Signed|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Signed|iPhone.Build.0 = Signed|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Signed|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{76ED0EA8-82EC-43DA-A724-D09991E1905D}.Signed|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
