@@ -309,6 +309,23 @@
       <Name>TwistedLogik.Ultraviolet.BASS (iOS)</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv29.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv58.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv87.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv80.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv120.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv57.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv114.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv180.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv40.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv72.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv144.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv76.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv152.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv167.png" />
+  </ItemGroup>
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
