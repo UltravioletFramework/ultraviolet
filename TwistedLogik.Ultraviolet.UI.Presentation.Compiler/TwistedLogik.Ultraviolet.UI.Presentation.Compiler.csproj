@@ -77,19 +77,19 @@
   <ItemGroup>
     <ProjectReference Include="..\TwistedLogik.Nucleus_Desktop\TwistedLogik.Nucleus %28Desktop%29.csproj">
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
+      <Name>TwistedLogik.Nucleus (Desktop)</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29.csproj">
       <Project>{7379D9E1-BB01-4B05-B4F7-5D39B393348F}</Project>
-      <Name>TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29</Name>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation (Desktop)</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>TwistedLogik.Ultraviolet %28Desktop%29</Name>
+      <Name>TwistedLogik.Ultraviolet (Desktop)</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss_Desktop\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29.csproj">
       <Project>{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}</Project>
-      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29</Name>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

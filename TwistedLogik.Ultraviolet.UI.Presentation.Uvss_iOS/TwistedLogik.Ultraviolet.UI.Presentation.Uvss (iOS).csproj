@@ -78,12 +78,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus_iOS\TwistedLogik.Nucleus (iOS).csproj">
-      <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
-      <Name>TwistedLogik.Nucleus (iOS)</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
