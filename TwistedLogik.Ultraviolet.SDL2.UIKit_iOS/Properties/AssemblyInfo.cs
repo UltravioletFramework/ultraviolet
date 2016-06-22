@@ -1,34 +1,23 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
-using Foundation;
+[assembly: CLSCompliant(false)]
 
-// This attribute allows you to mark your assemblies as “safe to link”. 
-// When the attribute is present, the linker—if enabled—will process the assembly 
-// even if you’re using the “Link SDK assemblies only” option, which is the default for device builds.
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+[assembly: AssemblyTitle(@"Ultraviolet Implementation Library (SDL2 UIKit Bindings)")]
+[assembly: AssemblyDescription(
+    @"An iOS binding library which exposes the UIKit components implemented by SDL2.")]
 
-[assembly: LinkerSafe]
+// Setting ComVisible to false makes the types in this assembly not visible 
+// to COM components.  If you need to access a type in this assembly from 
+// COM, set the ComVisible attribute to true on that type. Only Windows
+// assemblies support COM.
+[assembly: ComVisible(false)]
 
-// Information about this assembly is defined by the following attributes. 
-// Change them to the values specific to your project.
-
-[assembly: AssemblyTitle ("TwistedLogik.Ultraviolet.SDL2.UIKit_iOS")]
-[assembly: AssemblyDescription ("")]
-[assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("")]
-[assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("(c) Cole Campbell")]
-[assembly: AssemblyTrademark ("")]
-[assembly: AssemblyCulture ("")]
-
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
-
-[assembly: AssemblyVersion ("1.0.*")]
-
-// The following attributes are used to specify the signing key for the assembly, 
-// if desired. See the Mono documentation for more information about signing.
-
-//[assembly: AssemblyDelaySign(false)]
-//[assembly: AssemblyKeyFile("")]
+// On Windows, the following GUID is for the ID of the typelib if this
+// project is exposed to COM. On other platforms, it unique identifies the
+// title storage container when deploying this assembly to the device.
+[assembly: Guid("bd2dbb06-a933-4f33-8b32-e3c50386c60c")]
