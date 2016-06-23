@@ -49,7 +49,7 @@
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore"</MtouchExtraArgs>
+    <MtouchExtraArgs></MtouchExtraArgs>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
@@ -76,7 +76,7 @@
     <MtouchDebug>False</MtouchDebug>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore"</MtouchExtraArgs>
+    <MtouchExtraArgs></MtouchExtraArgs>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
@@ -103,7 +103,7 @@
     <MtouchDebug>False</MtouchDebug>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore" --xml=XamarinLinkDescription.xml</MtouchExtraArgs>
+    <MtouchExtraArgs></MtouchExtraArgs>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
@@ -131,7 +131,7 @@
     <MtouchDebug>False</MtouchDebug>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore" --xml=XamarinLinkDescription.xml</MtouchExtraArgs>
+    <MtouchExtraArgs></MtouchExtraArgs>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
@@ -156,18 +156,6 @@
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
-    <None Include="..\Dependencies\iOS\libbass.a">
-      <Link>libbass.a</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\iOS\libbass_fx.a">
-      <Link>libbass_fx.a</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\iOS\libSDL2.a">
-      <Link>libSDL2.a</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Info.plist" />
     <Compile Include="..\Sample12_UPF_Desktop\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

@@ -50,7 +50,7 @@
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore"</MtouchExtraArgs>
+    <MtouchExtraArgs></MtouchExtraArgs>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
@@ -77,7 +77,7 @@
     <MtouchDebug>False</MtouchDebug>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore"</MtouchExtraArgs>
+    <MtouchExtraArgs></MtouchExtraArgs>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
@@ -106,7 +106,7 @@
     <MtouchDebug>False</MtouchDebug>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore"</MtouchExtraArgs>
+    <MtouchExtraArgs></MtouchExtraArgs>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
@@ -143,7 +143,7 @@
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchFloat32>False</MtouchFloat32>
-    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir} -lSDL2 -force_load ${ProjectDir}/libSDL2.a -lbass -force_load ${ProjectDir}/libbass.a -lbass_fx -force_load ${ProjectDir}/libbass_fx.a -framework Accelerate -framework AudioToolbox -framework CoreMotion -framework GameController -framework OpenGLES -framework QuartzCore"</MtouchExtraArgs>
+    <MtouchExtraArgs></MtouchExtraArgs>
     <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;IOS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -153,18 +153,6 @@
     <BundleResource Include="..\Sample11_GamePads_Desktop\Content\Sprites\Xbox360Controller.sprite">
       <Link>Content\Sprites\Xbox360Controller.sprite</Link>
     </BundleResource>
-    <None Include="..\Dependencies\iOS\libbass.a">
-      <Link>libbass.a</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\iOS\libbass_fx.a">
-      <Link>libbass_fx.a</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\iOS\libSDL2.a">
-      <Link>libSDL2.a</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Info.plist" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <BundleResource Include="..\Sample11_GamePads_Desktop\Content\Fonts\SegoeUI12.xml">
@@ -179,26 +167,24 @@
     <Content Include="Entitlements.plist" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Dependencies\iOS\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Dependencies\iOS\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="TwistedLogik.Gluon">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Gluon.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Nucleus">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Nucleus.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.dll</HintPath>
-    </Reference>
     <Reference Include="TwistedLogik.Ultraviolet.BASS">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.BASS.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.iOS.Bindings">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.iOS.Bindings.dll</HintPath>
+    <Reference Include="TwistedLogik.Ultraviolet">
+      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet.OpenGL">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.OpenGL.dll</HintPath>
@@ -206,7 +192,9 @@
     <Reference Include="TwistedLogik.Ultraviolet.SDL2">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.iOS" />
+    <Reference Include="TwistedLogik.Ultraviolet.SDL2.UIKit_iOS">
+      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.UIKit_iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Contents.json">
