@@ -201,7 +201,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <Target Name="BeforeBuild">
+  <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'==''">
     <Message Text="Copying content archive and binding expressions assembly from Desktop project..."/>
     <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_Desktop/bin/$(ConfigurationName)/Content.uvarc')" 
       Text="Could not locate Content.uvarc. Ensure that the Desktop project has been built before building the Android project."/>
