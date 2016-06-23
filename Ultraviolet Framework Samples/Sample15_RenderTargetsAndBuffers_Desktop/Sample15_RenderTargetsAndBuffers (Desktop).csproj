@@ -7,7 +7,7 @@
     <ProjectGuid>{03638242-3ADB-4881-88C7-63519F4A377B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UltravioletSample.Sample14_LoadingImageDataWithSurfaces</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample15_RenderTargetsAndBuffers</RootNamespace>
     <AssemblyName>Sample14_LoadingImageDataWithSurfaces</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -138,6 +138,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <Compile Include="Game.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

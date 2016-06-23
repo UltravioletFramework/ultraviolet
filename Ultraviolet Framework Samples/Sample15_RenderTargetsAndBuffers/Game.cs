@@ -18,7 +18,7 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
 #endif
-    public class Game : SampleApplicationBase2
+    public partial class Game : SampleApplicationBase2
     {
         public Game()
             : base("TwistedLogik", "Sample 15 - Render Targets and Buffers", uv => uv.GetInput().GetActions())
@@ -73,30 +73,13 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
                 content.Load<SoundEffect>(GlobalSoundEffectID.Shutter).Play();
 
                 // The SurfaceSaver class contains platform-specific functionality needed to write image
-                // data to files. We can pass a render target directly to the SaveAsPng() or SaveAsJpg() methods.
+                // data to streams. We can pass a render target directly to the SaveAsPng() or SaveAsJpg() methods.
                 var saver = SurfaceSaver.Create();
-                var filename = $"output-{DateTime.Now:yyyyMMdd-HHmmss}.png";
-                var path = filename;
 
-#if ANDROID
-                var dir = Android.OS.Environment.GetExternalStoragePublicDirectory(
-                    Android.OS.Environment.DirectoryPictures).AbsolutePath;
-                path = Path.Combine(dir, filename);
-#endif
-
-                using (var stream = File.OpenWrite(path))
-                    saver.SaveAsPng(rtarget, stream);
-
-#if ANDROID
-                Android.Media.MediaScannerConnection.ScanFile(ApplicationContext, new String[] { path }, 
-                    new String[] { Android.Webkit.MimeTypeMap.Singleton.GetMimeTypeFromExtension("png") }, null);
-
-                confirmMsgText = $"Image saved to photo gallery";
-                confirmMsgOpacity = 1;
-#else
-                confirmMsgText = $"Image saved to {filename}";
-                confirmMsgOpacity = 1;
-#endif
+				// The Android and iOS platforms have restrictions on where you can save files, so we'll just
+				// save to the photo gallery on those devices. We'll use a partial method to implement
+				// this platform-specific behavior.
+				SaveImage(saver, rtarget);
 
                 // Alternatively, we could populate an array with the target's data using the GetData() method...
                 //     var data = new Color[rtarget.Width * rtarget.Height];
@@ -200,6 +183,11 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
             Ultraviolet.GetContent().Manifests["Global"]["Effects"].PopulateAssetLibrary(typeof(GlobalEffectID));
             Ultraviolet.GetContent().Manifests["Global"]["SoundEffects"].PopulateAssetLibrary(typeof(GlobalSoundEffectID));
         }
+
+		/// <summary>
+		/// Saves the specified image to the current device.
+		/// </summary>
+		partial void SaveImage(SurfaceSaver surfaceSaver, RenderTarget2D target);
 
         // Application resources
         private ContentManager content;

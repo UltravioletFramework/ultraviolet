@@ -117,6 +117,7 @@
       <Link>Properties\Version.cs</Link>
     </Compile>
     <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Game.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi-v7a\libbass.so">
