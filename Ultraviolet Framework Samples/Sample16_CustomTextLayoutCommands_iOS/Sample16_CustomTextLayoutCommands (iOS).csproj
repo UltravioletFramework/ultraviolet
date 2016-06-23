@@ -203,6 +203,10 @@
     <ImageAsset Include="Resources\Media.xcassets\LaunchImages.launchimage\Contents.json">
       <InProject>false</InProject>
     </ImageAsset>
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv57.png" />
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv114.png" />
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv72.png" />
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\uv144.png" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Contents.json">

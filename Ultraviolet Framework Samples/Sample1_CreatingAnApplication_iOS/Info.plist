@@ -42,5 +42,7 @@
 	<array/>
 	<key>XSAppIconAssets</key>
 	<string>Resources/Media.xcassets/AppIcons.appiconset</string>
+	<key>CFBundleName</key>
+	<string>Sample 1 - Creating an Application</string>
 </dict>
 </plist>
