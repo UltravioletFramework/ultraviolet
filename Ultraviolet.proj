@@ -9,6 +9,10 @@
 	<PropertyGroup Condition="'$(iOSPlatform)' == ''">
 		<iOSPlatform>iPhone</iOSPlatform>
 	</PropertyGroup>
+	<PropertyGroup>
+		<IsMac>false</IsMac>
+		<IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<Ultraviolet_Windows Include="TwistedLogik.Ultraviolet (Windows).sln">
@@ -156,7 +160,7 @@
 			Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Android)&quot;"/>
 	</Target>
 	
-	<Target Name="BuildAndroid">
+	<Target Name="BuildAndroid" Condition="'$(OS)' == 'Windows_NT' Or $(IsMac)">
 		<CallTarget Targets="RestoreAndroid"/>
 		<MSBuild Projects="@(Ultraviolet_Android)"/>
 		<CallTarget Targets="CopyAndroidBinaries"/>
@@ -221,7 +225,7 @@
 		<MSBuild Projects="@(Ultraviolet_iOS)"/>
 		<CallTarget Targets="CopyiOSBinaries"/>
 	</Target>
-	<Target Name="BuildiOSLocal" Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">
+	<Target Name="BuildiOSLocal" Condition="$(IsMac)">
 		<CallTarget Targets="RestoreiOS"/>
 		<MSBuild Projects="@(Ultraviolet_iOS_Local)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform)"/>
 		<CallTarget Targets="CopyiOSBinaries"/>
