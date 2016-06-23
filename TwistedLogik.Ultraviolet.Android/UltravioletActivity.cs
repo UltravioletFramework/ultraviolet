@@ -439,7 +439,7 @@ namespace TwistedLogik.Ultraviolet
         /// <inheritdoc/>
         protected override void OnStart()
         {
-            var uv = Ultraviolet;
+            var uv = UltravioletContext.RequestCurrent();
             if (uv != null && !uv.Disposed)
             {
                 uv.Messages.Publish(UltravioletMessages.ApplicationResumed, null);
@@ -451,7 +451,7 @@ namespace TwistedLogik.Ultraviolet
         /// <inheritdoc/>
         protected override void OnStop()
         {
-            var uv = Ultraviolet;
+            var uv = UltravioletContext.RequestCurrent();
             if (uv != null && !uv.Disposed)
             {
                 uv.Messages.Publish(UltravioletMessages.ApplicationSuspended, null);
