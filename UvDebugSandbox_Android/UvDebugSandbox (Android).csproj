@@ -198,16 +198,18 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PreBuildEvent>if not $(ConfigurationName)==Signed (
-    mkdir "$(ProjectDir)Presentation"
-    copy /Y "$(SolutionDir)UvDebugSandbox_Desktop\bin\$(ConfigurationName)\Content.uvarc" "$(ProjectDir)" 
-    copy /Y "$(SolutionDir)UvDebugSandbox_Desktop\bin\$(ConfigurationName)\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" "$(ProjectDir)Presentation"
-)</PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Target Name="BeforeBuild">
+    <Message Text="Copying content archive and binding expressions assembly from Desktop project..."/>
+    <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_Desktop/bin/$(ConfigurationName)/Content.uvarc')" 
+      Text="Could not locate Content.uvarc. Ensure that the Desktop project has been built before building the Android project."/>
+    <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_Desktop/bin/$(ConfigurationName)/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll')" 
+      Text="Could not locate the binding expressions assembly. Ensure that the Desktop project has been built before building the Android project."/>
+    <Copy SourceFiles="$(ProjectDir)../UvDebugSandbox_Desktop/bin/$(ConfigurationName)/Content.uvarc" DestinationFolder="$(ProjectDir)"/>
+    <Copy SourceFiles="$(ProjectDir)../UvDebugSandbox_Desktop/bin/$(ConfigurationName)/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation"/>
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
