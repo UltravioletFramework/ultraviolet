@@ -287,9 +287,9 @@
     </None>
   </ItemGroup>
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
-  <Target Name="AfterBuild">
+  <Target Name="AfterBuild" Condition="'$(BAMBOO_buildType)'==''">
     <Message Text="Compiling content archive and binding expressions assembly..."/>
-    <Exec Condition=" '$(OS)' == 'Windows_NT' " WorkingDirectory="$(OutputPath)" Command="'$(AssemblyName.exe)' -resolve:content -compile:content -compile:expressions"/>
-    <Exec Condition=" '$(OS)' == 'Unix' " WorkingDirectory="$(OutputPath)" Command="mono '$(AssemblyName).exe' -resolve:content -compile:content -compile:expressions"/>
+    <Exec Condition=" '$(OS)' == 'Windows_NT' " WorkingDirectory="$(OutputPath)" Command="&quot;$(AssemblyName).exe&quot; -resolve:content -compile:content -compile:expressions"/>
+    <Exec Condition=" '$(OS)' == 'Unix' " WorkingDirectory="$(OutputPath)" Command="mono &quot;$(AssemblyName).exe&quot; -resolve:content -compile:content -compile:expressions"/>
   </Target>
 </Project>

@@ -4,7 +4,7 @@
 		<Configuration>Debug</Configuration>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Platform)' == ''">
-		<Platform>AnyCPU</Platform>
+		<Platform>Any CPU</Platform>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(iOSPlatform)' == ''">
 		<iOSPlatform>iPhone</iOSPlatform>
