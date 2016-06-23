@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildWindows;BuildUnix;BuildAndroid;BuildiOS">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildWindows;BuildUnix;BuildAndroid;BuildiOS;BuildiOSLocal">
 	<PropertyGroup Condition="'$(Configuration)' == ''">
 		<Configuration>Debug</Configuration>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Platform)' == ''">
+		<Platform>AnyCPU</Platform>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(iOSPlatform)' == ''">
+		<iOSPlatform>iPhone</iOSPlatform>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Ultraviolet_Windows Include="TwistedLogik.Ultraviolet (Windows).sln">
-			<Properties>Configuration=$(Configuration)</Properties>
+			<Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
 		</Ultraviolet_Windows>
 		<Ultraviolet_Unix Include="TwistedLogik.Ultraviolet (Linux).sln">
-			<Properties>Configuration=$(Configuration)</Properties>
+			<Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
 		</Ultraviolet_Unix>
 		<Ultraviolet_Android Include="TwistedLogik.Ultraviolet (Android).sln">
-			<Properties>Configuration=$(Configuration)</Properties>
+			<Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
 		</Ultraviolet_Android>
 		<Ultraviolet_iOS Include="TwistedLogik.Ultraviolet (iOS).sln">
-			<Properties>Configuration=$(Configuration);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)</Properties>
+			<Properties>Configuration=$(Configuration);Platform=$(iOSPlatform);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)</Properties>
 		</Ultraviolet_iOS>
+		<Ultraviolet_iOS_Local Include="TwistedLogik.Ultraviolet (iOS).sln"/>
 	</ItemGroup>
 		
 	<!-- DESKTOP -->
@@ -212,6 +219,11 @@
 	<Target Name="BuildiOS" Condition="'$(ServerAddress)'!=''">
 		<CallTarget Targets="RestoreiOS"/>
 		<MSBuild Projects="@(Ultraviolet_iOS)"/>
+		<CallTarget Targets="CopyiOSBinaries"/>
+	</Target>
+	<Target Name="BuildiOSLocal" Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">
+		<CallTarget Targets="RestoreiOS"/>
+		<MSBuild Projects="@(Ultraviolet_iOS_Local)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform)"/>
 		<CallTarget Targets="CopyiOSBinaries"/>
 	</Target>
 				
