@@ -185,9 +185,9 @@
   </Target>
   -->
   <ItemGroup>
-    <ProjectReference Include="..\SampleSharedLib_Desktop\SampleSharedLib %28Desktop%29.csproj">
+    <ProjectReference Include="..\SampleSharedLib_Desktop\SampleSharedLib (Desktop).csproj">
       <Project>{9f505c43-6e37-425f-b348-be4de7ab2f0b}</Project>
-      <Name>SampleSharedLib %28Desktop%29</Name>
+      <Name>SampleSharedLib (Desktop)</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Sample11_GamePads\Sample11_GamePads.projitems" Label="Shared" />
