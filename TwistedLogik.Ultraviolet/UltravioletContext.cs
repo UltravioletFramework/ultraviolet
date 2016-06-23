@@ -69,6 +69,8 @@ namespace TwistedLogik.Ultraviolet
             Contract.Require(host, nameof(host));
             Contract.Require(configuration, nameof(configuration));
 
+            ProvideHintsToXamarinLinker();
+
             AcquireContext();
             DetectPlatform();
 
@@ -1149,6 +1151,24 @@ namespace TwistedLogik.Ultraviolet
         protected UltravioletFactory Factory
         {
             get { return factory; }
+        }
+
+        /// <summary>
+        /// Ensures that the Xamarin linker doesn't remove certain BCL methods which
+        /// are required by the Framework, but which are only accessed through reflection.
+        /// </summary>
+        private static void ProvideHintsToXamarinLinker()
+        {
+#if ANDROID || IOS
+            var nullable = Nullable.Equals<Int32>(123, 456);
+            Console.WriteLine($"Ensuring that Nullable.Equals() is linked: [{nullable}]");
+
+            var referenceEquals = Object.ReferenceEquals(new Object(), new Object());
+            Console.WriteLine($"Ensuring that Object.ReferenceEquals() is linked: [{referenceEquals}]");
+
+            var equals = Object.Equals(new Object(), new Object());
+            Console.WriteLine($"Ensuring that Object.Equals() is linked: [{equals}]");
+#endif
         }
 
         /// <summary>
