@@ -1,6 +1,6 @@
 ﻿using TwistedLogik.Ultraviolet.Content;
 
-namespace UltravioletSample.Sample16_CustomTextLayoutCommands.Assets
+namespace UltravioletSample.Sample6_RenderingText.Assets
 {
     public static class GlobalFontID
     {

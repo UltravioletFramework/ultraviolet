@@ -1,7 +1,7 @@
 ﻿using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Input;
 
-namespace UltravioletSample.Sample16_CustomTextLayoutCommands.Input
+namespace UltravioletSample.Sample6_RenderingText.Input
 {
     public static class SampleInput
     {
