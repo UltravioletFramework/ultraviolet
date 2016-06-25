@@ -116,9 +116,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 {
                     resetColorWriteChannels = true;
                     gl.ColorMask(true, true, true, true);
+                    gl.ThrowIfError();
                 }
 
                 gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+                gl.ThrowIfError();
+
                 mask |= gl.GL_COLOR_BUFFER_BIT;
             }
 
@@ -127,8 +130,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 if (!depthStencilState.DepthBufferEnable)
                 {
                     resetDepthTest = true;
+
                     gl.Enable(gl.GL_DEPTH_TEST);
+                    gl.ThrowIfError();
+
                     gl.DepthMask(true);
+                    gl.ThrowIfError();
                 }
 
                 gl.ClearDepth(depth);
@@ -141,13 +148,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 {
                     resetStencilTest = true;
                     gl.Enable(gl.GL_STENCIL_TEST);
+                    gl.ThrowIfError();
                 }
 
                 gl.ClearStencil(stencil);
+                gl.ThrowIfError();
+
                 mask |= gl.GL_STENCIL_BUFFER_BIT;
             }
 
             gl.Clear(mask);
+            gl.ThrowIfError();
 
             if (resetColorWriteChannels)
             {
