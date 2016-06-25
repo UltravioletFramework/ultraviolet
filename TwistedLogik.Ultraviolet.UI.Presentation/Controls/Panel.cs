@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
@@ -10,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType]
-    [DefaultProperty("Children")]
+    [UvmlDefaultProperty("Children")]
     public abstract class Panel : FrameworkElement
     {
         /// <summary>

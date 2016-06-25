@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Text;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
@@ -14,7 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.TextBox.xml")]
-    [DefaultProperty("Text")]
+    [UvmlDefaultProperty("Text")]
     public class TextBox : TextBoxBase
     {
         /// <summary>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
@@ -9,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType]
-    [DefaultProperty("Value")]
+    [UvmlDefaultProperty("Value")]
     public abstract class RangeBase : Control
     {
         /// <summary>

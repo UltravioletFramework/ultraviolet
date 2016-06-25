@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -9,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType]
-    [DefaultProperty("Source")]
+    [UvmlDefaultProperty("Source")]
     public class Image : FrameworkElement
     {
         /// <summary>

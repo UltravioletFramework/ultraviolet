@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
@@ -15,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// "When the Popup Encounters the Edge of the Screen" headings.</remarks>
     [Preserve(AllMembers = true)]
     [UvmlKnownType]
-    [DefaultProperty("Child")]
+    [UvmlDefaultProperty("Child")]
     public partial class Popup : FrameworkElement
     {
         /// <summary>

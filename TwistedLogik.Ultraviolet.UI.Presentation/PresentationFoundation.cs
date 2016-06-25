@@ -978,7 +978,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The <see cref="KnownType"/> registration that was created.</returns>
         private KnownType CreateKnownElementRegistration(Type type, UvmlKnownTypeAttribute attr)
         {
-            var defaultPropertyAttr  = (DefaultPropertyAttribute)type.GetCustomAttributes(typeof(DefaultPropertyAttribute), true).SingleOrDefault();
+            var defaultPropertyAttr  = (UvmlDefaultPropertyAttribute)type.GetCustomAttributes(typeof(UvmlDefaultPropertyAttribute), true).SingleOrDefault();
             var defaultProperty      = default(String);
             if (defaultPropertyAttr != null)
             {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 
@@ -10,7 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType]
-    [DefaultProperty("Value")]
+    [UvmlDefaultProperty("Value")]
     public class NumericTextBlock : TextBlockBase
     {
         /// <summary>

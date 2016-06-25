@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -486,12 +485,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets the <see cref="DefaultPropertyAttribute"/> which decorates the specified type, if one exists.
+        /// Gets the <see cref="UvmlDefaultPropertyAttribute"/> which decorates the specified type, if one exists.
         /// </summary>
-        private static DefaultPropertyAttribute GetDefaultPropertyAttribute(Type type)
+        private static UvmlDefaultPropertyAttribute GetDefaultPropertyAttribute(Type type)
         {
-            return type.GetCustomAttributes(typeof(DefaultPropertyAttribute), true)
-                .Cast<DefaultPropertyAttribute>().SingleOrDefault();
+            return type.GetCustomAttributes(typeof(UvmlDefaultPropertyAttribute), true)
+                .Cast<UvmlDefaultPropertyAttribute>().SingleOrDefault();
         }
 
         // Caches component templates to avoid repeated parsing of UVML documents for controls

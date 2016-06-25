@@ -406,6 +406,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)VisualStateTransitionKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WeakLinkedList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WeakReferencePool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UvmlDefaultPropertyAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.Licenses.txt">
