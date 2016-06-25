@@ -228,7 +228,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             var callParamType = miEquals.GetParameters()[0].ParameterType;
 
             exps.Add(Expression.Return(expReturnTarget,
-                Expression.IsFalse(Expression.Call(Lift(varCurrentValue), miEquals, Expression.Convert(Lift(paramRefval), callParamType)))));
+                Expression.Not(Expression.Call(Lift(varCurrentValue), miEquals, Expression.Convert(Lift(paramRefval), callParamType)))));
 
             exps.Add(expReturnLabel);
 
