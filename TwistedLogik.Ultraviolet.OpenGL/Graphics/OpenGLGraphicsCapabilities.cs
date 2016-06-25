@@ -22,6 +22,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             this.maximumViewportWidth = viewportDims[0];
             this.maximumViewportHeight = viewportDims[1];
 
+            this.supportsDepthStencilTextures = !gl.IsGLES2 || gl.IsExtensionSupported("GL_OES_packed_depth_stencil");
+
             this.SupportsNonZeroBaseInstance = SupportsInstancedRendering && !gl.IsGLES &&
                 (gl.IsVersionAtLeast(4, 2) || gl.IsExtensionSupported("GL_ARB_base_instance"));
 
@@ -32,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Boolean SupportsDepthStencilTextures
         {
-            get { return !gl.IsGLES2; }
+            get { return supportsDepthStencilTextures; }
         }
 
         /// <inheritdoc/>
@@ -75,6 +77,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         // Property values.
+        private readonly Boolean supportsDepthStencilTextures;
         private readonly Int32 maximumTextureSize;
         private readonly Int32 maximumViewportWidth;
         private readonly Int32 maximumViewportHeight;
