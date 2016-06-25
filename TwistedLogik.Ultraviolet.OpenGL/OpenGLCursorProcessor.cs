@@ -1,4 +1,5 @@
-﻿using TwistedLogik.Ultraviolet.Content;
+﻿using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics;
 using TwistedLogik.Ultraviolet.SDL2.Native;
 
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
     /// <summary>
     /// Loads a cursor from an image.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class OpenGLCursorProcessor : ContentProcessor<SDL_Surface, Cursor>
     {

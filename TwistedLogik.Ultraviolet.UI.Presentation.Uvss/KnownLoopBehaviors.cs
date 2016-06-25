@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
     /// <summary>
     /// Represents the types of storyboard loop specifiers which are understood by the UVSS parser.
     /// </summary>
+    [Preserve(AllMembers = true)]
     public static class KnownLoopBehaviors
     {
         /// <summary>

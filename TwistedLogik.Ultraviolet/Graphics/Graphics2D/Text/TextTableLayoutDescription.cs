@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// An intermediate representation of a <see cref="TextTableLayout"/> used during content loading.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal class TextTableLayoutDescription
     {
         /// <summary>

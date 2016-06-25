@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents an invalid UVSS selector part.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.InvalidSelectorPart)]
     public sealed class UvssInvalidSelectorPartSyntax : UvssSelectorPartBaseSyntax
     {

@@ -18,6 +18,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="assetName">The asset's name within its content manifest group.</param>
         /// <param name="assetPath">The asset's path as specified by its content manifest.</param>
         /// <param name="assetIndex">The asset's index within its content manifest group.</param>
+        [Preserve]
         internal AssetID(String manifestName, String manifestGroup, String assetName, String assetPath, Int32 assetIndex)
         {
             Contract.RequireNotEmpty(manifestName, nameof(manifestName));
@@ -38,6 +39,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="id1">The first <see cref="AssetID"/> to compare.</param>
         /// <param name="id2">The second <see cref="AssetID"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified identifiers are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(AssetID id1, AssetID id2)
         {
             return id1.Equals(id2);
@@ -49,6 +51,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="id1">The first <see cref="AssetID"/> to compare.</param>
         /// <param name="id2">The second <see cref="AssetID"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified identifiers are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(AssetID id1, AssetID id2)
         {
             return !id1.Equals(id2);
@@ -60,6 +63,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="s">A string containing the asset identifier to convert.</param>
         /// <returns>An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</returns>
+        [Preserve]
         public static AssetID Parse(String s)
         {
             Contract.Require(s, nameof(s));
@@ -79,6 +83,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="s">A string containing the asset identifier to convert.</param>
         /// <param name="value">An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</param>
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out AssetID value)
         {
             Contract.Require(s, nameof(s));
@@ -92,6 +97,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="manifests">The content manifest registry that contains the currently-loaded content manifests.</param>
         /// <param name="s">A string containing the asset identifier to convert.</param>
         /// <returns>An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</returns>
+        [Preserve]
         public static AssetID Parse(ContentManifestRegistry manifests, String s)
         {
             Contract.Require(manifests, nameof(manifests));
@@ -112,6 +118,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="s">A string containing the asset identifier to convert.</param>
         /// <param name="value">An instance of the <see cref="AssetID"/> structure that is equivalent to the specified string.</param>
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(ContentManifestRegistry manifests, String s, out AssetID value)
         {
             Contract.Require(manifests, nameof(manifests));
@@ -252,6 +259,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="obj">The object to compare to this object.</param>
         /// <returns><see langword="true"/> if this object is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             return obj is AssetID && Equals((AssetID)obj);
@@ -262,6 +270,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="other">The object to compare to this object.</param>
         /// <returns><see langword="true"/> if this object is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(AssetID other)
         {
             return

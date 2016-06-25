@@ -18,6 +18,7 @@ namespace TwistedLogik.Nucleus
         /// Initializes a new instance of the <see cref="MaskedUInt32"/> structure.
         /// </summary>
         /// <param name="value">The underlying value.</param>
+        [Preserve]
         public MaskedUInt32(UInt32 value)
         {
             Value = value;
@@ -37,6 +38,7 @@ namespace TwistedLogik.Nucleus
         /// </summary>
         /// <param name="masked">The masked integer to convert.</param>
         /// <returns>The converted integer.</returns>
+        [Preserve]
         public static implicit operator UInt32(MaskedUInt32 masked)
         {
             return masked.Value;
@@ -47,6 +49,7 @@ namespace TwistedLogik.Nucleus
         /// </summary>
         /// <param name="value">The integer to convert.</param>
         /// <returns>The converted masked integer.</returns>
+        [Preserve]
         public static implicit operator MaskedUInt32(UInt32 value)
         {
             return new MaskedUInt32(value);

@@ -56,6 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <summary>
     /// Represents the primary game pad device.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public static class GamePad
     {

@@ -11,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Contains methods for generating invocation delegates for routed events.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal static class RoutedEventInvocation
     {
         /// <summary>

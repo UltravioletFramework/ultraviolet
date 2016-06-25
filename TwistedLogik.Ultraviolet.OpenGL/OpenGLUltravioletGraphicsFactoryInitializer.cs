@@ -1,4 +1,5 @@
 ﻿using TwistedLogik.Gluon;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics;
@@ -11,13 +12,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
     /// <summary>
     /// Initializes factory methods for the OpenGL/SDL2 implementation of the graphics subsystem.
     /// </summary>
+    [Preserve(AllMembers = true)]
     public sealed class OpenGLUltravioletGraphicsFactoryInitializer : IUltravioletFactoryInitializer
     {
-        /// <summary>
-        /// Initializes the specified factory.
-        /// </summary>
-        /// <param name="owner">The Ultraviolet context that owns the initializer.</param>
-        /// <param name="factory">The factory to initialize.</param>
+        /// <inheritdoc/>
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
             // Core classes

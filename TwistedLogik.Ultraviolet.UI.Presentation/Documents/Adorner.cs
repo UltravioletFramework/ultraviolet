@@ -6,6 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
     /// <summary>
     /// Represents an element which decorates another selement.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public abstract class Adorner : FrameworkElement
     {

@@ -507,6 +507,7 @@ namespace TwistedLogik.Gluon
         /// <summary>
         /// Creates the exception object that is thrown by the default delegate used to replace missing OpenGL functions.
         /// </summary>
+        [Preserve]
         private static Exception CreateDefaultDelegateException(String function, Boolean isCore, Boolean hasReqs, String ext, String extFn)
         {
             var message = new StringBuilder();

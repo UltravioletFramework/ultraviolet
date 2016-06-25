@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using TwistedLogik.Gluon;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.SDL2.Native;
@@ -10,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads 2D texture assets.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class OpenGLTexture2DProcessor : ContentProcessor<SDL_Surface, Texture2D>
     {

@@ -1,11 +1,13 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
     /// An intermediate representation of the metadata for a <see cref="TextureAtlas"/> used during content processing.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal class TextureAtlasMetadataDescription
     {
         /// <summary>

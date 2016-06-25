@@ -25,6 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Clears the collection.
         /// </summary>
+        [Preserve]
         public void Clear()
         {
             if (storage.Count > 0)
@@ -43,6 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Adds a column to the collection.
         /// </summary>
         /// <param name="definition">The column definition to add to the collection.</param>
+        [Preserve]
         public void Add(ColumnDefinition definition)
         {
             Contract.Require(definition, nameof(definition));
@@ -60,6 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Adds a collection of columns to the collection.
         /// </summary>
         /// <param name="definitions">The collection of columns to add to the collection.</param>
+        [Preserve]
         public void AddRange(IEnumerable<ColumnDefinition> definitions)
         {
             Contract.Require(definitions, nameof(definitions));
@@ -86,6 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="definition">The column to remove from the collection.</param>
         /// <returns><see langword="true"/> if the specified column was removed from the collection; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Remove(ColumnDefinition definition)
         {
             Contract.Require(definition, nameof(definition));
@@ -105,6 +109,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="definition">The column to evaluate.</param>
         /// <returns><see langword="true"/> if the collection contains the specified column; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Contains(ColumnDefinition definition)
         {
             Contract.Require(definition, nameof(definition));

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using TwistedLogik.Nucleus;
 
 #if CODE_GEN_ENABLED
 using System.Linq.Expressions;
@@ -146,6 +147,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <typeparam name="T">The type for which to register an interpolator.</typeparam>
         /// <param name="interpolator">The interpolator for the non-nullable type.</param>
+        [Preserve]
         private void RegisterNullable<T>(Interpolator<T> interpolator) where T : struct
         {
             if (interpolator == null)

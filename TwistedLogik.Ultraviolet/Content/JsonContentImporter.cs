@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using System.IO;
+﻿using System.IO;
+using Newtonsoft.Json.Linq;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
@@ -9,6 +10,12 @@ namespace TwistedLogik.Ultraviolet.Content
     [ContentImporter(".json")]
     public sealed class JsonContentImporter : ContentImporter<JObject>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonContentImporter"/> class.
+        /// </summary>
+        [Preserve]
+        public JsonContentImporter() { }
+
         /// <inheritdoc/>
         public override JObject Import(IContentImporterMetadata metadata, Stream stream)
         {

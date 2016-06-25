@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.IO;
+using Newtonsoft.Json.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 
@@ -9,6 +10,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads shader effect assets.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class OpenGLEffectProcessorFromJObject : ContentProcessor<JObject, Effect>
     {

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using TwistedLogik.Nucleus;
 using SDL_JoystickID = System.Int32;
 
 #pragma warning disable 1591
 
 namespace TwistedLogik.Ultraviolet.SDL2.Native
 {
+    [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public struct SDL_JoyHatEvent
     {

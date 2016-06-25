@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.BASS.Audio
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
     /// <summary>
     /// Imports .mp3, .ogg, and .wav files.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentImporter(".mp3")]
     [ContentImporter(".ogg")]
     [ContentImporter(".wav")]

@@ -17,6 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="assetID">The asset's identifier.</param>
         /// <param name="assetSource">The asset's source.</param>
+        [Preserve]
         public SourcedAssetID(AssetID assetID, AssetSource assetSource)
         {
             this.assetID = assetID;
@@ -29,6 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="id1">The first <see cref="SourcedAssetID"/> to compare.</param>
         /// <param name="id2">The second <see cref="SourcedAssetID"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified identifiers are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(SourcedAssetID id1, SourcedAssetID id2)
         {
             return id1.assetID.Equals(id2.assetID) && id1.assetSource == id2.assetSource;
@@ -40,6 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="id1">The first <see cref="SourcedAssetID"/> to compare.</param>
         /// <param name="id2">The second <see cref="SourcedAssetID"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified identifiers are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(SourcedAssetID id1, SourcedAssetID id2)
         {
             return !id1.assetID.Equals(id2.assetID) || id1.assetSource != id2.assetSource;
@@ -51,6 +54,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="s">A string containing the asset identifier to convert.</param>
         /// <returns>An instance of the <see cref="SourcedAssetID"/> structure that is equivalent to the specified string.</returns>
+        [Preserve]
         public static SourcedAssetID Parse(String s)
         {
             Contract.Require(s, nameof(s));
@@ -70,6 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="s">A string containing the asset identifier to convert.</param>
         /// <param name="value">An instance of the <see cref="SourcedAssetID"/> structure that is equivalent to the specified string.</param>
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out SourcedAssetID value)
         {
             Contract.Require(s, nameof(s));
@@ -83,6 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="manifests">The content manifest registry that contains the currently-loaded content manifests.</param>
         /// <param name="s">A string containing the asset identifier to convert.</param>
         /// <returns>An instance of the <see cref="SourcedAssetID"/> structure that is equivalent to the specified string.</returns>
+        [Preserve]
         public static SourcedAssetID Parse(ContentManifestRegistry manifests, String s)
         {
             Contract.Require(manifests, nameof(manifests));
@@ -103,6 +109,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="s">A string containing the asset identifier to convert.</param>
         /// <param name="value">An instance of the <see cref="SourcedAssetID"/> structure that is equivalent to the specified string.</param>
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(ContentManifestRegistry manifests, String s, out SourcedAssetID value)
         {
             Contract.Require(manifests, nameof(manifests));
@@ -130,12 +137,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             return obj is SourcedAssetID && Equals((SourcedAssetID)obj);
         }
 
         /// <inheritdoc/>
+        [Preserve]
         public Boolean Equals(SourcedAssetID other)
         {
             return

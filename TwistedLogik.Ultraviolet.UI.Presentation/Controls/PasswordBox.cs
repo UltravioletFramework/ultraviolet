@@ -12,6 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a control designed for securely entering passwords.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.PasswordBox.xml")]
     public sealed class PasswordBox : Control
     {

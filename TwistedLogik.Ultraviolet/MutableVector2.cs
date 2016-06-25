@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet
     /// The <see cref="MutableVector2"/> structure is a mutable version of the <see cref="Vector2"/> structure used 
     /// primarily for performance micro-optimizations within the Ultraviolet Framework.
     /// </summary>
+    [Preserve(AllMembers = true)]
     public struct MutableVector2
     {
         /// <summary>

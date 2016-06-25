@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS property trigger.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.PropertyTrigger)]
     public sealed class UvssPropertyTriggerSyntax : UvssTriggerBaseSyntax
     {

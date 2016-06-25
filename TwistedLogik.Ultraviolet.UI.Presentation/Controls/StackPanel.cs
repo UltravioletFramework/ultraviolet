@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// other (if <see cref="Orientation"/> is <see cref="Orientation.Vertical"/>) or
     /// side-by-side if (see <see cref="Orientation"/> is <see cref="Orientation.Horizontal"/>).
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.StackPanel.xml")]
     public class StackPanel : Panel
     {

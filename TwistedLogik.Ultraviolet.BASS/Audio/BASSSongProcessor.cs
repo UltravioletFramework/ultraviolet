@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Audio;
 using TwistedLogik.Ultraviolet.Content;
 
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
     /// <summary>
     /// Loads song assets.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class BASSSongProcessor : ContentProcessor<String, Song>
     {

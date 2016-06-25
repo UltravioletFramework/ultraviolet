@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
     /// Represents a content processor which loads text assets.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class TextContentProcessor : ContentProcessor<String[], IEnumerable<String>>
     {

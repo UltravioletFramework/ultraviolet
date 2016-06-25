@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
@@ -12,6 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Initializes a new instance of the <see cref="UvssClassCollection"/> class.
         /// </summary>
         /// <param name="classes">A collection of class names with which to initialize the collection.</param>
+        [Preserve]
         internal UvssClassCollection(IEnumerable<String> classes)
         {
             this.storage = (classes == null) ? new List<String>() : new List<String>(classes);

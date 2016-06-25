@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents the argument list for an event trigger.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.EventTriggerArgumentList)]
     public sealed class UvssEventTriggerArgumentList : UvssNodeSyntax
     {

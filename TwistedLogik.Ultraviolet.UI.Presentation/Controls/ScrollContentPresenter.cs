@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -6,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents the content presenter for a <see cref="ScrollViewer"/>.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class ScrollContentPresenter : ContentPresenter
     {

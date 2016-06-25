@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Platform;
@@ -16,6 +17,12 @@ namespace TwistedLogik.Ultraviolet.UI
     [ContentProcessor]
     internal sealed class UIPanelDefinitionProcessor : ContentProcessor<XDocument, UIPanelDefinition>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UIPanelDefinitionProcessor"/> class.
+        /// </summary>
+        [Preserve]
+        public UIPanelDefinitionProcessor() { }
+
         /// <inheritdoc/>
         public override UIPanelDefinition Process(ContentManager manager, IContentProcessorMetadata metadata, XDocument input)
         {

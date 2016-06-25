@@ -22,6 +22,7 @@ namespace TwistedLogik.Nucleus.Text
         /// <param name="key">The string's localization key.</param>
         /// <param name="html">A value indicating whether the string contains HTML encoded characters.</param>
         /// <param name="nopseudo">A value indicating whether pseudolocalization is disabled for this string.</param>
+        [Preserve]
         private LocalizedString(String culture, String key, Boolean html, Boolean nopseudo)
         {
             this.Culture = culture;
@@ -35,6 +36,7 @@ namespace TwistedLogik.Nucleus.Text
         /// </summary>
         /// <param name="str">The localized string to convert.</param>
         /// <returns>The string to which the localized string was converted.</returns>
+        [Preserve]
         public static implicit operator String(LocalizedString str)
         {
             if (str == null)

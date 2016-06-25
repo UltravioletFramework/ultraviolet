@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.Content;
 
@@ -9,6 +10,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
     /// <summary>
     /// Represents a content processor that loads cursor collections.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     internal sealed class CursorCollectionProcessorFromXDocument : ContentProcessor<XDocument, CursorCollection>
     {

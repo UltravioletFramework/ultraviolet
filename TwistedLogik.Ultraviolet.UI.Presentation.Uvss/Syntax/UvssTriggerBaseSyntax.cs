@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents the base class for UVSS triggers.
     /// </summary>
+    [Preserve(AllMembers = true)]
     public abstract class UvssTriggerBaseSyntax : UvssNodeSyntax
     {
         /// <summary>

@@ -10,6 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the component of a <see cref="PasswordEditor"/> which is responsible for performing text editing.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public sealed class PasswordEditor : TextEditor
     {

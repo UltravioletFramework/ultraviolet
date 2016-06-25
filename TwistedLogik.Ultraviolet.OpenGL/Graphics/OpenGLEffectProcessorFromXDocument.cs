@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 
@@ -9,6 +10,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads shader effect assets.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class OpenGLEffectProcessorFromXDocument : ContentProcessor<XDocument, Effect>
     {

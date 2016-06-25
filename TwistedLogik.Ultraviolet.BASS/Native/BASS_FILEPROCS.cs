@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.BASS.Native
 {
@@ -8,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Native
     internal delegate UInt32 FileReadProc(IntPtr buffer, UInt32 length, IntPtr user);
     internal delegate Boolean FileSeekProc(UInt64 offset, IntPtr user);
 
+    [Preserve(AllMembers = true)]
     [StructLayout(LayoutKind.Sequential)]
     internal struct BASS_FILEPROCS
     {

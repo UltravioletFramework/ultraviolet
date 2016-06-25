@@ -17,6 +17,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="manifest">The content manifest that owns the group.</param>
         /// <param name="element">The XML element that defines the content manifest group.</param>
+        [Preserve]
         internal ContentManifestGroup(ContentManifest manifest, XElement element)
         {
             Contract.Require(manifest, nameof(manifest));
@@ -53,6 +54,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="manifest">The content manifest that owns the group.</param>
         /// <param name="desc">The manifest group description.</param>
+        [Preserve]
         internal ContentManifestGroup(ContentManifest manifest, ContentManifestGroupDescription desc)
         {
             Contract.Require(manifest, nameof(manifest));

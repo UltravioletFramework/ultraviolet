@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -16,6 +17,7 @@ namespace TwistedLogik.Ultraviolet
         /// Initializes a new instance of the <see cref="Radians"/> structure.
         /// </summary>
         /// <param name="value">The value in radians.</param>
+        [Preserve]
         public Radians(Single value)
         {
             this.value = value;
@@ -26,6 +28,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted value.</returns>
+        [Preserve]
         public static implicit operator Single(Radians value)
         {
             return value.Value;
@@ -36,6 +39,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted value.</returns>
+        [Preserve]
         public static explicit operator Radians(Single value)
         {
             return new Radians(value);
@@ -47,6 +51,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first value to compare.</param>
         /// <param name="r2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(Radians r1, Radians r2)
         {
             return r1.Equals(r2);
@@ -58,6 +63,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first value to compare.</param>
         /// <param name="r2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(Radians r1, Radians r2)
         {
             return !(r1 == r2);
@@ -69,6 +75,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first value to add.</param>
         /// <param name="r2">The second value to add.</param>
         /// <returns>The sum of the specified values.</returns>
+        [Preserve]
         public static Radians operator +(Radians r1, Radians r2)
         {
             return new Radians(r1.Value + r2.Value);
@@ -80,6 +87,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first value to add.</param>
         /// <param name="r2">The second value to add.</param>
         /// <returns>The sum of the specified values.</returns>
+        [Preserve]
         public static Radians operator +(Radians r1, Single r2)
         {
             return new Radians(r1.Value + r2);
@@ -91,6 +99,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first value to subtract.</param>
         /// <param name="r2">The second value to subtract.</param>
         /// <returns>The difference of the specified values.</returns>
+        [Preserve]
         public static Radians operator -(Radians r1, Radians r2)
         {
             return new Radians(r1.Value - r2.Value);
@@ -102,6 +111,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first value to subtract.</param>
         /// <param name="r2">The second value to subtract.</param>
         /// <returns>The difference of the specified values.</returns>
+        [Preserve]
         public static Radians operator -(Radians r1, Single r2)
         {
             return new Radians(r1.Value - r2);
@@ -113,6 +123,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first value to multiply.</param>
         /// <param name="r2">The second value to multiply.</param>
         /// <returns>The product of the specified values.</returns>
+        [Preserve]
         public static Radians operator *(Radians r1, Radians r2)
         {
             return new Radians(r1.Value * r2.Value);
@@ -124,6 +135,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first value to multiply.</param>
         /// <param name="r2">The second value to multiply.</param>
         /// <returns>The product of the specified values.</returns>
+        [Preserve]
         public static Radians operator *(Radians r1, Single r2)
         {
             return new Radians(r1.Value * r2);
@@ -135,6 +147,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first value to divide.</param>
         /// <param name="r2">The second value to divide.</param>
         /// <returns>The quotient of the specified values.</returns>
+        [Preserve]
         public static Radians operator /(Radians r1, Radians r2)
         {
             return new Radians(r1.Value / r2.Value);
@@ -146,6 +159,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first value to divide.</param>
         /// <param name="r2">The second value to divide.</param>
         /// <returns>The quotient of the specified values.</returns>
+        [Preserve]
         public static Radians operator /(Radians r1, Single r2)
         {
             return new Radians(r1.Value / r2);
@@ -156,6 +170,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="r1">The value to negate.</param>
         /// <returns>The negated value.</returns>
+        [Preserve]
         public static Radians operator -(Radians r1)
         {
             return new Radians(-r1.Value);
@@ -168,6 +183,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s">A string containing an angle to convert.</param>
         /// <param name="radians">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out Radians radians)
         {
             return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out radians);
@@ -178,6 +194,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing the angle to convert.</param>
         /// <returns>An instance of the <see cref="Radians"/> structure that is equivalent to the specified string.</returns>
+        [Preserve]
         public static Radians Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
@@ -192,6 +209,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="radians">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Radians radians)
         {
             radians = Radians.Zero;
@@ -221,6 +239,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>An instance of the <see cref="Radians"/> structure that is equivalent to the specified string.</returns>
+        [Preserve]
         public static Radians Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Radians value;
@@ -286,6 +305,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="other">The other instance to evaluate.</param>
         /// <returns><see langword="true"/> if this instance and the specified instance represent the same value; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object other)
         {
             if (!(other is Radians))
@@ -298,6 +318,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="other">The other instance to evaluate.</param>
         /// <returns><see langword="true"/> if this instance and the specified instance represent the same value; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(Radians other)
         {
             return value.Equals(other.value);
@@ -328,6 +349,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="other">The angle to compare to this instance.</param>
         /// <returns>A value that indicates the relative order of the objects being compared.</returns>
+        [Preserve]
         public Int32 CompareTo(Radians other)
         {
             return value.CompareTo(other.value);
@@ -339,6 +361,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="other">The angle to compare to this instance.</param>
         /// <returns>A value that indicates the relative order of the objects being compared.</returns>
+        [Preserve]
         public Int32 CompareTo(Single other)
         {
             return value.CompareTo(other);
@@ -359,6 +382,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
+        [Preserve]
         public Radians Interpolate(Radians target, Single t)
         {
             var angle = Tweening.Lerp(this.value, target.value, t);

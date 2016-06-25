@@ -915,35 +915,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
                 newCloseBracketToken);
         }
 
-		/// <inheritdoc/>
-		public override SyntaxNode VisitUnknownDirective(UvssUnknownDirectiveSyntax node)
-		{
-			var unchanged = true;
+        /// <inheritdoc/>
+        public override SyntaxNode VisitUnknownDirective(UvssUnknownDirectiveSyntax node)
+        {
+            var unchanged = true;
 
-			var newDirectiveToken = (SyntaxToken)Visit(node.DirectiveToken);
-			if (newDirectiveToken != node.DirectiveToken)
-				unchanged = false;
-			
-			return unchanged ? node : new UvssUnknownDirectiveSyntax(
-				newDirectiveToken);
-		}
+            var newDirectiveToken = (SyntaxToken)Visit(node.DirectiveToken);
+            if (newDirectiveToken != node.DirectiveToken)
+                unchanged = false;
+            
+            return unchanged ? node : new UvssUnknownDirectiveSyntax(
+                newDirectiveToken);
+        }
 
-		/// <inheritdoc/>
-		public override SyntaxNode VisitCultureDirective(UvssCultureDirectiveSyntax node)
-		{
-			var unchanged = true;
+        /// <inheritdoc/>
+        public override SyntaxNode VisitCultureDirective(UvssCultureDirectiveSyntax node)
+        {
+            var unchanged = true;
 
-			var newDirectiveToken = (SyntaxToken)Visit(node.DirectiveToken);
-			if (newDirectiveToken != node.DirectiveToken)
-				unchanged = false;
+            var newDirectiveToken = (SyntaxToken)Visit(node.DirectiveToken);
+            if (newDirectiveToken != node.DirectiveToken)
+                unchanged = false;
 
-			var newCultureValue = (UvssPropertyValueWithBracesSyntax)Visit(node.CultureValue);
-			if (newCultureValue != node.CultureValue)
-				unchanged = false;
+            var newCultureValue = (UvssPropertyValueWithBracesSyntax)Visit(node.CultureValue);
+            if (newCultureValue != node.CultureValue)
+                unchanged = false;
 
-			return unchanged ? node : new UvssCultureDirectiveSyntax(
-				newDirectiveToken,
-				newCultureValue);
-		}
-	}
+            return unchanged ? node : new UvssCultureDirectiveSyntax(
+                newDirectiveToken,
+                newCultureValue);
+        }
+    }
 }

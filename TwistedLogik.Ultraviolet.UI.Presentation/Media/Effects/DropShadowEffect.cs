@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
     /// <summary>
     /// Represents an effect that draws a drop shadow on the target element.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public sealed class DropShadowEffect : Effect
     {

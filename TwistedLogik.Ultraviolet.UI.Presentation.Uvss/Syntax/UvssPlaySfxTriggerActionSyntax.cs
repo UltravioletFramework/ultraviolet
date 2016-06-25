@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS play-sfx trigger action.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.PlaySfxTriggerAction)]
     public sealed class UvssPlaySfxTriggerActionSyntax : UvssTriggerActionBaseSyntax
     {

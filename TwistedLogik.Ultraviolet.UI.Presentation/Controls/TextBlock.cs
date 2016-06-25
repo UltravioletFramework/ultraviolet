@@ -13,6 +13,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a lightweight control for displaying text.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     [DefaultProperty("Text")]
     public class TextBlock : TextBlockBase
@@ -151,7 +152,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, RoutedEventData data)
         {
-			if (device.GetIndexFromFingerID(fingerID) == 0)
+            if (device.GetIndexFromFingerID(fingerID) == 0)
             {
                 LinkUtil.DeactivateTextLink(textLayoutCommands, this);
                 LinkUtil.UpdateLinkCursor(textLayoutCommands, this, null);

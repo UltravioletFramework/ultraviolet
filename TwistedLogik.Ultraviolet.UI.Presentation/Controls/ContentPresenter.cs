@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.Input;
@@ -10,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents an element which is used to indicate the position of child content within a component template.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class ContentPresenter : FrameworkElement
     {

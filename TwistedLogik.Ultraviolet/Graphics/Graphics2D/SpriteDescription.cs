@@ -7,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Describes a <see cref="Sprite"/> object during deserialization.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class SpriteDescription
     {
         /// <summary>

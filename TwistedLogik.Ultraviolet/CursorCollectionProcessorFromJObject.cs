@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.SDL2
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
     /// <summary>
     /// Represents a content processor that loads cursor collections.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     internal sealed class CursorCollectionProcessorFromJObject : ContentProcessor<JObject, CursorCollection>
     {

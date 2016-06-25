@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Activates the actions in the collection, with the specified dependency object as their implicit target.
         /// </summary>
-		/// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="dobj">The dependency object which is the implicit target of the activated actions.</param>
         internal void Activate(UltravioletContext uv, DependencyObject dobj)
         {
@@ -22,12 +22,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
             }
         }
 
-		/// <summary>
-		/// Deactivates the actions in the collection, with the specified dependency object as their implicit target.
-		/// </summary>
-		/// <param name="uv">The Ultraviolet context.</param>
-		/// <param name="dobj">The dependency object which is the implicit target of the deactivated actions.</param>
-		internal void Deactivate(UltravioletContext uv, DependencyObject dobj)
+        /// <summary>
+        /// Deactivates the actions in the collection, with the specified dependency object as their implicit target.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="dobj">The dependency object which is the implicit target of the deactivated actions.</param>
+        internal void Deactivate(UltravioletContext uv, DependencyObject dobj)
         {
             foreach (var action in actions)
             {
@@ -38,6 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Removes all items from the collection.
         /// </summary>
+        [Preserve]
         internal void Clear()
         {
             actions.Clear();
@@ -47,6 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Adds an action to the collection.
         /// </summary>
         /// <param name="action">The action to add to the collection.</param>
+        [Preserve]
         internal void Add(TriggerAction action)
         {
             Contract.Require(action, nameof(action));
@@ -59,6 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="action">The action to remove from the collection.</param>
         /// <returns><see langword="true"/> if the action was removed from the collection; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         internal Boolean Remove(TriggerAction action)
         {
             Contract.Require(action, nameof(action));
@@ -71,6 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="action">The action to evaluate.</param>
         /// <returns><see langword="true"/> if the collection contains the specified action; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         internal Boolean Contains(TriggerAction action)
         {
             Contract.Require(action, nameof(action));

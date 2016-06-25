@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
@@ -10,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents a content processor which loads sprites from JSON files.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     internal sealed class SpriteProcessorFromJObject : ContentProcessor<JObject, Sprite>
     {

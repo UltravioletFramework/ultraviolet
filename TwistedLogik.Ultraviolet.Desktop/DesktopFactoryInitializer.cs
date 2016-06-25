@@ -1,4 +1,5 @@
-﻿using TwistedLogik.Ultraviolet.Desktop.Graphics;
+﻿using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Desktop.Graphics;
 using TwistedLogik.Ultraviolet.Desktop.Input;
 using TwistedLogik.Ultraviolet.Desktop.Platform;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -13,10 +14,17 @@ namespace TwistedLogik.Ultraviolet.Desktop
     internal sealed class DesktopFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopFactoryInitializer"/> class.
+        /// </summary>
+        [Preserve]
+        public DesktopFactoryInitializer() { }
+
+        /// <summary>
         /// Initializes the specified factory.
         /// </summary>
         /// <param name="owner">The Ultraviolet context that owns the initializer.</param>
         /// <param name="factory">The <see cref="UltravioletFactory"/> to initialize.</param>
+        [Preserve]
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
             factory.SetFactoryMethod<SurfaceSourceFactory>((stream) => new DesktopSurfaceSource(stream));

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
     /// <summary>
     /// Represents a terminal token.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.Token)]
     public class SyntaxToken : SyntaxNode
     {

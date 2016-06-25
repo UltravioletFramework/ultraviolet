@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -18,6 +19,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="x">The x-coordinate of the circle's center.</param>
         /// <param name="y">The y-coordinate of the circle's center.</param>
         /// <param name="radius">The circle's radius.</param>
+        [Preserve]
         [JsonConstructor]
         public CircleD(Double x, Double y, Double radius)
         {
@@ -31,6 +33,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="position">The position of the circle's center.</param>
         /// <param name="radius">The circle's radius.</param>
+        [Preserve]
         public CircleD(Point2D position, Single radius)
             : this(position.X, position.Y, radius)
         {
@@ -43,6 +46,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="c1">The first <see cref="CircleD"/> to compare.</param>
         /// <param name="c2">The second <see cref="CircleD"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified circles are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(CircleD c1, CircleD c2)
         {
             return c1.Equals(c2);
@@ -54,6 +58,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="c1">The first <see cref="CircleD"/> to compare.</param>
         /// <param name="c2">The second <see cref="CircleD"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified circles are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(CircleD c1, CircleD c2)
         {
             return !c1.Equals(c2);
@@ -64,6 +69,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="circle">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator Circle(CircleD circle)
         {
             return new Circle((Int32)circle.x, (Int32)circle.y, (Int32)circle.radius);
@@ -74,6 +80,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="circle">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static implicit operator CircleD(Circle circle)
         {
             return new CircleD(circle.X, circle.Y, circle.Radius);
@@ -84,6 +91,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="circle">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator CircleF(CircleD circle)
         {
             return new CircleF((Single)circle.x, (Single)circle.y, (Single)circle.radius);
@@ -94,6 +102,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="circle">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static implicit operator CircleD(CircleF circle)
         {
             return new CircleD(circle.X, circle.Y, circle.Radius);
@@ -106,6 +115,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s">A string containing a circle to convert.</param>
         /// <param name="circle">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out CircleD circle)
         {
             return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out circle);
@@ -116,6 +126,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a circle to convert.</param>
         /// <returns>A instance of the <see cref="CircleD"/> structure equivalent to the circle contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static CircleD Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
@@ -130,6 +141,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="circle">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out CircleD circle)
         {
             circle = default(CircleD);
@@ -160,6 +172,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the <see cref="CircleD"/> structure equivalent to the circle contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static CircleD Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             CircleD circle;
@@ -231,6 +244,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
+        [Preserve]
         public CircleD Interpolate(CircleD target, Single t)
         {
             var x      = Tweening.Lerp(this.x, target.x, t);
@@ -259,6 +273,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the x-coordinate of the circle's center.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "x", Required = Required.Always)]
         public Double X
         {
@@ -268,6 +283,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the y-coordinate of the circle's center.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "y", Required = Required.Always)]
         public Double Y
         {
@@ -277,6 +293,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the circle's radius.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "radius", Required = Required.Always)]
         public Double Radius
         {

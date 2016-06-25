@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Linq.Expressions;
+
+#if !CODE_GEN_ENABLED
 using System.Reflection;
+using TwistedLogik.Nucleus;
+#endif
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -74,6 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Represents a reflection-based implementation of a binding expression setter which is
         /// used on platforms that don't support runtime code generation.
         /// </summary>
+        [Preserve]
         private static Object ReflectionBasedImplementation(PropertyInfo property, Object dataSource)
         {
             if (dataSource == null)

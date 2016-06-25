@@ -1,11 +1,13 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// An intermediate representation of the default values used for sprite frames.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class SpriteFrameDefaultsDescription
     {
         /// <summary>

@@ -26,6 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             /// Adds the specified container to the selection collection.
             /// </summary>
             /// <param name="container">The container to add to the collection.</param>
+            [Preserve]
             public void Add(DependencyObject container)
             {
                 Contract.Require(container, nameof(container));
@@ -41,6 +42,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             /// Removes the specified container from the selection collection.
             /// </summary>
             /// <param name="container">The container to remove from the collection.</param>
+            [Preserve]
             public void Remove(DependencyObject container)
             {
                 Contract.Require(container, nameof(container));
@@ -61,6 +63,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             /// <summary>
             /// Removes all items from the selection collection.
             /// </summary>
+            [Preserve]
             public void Clear()
             {
                 selections.Clear();

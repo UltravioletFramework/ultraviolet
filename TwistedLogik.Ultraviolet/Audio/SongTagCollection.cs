@@ -22,6 +22,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         /// </summary>
         /// <param name="key">The tag's identifying key.</param>
         /// <param name="value">The tag's raw value.</param>
+        [Preserve]
         public void Add(String key, String value)
         {
             Contract.RequireNotEmpty(key, nameof(key));
@@ -37,13 +38,14 @@ namespace TwistedLogik.Ultraviolet.Audio
         /// <param name="key">The identifying key of the tag to remove.</param>
         /// <returns><see langword="true"/> if a tag with the specified key
         /// was removed from the collection; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Remove(String key)
         {
             Contract.RequireNotEmpty(key, nameof(key));
 
             return storage.Remove(key);
         }
-        
+
         /// <summary>
         /// Gets a value indicating whether the collection contains
         /// a tag with the specified key.
@@ -51,6 +53,7 @@ namespace TwistedLogik.Ultraviolet.Audio
         /// <param name="key">The identifying key of the tag for which to search.</param>
         /// <returns><see langword="true"/> if the collection contains a tag with the
         /// specified key; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean ContainsKey(String key)
         {
             Contract.RequireNotEmpty(key, nameof(key));

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
@@ -10,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents a content processor which loads sprites from XML files.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     internal sealed class SpriteProcessorFromXDocument : ContentProcessor<XDocument, Sprite>
     {

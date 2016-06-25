@@ -1,10 +1,12 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
     /// Represents a framework element which renders a rectangle.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class Rectangle : Shape
     {

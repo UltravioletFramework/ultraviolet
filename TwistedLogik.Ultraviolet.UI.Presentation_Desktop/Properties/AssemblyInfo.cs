@@ -7,6 +7,14 @@ using System.Security;
 [assembly: CLSCompliant(true)]
 [assembly: AllowPartiallyTrustedCallers]
 
+#if ANDROID
+[assembly: Android.LinkerSafe]
+#endif
+
+#if IOS
+[assembly: Foundation.LinkerSafe]
+#endif
+
 #if SIGNED
 [assembly: InternalsVisibleTo("TwistedLogik.Ultraviolet.UI.Presentation.Compiler, PublicKey=" +
     "00240000048000009400000006020000002400005253413100040000010001005dd0e010413925" +

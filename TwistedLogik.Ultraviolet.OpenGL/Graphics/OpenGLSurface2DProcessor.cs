@@ -1,4 +1,5 @@
-﻿using TwistedLogik.Ultraviolet.Content;
+﻿using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.SDL2.Native;
 
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads 2D surface assets.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class OpenGLSurface2DProcessor : ContentProcessor<SDL_Surface, Surface2D>
     {

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents the component of a UVSS selector part which specifies the selected name.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.SelectorPartName)]
     public sealed class UvssSelectorPartNameSyntax : UvssNodeSyntax
     {

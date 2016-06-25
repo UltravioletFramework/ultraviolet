@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet
 {
     /// <summary>
     /// An intermediate representation of a <see cref="CursorCollection"/> used during content processing.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal class CursorCollectionDescription
     {
         /// <summary>

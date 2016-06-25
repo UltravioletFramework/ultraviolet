@@ -25,6 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Clears the collection.
         /// </summary>
+        [Preserve]
         public void Clear()
         {
             if (storage.Count > 0)
@@ -43,6 +44,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Adds a row to the collection.
         /// </summary>
         /// <param name="definition">The row definition to add to the collection.</param>
+        [Preserve]
         public void Add(RowDefinition definition)
         {
             Contract.Require(definition, nameof(definition));
@@ -60,6 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Adds a collection of rows to the collection.
         /// </summary>
         /// <param name="definitions">The collection of rows to add to the collection.</param>
+        [Preserve]
         public void AddRange(IEnumerable<RowDefinition> definitions)
         {
             Contract.Require(definitions, nameof(definitions));
@@ -86,6 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="definition">The row to remove from the collection.</param>
         /// <returns><see langword="true"/> if the specified row was removed from the collection; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Remove(RowDefinition definition)
         {
             Contract.Require(definition, nameof(definition));
@@ -105,6 +109,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <param name="definition">The row to evaluate.</param>
         /// <returns><see langword="true"/> if the collection contains the specified row; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Contains(RowDefinition definition)
         {
             Contract.Require(definition, nameof(definition));

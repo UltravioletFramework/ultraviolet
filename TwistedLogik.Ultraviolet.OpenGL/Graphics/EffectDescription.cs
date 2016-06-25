@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
     /// Represents a description of an effect.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class EffectDescription
     {
         /// <summary>
@@ -25,6 +27,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents a description of an effect technique.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class EffectTechniqueDescription
     {
         /// <summary>
@@ -43,6 +46,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents a description of an effect pass.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class EffectPassDescription
     {
         /// <summary>
@@ -61,6 +65,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents the stages of an effect pass.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class EffectStagesDescription
     {
         /// <summary>

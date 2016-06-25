@@ -7,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <summary>
     /// Represents a control that allows the user to select items.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public abstract partial class Selector : ItemsControl
     {

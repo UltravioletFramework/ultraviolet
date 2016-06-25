@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
@@ -13,6 +14,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="name">The animation's name.</param>
         /// <param name="repeat">A <see cref="SpriteAnimationRepeat"/> value indicating how the animation should act
         /// when it reaches the end of its list of frames.</param>
+        [Preserve]
         public SpriteAnimation(String name, SpriteAnimationRepeat repeat)
         {
             this.name = name;

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -17,6 +18,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="width">The area's width.</param>
         /// <param name="height">The area's height.</param>
+        [Preserve]
         [JsonConstructor]
         public Size2D(Double width, Double height)
         {
@@ -30,6 +32,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s1">The first <see cref="Size2D"/> to compare.</param>
         /// <param name="s2">The second <see cref="Size2D"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified sizes are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(Size2D s1, Size2D s2)
         {
             return s1.Equals(s2);
@@ -41,6 +44,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s1">The first <see cref="Size2D"/> to compare.</param>
         /// <param name="s2">The second <see cref="Size2D"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified sizes are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(Size2D s1, Size2D s2)
         {
             return !s1.Equals(s2);
@@ -52,6 +56,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s1">The <see cref="Size2D"/> on the left side of the operator.</param>
         /// <param name="s2">The <see cref="Size2D"/> on the right side of the operator.</param>
         /// <returns>The result of adding the two instances.</returns>
+        [Preserve]
         public static Size2D operator +(Size2D s1, Size2D s2)
         {
             return new Size2D(s1.Width + s2.Width, s1.Height + s2.Height);
@@ -63,6 +68,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s1">The <see cref="Size2D"/> on the left side of the operator.</param>
         /// <param name="s2">The <see cref="Size2D"/> on the right side of the operator.</param>
         /// <returns>The result of subtracting the two instances.</returns>
+        [Preserve]
         public static Size2D operator -(Size2D s1, Size2D s2)
         {
             return new Size2D(s1.Width - s2.Width, s1.Height - s2.Height);
@@ -73,6 +79,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator Size2(Size2D size)
         {
             return new Size2((Int32)size.width, (Int32)size.height);
@@ -83,6 +90,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static implicit operator Size2D(Size2 size)
         {
             return new Size2D(size.Width, size.Height);
@@ -93,6 +101,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator Size2F(Size2D size)
         {
             return new Size2F((Single)size.width, (Single)size.height);
@@ -103,6 +112,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static implicit operator Size2D(Size2F size)
         {
             return new Size2D(size.Width, size.Height);
@@ -115,6 +125,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s">A string containing a size to convert.</param>
         /// <param name="size">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out Size2D size)
         {
             return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out size);
@@ -125,6 +136,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing an area to convert.</param>
         /// <returns>A instance of the <see cref="Size2D"/> structure equivalent to the area contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Size2D Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
@@ -139,6 +151,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="size">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Size2D size)
         {
             size = default(Size2D);
@@ -167,6 +180,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the <see cref="Size2D"/> structure equivalent to the area contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Size2D Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Size2D area;
@@ -216,6 +230,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Size2D))
@@ -228,6 +243,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(Size2D other)
         {
             return width == other.width && height == other.height;
@@ -239,6 +255,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
+        [Preserve]
         public Size2D Interpolate(Size2D target, Single t)
         {
             var width  = Tweening.Lerp(this.width, target.width, t);
@@ -257,6 +274,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the area's width.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "width", Required = Required.Always)]
         public Double Width
         {
@@ -266,6 +284,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the area's height.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "height", Required = Required.Always)]
         public Double Height
         {

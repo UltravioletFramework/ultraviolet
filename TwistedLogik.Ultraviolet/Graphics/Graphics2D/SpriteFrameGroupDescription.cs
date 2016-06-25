@@ -1,11 +1,13 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Describes a collectively-defined group of <see cref="SpriteFrame"/> objects during deserialization.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class SpriteFrameGroupDescription
     {
         /// <summary>

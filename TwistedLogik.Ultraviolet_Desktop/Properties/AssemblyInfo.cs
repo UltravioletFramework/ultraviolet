@@ -27,10 +27,12 @@ using System.Security;
 
 #if ANDROID
 [assembly: InternalsVisibleTo("TwistedLogik.Ultraviolet.Android")]
+[assembly: Android.LinkerSafe]
 #endif
 
 #if IOS
 [assembly: InternalsVisibleTo("TwistedLogik.Ultraviolet.iOS")]
+[assembly: Foundation.LinkerSafe]
 [assembly: Foundation.Preserve(typeof(Object), AllMembers = true)]
 [assembly: Foundation.Preserve(typeof(Nullable), AllMembers = true)]
 #endif

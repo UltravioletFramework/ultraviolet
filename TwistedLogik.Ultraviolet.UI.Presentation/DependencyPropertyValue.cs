@@ -19,6 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// </summary>
             /// <param name="owner">The dependency object that owns the property value.</param>
             /// <param name="property">The dependency property which has its value represented by this object.</param>
+            [Preserve]
             public DependencyPropertyValue(DependencyObject owner, DependencyProperty property)
             {
                 Contract.Require(owner, nameof(owner));

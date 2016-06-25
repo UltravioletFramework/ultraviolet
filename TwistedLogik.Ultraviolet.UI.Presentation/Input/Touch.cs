@@ -47,6 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <summary>
     /// Represents a touch device.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public static partial class Touch
     {

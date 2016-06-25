@@ -7,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
     /// <summary>
     /// Represents a token that could not be parsed.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.SkippedTokensTrivia)]
     public sealed class SkippedTokensTriviaSyntax : StructuredTriviaSyntax
     {

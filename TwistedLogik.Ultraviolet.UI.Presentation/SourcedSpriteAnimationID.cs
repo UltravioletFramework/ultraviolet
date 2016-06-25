@@ -18,6 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="spriteAnimationID">The sprite animation's identifier.</param>
         /// <param name="spriteSource">The sprite asset's source.</param>
+        [Preserve]
         public SourcedSpriteAnimationID(SpriteAnimationID spriteAnimationID, AssetSource spriteSource)
         {
             this.spriteAnimationID = spriteAnimationID;
@@ -30,6 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="id1">The first <see cref="SourcedSpriteAnimationID"/> to compare.</param>
         /// <param name="id2">The second <see cref="SourcedSpriteAnimationID"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified identifiers are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(SourcedSpriteAnimationID id1, SourcedSpriteAnimationID id2)
         {
             return id1.spriteAnimationID.Equals(id2.spriteAnimationID) && id1.spriteSource == id2.spriteSource;
@@ -41,6 +43,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="id1">The first <see cref="SourcedSpriteAnimationID"/> to compare.</param>
         /// <param name="id2">The second <see cref="SourcedSpriteAnimationID"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified identifiers are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(SourcedSpriteAnimationID id1, SourcedSpriteAnimationID id2)
         {
             return !id1.spriteAnimationID.Equals(id2.spriteAnimationID) || id1.spriteSource != id2.spriteSource;
@@ -53,6 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="s">A string containing the sprite animation identifier to convert.</param>
         /// <returns>An instance of the <see cref="SourcedSpriteAnimationID"/> structure that is equivalent to the specified string.</returns>
+        [Preserve]
         public static SourcedSpriteAnimationID Parse(String s)
         {
             Contract.Require(s, nameof(s));
@@ -73,6 +77,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="s">A string containing the sprite animation identifier to convert.</param>
         /// <param name="value">An instance of the <see cref="SourcedSpriteAnimationID"/> structure that is equivalent to the specified string.</param>
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out SourcedSpriteAnimationID value)
         {
             Contract.Require(s, nameof(s));
@@ -87,6 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="manifests">The content manifest registry that contains the currently-loaded content manifests.</param>
         /// <param name="s">A string containing the sprite animation identifier to convert.</param>
         /// <returns>An instance of the <see cref="SourcedSpriteAnimationID"/> structure that is equivalent to the specified string.</returns>
+        [Preserve]
         public static SourcedSpriteAnimationID Parse(ContentManifestRegistry manifests, String s)
         {
             Contract.Require(manifests, nameof(manifests));
@@ -108,6 +114,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="s">A string containing the sprite animation identifier to convert.</param>
         /// <param name="value">An instance of the <see cref="SourcedAssetID"/> structure that is equivalent to the specified string.</param>
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(ContentManifestRegistry manifests, String s, out SourcedSpriteAnimationID value)
         {
             Contract.Require(manifests, nameof(manifests));
@@ -135,12 +142,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             return obj is SourcedAssetID && Equals((SourcedAssetID)obj);
         }
 
         /// <inheritdoc/>
+        [Preserve]
         public Boolean Equals(SourcedSpriteAnimationID other)
         {
             return

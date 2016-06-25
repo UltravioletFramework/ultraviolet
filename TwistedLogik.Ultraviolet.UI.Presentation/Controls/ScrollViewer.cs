@@ -16,6 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a control which provides a scrollable view of its content.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.ScrollViewer.xml")]
     public class ScrollViewer : ContentControl
     {
@@ -624,7 +625,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
         {
-			if (!data.Handled && device.GetIndexFromFingerID(fingerID) == 0)
+            if (!data.Handled && device.GetIndexFromFingerID(fingerID) == 0)
             {
                 if (dx != 0 && PART_HScroll != null)
                 {

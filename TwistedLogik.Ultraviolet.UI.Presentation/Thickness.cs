@@ -24,6 +24,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="Thickness"/> structure.
         /// </summary>
         /// <param name="value">The size, in device independent pixels, of the bounding rectangles' four edges.</param>
+        [Preserve]
         public Thickness(Double value)
             : this(value, value, value, value)
         {
@@ -37,6 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="top">The width, in device independent pixels (1/96 of an inch), of the top side of the bounding rectangle.</param>
         /// <param name="right">The width, in device independent pixels (1/96 of an inch), of the right side of the bounding rectangle.</param>
         /// <param name="bottom">The width, in device independent pixels (1/96 of an inch), of the bottom side of the bounding rectangle.</param>
+        [Preserve]
         public Thickness(Double left, Double top, Double right, Double bottom)
         {
             this.left   = left;
@@ -51,6 +53,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="t1">The first <see cref="Thickness"/> to add.</param>
         /// <param name="t2">The second <see cref="Thickness"/> to add.</param>
         /// <returns>A <see cref="Thickness"/> that is the sum of the specified <see cref="Thickness"/> values.</returns>
+        [Preserve]
         public static Thickness operator +(Thickness t1, Thickness t2)
         {
             return new Thickness(t1.Left + t2.Left, t1.Top + t2.Top, t1.Right + t2.Right, t1.Bottom + t2.Bottom);
@@ -62,6 +65,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="t1">The first <see cref="Thickness"/> to subtract.</param>
         /// <param name="t2">The second <see cref="Thickness"/> to subtract.</param>
         /// <returns>A <see cref="Thickness"/> that is the difference of the specified <see cref="Thickness"/> values.</returns>
+        [Preserve]
         public static Thickness operator -(Thickness t1, Thickness t2)
         {
             return new Thickness(t1.Left - t2.Left, t1.Top - t2.Top, t1.Right - t2.Right, t1.Bottom - t2.Bottom);
@@ -73,6 +77,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="size">The <see cref="Size2D"/> to which to add the <see cref="Thickness"/>.</param>
         /// <param name="thickness">The <see cref="Thickness"/> to add to the <see cref="Size2D"/>.</param>
         /// <returns>A <see cref="Size2D"/> that is the sum of the original <see cref="Size2D"/> and the specified <see cref="Thickness"/>.</returns>
+        [Preserve]
         public static Size2D operator +(Size2D size, Thickness thickness)
         {
             var width  = Math.Max(0, size.Width + thickness.Left + thickness.Right);
@@ -87,6 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="thickness">The <see cref="Thickness"/> to add to the <see cref="Size2D"/>.</param>
         /// <param name="size">The <see cref="Size2D"/> to which to add the <see cref="Thickness"/>.</param>
         /// <returns>A <see cref="Size2D"/> that is the sum of the original <see cref="Size2D"/> and the specified <see cref="Thickness"/>.</returns>
+        [Preserve]
         public static Size2D operator +(Thickness thickness, Size2D size)
         {
             var width  = Math.Max(0, size.Width + thickness.Left + thickness.Right);
@@ -101,6 +107,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="size">The <see cref="Size2D"/> from which to subtract the <see cref="Thickness"/>.</param>
         /// <param name="thickness">The <see cref="Thickness"/> to subtract from the <see cref="Size2D"/>.</param>
         /// <returns>A <see cref="Size2D"/> that is the difference of the original <see cref="Size2D"/> and the specified <see cref="Thickness"/>.</returns>
+        [Preserve]
         public static Size2D operator -(Size2D size, Thickness thickness)
         {
             var width  = Math.Max(0, size.Width - (thickness.Left + thickness.Right));
@@ -115,6 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="rectangle">The <see cref="RectangleD"/> to which to add the <see cref="Thickness"/>.</param>
         /// <param name="thickness">The <see cref="Thickness"/> to add to the <see cref="RectangleD"/>.</param>
         /// <returns>A <see cref="RectangleD"/> that is the sum of the original <see cref="RectangleD"/> and the specified <see cref="Thickness"/>.</returns>
+        [Preserve]
         public static RectangleD operator +(RectangleD rectangle, Thickness thickness)
         {
             var width = Math.Max(0, rectangle.Width + thickness.Left + thickness.Right);
@@ -129,6 +137,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="thickness">The <see cref="Thickness"/> to add to the <see cref="RectangleD"/>.</param>
         /// <param name="rectangle">The <see cref="RectangleD"/> to which to add the <see cref="Thickness"/>.</param>
         /// <returns>A <see cref="RectangleD"/> that is the sum of the original <see cref="RectangleD"/> and the specified <see cref="Thickness"/>.</returns>
+        [Preserve]
         public static RectangleD operator +(Thickness thickness, RectangleD rectangle)
         {
             var width = Math.Max(0, rectangle.Width + thickness.Left + thickness.Right);
@@ -143,6 +152,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="rectangle">The <see cref="RectangleD"/> from which to subtract the <see cref="Thickness"/>.</param>
         /// <param name="thickness">The <see cref="Thickness"/> to subtract from the <see cref="RectangleD"/>.</param>
         /// <returns>A <see cref="RectangleD"/> that is the difference of the original <see cref="RectangleD"/> and the specified <see cref="Thickness"/>.</returns>
+        [Preserve]
         public static RectangleD operator -(RectangleD rectangle, Thickness thickness)
         {
             var width  = Math.Max(0, rectangle.Width - (thickness.Left + thickness.Right));
@@ -157,6 +167,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="t1">The first <see cref="Thickness"/> to compare.</param>
         /// <param name="t2">The second <see cref="Thickness"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified thicknesses are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(Thickness t1, Thickness t2)
         {
             return t1.Equals(t2);
@@ -168,6 +179,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="t1">The first <see cref="Thickness"/> to compare.</param>
         /// <param name="t2">The second <see cref="Thickness"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified thicknesses are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(Thickness t1, Thickness t2)
         {
             return !t1.Equals(t2);
@@ -180,6 +192,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="s">A string containing a bounding rectangle to convert.</param>
         /// <param name="thickness">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out Thickness thickness)
         {
             return TryParse(s, NumberStyles.Float, NumberFormatInfo.CurrentInfo, out thickness);
@@ -190,6 +203,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="s">A string containing a bounding rectangle to convert.</param>
         /// <returns>A instance of the <see cref="Thickness"/> structure equivalent to the bounding rectangle contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Thickness Parse(String s)
         {
             return Parse(s, NumberStyles.Float, NumberFormatInfo.CurrentInfo);
@@ -204,6 +218,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="thickness">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Thickness thickness)
         {
             Contract.Require(s, nameof(s));
@@ -250,6 +265,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the <see cref="Thickness"/> structure equivalent to the bounding rectangle contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Thickness Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Thickness thickness;
@@ -301,6 +317,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Thickness))
@@ -313,6 +330,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(Thickness other)
         {
             return
@@ -328,6 +346,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
+        [Preserve]
         public Thickness Interpolate(Thickness target, Single t)
         {
             var left   = Tweening.Lerp(this.left, target.left, t);

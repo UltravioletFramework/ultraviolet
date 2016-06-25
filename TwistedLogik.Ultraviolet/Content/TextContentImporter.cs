@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
     /// Represents a content importer which loads text files.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentImporter(".txt")]
     public sealed class TextContentImporter : ContentImporter<String[]>
     {

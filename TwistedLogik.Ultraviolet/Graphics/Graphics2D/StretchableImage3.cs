@@ -15,6 +15,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Initializes a new instance of the <see cref="StretchableImage3"/> class.
         /// </summary>
+        [Preserve]
         private StretchableImage3()
         {
 
@@ -119,6 +120,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="s">A string containing the image to convert.</param>
         /// <param name="image">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out StretchableImage3 image)
         {
             return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out image);
@@ -129,6 +131,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="s">A string containing the image to convert.</param>
         /// <returns>An instance of the <see cref="StretchableImage3"/> class that is equivalent to the specified string.</returns>
+        [Preserve]
         public static StretchableImage3 Parse(String s)
         {
             return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
@@ -143,6 +146,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="image">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out StretchableImage3 image)
         {
             Contract.Require(s, nameof(s));
@@ -217,6 +221,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>An instance of the <see cref="StretchableImage3"/> class that is equivalent to the specified string.</returns>
+        [Preserve]
         public static StretchableImage3 Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             StretchableImage3 value;

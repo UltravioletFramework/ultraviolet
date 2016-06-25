@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -16,6 +17,7 @@ namespace TwistedLogik.Ultraviolet
         /// Initializes a new instance of the <see cref="Vector2"/> structure with all of its components set to the specified value.
         /// </summary>
         /// <param name="value">The value to which to set the vector's components.</param>
+        [Preserve]
         public Vector2(Single value)
         {
             this.x = value;
@@ -27,6 +29,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="x">The vector's x component.</param>
         /// <param name="y">The vector's y component.</param>
+        [Preserve]
         [JsonConstructor]
         public Vector2(Single x, Single y)
         {
@@ -40,6 +43,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector1">The first <see cref="Vector2"/> to compare.</param>
         /// <param name="vector2">The second <see cref="Vector2"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified vectors are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(Vector2 vector1, Vector2 vector2)
         {
             return vector1.Equals(vector2);
@@ -51,6 +55,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector1">The first <see cref="Vector2"/> to compare.</param>
         /// <param name="vector2">The second <see cref="Vector2"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified vectors are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(Vector2 vector1, Vector2 vector2)
         {
             return !vector1.Equals(vector2);
@@ -62,6 +67,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector1">The <see cref="Vector2"/> to the left of the addition operator.</param>
         /// <param name="vector2">The <see cref="Vector2"/> to the right of the addition operator.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
+        [Preserve]
         public static Vector2 operator +(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(vector1.x + vector2.x, vector1.y + vector2.y);
@@ -73,6 +79,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector1">The <see cref="Vector2"/> to the left of the subtraction operator.</param>
         /// <param name="vector2">The <see cref="Vector2"/> to the right of the subtraction operator.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
+        [Preserve]
         public static Vector2 operator -(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(vector1.x - vector2.x, vector1.y - vector2.y);
@@ -84,6 +91,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector1">The <see cref="Vector2"/> to the left of the multiplication operator.</param>
         /// <param name="vector2">The <see cref="Vector2"/> to the right of the multiplication operator.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
+        [Preserve]
         public static Vector2 operator *(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
@@ -98,6 +106,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector">The <see cref="Vector2"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the vector.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
+        [Preserve]
         public static Vector2 operator *(Single factor, Vector2 vector)
         {
             return new Vector2(
@@ -112,6 +121,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector">The <see cref="Vector2"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the vector.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
+        [Preserve]
         public static Vector2 operator *(Vector2 vector, Single factor)
         {
             return new Vector2(
@@ -126,6 +136,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector1">The <see cref="Vector2"/> to the left of the division operator.</param>
         /// <param name="vector2">The <see cref="Vector2"/> to the right of the division operator.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
+        [Preserve]
         public static Vector2 operator /(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
@@ -140,6 +151,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="vector">The <see cref="Vector2"/> to divide.</param>
         /// <param name="factor">The scaling factor by which to divide the vector.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
+        [Preserve]
         public static Vector2 operator /(Vector2 vector, Single factor)
         {
             return new Vector2(
@@ -153,6 +165,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="vector">The <see cref="Vector2"/> to reverse.</param>
         /// <returns>The reversed <see cref="Vector2"/>.</returns>
+        [Preserve]
         public static Vector2 operator -(Vector2 vector)
         {
             return new Vector2(-vector.x, -vector.y);
@@ -163,6 +176,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator Point2(Vector2 vector)
         {
             return new Point2((Int32)vector.X, (Int32)vector.Y);
@@ -173,6 +187,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator Point2F(Vector2 vector)
         {
             return new Point2F(vector.X, vector.Y);
@@ -183,6 +198,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator Point2D(Vector2 vector)
         {
             return new Point2D(vector.X, vector.Y);
@@ -193,6 +209,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator Vector2(Point2 point)
         {
             return new Vector2(point.X, point.Y);
@@ -203,6 +220,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator Vector2(Point2F point)
         {
             return new Vector2(point.X, point.Y);
@@ -213,6 +231,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator Vector2(Point2D point)
         {
             return new Vector2((Single)point.X, (Single)point.Y);
@@ -225,6 +244,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s">A string containing a vector to convert.</param>
         /// <param name="vector">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out Vector2 vector)
         {
             return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out vector);
@@ -235,6 +255,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a vector to convert.</param>
         /// <returns>A instance of the <see cref="Vector2"/> structure equivalent to the vector contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Vector2 Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
@@ -249,6 +270,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="vector">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Vector2 vector)
         {
             vector = default(Vector2);
@@ -277,6 +299,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the <see cref="Vector2"/> structure equivalent to the vector contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Vector2 Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Vector2 vector;
@@ -960,6 +983,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Vector2))
@@ -972,6 +996,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(Vector2 other)
         {
             return x == other.x && y == other.y;
@@ -1001,6 +1026,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
+        [Preserve]
         public Vector2 Interpolate(Vector2 target, Single t)
         {
             var x = Tweening.Lerp(this.x, target.x, t);
@@ -1043,6 +1069,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the vector's x-coordinate.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "x", Required = Required.Always)]
         public Single X
         {
@@ -1052,6 +1079,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the vector's y-coordinate.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "y", Required = Required.Always)]
         public Single Y
         {

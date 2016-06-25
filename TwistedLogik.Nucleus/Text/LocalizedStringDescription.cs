@@ -7,6 +7,7 @@ namespace TwistedLogik.Nucleus.Text
     /// <summary>
     /// An intermediate representation of a <see cref="LocalizedStringDescription"/> used during serialization.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class LocalizedStringDescription
     {
         /// <summary>

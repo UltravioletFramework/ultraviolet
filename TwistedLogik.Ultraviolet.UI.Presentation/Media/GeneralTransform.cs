@@ -1,10 +1,12 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
     /// <summary>
     /// Represents a coordinate transformation.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public abstract class GeneralTransform : DependencyObject
     {

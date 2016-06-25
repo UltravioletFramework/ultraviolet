@@ -59,6 +59,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <inheritdoc/>
+        [Preserve]
         public void Clear()
         {
             if (storage == null)
@@ -76,6 +77,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <inheritdoc/>
+        [Preserve]
         public void Add(Visual item)
         {
             Contract.Require(item, nameof(item));
@@ -91,6 +93,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <inheritdoc/>
+        [Preserve]
         public void Insert(Int32 index, Visual item)
         {
             Contract.Require(item, nameof(item));
@@ -106,6 +109,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <inheritdoc/>
+        [Preserve]
         public void RemoveAt(Int32 index)
         {
             if (storage == null)
@@ -121,6 +125,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <inheritdoc/>
+        [Preserve]
         public Boolean Remove(Visual item)
         {
             Contract.Require(item, nameof(item));
@@ -143,12 +148,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
         }
 
         /// <inheritdoc/>
+        [Preserve]
         public Boolean Contains(Visual item)
         {
             return storage != null && storage.Contains(item);
         }
 
         /// <inheritdoc/>
+        [Preserve]
         public Int32 IndexOf(Visual item)
         {
             return storage == null ? -1 : storage.IndexOf(item);

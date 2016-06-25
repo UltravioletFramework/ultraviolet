@@ -18,10 +18,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             ObjectResolver.RegisterValueResolver<TextureImage>(ImageResolver);
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureImage"/> class.
         /// </summary>
+        [Preserve]
         internal TextureImage()
         {
 

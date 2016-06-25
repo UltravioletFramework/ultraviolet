@@ -9,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a control that contains multiple tabbed pages.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.TabControl.xml")]
     [UvmlPlaceholder("ItemsPanel", typeof(TabPanel))]
     public class TabControl : Selector

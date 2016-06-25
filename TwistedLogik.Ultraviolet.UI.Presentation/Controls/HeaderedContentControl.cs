@@ -6,6 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a content control with a header.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class HeaderedContentControl : ContentControl
     {

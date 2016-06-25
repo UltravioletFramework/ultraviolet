@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -8,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Represents the base class for syntax lists with many children.
         /// </summary>
+        [Preserve(AllMembers = true)]
         internal abstract class WithManyChildrenBase : SyntaxList
         {
             /// <summary>

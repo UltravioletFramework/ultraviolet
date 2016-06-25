@@ -1,11 +1,13 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet
 {
     /// <summary>
     /// An intermediate representation of <see cref="Cursor"/> used during content processing.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal class CursorDescription
     {
         /// <summary>

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.BASS.Native
 {
+    [Preserve(AllMembers = true)]
     [StructLayout(LayoutKind.Sequential)]
     internal struct BASS_CHANNELINFO
     {

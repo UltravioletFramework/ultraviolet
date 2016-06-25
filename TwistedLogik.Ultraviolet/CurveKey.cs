@@ -19,6 +19,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="tangentIn">The value of the tangent when approaching this key from the previous key.</param>
         /// <param name="tangentOut">The value of the tangent when approaching this key from the next key.</param>
         /// <param name="continuity">A value describing the continuity between this key and the next.</param>
+        [Preserve]
         public CurveKey(Single position, Single value, Single tangentIn, Single tangentOut, CurveContinuity continuity)
         {
             this.position = position;
@@ -34,6 +35,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="key1">The first <see cref="CurveKey"/> to compare.</param>
         /// <param name="key2">The second <see cref="CurveKey"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified curve keys are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(CurveKey key1, CurveKey key2)
         {
             if (key1 == null || key2 == null)
@@ -49,6 +51,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="key1">The first <see cref="CurveKey"/> to compare.</param>
         /// <param name="key2">The second <see cref="CurveKey"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified curve keys are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(CurveKey key1, CurveKey key2)
         {
             if (key1 == null || key2 == null)
@@ -100,6 +103,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             return obj is CurveKey && Equals((CurveKey)obj);
@@ -110,6 +114,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(CurveKey obj)
         {
             if (obj == null) 
@@ -131,6 +136,7 @@ namespace TwistedLogik.Ultraviolet
         /// <returns>A value that indicates the relative order of the objects being compared.</returns>
         /// <remarks>If the keys have the same position, this method returns zero.  If this key comes before <paramref name="other"/>,
         /// then this method returns -1.  Otherwise, this method returns 1.</remarks>
+        [Preserve]
         public Int32 CompareTo(CurveKey other)
         {
             Contract.Require(other, nameof(other));

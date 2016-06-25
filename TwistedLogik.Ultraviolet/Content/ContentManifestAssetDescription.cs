@@ -1,11 +1,13 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
     /// An intermediate representation of a <see cref="ContentManifestAsset"/> used during loading.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal class ContentManifestAssetDescription
     {
         /// <summary>

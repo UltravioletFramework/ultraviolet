@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents the root node of a UVSS document.
     /// </summary>
+    [Preserve]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.Document)]
     public sealed class UvssDocumentSyntax : UvssNodeSyntax
     {
@@ -55,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         public override void Serialize(BinaryWriter writer, Int32 version)
         {
             base.Serialize(writer, version);
-			
+            
             writer.Write(Content, version);
             writer.Write(EndOfFileToken, version);
         }
@@ -77,26 +79,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
         /// </summary>
         public SyntaxList<SyntaxNode> Content { get; internal set; }
 
-		/// <summary>
-		/// Gets a collection of the document's directives.
-		/// </summary>
-		public IEnumerable<UvssDirectiveSyntax> Directives
-		{
-			get
-			{
-				for (int i = 0; i < Content.Count; i++)
-				{
-					var directive = Content[i] as UvssDirectiveSyntax;
-					if (directive != null)
-						yield return directive;
-				}
-			}
-		}
+        /// <summary>
+        /// Gets a collection of the document's directives.
+        /// </summary>
+        public IEnumerable<UvssDirectiveSyntax> Directives
+        {
+            get
+            {
+                for (int i = 0; i < Content.Count; i++)
+                {
+                    var directive = Content[i] as UvssDirectiveSyntax;
+                    if (directive != null)
+                        yield return directive;
+                }
+            }
+        }
 
-		/// <summary>
-		/// Gets a collection of the document's rule sets.
-		/// </summary>
-		public IEnumerable<UvssRuleSetSyntax> RuleSets
+        /// <summary>
+        /// Gets a collection of the document's rule sets.
+        /// </summary>
+        public IEnumerable<UvssRuleSetSyntax> RuleSets
         {
             get
             {

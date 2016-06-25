@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.SDL2.Native
@@ -12,6 +13,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
     [ContentImporter(".jpeg")]
     public unsafe sealed class SDL_SurfaceImporter : ContentImporter<SDL_Surface>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SDL_SurfaceImporter"/> class.
+        /// </summary>
+        [Preserve]
+        public SDL_SurfaceImporter() { }
+
         /// <summary>
         /// Imports the data from the specified file.
         /// </summary>

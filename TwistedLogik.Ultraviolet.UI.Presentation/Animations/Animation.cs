@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
@@ -11,6 +12,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <summary>
         /// Initializes a new instance of the <see cref="Animation{T}"/> class.
         /// </summary>
+        [Preserve]
         public Animation()
         {
             this.keyframes = new AnimationKeyframeCollection<T>(this);

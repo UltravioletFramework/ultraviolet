@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
 {
@@ -13,6 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// </summary>
         /// <param name="time">The keyframe time.</param>
         /// <param name="easingFunction">The keyframe's easing function.</param>
+        [Preserve]
         public AnimationKeyframe(TimeSpan time, EasingFunction easingFunction = null)
             : base(time, easingFunction)
         {
@@ -25,6 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
         /// <param name="time">The keyframe time.</param>
         /// <param name="value">The keyframe value.</param>
         /// <param name="easingFunction">The keyframe's easing function.</param>
+        [Preserve]
         public AnimationKeyframe(TimeSpan time, T value, EasingFunction easingFunction = null)
             : base(time, easingFunction)
         {

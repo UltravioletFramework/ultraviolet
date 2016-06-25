@@ -1,10 +1,12 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
     /// <summary>
     /// Represents an identity transformation.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public sealed class IdentityTransform : Transform
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
@@ -11,6 +12,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
     /// <summary>
     /// Loads sprite font assets.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     internal sealed class OpenGLSpriteFontProcessorFromXDocument : ContentProcessor<XDocument, SpriteFont>
     {

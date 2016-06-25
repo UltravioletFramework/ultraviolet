@@ -1,10 +1,12 @@
-﻿using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+﻿using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet
 {
     /// <summary>
     /// Initializes factory methods for the Framework core.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class UltravioletFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <summary>

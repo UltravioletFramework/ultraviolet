@@ -7,12 +7,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the view model wrapper for <see cref="MessageBoxViewModel"/>.
     /// </summary>
+    [Preserve(AllMembers = true)]
     public partial class MessageBoxViewModel_Impl
     { }
 
     /// <summary>
     /// The view model for the <see cref="MessageBoxScreen"/> class.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ViewModelWrapper(typeof(MessageBoxViewModel_Impl))]
     public class MessageBoxViewModel
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
@@ -8,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         /// <summary>
         /// Represents a syntax list with two children.
         /// </summary>
+        [Preserve(AllMembers = true)]
         [SyntaxNodeTypeID((Byte)SyntaxNodeType.SyntaxListWithTwoChildren)]
         internal sealed class WithTwoChildren : SyntaxList
         {

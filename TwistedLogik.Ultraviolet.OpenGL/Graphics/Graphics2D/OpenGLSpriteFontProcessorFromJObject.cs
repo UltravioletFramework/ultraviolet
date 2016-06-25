@@ -2,6 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
@@ -10,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
     /// <summary>
     /// Loads sprite font assets.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     internal sealed class OpenGLSpriteFontProcessorFromJObject : ContentProcessor<JObject, SpriteFont>
     {

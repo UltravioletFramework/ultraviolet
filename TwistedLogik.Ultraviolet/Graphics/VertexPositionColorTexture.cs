@@ -1,10 +1,12 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents a vertex containing 3D position, color, and texture coordinate data.
     /// </summary>
+    [Preserve(AllMembers = true)]
     public struct VertexPositionColorTexture : IVertexType
     {
         /// <summary>

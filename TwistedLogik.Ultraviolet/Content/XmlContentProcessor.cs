@@ -1,10 +1,12 @@
 ﻿using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
     /// Represents a content processor which loads XML documents.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class XmlContentProcessor : ContentProcessor<XDocument, XDocument>
     {

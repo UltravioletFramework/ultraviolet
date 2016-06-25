@@ -8,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Describes a <see cref="SpriteAnimation"/> object during deserialization.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class SpriteAnimationDescription
     {
         /// <summary>

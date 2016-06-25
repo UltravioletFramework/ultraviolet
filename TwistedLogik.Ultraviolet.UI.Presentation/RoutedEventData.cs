@@ -38,6 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Releases the instance back into the pool which created it.
         /// </summary>
+        [Preserve]
         public void Release()
         {
             if (!Alive)
@@ -111,12 +112,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Gets a value indicating whether the object is currently alive.
         /// </summary>
+        [Preserve]
         protected internal Boolean Alive => origin != null;
 
         /// <summary>
         /// Gets a value indicating whether the object should be automatically released
         /// back into the global pool after it has been used.
         /// </summary>
+        [Preserve]
         protected internal Boolean AutoRelease => autorelease;
 
         // The global pool of routed event data objects.

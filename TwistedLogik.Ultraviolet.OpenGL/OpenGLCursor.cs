@@ -18,6 +18,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <param name="surface">The surface that contains the cursor image.</param>
         /// <param name="hx">The x-coordinate of the cursor's hotspot.</param>
         /// <param name="hy">The y-coordinate of the cursor's hotspot.</param>
+        [Preserve]
         public OpenGLCursor(UltravioletContext uv, Surface2D surface, Int32 hx, Int32 hy)
             : base(uv)
         {

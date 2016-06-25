@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
     /// Represents a framework element which displays a particular image.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     [DefaultProperty("Source")]
     public class Image : FrameworkElement

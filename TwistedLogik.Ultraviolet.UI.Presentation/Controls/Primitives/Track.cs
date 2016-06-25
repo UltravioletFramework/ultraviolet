@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the track for a scroll bar or slider.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class Track : FrameworkElement
     {

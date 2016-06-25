@@ -9,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents an item in a <see cref="TabControl"/> control.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.TabItem.xml")]
     public class TabItem : HeaderedContentControl
     {

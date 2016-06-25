@@ -281,6 +281,7 @@ namespace TwistedLogik.Nucleus.Data
         /// Resolves a value to an instance of <see cref="Lazy{T}"/>, where the lazily-loaded
         /// object is an instance of <see cref="DataObject"/>.
         /// </summary>
+        [Preserve]
         private static Object ResolveLazilyLoadedDataObject<T>(String value) where T : DataObject
         {
             var registry = DataObjectRegistries.Get<T>();

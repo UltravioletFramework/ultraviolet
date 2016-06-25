@@ -14,6 +14,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="name">The message type's name.</param>
         /// <param name="value">The message's identifier value.</param>
+        [Preserve]
         private UltravioletMessageID(String name, Int32 value)
         {
             this.name  = name;
@@ -26,6 +27,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="id1">The first <see cref="UltravioletMessageID"/>.</param>
         /// <param name="id2">The second <see cref="UltravioletMessageID"/>.</param>
         /// <returns><see langword="true"/> if the specified identifiers are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(UltravioletMessageID id1, UltravioletMessageID id2)
         {
             return id1.Equals(id2);
@@ -37,6 +39,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="id1">The first <see cref="UltravioletMessageID"/>.</param>
         /// <param name="id2">The second <see cref="UltravioletMessageID"/>.</param>
         /// <returns><see langword="true"/> if the specified identifiers are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(UltravioletMessageID id1, UltravioletMessageID id2)
         {
             return !id1.Equals(id2);
@@ -88,6 +91,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             return obj is UltravioletMessageID && Equals((UltravioletMessageID)obj);
@@ -98,6 +102,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(UltravioletMessageID obj)
         {
             return obj.value == this.value;

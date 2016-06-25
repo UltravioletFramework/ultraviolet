@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
 {
@@ -9,6 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
     /// Represents a trigger node which does not have enough information to determine
     /// what kind of trigger it should be.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.IncompleteTrigger)]
     public sealed class UvssIncompleteTriggerSyntax : UvssTriggerBaseSyntax
     {

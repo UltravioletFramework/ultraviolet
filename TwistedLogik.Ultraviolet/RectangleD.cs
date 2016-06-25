@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -17,6 +18,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="position">The rectangle's position.</param>
         /// <param name="size">The rectangle's size.</param>
+        [Preserve]
         public RectangleD(Point2D position, Size2D size)
             : this(position.X, position.Y, size.Width, size.Height)
         {
@@ -30,6 +32,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="y">The y-coordinate of the rectangle's top-right corner.</param>
         /// <param name="width">The rectangle's width.</param>
         /// <param name="height">The rectangle's height.</param>
+        [Preserve]
         [JsonConstructor]
         public RectangleD(Double x, Double y, Double width, Double height)
         {
@@ -45,6 +48,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="rect">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="point">The <see cref="Point2D"/> by which to offset the rectangle.</param>
         /// <returns>A <see cref="RectangleD"/> that has been offset by the specified amount.</returns>
+        [Preserve]
         public static RectangleD operator +(RectangleD rect, Point2D point)
         {
             return new RectangleD(rect.X + point.X, rect.Y + point.Y, rect.Width, rect.Height);
@@ -56,6 +60,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="rect">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="point">The <see cref="Point2D"/> by which to offset the rectangle.</param>
         /// <returns>A <see cref="RectangleD"/> that has been offset by the specified amount.</returns>
+        [Preserve]
         public static RectangleD operator -(RectangleD rect, Point2D point)
         {
             return new RectangleD(rect.X - point.X, rect.Y - point.Y, rect.Width, rect.Height);
@@ -67,6 +72,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first <see cref="RectangleD"/> to compare.</param>
         /// <param name="r2">The second <see cref="RectangleD"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified rectangles are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(RectangleD r1, RectangleD r2)
         {
             return r1.Equals(r2);
@@ -78,6 +84,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="r1">The first <see cref="RectangleD"/> to compare.</param>
         /// <param name="r2">The second <see cref="RectangleD"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified rectangles are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(RectangleD r1, RectangleD r2)
         {
             return !r1.Equals(r2);
@@ -88,6 +95,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="rect">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator Rectangle(RectangleD rect)
         {
             return new Rectangle((Int32)rect.x, (Int32)rect.y, (Int32)rect.width, (Int32)rect.height);
@@ -98,6 +106,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="rect">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static implicit operator RectangleD(Rectangle rect)
         {
             return new RectangleD(rect.X, rect.Y, rect.Width, rect.Height);
@@ -108,6 +117,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="rect">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static explicit operator RectangleF(RectangleD rect)
         {
             return new RectangleF((Single)rect.x, (Single)rect.y, (Single)rect.width, (Single)rect.height);
@@ -118,6 +128,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="rect">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
+        [Preserve]
         public static implicit operator RectangleD(RectangleF rect)
         {
             return new RectangleD(rect.X, rect.Y, rect.Width, rect.Height);
@@ -130,6 +141,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s">A string containing a rectangle to convert.</param>
         /// <param name="rect">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out RectangleD rect)
         {
             return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out rect);
@@ -140,6 +152,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a rectangle to convert.</param>
         /// <returns>A instance of the <see cref="RectangleD"/> structure equivalent to the rectangle contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static RectangleD Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
@@ -154,6 +167,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="rect">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out RectangleD rect)
         {
             rect = default(RectangleD);
@@ -186,6 +200,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the <see cref="RectangleD"/> structure equivalent to the rectangle contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static RectangleD Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             RectangleD rect;
@@ -435,6 +450,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             if (!(obj is RectangleD))
@@ -447,6 +463,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(RectangleD other)
         {
             return x == other.x && y == other.y && width == other.width && height == other.height;
@@ -571,6 +588,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
+        [Preserve]
         public RectangleD Interpolate(RectangleD target, Single t)
         {
             var x      = Tweening.Lerp(this.x, target.x, t);
@@ -600,6 +618,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the x-coordinate of the rectangle's top-left corner.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "x", Required = Required.Always)]
         public Double X
         {
@@ -609,6 +628,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the y-coordinate of the rectangle's top-left corner.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "y", Required = Required.Always)]
         public Double Y
         {
@@ -618,6 +638,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the rectangle's width.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "width", Required = Required.Always)]
         public Double Width
         {
@@ -627,6 +648,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the rectangle's height.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "height", Required = Required.Always)]
         public Double Height
         {

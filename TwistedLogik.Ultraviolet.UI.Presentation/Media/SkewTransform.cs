@@ -6,6 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
     /// <summary>
     /// Represents a transformation which skews an object in two dimensions.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public sealed class SkewTransform : Transform
     {

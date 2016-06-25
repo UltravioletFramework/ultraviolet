@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -69,6 +70,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Adds an object to the collection.
         /// </summary>
         /// <param name="item">The item to add to the collection.</param>
+        [Preserve]
         internal void Add(Object item)
         {
             storage.Add(item);
@@ -78,6 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Removes an object from the collection.
         /// </summary>
         /// <param name="item">The item to remove from the collection.</param>
+        [Preserve]
         internal void Remove(Object item)
         {
             storage.Remove(item);
@@ -86,6 +89,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Removes all items from the collection.
         /// </summary>
+        [Preserve]
         internal void Clear()
         {
             storage.Clear();

@@ -28,7 +28,7 @@ namespace TwistedLogik.Nucleus.Messages
         public LocalMessageQueue(Int32 capacity)
         {
             this.queue     = new Queue<EnqueuedMessage>(capacity);
-            this.queuePool = new ExpandingPool<EnqueuedMessage>(capacity);
+            this.queuePool = new ExpandingPool<EnqueuedMessage>(capacity, () => new EnqueuedMessage());
         }
 
         /// <summary>

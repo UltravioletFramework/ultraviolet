@@ -1,11 +1,13 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Graphics
 {
     /// <summary>
     /// An intermediate representation of an image in a <see cref="TextureAtlas"/> which is used during content processing.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal class TextureAtlasImageDescription
     {
         /// <summary>

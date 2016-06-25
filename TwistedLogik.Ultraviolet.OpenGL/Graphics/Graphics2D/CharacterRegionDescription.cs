@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
     /// <summary>
     /// An internal representation of a <see cref="CharacterRegion"/> used during content processing.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class CharacterRegionDescription
     {
         /// <summary>

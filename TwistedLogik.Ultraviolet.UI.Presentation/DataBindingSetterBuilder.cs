@@ -2,6 +2,10 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
+#if !CODE_GEN_ENABLED
+using TwistedLogik.Nucleus;
+#endif
+
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
@@ -79,6 +83,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Represents a reflection-based implementation of a binding expression setter which is
         /// used on platforms that don't support runtime code generation.
         /// </summary>
+        [Preserve]
         private static void ReflectionBasedImplementation(PropertyInfo property, Object dataSource, Object value)
         {
             if (dataSource == null)
@@ -88,6 +93,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             property.SetValue(dataSource, convertedValue, null);
         }
 #else
+
         /// <summary>
         /// Adds a reference to the data source. If accessing the data source would
         /// result in a <see cref="NullReferenceException"/>, the getter will return a default value.

@@ -445,28 +445,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
         public virtual SyntaxNode VisitEmptyStatement(UvssEmptyStatementSyntax node)
         {
             return VisitSyntaxNode(node);
-		}
+        }
 
-		/// <summary>
-		/// Visits the specified unknown directive node.
-		/// </summary>
-		/// <param name="node">The node to visit.</param>
-		/// <returns>A node which should replace the visited node, or a reference to the visited node
-		/// itself if no changes were made.</returns>
-		public virtual SyntaxNode VisitUnknownDirective(UvssUnknownDirectiveSyntax node)
-		{
-			return VisitSyntaxNode(node);
-		}
+        /// <summary>
+        /// Visits the specified unknown directive node.
+        /// </summary>
+        /// <param name="node">The node to visit.</param>
+        /// <returns>A node which should replace the visited node, or a reference to the visited node
+        /// itself if no changes were made.</returns>
+        public virtual SyntaxNode VisitUnknownDirective(UvssUnknownDirectiveSyntax node)
+        {
+            return VisitSyntaxNode(node);
+        }
 
-		/// <summary>
-		/// Visits the specified culture directive node.
-		/// </summary>
-		/// <param name="node">The node to visit.</param>
-		/// <returns>A node which should replace the visited node, or a reference to the visited node
-		/// itself if no changes were made.</returns>
-		public virtual SyntaxNode VisitCultureDirective(UvssCultureDirectiveSyntax node)
-		{
-			return VisitSyntaxNode(node);
-		}
-	}
+        /// <summary>
+        /// Visits the specified culture directive node.
+        /// </summary>
+        /// <param name="node">The node to visit.</param>
+        /// <returns>A node which should replace the visited node, or a reference to the visited node
+        /// itself if no changes were made.</returns>
+        public virtual SyntaxNode VisitCultureDirective(UvssCultureDirectiveSyntax node)
+        {
+            return VisitSyntaxNode(node);
+        }
+    }
 }

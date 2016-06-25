@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
     /// An intermediate representation of a <see cref="ContentManifestGroup"/> used during loading.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal class ContentManifestGroupDescription
     {
         /// <summary>

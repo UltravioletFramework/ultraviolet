@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
     /// <summary>
     /// Represents structured trivia.
     /// </summary>
+    [Preserve(AllMembers = true)]
     public abstract class StructuredTriviaSyntax : SyntaxTrivia
     {
         /// <summary>

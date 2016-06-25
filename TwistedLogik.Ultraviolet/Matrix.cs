@@ -33,6 +33,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="m42">The value at row 4, column 2 of the matrix.</param>
         /// <param name="m43">The value at row 4, column 3 of the matrix.</param>
         /// <param name="m44">The value at row 4, column 4 of the matrix.</param>
+        [Preserve]
         public Matrix(
             Single m11, Single m12, Single m13, Single m14,
             Single m21, Single m22, Single m23, Single m24,
@@ -66,6 +67,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="m1">The first <see cref="Matrix"/> to compare.</param>
         /// <param name="m2">The second <see cref="Matrix"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified matrices are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(Matrix m1, Matrix m2)
         {
             return m1.Equals(m2);
@@ -77,6 +79,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="m1">The first <see cref="Matrix"/> to compare.</param>
         /// <param name="m2">The second <see cref="Matrix"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified matrices are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(Matrix m1, Matrix m2)
         {
             return !m1.Equals(m2);
@@ -88,6 +91,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="multiplier">The multiplier.</param>
         /// <param name="multiplicand">The multiplicand.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
+        [Preserve]
         public static Matrix operator *(Single multiplier, Matrix multiplicand)
         {
             Matrix result;
@@ -101,6 +105,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="multiplicand">The multiplicand.</param>
         /// <param name="multiplier">The multiplier.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
+        [Preserve]
         public static Matrix operator *(Matrix multiplicand, Single multiplier)
         {
             Matrix result;
@@ -114,6 +119,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="multiplicand">The multiplicand.</param>
         /// <param name="multiplier">The multiplier.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
+        [Preserve]
         public static Matrix operator *(Matrix multiplicand, Matrix multiplier)
         {
             Matrix result;
@@ -127,6 +133,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="dividend">The dividend.</param>
         /// <param name="divisor">The divisor.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
+        [Preserve]
         public static Matrix operator /(Matrix dividend, Single divisor)
         {
             Matrix result;
@@ -140,6 +147,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="dividend">The dividend.</param>
         /// <param name="divisor">The divisor.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
+        [Preserve]
         public static Matrix operator /(Matrix dividend, Matrix divisor)
         {
             Matrix result;
@@ -153,6 +161,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="m1">The <see cref="Matrix"/> on the left side of the addition operator.</param>
         /// <param name="m2">The <see cref="Matrix"/> on the right side of the addition operator.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
+        [Preserve]
         public static Matrix operator +(Matrix m1, Matrix m2)
         {
             Matrix result;
@@ -166,6 +175,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="m1">The <see cref="Matrix"/> on the left side of the subtraction operator.</param>
         /// <param name="m2">The <see cref="Matrix"/> on the right side of the subtraction operator.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
+        [Preserve]
         public static Matrix operator -(Matrix m1, Matrix m2)
         {
             Matrix result;
@@ -178,6 +188,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix"/> to negate.</param>
         /// <returns>The negated <see cref="Matrix"/>.</returns>
+        [Preserve]
         public static Matrix operator -(Matrix matrix)
         {
             Matrix result;
@@ -192,6 +203,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s">A string containing a <see cref="Matrix"/> to convert.</param>
         /// <param name="matrix">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out Matrix matrix)
         {
             return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out matrix);
@@ -202,6 +214,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a matrix to convert.</param>
         /// <returns>A instance of the <see cref="Matrix"/> structure equivalent to the matrix contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Matrix Parse(String s)
         {
             return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
@@ -216,6 +229,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="matrix">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Matrix matrix)
         {
             matrix = default(Matrix);
@@ -250,6 +264,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the Matrix structure equivalent to the matrix contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Matrix Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Matrix matrix;
@@ -1863,6 +1878,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Matrix))
@@ -1875,6 +1891,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(Matrix other)
         {
             return
@@ -1901,6 +1918,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean EqualsRef(ref Matrix other)
         {
             return
@@ -1951,6 +1969,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
+        [Preserve]
         public Matrix Interpolate(Matrix target, Single t)
         {
             Matrix result;

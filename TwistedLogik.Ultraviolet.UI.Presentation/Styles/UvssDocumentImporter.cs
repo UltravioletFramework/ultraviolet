@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
     /// <summary>
     /// Represents a content importer for the *.uvss file type.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentImporter(".uvss")]
     public class UvssDocumentImporter : ContentImporter<String>
     {

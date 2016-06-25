@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -17,6 +18,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="x">The point's x-coordinate.</param>
         /// <param name="y">The point's y-coordinate.</param>
+        [Preserve]
         [JsonConstructor]
         public Point2(Int32 x, Int32 y)
         {
@@ -30,6 +32,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="p1">The first <see cref="Point2"/> to add.</param>
         /// <param name="p2">The second <see cref="Point2"/> to add.</param>
         /// <returns>A <see cref="Point2"/> that represents the sum of the specified points.</returns>
+        [Preserve]
         public static Point2 operator +(Point2 p1, Point2 p2)
         {
             return new Point2(p1.X + p2.X, p1.Y + p2.Y);
@@ -41,6 +44,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="p1">The first <see cref="Point2"/> to subtract.</param>
         /// <param name="p2">The second <see cref="Point2"/> to subtract.</param>
         /// <returns>A <see cref="Point2"/> that represents the difference of the specified points.</returns>
+        [Preserve]
         public static Point2 operator -(Point2 p1, Point2 p2)
         {
             return new Point2(p1.X - p2.X, p1.Y - p2.Y);
@@ -52,6 +56,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="point">The <see cref="Point2"/> to offset.</param>
         /// <param name="offset">The <see cref="Size2"/> that specifies how much to offset <paramref name="point"/>.</param>
         /// <returns>A <see cref="Point2"/> that represents the original point plus the specified offset.</returns>
+        [Preserve]
         public static Point2 operator +(Point2 point, Size2 offset)
         {
             return new Point2(point.X + offset.Width, point.Y + offset.Height);
@@ -63,6 +68,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="point">The <see cref="Point2"/> to size.</param>
         /// <param name="offset">The <see cref="Size2"/> that specifies how much to offset <paramref name="point"/>.</param>
         /// <returns>A <see cref="Point2"/> that represents the original point plus the specified offset.</returns>
+        [Preserve]
         public static Point2 operator -(Point2 point, Size2 offset)
         {
             return new Point2(point.X - offset.Width, point.Y - offset.Height);
@@ -74,6 +80,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="p1">The first <see cref="Point2"/> to compare.</param>
         /// <param name="p2">The second <see cref="Point2"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified points are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(Point2 p1, Point2 p2)
         {
             return p1.Equals(p2);
@@ -85,11 +92,12 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="p1">The first <see cref="Point2"/> to compare.</param>
         /// <param name="p2">The second <see cref="Point2"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified points are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(Point2 p1, Point2 p2)
         {
             return !p1.Equals(p2);
         }
-        
+
         /// <summary>
         /// Converts the string representation of a point into an instance of the <see cref="Point2"/> structure.
         /// A return value indicates whether the conversion succeeded.
@@ -97,6 +105,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s">A string containing a point to convert.</param>
         /// <param name="point">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out Point2 point)
         {
             return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out point);
@@ -107,6 +116,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a point to convert.</param>
         /// <returns>A instance of the <see cref="Point2"/> structure equivalent to the point contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Point2 Parse(String s)
         {
             return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
@@ -121,6 +131,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="point">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Point2 point)
         {
             point = default(Point2);
@@ -149,6 +160,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the <see cref="Point2"/> structure equivalent to the point contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Point2 Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Point2 point;
@@ -198,6 +210,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Point2))
@@ -210,6 +223,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(Point2 other)
         {
             return x == other.x && y == other.y;
@@ -221,6 +235,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
+        [Preserve]
         public Point2 Interpolate(Point2 target, Single t)
         {
             var width  = Tweening.Lerp(this.x, target.x, t);
@@ -239,6 +254,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the point's x-coordinate.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "x", Required = Required.Always)]
         public Int32 X
         {
@@ -248,6 +264,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the point's y-coordinate.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "y", Required = Required.Always)]
         public Int32 Y
         {

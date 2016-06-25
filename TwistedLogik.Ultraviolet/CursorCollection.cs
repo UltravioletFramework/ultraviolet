@@ -13,6 +13,7 @@ namespace TwistedLogik.Ultraviolet
         /// Initializes a new instance of the <see cref="CursorCollection"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
+        [Preserve]
         internal CursorCollection(UltravioletContext uv)
             : base(uv)
         {

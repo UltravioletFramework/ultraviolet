@@ -21,6 +21,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
+        [Preserve]
         public OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, UltravioletConfiguration configuration)
             : base(uv)
         {

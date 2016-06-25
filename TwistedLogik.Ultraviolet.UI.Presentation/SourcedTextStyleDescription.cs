@@ -2,12 +2,14 @@
 using Newtonsoft.Json;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
     /// An internal representation of a <see cref="TextStyle"/> used during deserialization.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class SourcedTextStyleDescription
     {
         /// <summary>

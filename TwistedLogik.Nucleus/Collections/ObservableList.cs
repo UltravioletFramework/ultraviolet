@@ -13,6 +13,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservableList{T}"/> class.
         /// </summary>
+        [Preserve]
         public ObservableList()
         {
             this.list = new List<TValue>();
@@ -22,6 +23,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Initializes a new instance of the <see cref="ObservableList{T}"/> class with the specified initial capacity.
         /// </summary>
         /// <param name="capacity">The initial capacity of the list.</param>
+        [Preserve]
         public ObservableList(Int32 capacity)
         {
             this.list = new List<TValue>(capacity);
@@ -32,6 +34,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// contained by the specified collection.
         /// </summary>
         /// <param name="collection">The collection that contains the elements to copy to this collection.</param>
+        [Preserve]
         public ObservableList(IEnumerable<TValue> collection)
         {
             this.list = new List<TValue>(collection);
@@ -95,12 +98,23 @@ namespace TwistedLogik.Nucleus.Collections
             list.Sort(comparer);
             OnCollectionReset();
         }
-        
+
+        /// <summary>
+        /// Removes all items from the list.
+        /// </summary>
+        [Preserve]
+        public void Clear()
+        {
+            list.Clear();
+            OnCollectionReset();
+        }
+
         /// <summary>
         /// Inserts an item into the list at the specified index.
         /// </summary>
         /// <param name="index">The index at which to insert the item.</param>
         /// <param name="item">The item to insert into the list.</param>
+        [Preserve]
         public void Insert(Int32 index, TValue item)
         {
             list.Insert(index, item);
@@ -111,6 +125,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Adds an item to the end of the list.
         /// </summary>
         /// <param name="item">The item to add to the end of the list.</param>
+        [Preserve]
         public void Add(TValue item)
         {
             list.Add(item);
@@ -118,10 +133,24 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
+        /// Removes the item at the specified index from the list.
+        /// </summary>
+        /// <param name="index">The index of the item to remove from the list.</param>
+        [Preserve]
+        public void RemoveAt(Int32 index)
+        {
+            var item = list[index];
+            list.RemoveAt(index);
+
+            OnCollectionItemRemoved(index, item);
+        }
+
+        /// <summary>
         /// Removes the specified item from the list, if it exists in the list.
         /// </summary>
         /// <param name="item">The item to remove from the list.</param>
         /// <returns><see langword="true"/> if the specified item was removed from the list; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Remove(TValue item)
         {
             var index = list.IndexOf(item);
@@ -135,31 +164,11 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Removes the item at the specified index from the list.
-        /// </summary>
-        /// <param name="index">The index of the item to remove from the list.</param>
-        public void RemoveAt(Int32 index)
-        {
-            var item = list[index];
-            list.RemoveAt(index);
-
-            OnCollectionItemRemoved(index, item);
-        }
-
-        /// <summary>
-        /// Removes all items from the list.
-        /// </summary>
-        public void Clear()
-        {
-            list.Clear();
-            OnCollectionReset();
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the list contains the specified item.
         /// </summary>
         /// <param name="item">The item to evaluate.</param>
         /// <returns><see langword="true"/> if the list contains the specified item; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Contains(TValue item)
         {
             return list.Contains(item);

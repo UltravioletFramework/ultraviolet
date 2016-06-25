@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {
@@ -23,6 +24,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <summary>
         /// Removes all items from the collection.
         /// </summary>
+        [Preserve]
         internal void Clear()
         {
             triggers.Clear();
@@ -32,6 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// Adds an item to the collection.
         /// </summary>
         /// <param name="trigger">The trigger to add to the collection.</param>
+        [Preserve]
         internal void Add(UvssTrigger trigger)
         {
             triggers.Add(trigger);
@@ -42,6 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="trigger">The trigger to remove from the collection.</param>
         /// <returns><see langword="true"/> if the item was removed from the collection; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         internal Boolean Remove(UvssTrigger trigger)
         {
             return triggers.Remove(trigger);
@@ -52,6 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// </summary>
         /// <param name="trigger">The trigger to evaluate.</param>
         /// <returns><see langword="true"/> if the collection contains the specified item; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         internal Boolean Contains(UvssTrigger trigger)
         {
             return triggers.Contains(trigger);

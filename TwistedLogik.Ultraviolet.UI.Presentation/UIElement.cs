@@ -41,6 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Represents the base class for all elements within the Ultraviolet Presentation Foundation.
     /// </summary>
+    [Preserve(AllMembers = true)]
     public abstract partial class UIElement : Visual
     {
         /// <summary>

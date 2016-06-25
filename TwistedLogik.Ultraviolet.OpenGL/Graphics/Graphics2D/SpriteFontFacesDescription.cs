@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
 {
     /// <summary>
     /// An internal representation of a sprite font's collection of faces used during content processing.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class SpriteFontFacesDescription
     {
         /// <summary>

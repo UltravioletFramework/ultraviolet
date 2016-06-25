@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using TwistedLogik.Gluon;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
@@ -11,6 +12,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents a collection of states to apply to the OpenGL context.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class OpenGLState : IDisposable
     {
         /// <summary>

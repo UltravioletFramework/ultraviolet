@@ -20,6 +20,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// </summary>
         /// <param name="name">The content manifest's name.</param>
         /// <param name="groups">The content manifest's group definitions.</param>
+        [Preserve]
         private ContentManifest(String name, IEnumerable<XElement> groups)
         {
             Contract.Require(name, nameof(name));
@@ -37,6 +38,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Initializes a new instance of the <see cref="ContentManifest"/> class.
         /// </summary>
         /// <param name="desc">The content manifest description.</param>
+        [Preserve]
         private ContentManifest(ContentManifestDescription desc)
         {
             Contract.Require(desc, nameof(desc));

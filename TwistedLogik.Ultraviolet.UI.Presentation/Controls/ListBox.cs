@@ -9,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a list of selectable items.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.ListBox.xml")]
     [UvmlPlaceholder("ItemsPanel", typeof(StackPanel))]
     public class ListBox : Selector

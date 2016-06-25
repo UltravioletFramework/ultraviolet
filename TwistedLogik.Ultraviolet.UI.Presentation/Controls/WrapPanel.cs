@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -8,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// side-by-side if (see <see cref="Orientation"/> is <see cref="Orientation.Horizontal"/>,
     /// wrapping the content if necessary to fit within the available space.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.WrapPanel.xml")]
     public class WrapPanel : Panel
     {

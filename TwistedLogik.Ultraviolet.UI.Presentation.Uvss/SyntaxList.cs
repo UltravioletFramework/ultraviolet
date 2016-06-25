@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
 {
     /// <summary>
     /// Represents a list of syntax nodes.
     /// </summary>
+    [Preserve(AllMembers = true)]
     public abstract partial class SyntaxList : SyntaxNode
     {
         /// <summary>

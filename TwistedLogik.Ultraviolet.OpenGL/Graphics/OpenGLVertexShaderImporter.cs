@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
@@ -7,6 +8,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Imports .vert files.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentImporter(".vert")]
     public sealed class OpenGLVertexShaderImporter : ContentImporter<String>
     {

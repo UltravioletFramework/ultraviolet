@@ -24,6 +24,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Adds a cell to the collection.
         /// </summary>
         /// <returns>The cell that was added to the collection.</returns>
+        [Preserve]
         public TextTableCell<ViewModelType> Add()
         {
             return Add(null, null, TextFlags.Standard, null, null);
@@ -36,6 +37,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="text">The cell's text.</param>
         /// <param name="textFlags">The cell's text flags.</param>
         /// <returns>The cell that was added to the collection.</returns>
+        [Preserve]
         public TextTableCell<ViewModelType> Add(String format, String text, TextFlags textFlags)
         {
             return Add(format, text, textFlags, null, null);
@@ -50,6 +52,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="width">The cell's width in pixels, or <see langword="null"/> to automatically size the cell.</param>
         /// <param name="height">The cell's height in pixels, or <see langword="null"/> to automatically size the cell.</param>
         /// <returns>The cell that was added to the collection.</returns>
+        [Preserve]
         public TextTableCell<ViewModelType> Add(String format, String text, TextFlags textFlags, Int32? width, Int32? height)
         {
             var cell = new TextTableCell<ViewModelType>(row)

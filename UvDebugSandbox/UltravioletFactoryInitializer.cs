@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 
 namespace UvDebugSandbox
@@ -6,6 +7,7 @@ namespace UvDebugSandbox
     /// <summary>
     /// Represents the factory initializer for this application.
     /// </summary>
+    [Preserve(AllMembers = true)]
     public class UltravioletFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <inheritdoc/>

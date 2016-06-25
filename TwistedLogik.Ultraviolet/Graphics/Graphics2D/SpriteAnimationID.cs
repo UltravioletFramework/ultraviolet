@@ -16,6 +16,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="spriteAssetID">The <see cref="AssetID"/> that represents the sprite that contains the animation.</param>
         /// <param name="animationName">The name of the referenced animation.</param>
+        [Preserve]
         internal SpriteAnimationID(AssetID spriteAssetID, String animationName)
         {
             this.spriteAssetID = spriteAssetID;
@@ -28,6 +29,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="spriteAssetID">The <see cref="AssetID"/> that represents the sprite that contains the animation.</param>
         /// <param name="animationIndex">The index of the referenced animation.</param>
+        [Preserve]
         internal SpriteAnimationID(AssetID spriteAssetID, Int32 animationIndex)
         {
             this.spriteAssetID = spriteAssetID;
@@ -41,6 +43,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="id1">The first identifier to compare.</param>
         /// <param name="id2">The second identifier to compare.</param>
         /// <returns><see langword="true"/> if the specified identifiers are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(SpriteAnimationID id1, SpriteAnimationID id2)
         {
             return id1.Equals(id2);
@@ -52,6 +55,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="id1">The first identifier to compare.</param>
         /// <param name="id2">The second identifier to compare.</param>
         /// <returns><see langword="true"/> if the specified identifiers are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(SpriteAnimationID id1, SpriteAnimationID id2)
         {
             return !id1.Equals(id2);
@@ -63,6 +67,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="s">A string containing the sprite animation identifier to convert.</param>
         /// <returns>An instance of the SpriteAnimationID structure that is equivalent to the specified string.</returns>
+        [Preserve]
         public static SpriteAnimationID Parse(String s)
         {
             Contract.Require(s, nameof(s));
@@ -82,6 +87,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="s">A string containing the sprite animation identifier to convert.</param>
         /// <param name="value">An instance of the SpriteAnimationID structure that is equivalent to the specified string.</param>
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out SpriteAnimationID value)
         {
             Contract.Require(s, nameof(s));
@@ -96,6 +102,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="manifests">The content manifest registry that contains the currently-loaded content manifests.</param>
         /// <param name="s">A string containing the sprite animation identifier to convert.</param>
         /// <returns>An instance of the SpriteAnimationID structure that is equivalent to the specified string.</returns>
+        [Preserve]
         public static SpriteAnimationID Parse(ContentManifestRegistry manifests, String s)
         {
             Contract.Require(manifests, nameof(manifests));
@@ -116,6 +123,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="s">A string containing the sprite animation identifier to convert.</param>
         /// <param name="value">An instance of the SpriteAnimationID structure that is equivalent to the specified string.</param>
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(ContentManifestRegistry manifests, String s, out SpriteAnimationID value)
         {
             Contract.Require(manifests, nameof(manifests));
@@ -215,6 +223,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="obj">The object to compare to this object.</param>
         /// <returns><see langword="true"/> if this object is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             return obj is SpriteAnimationID && Equals((SpriteAnimationID)obj);
@@ -225,6 +234,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="other">The object to compare to this object.</param>
         /// <returns><see langword="true"/> if this object is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(SpriteAnimationID other)
         {
             return

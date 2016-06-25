@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
 {
     /// <summary>
     /// Represents a group of transformations.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     [DefaultProperty("Children")]
     public sealed class TransformGroup : Transform, IIndexable

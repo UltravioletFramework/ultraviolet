@@ -1,11 +1,13 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Describes a <see cref="SpriteFrame"/> object during deserialization.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class SpriteFrameDescription
     {
         /// <summary>

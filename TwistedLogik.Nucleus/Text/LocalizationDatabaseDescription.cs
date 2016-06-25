@@ -6,6 +6,7 @@ namespace TwistedLogik.Nucleus.Text
     /// <summary>
     /// An intermediate representation of a <see cref="LocalizationDatabase"/> used during serialization.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class LocalizationDatabaseDescription
     {
         /// <summary>

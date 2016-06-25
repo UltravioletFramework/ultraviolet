@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using Newtonsoft.Json;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -18,6 +19,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="width">The area's width.</param>
         /// <param name="height">The area's height.</param>
         /// <param name="depth">The area's depth</param>
+        [Preserve]
         [JsonConstructor]
         public Size3(Int32 width, Int32 height, Int32 depth)
         {
@@ -32,6 +34,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s1">The first <see cref="Size3"/> to compare.</param>
         /// <param name="s2">The second <see cref="Size3"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified sizes are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator ==(Size3 s1, Size3 s2)
         {
             return s1.Equals(s2);
@@ -43,6 +46,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s1">The first <see cref="Size3"/> to compare.</param>
         /// <param name="s2">The second <see cref="Size3"/> to compare.</param>
         /// <returns><see langword="true"/> if the specified sizes are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean operator !=(Size3 s1, Size3 s2)
         {
             return !s1.Equals(s2);
@@ -54,6 +58,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s1">The <see cref="Size3"/> on the left side of the operator.</param>
         /// <param name="s2">The <see cref="Size3"/> on the right side of the operator.</param>
         /// <returns>The result of adding the two instances.</returns>
+        [Preserve]
         public static Size3 operator +(Size3 s1, Size3 s2)
         {
             return new Size3(s1.Width + s2.Width, s1.Height + s2.Height, s1.Depth + s2.Depth);
@@ -65,6 +70,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s1">The <see cref="Size3"/> on the left side of the operator.</param>
         /// <param name="s2">The <see cref="Size3"/> on the right side of the operator.</param>
         /// <returns>The result of subtracting the two instances.</returns>
+        [Preserve]
         public static Size3 operator -(Size3 s1, Size3 s2)
         {
             return new Size3(s1.Width - s2.Width, s1.Height - s2.Height, s1.Depth + s2.Depth);
@@ -77,6 +83,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="s">A string containing a size to convert.</param>
         /// <param name="size">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, out Size3 size)
         {
             return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out size);
@@ -87,6 +94,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="s">A string containing a size to convert.</param>
         /// <returns>A instance of the <see cref="Size3"/> structure equivalent to the size contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Size3 Parse(String s)
         {
             return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
@@ -101,6 +109,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="size">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Size3 size)
         {
             size = default(Size3);
@@ -131,6 +140,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the <see cref="Size3"/> structure equivalent to the size contained in <paramref name="s"/>.</returns>
+        [Preserve]
         public static Size3 Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             Size3 size;
@@ -179,6 +189,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="obj">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public override Boolean Equals(Object obj)
         {
             if (!(obj is Size3))
@@ -191,6 +202,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         /// <param name="other">The object to compare to this instance.</param>
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Equals(Size3 other)
         {
             return width == other.width && height == other.height && depth == other.depth;
@@ -202,6 +214,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
+        [Preserve]
         public Size3 Interpolate(Size3 target, Single t)
         {
             var width  = Tweening.Lerp(this.width, target.width, t);
@@ -221,6 +234,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the size's width.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "width", Required = Required.Always)]
         public Int32 Width
         {
@@ -230,6 +244,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the size's height.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "height", Required = Required.Always)]
         public Int32 Height
         {
@@ -239,6 +254,7 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Gets the size's depth.
         /// </summary>
+        [Preserve]
         [JsonProperty(PropertyName = "depth", Required = Required.Always)]
         public Int32 Depth
         {

@@ -34,6 +34,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservableDictionary{TKey, TValue}"/> class.
         /// </summary>
+        [Preserve]
         public ObservableDictionary()
         {
             this.dictionary = new Dictionary<TKey, TValue>();
@@ -43,6 +44,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Initializes a new instance of the <see cref="ObservableDictionary{TKey, TValue}"/> class with the specified initial capacity.
         /// </summary>
         /// <param name="capacity">The dictionary's initial capacity.</param>
+        [Preserve]
         public ObservableDictionary(Int32 capacity)
         {
             this.dictionary = new Dictionary<TKey, TValue>(capacity);
@@ -52,6 +54,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Initializes a new instance of the <see cref="ObservableDictionary{TKey, TValue}"/> class that uses the specified equality comparer.
         /// </summary>
         /// <param name="comparer">The <see cref="IEqualityComparer{TKey}"/> to use when comparing keys.</param>
+        [Preserve]
         public ObservableDictionary(IEqualityComparer<TKey> comparer)
         {
             this.dictionary = new Dictionary<TKey, TValue>(comparer);
@@ -63,6 +66,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="capacity">The dictionary's initial capacity.</param>
         /// <param name="comparer">The <see cref="IEqualityComparer{TKey}"/> to use when comparing keys.</param>
+        [Preserve]
         public ObservableDictionary(Int32 capacity, IEqualityComparer<TKey> comparer)
         {
             this.dictionary = new Dictionary<TKey, TValue>(capacity, comparer);
@@ -72,6 +76,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// Initializes a new instance of the <see cref="ObservableDictionary{TKey, TValue}"/> class that contains the same items as the specified dictionary.
         /// </summary>
         /// <param name="dictionary">The dictionary from which to copy items.</param>
+        [Preserve]
         public ObservableDictionary(IDictionary<TKey, TValue> dictionary)
         {
             this.dictionary = new Dictionary<TKey, TValue>(dictionary);
@@ -82,9 +87,20 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="dictionary">The dictionary from which to copy items.</param>
         /// <param name="comparer">The equality comparer to use when comparing keys.</param>
+        [Preserve]
         public ObservableDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
         {
             this.dictionary = new Dictionary<TKey, TValue>(dictionary, comparer);
+        }
+
+        /// <summary>
+        /// Removes all items from the dictionary.
+        /// </summary>
+        [Preserve]
+        public void Clear()
+        {
+            dictionary.Clear();
+            OnCollectionReset();
         }
 
         /// <summary>
@@ -92,6 +108,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="key">The key of the item to add to the dictionary.</param>
         /// <param name="value">The value of the item to add to the dictionary.</param>
+        [Preserve]
         public void Add(TKey key, TValue value)
         {
             TValue existing;
@@ -109,6 +126,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="key">The key that represents the object to remove from the dictionary.</param>
         /// <returns><see langword="true"/> if the object was removed from the dictionary; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean Remove(TKey key)
         {
             TValue existing;
@@ -121,19 +139,11 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <summary>
-        /// Removes all items from the dictionary.
-        /// </summary>
-        public void Clear()
-        {
-            dictionary.Clear();
-            OnCollectionReset();
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the dictionary contains an item with the specified key.
         /// </summary>
         /// <param name="key">The key to evaluate.</param>
         /// <returns><see langword="true"/> if the dictionary contains an item with the specified key; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean ContainsKey(TKey key)
         {
             return dictionary.ContainsKey(key);
@@ -144,6 +154,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="value">The value to evaluate.</param>
         /// <returns><see langword="true"/> if the dictoinary contains an item with the specified value; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean ContainsValue(TValue value)
         {
             return dictionary.ContainsValue(value);
@@ -155,6 +166,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="key">The key of the item to retrieve.</param>
         /// <param name="value">The value of the item that was retrieved, if an item was successfully retrieved.</param>
         /// <returns><see langword="true"/> if an item with the specified key was retrieved; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
         public Boolean TryGetValue(TKey key, out TValue value)
         {
             return dictionary.TryGetValue(key, out value);

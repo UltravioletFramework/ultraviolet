@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -13,6 +14,7 @@ namespace TwistedLogik.Ultraviolet
         /// Initializes a new instance of the <see cref="CurveKeyCollection"/> class from the specified collection of keys.
         /// </summary>
         /// <param name="keys">A collection of <see cref="CurveKey"/> objects with which to populate the collection.</param>
+        [Preserve]
         public CurveKeyCollection(IEnumerable<CurveKey> keys)
         {
             if (keys != null)

@@ -23,6 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the component of a <see cref="TextBox"/> which is responsible for performing text editing.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class TextEditor : FrameworkElement
     {

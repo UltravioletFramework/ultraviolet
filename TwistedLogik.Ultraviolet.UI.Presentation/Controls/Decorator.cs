@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
     /// <summary>
     /// Represents an element which contains a single child element.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     [DefaultProperty("Child")]
     public class Decorator : FrameworkElement

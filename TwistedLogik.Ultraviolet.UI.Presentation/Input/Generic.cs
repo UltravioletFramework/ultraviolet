@@ -14,6 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <summary>
     /// Contains generic input events which are not associated with any particular class of device.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public static class Generic
     {

@@ -1,11 +1,13 @@
 ﻿using System.IO;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
     /// <summary>
     /// Represents a content importer which loads XML documents.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [ContentImporter(".xml")]
     public sealed class XmlContentImporter : ContentImporter<XDocument>
     {
