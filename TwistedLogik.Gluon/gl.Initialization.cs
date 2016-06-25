@@ -55,10 +55,11 @@ namespace TwistedLogik.Gluon
                 }
             }
             
-            Int32 defaultFramebuffer;
-            gl.GetIntegerv(gl.GL_FRAMEBUFFER_BINDING, &defaultFramebuffer);
+            gl.DefaultFramebuffer = (UInt32)gl.GetInteger(gl.GL_FRAMEBUFFER_BINDING);
             gl.ThrowIfError();
-            gl.DefaultFramebuffer = (UInt32)defaultFramebuffer;
+
+            gl.DefaultRenderbuffer = (UInt32)gl.GetInteger(gl.GL_RENDERBUFFER_BINDING);
+            gl.ThrowIfError();
 
             Debug.WriteLine(GluonStrings.LoadedOpenGLVersion.Format(GetString(GL_VERSION), GetString(GL_VENDOR)));
 
@@ -288,6 +289,15 @@ namespace TwistedLogik.Gluon
         /// Gets the resource name for the context's default framebuffer.
         /// </summary>
         public static UInt32 DefaultFramebuffer
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the resource name for the context's default renderbuffer.
+        /// </summary>
+        public static UInt32 DefaultRenderbuffer
         {
             get;
             private set;

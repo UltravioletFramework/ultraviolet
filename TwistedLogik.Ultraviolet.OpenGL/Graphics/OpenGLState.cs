@@ -46,6 +46,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 .Select(x => (OpenGLStateInteger)x.GetValue(null)).ToArray();
 
             GL_FRAMEBUFFER_BINDING.Update(gl.DefaultFramebuffer);
+            GL_RENDERBUFFER_BINDING.Update(gl.DefaultRenderbuffer);
+
             VerifyCache();
         }
 
@@ -66,6 +68,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             glTextureBinding2DByTextureUnit.Clear();
 
             GL_FRAMEBUFFER_BINDING.Update(gl.DefaultFramebuffer);
+            GL_RENDERBUFFER_BINDING.Update(gl.DefaultRenderbuffer);
         }
 
         /// <summary>
