@@ -24,16 +24,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
 
-            this.format           = format;
-            this.width            = width;
-            this.height           = height;
-            this.immutable        = (options & RenderBufferOptions.ImmutableStorage) == RenderBufferOptions.ImmutableStorage;
+            this.format = format;
+            this.width = width;
+            this.height = height;
+            this.immutable = (options & RenderBufferOptions.ImmutableStorage) == RenderBufferOptions.ImmutableStorage;
             this.willNotBeSampled = (options & RenderBufferOptions.WillNotBeSampled) == RenderBufferOptions.WillNotBeSampled;
 
             if (willNotBeSampled)
             {
-                OpenGLState.CreateRenderbuffer(out renderbuffer);
-                AllocateRenderbufferStorage(width, height);
+                using (var state = OpenGLState.ScopedCreateRenderbuffer(out renderbuffer))
+                {
+                    AllocateRenderbufferStorage(width, height);
+                }
             }
             else
             {

@@ -1066,7 +1066,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             if (!gl.IsDirectStateAccessAvailable)
             {
-                gl.BindRenderbuffer(gl.GL_RENDER, oldGL_RENDERBUFFER_BINDING);
+                gl.BindRenderbuffer(gl.GL_RENDERBUFFER, oldGL_RENDERBUFFER_BINDING);
                 gl.ThrowIfError();
 
                 GL_RENDERBUFFER_BINDING.Update(oldGL_RENDERBUFFER_BINDING);
