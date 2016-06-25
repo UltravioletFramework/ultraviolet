@@ -326,6 +326,11 @@
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv152.png" />
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv167.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\UvDebugSandbox_Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
+      <Link>UI\Controls\Templates\TriangleColorSelector.xml</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
