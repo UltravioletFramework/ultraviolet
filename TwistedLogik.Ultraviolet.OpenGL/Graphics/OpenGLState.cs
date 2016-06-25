@@ -62,8 +62,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             foreach (var glCachedInteger in glCachedIntegers)
                 glCachedInteger.Reset();
-
+            
             glTextureBinding2DByTextureUnit.Clear();
+
+            GL_FRAMEBUFFER_BINDING.Update(gl.DefaultFramebuffer);
         }
 
         /// <summary>
