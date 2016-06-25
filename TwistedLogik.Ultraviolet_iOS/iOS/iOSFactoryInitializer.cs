@@ -1,3 +1,4 @@
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.iOS.Graphics;
@@ -10,6 +11,7 @@ namespace TwistedLogik.Ultraviolet.iOS
     /// <summary>
     /// Initializes factory methods for the iOS platform compatibility shim.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class iOSFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <summary>
