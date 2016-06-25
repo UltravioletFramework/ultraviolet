@@ -6,7 +6,7 @@
     <ProjectGuid>{E6766408-B862-4C60-948C-96809811B157}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample15_RenderTargetsAndBuffers</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample15_RenderTargetsAndBuffers</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Sample15_RenderTargetsAndBuffers</AssemblyName>
   </PropertyGroup>

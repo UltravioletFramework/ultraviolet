@@ -6,7 +6,7 @@
     <ProjectGuid>{A9531D37-0198-4170-A4D7-1D79953392BE}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample3_RenderingGeometry</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample3_RenderingGeometry</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Sample3_RenderingGeometry</AssemblyName>
   </PropertyGroup>

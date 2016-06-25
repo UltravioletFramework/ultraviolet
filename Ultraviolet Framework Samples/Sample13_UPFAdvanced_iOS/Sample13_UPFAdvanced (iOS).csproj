@@ -6,7 +6,7 @@
     <ProjectGuid>{18E6166B-F4B3-4265-8B7F-BA99D7345C23}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample13_UPFAdvanced</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample13_UPFAdvanced</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Sample13_UPFAdvanced</AssemblyName>
   </PropertyGroup>
@@ -147,9 +147,6 @@
     <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;IOS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Sample13_UPFAdvanced_Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
-      <Link>UI\Controls\Templates\TriangleColorSelector.xml</Link>
-    </EmbeddedResource>
     <BundleResource Include="..\Sample13_UPFAdvanced_Desktop\Content\Cursors\Cursors.xml">
       <Link>Content\Cursors\Cursors.xml</Link>
     </BundleResource>
@@ -316,6 +313,11 @@
     <ImageAsset Include="Resources\Media.xcassets\LaunchImages.launchimage\Contents.json">
       <InProject>false</InProject>
     </ImageAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Sample13_UPFAdvanced_Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
+      <Link>UI\Controls\Templates\TriangleColorSelector.xml</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\SampleSharedLib\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="..\Sample13_UPFAdvanced\Sample13_UPFAdvanced.projitems" Label="Shared" />

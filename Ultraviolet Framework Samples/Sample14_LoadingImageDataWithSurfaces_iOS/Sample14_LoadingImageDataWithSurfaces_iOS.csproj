@@ -6,7 +6,7 @@
     <ProjectGuid>{C0A427E3-4C7D-4F60-B124-37CB3A2E476E}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample14_LoadingImageDataWithSurfaces</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample14_LoadingImageDataWithSurfaces</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Sample14_LoadingImageDataWithSurfaces</AssemblyName>
   </PropertyGroup>

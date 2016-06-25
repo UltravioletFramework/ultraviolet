@@ -6,7 +6,7 @@
     <ProjectGuid>{D0D33AC7-B04B-4C82-BF1E-4FC6736465C0}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample4_ContentManagement</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample4_ContentManagement</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Sample4_ContentManagement_iOS</AssemblyName>
   </PropertyGroup>

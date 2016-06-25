@@ -6,7 +6,7 @@
     <ProjectGuid>{8511A93F-9ECF-40BB-AA58-990A158964FC}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample1_CreatingAnApplication</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample1_CreatingAnApplication</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Sample1_CreatingAnApplication</AssemblyName>
   </PropertyGroup>

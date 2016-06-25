@@ -6,7 +6,7 @@
     <ProjectGuid>{38187B1F-ADA4-47B4-AD49-09FCB60941FC}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample10_AsynchronousContentLoading</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample10_AsynchronousContentLoading</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Sample10_AsynchronousContentLoading</AssemblyName>
   </PropertyGroup>

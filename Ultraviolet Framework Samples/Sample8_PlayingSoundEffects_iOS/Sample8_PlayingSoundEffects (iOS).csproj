@@ -6,7 +6,7 @@
     <ProjectGuid>{55F0B40A-8C6C-4AC1-B014-7616F136423F}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample8_PlayingSoundEffects</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample8_PlayingSoundEffects</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Sample8_PlayingSoundEffects</AssemblyName>
   </PropertyGroup>

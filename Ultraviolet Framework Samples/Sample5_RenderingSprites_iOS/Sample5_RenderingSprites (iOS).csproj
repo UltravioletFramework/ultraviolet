@@ -6,7 +6,7 @@
     <ProjectGuid>{68CF6BE0-EA7D-421A-BA82-2C68D945BC7C}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample5_RenderingSprites</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample5_RenderingSprites</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Sample5_RenderingSprites</AssemblyName>
   </PropertyGroup>

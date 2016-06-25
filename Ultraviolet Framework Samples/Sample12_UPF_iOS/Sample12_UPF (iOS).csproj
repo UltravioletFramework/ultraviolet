@@ -6,7 +6,7 @@
     <ProjectGuid>{E1657C38-0E22-4A7E-879E-E59A6DBD3594}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample12_UPF</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample12_UPF</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Sample12_UPF</AssemblyName>
   </PropertyGroup>

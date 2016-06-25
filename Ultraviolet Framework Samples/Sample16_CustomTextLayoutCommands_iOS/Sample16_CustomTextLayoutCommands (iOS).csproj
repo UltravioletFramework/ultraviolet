@@ -6,7 +6,7 @@
     <ProjectGuid>{2159B6B5-F8A0-41EC-A240-35EE551870AE}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ultraviolet.Sample16_CustomTextLayoutCommands</RootNamespace>
+    <RootNamespace>UltravioletSample.Sample16_CustomTextLayoutCommands</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Sample16_CustomTextLayoutCommands</AssemblyName>
   </PropertyGroup>
