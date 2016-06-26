@@ -75,6 +75,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
                 if (SDL.GL_SetAttribute(SDL_GLattr.STENCIL_SIZE, configuration.BackBufferStencilSize) < 0)
                     throw new SDL2Exception();
+
+                if (SDL.GL_SetAttribute(SDL_GLattr.RETAINED_BACKING, 0) < 0)
+                    throw new SDL2Exception();
             }
 
             this.platform = IsRunningInServiceMode ? (IUltravioletPlatform)(new DummyUltravioletPlatform(this)) : new OpenGLUltravioletPlatform(this, configuration);
