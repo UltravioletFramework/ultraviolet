@@ -78,6 +78,29 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
                 if (SDL.GL_SetAttribute(SDL_GLattr.RETAINED_BACKING, 0) < 0)
                     throw new SDL2Exception();
+
+                if (configuration.Use32BitFramebuffer)
+                {
+                    if (SDL.GL_SetAttribute(SDL_GLattr.RED_SIZE, 8) < 0)
+                        throw new SDL2Exception();
+                    
+                    if (SDL.GL_SetAttribute(SDL_GLattr.GREEN_SIZE, 8) < 0)
+                        throw new SDL2Exception();
+
+                    if (SDL.GL_SetAttribute(SDL_GLattr.BLUE_SIZE, 8) < 0)
+                        throw new SDL2Exception();
+                }
+                else
+                {
+                    if (SDL.GL_SetAttribute(SDL_GLattr.RED_SIZE, 5) < 0)
+                        throw new SDL2Exception();
+                    
+                    if (SDL.GL_SetAttribute(SDL_GLattr.GREEN_SIZE, 6) < 0)
+                        throw new SDL2Exception();
+
+                    if (SDL.GL_SetAttribute(SDL_GLattr.BLUE_SIZE, 5) < 0)
+                        throw new SDL2Exception();
+                }
             }
 
             this.platform = IsRunningInServiceMode ? (IUltravioletPlatform)(new DummyUltravioletPlatform(this)) : new OpenGLUltravioletPlatform(this, configuration);

@@ -118,6 +118,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the default framebuffer should be 32-bit (if <see langword="true"/>)
+        /// or 16-bit (if <see langword="false"/>). 
+        /// </summary>
+        public Boolean Use32BitFramebuffer
+        {
+            get { return use32BitFramebuffer; }
+            set { use32BitFramebuffer = value; }
+        }
+
+        /// <summary>
         /// The default configuration for the OpenGL/SDL2 implementation.
         /// </summary>
         public static readonly OpenGLUltravioletConfiguration Default = new OpenGLUltravioletConfiguration();
@@ -131,5 +141,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         private Int32 multiSampleBuffers = 1;
         private Int32 multiSampleSamples = 4;
         private Boolean isHardwareInputDisabled;
+        private Boolean use32BitFramebuffer;
     }
 }
