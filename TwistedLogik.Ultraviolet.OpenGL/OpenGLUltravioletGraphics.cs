@@ -25,9 +25,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration)
             : base(uv)
         {
-            if (configuration.Debug)
-                SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, (int)SDL_GLcontextFlag.DEBUG);
-
             var masterptr = ((OpenGLUltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();
             if (!TryInitializeGLContext(masterptr, configuration))
             {
@@ -64,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 gl.Uninitialize();
             }
             gl.Initialize(new OpenGLInitializer());
-
+            
             OpenGLState.ResetCache();
 
             if (!VerifyCapabilities())
@@ -90,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                     samplerObjects[i] = new OpenGLSamplerObject(Ultraviolet);
                     samplerObjects[i].Bind((uint)i);
                 }
-            }
+            }            
 
             OpenGLState.VerifyCache();
         }
@@ -828,8 +825,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                     if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, 0) < 0)
                         throw new SDL2Exception();
 
-                    if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
-                        return false;
+                    if ((this.context = SDL.GL_CreateContext(masterptr)) != IntPtr.Zero)
+                        return true;
                 }
                 return false;
             }
