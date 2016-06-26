@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         private static class Native
         {
-            [DllImport("SDL2main", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UV_SetMainProc")]
+            [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UV_SetMainProc")]
             public static extern void UVSetMainProc(IntPtr proc);
         }
         
@@ -416,7 +416,7 @@ namespace TwistedLogik.Ultraviolet
             {
                 running = false;
             }
-        }
+        }        
 
         /// <inheritdoc/>
         protected override void OnCreate(global::Android.OS.Bundle savedInstanceState)
