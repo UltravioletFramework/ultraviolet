@@ -54,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             var versionRequested = isGLES ? configuration.MinimumOpenGLESVersion : configuration.MinimumOpenGLVersion;
             if (versionRequested == null || versionRequested < versionRequired)
             {
-                versionRequested = versionRequired;
+                versionRequested = isGLES ? new Version(3, 0) : versionRequired;
             }
 
             if (!configuration.EnableServiceMode)

@@ -17,25 +17,63 @@ namespace TwistedLogik.Ultraviolet.OpenGL
     public sealed class OpenGLUltravioletGraphics : UltravioletResource, IUltravioletGraphics
     {
         /// <summary>
+        /// Attempts to initialize the OpenGL context with the specified configuration.
+        /// </summary>
+        private Boolean TryInitializeGLContext(IntPtr masterptr, OpenGLUltravioletConfiguration configuration)
+        {
+            if (configuration.Debug)
+                SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, (int)SDL_GLcontextFlag.DEBUG);
+
+            if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
+            {
+                if (configuration.Debug)
+                {
+                    if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, 0) < 0)
+                        throw new SDL2Exception();
+
+                    if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
+                        return false;
+                }
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the OpenGLUltravioletGraphics class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
         [Preserve]
-        public OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, UltravioletConfiguration configuration)
+        public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration)
             : base(uv)
         {
             if (configuration.Debug)
                 SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, (int)SDL_GLcontextFlag.DEBUG);
 
             var masterptr = ((OpenGLUltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();
-            if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
+            if (!TryInitializeGLContext(masterptr, configuration))
             {
-                if (configuration.Debug)
-                {
-                    SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, 0);
+                var attemptedVersionMajor = 0;
+                var attemptedVersionMinor = 0;
 
-                    if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
+                if (SDL.GL_GetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, &attemptedVersionMajor) < 0)
+                    throw new SDL2Exception();
+                if (SDL.GL_GetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, &attemptedVersionMinor) < 0)
+                    throw new SDL2Exception();
+                
+                var attemptedVersion = new Version(attemptedVersionMajor, attemptedVersionMinor, 0, 0);
+
+                var isGLES = (uv.Platform == UltravioletPlatform.Android || uv.Platform == UltravioletPlatform.iOS);
+                if (isGLES && attemptedVersion >= new Version(3, 0) && (configuration.MinimumOpenGLESVersion ?? new Version(2, 0)) <= new Version(2, 0))
+                {
+                    if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, 2) < 0)
+                        throw new SDL2Exception();
+
+                    if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, 0) < 0)
+                        throw new SDL2Exception();
+
+                    if (!TryInitializeGLContext(masterptr, configuration))
                         throw new SDL2Exception();
                 }
                 else throw new SDL2Exception();
