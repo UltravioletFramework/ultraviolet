@@ -17,29 +17,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL
     public sealed class OpenGLUltravioletGraphics : UltravioletResource, IUltravioletGraphics
     {
         /// <summary>
-        /// Attempts to initialize the OpenGL context with the specified configuration.
-        /// </summary>
-        private Boolean TryInitializeGLContext(IntPtr masterptr, OpenGLUltravioletConfiguration configuration)
-        {
-            if (configuration.Debug)
-                SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, (int)SDL_GLcontextFlag.DEBUG);
-
-            if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
-            {
-                if (configuration.Debug)
-                {
-                    if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, 0) < 0)
-                        throw new SDL2Exception();
-
-                    if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
-                        return false;
-                }
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Initializes a new instance of the OpenGLUltravioletGraphics class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -834,6 +811,29 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 return;
 
             gfx.debugCallback?.Invoke(uv, messageLevel, messageString);
+        }
+
+        /// <summary>
+        /// Attempts to initialize the OpenGL context with the specified configuration.
+        /// </summary>
+        private Boolean TryInitializeGLContext(IntPtr masterptr, OpenGLUltravioletConfiguration configuration)
+        {
+            if (configuration.Debug)
+                SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, (int)SDL_GLcontextFlag.DEBUG);
+
+            if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
+            {
+                if (configuration.Debug)
+                {
+                    if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, 0) < 0)
+                        throw new SDL2Exception();
+
+                    if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
+                        return false;
+                }
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
