@@ -142,7 +142,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Immediately binds a 2D texture to the OpenGL context and updates the state cache.
         /// </summary>
         /// <param name="texture">The texture to bind to the context.</param>
-        public static void Texture2D(UInt32 texture)
+        public static void BindTexture2D(UInt32 texture)
         {
             gl.BindTexture(gl.GL_TEXTURE_2D, texture);
             gl.ThrowIfError();
@@ -350,34 +350,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             GL_CURRENT_PROGRAM.Update(program);
             VerifyCache();
         }
-
-        /// <summary>
-        /// Immediately creates an array buffer and updates the state cache.
-        /// </summary>
-        /// <param name="buffer">The identifier of the buffer that was created.</param>
-        public static void CreateArrayBuffer(out UInt32 buffer)
-        {
-            if (SupportsDirectStateAccessCreateFunctions)
-            {
-                buffer = gl.CreateBuffer();
-                gl.ThrowIfError();
-            }
-            else
-            {
-                buffer = gl.GenBuffer();
-                gl.ThrowIfError();
-
-                if (!gl.IsDirectStateAccessAvailable)
-                {
-                    gl.BindBuffer(gl.GL_ARRAY_BUFFER, buffer);
-                    gl.ThrowIfError();
-
-                    GL_ARRAY_BUFFER_BINDING.Update(buffer);
-                    VerifyCache();
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates an array buffer.
         /// </summary>
@@ -393,34 +366,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             return state;
         }
-
-        /// <summary>
-        /// Immediately creates an element array buffer and updates the state cache.
-        /// </summary>
-        /// <param name="buffer">The identifier of the buffer that was created.</param>
-        public static void CreateElementArrayBuffer(out UInt32 buffer)
-        {
-            if (SupportsDirectStateAccessCreateFunctions)
-            {
-                buffer = gl.CreateBuffer();
-                gl.ThrowIfError();
-            }
-            else
-            {
-                buffer = gl.GenBuffer();
-                gl.ThrowIfError();
-
-                if (!gl.IsDirectStateAccessAvailable)
-                {
-                    gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
-                    gl.ThrowIfError();
-
-                    GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(buffer);
-                    VerifyCache();
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates an element array buffer.
         /// </summary>
@@ -436,36 +382,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             return state;
         }
-
-        /// <summary>
-        /// Immediately creates a 2D texture and updates the state cache.
-        /// </summary>
-        /// <param name="texture">The identifier of the texture that was created.</param>
-        public static void CreateTexture2D(out UInt32 texture)
-        {
-            if (SupportsDirectStateAccessCreateFunctions)
-            {
-                texture = gl.CreateTexture(gl.GL_TEXTURE_2D);
-                gl.ThrowIfError();
-            }
-            else
-            {
-                texture = gl.GenTexture();
-                gl.ThrowIfError();
-
-                if (!gl.IsDirectStateAccessAvailable)
-                {
-                    gl.BindTexture(gl.GL_TEXTURE_2D, texture);
-                    gl.ThrowIfError();
-
-                    GL_TEXTURE_BINDING_2D.Update(texture);
-                    glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
-
-                    VerifyCache();
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates a 2D texture.
         /// </summary>
@@ -481,34 +398,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             return state;
         }
-
-        /// <summary>
-        /// Immediately creates a framebuffer and updates the state cache.
-        /// </summary>
-        /// <param name="framebuffer">The identifier of the framebuffer that was created.</param>
-        public static void CreateFramebuffer(out UInt32 framebuffer)
-        {
-            if (SupportsDirectStateAccessCreateFunctions)
-            {
-                framebuffer = gl.CreateFramebuffer();
-                gl.ThrowIfError();
-            }
-            else
-            {
-                framebuffer = gl.GenFramebuffer();
-                gl.ThrowIfError();
-
-                if (!gl.IsDirectStateAccessAvailable)
-                {
-                    gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
-                    gl.ThrowIfError();
-
-                    GL_FRAMEBUFFER_BINDING.Update(framebuffer);
-                    VerifyCache();
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates a framebuffer.
         /// </summary>
@@ -524,34 +414,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             return state;
         }
-
-        /// <summary>
-        /// Immediately creates a renderbuffer and updates the state cache.
-        /// </summary>
-        /// <param name="renderbuffer">The identifier of the renderbuffer that was created.</param>
-        public static void CreateRenderbuffer(out UInt32 renderbuffer)
-        {
-            if (SupportsDirectStateAccessCreateFunctions)
-            {
-                renderbuffer = gl.CreateRenderbuffer();
-                gl.ThrowIfError();
-            }
-            else
-            {
-                renderbuffer = gl.GenRenderbuffer();
-                gl.ThrowIfError();
-
-                if (!gl.IsDirectStateAccessAvailable)
-                {
-                    gl.BindRenderbuffer(gl.GL_RENDERBUFFER, renderbuffer);
-                    gl.ThrowIfError();
-
-                    GL_RENDERBUFFER_BINDING.Update(renderbuffer);
-                    VerifyCache();
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates a renderbuffer.
         /// </summary>

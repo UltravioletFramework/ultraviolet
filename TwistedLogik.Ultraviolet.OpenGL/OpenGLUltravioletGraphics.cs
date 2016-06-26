@@ -333,7 +333,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             {
                 var textureName = (texture == null) ? 0 : ((IOpenGLResource)texture).OpenGLName;
                 OpenGLState.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
-                OpenGLState.Texture2D(textureName);
+                OpenGLState.BindTexture2D(textureName);
 
                 if (this.textures[sampler] != null)
                     ((IBindableResource)this.textures[sampler]).UnbindRead();
