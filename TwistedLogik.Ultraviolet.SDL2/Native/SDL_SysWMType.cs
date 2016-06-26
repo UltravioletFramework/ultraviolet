@@ -13,5 +13,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         WAYLAND,
         MIR,
         WINRT,
+        ANDROID,
     }
 }

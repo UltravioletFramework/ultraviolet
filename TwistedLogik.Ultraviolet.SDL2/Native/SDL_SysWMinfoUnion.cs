@@ -27,6 +27,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         [FieldOffset(0)]
         public SDL_SysWMinfo_mir mir;
         [FieldOffset(0)]
+        public SDL_SysWMinfo_android android;
+        [FieldOffset(0)]
         public Int32 dummy;
     }
 }

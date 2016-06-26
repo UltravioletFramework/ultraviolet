@@ -93,6 +93,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Strings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletInput.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletMessages.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWMinfo_android.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.SDL2.Licenses.txt">
