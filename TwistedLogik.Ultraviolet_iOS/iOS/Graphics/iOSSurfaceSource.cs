@@ -36,6 +36,7 @@ namespace TwistedLogik.Ultraviolet.iOS.Graphics
                     {
                         using (var bmp = new CGBitmapContext(bmpData, width, height, 8, stride, colorSpace, CGImageAlphaInfo.PremultipliedLast))
                         {
+                            bmp.ClearRect(new CGRect(0, 0, width, height));
                             bmp.DrawImage(new CGRect(0, 0, width, height), img.CGImage);
                         }
                     }
