@@ -465,8 +465,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 using (OpenGLState.ScopedCreateTexture2D(out glname))
                 {
-                    gl.TextureParameteri(glname, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_LEVEL, 0);
-                    gl.ThrowIfError();
+                    if (!gl.IsGLES2)
+                    {
+                        gl.TextureParameteri(glname, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_LEVEL, 0);
+                        gl.ThrowIfError();
+                    }
 
                     gl.TextureParameteri(glname, gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
                     gl.ThrowIfError();
