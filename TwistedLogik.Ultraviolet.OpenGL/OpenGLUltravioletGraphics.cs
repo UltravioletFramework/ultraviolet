@@ -21,8 +21,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
+        /// <param name="versionRequested">The OpenGL context version which is required by the application.</param>
         [Preserve]
-        public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration)
+        public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration, Version versionRequested)
             : base(uv)
         {
             var masterptr = ((OpenGLUltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();
@@ -61,6 +62,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 gl.Uninitialize();
             }
             gl.Initialize(new OpenGLInitializer());
+            
+            if (!gl.IsVersionAtLeast(versionRequested))
+                throw new InvalidOperationException(OpenGLStrings.DoesNotMeetMinimumVersionRequirement.Format(gl.MajorVersion, gl.MinorVersion, versionRequested.Major, versionRequested.Minor));
             
             OpenGLState.ResetCache();
 

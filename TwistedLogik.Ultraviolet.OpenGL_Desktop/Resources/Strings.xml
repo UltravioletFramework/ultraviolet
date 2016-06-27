@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LocalizedStrings>
+  <String Key="DOES_NOT_MEET_MINIMUM_VERSION_REQUIREMENT">
+    <en-US>
+      <Variant>The OpenGL driver provided a version {0}.{1} context, but the application requires a version {2}.{3} context.</Variant>
+    </en-US>
+  </String>
   <String Key="UNSUPPORTED_GRAPHICS_DEVICE">
     <en-US>
       <Variant>No supported graphics device was found.</Variant>

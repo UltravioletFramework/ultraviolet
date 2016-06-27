@@ -23,6 +23,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         private static readonly LocalizationDatabase StringDatabase = new LocalizationDatabase();
 
 #pragma warning disable 1591
+        public static readonly StringResource DoesNotMeetMinimumVersionRequirement  = new StringResource(StringDatabase, "DOES_NOT_MEET_MINIMUM_VERSION_REQUIREMENT");
         public static readonly StringResource UnsupportedGraphicsDevice             = new StringResource(StringDatabase, "UNSUPPORTED_GRAPHICS_DEVICE");
         public static readonly StringResource UnsupportedShaderType                 = new StringResource(StringDatabase, "UNSUPPORTED_SHADER_TYPE");
         public static readonly StringResource UnsupportedDataType                   = new StringResource(StringDatabase, "UNSUPPORTED_DATA_TYPE");

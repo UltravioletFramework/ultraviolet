@@ -54,7 +54,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             var versionRequested = isGLES ? configuration.MinimumOpenGLESVersion : configuration.MinimumOpenGLVersion;
             if (versionRequested == null || versionRequested < versionRequired)
             {
-                versionRequested = isGLES ? new Version(3, 0) : versionRequired;
+                if (isGLES)
+                {
+                    versionRequested = Platform == UltravioletPlatform.Android ? 
+                        new Version(2, 0) : new Version(3, 0);
+                }
+                else
+                {
+                    versionRequested = versionRequired;
+                }
             }
 
             if (!configuration.EnableServiceMode)
@@ -64,11 +72,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, (Int32)profile) < 0)
                     throw new SDL2Exception();
 
-                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, versionRequested.Major) < 0)
-                    throw new SDL2Exception();
+                // NOTE: Asking for an ES 3.0 context in the emulator will return a valid
+                // context pointer, but actually using it will cause segfaults. It seems like
+                // the best thing to do on Android is just not ask for a specific version,
+                // and trust the OS to give you the highest version it supports.
+                if (Platform != UltravioletPlatform.Android)
+                {
+                    if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, versionRequested.Major) < 0)
+                        throw new SDL2Exception();
 
-                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, versionRequested.Minor) < 0)
-                    throw new SDL2Exception();
+                    if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, versionRequested.Minor) < 0)
+                        throw new SDL2Exception();
+                }
 
                 if (SDL.GL_SetAttribute(SDL_GLattr.DEPTH_SIZE, configuration.BackBufferDepthSize) < 0)
                     throw new SDL2Exception();
@@ -103,11 +118,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 }
             }
 
-            this.platform = IsRunningInServiceMode ? (IUltravioletPlatform)(new DummyUltravioletPlatform(this)) : new OpenGLUltravioletPlatform(this, configuration);
+            this.platform = IsRunningInServiceMode ? (IUltravioletPlatform)new DummyUltravioletPlatform(this) : new OpenGLUltravioletPlatform(this, configuration);
 
             PumpEvents();
 
-            this.graphics = IsRunningInServiceMode ? (IUltravioletGraphics)(new DummyUltravioletGraphics(this)) : new OpenGLUltravioletGraphics(this, configuration);
+            this.graphics = IsRunningInServiceMode ? (IUltravioletGraphics)new DummyUltravioletGraphics(this) : new OpenGLUltravioletGraphics(this, configuration, versionRequested);
             if (!IsRunningInServiceMode)
                 ((OpenGLUltravioletGraphics)graphics).ResetDeviceStates();
 
