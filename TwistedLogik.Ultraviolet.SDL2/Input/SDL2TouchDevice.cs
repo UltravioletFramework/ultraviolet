@@ -22,8 +22,11 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         public SDL2TouchDevice(UltravioletContext uv, Int32 index)
             : base(uv)
         {
+            // HACK: Working around an Android emulator glitch here -- it will
+            // return a touch ID of 0 even after saying that the device exists,
+            // and yet not produce any kind of SDL error... I hate emulators.            
             var id = SDL.GetTouchDevice(index);
-            if (id == 0)
+            if (id == 0 && !String.IsNullOrEmpty(SDL.GetError()))
                 throw new SDL2Exception();
 
             this.sdlTouchID = id;
