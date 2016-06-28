@@ -125,6 +125,22 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
+        public Boolean IsTouchDeviceConnected()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return false;
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsTouchDeviceAvailable(Int32 index)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return false;
+        }
+
+        /// <inheritdoc/>
         public Boolean IsTouchDeviceConnected(Int32 index)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -175,6 +191,13 @@ namespace TwistedLogik.Ultraviolet
 
         /// <inheritdoc/>
         public event GamePadConnectionEventHandler GamePadDisconnected
+        {
+            add { }
+            remove { }
+        }
+
+        /// <inheritdoc/>
+        public event TouchDeviceConnectionEventHandler TouchDeviceConnected
         {
             add { }
             remove { }

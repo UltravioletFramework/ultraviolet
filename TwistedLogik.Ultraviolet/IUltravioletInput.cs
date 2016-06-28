@@ -11,6 +11,13 @@ namespace TwistedLogik.Ultraviolet
     public delegate void GamePadConnectionEventHandler(GamePadDevice device, Int32 playerIndex);
 
     /// <summary>
+    /// Represents the method that is called when the first <see cref="TouchDevice"/> is registered
+    /// as as a result of receiving user input.
+    /// </summary>
+    /// <param name="device">The touch device which was registered as the primary device.</param>
+    public delegate void TouchDeviceConnectionEventHandler(TouchDevice device);
+
+    /// <summary>
     /// Represents the Ultraviolet Framework's input subsystem.
     /// </summary>
     public interface IUltravioletInput : IUltravioletSubsystem
@@ -96,11 +103,18 @@ namespace TwistedLogik.Ultraviolet
         Boolean IsTouchSupported();
 
         /// <summary>
+        /// Gets a value indicating whether a touch device has been registered as the primary
+        /// device as a result of receiving user input.
+        /// </summary>
+        /// <returns><see langword="true"/> if a device has been registered; otherwise, <see langword="false"/>.</returns>
+        Boolean IsTouchDeviceConnected();
+
+        /// <summary>
         /// Gets a value indicating whether a touch device with the specified index exists.
         /// </summary>
         /// <param name="index">The touch device index to evaluate.</param>
         /// <returns><see langword="true"/> if there is a touch device at the specified index; otherwise, false.</returns>
-        Boolean IsTouchDeviceConnected(Int32 index);
+        Boolean IsTouchDeviceAvailable(Int32 index);
 
         /// <summary>
         /// Gets the first available touch device.
@@ -134,5 +148,10 @@ namespace TwistedLogik.Ultraviolet
         /// Occurs when a game pad is disconnected from the system.
         /// </summary>
         event GamePadConnectionEventHandler GamePadDisconnected;
+
+        /// <summary>
+        /// Occurs when the first touch device is registered as a result of receiving user input.
+        /// </summary>
+        event TouchDeviceConnectionEventHandler TouchDeviceConnected;
     }
 }

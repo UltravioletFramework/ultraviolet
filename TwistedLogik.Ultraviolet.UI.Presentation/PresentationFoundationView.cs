@@ -51,8 +51,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             HookKeyboardEvents();
             HookMouseEvents();
-            HookTouchEvents();
             HookGamePadEvents();
+
+            var input = uv.GetInput();
+            if (input.IsTouchDeviceConnected())
+            {
+                HookTouchEvents();
+            }
+            else
+            {
+                input.TouchDeviceConnected += Input_TouchDeviceConnected;
+            }
 
             SetStyleSheet(null);
         }
@@ -1237,7 +1246,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private void HookTouchEvents()
         {
             var input = Ultraviolet.GetInput();
-            if (input.IsTouchSupported())
+            if (input.IsTouchDeviceConnected())
             {
                 var touch = input.GetTouchDevice();
                 touch.Tap += touch_Tap;
@@ -1333,7 +1342,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private void UnhookTouchEvents()
         {
             var input = Ultraviolet.GetInput();
-            if (input.IsTouchSupported())
+            if (input.IsTouchDeviceConnected())
             {
                 var touch = input.GetTouchDevice();
                 touch.Tap -= touch_Tap;
@@ -2353,6 +2362,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (originalFocus != elementWithFocus)
                     focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
             }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IUltravioletInput.TouchDeviceConnected"/> event.
+        /// </summary>
+        private void Input_TouchDeviceConnected(TouchDevice device)
+        {
+            Ultraviolet.GetInput().TouchDeviceConnected -= Input_TouchDeviceConnected;
+            HookTouchEvents();
         }
 
         /// <summary>

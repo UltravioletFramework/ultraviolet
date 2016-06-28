@@ -47,7 +47,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 case SDL_EventType.FINGERDOWN:
                     {
                         if (evt.tfinger.touchId != sdlTouchID)
-                            return;					
+                            return;
+
+                        var input = (SDL2UltravioletInput)Ultraviolet.GetInput();
+                        input.RegisterTouchDevice(this);
 
                         BeginTap(evt.tfinger.fingerId, evt.tfinger.x, evt.tfinger.y);
                         OnFingerDown(evt.tfinger.fingerId, evt.tfinger.x, evt.tfinger.y, evt.tfinger.pressure);

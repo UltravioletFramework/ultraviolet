@@ -158,7 +158,15 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
-        public Boolean IsTouchDeviceConnected(Int32 index)
+        public Boolean IsTouchDeviceConnected()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return touch != null;
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsTouchDeviceAvailable(Int32 index)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureRange(index >= 0, nameof(index));
@@ -171,7 +179,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return touchInfo.Count > 0 ? touchInfo.GetTouchDeviceByIndex(0) : null;
+            return touch;
         }
 
         /// <inheritdoc/>
@@ -208,6 +216,26 @@ namespace TwistedLogik.Ultraviolet.SDL2
 
         /// <inheritdoc/>
         public event GamePadConnectionEventHandler GamePadDisconnected;
+
+        /// <inheritdoc/>
+        public event TouchDeviceConnectionEventHandler TouchDeviceConnected;
+
+        /// <summary>
+        /// Registers the specified touch device as the primary device, if no primary device
+        /// has already been registered.
+        /// </summary>
+        /// <param name="device">The device to register as primary.</param>
+        /// <returns><see langword="true"/> if the device became the primary device; otherwise, <see langword="false"/>.</returns>
+        internal Boolean RegisterTouchDevice(SDL2TouchDevice device)
+        {
+            if (touch != null)
+                return false;
+
+            touch = device;
+            OnTouchDeviceConnected(device);
+
+            return true;
+        }
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
@@ -249,12 +277,19 @@ namespace TwistedLogik.Ultraviolet.SDL2
         private void OnGamePadDisconnected(GamePadDevice device, Int32 playerIndex) =>
             GamePadDisconnected?.Invoke(device, playerIndex);
 
+        /// <summary>
+        /// Raises the <see cref="TouchDeviceConnected"/> event.
+        /// </summary>
+        private void OnTouchDeviceConnected(TouchDevice device) =>
+            TouchDeviceConnected?.Invoke(device);
+
         // Platform services.
         private readonly SoftwareKeyboardService softwareKeyboardService;
 
         // Input devices.
         private SDL2KeyboardDevice keyboard;
         private SDL2MouseDevice mouse;
+        private SDL2TouchDevice touch;
         private GamePadDeviceInfo gamePadInfo;
         private TouchDeviceInfo touchInfo;
 
