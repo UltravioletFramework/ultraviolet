@@ -24,6 +24,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             this.supportsDepthStencilTextures = !gl.IsGLES2 || gl.IsExtensionSupported("GL_OES_packed_depth_stencil");
 
+            if (gl.IsGLES2 && !this.supportsDepthStencilTextures)
+            {
+                // HACK: Guess what? The Visual Studio Emulator for Android flat-out lies about this.
+                // So it seems the only reliable way to determine support for depth/stencil is to
+                // actually try to create one and see if it fails. I hate Android emulators.
+                var rb = gl.GenRenderbuffer();
+                using (var state = OpenGLState.ScopedBindRenderbuffer(rb, true))
+                {
+                    gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.GL_DEPTH24_STENCIL8, 32, 32);
+                    this.supportsDepthStencilTextures = (gl.GetError() == gl.GL_NO_ERROR);
+                }
+                gl.DeleteRenderBuffers(rb);
+            }
+
             this.SupportsNonZeroBaseInstance = SupportsInstancedRendering && !gl.IsGLES &&
                 (gl.IsVersionAtLeast(4, 2) || gl.IsExtensionSupported("GL_ARB_base_instance"));
 

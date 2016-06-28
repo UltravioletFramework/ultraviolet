@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// <summary>
         /// The buffer contains 32 bits of depth data.
         /// </summary>
-        Depth32,
+        Depth32,        
 
         /// <summary>
         /// The buffer contains 16 bits of depth data.
