@@ -10,12 +10,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL
     /// </summary>
     public sealed class OpenGLInitializer : IOpenGLInitializer
     {
-        /// <summary>
-        /// Gets a pointer to the OpenGL function with the specified name.
-        /// All valid OpenGL functions must return a valid pointer on all platforms.
-        /// </summary>
-        /// <param name="name">The name of the OpenGL function to retrieve.</param>
-        /// <returns>A function pointer representing the specified OpenGL function.</returns>
+        /// <inheritdoc/>
+        public void Prepare()
+        {
+
+        }
+
+        /// <inheritdoc/>
+        public void Cleanup()
+        {
+            SDL.ClearError();
+        }
+
+        /// <inheritdoc/>
         public IntPtr GetProcAddress(String name)
         {
             return SDL.GL_GetProcAddress(name);

@@ -33,6 +33,8 @@ namespace TwistedLogik.Gluon
 
             initializing = true;
 
+            initializer.Prepare();
+
             LoadFunction(initializer, "glGetError", false);
             LoadFunction(initializer, "glGetIntegerv", false);
             LoadFunction(initializer, "glGetString", false);
@@ -62,6 +64,8 @@ namespace TwistedLogik.Gluon
             gl.ThrowIfError();
 
             Debug.WriteLine(GluonStrings.LoadedOpenGLVersion.Format(GetString(GL_VERSION), GetString(GL_VENDOR)));
+
+            initializer.Cleanup();
 
             initializing = false;
             initialized = true;

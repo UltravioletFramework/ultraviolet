@@ -9,6 +9,16 @@ namespace TwistedLogik.Gluon
     public interface IOpenGLInitializer
     {
         /// <summary>
+        /// Indicates that the initializer should prepare to load OpenGL functions.
+        /// </summary>
+        void Prepare();
+
+        /// <summary>
+        /// Indicates that the initializer is done loading OpenGL functions.
+        /// </summary>
+        void Cleanup();
+
+        /// <summary>
         /// Gets a pointer to the OpenGL function with the specified name.
         /// All valid OpenGL functions must return a valid pointer on all platforms.
         /// </summary>
