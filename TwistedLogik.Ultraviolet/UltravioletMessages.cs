@@ -27,6 +27,11 @@ namespace TwistedLogik.Ultraviolet
         public static readonly UltravioletMessageID ApplicationResumed = UltravioletMessageID.Acquire("ApplicationResumed");
 
         /// <summary>
+        /// An event indicating that the operation system is low on memory.
+        /// </summary>
+        public static readonly UltravioletMessageID LowMemory = UltravioletMessageID.Acquire("LowMemory");
+
+        /// <summary>
         /// An event indicating that the software keyboard was shown.
         /// </summary>
         public static readonly UltravioletMessageID SoftwareKeyboardShown = UltravioletMessageID.Acquire("SoftwareKeyboardShown");

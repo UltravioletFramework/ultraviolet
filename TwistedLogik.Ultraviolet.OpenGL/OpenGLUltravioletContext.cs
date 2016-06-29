@@ -393,6 +393,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                         }
                         break;
 
+                    case SDL_EventType.APP_LOWMEMORY:
+                        Messages.Publish(UltravioletMessages.LowMemory, null);
+                        break;
+
                     case SDL_EventType.QUIT:
                         Messages.Publish(UltravioletMessages.Quit, null);
                         return true;
