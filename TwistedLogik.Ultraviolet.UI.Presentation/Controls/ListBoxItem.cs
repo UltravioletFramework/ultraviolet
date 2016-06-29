@@ -112,10 +112,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnMouseLeave(MouseDevice device, RoutedEventData data)
         {
-            if (HighlightOnMouseOver)
-            {
+            if (!HighlightOnSelect || !IsSelected)
                 HighlightOpacity = 0.0;
-            }
+
             base.OnMouseLeave(device, data);
         }
 
