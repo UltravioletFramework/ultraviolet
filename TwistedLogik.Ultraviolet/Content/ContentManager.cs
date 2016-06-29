@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Messages;
 using TwistedLogik.Nucleus.Xml;
 using TwistedLogik.Ultraviolet.Platform;
 
@@ -15,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Content
     /// <summary>
     /// Represents a collection of related content assets.
     /// </summary>
-    public sealed partial class ContentManager : UltravioletResource
+    public sealed partial class ContentManager : UltravioletResource, IMessageSubscriber<UltravioletMessageID>
     {
         /// <summary>
         /// Initializes the <see cref="ContentManager"/> type.
@@ -33,8 +34,10 @@ namespace TwistedLogik.Ultraviolet.Content
         private ContentManager(UltravioletContext uv, String rootDirectory)
             : base(uv)
         {
-            this.rootDirectory     = rootDirectory;
+            this.rootDirectory = rootDirectory;
             this.fileSystemService = FileSystemService.Create();
+
+            uv.Messages.Subscribe(this, UltravioletMessages.LowMemory);
         }
 
         /// <summary>
@@ -100,13 +103,107 @@ namespace TwistedLogik.Ultraviolet.Content
             return sb.ToString();
         }
 
+        /// <inheritdoc/>
+        void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
+        {
+            if (type == UltravioletMessages.LowMemory)
+            {
+                PurgeCache(true);
+            }
+        }
+
+        /// <summary>
+        /// Purges the content manager's internal cache, removing all references to previously loaded objects
+        /// so that they can be collected.
+        /// </summary>
+        /// <param name="lowMemory">A value indicating whether the cache is being purged due to the operating system
+        /// being low on memory. If this value is <see langword="true"/>, then assets which have the 
+        /// <see cref="AssetFlags.PreserveThroughLowMemory"/> flag will be ignored by this method. Otherwise,
+        /// all of the cache's assets will be purged.</param>
+        public void PurgeCache(Boolean lowMemory)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            foreach (var kvp in assetFlags)
+            {
+                var asset = kvp.Key;
+                var flags = kvp.Value;
+
+                var preserve = (flags & AssetFlags.PreserveThroughLowMemory) == AssetFlags.PreserveThroughLowMemory;
+                if (preserve)
+                    continue;
+
+                assetCache.Remove(asset);
+            }
+        }
+
+        /// <summary>
+        /// Sets the flags associated with the specified asset.
+        /// </summary>
+        /// <remarks>Please note that, for performance reasons, the content manager's internal cache does not normalize asset paths.
+        /// This means that if you reference the same asset by two different but equivalent paths (i.e. "foo/bar" and "foo\\bar"), 
+        /// each of those paths will represent a <b>separate entry in the cache</b> with <b>separate asset flags</b>.</remarks>
+        /// <param name="asset">The asset path of the asset for which to set flags.</param>
+        /// <param name="flags">A collection of <see cref="AssetFlags"/> values to associate with the specified asset.</param>
+        public void SetAssetFlags(String asset, AssetFlags flags)
+        {
+            Contract.Require(asset, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            assetFlags[asset] = flags;
+        }
+
+        /// <summary>
+        /// Sets the flags associated with the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset identifier of the asset for which to set flags.</param>
+        /// <param name="flags">A collection of <see cref="AssetFlags"/> values to associate with the specified asset.</param>
+        public void SetAssetFlags(AssetID asset, AssetFlags flags)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            assetFlags[AssetID.GetAssetPath(asset)] = flags;
+        }
+
+        /// <summary>
+        /// Sets the flags associated with the specified asset.
+        /// </summary>
+        /// <remarks>Please note that, for performance reasons, the content manager's internal cache does not normalize asset paths.
+        /// This means that if you reference the same asset by two different but equivalent paths (i.e. "foo/bar" and "foo\\bar"), 
+        /// each of those paths will represent a <b>separate entry in the cache</b> with <b>separate asset flags</b>.</remarks>
+        /// <param name="asset">The asset path of the asset for which to retrieve flags.</param>
+        /// <param name="flags">A collection of <see cref="AssetFlags"/> value associated with the specified asset.</param>
+        /// <returns><see langword="true"/> if the specified asset has flags defined within this 
+        /// content manager; otherwise, <see langword="false"/>.</returns>
+        public Boolean GetAssetFlags(String asset, out AssetFlags flags)
+        {
+            Contract.Require(asset, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return assetFlags.TryGetValue(asset, out flags);
+        }
+
+        /// <summary>
+        /// Sets the flags associated with the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset identifier of the asset for which to retrieve flags.</param>
+        /// <param name="flags">A collection of <see cref="AssetFlags"/> value associated with the specified asset.</param>
+        /// <returns><see langword="true"/> if the specified asset has flags defined within this 
+        /// content manager; otherwise, <see langword="false"/>.</returns>
+        public Boolean GetAssetFlags(AssetID asset, out AssetFlags flags)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return assetFlags.TryGetValue(AssetID.GetAssetPath(asset), out flags);
+        }
+
         /// <summary>
         /// Loads all of the assets in the specified <see cref="ContentManifest"/> into the content manager's asset cache.
         /// </summary>
         /// <param name="manifest">The <see cref="ContentManifest"/> to load.</param>
         public void Load(ContentManifest manifest)
         {
-            Contract.Require(manifest, nameof(manifest)); 
+            Contract.Require(manifest, nameof(manifest));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Object result;
@@ -382,11 +479,11 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
-            
+
             var metadata = GetAssetMetadata(NormalizeAssetPath(asset), true, false);
             if (metadata == null)
                 throw new FileNotFoundException(asset);
-            
+
             return fileSystemService.GetFullPath(metadata.AssetFilePath);
         }
 
@@ -482,11 +579,11 @@ namespace TwistedLogik.Ultraviolet.Content
         /// of the asset in question. All override directories take precedence over the content manager's root directory.</remarks>
         public ContentOverrideDirectoryCollection OverrideDirectories
         {
-            get 
+            get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return overrideDirectories; 
+                return overrideDirectories;
             }
         }
 
@@ -529,6 +626,8 @@ namespace TwistedLogik.Ultraviolet.Content
 
             if (disposing)
             {
+                Ultraviolet.Messages.Unsubscribe(this);
+
                 foreach (var instance in assetCache)
                 {
                     var disposable = instance.Value as IDisposable;
@@ -538,11 +637,13 @@ namespace TwistedLogik.Ultraviolet.Content
                     }
                 }
             }
+
             assetCache.Clear();
+            assetFlags.Clear();
 
             base.Dispose(disposing);
         }
-        
+
         /// <summary>
         /// Lists the assets which can serve as substitutions for the specified asset.
         /// </summary>
@@ -552,7 +653,7 @@ namespace TwistedLogik.Ultraviolet.Content
         private IEnumerable<String> ListPossibleSubstitutions(String path, ScreenDensityBucket maxDensityBucket)
         {
             var directory = Path.GetDirectoryName(path) ?? String.Empty;
-            var filename  = Path.GetFileNameWithoutExtension(path);
+            var filename = Path.GetFileNameWithoutExtension(path);
             var extension = Path.GetExtension(path);
 
             var substitutions =
@@ -650,13 +751,16 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 var importer = default(IContentImporter);
                 var processor = default(IContentProcessor);
-                var instance = preprocessed ? 
-                    LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, out importer, out processor) : 
+                var instance = preprocessed ?
+                    LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, out importer, out processor) :
                     LoadInternalRaw(type, normalizedAsset, metadata, out importer, out processor);
 
                 if (cache)
                 {
                     assetCache[asset] = instance;
+
+                    if (!assetFlags.ContainsKey(asset))
+                        assetFlags[asset] = AssetFlags.None;
                 }
 
                 result = instance;
@@ -778,7 +882,7 @@ namespace TwistedLogik.Ultraviolet.Content
 
 
                     processor = (IContentProcessor)Activator.CreateInstance(uvcProcessorType);
-                    
+
                     var metadata = new AssetMetadata(asset, fileSystemService.GetFullPath(path), null, null, true, false);
                     return processor.ImportPreprocessed(this, metadata, reader);
                 }
@@ -858,15 +962,15 @@ namespace TwistedLogik.Ultraviolet.Content
             }
 
             var assetNoExtension = Path.GetFileNameWithoutExtension(asset);
-            var assetMatches = 
+            var assetMatches =
                 from file in fileSystemService.ListFiles(assetPath, assetNoExtension + ".*")
                 let fileExtension = Path.GetExtension(file)
-                where 
+                where
                     includePreprocessed || !fileExtension.Equals(PreprocessedFileExtension, StringComparison.InvariantCultureIgnoreCase)
                 select file;
 
             var filteredExtension = extension;
-            var filteredMatches = 
+            var filteredMatches =
                 from assetMatch in assetMatches
                 let assetExtension = Path.GetExtension(assetMatch)
                 where
@@ -875,7 +979,7 @@ namespace TwistedLogik.Ultraviolet.Content
 
             if (filteredMatches.Count() > 1)
                 throw new FileNotFoundException(UltravioletStrings.FileAmbiguous.Format(asset));
-            
+
             var singleMatch = filteredMatches.SingleOrDefault();
             if (singleMatch != null)
             {
@@ -1164,7 +1268,7 @@ namespace TwistedLogik.Ultraviolet.Content
             Object result;
 
             var assetDirectory = String.Empty;
-            var assetPath      = GetAssetPath(asset, null, out assetDirectory, AssetResolutionFlags.None);
+            var assetPath = GetAssetPath(asset, null, out assetDirectory, AssetResolutionFlags.None);
 
             if (IsPreprocessedFile(assetPath))
                 return true;
@@ -1187,6 +1291,7 @@ namespace TwistedLogik.Ultraviolet.Content
         // State values.
         private readonly ContentOverrideDirectoryCollection overrideDirectories = new ContentOverrideDirectoryCollection();
         private readonly Dictionary<String, Object> assetCache = new Dictionary<String, Object>();
+        private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
         private readonly FileSystemService fileSystemService;
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
