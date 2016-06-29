@@ -367,7 +367,11 @@ namespace TwistedLogik.Ultraviolet
 
                 OnResumed();
             }
-            else if (type == UltravioletMessages.Quit || type == UltravioletMessages.ApplicationTerminating)
+            else if (type == UltravioletMessages.ApplicationTerminating)
+            {
+                running = false;
+            }
+            else if (type == UltravioletMessages.Quit)
             {
 #if IOS
                 System.Diagnostics.Debug.WriteLine(UltravioletStrings.CannotQuitOniOS);
