@@ -1684,6 +1684,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             if (toolTipElementDisplayed != null)
             {
+                var toolTipClosingData = RoutedEventData.Retrieve(toolTipElementDisplayed);
+                ToolTipService.RaiseToolTipClosing(toolTipElementDisplayed, toolTipClosingData);
+
                 toolTipElementDisplayed.SetValue(ToolTipService.IsOpenPropertyKey, false);
                 toolTipElementDisplayed = null;
             }
@@ -1905,22 +1908,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (content == null)
                 return false;
 
-            layoutRoot.ToolTip.Content = content;
-            layoutRoot.ToolTipPopup.VerticalOffset = ToolTipService.GetVerticalOffset(uiToolTipElement);
-            layoutRoot.ToolTipPopup.HorizontalOffset = ToolTipService.GetHorizontalOffset(uiToolTipElement);
-            layoutRoot.ToolTipPopup.Placement = ToolTipService.GetPlacement(uiToolTipElement);
-            layoutRoot.ToolTipPopup.PlacementRectangle = ToolTipService.GetPlacementRectangle(uiToolTipElement);
-            layoutRoot.ToolTipPopup.PlacementTarget = ToolTipService.GetPlacementTarget(uiToolTipElement);
-            layoutRoot.ToolTipPopup.Effect = ToolTipService.GetHasDropShadow(uiToolTipElement) ? toolTipDropShadow : null;
-            layoutRoot.ToolTipPopup.IsOpen = false;
-            layoutRoot.ToolTipPopup.IsOpen = true;
+            var toolTipOpeningData = RoutedEventData.Retrieve(uiToolTipElement, autorelease: false);
+            ToolTipService.RaiseToolTipOpening(uiToolTipElement, toolTipOpeningData);
+            var toolTipSuppressed = toolTipOpeningData.Handled;
+            toolTipOpeningData.Release();
 
-            timeSinceToolTipWasClosed = 0.0;
-            timeSinceToolTipWasOpened = 0.0;
-            timeUntilToolTipWillOpen = 0.0;
+            if (!toolTipSuppressed)
+            {
+                layoutRoot.ToolTip.Content = content;
+                layoutRoot.ToolTipPopup.VerticalOffset = ToolTipService.GetVerticalOffset(uiToolTipElement);
+                layoutRoot.ToolTipPopup.HorizontalOffset = ToolTipService.GetHorizontalOffset(uiToolTipElement);
+                layoutRoot.ToolTipPopup.Placement = ToolTipService.GetPlacement(uiToolTipElement);
+                layoutRoot.ToolTipPopup.PlacementRectangle = ToolTipService.GetPlacementRectangle(uiToolTipElement);
+                layoutRoot.ToolTipPopup.PlacementTarget = ToolTipService.GetPlacementTarget(uiToolTipElement);
+                layoutRoot.ToolTipPopup.Effect = ToolTipService.GetHasDropShadow(uiToolTipElement) ? toolTipDropShadow : null;
+                layoutRoot.ToolTipPopup.IsOpen = false;
+                layoutRoot.ToolTipPopup.IsOpen = true;
 
-            toolTipElementDisplayed = uiToolTipElement;
-            toolTipElementDisplayed.SetValue(ToolTipService.IsOpenPropertyKey, true);
+                timeSinceToolTipWasClosed = 0.0;
+                timeSinceToolTipWasOpened = 0.0;
+                timeUntilToolTipWillOpen = 0.0;
+
+                toolTipElementDisplayed = uiToolTipElement;
+                toolTipElementDisplayed.SetValue(ToolTipService.IsOpenPropertyKey, true);
+            }
 
             toolTipWasShownForCurrentElement = true;
 
