@@ -353,7 +353,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="data">The message data.</param>
         protected virtual void OnReceivedMessage(UltravioletMessageID type, MessageData data)
         {
-            if (type == UltravioletMessages.ApplicationSuspended)
+            if (type == UltravioletMessages.ApplicationSuspending)
             {
                 suspended = true;
                 OnSuspended();
@@ -367,7 +367,7 @@ namespace TwistedLogik.Ultraviolet
 
                 OnResumed();
             }
-            else if (type == UltravioletMessages.Quit)
+            else if (type == UltravioletMessages.Quit || type == UltravioletMessages.ApplicationTerminating)
             {
 #if IOS
                 System.Diagnostics.Debug.WriteLine(UltravioletStrings.CannotQuitOniOS);
@@ -499,7 +499,8 @@ namespace TwistedLogik.Ultraviolet
 
             CreateUltravioletHostCore();
 
-            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspended);
+            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationTerminating);
+            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
             this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
             this.uv.Messages.Subscribe(this, UltravioletMessages.Quit);
             this.uv.Updating += uv_Updating;

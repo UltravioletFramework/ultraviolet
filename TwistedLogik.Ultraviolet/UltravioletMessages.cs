@@ -17,9 +17,24 @@ namespace TwistedLogik.Ultraviolet
         public static readonly UltravioletMessageID OrientationChanged = UltravioletMessageID.Acquire("OrientationChanged");
 
         /// <summary>
+        /// An event indicating that the application is being terminated by the operating system.
+        /// </summary>
+        public static readonly UltravioletMessageID ApplicationTerminating = UltravioletMessageID.Acquire("ApplicationTerminating");
+
+        /// <summary>
+        /// An event indicating that the application is about to be suspended.
+        /// </summary>
+        public static readonly UltravioletMessageID ApplicationSuspending = UltravioletMessageID.Acquire("ApplicationSuspending");
+
+        /// <summary>
         /// An event indicating that the application was suspended.
         /// </summary>
         public static readonly UltravioletMessageID ApplicationSuspended = UltravioletMessageID.Acquire("ApplicationSuspended");
+
+        /// <summary>
+        /// An event indicating that the application is about to resume after being suspended.
+        /// </summary>
+        public static readonly UltravioletMessageID ApplicationResuming = UltravioletMessageID.Acquire("ApplicationResuming");
 
         /// <summary>
         /// An event indicating that the application was resumed after being suspended.

@@ -398,7 +398,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="data">The message data.</param>
         protected virtual void OnReceivedMessage(UltravioletMessageID type, MessageData data)
         {
-            if (type == UltravioletMessages.ApplicationSuspended)
+            if (type == UltravioletMessages.ApplicationSuspending)
             {
                 suspended = true;
                 OnSuspended();
@@ -412,7 +412,7 @@ namespace TwistedLogik.Ultraviolet
 
                 OnResumed();
             }
-            else if (type == UltravioletMessages.Quit)
+            else if (type == UltravioletMessages.Quit || type == UltravioletMessages.ApplicationTerminating)
             {
                 running = false;
             }
@@ -426,56 +426,7 @@ namespace TwistedLogik.Ultraviolet
             AndroidScreenDensityService.Activity = this;
             AndroidSoftwareKeyboardService.Activity = this;
         }
-
-        /// <inheritdoc/>
-        protected override void OnDestroy()
-        {
-            suspended = false;
-            running = false;
-
-            base.OnDestroy();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnStart()
-        {
-            var uv = UltravioletContext.RequestCurrent();
-            if (uv != null && !uv.Disposed)
-            {
-                uv.Messages.Publish(UltravioletMessages.ApplicationResumed, null);
-                uv.ProcessMessages();
-            }
-            base.OnStart();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnStop()
-        {
-            var uv = UltravioletContext.RequestCurrent();
-            if (uv != null && !uv.Disposed)
-            {
-                uv.Messages.Publish(UltravioletMessages.ApplicationSuspended, null);
-                uv.ProcessMessages();
-            }
-            base.OnStop();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnPause()
-        {
-            active = false;
-
-            base.OnPause();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnResume()
-        {
-            active = true;
-
-            base.OnResume();
-        }
-
+        
         /// <summary>
         /// Ensures that the assembly which contains the specified type is linked on platforms
         /// which require ahead-of-time compilation.
@@ -584,7 +535,8 @@ namespace TwistedLogik.Ultraviolet
 
             CreateUltravioletHostCore();
 
-            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspended);
+            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationTerminating);
+            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
             this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
             this.uv.Messages.Subscribe(this, UltravioletMessages.Quit);
             this.uv.Updating += uv_Updating;

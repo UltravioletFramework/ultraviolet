@@ -25,14 +25,14 @@ namespace TwistedLogik.Ultraviolet.BASS
             if (!BASSNative.Init(device, freq, 0, IntPtr.Zero, IntPtr.Zero))
                 throw new BASSException();
 
-            uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspended);
+            uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
         }
 
         /// <inheritdoc/>
         void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
         {
-            if (type == UltravioletMessages.ApplicationSuspended)
+            if (type == UltravioletMessages.ApplicationSuspending)
             {
                 if (!suspended)
                 {
