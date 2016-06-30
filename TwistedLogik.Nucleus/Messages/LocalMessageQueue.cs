@@ -49,11 +49,7 @@ namespace TwistedLogik.Nucleus.Messages
             return data;
         }
 
-        /// <summary>
-        /// Subscribes a receiver to the specified message type.
-        /// </summary>
-        /// <param name="receiver">The receiver to subscribe to the specified message type.</param>
-        /// <param name="type">The message type to which to subscribe the receiver.</param>
+        /// <inheritdoc/>
         public void Subscribe(IMessageSubscriber<TMessageType> receiver, TMessageType type)
         {
             lock (subscribers)
@@ -62,10 +58,22 @@ namespace TwistedLogik.Nucleus.Messages
             }
         }
 
-        /// <summary>
-        /// Unsubcribes a receiver from all message types.
-        /// </summary>
-        /// <param name="receiver">The receiver to unsubscribe from all message types.</param>
+        /// <inheritdoc/>
+        public void Subscribe(IMessageSubscriber<TMessageType> receiver, params TMessageType[] types)
+        {
+            lock (subscribers)
+            {
+                if (types != null)
+                {
+                    foreach (var type in types)
+                    {
+                        subscribers[type].Add(receiver);
+                    }
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public void Unsubscribe(IMessageSubscriber<TMessageType> receiver)
         {
             lock (subscribers)
@@ -74,11 +82,7 @@ namespace TwistedLogik.Nucleus.Messages
             }
         }
 
-        /// <summary>
-        /// Unsubscribes a receiver from the specified message type.
-        /// </summary>
-        /// <param name="receiver">The receiver to unsubscribe from the specified message type.</param>
-        /// <param name="type">The message type from which to unsubscribe the receiver.</param>
+        /// <inheritdoc/>
         public void Unsubscribe(IMessageSubscriber<TMessageType> receiver, TMessageType type)
         {
             lock (subscribers)
@@ -87,11 +91,7 @@ namespace TwistedLogik.Nucleus.Messages
             }
         }
 
-        /// <summary>
-        /// Publishes a message to the queue.
-        /// </summary>
-        /// <param name="type">The message type.</param>
-        /// <param name="data">The message data.</param>
+        /// <inheritdoc/>
         public void Publish(TMessageType type, MessageData data)
         {
             // If the specified data is potentially mergable, scan the queue
@@ -125,9 +125,16 @@ namespace TwistedLogik.Nucleus.Messages
             }
         }
 
-        /// <summary>
-        /// Processes the queue.
-        /// </summary>
+        /// <inheritdoc/>
+        public void PublishImmediate(TMessageType type, MessageData data)
+        {
+            lock (subscribers)
+            {
+                subscribers.ReceiveMessage(type, data);
+            }
+        }
+
+        /// <inheritdoc/>
         public void Process()
         {
             while (true)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -10,22 +9,25 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         partial void LoadSettings()
         {
-            if (!PreserveApplicationSettings)
-                return;
-
-            var directory = GetLocalApplicationSettingsDirectory();
-            var path = Path.Combine(directory, "UltravioletSettings.xml");
-
-            try
+            lock (stateSyncObject)
             {
-                var settings = UltravioletApplicationSettings.Load(path);
-                if (settings == null)
+                if (!PreserveApplicationSettings)
                     return;
 
-                this.settings = settings;
+                var directory = GetLocalApplicationSettingsDirectory();
+                var path = Path.Combine(directory, "UltravioletSettings.xml");
+
+                try
+                {
+                    var settings = UltravioletApplicationSettings.Load(path);
+                    if (settings == null)
+                        return;
+
+                    this.settings = settings;
+                }
+                catch (FileNotFoundException) { }
+                catch (DirectoryNotFoundException) { }
             }
-            catch (FileNotFoundException) { }
-            catch (DirectoryNotFoundException) { }
         }
 
         /// <summary>
@@ -33,14 +35,17 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         partial void SaveSettings()
         {
-            if (!PreserveApplicationSettings)
-                return;
+            lock (stateSyncObject)
+            {
+                if (!PreserveApplicationSettings)
+                    return;
 
-            var directory = GetLocalApplicationSettingsDirectory();
-            var path = Path.Combine(directory, "UltravioletSettings.xml");
+                var directory = GetLocalApplicationSettingsDirectory();
+                var path = Path.Combine(directory, "UltravioletSettings.xml");
 
-            this.settings = UltravioletApplicationSettings.FromCurrentSettings(Ultraviolet);
-            UltravioletApplicationSettings.Save(path, settings);
+                this.settings = UltravioletApplicationSettings.FromCurrentSettings(Ultraviolet);
+                UltravioletApplicationSettings.Save(path, settings);
+            }
         }
 
         /// <summary>
@@ -48,10 +53,13 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         partial void ApplySettings()
         {
-            if (this.settings == null)
-                return;
+            lock (stateSyncObject)
+            {
+                if (this.settings == null)
+                    return;
 
-            this.settings.Apply(uv);
+                this.settings.Apply(uv);
+            }
         }
 
         /// <summary>

@@ -66,6 +66,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\MessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\SubscriberCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MonoNativeFunctionWrapperAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MonoPInvokeCallbackAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NucleusEnumJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NucleusEnumerableJsonConverter.cs" />
@@ -119,8 +121,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\Tokenizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xml\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xml\XElementExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MonoNativeFunctionWrapperAttribute.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MonoPInvokeCallbackAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\MaskedUInt32.json" />

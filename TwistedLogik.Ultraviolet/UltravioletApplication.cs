@@ -142,7 +142,8 @@ namespace TwistedLogik.Ultraviolet
                 if (primary == null)
                     return false;
 
-                return primary.Active && !suspended;
+                lock (stateSyncObject)
+                    return primary.Active && !suspended;
             }
         }
 
@@ -153,7 +154,8 @@ namespace TwistedLogik.Ultraviolet
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                return suspended;
+                lock (stateSyncObject)
+                    return suspended;
             }
         }
 
@@ -233,30 +235,33 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="disposing"><see langword="true"/> if the object is being disposed; <see langword="false"/> if the object is being finalized.</param>
         protected virtual void Dispose(Boolean disposing)
         {
-            if (!disposed)
+            lock (stateSyncObject)
             {
-                if (disposing && uv != null)
+                if (!disposed)
                 {
-                    uv.Messages.Unsubscribe(this);
-
-                    DisposePlatformResources();
-
-                    if (primary != null)
+                    if (disposing && uv != null)
                     {
-                        primary.Drawing -= uv_Drawing;
-                        primary = null;
+                        uv.Messages.Unsubscribe(this);
+
+                        DisposePlatformResources();
+
+                        if (primary != null)
+                        {
+                            primary.Drawing -= uv_Drawing;
+                            primary = null;
+                        }
+
+                        uv.Dispose();
+
+                        uv.Updating -= uv_Updating;
+                        uv.Shutdown -= uv_Shutdown;
+                        uv.WindowDrawing -= uv_WindowDrawing;
+                        uv.WindowDrawn -= uv_WindowDrawn;
+
+                        hostcore = null;
                     }
-
-                    uv.Dispose();
-
-                    uv.Updating -= uv_Updating;
-                    uv.Shutdown -= uv_Shutdown;
-                    uv.WindowDrawing -= uv_WindowDrawing;
-                    uv.WindowDrawn -= uv_WindowDrawn;
-
-                    hostcore = null;
+                    disposed = true;
                 }
-                disposed = true;
             }
         }
 
@@ -321,19 +326,52 @@ namespace TwistedLogik.Ultraviolet
         {
 
         }
-        
+
         /// <summary>
-        /// Called when the application is suspended.
+        /// Called when the application is about to be suspended.
         /// </summary>
-        protected virtual void OnSuspended()
+        /// <remarks>When implementing this method, be aware that it can potentially be called
+        /// from a thread other than the main Ultraviolet thread.</remarks>
+        protected internal virtual void OnSuspending()
+        {
+        }
+
+        /// <summary>
+        /// Called when the application has been suspended.
+        /// </summary>
+        /// <remarks>When implementing this method, be aware that it can potentially be called
+        /// from a thread other than the main Ultraviolet thread.</remarks>
+        protected internal virtual void OnSuspended()
         {
             SaveSettings();
         }
 
         /// <summary>
-        /// Called when the application is resumed.
+        /// Called when the application is about to be resumed.
         /// </summary>
-        protected virtual void OnResumed()
+        /// <remarks>When implementing this method, be aware that it can potentially be called
+        /// from a thread other than the main Ultraviolet thread.</remarks>
+        protected internal virtual void OnResuming()
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the application has been resumed.
+        /// </summary>
+        /// <remarks>When implementing this method, be aware that it can potentially be called
+        /// from a thread other than the main Ultraviolet thread.</remarks>
+        protected internal virtual void OnResumed()
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the operating system is attempting to reclaim memory.
+        /// </summary>
+        /// <remarks>When implementing this method, be aware that it can potentially be called
+        /// from a thread other than the main Ultraviolet thread.</remarks>
+        protected internal virtual void OnReclaimingMemory()
         {
 
         }
@@ -353,23 +391,37 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="data">The message data.</param>
         protected virtual void OnReceivedMessage(UltravioletMessageID type, MessageData data)
         {
-            if (type == UltravioletMessages.ApplicationSuspending)
+            if (type == UltravioletMessages.ApplicationTerminating)
             {
-                suspended = true;
+                running = false;
+            }
+            else if (type == UltravioletMessages.ApplicationSuspending)
+            {
+                OnSuspending();
+
+                lock (stateSyncObject)
+                    suspended = true;
+            }
+            else if (type == UltravioletMessages.ApplicationSuspended)
+            {
                 OnSuspended();
+            }
+            else if (type == UltravioletMessages.ApplicationResuming)
+            {
+                OnResuming();
             }
             else if (type == UltravioletMessages.ApplicationResumed)
             {
-                suspended = false;
+                hostcore?.ResetElapsed();
 
-                if (hostcore != null)
-                    hostcore.ResetElapsed();
+                lock (stateSyncObject)
+                    suspended = false;
 
                 OnResumed();
             }
-            else if (type == UltravioletMessages.ApplicationTerminating)
+            else if (type == UltravioletMessages.LowMemory)
             {
-                running = false;
+                OnReclaimingMemory();
             }
             else if (type == UltravioletMessages.Quit)
             {
@@ -503,10 +555,14 @@ namespace TwistedLogik.Ultraviolet
 
             CreateUltravioletHostCore();
 
-            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationTerminating);
-            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
-            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
-            this.uv.Messages.Subscribe(this, UltravioletMessages.Quit);
+            this.uv.Messages.Subscribe(this, 
+                UltravioletMessages.ApplicationTerminating,
+                UltravioletMessages.ApplicationSuspending,
+                UltravioletMessages.ApplicationSuspended,
+                UltravioletMessages.ApplicationResuming,
+                UltravioletMessages.ApplicationResumed,
+                UltravioletMessages.LowMemory,
+                UltravioletMessages.Quit);
             this.uv.Updating += uv_Updating;
             this.uv.Shutdown += uv_Shutdown;
             this.uv.WindowDrawing += uv_WindowDrawing;
@@ -637,6 +693,7 @@ namespace TwistedLogik.Ultraviolet
         private UltravioletContext uv;
 
         // State values.
+        private readonly Object stateSyncObject = new Object();
         private UltravioletHostCore hostcore;
         private Boolean created;
         private Boolean running;

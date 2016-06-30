@@ -168,20 +168,7 @@ namespace TwistedLogik.Ultraviolet
             if (syncContext != null)
                 syncContext.ProcessWorkItems();
         }
-
-        /// <summary>
-        /// Updates the game state while the application is suspended.
-        /// </summary>
-        /// <remarks>Certain platforms, such as phones and tablets, may suspend the application while it is in the background
-        /// in order to save power. Ultraviolet will automatically cease calling <see cref="Update"/> and <see cref="Draw"/> when
-        /// this happens; however, some implementations may require that certain processing continues to take place even while 
-        /// the application is suspended. The <see cref="UpdateSuspended"/> method is provided for such a scenario.
-        /// </remarks>
-        public virtual void UpdateSuspended()
-        {
-
-        }
-
+        
         /// <summary>
         /// Called when a new frame is started.
         /// </summary>

@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet
             [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UV_SetMainProc")]
             public static extern void UVSetMainProc(IntPtr proc);
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UltravioletActivity"/> class.
         /// </summary>
@@ -85,14 +85,7 @@ namespace TwistedLogik.Ultraviolet
             running = true;
             while (running)
             {
-                if (suspended)
-                {
-                    hostcore.RunOneTickSuspended();
-                }
-                else
-                {
-                    hostcore.RunOneTick();
-                }
+                hostcore.RunOneTick();
                 Thread.Yield();
             }
 
@@ -106,7 +99,7 @@ namespace TwistedLogik.Ultraviolet
         {
             Contract.EnsureNotDisposed(this, disposed);
 
-            running  = false;
+            running = false;
             finished = true;
         }
 
@@ -118,13 +111,13 @@ namespace TwistedLogik.Ultraviolet
             get { return (InputTypes)MCurrentInputType; }
             set { MCurrentInputType = (Int32)value; }
         }
-        
+
         /// <inheritdoc/>
         public override void OnConfigurationChanged(global::Android.Content.Res.Configuration newConfig)
         {
             if (Ultraviolet != null && !Ultraviolet.Disposed)
             {
-                var display  = Ultraviolet.GetPlatform().Displays[0];
+                var display = Ultraviolet.GetPlatform().Displays[0];
                 var rotation = (ScreenRotation)WindowManager.DefaultDisplay.Rotation;
 
                 if (rotation != display.Rotation)
@@ -187,7 +180,8 @@ namespace TwistedLogik.Ultraviolet
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                return active && !suspended;
+                lock (stateSyncObject)
+                    return active && !suspended;
             }
         }
 
@@ -198,7 +192,8 @@ namespace TwistedLogik.Ultraviolet
             {
                 Contract.EnsureNotDisposed(this, disposed);
 
-                return suspended;
+                lock (stateSyncObject)
+                    return suspended;
             }
         }
 
@@ -278,30 +273,32 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="disposing"><see langword="true"/> if the object is being disposed; <see langword="false"/> if the object is being finalized.</param>
         protected override void Dispose(Boolean disposing)
         {
-            if (!disposed)
+            lock (stateSyncObject)
             {
-                if (disposing && uv != null)
+                if (!disposed)
                 {
-                    uv.Messages.Unsubscribe(this);
-
-                    if (primary != null)
+                    if (disposing && uv != null)
                     {
-                        primary.Drawing -= uv_Drawing;
-                        primary = null;
+                        uv.Messages.Unsubscribe(this);
+
+                        if (primary != null)
+                        {
+                            primary.Drawing -= uv_Drawing;
+                            primary = null;
+                        }
+
+                        uv.Dispose();
+
+                        uv.Updating -= uv_Updating;
+                        uv.Shutdown -= uv_Shutdown;
+                        uv.WindowDrawing -= uv_WindowDrawing;
+                        uv.WindowDrawn -= uv_WindowDrawn;
+
+                        hostcore = null;
                     }
-
-                    uv.Dispose();
-
-                    uv.Updating -= uv_Updating;
-                    uv.Shutdown -= uv_Shutdown;
-                    uv.WindowDrawing -= uv_WindowDrawing;
-                    uv.WindowDrawn -= uv_WindowDrawn;
-
-                    hostcore = null;
+                    disposed = true;
                 }
-                disposed = true;
             }
-
             base.Dispose(disposing);
         }
 
@@ -368,17 +365,50 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Called when the application is suspended.
+        /// Called when the application is about to be suspended.
         /// </summary>
-        protected virtual void OnSuspended()
+        /// <remarks>When implementing this method, be aware that it can potentially be called
+        /// from a thread other than the main Ultraviolet thread.</remarks>
+        protected internal virtual void OnSuspending()
+        {
+        }
+
+        /// <summary>
+        /// Called when the application has been suspended.
+        /// </summary>
+        /// <remarks>When implementing this method, be aware that it can potentially be called
+        /// from a thread other than the main Ultraviolet thread.</remarks>
+        protected internal virtual void OnSuspended()
         {
             SaveSettings();
         }
 
         /// <summary>
-        /// Called when the application is resumed.
+        /// Called when the application is about to be resumed.
         /// </summary>
-        protected virtual void OnResumed()
+        /// <remarks>When implementing this method, be aware that it can potentially be called
+        /// from a thread other than the main Ultraviolet thread.</remarks>
+        protected internal virtual void OnResuming()
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the application has been resumed.
+        /// </summary>
+        /// <remarks>When implementing this method, be aware that it can potentially be called
+        /// from a thread other than the main Ultraviolet thread.</remarks>
+        protected internal virtual void OnResumed()
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the operating system is attempting to reclaim memory.
+        /// </summary>
+        /// <remarks>When implementing this method, be aware that it can potentially be called
+        /// from a thread other than the main Ultraviolet thread.</remarks>
+        protected internal virtual void OnReclaimingMemory()
         {
 
         }
@@ -398,25 +428,39 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="data">The message data.</param>
         protected virtual void OnReceivedMessage(UltravioletMessageID type, MessageData data)
         {
-            if (type == UltravioletMessages.ApplicationSuspending)
-            {
-                suspended = true;
-                OnSuspended();
-            }
-            else if (type == UltravioletMessages.ApplicationResumed)
-            {
-                suspended = false;
-
-                if (hostcore != null)
-                    hostcore.ResetElapsed();
-
-                OnResumed();
-            }
-            else if (type == UltravioletMessages.Quit || type == UltravioletMessages.ApplicationTerminating)
+            if (type == UltravioletMessages.ApplicationTerminating || type == UltravioletMessages.Quit)
             {
                 running = false;
             }
-        }        
+            else if (type == UltravioletMessages.ApplicationSuspending)
+            {
+                OnSuspending();
+
+                lock (stateSyncObject)
+                    suspended = true;
+            }
+            else if (type == UltravioletMessages.ApplicationSuspended)
+            {
+                OnSuspended();
+            }
+            else if (type == UltravioletMessages.ApplicationResuming)
+            {
+                OnResuming();
+            }
+            else if (type == UltravioletMessages.ApplicationResumed)
+            {
+                hostcore?.ResetElapsed();
+
+                lock (stateSyncObject)
+                    suspended = false;
+
+                OnResumed();
+            }
+            else if (type == UltravioletMessages.LowMemory)
+            {
+                OnReclaimingMemory();
+            }
+        }
 
         /// <inheritdoc/>
         protected override void OnCreate(global::Android.OS.Bundle savedInstanceState)
@@ -426,7 +470,7 @@ namespace TwistedLogik.Ultraviolet
             AndroidScreenDensityService.Activity = this;
             AndroidSoftwareKeyboardService.Activity = this;
         }
-        
+
         /// <summary>
         /// Ensures that the assembly which contains the specified type is linked on platforms
         /// which require ahead-of-time compilation.
@@ -535,17 +579,21 @@ namespace TwistedLogik.Ultraviolet
 
             CreateUltravioletHostCore();
 
-            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationTerminating);
-            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
-            this.uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
-            this.uv.Messages.Subscribe(this, UltravioletMessages.Quit);
+            this.uv.Messages.Subscribe(this,
+                UltravioletMessages.ApplicationTerminating,
+                UltravioletMessages.ApplicationSuspending,
+                UltravioletMessages.ApplicationSuspended,
+                UltravioletMessages.ApplicationResuming,
+                UltravioletMessages.ApplicationResumed,
+                UltravioletMessages.LowMemory,
+                UltravioletMessages.Quit);
             this.uv.Updating += uv_Updating;
             this.uv.Shutdown += uv_Shutdown;
             this.uv.WindowDrawing += uv_WindowDrawing;
             this.uv.WindowDrawn += uv_WindowDrawn;
 
             this.uv.GetPlatform().Windows.PrimaryWindowChanging += uv_PrimaryWindowChanging;
-            this.uv.GetPlatform().Windows.PrimaryWindowChanged  += uv_PrimaryWindowChanged;
+            this.uv.GetPlatform().Windows.PrimaryWindowChanged += uv_PrimaryWindowChanged;
             HookPrimaryWindowEvents();
 
             this.created = true;
@@ -556,8 +604,8 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         private void CreateUltravioletHostCore()
         {
-            hostcore                   = new UltravioletHostCore(this);
-            hostcore.IsFixedTimeStep   = this.IsFixedTimeStep;
+            hostcore = new UltravioletHostCore(this);
+            hostcore.IsFixedTimeStep = this.IsFixedTimeStep;
             hostcore.TargetElapsedTime = this.TargetElapsedTime;
             hostcore.InactiveSleepTime = this.InactiveSleepTime;
         }
@@ -585,14 +633,25 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         private void LoadSettings()
         {
-            if (!PreserveApplicationSettings)
-                return;
+            lock (stateSyncObject)
+            {
+                if (!PreserveApplicationSettings)
+                    return;
 
-            var path = Path.Combine(GetLocalApplicationSettingsDirectory(), "UltravioletSettings.xml");
-            if (!File.Exists(path))
-                return;
+                var directory = GetLocalApplicationSettingsDirectory();
+                var path = Path.Combine(directory, "UltravioletSettings.xml");
 
-            this.settings = UltravioletActivitySettings.Load(path);
+                try
+                {
+                    var settings = UltravioletActivitySettings.Load(path);
+                    if (settings == null)
+                        return;
+
+                    this.settings = settings;
+                }
+                catch (FileNotFoundException) { }
+                catch (DirectoryNotFoundException) { }
+            }
         }
 
         /// <summary>
@@ -600,13 +659,16 @@ namespace TwistedLogik.Ultraviolet
         /// </summary>
         private void SaveSettings()
         {
-            if (!PreserveApplicationSettings)
-                return;
+            lock (stateSyncObject)
+            {
+                if (!PreserveApplicationSettings)
+                    return;
 
-            var path = Path.Combine(GetLocalApplicationSettingsDirectory(), "UltravioletSettings.xml");
+                var path = Path.Combine(GetLocalApplicationSettingsDirectory(), "UltravioletSettings.xml");
 
-            this.settings = UltravioletActivitySettings.FromCurrentSettings(Ultraviolet);
-            UltravioletActivitySettings.Save(path, settings);
+                this.settings = UltravioletActivitySettings.FromCurrentSettings(Ultraviolet);
+                UltravioletActivitySettings.Save(path, settings);
+            }
         }
 
         /// <summary>
@@ -688,7 +750,7 @@ namespace TwistedLogik.Ultraviolet
 
             return 0;
         }
-        
+
         /// <summary>
         /// Writes a warning to the debug output if no file system source has been specified.
         /// </summary>
@@ -704,6 +766,7 @@ namespace TwistedLogik.Ultraviolet
         private UltravioletContext uv;
 
         // State values.
+        private readonly Object stateSyncObject = new Object();
         private readonly Func<Int32> sdlMainProc;
         private UltravioletHostCore hostcore;
         private Boolean created;
@@ -715,13 +778,13 @@ namespace TwistedLogik.Ultraviolet
         private IUltravioletWindow primary;
 
         // The application's tick state.
-        private Boolean isFixedTimeStep    = UltravioletHostCore.DefaultIsFixedTimeStep;
+        private Boolean isFixedTimeStep = UltravioletHostCore.DefaultIsFixedTimeStep;
         private TimeSpan targetElapsedTime = UltravioletHostCore.DefaultTargetElapsedTime;
         private TimeSpan inactiveSleepTime = UltravioletHostCore.DefaultInactiveSleepTime;
 
         // The application's name.
-        private String company;
-        private String application;
+        private readonly String company;
+        private readonly String application;
 
         // The application's settings.
         private UltravioletActivitySettings settings;

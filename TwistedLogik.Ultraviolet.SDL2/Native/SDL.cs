@@ -19,6 +19,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         const String LibraryPath = "SDL2";
 #endif
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate Int32 EventFilter(IntPtr userdata, SDL_Event* @event);
+
         static SDL()
         {
             LibraryLoader.Load("SDL2");
@@ -43,6 +46,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_PollEvent")]
         public static extern Int32 PollEvent(out SDL_Event @event);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetEventFilter")]
+        public static extern void SetEventFilter(IntPtr filter, IntPtr userdata);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateWindow", BestFitMapping = false)]
         public static extern IntPtr CreateWindow([MarshalAs(UnmanagedType.LPStr)] String title, Int32 x, Int32 y, Int32 w, Int32 h, SDL_WindowFlags flags);

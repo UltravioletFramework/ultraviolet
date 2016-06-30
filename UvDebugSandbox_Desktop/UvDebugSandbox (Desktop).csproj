@@ -14,7 +14,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -288,8 +288,8 @@
   </ItemGroup>
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
   <Target Name="AfterBuild" Condition="'$(BAMBOO_buildType)'==''">
-    <Message Text="Compiling content archive and binding expressions assembly..."/>
-    <Exec Condition=" '$(OS)' == 'Windows_NT' " WorkingDirectory="$(OutputPath)" Command="&quot;$(AssemblyName).exe&quot; -resolve:content -compile:content -compile:expressions"/>
-    <Exec Condition=" '$(OS)' == 'Unix' " WorkingDirectory="$(OutputPath)" Command="mono &quot;$(AssemblyName).exe&quot; -resolve:content -compile:content -compile:expressions"/>
+    <Message Text="Compiling content archive and binding expressions assembly..." />
+    <Exec Condition=" '$(OS)' == 'Windows_NT' " WorkingDirectory="$(OutputPath)" Command="&quot;$(AssemblyName).exe&quot; -resolve:content -compile:content -compile:expressions" />
+    <Exec Condition=" '$(OS)' == 'Unix' " WorkingDirectory="$(OutputPath)" Command="mono &quot;$(AssemblyName).exe&quot; -resolve:content -compile:content -compile:expressions" />
   </Target>
 </Project>

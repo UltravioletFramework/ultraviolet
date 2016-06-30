@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -56,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             {
                 if (isGLES)
                 {
-                    versionRequested = Platform == UltravioletPlatform.Android ? 
+                    versionRequested = Platform == UltravioletPlatform.Android ?
                         new Version(2, 0) : new Version(3, 0);
                 }
                 else
@@ -98,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 {
                     if (SDL.GL_SetAttribute(SDL_GLattr.RED_SIZE, 8) < 0)
                         throw new SDL2Exception();
-                    
+
                     if (SDL.GL_SetAttribute(SDL_GLattr.GREEN_SIZE, 8) < 0)
                         throw new SDL2Exception();
 
@@ -109,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 {
                     if (SDL.GL_SetAttribute(SDL_GLattr.RED_SIZE, 5) < 0)
                         throw new SDL2Exception();
-                    
+
                     if (SDL.GL_SetAttribute(SDL_GLattr.GREEN_SIZE, 6) < 0)
                         throw new SDL2Exception();
 
@@ -119,7 +120,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
 
             this.platform = IsRunningInServiceMode ? (IUltravioletPlatform)new DummyUltravioletPlatform(this) : new OpenGLUltravioletPlatform(this, configuration);
-            
+
             PumpEvents();
 
             this.graphics = IsRunningInServiceMode ? (IUltravioletGraphics)new DummyUltravioletGraphics(this) : new OpenGLUltravioletGraphics(this, configuration, versionRequested);
@@ -140,26 +141,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             this.content.Importers.RegisterImporter<XmlContentImporter>("prog");
 
             PumpEvents();
+            
+            unsafe
+            {
+                eventFilter = new SDL.EventFilter(SDLEventFilter);
+                eventFilterPtr = Marshal.GetFunctionPointerForDelegate(eventFilter);
+                SDL.SetEventFilter(eventFilterPtr, IntPtr.Zero);
+            }
 
             InitializeContext();
             InitializeViewProvider(configuration);
         }
-
-        /// <inheritdoc/>
-        public override void UpdateSuspended()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            if (!PumpEvents())
-            {
-                return;
-            }
-
-            ProcessMessages();
-
-            base.UpdateSuspended();
-        }
-
+        
         /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
@@ -216,7 +209,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
                     window.Compositor.BeginFrame();
                     window.Compositor.BeginContext(CompositionContext.Scene);
-                    
+
                     OnWindowDrawing(time, window);
 
                     windowInfo.Draw(time);
@@ -289,11 +282,53 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         protected override void OnShutdown()
         {
+            SDL.SetEventFilter(IntPtr.Zero, IntPtr.Zero);
             SDL.Quit();
 
             base.OnShutdown();
         }
-        
+
+        /// <summary>
+        /// Filters SDL2 events.
+        /// </summary>
+        [MonoPInvokeCallback(typeof(SDL.EventFilter))]
+        private static unsafe Int32 SDLEventFilter(IntPtr userdata, SDL_Event* @event)
+        {
+            var uv = RequestCurrent();
+            if (uv == null)
+                return 1;
+
+            switch (@event->type)
+            {
+                case SDL_EventType.APP_TERMINATING:
+                    uv.Messages.PublishImmediate(UltravioletMessages.ApplicationTerminating, null);
+                    return 0;
+
+                case SDL_EventType.APP_WILLENTERBACKGROUND:
+                    uv.Messages.PublishImmediate(UltravioletMessages.ApplicationSuspending, null);
+                    return 0;
+
+                case SDL_EventType.APP_DIDENTERBACKGROUND:
+                    uv.Messages.PublishImmediate(UltravioletMessages.ApplicationSuspended, null);
+                    return 0;
+
+                case SDL_EventType.APP_WILLENTERFOREGROUND:
+                    uv.Messages.PublishImmediate(UltravioletMessages.ApplicationResuming, null);
+                    return 0;
+
+                case SDL_EventType.APP_DIDENTERFOREGROUND:
+                    uv.Messages.PublishImmediate(UltravioletMessages.ApplicationResumed, null);
+                    return 0;
+
+                case SDL_EventType.APP_LOWMEMORY:
+                    uv.Messages.PublishImmediate(UltravioletMessages.LowMemory, null);
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+                    return 0;
+            }
+
+            return 1;
+        }
+
         /// <summary>
         /// Initializes the context's audio subsystem.
         /// </summary>
@@ -393,32 +428,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                         }
                         break;
 
-                    case SDL_EventType.APP_TERMINATING:
-                        Messages.Publish(UltravioletMessages.ApplicationTerminating, null);
-                        return true;
-
-                    case SDL_EventType.APP_LOWMEMORY:
-                        Messages.Publish(UltravioletMessages.LowMemory, null);
-                        ProcessMessages();
-                        GC.Collect(2, GCCollectionMode.Forced);
-                        return true;
-
-                    case SDL_EventType.APP_WILLENTERBACKGROUND:
-                        Messages.Publish(UltravioletMessages.ApplicationSuspending, null);
-                        return true;
-
-                    case SDL_EventType.APP_DIDENTERBACKGROUND:
-                        Messages.Publish(UltravioletMessages.ApplicationSuspended, null);
-                        return true;
-
-                    case SDL_EventType.APP_WILLENTERFOREGROUND:
-                        Messages.Publish(UltravioletMessages.ApplicationResuming, null);
-                        return true;
-
-                    case SDL_EventType.APP_DIDENTERFOREGROUND:
-                        Messages.Publish(UltravioletMessages.ApplicationResumed, null);
-                        return true;
-
                     case SDL_EventType.QUIT:
                         Messages.Publish(UltravioletMessages.Quit, null);
                         return true;
@@ -431,13 +440,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             }
             return !Disposed;
         }
-        
+
         // Ultraviolet subsystems.
         private readonly IUltravioletPlatform platform;
         private readonly IUltravioletContent content;
         private readonly IUltravioletGraphics graphics;
         private readonly IUltravioletAudio audio;
         private readonly IUltravioletInput input;
-        private readonly IUltravioletUI ui;        
+        private readonly IUltravioletUI ui;
+
+        // The SDL event filter.
+        private readonly SDL.EventFilter eventFilter;
+        private readonly IntPtr eventFilterPtr;
     }
 }
