@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-
-#if IOS
-using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapperAttribute;
-#endif
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Gluon
 {

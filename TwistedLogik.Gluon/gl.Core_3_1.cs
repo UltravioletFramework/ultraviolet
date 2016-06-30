@@ -1,8 +1,5 @@
 ﻿using System;
-
-#if IOS
-using MonoNativeFunctionWrapperAttribute = ObjCRuntime.MonoNativeFunctionWrapperAttribute;
-#endif
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Gluon
 {

@@ -119,6 +119,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\Tokenizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xml\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xml\XElementExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MonoNativeFunctionWrapperAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MonoPInvokeCallbackAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\MaskedUInt32.json" />

@@ -785,9 +785,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <summary>
         /// Represents a thunk which allows the native OpenGL driver to call into the managed debug callback.
         /// </summary>
-#if IOS
-        [ObjCRuntime.MonoPInvokeCallback(typeof(gl.DebugProc))]
-#endif
+        [MonoPInvokeCallback(typeof(gl.DebugProc))]
         private static void DebugCallbackThunk(UInt32 source, UInt32 type, UInt32 id, UInt32 severity, Int32 length, IntPtr message, IntPtr userParam)
         {
             var messageString = Marshal.PtrToStringAnsi(message, length);

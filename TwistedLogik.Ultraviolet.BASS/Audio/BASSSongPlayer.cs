@@ -4,10 +4,6 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Audio;
 using TwistedLogik.Ultraviolet.BASS.Native;
 
-#if IOS
-using ObjCRuntime;
-#endif
-
 namespace TwistedLogik.Ultraviolet.BASS.Audio
 {
     /// <summary>
@@ -338,9 +334,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         /// <summary>
         /// Performs custom looping when a loop range is specified.
         /// </summary>
-#if IOS
         [MonoPInvokeCallback(typeof(SyncProc))]
-#endif
         private static void SyncLoopThunk(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
         {
             if (!BASSNative.ChannelSetPosition(channel, (UInt32)user, 0))
@@ -350,9 +344,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         /// <summary>
         /// Raises a callback when a song ends.
         /// </summary>
-#if IOS
         [MonoPInvokeCallback(typeof(SyncProc))]
-#endif
         private static void SyncEndThunk(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
         {
             var gcHandle = GCHandle.FromIntPtr(user);
