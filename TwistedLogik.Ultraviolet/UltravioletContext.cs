@@ -188,6 +188,14 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Updates the game state while the application is suspended.
+        /// </summary>
+        public virtual void UpdateSuspended()
+        {
+
+        }
+
+        /// <summary>
         /// Updates the game state.
         /// </summary>
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>

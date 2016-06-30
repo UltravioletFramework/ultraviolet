@@ -85,7 +85,14 @@ namespace TwistedLogik.Ultraviolet
             running = true;
             while (running)
             {
-                hostcore.RunOneTick();
+                if (IsSuspended)
+                {
+                    hostcore.RunOneTickSuspended();
+                }
+                else
+                {
+                    hostcore.RunOneTick();
+                }
                 Thread.Yield();
             }
 

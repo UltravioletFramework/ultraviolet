@@ -44,6 +44,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Quit")]
         public static extern void Quit();
 
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_PumpEvents")]
+        public static extern void PumpEvents();
+
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_PollEvent")]
         public static extern Int32 PollEvent(out SDL_Event @event);
 

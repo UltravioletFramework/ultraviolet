@@ -152,7 +152,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             InitializeContext();
             InitializeViewProvider(configuration);
         }
-        
+
+        /// <inheritdoc/>
+        public override void UpdateSuspended()
+        {
+            SDL.PumpEvents();
+
+            base.UpdateSuspended();
+        }
+
         /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
