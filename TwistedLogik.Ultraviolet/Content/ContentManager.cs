@@ -124,16 +124,19 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            foreach (var kvp in assetFlags)
+            lock (cacheSyncObject)
             {
-                var asset = kvp.Key;
-                var flags = kvp.Value;
+                foreach (var kvp in assetFlags)
+                {
+                    var asset = kvp.Key;
+                    var flags = kvp.Value;
 
-                var preserve = (flags & AssetFlags.PreserveThroughLowMemory) == AssetFlags.PreserveThroughLowMemory;
-                if (preserve)
-                    continue;
+                    var preserve = (flags & AssetFlags.PreserveThroughLowMemory) == AssetFlags.PreserveThroughLowMemory;
+                    if (preserve)
+                        continue;
 
-                assetCache.Remove(asset);
+                    assetCache.Remove(asset);
+                }
             }
         }
 
@@ -150,7 +153,8 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.Require(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            assetFlags[asset] = flags;
+            lock (cacheSyncObject)
+                assetFlags[asset] = flags;
         }
 
         /// <summary>
@@ -162,7 +166,8 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            assetFlags[AssetID.GetAssetPath(asset)] = flags;
+            lock (cacheSyncObject)
+                assetFlags[AssetID.GetAssetPath(asset)] = flags;
         }
 
         /// <summary>
@@ -180,7 +185,8 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.Require(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return assetFlags.TryGetValue(asset, out flags);
+            lock (cacheSyncObject)
+                return assetFlags.TryGetValue(asset, out flags);
         }
 
         /// <summary>
@@ -194,7 +200,8 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return assetFlags.TryGetValue(AssetID.GetAssetPath(asset), out flags);
+            lock (cacheSyncObject)
+                return assetFlags.TryGetValue(AssetID.GetAssetPath(asset), out flags);
         }
 
         /// <summary>
@@ -229,13 +236,19 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            Object cachedInstance;
-            if (!assetCache.TryGetValue(asset, out cachedInstance))
+            var cachedInstance = default(Object);
+            var cacheMiss = false;
+
+            lock (cacheSyncObject)
+                cacheMiss = !assetCache.TryGetValue(asset, out cachedInstance);
+
+            if (cacheMiss)
             {
                 Object result;
                 LoadInternal(asset, typeof(TOutput), cache, false, false, out result);
                 return (TOutput)result;
             }
+
             return (TOutput)cachedInstance;
         }
 
@@ -638,8 +651,11 @@ namespace TwistedLogik.Ultraviolet.Content
                 }
             }
 
-            assetCache.Clear();
-            assetFlags.Clear();
+            lock (cacheSyncObject)
+            {
+                assetCache.Clear();
+                assetFlags.Clear();
+            }
 
             base.Dispose(disposing);
         }
@@ -757,10 +773,13 @@ namespace TwistedLogik.Ultraviolet.Content
 
                 if (cache)
                 {
-                    assetCache[asset] = instance;
+                    lock (cacheSyncObject)
+                    {
+                        assetCache[asset] = instance;
 
-                    if (!assetFlags.ContainsKey(asset))
-                        assetFlags[asset] = AssetFlags.None;
+                        if (!assetFlags.ContainsKey(asset))
+                            assetFlags[asset] = AssetFlags.None;
+                    }
                 }
 
                 result = instance;
@@ -1293,6 +1312,7 @@ namespace TwistedLogik.Ultraviolet.Content
         private readonly Dictionary<String, Object> assetCache = new Dictionary<String, Object>();
         private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
         private readonly FileSystemService fileSystemService;
+        private readonly Object cacheSyncObject = new Object();
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
         private const String PreprocessedFileExtension = ".uvc";
