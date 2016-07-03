@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using AppKit;
+using CoreGraphics;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 
@@ -19,27 +21,25 @@ namespace TwistedLogik.Ultraviolet.OSX.Graphics
         {
             Contract.Require(stream, "stream");
 
-            var data = new Byte[stream.Length];
-            stream.Read(data, 0, data.Length);
-
-            using (var mstream = new MemoryStream(data))
+            using (var img = NSImage.FromStream(stream))
             {
-                this.image = NSImage.FromStream(mstream);
-                this.imageRep = new NSBitmapImageRep(image.CGImage);
+                this.width = (Int32)img.Size.Width;
+                this.height = (Int32)img.Size.Height;
+                this.stride = (Int32)img.CGImage.BytesPerRow;
+
+                this.bmpData = Marshal.AllocHGlobal(stride * height);
+
+                using (var colorSpace = CGColorSpace.CreateDeviceRGB())
+                {
+                    using (var bmp = new CGBitmapContext(bmpData, width, height, 8, stride, colorSpace, CGImageAlphaInfo.PremultipliedLast))
+                    {
+                        bmp.ClearRect(new CGRect(0, 0, width, height));
+                        bmp.DrawImage(new CGRect(0, 0, width, height), img.CGImage);
+                    }
+                }
             }
-        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OSXSurfaceSource"/> class from the specified image.
-        /// </summary>
-        /// <param name="stream">The <see cref="NSImage"/> that contains the surface data.</param>
-        [CLSCompliant(false)]
-        public OSXSurfaceSource(NSImage image)
-        {
-            Contract.Require(image, "image");
-
-            this.image = image;
-            this.imageRep = new NSBitmapImageRep(image.CGImage);
+            ReversePremultiplication();
         }
 
         /// <inheritdoc/>
@@ -54,11 +54,13 @@ namespace TwistedLogik.Ultraviolet.OSX.Graphics
         {
             get
             {
-                var pixel = ((byte*)imageRep.BitmapData) + (imageRep.BytesPerRow * y) + (x * sizeof(UInt32));
+                Contract.EnsureNotDisposed(this, disposed);
+
+                var pixel = ((byte*)bmpData.ToPointer()) + (stride * y) + (x * sizeof(UInt32));
                 var a = *pixel++;
-                var r = *pixel++;
-                var g = *pixel++;
                 var b = *pixel++;
+                var g = *pixel++;
+                var r = *pixel++;
                 return new Color(r, g, b, a);
             }
         }
@@ -68,7 +70,9 @@ namespace TwistedLogik.Ultraviolet.OSX.Graphics
         {
             get
             {
-                return this.imageRep.BitmapData;
+                Contract.EnsureNotDisposed(this, disposed);
+
+                return bmpData;
             }
         }
 
@@ -77,7 +81,9 @@ namespace TwistedLogik.Ultraviolet.OSX.Graphics
         {
             get
             {
-                return (Int32)this.imageRep.BytesPerRow;
+                Contract.EnsureNotDisposed(this, disposed);
+
+                return stride;
             }
         }
 
@@ -86,7 +92,9 @@ namespace TwistedLogik.Ultraviolet.OSX.Graphics
         {
             get
             {
-                return (Int32)this.imageRep.PixelsWide;
+                Contract.EnsureNotDisposed(this, disposed);
+
+                return width;
             }
         }
 
@@ -95,16 +103,30 @@ namespace TwistedLogik.Ultraviolet.OSX.Graphics
         {
             get
             {
-                return (Int32)this.imageRep.PixelsHigh;
+                Contract.EnsureNotDisposed(this, disposed);
+
+                return height;
             }
         }
 
         /// <inheritdoc/>
-        public override SurfaceSourceDataFormat DataFormat
+        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.BGRA;
+
+        /// <summary>
+        /// Reverses the premultiplication which is automatically applied by the iOS API's...
+        /// ...so that Ultraviolet can re-premultiply it later. Yeah.
+        /// </summary>
+        private void ReversePremultiplication()
         {
-            get
+            var pBmpData = (Byte*)bmpData.ToPointer();
+            for (int i = 0; i < width * height; i++)
             {
-                return SurfaceSourceDataFormat.BGRA;
+                var a = *(pBmpData + 3) / 255f;
+                *(pBmpData + 0) = (Byte)(*(pBmpData + 0) / a);
+                *(pBmpData + 1) = (Byte)(*(pBmpData + 1) / a);
+                *(pBmpData + 2) = (Byte)(*(pBmpData + 2) / a);
+
+                pBmpData += 4;
             }
         }
 
@@ -117,18 +139,17 @@ namespace TwistedLogik.Ultraviolet.OSX.Graphics
             if (disposed)
                 return;
 
-            if (disposing)
-            {
-                this.imageRep.Dispose();
-                this.image.Dispose();
-            }
+            if (bmpData != IntPtr.Zero)
+                Marshal.FreeHGlobal(bmpData);
 
             disposed = true;
         }
 
         // State values.
-        private readonly NSImage image;
-        private readonly NSBitmapImageRep imageRep;
+        private readonly IntPtr bmpData;
+        private readonly Int32 width;
+        private readonly Int32 height;
+        private readonly Int32 stride;
         private Boolean disposed;
     }
 }
