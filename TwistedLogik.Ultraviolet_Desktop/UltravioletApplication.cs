@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Xml;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -27,6 +28,7 @@ namespace TwistedLogik.Ultraviolet
                 }
                 catch (FileNotFoundException) { }
                 catch (DirectoryNotFoundException) { }
+                catch (XmlException) { }
             }
         }
 

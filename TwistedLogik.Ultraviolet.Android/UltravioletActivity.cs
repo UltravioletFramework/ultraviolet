@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Xml;
 using Android.Text;
 using Org.Libsdl.App;
 using TwistedLogik.Nucleus;
@@ -658,6 +659,7 @@ namespace TwistedLogik.Ultraviolet
                 }
                 catch (FileNotFoundException) { }
                 catch (DirectoryNotFoundException) { }
+                catch (XmlException) { }
             }
         }
 

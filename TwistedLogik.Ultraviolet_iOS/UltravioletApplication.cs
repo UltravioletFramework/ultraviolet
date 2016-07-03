@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Xml;
 using Foundation;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Messages;
@@ -121,6 +122,7 @@ namespace TwistedLogik.Ultraviolet
                 }
                 catch (FileNotFoundException) { }
                 catch (DirectoryNotFoundException) { }
+                catch (XmlException) { }
             }
         }
 
