@@ -389,7 +389,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Platform
             // If we're running on Android or iOS, we can't create a headless context.
             var isRunningOnMobile = (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS);
             if (isRunningOnMobile && configuration.Headless)
-                throw new InvalidOperationException(OpenGLStrings.CannotCreateHeadlessContextOnAndroid);
+                throw new InvalidOperationException(OpenGLStrings.CannotCreateHeadlessContextOnMobile);
 
             // Initialize the hidden master window used to create the OpenGL context.
             var masterWidth = 0;
