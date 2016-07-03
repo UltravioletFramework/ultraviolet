@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-	<PropertyGroup>
-		<IsMac>false</IsMac>
-		<IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
-	</PropertyGroup>
+  <PropertyGroup>
+    <IsMac>false</IsMac>
+    <IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -141,6 +141,10 @@
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS_Desktop\TwistedLogik.Ultraviolet.BASS %28Desktop%29.csproj">
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
       <Name>TwistedLogik.Ultraviolet.BASS (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj">
+      <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
+      <Name>TwistedLogik.Ultraviolet.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29.csproj">
       <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
