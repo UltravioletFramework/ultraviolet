@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using MonoMac;
-using MonoMac.AppKit;
+using AppKit;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.OSX
+namespace TwistedLogik.Ultraviolet.OSX.Graphics
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSource"/> class for Mac OS X.
@@ -77,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.OSX
         {
             get
             {
-                return this.imageRep.BytesPerRow;
+                return (Int32)this.imageRep.BytesPerRow;
             }
         }
 
@@ -86,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.OSX
         {
             get
             {
-                return this.imageRep.PixelsWide;
+                return (Int32)this.imageRep.PixelsWide;
             }
         }
 
@@ -95,7 +94,7 @@ namespace TwistedLogik.Ultraviolet.OSX
         {
             get
             {
-                return this.imageRep.PixelsHigh;
+                return (Int32)this.imageRep.PixelsHigh;
             }
         }
 

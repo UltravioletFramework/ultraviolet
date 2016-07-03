@@ -1,15 +1,16 @@
-﻿using System;
-using TwistedLogik.Ultraviolet.Graphics;
+﻿using TwistedLogik.Ultraviolet.Graphics;
+using TwistedLogik.Ultraviolet.OSX.Graphics;
+using TwistedLogik.Ultraviolet.OSX.Platform;
 using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.OSX
 {
-	internal sealed class OSXFactoryInitializer : IUltravioletFactoryInitializer
+    internal sealed class OSXFactoryInitializer : IUltravioletFactoryInitializer
 	{   
 		/// <inheritdoc/>
 		public void Initialize(UltravioletContext owner, UltravioletFactory factory)
 		{
-			MonoMac.AppKit.NSApplication.Init();
+            AppKit.NSApplication.Init ();
 
 			factory.RemoveFactoryMethod<SurfaceSourceFactory>();
 			factory.RemoveFactoryMethod<SurfaceSaverFactory>();

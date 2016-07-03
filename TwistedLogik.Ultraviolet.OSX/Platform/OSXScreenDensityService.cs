@@ -1,67 +1,58 @@
 ﻿using System;
+using AppKit;
+using Foundation;
 using TwistedLogik.Ultraviolet.Platform;
-using MonoMac.AppKit;
-using MonoMac.Foundation;
 
-namespace TwistedLogik.Ultraviolet.OSX
+namespace TwistedLogik.Ultraviolet.OSX.Platform
 {
 	public sealed class OSXScreenDensityService : ScreenDensityService
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="OSXScreenDensityService"/> class.
-		/// </summary>
-		/// <param name="display">The <see cref="IUltravioletDisplay"/> for which to retrieve density information.</param>
-		public OSXScreenDensityService(IUltravioletDisplay display)
-			: base(display)
-		{
-			var screen  = NSScreen.Screens[display.Index];
-			var density = ((NSValue)screen.DeviceDescription["NSDeviceResolution"]).SizeFValue;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OSXScreenDensityService"/> class.
+        /// </summary>
+        /// <param name="display">The <see cref="IUltravioletDisplay"/> for which to retrieve density information.</param>
+        public OSXScreenDensityService(IUltravioletDisplay display)
+            : base(display)
+        {
+            var screen = NSScreen.Screens[display.Index];
+            deviceScale = (Single)screen.BackingScaleFactor;
 
-			this.densityScale = screen.BackingScaleFactor;
-			this.densityX     = density.Width;
-			this.densityY     = density.Height;
-		}
+            var density = ((NSValue)screen.DeviceDescription["NSDeviceResolution"]).CGSizeValue;
+            densityX = (Single)density.Width * (96f / 72f);
+            densityY = (Single)density.Height * (96f / 72f);
 
-		/// <inheritdoc/>
-		public override Single DensityScale
-		{
-			get { return densityScale; }
-		}
+            var displayIsScaled = !UltravioletContext.DemandCurrent().SupportsHighDensityDisplayModes;
+            if (displayIsScaled)
+            {
+                densityX /= deviceScale;
+                densityY /= deviceScale;
+            }
 
-		/// <inheritdoc/>
-		public override Single DensityX
-		{
-			get { return densityX; }
-		}
+            densityScale = densityX / 96f;
+            densityBucket = GuessBucketFromDensityScale(densityScale);
+        }
 
-		/// <inheritdoc/>
-		public override Single DensityY
-		{
-			get { return densityY; }
-		}
+        /// <inheritdoc/>
+        public override Single DeviceScale => deviceScale;
 
-		/// <inheritdoc/>
-		public override ScreenDensityBucket DensityBucket
-		{
-			get
-			{
-				if (densityScale == 1.0f)
-					return ScreenDensityBucket.Desktop;
+        /// <inheritdoc/>
+        public override Single DensityScale => densityScale;
 
-				if (densityScale == 2.0f)
-					return ScreenDensityBucket.Retina;
+        /// <inheritdoc/>
+        public override Single DensityX => densityX;
 
-				if (densityScale == 3.0f)
-					return ScreenDensityBucket.RetinaHD;
+        /// <inheritdoc/>
+        public override Single DensityY => densityY;
 
-				return ScreenDensityBucket.ExtraExtraExtraHigh;
-			}
-		}
+        /// <inheritdoc/>
+        public override ScreenDensityBucket DensityBucket => densityBucket;
 
-		// State values.
-		private readonly Single densityScale;
-		private readonly Single densityX;
-		private readonly Single densityY;
+        // Property values.
+        private readonly Single deviceScale;
+        private readonly Single densityScale;
+        private readonly Single densityX;
+        private readonly Single densityY;
+        private readonly ScreenDensityBucket densityBucket;
 	}
 }
 

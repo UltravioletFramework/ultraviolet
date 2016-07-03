@@ -155,32 +155,6 @@ namespace TwistedLogik.Ultraviolet.iOS.Platform
         /// <inheritdoc/>
         public override ScreenDensityBucket DensityBucket => densityBucket;
 
-        /// <summary>
-        /// Attempts to guess at the appropriate <see cref="ScreenDensityBucket"/> for the specified density scale.
-        /// </summary>
-        private static ScreenDensityBucket GuessBucketFromDensityScale(Single scale)
-        {
-            if (scale >= 6f)
-                return ScreenDensityBucket.ExtraExtraExtraHigh;
-
-            if (scale >= 5f)
-                return ScreenDensityBucket.ExtraExtraHigh;
-
-            if (scale >= 3f)
-                return ScreenDensityBucket.ExtraHigh;
-
-            if (scale >= 2.5f)
-                return ScreenDensityBucket.High;
-
-            if (scale >= 1.5f)
-                return ScreenDensityBucket.Medium;
-
-            if (scale >= 1.25f)
-                return ScreenDensityBucket.Low;
-
-            return ScreenDensityBucket.Desktop;
-        }
-
         // Property values.
         private readonly Single deviceScale;
         private readonly Single densityScale;

@@ -106,5 +106,33 @@ namespace TwistedLogik.Ultraviolet.Platform
         {
             get;
         }
+
+        /// <summary>
+        /// Attempts to guess at the appropriate <see cref="ScreenDensityBucket"/> for the specified density scale.
+        /// </summary>
+        /// <param name="scale">The density scale for which to guess a density bucket.</param>
+        /// <returns>The <see cref="ScreenDensityBucket"/> which was guessed for the specified density scale.</returns>
+        protected static ScreenDensityBucket GuessBucketFromDensityScale(Single scale)
+        {
+            if (scale >= 6f)
+                return ScreenDensityBucket.ExtraExtraExtraHigh;
+
+            if (scale >= 5f)
+                return ScreenDensityBucket.ExtraExtraHigh;
+
+            if (scale >= 3f)
+                return ScreenDensityBucket.ExtraHigh;
+
+            if (scale >= 2.5f)
+                return ScreenDensityBucket.High;
+
+            if (scale >= 1.5f)
+                return ScreenDensityBucket.Medium;
+
+            if (scale >= 1.25f)
+                return ScreenDensityBucket.Low;
+
+            return ScreenDensityBucket.Desktop;
+        }
     }
 }
