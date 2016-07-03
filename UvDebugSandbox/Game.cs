@@ -34,10 +34,6 @@ namespace UvDebugSandbox
         public Game() : base("YOUR_COMPANY_NAME", "ProjectName")
         {
             PlatformSpecificInitialization();
-#if IOS
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.CompilerMetadata>();
-#endif
         }
 
         /// <summary>

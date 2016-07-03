@@ -261,6 +261,7 @@
       <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml</Link>
     </BundleResource>
     <Content Include="Entitlements.plist" />
+    <Compile Include="Game.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Dynamic.Interpreter" />
