@@ -1246,11 +1246,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (isReadOnly)
                 return;
 
-            if (lengthOfEditInProgress > 0)
-                DeleteSpan(caretPosition - lengthOfEditInProgress, lengthOfEditInProgress, false);
-
-            lengthOfEditInProgress = 0;
-
             device.GetTextInput(bufferInput);
             InsertTextAtCaret((StringSegment)bufferInput, true);
 
@@ -1264,20 +1259,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="data">The routed event metadata for this event.</param>
         internal void HandleTextEditing(KeyboardDevice device, RoutedEventData data)
         {
-            var owner = TemplatedParent as Control;
-
-            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyProperty));
-            if (isReadOnly)
-                return;
-
-            if (lengthOfEditInProgress > 0)
-                DeleteSpan(caretPosition - lengthOfEditInProgress, lengthOfEditInProgress, false);
-
-            device.GetTextInput(bufferInput);
-            InsertTextAtCaret((StringSegment)bufferInput, false);
-            lengthOfEditInProgress = bufferInput.Length;
-
-            data.Handled = true;
+            // TODO
         }
 
         /// <summary>
@@ -2759,9 +2741,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private Int32 selectionTrackingCounter;
         private Int32 storedCaretPosition;
         private Int32 storedSelectionPosition;
-
-        // Text editing.
-        private Int32 lengthOfEditInProgress;
 
         // The editor's internal text buffer.
         private readonly StringBuilder bufferInput = new StringBuilder();

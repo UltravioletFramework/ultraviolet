@@ -18,7 +18,10 @@ namespace TwistedLogik.Ultraviolet.Android.Input
             switch (mode)
             {
                 case KeyboardMode.Text:
-                    Activity.KeyboardInputType = InputTypes.ClassText;
+                    /* NOTE: We use TextVariationVisiblePassword here to match SDL's default behavior.
+                     * This is done to disable text suggestions due to the fact that some keyboards implement
+                     * them in a way which is difficult to handle properly. */
+                    Activity.KeyboardInputType = InputTypes.ClassText | InputTypes.TextVariationVisiblePassword;
                     break;
 
                 case KeyboardMode.Number:
