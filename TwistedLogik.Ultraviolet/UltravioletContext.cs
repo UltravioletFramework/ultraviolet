@@ -1212,7 +1212,7 @@ namespace TwistedLogik.Ultraviolet
                 {
                     case UltravioletPlatform.Windows:
                     case UltravioletPlatform.Linux:
-                        shim = Assembly.LoadFile("TwistedLogik.Ultraviolet.Desktop.dll");
+                        shim = Assembly.Load("TwistedLogik.Ultraviolet.Desktop");
                         break;
 
                     case UltravioletPlatform.OSX:

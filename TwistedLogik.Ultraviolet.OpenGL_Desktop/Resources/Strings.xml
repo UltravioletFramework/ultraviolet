@@ -190,9 +190,9 @@
       <Variant>The specified level of detail bias is not supported under the OpenGL ES profile.</Variant>
     </en-US>
   </String>
-  <String Key="CANNOT_CREATE_HEADLESS_CONTEXT_ON_ANDROID">
+  <String Key="CANNOT_CREATE_HEADLESS_CONTEXT_ON_MOBILE">
     <en-US>
-      <Variant>A headless context cannot be created on the Android platform.</Variant>
+      <Variant>A headless context cannot be created on the Android or iOS platforms.</Variant>
     </en-US>
   </String>
   <String Key="INVALID_CONTENT_ARCHIVE">
