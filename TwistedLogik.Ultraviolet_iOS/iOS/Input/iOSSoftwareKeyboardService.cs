@@ -59,5 +59,23 @@ namespace TwistedLogik.Ultraviolet.iOS.Input
 
             return true;
         }
+
+        /// <inheritdoc/>
+        public override Rectangle? TextInputRegion
+        {
+            get { return textInputRegion; }
+            set
+            {
+                if (textInputRegion != value)
+                {
+                    textInputRegion = value;
+                    UltravioletContext.RequestCurrent()?.Messages.Publish(
+                        UltravioletMessages.TextInputRegionChanged, null);
+                }
+            }
+        }
+
+        // Property values.
+        private Rectangle? textInputRegion;
     }
 }
