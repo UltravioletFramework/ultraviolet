@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Nucleus.Messages
 {
@@ -16,8 +17,11 @@ namespace TwistedLogik.Nucleus.Messages
         /// <param name="data">The data for the message being pushed.</param>
         public void ReceiveMessage(TMessageType messageType, MessageData data)
         {
-            tempstorage.Clear();
+            var tempstorage = default(List<IMessageSubscriber<TMessageType>>);
 
+            lock (tempstoragePool)
+                tempstorage = tempstoragePool.Retrieve();
+            
             foreach (var sub in this[messageType])
                 tempstorage.Add(sub);
 
@@ -26,7 +30,8 @@ namespace TwistedLogik.Nucleus.Messages
                 subscriber.ReceiveMessage(messageType, data);
             }
 
-            tempstorage.Clear();
+            lock (tempstoragePool)
+                tempstoragePool.Release(tempstorage);
         }
 
         /// <summary>
@@ -85,7 +90,7 @@ namespace TwistedLogik.Nucleus.Messages
 
         // A list which temporarily stores the list of subscribers while
         // publishing messages, so that the subscription table can be updated during enumeration.
-        private readonly List<IMessageSubscriber<TMessageType>> tempstorage = 
-            new List<IMessageSubscriber<TMessageType>>();
+        private readonly IPool<List<IMessageSubscriber<TMessageType>>> tempstoragePool =
+            new ExpandingPool<List<IMessageSubscriber<TMessageType>>>(1, () => new List<IMessageSubscriber<TMessageType>>(), item => item.Clear());
     }
 }
