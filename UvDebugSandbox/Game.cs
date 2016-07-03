@@ -23,9 +23,9 @@ namespace UvDebugSandbox
         Android.Content.PM.ConfigChanges.Orientation |
         Android.Content.PM.ConfigChanges.ScreenSize |
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
+    public partial class Game : UltravioletActivity
 #else
-    public class Game : UltravioletApplication
+    public partial class Game : UltravioletApplication
 #endif
     {
         /// <summary>
@@ -33,6 +33,7 @@ namespace UvDebugSandbox
         /// </summary>
         public Game() : base("YOUR_COMPANY_NAME", "ProjectName")
         {
+            PlatformSpecificInitialization();
 #if IOS
             EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
             EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.CompilerMetadata>();
@@ -223,6 +224,11 @@ namespace UvDebugSandbox
             }
             base.Dispose(disposing);
         }
+
+        /// <summary>
+        /// Performs any platform-specific initialization.
+        /// </summary>
+        partial void PlatformSpecificInitialization();
 
         /// <summary>
         /// Gets a value indicating whether the game should run in service mode.

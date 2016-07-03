@@ -1216,7 +1216,7 @@ namespace TwistedLogik.Ultraviolet
                         break;
 
                     case UltravioletPlatform.OSX:
-                        shim = Assembly.LoadFile("TwistedLogik.Ultraviolet.OSX.dll");
+                        shim = Assembly.Load("TwistedLogik.Ultraviolet.OSX");
                         break;
 
                     case UltravioletPlatform.Android:

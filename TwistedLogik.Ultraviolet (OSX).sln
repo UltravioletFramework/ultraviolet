@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvFont", "UvFont\UvFont.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvArchive", "UvArchive\UvArchive.csproj", "{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Desktop", "TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj", "{073CAFC1-86CB-414D-A71E-46440E25A3F4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Tooling", "TwistedLogik.Ultraviolet.Tooling\TwistedLogik.Ultraviolet.Tooling.csproj", "{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (Desktop)", "TwistedLogik.Ultraviolet.UI.Presentation_Desktop\TwistedLogik.Ultraviolet.UI.Presentation (Desktop).csproj", "{7379D9E1-BB01-4B05-B4F7-5D39B393348F}"
@@ -53,6 +51,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss_Desktop\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop).csproj", "{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (OSX)", "UvDebugSandbox_OSX\UvDebugSandbox (OSX).csproj", "{471F13F8-1A43-44FA-B0AC-C0ECC280D193}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,12 +60,6 @@ Global
 		Signed|Any CPU = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{073CAFC1-86CB-414D-A71E-46440E25A3F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{073CAFC1-86CB-414D-A71E-46440E25A3F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{073CAFC1-86CB-414D-A71E-46440E25A3F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{073CAFC1-86CB-414D-A71E-46440E25A3F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{073CAFC1-86CB-414D-A71E-46440E25A3F4}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
-		{073CAFC1-86CB-414D-A71E-46440E25A3F4}.Signed|Any CPU.Build.0 = Signed|Any CPU
 		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08B2B8D5-152F-45FB-B4EB-8C09010A9908}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -118,8 +112,8 @@ Global
 		{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}.Signed|Any CPU.ActiveCfg = Release|Any CPU
-		{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}.Signed|Any CPU.Build.0 = Signed|Any CPU
 		{D27AB499-F06F-47EA-8645-285CF2315EC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D27AB499-F06F-47EA-8645-285CF2315EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D27AB499-F06F-47EA-8645-285CF2315EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -156,6 +150,12 @@ Global
 		{F6C64886-59BF-4DFD-AF10-53C1700EE20D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6C64886-59BF-4DFD-AF10-53C1700EE20D}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{F6C64886-59BF-4DFD-AF10-53C1700EE20D}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{471F13F8-1A43-44FA-B0AC-C0ECC280D193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{471F13F8-1A43-44FA-B0AC-C0ECC280D193}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{471F13F8-1A43-44FA-B0AC-C0ECC280D193}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{471F13F8-1A43-44FA-B0AC-C0ECC280D193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{471F13F8-1A43-44FA-B0AC-C0ECC280D193}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{471F13F8-1A43-44FA-B0AC-C0ECC280D193}.Signed|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

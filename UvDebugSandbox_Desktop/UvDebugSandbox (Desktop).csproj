@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+	<PropertyGroup>
+		<IsMac>false</IsMac>
+		<IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
+	</PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -137,10 +141,6 @@
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS_Desktop\TwistedLogik.Ultraviolet.BASS %28Desktop%29.csproj">
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
       <Name>TwistedLogik.Ultraviolet.BASS (Desktop)</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj">
-      <Project>{073CAFC1-86CB-414D-A71E-46440E25A3F4}</Project>
-      <Name>TwistedLogik.Ultraviolet.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29.csproj">
       <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
@@ -290,6 +290,6 @@
   <Target Name="AfterBuild" Condition="'$(BAMBOO_buildType)'==''">
     <Message Text="Compiling content archive and binding expressions assembly..." />
     <Exec Condition=" '$(OS)' == 'Windows_NT' " WorkingDirectory="$(OutputPath)" Command="&quot;$(AssemblyName).exe&quot; -resolve:content -compile:content -compile:expressions" />
-    <Exec Condition=" '$(OS)' == 'Unix' " WorkingDirectory="$(OutputPath)" Command="mono &quot;$(AssemblyName).exe&quot; -resolve:content -compile:content -compile:expressions" />
+    <Exec Condition=" '$(OS)' == 'Unix' And '$(IsMac)' == 'false' " WorkingDirectory="$(OutputPath)" Command="mono &quot;$(AssemblyName).exe&quot; -resolve:content -compile:content -compile:expressions" />
   </Target>
 </Project>
