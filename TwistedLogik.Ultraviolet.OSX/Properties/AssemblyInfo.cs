@@ -2,18 +2,14 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: CLSCompliant(false)]
+[assembly: CLSCompliant(true)]
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ultraviolet OSX Platform Compatibility Shim")]
-[assembly: AssemblyProduct("Ultraviolet Framework")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("TwistedLogik Software")]
-[assembly: AssemblyCopyright("Copyright © Cole Campbell 2015")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle(@"Platform Compatibility Shim for OS X")]
+[assembly: AssemblyDescription(
+    @"Provides Ultraviolet type implementations which are specific to the OS X platform.")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -25,13 +21,3 @@ using System.Runtime.InteropServices;
 // project is exposed to COM. On other platforms, it unique identifies the
 // title storage container when deploying this assembly to the device.
 [assembly: Guid("54bf4e4a-678c-44d4-b04b-c770b13b550f")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]

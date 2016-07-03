@@ -1212,8 +1212,11 @@ namespace TwistedLogik.Ultraviolet
                 {
                     case UltravioletPlatform.Windows:
                     case UltravioletPlatform.Linux:
+                        shim = Assembly.LoadFile("TwistedLogik.Ultraviolet.Desktop.dll");
+                        break;
+
                     case UltravioletPlatform.OSX:
-                        shim = Assembly.LoadFrom("TwistedLogik.Ultraviolet.Desktop.dll");
+                        shim = Assembly.LoadFile("TwistedLogik.Ultraviolet.OSX.dll");
                         break;
 
                     case UltravioletPlatform.Android:
@@ -1231,26 +1234,6 @@ namespace TwistedLogik.Ultraviolet
                 if (shim != null)
                 {
                     InitializeFactoryMethodsInAssembly(shim);
-                }
-
-                /* NOTE:
-                 * There appears to be a bug in recent versions of Mono on OSX which cause the
-                 * first call into System.Drawing to freeze the application for 15+ seconds
-                 * while the font cache is rebuilt. To work around this, we provide an OSX
-                 * platform shim which overrides some of the System.Drawing-based services
-                 * in the Desktop shim. Currently, this shim is optional; we can fall back to
-                 * the bugged implementation if it isn't present. */
-                if (Platform == UltravioletPlatform.OSX)
-                {
-                    try
-                    {
-                        var osxOverrideShim = Assembly.LoadFrom("TwistedLogik.Ultraviolet.OSX.dll");
-                        if (osxOverrideShim != null)
-                        {
-                            InitializeFactoryMethodsInAssembly(osxOverrideShim);
-                        }
-                    }
-                    catch (FileNotFoundException) { }
                 }
             }
             catch (FileNotFoundException e)

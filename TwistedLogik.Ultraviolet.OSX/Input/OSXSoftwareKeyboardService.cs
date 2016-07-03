@@ -1,12 +1,12 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Input;
 
-namespace TwistedLogik.Ultraviolet.Desktop.Input
+namespace TwistedLogik.Ultraviolet.OSX.Input
 {
     /// <summary>
-    /// Represents an implementation of the <see cref="SoftwareKeyboardService"/> class for desktop platforms.
+    /// Represents an implementation of the <see cref="SoftwareKeyboardService"/> class for Mac OS X.
     /// </summary>
-    public sealed class DesktopSoftwareKeyboardService : SoftwareKeyboardService
+    public sealed class OSXSoftwareKeyboardService : SoftwareKeyboardService
     {
         /// <inheritdoc/>
         public override Boolean ShowSoftwareKeyboard(KeyboardMode mode)

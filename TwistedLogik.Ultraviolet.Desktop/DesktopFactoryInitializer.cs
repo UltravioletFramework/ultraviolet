@@ -11,20 +11,14 @@ namespace TwistedLogik.Ultraviolet.Desktop
     /// <summary>
     /// Initializes factory methods for the Desktop platform compatibility shim.
     /// </summary>
+    [Preserve(AllMembers = true)]
     internal sealed class DesktopFactoryInitializer : IUltravioletFactoryInitializer
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopFactoryInitializer"/> class.
-        /// </summary>
-        [Preserve]
-        public DesktopFactoryInitializer() { }
-
         /// <summary>
         /// Initializes the specified factory.
         /// </summary>
         /// <param name="owner">The Ultraviolet context that owns the initializer.</param>
         /// <param name="factory">The <see cref="UltravioletFactory"/> to initialize.</param>
-        [Preserve]
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
             factory.SetFactoryMethod<SurfaceSourceFactory>((stream) => new DesktopSurfaceSource(stream));

@@ -3,6 +3,9 @@ using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.OSX.Platform
 {
+    /// <summary>
+    /// Represents an implementation of the <see cref="IconLoader"/> class for Mac OS X.
+    /// </summary>
     public sealed class OSXIconLoader : IconLoader
 	{
         /// <inheritdoc/>

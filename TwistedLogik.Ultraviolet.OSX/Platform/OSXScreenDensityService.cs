@@ -5,6 +5,9 @@ using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.OSX.Platform
 {
+    /// <summary>
+    /// Represents an implementation of the <see cref="ScreenDensityService"/> class for Mac OS X.
+    /// </summary>
 	public sealed class OSXScreenDensityService : ScreenDensityService
 	{
         /// <summary>

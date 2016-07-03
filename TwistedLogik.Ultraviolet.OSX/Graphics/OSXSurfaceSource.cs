@@ -33,6 +33,7 @@ namespace TwistedLogik.Ultraviolet.OSX.Graphics
         /// Initializes a new instance of the <see cref="OSXSurfaceSource"/> class from the specified image.
         /// </summary>
         /// <param name="stream">The <see cref="NSImage"/> that contains the surface data.</param>
+        [CLSCompliant(false)]
         public OSXSurfaceSource(NSImage image)
         {
             Contract.Require(image, "image");

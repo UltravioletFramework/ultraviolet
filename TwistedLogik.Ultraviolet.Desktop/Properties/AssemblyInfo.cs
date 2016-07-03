@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle(@"Platform Compatibility Shim for Desktop")]
 [assembly: AssemblyDescription(
-    @"Provides Ultraviolet type implementations which are specific to the Windows, Linux, and OS X platforms.")]
+    @"Provides Ultraviolet type implementations which are specific to the Windows and Linux platforms.")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
