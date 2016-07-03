@@ -19,5 +19,12 @@ namespace TwistedLogik.Ultraviolet.Desktop.Input
         {
             return false;
         }
+        
+        /// <inheritdoc/>
+        public override Rectangle? TextInputRegion
+        {
+            get { return null; }
+            set { }
+        }
     }
 }

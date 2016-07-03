@@ -602,9 +602,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void PositionChildrenOverride()
+        {
+            base.PositionChildrenOverride();
+
+            if (IsKeyboardFocused)
+                UpdateTextInputRegion();
+        }
+
+        /// <inheritdoc/>
         protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
         {
+            UpdateTextInputRegion();
             Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode);
+
             data.Handled = true;
 
             base.OnGenericInteraction(device, data);
@@ -673,6 +684,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
+            UpdateTextInputRegion();
             Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode);
 
             if (TextEditor != null)
@@ -684,6 +696,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnLostKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
+            UpdateTextInputRegion(clear: true);
             Ultraviolet.GetInput().HideSoftwareKeyboard();
 
             if (TextEditor != null)
@@ -865,6 +878,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     scrollViewer.ClearLocalValue(MaxHeightProperty);
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates the text input region so that this control will be panned into view while
+        /// the software keyboard is open.
+        /// </summary>
+        private void UpdateTextInputRegion(Boolean clear = false)
+        {
+            var service = SoftwareKeyboardService.Create();
+            service.TextInputRegion = clear ? (Ultraviolet.Rectangle?)null :
+                (Ultraviolet.Rectangle)Display.DipsToPixels(CalculateTransformedVisualBounds());
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.SDL2.Native;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Messages;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.SDL2.Input;
 
@@ -8,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
     /// <summary>
     /// Represents the SDL2 implementation of the Ultraviolet Input subsystem.
     /// </summary>
-    public sealed class SDL2UltravioletInput : UltravioletResource, IUltravioletInput
+    public sealed class SDL2UltravioletInput : UltravioletResource, IUltravioletInput, IMessageSubscriber<UltravioletMessageID>
     {
         /// <summary>
         /// Initializes a new instance of the SDL2UltravioletInput class.
@@ -25,6 +27,37 @@ namespace TwistedLogik.Ultraviolet.SDL2
             this.gamePadInfo.GamePadConnected += OnGamePadConnected;
             this.gamePadInfo.GamePadDisconnected += OnGamePadDisconnected;
             this.touchInfo = new TouchDeviceInfo(uv);
+
+            uv.Messages.Subscribe(this,
+                UltravioletMessages.TextInputRegionChanged);
+        }
+
+        /// <inheritdoc/>
+        void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
+        {
+            if (type == UltravioletMessages.TextInputRegionChanged)
+            {
+                unsafe
+                {
+                    var service = SoftwareKeyboardService.Create();
+                    var region = service.TextInputRegion;
+                    if (region.HasValue)
+                    {
+                        var rect = new SDL_Rect()
+                        {
+                            x = region.Value.X,
+                            y = region.Value.Y,
+                            w = region.Value.Width,
+                            h = region.Value.Height,
+                        };
+                        SDL.SetTextInputRect(&rect);
+                    }
+                    else
+                    {
+                        SDL.SetTextInputRect(null);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -245,6 +278,9 @@ namespace TwistedLogik.Ultraviolet.SDL2
 
             if (disposing)
             {
+                if (Ultraviolet != null && !Ultraviolet.Disposed)
+                    Ultraviolet.Messages.Unsubscribe(this);
+
                 SafeDispose.DisposeRef(ref keyboard);
                 SafeDispose.DisposeRef(ref mouse);
                 SafeDispose.DisposeRef(ref gamePadInfo);

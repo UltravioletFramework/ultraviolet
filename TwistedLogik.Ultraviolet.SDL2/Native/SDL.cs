@@ -346,6 +346,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_StopTextInput")]
         public static extern void StopTextInput();
 
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetTextInputRect")]
+        public static extern void SetTextInputRect(SDL_Rect* rect);
+
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_HasClipboardText")]
         public static extern Boolean HasClipboardText();
 

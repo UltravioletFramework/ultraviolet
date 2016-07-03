@@ -50,6 +50,21 @@ namespace TwistedLogik.Ultraviolet.Android.Input
             return true;
         }
 
+        /// <inheritdoc/>
+        public override Rectangle? TextInputRegion
+        {
+            get { return textInputRegion; }
+            set
+            {
+                if (textInputRegion != value)
+                {
+                    textInputRegion = value;
+                    UltravioletContext.RequestCurrent()?.Messages.Publish(
+                        UltravioletMessages.TextInputRegionChanged, null);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the current Android activity.
         /// </summary>
@@ -59,5 +74,8 @@ namespace TwistedLogik.Ultraviolet.Android.Input
             get;
             internal set;
         }
+
+        // Property values.
+        private Rectangle? textInputRegion;
     }
 }

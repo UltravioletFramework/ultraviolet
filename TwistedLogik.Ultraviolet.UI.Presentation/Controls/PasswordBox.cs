@@ -273,7 +273,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
         {
-            Ultraviolet.GetInput().ShowSoftwareKeyboard();
+            UpdateTextInputRegion();
+            Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode.Text);
+
             data.Handled = true;
 
             base.OnGenericInteraction(device, data);
@@ -342,6 +344,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnGotKeyboardFocus(KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
         {
+            UpdateTextInputRegion();
             Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode.Text);
 
             if (PART_Editor != null)
@@ -442,6 +445,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 SetValue(TextBoxBase.IsSelectionActivePropertyKey, isSelectionActive);
             }
+        }
+
+        /// <summary>
+        /// Updates the text input region so that this control will be panned into view while
+        /// the software keyboard is open.
+        /// </summary>
+        private void UpdateTextInputRegion(Boolean clear = false)
+        {
+            var service = SoftwareKeyboardService.Create();
+            service.TextInputRegion = clear ? (Ultraviolet.Rectangle?)null :
+                (Ultraviolet.Rectangle)Display.DipsToPixels(CalculateTransformedVisualBounds());
         }
 
         // Component references.
