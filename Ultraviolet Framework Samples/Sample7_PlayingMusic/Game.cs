@@ -113,6 +113,7 @@ namespace UltravioletSample.Sample7_PlayingMusic
         {
             if (disposing)
             {
+                SafeDispose.Dispose(songPlayer);
                 SafeDispose.Dispose(spriteBatch);
                 SafeDispose.Dispose(content);
             }

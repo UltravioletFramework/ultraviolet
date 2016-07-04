@@ -323,7 +323,8 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
-            StopInternal();
+            if (Ultraviolet != null && !Ultraviolet.Disposed)
+                StopInternal();
 
             if (gcHandle.IsAllocated)
                 gcHandle.Free();

@@ -315,10 +315,9 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
-            if (disposing)
-            {
+            if (Ultraviolet != null && !Ultraviolet.Disposed)
                 Release();
-            }
+
             base.Dispose(disposing);
         }
 
