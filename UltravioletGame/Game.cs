@@ -18,7 +18,7 @@ namespace SAFE_PROJECT_NAME
     /// Represents the main application object.
     /// </summary>
 #if ANDROID
-    [Android.App.Activity(Label = "GameActivity", MainLauncher = true, ConfigurationChanges = 
+    [Android.App.Activity(Label = "UltravioletGame", MainLauncher = true, ConfigurationChanges = 
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]

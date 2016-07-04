@@ -42,6 +42,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>uv.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -189,6 +192,9 @@
       <Project>{9f505c43-6e37-425f-b348-be4de7ab2f0b}</Project>
       <Name>SampleSharedLib (Desktop)</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="..\Sample11_GamePads\Sample11_GamePads.projitems" Label="Shared" />
 </Project>
