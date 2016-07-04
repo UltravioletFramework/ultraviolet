@@ -122,6 +122,13 @@
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-512.png" />
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-512%402x.png" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv16.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv32.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv64.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv128.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv256.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv512.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv1024.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -211,7 +218,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SampleSharedLib_OSX\SampleSharedLib (OSX).csproj">
       <Project>{44E65162-EF15-4076-91C2-319AAC6A22AC}</Project>
-      <Name>SampleSharedLib_OSX</Name>
+      <Name>SampleSharedLib (OSX)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
