@@ -33,7 +33,6 @@ namespace SAFE_PROJECT_NAME
         public Game() : base("YOUR_ORGANIZATION", "PROJECT_NAME")
         {
             PlatformSpecificInitialization();
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
         }
 
         /// <summary>

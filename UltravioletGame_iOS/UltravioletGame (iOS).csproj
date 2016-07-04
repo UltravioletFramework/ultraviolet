@@ -6,7 +6,7 @@
     <ProjectGuid>{37B9C072-2799-4C6A-B952-63A848DAAC0A}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>UltravioletGame</RootNamespace>
+    <RootNamespace>SAFE_PROJECT_NAME</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>UltravioletGame</AssemblyName>
   </PropertyGroup>
@@ -214,6 +214,7 @@
       <Link>Resources\Content\Cursors\CursorsImage.png</Link>
     </BundleResource>
     <Content Include="Entitlements.plist" />
+    <Compile Include="Game.Init.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
