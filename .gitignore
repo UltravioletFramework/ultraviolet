@@ -162,6 +162,7 @@ $RECYCLE.BIN/
 
 Resource.Designer.cs
 gen/
+*.userprefs
 
 # =========================
 # Ultraviolet stuff

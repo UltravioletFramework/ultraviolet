@@ -257,6 +257,7 @@
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
+    <Compile Include="Game.cs" />
   </ItemGroup>
   <Import Project="..\Sample10_AsynchronousContentLoading\Sample10_AsynchronousContentLoading.projitems" Label="Shared" />
   <Import Project="..\SampleSharedLib\SampleSharedLib.projitems" Label="Shared" />

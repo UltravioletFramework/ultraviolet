@@ -22,7 +22,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
         Android.Content.PM.ConfigChanges.ScreenSize |
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
 #endif
-    public class Game : SampleApplicationBase2
+    public partial class Game : SampleApplicationBase2
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
@@ -30,11 +30,10 @@ namespace UltravioletSample.Sample13_UPFAdvanced
         public Game() 
             : base("TwistedLogik", "Sample 13 - UPF Advanced", uv => uv.GetInput().GetActions())
         {
-#if IOS
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.CompilerMetadata>();
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
-#endif
+            PlatformSpecificInitialization();
         }
+
+        partial void PlatformSpecificInitialization();
 
         /// <summary>
         /// The application's entry point.

@@ -17,16 +17,15 @@ namespace UltravioletSample.Sample12_UPF
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
 #endif
-    public class Game : SampleApplicationBase2
+    public partial class Game : SampleApplicationBase2
     {
         public Game()
             : base("TwistedLogik", "Sample 12 - UPF", uv => uv.GetInput().GetActions())
         {
-#if IOS
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.CompilerMetadata>();
-#endif
+            PlatformSpecificInitialization();
         }
+
+        partial void PlatformSpecificInitialization();
 
         public static void Main(String[] args)
         {

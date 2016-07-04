@@ -13,15 +13,15 @@ namespace UltravioletSample.Sample3_RenderingGeometry
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
 #endif
-    public class Game : SampleApplicationBase1
+    public partial class Game : SampleApplicationBase1
     {
         public Game()
             : base("TwistedLogik", "Sample 3 - Rendering Geometry", uv => uv.GetInput().GetActions())
         {
-#if IOS
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
-#endif
+            PlatformSpecificInitialization();
         }
+
+        partial void PlatformSpecificInitialization();
 
         public static void Main(String[] args)
         {

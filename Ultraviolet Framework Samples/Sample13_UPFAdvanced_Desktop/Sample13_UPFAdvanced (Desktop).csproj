@@ -104,18 +104,6 @@
     <EmbeddedResource Include="UI\Controls\Templates\TriangleColorSelector.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Dependencies\x64\osx\libbass.dylib">
-      <Link>x64\osx\libbass.dylib</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\x64\osx\libbass_fx.dylib">
-      <Link>x64\osx\libbass_fx.dylib</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Dependencies\x64\osx\libSDL2.dylib">
-      <Link>x64\osx\libSDL2.dylib</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\Dependencies\x64\unix\libbass.so">
       <Link>x64\unix\libbass.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

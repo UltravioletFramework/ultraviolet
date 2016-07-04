@@ -11,18 +11,18 @@ namespace UltravioletSample.Sample2_HandlingInput
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
+    public partial class Game : UltravioletActivity
 #else
-    public class Game : UltravioletApplication
+    public partial class Game : UltravioletApplication
 #endif
     {
         public Game()
             : base("TwistedLogik", "Sample 2 - Handling Input")
         {
-#if IOS
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
-#endif
+            PlatformSpecificInitialization();
         }
+
+        partial void PlatformSpecificInitialization();
 
         public static void Main(String[] args)
         {

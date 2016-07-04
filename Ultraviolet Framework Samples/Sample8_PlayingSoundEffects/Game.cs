@@ -19,15 +19,15 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
 #endif
-    public class Game : SampleApplicationBase2
+    public partial class Game : SampleApplicationBase2
     {
         public Game()
             : base("TwistedLogik", "Sample 8 - Playing Sound Effects", uv => uv.GetInput().GetActions())
         {
-#if IOS
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
-#endif
+            PlatformSpecificInitialization();
         }
+
+        partial void PlatformSpecificInitialization();
 
         public static void Main(String[] args)
         {

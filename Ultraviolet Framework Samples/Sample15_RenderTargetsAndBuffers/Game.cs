@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Audio;
@@ -23,10 +22,10 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
         public Game()
             : base("TwistedLogik", "Sample 15 - Render Targets and Buffers", uv => uv.GetInput().GetActions())
         {
-#if IOS
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
-#endif
+            PlatformSpecificInitialization();
         }
+
+        partial void PlatformSpecificInitialization();
 
         public static void Main(String[] args)
         {
@@ -98,6 +97,8 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
 
             base.OnUpdating(time);
         }
+
+        partial void SaveImage(SurfaceSaver surfaceSaver, RenderTarget2D target);
 
         /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time)
@@ -183,11 +184,6 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
             Ultraviolet.GetContent().Manifests["Global"]["Effects"].PopulateAssetLibrary(typeof(GlobalEffectID));
             Ultraviolet.GetContent().Manifests["Global"]["SoundEffects"].PopulateAssetLibrary(typeof(GlobalSoundEffectID));
         }
-
-		/// <summary>
-		/// Saves the specified image to the current device.
-		/// </summary>
-		partial void SaveImage(SurfaceSaver surfaceSaver, RenderTarget2D target);
 
         // Application resources
         private ContentManager content;
