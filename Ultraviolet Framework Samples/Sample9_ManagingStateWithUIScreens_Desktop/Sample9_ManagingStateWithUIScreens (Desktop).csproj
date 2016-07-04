@@ -182,6 +182,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SampleSharedLib_Desktop\SampleSharedLib %28Desktop%29.csproj">
+      <Project>{9f505c43-6e37-425f-b348-be4de7ab2f0b}</Project>
+      <Name>SampleSharedLib %28Desktop%29</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\Sample9_ManagingStateWithUIScreens\Sample9_ManagingStateWithUIScreens.projitems" Label="Shared" />
 </Project>
