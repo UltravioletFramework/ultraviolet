@@ -1,5 +1,5 @@
-del *.nuspec
-del *.nupkg
+del *.nuspec 2>NUL
+del *.nupkg 2>NUL
 
 if [%1]==[] ( set UV_BUILD=0 ) else ( set UV_BUILD=%1 )
 
