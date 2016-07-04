@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<IsMac>false</IsMac>
 		<IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
+		<AssemblyName>UltravioletGame</AssemblyName>
 	</PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -36,7 +37,6 @@
     <TlsProvider>Default</TlsProvider>
     <LinkMode>None</LinkMode>
     <XamMacArch></XamMacArch>
-    <AssemblyName>UvDebugSandbox</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>

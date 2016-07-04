@@ -22,9 +22,9 @@ namespace SAFE_PROJECT_NAME
         Android.Content.PM.ConfigChanges.Orientation | 
         Android.Content.PM.ConfigChanges.ScreenSize | 
         Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class Game : UltravioletActivity
+    public partial class Game : UltravioletActivity
 #else
-    public class Game : UltravioletApplication
+    public partial class Game : UltravioletApplication
 #endif
     {
         /// <summary>
@@ -32,8 +32,14 @@ namespace SAFE_PROJECT_NAME
         /// </summary>
         public Game() : base("YOUR_ORGANIZATION", "PROJECT_NAME")
         {
+            PlatformSpecificInitialization();
             EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
         }
+
+        /// <summary>
+        /// Performs any necessary platform-specific initialization steps.
+        /// </summary>
+        partial void PlatformSpecificInitialization();
 
         /// <summary>
         /// The application's entry point.
