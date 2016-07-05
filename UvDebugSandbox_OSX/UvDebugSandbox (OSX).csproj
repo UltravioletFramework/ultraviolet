@@ -57,6 +57,25 @@
     <TlsProvider>Default</TlsProvider>
     <XamMacArch></XamMacArch>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Signed</OutputPath>
+    <DefineConstants>__UNIFIED__;OSX</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <CodeSigningKey>Developer ID Application</CodeSigningKey>
+    <CreatePackage>true</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <LinkMode>None</LinkMode>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
+    <XamMacArch></XamMacArch>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -238,7 +257,7 @@
   </ItemGroup>
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" Condition="Exists('..\UvDebugSandbox\UvDebugSandbox.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
-  <Target Name="AfterBuild" Condition="'$(BAMBOO_buildType)'==''">
+  <Target Name="AfterBuild" DependsOnTargets="_CreateAppBundle" Condition="'$(BAMBOO_buildType)'==''">
     <Message Text="Compiling content archive and binding expressions assembly..." />
     <Exec Condition=" '$(OS)' == 'Unix' And '$(IsMac)' == 'true' " WorkingDirectory="$(OutputPath)" Command="open &quot;./$(AssemblyName).app&quot; --args -resolve:content -compile:content -compile:expressions" />
   </Target>  
