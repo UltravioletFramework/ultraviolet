@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (OSX)", "UvDebugSandbox_OSX\UvDebugSandbox (OSX).csproj", "{471F13F8-1A43-44FA-B0AC-C0ECC280D193}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame_OSX", "UltravioletGame_OSX\UltravioletGame_OSX.csproj", "{AE469C94-75D7-4387-A030-D3C53CCA90B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (OSX)", "UltravioletGame_OSX\UltravioletGame (OSX).csproj", "{AE469C94-75D7-4387-A030-D3C53CCA90B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
