@@ -70,7 +70,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample12_UPF (iOS)", "Sampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample13_UPFAdvanced (iOS)", "Sample13_UPFAdvanced_iOS\Sample13_UPFAdvanced (iOS).csproj", "{18E6166B-F4B3-4265-8B7F-BA99D7345C23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample14_LoadingImageDataWithSurfaces_iOS", "Sample14_LoadingImageDataWithSurfaces_iOS\Sample14_LoadingImageDataWithSurfaces_iOS.csproj", "{C0A427E3-4C7D-4F60-B124-37CB3A2E476E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample14_LoadingImageDataWithSurfaces (iOS)", "Sample14_LoadingImageDataWithSurfaces_iOS\Sample14_LoadingImageDataWithSurfaces (iOS).csproj", "{C0A427E3-4C7D-4F60-B124-37CB3A2E476E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBuffers (iOS)", "Sample15_RenderTargetsAndBuffers_iOS\Sample15_RenderTargetsAndBuffers (iOS).csproj", "{E6766408-B862-4C60-948C-96809811B157}"
 EndProject
