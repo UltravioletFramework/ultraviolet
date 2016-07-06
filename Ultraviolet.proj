@@ -1,304 +1,304 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildWindows;BuildLinux;BuildOSX;BuildAndroid;BuildiOS;BuildiOSLocal">
-	<PropertyGroup Condition="'$(Configuration)' == ''">
-		<Configuration>Debug</Configuration>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Platform)' == ''">
-		<Platform>Any CPU</Platform>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(iOSPlatform)' == ''">
-		<iOSPlatform>iPhone</iOSPlatform>
-	</PropertyGroup>
-	<PropertyGroup>
-		<IsMac>false</IsMac>
-		<IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == ''">
+    <Configuration>Debug</Configuration>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == ''">
+    <Platform>Any CPU</Platform>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(iOSPlatform)' == ''">
+    <iOSPlatform>iPhone</iOSPlatform>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IsMac>false</IsMac>
+    <IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<Ultraviolet_Windows Include="TwistedLogik.Ultraviolet (Windows).sln">
-			<Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-		</Ultraviolet_Windows>
-		<Ultraviolet_Linux Include="TwistedLogik.Ultraviolet (Linux).sln">
-			<Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-		</Ultraviolet_Linux>
-		<Ultraviolet_OSX Include="TwistedLogik.Ultraviolet (OSX).sln">
-			<Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-		</Ultraviolet_OSX>
-		<Ultraviolet_Android Include="TwistedLogik.Ultraviolet (Android).sln">
-			<Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-		</Ultraviolet_Android>
-		<Ultraviolet_iOS Include="TwistedLogik.Ultraviolet (iOS).sln">
-			<Properties>Configuration=$(Configuration);Platform=$(iOSPlatform);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)</Properties>
-		</Ultraviolet_iOS>
-		<Ultraviolet_iOS_Local Include="TwistedLogik.Ultraviolet (iOS).sln"/>
-	</ItemGroup>
-		
-	<!-- DESKTOP -->	
-	<Target Name="RestoreWindows">
-		<Exec Condition="'$(OS)'=='Windows_NT'" 
-			Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Windows)&quot;"/>
-		<Exec Condition="'$(OS)'=='Unix'" 
-			Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Windows)&quot;"/>
-	</Target>
-	<Target Name="RestoreLinux">
-		<Exec Condition="'$(OS)'=='Windows_NT'" 
-			Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Linux)&quot;"/>
-		<Exec Condition="'$(OS)'=='Unix'" 
-			Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Linux)&quot;"/>
-	</Target>
-	<Target Name="RestoreOSX">
-		<Exec Condition="'$(OS)'=='Windows_NT'" 
-			Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_OSX)&quot;"/>
-		<Exec Condition="'$(OS)'=='Unix'" 
-			Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_OSX)&quot;"/>
-	</Target>
-	
-	<Target Name="BuildWindows" Condition="'$(OS)' == 'Windows_NT'">
-		<CallTarget Targets="RestoreWindows"/>
-		<MSBuild Projects="@(Ultraviolet_Windows)"/>
-		<CallTarget Targets="CopyWindowsBinaries"/>
-		<CallTarget Targets="CopyDesktopBinaries"/>
-	</Target>
-	<Target Name="BuildLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
-		<CallTarget Targets="RestoreLinux"/>
-		<MSBuild Projects="@(Ultraviolet_Linux)"/>
-		<CallTarget Targets="CopyDesktopBinaries"/>
-	</Target>
-	<Target Name="BuildOSX" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
-		<CallTarget Targets="RestoreOSX"/>
-		<MSBuild Projects="@(Ultraviolet_OSX)"/>
-		<CallTarget Targets="CopyOSXBinaries"/>
-		<CallTarget Targets="CopyDesktopBinaries"/>
-	</Target>
-			
-	<Target Name="CopyDesktopBinaries">
-    	<CreateItem Include="packages/Newtonsoft.Json.8.0.3/lib/net40/*.*">
+  <ItemGroup>
+    <Ultraviolet_Windows Include="TwistedLogik.Ultraviolet (Windows).sln">
+      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
+    </Ultraviolet_Windows>
+    <Ultraviolet_Linux Include="TwistedLogik.Ultraviolet (Linux).sln">
+      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
+    </Ultraviolet_Linux>
+    <Ultraviolet_OSX Include="TwistedLogik.Ultraviolet (OSX).sln">
+      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
+    </Ultraviolet_OSX>
+    <Ultraviolet_Android Include="TwistedLogik.Ultraviolet (Android).sln">
+      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
+    </Ultraviolet_Android>
+    <Ultraviolet_iOS Include="TwistedLogik.Ultraviolet (iOS).sln">
+      <Properties>Configuration=$(Configuration);Platform=$(iOSPlatform);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)</Properties>
+    </Ultraviolet_iOS>
+    <Ultraviolet_iOS_Local Include="TwistedLogik.Ultraviolet (iOS).sln"/>
+  </ItemGroup>
+    
+  <!-- DESKTOP -->	
+  <Target Name="RestoreWindows">
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Windows)&quot;"/>
+    <Exec Condition="'$(OS)'=='Unix'" 
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Windows)&quot;"/>
+  </Target>
+  <Target Name="RestoreLinux">
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Linux)&quot;"/>
+    <Exec Condition="'$(OS)'=='Unix'" 
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Linux)&quot;"/>
+  </Target>
+  <Target Name="RestoreOSX">
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_OSX)&quot;"/>
+    <Exec Condition="'$(OS)'=='Unix'" 
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_OSX)&quot;"/>
+  </Target>
+  
+  <Target Name="BuildWindows" Condition="'$(OS)' == 'Windows_NT'">
+    <CallTarget Targets="RestoreWindows"/>
+    <MSBuild Projects="@(Ultraviolet_Windows)"/>
+    <CallTarget Targets="CopyWindowsBinaries"/>
+    <CallTarget Targets="CopyDesktopBinaries"/>
+  </Target>
+  <Target Name="BuildLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
+    <CallTarget Targets="RestoreLinux"/>
+    <MSBuild Projects="@(Ultraviolet_Linux)"/>
+    <CallTarget Targets="CopyDesktopBinaries"/>
+  </Target>
+  <Target Name="BuildOSX" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
+    <CallTarget Targets="RestoreOSX"/>
+    <MSBuild Projects="@(Ultraviolet_OSX)"/>
+    <CallTarget Targets="CopyOSXBinaries"/>
+    <CallTarget Targets="CopyDesktopBinaries"/>
+  </Target>
+      
+  <Target Name="CopyDesktopBinaries">
+      <CreateItem Include="packages/Newtonsoft.Json.8.0.3/lib/net40/*.*">
             <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Desktop"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Nucleus_Desktop/bin/$(Configuration)/TwistedLogik.Nucleus.*">
+    <CreateItem Include="TwistedLogik.Nucleus_Desktop/bin/$(Configuration)/TwistedLogik.Nucleus.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Nucleus_Desktop"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Gluon_Desktop/bin/$(Configuration)/TwistedLogik.Gluon.*">
+    <CreateItem Include="TwistedLogik.Gluon_Desktop/bin/$(Configuration)/TwistedLogik.Gluon.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Gluon_Desktop"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Desktop"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.Profiler.dotTrace_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.Profiler.dotTrace.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.Profiler.dotTrace_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.Profiler.dotTrace.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Profiler_dotTrace_Desktop"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.Desktop.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.Desktop.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Desktop_Shim"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.BASS_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.BASS.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.BASS_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.BASS.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_BASS_Desktop"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.OpenGL_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.OpenGL.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.OpenGL_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.OpenGL.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_OpenGL_Desktop"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.SDL2_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.SDL2.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.SDL2_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.SDL2.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_SDL2_Desktop"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_UI_Presentation_Desktop"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.Uvss.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.Uvss.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Desktop"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation.Compiler/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.Compiler.*">
-            <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_UI_Presentation_Compiler"/>
+    <CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation.Compiler_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.Compiler.*">
+            <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_UI_Presentation_Compiler_Desktop"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.Tooling/bin/$(Configuration)/TwistedLogik.Ultraviolet.Tooling.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.Tooling/bin/$(Configuration)/TwistedLogik.Ultraviolet.Tooling.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Tooling"/>
         </CreateItem>
-		<CreateItem Include="UvFont/bin/$(Configuration)/uvfont.exe">
+    <CreateItem Include="UvFont/bin/$(Configuration)/uvfont.exe">
             <Output TaskParameter="Include" ItemName="uvfont_exe"/>
         </CreateItem>
-		<CreateItem Include="UvArchive/bin/$(Configuration)/uvarchive.exe">
+    <CreateItem Include="UvArchive/bin/$(Configuration)/uvarchive.exe">
             <Output TaskParameter="Include" ItemName="uvarchive_exe"/>
         </CreateItem>
-		<Copy SourceFiles="@(Newtonsoft_Json_Desktop)" DestinationFiles="@(Newtonsoft_Json_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Nucleus_Desktop)" DestinationFiles="@(TwistedLogik_Nucleus_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Gluon_Desktop)" DestinationFiles="@(TwistedLogik_Gluon_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_Desktop_Shim)" DestinationFiles="@(TwistedLogik_Ultraviolet_Desktop_Shim->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_BASS_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_BASS_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_OpenGL_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_OpenGL_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_SDL2_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_SDL2_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Compiler)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Compiler->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_Tooling)" DestinationFiles="@(TwistedLogik_Ultraviolet_Tooling->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(uvfont_exe)" DestinationFiles="@(uvfont_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(uvarchive_exe)" DestinationFiles="@(uvarchive_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<CallTarget Targets="CopyDesktopSampleDependencies"/>		
-	</Target>
-	<Target Name="CopyWindowsBinaries">
+    <Copy SourceFiles="@(Newtonsoft_Json_Desktop)" DestinationFiles="@(Newtonsoft_Json_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Nucleus_Desktop)" DestinationFiles="@(TwistedLogik_Nucleus_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Gluon_Desktop)" DestinationFiles="@(TwistedLogik_Gluon_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Desktop_Shim)" DestinationFiles="@(TwistedLogik_Ultraviolet_Desktop_Shim->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_BASS_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_BASS_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_OpenGL_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_OpenGL_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_SDL2_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_SDL2_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Compiler_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Compiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Tooling)" DestinationFiles="@(TwistedLogik_Ultraviolet_Tooling->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(uvfont_exe)" DestinationFiles="@(uvfont_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(uvarchive_exe)" DestinationFiles="@(uvarchive_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <CallTarget Targets="CopyDesktopSampleDependencies"/>		
+  </Target>
+  <Target Name="CopyWindowsBinaries">
         <CreateItem Include="TwistedLogik.Nucleus.Design/bin/$(Configuration)/TwistedLogik.Nucleus.Design.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Nucleus_Design"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.Design/bin/$(Configuration)/TwistedLogik.Ultraviolet.Design.*">		
+    <CreateItem Include="TwistedLogik.Ultraviolet.Design/bin/$(Configuration)/TwistedLogik.Ultraviolet.Design.*">		
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Design"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.WindowsForms/bin/$(Configuration)/TwistedLogik.Ultraviolet.WindowsForms.*">	
+    <CreateItem Include="TwistedLogik.Ultraviolet.WindowsForms/bin/$(Configuration)/TwistedLogik.Ultraviolet.WindowsForms.*">	
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_WindowsForms"/>
         </CreateItem>
-		<Copy SourceFiles="@(TwistedLogik_Nucleus_Design)" DestinationFiles="@(TwistedLogik_Nucleus_Design->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_Design)" DestinationFiles="@(TwistedLogik_Ultraviolet_Design->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_WindowsForms)" DestinationFiles="@(TwistedLogik_Ultraviolet_WindowsForms->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>	
-	</Target>
-	<Target Name="CopyOSXBinaries">
-		<CreateItem	Include="TwistedLogik.Ultraviolet.OSX/bin/$(Configuration)/TwistedLogik.Ultraviolet.OSX.*">
+    <Copy SourceFiles="@(TwistedLogik_Nucleus_Design)" DestinationFiles="@(TwistedLogik_Nucleus_Design->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Design)" DestinationFiles="@(TwistedLogik_Ultraviolet_Design->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_WindowsForms)" DestinationFiles="@(TwistedLogik_Ultraviolet_WindowsForms->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>	
+  </Target>
+  <Target Name="CopyOSXBinaries">
+    <CreateItem	Include="TwistedLogik.Ultraviolet.OSX/bin/$(Configuration)/TwistedLogik.Ultraviolet.OSX.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_OSX_Shim"/>
         </CreateItem>
         <Copy SourceFiles="@(TwistedLogik_Ultraviolet_OSX_Shim)" DestinationFiles="@(TwistedLogik_Ultraviolet_OSX_Shim->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-	</Target>
-	<Target Name="CopyDesktopSampleDependencies">
-		<CreateItem Include="Binaries/AnyCPU/$(Configuration)/*.*">
-			<Output TaskParameter="Include" ItemName="SampleDependencies_Desktop"/>
-		</CreateItem>
-		<Copy SourceFiles="@(SampleDependencies_Desktop)" DestinationFiles="@(SampleDependencies_Desktop->'Ultraviolet Framework Samples/Dependencies/%(RecursiveDir)%(Filename)%(Extension)')"/>	
-	</Target>
-	
-	<!-- ANDROID -->
-	<Target Name="RestoreAndroid">
-		<Exec Condition="'$(OS)'=='Windows_NT'" 
-			Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Android)&quot;"/>
-		<Exec Condition="'$(OS)'=='Unix'" 
-			Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Android)&quot;"/>
-	</Target>
-	
-	<Target Name="BuildAndroid" Condition="'$(OS)' == 'Windows_NT' Or $(IsMac)">
-		<CallTarget Targets="RestoreAndroid"/>
-		<MSBuild Projects="@(Ultraviolet_Android)"/>
-		<CallTarget Targets="CopyAndroidBinaries"/>
-	</Target>
-			
-	<Target Name="CopyAndroidBinaries">
-		<CreateItem Include="packages/Newtonsoft.Json.8.0.3/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
+  </Target>
+  <Target Name="CopyDesktopSampleDependencies">
+    <CreateItem Include="Binaries/AnyCPU/$(Configuration)/*.*">
+      <Output TaskParameter="Include" ItemName="SampleDependencies_Desktop"/>
+    </CreateItem>
+    <Copy SourceFiles="@(SampleDependencies_Desktop)" DestinationFiles="@(SampleDependencies_Desktop->'Ultraviolet Framework Samples/Dependencies/%(RecursiveDir)%(Filename)%(Extension)')"/>	
+  </Target>
+  
+  <!-- ANDROID -->
+  <Target Name="RestoreAndroid">
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Android)&quot;"/>
+    <Exec Condition="'$(OS)'=='Unix'" 
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Android)&quot;"/>
+  </Target>
+  
+  <Target Name="BuildAndroid" Condition="'$(OS)' == 'Windows_NT' Or $(IsMac)">
+    <CallTarget Targets="RestoreAndroid"/>
+    <MSBuild Projects="@(Ultraviolet_Android)"/>
+    <CallTarget Targets="CopyAndroidBinaries"/>
+  </Target>
+      
+  <Target Name="CopyAndroidBinaries">
+    <CreateItem Include="packages/Newtonsoft.Json.8.0.3/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
             <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Android"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Nucleus_Android/bin/$(Configuration)/TwistedLogik.Nucleus.*">
+    <CreateItem Include="TwistedLogik.Nucleus_Android/bin/$(Configuration)/TwistedLogik.Nucleus.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Nucleus_Android"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Gluon_Android/bin/$(Configuration)/TwistedLogik.Gluon.*">
+    <CreateItem Include="TwistedLogik.Gluon_Android/bin/$(Configuration)/TwistedLogik.Gluon.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Gluon_Android"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Android"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.Android.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.Android.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Android_Shim"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.Profiler.dotTrace_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.Profiler.dotTrace.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.Profiler.dotTrace_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.Profiler.dotTrace.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Profiler_dotTrace_Android"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.BASS_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.BASS.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.BASS_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.BASS.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_BASS_Android"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.OpenGL_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.OpenGL.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.OpenGL_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.OpenGL.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_OpenGL_Android"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.SDL2_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.SDL2.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.SDL2_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.SDL2.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_SDL2_Android"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_UI_Presentation_Android"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.Uvss.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.Uvss.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Android"/>
         </CreateItem>
         <Copy SourceFiles="@(Newtonsoft_Json_Android)" DestinationFiles="@(Newtonsoft_Json_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Nucleus_Android)" DestinationFiles="@(TwistedLogik_Nucleus_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Gluon_Android)" DestinationFiles="@(TwistedLogik_Gluon_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_Android_Shim)" DestinationFiles="@(TwistedLogik_Ultraviolet_Android_Shim->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_BASS_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_BASS_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_OpenGL_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_OpenGL_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_SDL2_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_SDL2_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<CallTarget Targets="CopyAndroidSampleDependencies"/>
-	</Target>
-	<Target Name="CopyAndroidSampleDependencies">
-		<CreateItem Include="Binaries/Android/$(Configuration)/*.*">
-			<Output TaskParameter="Include" ItemName="SampleDependencies_Android"/>
-		</CreateItem>
-		<Copy SourceFiles="@(SampleDependencies_Android)" DestinationFiles="@(SampleDependencies_Android->'Ultraviolet Framework Samples/Dependencies/Android/%(RecursiveDir)%(Filename)%(Extension)')"/>	
-	</Target>
-	
-	<!-- IOS -->	
-	<Target Name="RestoreiOS">
-		<Exec Condition="'$(OS)'=='Windows_NT'" 
-			Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_iOS)&quot;"/>
-		<Exec Condition="'$(OS)'=='Unix'" 
-			Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_iOS)&quot;"/>
-	</Target>
-	
-	<Target Name="BuildiOS" Condition="'$(ServerAddress)'!=''">
-		<CallTarget Targets="RestoreiOS"/>
-		<MSBuild Projects="@(Ultraviolet_iOS)"/>
-		<CallTarget Targets="CopyiOSBinaries"/>
-	</Target>
-	<Target Name="BuildiOSLocal" Condition="$(IsMac)">
-		<CallTarget Targets="RestoreiOS"/>
-		<MSBuild Projects="@(Ultraviolet_iOS_Local)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform)"/>
-		<CallTarget Targets="CopyiOSBinaries"/>
-	</Target>
-				
-	<Target Name="CopyiOSBinaries">
-		<CreateItem Include="packages/Newtonsoft.Json.8.0.3/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
+    <Copy SourceFiles="@(TwistedLogik_Nucleus_Android)" DestinationFiles="@(TwistedLogik_Nucleus_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Gluon_Android)" DestinationFiles="@(TwistedLogik_Gluon_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Android_Shim)" DestinationFiles="@(TwistedLogik_Ultraviolet_Android_Shim->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_BASS_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_BASS_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_OpenGL_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_OpenGL_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_SDL2_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_SDL2_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <CallTarget Targets="CopyAndroidSampleDependencies"/>
+  </Target>
+  <Target Name="CopyAndroidSampleDependencies">
+    <CreateItem Include="Binaries/Android/$(Configuration)/*.*">
+      <Output TaskParameter="Include" ItemName="SampleDependencies_Android"/>
+    </CreateItem>
+    <Copy SourceFiles="@(SampleDependencies_Android)" DestinationFiles="@(SampleDependencies_Android->'Ultraviolet Framework Samples/Dependencies/Android/%(RecursiveDir)%(Filename)%(Extension)')"/>	
+  </Target>
+  
+  <!-- IOS -->	
+  <Target Name="RestoreiOS">
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_iOS)&quot;"/>
+    <Exec Condition="'$(OS)'=='Unix'" 
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_iOS)&quot;"/>
+  </Target>
+  
+  <Target Name="BuildiOS" Condition="'$(ServerAddress)'!=''">
+    <CallTarget Targets="RestoreiOS"/>
+    <MSBuild Projects="@(Ultraviolet_iOS)"/>
+    <CallTarget Targets="CopyiOSBinaries"/>
+  </Target>
+  <Target Name="BuildiOSLocal" Condition="$(IsMac)">
+    <CallTarget Targets="RestoreiOS"/>
+    <MSBuild Projects="@(Ultraviolet_iOS_Local)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform)"/>
+    <CallTarget Targets="CopyiOSBinaries"/>
+  </Target>
+        
+  <Target Name="CopyiOSBinaries">
+    <CreateItem Include="packages/Newtonsoft.Json.8.0.3/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
             <Output TaskParameter="Include" ItemName="Newtonsoft_Json_iOS"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Nucleus_iOS/bin/$(Configuration)/TwistedLogik.Nucleus.*">
+    <CreateItem Include="TwistedLogik.Nucleus_iOS/bin/$(Configuration)/TwistedLogik.Nucleus.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Nucleus_iOS"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Gluon_iOS/bin/$(Configuration)/TwistedLogik.Gluon.*">
+    <CreateItem Include="TwistedLogik.Gluon_iOS/bin/$(Configuration)/TwistedLogik.Gluon.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Gluon_iOS"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_iOS"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.Profiler.dotTrace_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.Profiler.dotTrace.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.Profiler.dotTrace_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.Profiler.dotTrace.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Profiler_dotTrace_iOS"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.iOS.Bindings/bin/$(Configuration)/TwistedLogik.Ultraviolet.iOS.Bindings.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.iOS.Bindings/bin/$(Configuration)/TwistedLogik.Ultraviolet.iOS.Bindings.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_iOS_Bindings"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.BASS_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.BASS.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.BASS_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.BASS.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_BASS_iOS"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.OpenGL_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.OpenGL.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.OpenGL_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.OpenGL.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_OpenGL_iOS"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.SDL2_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.SDL2.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.SDL2_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.SDL2.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_SDL2_iOS"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_UI_Presentation_iOS"/>
         </CreateItem>
-		<CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.Uvss.*">
+    <CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.Uvss.*">
             <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_UI_Presentation_Uvss_iOS"/>
         </CreateItem>
         <Copy SourceFiles="@(Newtonsoft_Json_iOS)" DestinationFiles="@(Newtonsoft_Json_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Nucleus_iOS)" DestinationFiles="@(TwistedLogik_Nucleus_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Gluon_iOS)" DestinationFiles="@(TwistedLogik_Gluon_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_iOS_Bindings)" DestinationFiles="@(TwistedLogik_Ultraviolet_iOS_Bindings->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_BASS_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_BASS_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_OpenGL_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_OpenGL_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_SDL2_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_SDL2_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-		<CallTarget Targets="CopyiOSSampleDependencies"/>
-	</Target>
-	<Target Name="CopyiOSSampleDependencies">
-		<CreateItem Include="Binaries/iOS/$(Configuration)/*.*">
-			<Output TaskParameter="Include" ItemName="SampleDependencies_iOS"/>
-		</CreateItem>
-		<Copy SourceFiles="@(SampleDependencies_iOS)" DestinationFiles="@(SampleDependencies_iOS->'Ultraviolet Framework Samples/Dependencies/iOS/%(RecursiveDir)%(Filename)%(Extension)')"/>	
-	</Target>
+    <Copy SourceFiles="@(TwistedLogik_Nucleus_iOS)" DestinationFiles="@(TwistedLogik_Nucleus_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Gluon_iOS)" DestinationFiles="@(TwistedLogik_Gluon_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_iOS_Bindings)" DestinationFiles="@(TwistedLogik_Ultraviolet_iOS_Bindings->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_BASS_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_BASS_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_OpenGL_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_OpenGL_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_SDL2_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_SDL2_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <CallTarget Targets="CopyiOSSampleDependencies"/>
+  </Target>
+  <Target Name="CopyiOSSampleDependencies">
+    <CreateItem Include="Binaries/iOS/$(Configuration)/*.*">
+      <Output TaskParameter="Include" ItemName="SampleDependencies_iOS"/>
+    </CreateItem>
+    <Copy SourceFiles="@(SampleDependencies_iOS)" DestinationFiles="@(SampleDependencies_iOS->'Ultraviolet Framework Samples/Dependencies/iOS/%(RecursiveDir)%(Filename)%(Extension)')"/>	
+  </Target>
 </Project>
