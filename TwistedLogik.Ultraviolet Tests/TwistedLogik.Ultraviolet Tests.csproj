@@ -113,12 +113,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.2.1\lib\net40\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.4.1\lib\net40\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -298,6 +298,10 @@
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.Testing\TwistedLogik.Ultraviolet.Testing.csproj">
       <Project>{BF3C3975-5E7C-40C0-B49B-9A0CBD22BFCB}</Project>
       <Name>TwistedLogik.Ultraviolet.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Compiler_Desktop\TwistedLogik.Ultraviolet.UI.Presentation.Compiler %28Desktop%29.csproj">
+      <Project>{8f3c2da1-8930-493b-854b-a053bdbf9071}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Compiler %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29.csproj">
       <Project>{7379D9E1-BB01-4B05-B4F7-5D39B393348F}</Project>

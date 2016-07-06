@@ -72,7 +72,7 @@
   </Target>
       
   <Target Name="CopyDesktopBinaries">
-      <CreateItem Include="packages/Newtonsoft.Json.8.0.3/lib/net40/*.*">
+      <CreateItem Include="packages/Newtonsoft.Json.9.0.1/lib/net40/*.*">
             <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Desktop"/>
         </CreateItem>
     <CreateItem Include="TwistedLogik.Nucleus_Desktop/bin/$(Configuration)/TwistedLogik.Nucleus.*">
@@ -176,7 +176,7 @@
   </Target>
       
   <Target Name="CopyAndroidBinaries">
-    <CreateItem Include="packages/Newtonsoft.Json.8.0.3/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
+    <CreateItem Include="packages/Newtonsoft.Json.9.0.1/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
             <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Android"/>
         </CreateItem>
     <CreateItem Include="TwistedLogik.Nucleus_Android/bin/$(Configuration)/TwistedLogik.Nucleus.*">
@@ -249,7 +249,7 @@
   </Target>
         
   <Target Name="CopyiOSBinaries">
-    <CreateItem Include="packages/Newtonsoft.Json.8.0.3/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
+    <CreateItem Include="packages/Newtonsoft.Json.9.0.1/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
             <Output TaskParameter="Include" ItemName="Newtonsoft_Json_iOS"/>
         </CreateItem>
     <CreateItem Include="TwistedLogik.Nucleus_iOS/bin/$(Configuration)/TwistedLogik.Nucleus.*">
