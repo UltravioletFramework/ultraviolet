@@ -9,8 +9,8 @@
     <ProjectGuid>{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler_Desktop</RootNamespace>
-    <AssemblyName>TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler_Desktop</AssemblyName>
+    <RootNamespace>TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler</RootNamespace>
+    <AssemblyName>TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -35,6 +35,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>bin\Signed\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
