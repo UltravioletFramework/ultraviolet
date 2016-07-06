@@ -7,7 +7,7 @@
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>UltravioletSample.Sample6_RenderingText</RootNamespace>
-    <AssemblyName>Sample 7 - Playing Music</AssemblyName>
+    <AssemblyName>Sample6_RenderingText</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <UseXamMacFullFramework>true</UseXamMacFullFramework>
@@ -161,7 +161,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SampleSharedLib_OSX\SampleSharedLib (OSX).csproj">
       <Project>{44E65162-EF15-4076-91C2-319AAC6A22AC}</Project>
-      <Name>SampleSharedLib_OSX</Name>
+      <Name>SampleSharedLib (OSX)</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Sample6_RenderingText\Sample6_RenderingText.projitems" Label="Shared" Condition="Exists('..\Sample6_RenderingText\Sample6_RenderingText.projitems')" />

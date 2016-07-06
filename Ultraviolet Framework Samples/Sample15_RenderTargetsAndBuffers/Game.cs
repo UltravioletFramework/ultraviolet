@@ -139,7 +139,7 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
                 (compWidth - rbufferColor.Width) / 2,
                 (compHeight - rbufferColor.Height) / 2), Color.White);
 
-            var instruction = Ultraviolet.Platform == UltravioletPlatform.Android ?
+            var instruction = Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS ?
                 "Tap to save the image to the gallery" :
                 "Press F1 to save the image to a file";
 

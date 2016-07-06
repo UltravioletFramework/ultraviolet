@@ -37,11 +37,31 @@
     <TlsProvider>Default</TlsProvider>
     <LinkMode>None</LinkMode>
     <XamMacArch></XamMacArch>
+    <AssemblyName>UvDebugSandbox</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <DefineConstants>OSX</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <CodeSigningKey>Developer ID Application</CodeSigningKey>
+    <CreatePackage>true</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <LinkMode>None</LinkMode>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
+    <XamMacArch></XamMacArch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Signed</OutputPath>
+    <DefineConstants>__UNIFIED__;OSX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -237,8 +257,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" Condition="Exists('..\UvDebugSandbox\UvDebugSandbox.projitems')" />
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
-  <Target Name="AfterBuild" Condition="'$(BAMBOO_buildType)'==''">
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />  
+  <PropertyGroup>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+      UvCompileContent
+    </BuildDependsOn>
+  </PropertyGroup>
+  <Target Name="UvCompileContent" Condition="'$(BAMBOO_buildType)'==''">
     <Message Text="Compiling content archive and binding expressions assembly..." />
     <Exec Condition=" '$(OS)' == 'Unix' And '$(IsMac)' == 'true' " WorkingDirectory="$(OutputPath)" Command="open &quot;./$(AssemblyName).app&quot; --args -resolve:content -compile:content -compile:expressions" />
   </Target>  
