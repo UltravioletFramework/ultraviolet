@@ -38,6 +38,7 @@
     <LinkMode>None</LinkMode>
     <XamMacArch></XamMacArch>
     <AssemblyName>UvDebugSandbox</AssemblyName>
+    <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -95,6 +96,13 @@
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-512.png" />
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-512%402x.png" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv16.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv32.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv64.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv128.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv256.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv512.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv1024.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -128,10 +136,6 @@
       <Project>{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}</Project>
       <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Compiler\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.csproj">
-      <Project>{D27AB499-F06F-47EA-8645-285CF2315EC2}</Project>
-      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Compiler</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS_Desktop\TwistedLogik.Ultraviolet.BASS %28Desktop%29.csproj">
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
       <Name>TwistedLogik.Ultraviolet.BASS (Desktop)</Name>
@@ -139,6 +143,10 @@
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OSX\TwistedLogik.Ultraviolet.OSX.csproj">
       <Project>{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}</Project>
       <Name>TwistedLogik.Ultraviolet.OSX</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Compiler_Desktop\TwistedLogik.Ultraviolet.UI.Presentation.Compiler %28Desktop%29.csproj">
+      <Project>{8F3C2DA1-8930-493B-854B-A053BDBF9071}</Project>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Compiler (Desktop)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

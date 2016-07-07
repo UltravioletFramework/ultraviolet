@@ -75,21 +75,21 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus_Desktop\TwistedLogik.Nucleus %28Desktop%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Nucleus_Desktop\TwistedLogik.Nucleus (Desktop).csproj">
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
-      <Name>TwistedLogik.Nucleus %28Desktop%29</Name>
+      <Name>TwistedLogik.Nucleus (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss_Desktop\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss_Desktop\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop).csproj">
       <Project>{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}</Project>
-      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28Desktop%29</Name>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\TwistedLogik.Ultraviolet.UI.Presentation (Desktop).csproj">
       <Project>{7379d9e1-bb01-4b05-b4f7-5d39b393348f}</Project>
-      <Name>TwistedLogik.Ultraviolet.UI.Presentation %28Desktop%29</Name>
+      <Name>TwistedLogik.Ultraviolet.UI.Presentation (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet (Desktop).csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
-      <Name>TwistedLogik.Ultraviolet %28Desktop%29</Name>
+      <Name>TwistedLogik.Ultraviolet (Desktop)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
