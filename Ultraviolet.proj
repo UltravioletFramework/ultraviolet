@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildWindows;BuildLinux;BuildOSX;BuildAndroid;BuildiOS;BuildiOSLocal">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildWindows;BuildLinux;BuildOSX;BuildAndroid;BuildiOS">
   <PropertyGroup Condition="'$(Configuration)' == ''">
     <Configuration>Debug</Configuration>
   </PropertyGroup>
@@ -24,13 +24,16 @@
     <Ultraviolet_OSX Include="TwistedLogik.Ultraviolet (OSX).sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_OSX>
+    <Ultraviolet_OSX_Bamboo Include="TwistedLogik.Ultraviolet (OSX Bamboo).sln">
+      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
+    </Ultraviolet_OSX_Bamboo>
     <Ultraviolet_Android Include="TwistedLogik.Ultraviolet (Android).sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_Android>
-    <Ultraviolet_iOS Include="TwistedLogik.Ultraviolet (iOS Bamboo).sln">
+    <Ultraviolet_iOS_Bamboo Include="TwistedLogik.Ultraviolet (iOS Bamboo).sln">
       <Properties>Configuration=$(Configuration);Platform=$(iOSPlatform);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)</Properties>
-    </Ultraviolet_iOS>
-    <Ultraviolet_iOS_Local Include="TwistedLogik.Ultraviolet (iOS).sln"/>
+    </Ultraviolet_iOS_Bamboo>
+    <Ultraviolet_iOS Include="TwistedLogik.Ultraviolet (iOS).sln"/>
   </ItemGroup>
     
   <!-- DESKTOP -->	
@@ -67,6 +70,12 @@
   <Target Name="BuildOSX" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
     <CallTarget Targets="RestoreOSX"/>
     <MSBuild Projects="@(Ultraviolet_OSX)"/>
+    <CallTarget Targets="CopyOSXBinaries"/>
+    <CallTarget Targets="CopyDesktopBinaries"/>
+  </Target>
+  <Target Name="BuildOSXBamboo" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
+    <CallTarget Targets="RestoreOSX"/>
+    <MSBuild Projects="@(Ultraviolet_OSX_Bamboo)"/>
     <CallTarget Targets="CopyOSXBinaries"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
@@ -237,14 +246,14 @@
       Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_iOS)&quot;"/>
   </Target>
   
-  <Target Name="BuildiOS" Condition="'$(ServerAddress)'!=''">
+  <Target Name="BuildiOS" Condition="$(IsMac)">
     <CallTarget Targets="RestoreiOS"/>
-    <MSBuild Projects="@(Ultraviolet_iOS)"/>
+    <MSBuild Projects="@(Ultraviolet_iOS)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform)"/>
     <CallTarget Targets="CopyiOSBinaries"/>
   </Target>
-  <Target Name="BuildiOSLocal" Condition="$(IsMac)">
+  <Target Name="BuildiOSBamboo" Condition="'$(ServerAddress)'!=''">
     <CallTarget Targets="RestoreiOS"/>
-    <MSBuild Projects="@(Ultraviolet_iOS_Local)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform)"/>
+    <MSBuild Projects="@(Ultraviolet_iOS_Bamboo)"/>
     <CallTarget Targets="CopyiOSBinaries"/>
   </Target>
         
