@@ -43,6 +43,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler (Desktop)", "TwistedLogik.Ultraviolet.UI.Presentation.Compiler_Desktop\TwistedLogik.Ultraviolet.UI.Presentation.Compiler (Desktop).csproj", "{8F3C2DA1-8930-493B-854B-A053BDBF9071}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvArchive", "UvArchive\UvArchive.csproj", "{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvFont", "UvFont\UvFont.csproj", "{F224C80E-2D2F-403D-AB1A-29FE13AF726B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -116,6 +120,18 @@ Global
 		{8F3C2DA1-8930-493B-854B-A053BDBF9071}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8F3C2DA1-8930-493B-854B-A053BDBF9071}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{8F3C2DA1-8930-493B-854B-A053BDBF9071}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
