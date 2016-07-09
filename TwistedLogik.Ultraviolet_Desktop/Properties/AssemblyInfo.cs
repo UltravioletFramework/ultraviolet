@@ -7,6 +7,7 @@ using System.Security;
 [assembly: CLSCompliant(true)]
 [assembly: AllowPartiallyTrustedCallers]
 
+#if DESKTOP
 #if SIGNED
 [assembly: InternalsVisibleTo("TwistedLogik.Ultraviolet.Design, PublicKey=" +
     "00240000048000009400000006020000002400005253413100040000010001005dd0e010413925" +
@@ -24,6 +25,7 @@ using System.Security;
 [assembly: InternalsVisibleTo("TwistedLogik.Ultraviolet.Design")]
 [assembly: InternalsVisibleTo("TwistedLogik.Ultraviolet.Desktop")]
 #endif
+#endif
 
 #if ANDROID
 #if SIGNED
@@ -40,10 +42,9 @@ using System.Security;
 #endif
 
 #if IOS
-[assembly: InternalsVisibleTo("TwistedLogik.Ultraviolet.iOS")]
-[assembly: Foundation.LinkerSafe]
 [assembly: Foundation.Preserve(typeof(Object), AllMembers = true)]
 [assembly: Foundation.Preserve(typeof(Nullable), AllMembers = true)]
+[assembly: Foundation.LinkerSafe]
 #endif
 
 // General Information about an assembly is controlled through the following 

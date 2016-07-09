@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;VERIFY_OPENGL_CACHE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;VERIFY_OPENGL_CACHE;DESKTOP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -29,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DESKTOP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -94,7 +94,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Signed\</OutputPath>
-    <DefineConstants>TRACE;SIGNED</DefineConstants>
+    <DefineConstants>TRACE;SIGNED;DESKTOP</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Signed\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
     <Optimize>true</Optimize>

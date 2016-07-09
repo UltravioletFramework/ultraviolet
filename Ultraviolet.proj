@@ -289,6 +289,9 @@
     <CreateItem Include="TwistedLogik.Ultraviolet.SDL2_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_SDL2_iOS"/>
     </CreateItem>
+    <CreateItem Include="TwistedLogik.Ultraviolet.SDL2.UIKit_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.SDL2.UIKit.*">
+        <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_SDL2_UIKit_iOS"/>
+    </CreateItem>
     <CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.*">
         <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_UI_Presentation_iOS"/>
     </CreateItem>
@@ -304,6 +307,7 @@
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_BASS_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_BASS_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_OpenGL_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_OpenGL_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_SDL2_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_SDL2_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_SDL2_UIKit_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_SDL2_UIKit_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <CallTarget Targets="CopyiOSSampleDependencies"/>

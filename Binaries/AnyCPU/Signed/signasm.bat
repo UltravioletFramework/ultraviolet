@@ -11,7 +11,8 @@ ECHO %TLSN%
 ECHO.
 ECHO Strong naming assemblies...
 
-IF "%1"=="sign_mobile" GOTO sign_mobile
+IF "%1"=="sign_android" GOTO sign_android
+IF "%1"=="sign_ios" GOTO sign_ios
 IF "%1"=="test_nucleus" GOTO test_nucleus
 IF "%1"=="test_ultraviolet" GOTO test_ultraviolet
 IF "%1"=="test_uvss" GOTO test_uvss
@@ -36,7 +37,7 @@ sn.exe -R "uvfont.exe" "%TLSN%"
 sn.exe -R "uvarchive.exe" "%TLSN%"
 GOTO :eof
 
-:sign_mobile
+:sign_android
 sn.exe -R "TwistedLogik.Nucleus.dll" "%TLSN%" 
 sn.exe -R "TwistedLogik.Gluon.dll" "%TLSN%" 
 sn.exe -R "TwistedLogik.Ultraviolet.dll" "%TLSN%"
@@ -46,9 +47,18 @@ sn.exe -R "TwistedLogik.Ultraviolet.OpenGL.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.BASS.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.Android.dll" "%TLSN%"
-sn.exe -R "TwistedLogik.Ultraviolet.Tooling.dll" "%TLSN%"
-sn.exe -R "uvfont.exe" "%TLSN%"
-sn.exe -R "uvarchive.exe" "%TLSN%"
+GOTO :eof
+
+:sign_ios
+sn.exe -R "TwistedLogik.Nucleus.dll" "%TLSN%" 
+sn.exe -R "TwistedLogik.Gluon.dll" "%TLSN%" 
+sn.exe -R "TwistedLogik.Ultraviolet.dll" "%TLSN%"
+sn.exe -R "TwistedLogik.Ultraviolet.UI.Presentation.dll" "%TLSN%"
+sn.exe -R "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" "%TLSN%"
+sn.exe -R "TwistedLogik.Ultraviolet.OpenGL.dll" "%TLSN%"
+sn.exe -R "TwistedLogik.Ultraviolet.SDL2.dll" "%TLSN%"
+sn.exe -R "TwistedLogik.Ultraviolet.SDL2.UIKit.dll" "%TLSN%"
+sn.exe -R "TwistedLogik.Ultraviolet.BASS.dll" "%TLSN%"
 GOTO :eof
 
 :test_nucleus

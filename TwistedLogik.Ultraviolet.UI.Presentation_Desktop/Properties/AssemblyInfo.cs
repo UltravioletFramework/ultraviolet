@@ -15,6 +15,7 @@ using System.Security;
 [assembly: Foundation.LinkerSafe]
 #endif
 
+#if DESKTOP
 #if SIGNED
 [assembly: InternalsVisibleTo("TwistedLogik.Ultraviolet.UI.Presentation.Compiler, PublicKey=" +
     "00240000048000009400000006020000002400005253413100040000010001005dd0e010413925" +
@@ -24,6 +25,7 @@ using System.Security;
     "59a204da")]
 #else
 [assembly: InternalsVisibleTo("TwistedLogik.Ultraviolet.UI.Presentation.Compiler")]
+#endif
 #endif
 
 // General Information about an assembly is controlled through the following 

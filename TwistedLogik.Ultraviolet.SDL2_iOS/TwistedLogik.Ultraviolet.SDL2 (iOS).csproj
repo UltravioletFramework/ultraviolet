@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>__MOBILE__;__IOS__;__UNIFIED__;DEBUG;IOS</DefineConstants>
+    <DefineConstants>DEBUG;IOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>__MOBILE__;__IOS__;__UNIFIED__;IOS</DefineConstants>
+    <DefineConstants>IOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -33,12 +33,26 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Signed</OutputPath>
-    <DefineConstants>__MOBILE__;__IOS__;__UNIFIED__;IOS</DefineConstants>
+    <DefineConstants>SIGNED;IOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
+    <DelaySign>true</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>  
+  <ItemGroup>
+    <None Include="..\TwistedLogik.Public.snk">
+      <Link>TwistedLogik.Public.snk</Link>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Xamarin.iOS" />
