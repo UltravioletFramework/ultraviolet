@@ -117,6 +117,9 @@
     <CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation.Compiler_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.Compiler.*">
         <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_UI_Presentation_Compiler_Desktop"/>
     </CreateItem>
+    <CreateItem Include="TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler.*">
+        <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_UI_Presentation_RoslynCompiler_Desktop"/>
+    </CreateItem>
     <CreateItem Include="TwistedLogik.Ultraviolet.Tooling/bin/$(Configuration)/TwistedLogik.Ultraviolet.Tooling.*">
         <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Tooling"/>
     </CreateItem>
@@ -138,6 +141,7 @@
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Uvss_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Compiler_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_Compiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_RoslynCompiler_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_UI_Presentation_RoslynCompiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Tooling)" DestinationFiles="@(TwistedLogik_Ultraviolet_Tooling->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvfont_exe)" DestinationFiles="@(uvfont_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvarchive_exe)" DestinationFiles="@(uvarchive_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
