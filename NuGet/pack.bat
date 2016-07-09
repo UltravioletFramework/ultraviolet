@@ -1,5 +1,7 @@
-del *.nuspec 2>NUL
-del *.nupkg 2>NUL
+del /s *.nuspec 2>NUL
+del /s *.nupkg 2>NUL
+
+copy ../
 
 if [%1]==[] ( set UV_BUILD=0 ) else ( set UV_BUILD=%1 )
 
@@ -39,6 +41,9 @@ nuget pack TwistedLogik.Ultraviolet.SDL2.Native.nuspec
 powershell -Command "(gc TwistedLogik.Ultraviolet.SDL2.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.SDL2.nuspec"
 nuget pack TwistedLogik.Ultraviolet.SDL2.nuspec -Symbols
 
+powershell -Command "(gc TwistedLogik.Ultraviolet.SDL2.UIKit.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.SDL2.UIKit.nuspec"
+nuget pack TwistedLogik.Ultraviolet.SDL2.UIKit.nuspec -Symbols
+
 powershell -Command "(gc TwistedLogik.Ultraviolet.UI.Presentation.Compiler.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.UI.Presentation.Compiler.nuspec"
 nuget pack TwistedLogik.Ultraviolet.UI.Presentation.Compiler.nuspec -Symbols
 
@@ -53,3 +58,9 @@ nuget pack TwistedLogik.Ultraviolet.Game.Desktop.nuspec
 
 powershell -Command "(gc TwistedLogik.Ultraviolet.Game.Android.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Game.Android.nuspec"
 nuget pack TwistedLogik.Ultraviolet.Game.Android.nuspec
+
+powershell -Command "(gc TwistedLogik.Ultraviolet.Game.iOS.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Game.iOS.nuspec"
+nuget pack TwistedLogik.Ultraviolet.Game.iOS.nuspec
+
+powershell -Command "(gc TwistedLogik.Ultraviolet.Game.OSX.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Game.OSX.nuspec"
+nuget pack TwistedLogik.Ultraviolet.Game.OSX.nuspec

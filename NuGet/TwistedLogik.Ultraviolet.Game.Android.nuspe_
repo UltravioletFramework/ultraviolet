@@ -10,7 +10,7 @@
     <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Ultraviolet Framework Game (Android)</title>
-    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains all of the components needed to create a simple game for the Android platform.</description>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains all of the components needed to create a simple game for the Android platform using Xamarin.Android.</description>
     <tags>ultraviolet gamedev</tags>	
     <dependencies>
         <dependency id="TwistedLogik.Gluon" version="UV_VERSION" />	
@@ -26,6 +26,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="TwistedLogik.Ultraviolet.Game.Android\content\GameActivity.cs.pp" target="content"/>
+    <file src="TwistedLogik.Ultraviolet.Game.Android\content\MainActivity.cs.pp" target="content"/>
   </files>  
 </package>

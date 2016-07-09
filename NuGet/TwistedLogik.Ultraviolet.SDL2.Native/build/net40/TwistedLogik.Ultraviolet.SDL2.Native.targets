@@ -8,20 +8,12 @@
       <Link>x86\win32nt\SDL2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  <None Include="$(MSBuildThisFileDirectory)x64\unix\libSDL2.so">
+	<None Include="$(MSBuildThisFileDirectory)x64\unix\libSDL2.so">
       <Link>x64\unix\libSDL2.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)x64\win32nt\SDL2.dll">
       <Link>x64\win32nt\SDL2.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)x64\osx\libSDL2.dylib">
-      <Link>x64\osx\libSDL2.dylib</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.SDL2.dll.config">
-      <Link>TwistedLogik.Ultraviolet.SDL2.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

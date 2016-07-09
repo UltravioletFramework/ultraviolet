@@ -12,15 +12,19 @@
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the "Nucleus" core library, which implements basic data structures, collections, and algorithms used throughout the Framework.</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
-    <dependency id="Newtonsoft.Json" version="8.0.3"/>
+    <dependency id="Newtonsoft.Json" version="9.0.1"/>
   </dependencies>
   </metadata>
   <files>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.dll" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.XML" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Nucleus.pdb" target="lib\net40\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Nucleus.dll" target="lib\MonoAndroid404\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Nucleus.XML" target="lib\MonoAndroid404\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Nucleus.pdb" target="lib\MonoAndroid404\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Nucleus.dll" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Nucleus.dll.mdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Nucleus.XML" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Nucleus.pdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\iOS\Signed\TwistedLogik.Nucleus.dll" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\TwistedLogik.Nucleus.dll.mdb" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\TwistedLogik.Nucleus.XML" target="lib\Xamarin.iOS10\"/>
   </files>  
 </package>

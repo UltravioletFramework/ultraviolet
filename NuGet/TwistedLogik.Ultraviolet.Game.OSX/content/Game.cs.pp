@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
@@ -6,17 +6,11 @@ using TwistedLogik.Ultraviolet.OpenGL;
 
 namespace $RootNamespace$
 {
-    [Android.App.Activity(Label = "GameActivity", MainLauncher = true, ConfigurationChanges = 
-        Android.Content.PM.ConfigChanges.Orientation | 
-        Android.Content.PM.ConfigChanges.ScreenSize | 
-        Android.Content.PM.ConfigChanges.KeyboardHidden)]
-    public class GameActivity : UltravioletActivity
+    public class Game : UltravioletApplication
     {
-        public GameActivity() 
+        public Game() 
             : base("YOUR_ORGANIZATION", "PROJECT_NAME") 
-        { 
-
-        }
+        { }
 
         protected override UltravioletContext OnCreatingUltravioletContext()
         {

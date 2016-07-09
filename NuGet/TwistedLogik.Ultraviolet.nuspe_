@@ -19,8 +19,12 @@
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.dll" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.XML" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.pdb" target="lib\net40\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.dll" target="lib\MonoAndroid404\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.XML" target="lib\MonoAndroid404\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.pdb" target="lib\MonoAndroid404\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.dll" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.dll.mdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.XML" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.pdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\iOS\Signed\TwistedLogik.Ultraviolet.dll" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\TwistedLogik.Ultraviolet.dll.mdb" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\TwistedLogik.Ultraviolet.XML" target="lib\Xamarin.iOS10\"/>
   </files>  
 </package>

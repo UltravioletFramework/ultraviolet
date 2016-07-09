@@ -183,8 +183,8 @@
     <Reference Include="TwistedLogik.Ultraviolet">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.SDL2.UIKit_iOS">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.UIKit_iOS.dll</HintPath>
+    <Reference Include="TwistedLogik.Ultraviolet.SDL2.UIKit">
+      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.UIKit.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet.OpenGL">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.OpenGL.dll</HintPath>

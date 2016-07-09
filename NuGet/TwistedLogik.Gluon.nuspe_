@@ -18,7 +18,10 @@
   <files>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Gluon.dll" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Gluon.pdb" target="lib\net40\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Gluon.dll" target="lib\MonoAndroid404\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Gluon.pdb" target="lib\MonoAndroid404\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Gluon.dll" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Gluon.dll.mdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Gluon.pdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\iOS\Signed\TwistedLogik.Gluon.dll" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\TwistedLogik.Gluon.dll.mdb" target="lib\Xamarin.iOS10\"/>
   </files>
 </package>

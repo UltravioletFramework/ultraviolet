@@ -17,11 +17,17 @@
   </dependencies>
   </metadata>
   <files>
+    <file src="TwistedLogik.Ultraviolet.BASS\build\net40\TwistedLogik.Ultraviolet.BASS.targets" target="build\net40\TwistedLogik.Ultraviolet.BASS.targets"/>
+    <file src="..\TwistedLogik.Ultraviolet.BASS_Desktop\TwistedLogik.Ultraviolet.BASS.dll.config" target="lib\net40\TwistedLogik.Ultraviolet.BASS.dll.config"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.BASS.dll" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.BASS.XML" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.BASS.pdb" target="lib\net40\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.BASS.dll" target="lib\MonoAndroid404\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.BASS.XML" target="lib\MonoAndroid404\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.BASS.pdb" target="lib\MonoAndroid404\"/>
+    
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.BASS.dll" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.BASS.XML" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.BASS.pdb" target="lib\MonoAndroid60\"/>
+
+    <file src="..\Binaries\iOS\Signed\TwistedLogik.Ultraviolet.BASS.dll" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\TwistedLogik.Ultraviolet.BASS.XML" target="lib\Xamarin.iOS10\"/>
   </files>  
 </package>

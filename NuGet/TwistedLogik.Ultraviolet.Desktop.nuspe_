@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
     <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for desktop platforms (Windows, Linux, and OS X).</description>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for the Windows and Linux platforms.</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
     <dependency id="TwistedLogik.Nucleus" version="UV_VERSION" />

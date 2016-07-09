@@ -177,8 +177,8 @@
     <Reference Include="TwistedLogik.Ultraviolet.SDL2">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.SDL2.UIKit_iOS">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.UIKit_iOS.dll</HintPath>
+    <Reference Include="TwistedLogik.Ultraviolet.SDL2.UIKit">
+      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.UIKit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

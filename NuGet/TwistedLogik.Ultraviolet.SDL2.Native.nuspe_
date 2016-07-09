@@ -18,20 +18,25 @@
   </metadata>
   <files>
     <file src="TwistedLogik.Ultraviolet.SDL2.Native\build\net40\TwistedLogik.Ultraviolet.SDL2.Native.targets" target="build\net40\TwistedLogik.Ultraviolet.SDL2.Native.targets"/>
-    <file src="..\TwistedLogik.Ultraviolet.SDL2_Desktop\TwistedLogik.Ultraviolet.SDL2.dll.config" target="build\net40\TwistedLogik.Ultraviolet.SDL2.dll.config"/>
     <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\net40\x86\unix\libSDL2.so"/>
     <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\net40\x64\unix\libSDL2.so"/>
     <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\net40\x86\win32nt\SDL2.dll"/>
     <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\net40\x64\win32nt\SDL2.dll"/>
-    <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\net40\x64\osx\libSDL2.dylib"/>
+    
+    <file src="TwistedLogik.Ultraviolet.SDL2.Native\build\net45\TwistedLogik.Ultraviolet.SDL2.Native.targets" target="build\net45\TwistedLogik.Ultraviolet.SDL2.Native.targets"/>
+    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\net45\x86\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\net45\x64\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\net45\x86\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\net45\x64\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\net45\x64\osx\libSDL2.dylib"/>
   
-    <file src="TwistedLogik.Ultraviolet.SDL2.Native\build\MonoAndroid404\TwistedLogik.Ultraviolet.SDL2.Native.targets" target="build\MonoAndroid404\TwistedLogik.Ultraviolet.SDL2.Native.targets"/>
-    <file src="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so" target="build\MonoAndroid404\lib\armeabi-v7a\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2main.so" target="build\MonoAndroid404\lib\armeabi-v7a\libSDL2main.so"/>	
-    <file src="..\Dependencies\SDL2\Android\armeabi\libSDL2.so" target="build\MonoAndroid404\lib\armeabi\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\Android\armeabi\libSDL2main.so" target="build\MonoAndroid404\lib\armeabi\libSDL2main.so"/>
-    <file src="..\Dependencies\SDL2\Android\x86\libSDL2.so" target="build\MonoAndroid404\lib\x86\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\Android\x86\libSDL2main.so" target="build\MonoAndroid404\lib\x86\libSDL2main.so"/>
-    <file src="..\Dependencies\SDL2\Android\Org.Libsdl.App.dll" target="lib\MonoAndroid404\Org.Libsdl.App.dll"/>
+    <file src="TwistedLogik.Ultraviolet.SDL2.Native\build\MonoAndroid60\TwistedLogik.Ultraviolet.SDL2.Native.targets" target="build\MonoAndroid60\TwistedLogik.Ultraviolet.SDL2.Native.targets"/>
+    <file src="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so" target="build\MonoAndroid60\lib\armeabi-v7a\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2main.so" target="build\MonoAndroid60\lib\armeabi-v7a\libSDL2main.so"/>	
+    <file src="..\Dependencies\SDL2\Android\armeabi\libSDL2.so" target="build\MonoAndroid60\lib\armeabi\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\Android\armeabi\libSDL2main.so" target="build\MonoAndroid60\lib\armeabi\libSDL2main.so"/>
+    <file src="..\Dependencies\SDL2\Android\x86\libSDL2.so" target="build\MonoAndroid60\lib\x86\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\Android\x86\libSDL2main.so" target="build\MonoAndroid60\lib\x86\libSDL2main.so"/>
+    <file src="..\Dependencies\SDL2\Android\org.libsdl.app.dll" target="lib\MonoAndroid60\org.libsdl.app.dll"/>
   </files>  
 </package>

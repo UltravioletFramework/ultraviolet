@@ -18,7 +18,7 @@
   </dependencies>
   </metadata>
   <files>
-    <file src="TwistedLogik.Ultraviolet.OSX\build\net40\TwistedLogik.Ultraviolet.OSX.targets" target="build\net40\TwistedLogik.Ultraviolet.OSX.targets"/>
-    <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.OSX.dll" target="build\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.OSX.dll" target="lib\net45"/>  
+    <file src="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.OSX.dll.mdb" target="lib\net45"/>  
   </files>  
 </package>

@@ -17,7 +17,8 @@
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.Android.dll" target="lib\MonoAndroid404\"/>
-    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.Android.pdb" target="lib\MonoAndroid404\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.Android.dll" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.Android.dll.mdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\TwistedLogik.Ultraviolet.Android.pdb" target="lib\MonoAndroid60\"/>
   </files>  
 </package>
