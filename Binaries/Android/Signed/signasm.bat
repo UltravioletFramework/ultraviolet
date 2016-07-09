@@ -46,9 +46,6 @@ sn.exe -R "TwistedLogik.Ultraviolet.OpenGL.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.BASS.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.Android.dll" "%TLSN%"
-sn.exe -R "TwistedLogik.Ultraviolet.Tooling.dll" "%TLSN%"
-sn.exe -R "uvfont.exe" "%TLSN%"
-sn.exe -R "uvarchive.exe" "%TLSN%"
 GOTO :eof
 
 :test_nucleus
