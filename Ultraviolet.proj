@@ -255,7 +255,7 @@
     <MSBuild Projects="@(Ultraviolet_iOS)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform)"/>
     <CallTarget Targets="CopyiOSBinaries"/>
   </Target>
-  <Target Name="BuildiOSBamboo" Condition="'$(ServerAddress)'!=''">
+  <Target Name="BuildiOSBamboo" Condition="$(IsMac) Or '$(ServerAddress)'!=''">
     <CallTarget Targets="RestoreiOS"/>
     <MSBuild Projects="@(Ultraviolet_iOS_Bamboo)"/>
     <CallTarget Targets="CopyiOSBinaries"/>
