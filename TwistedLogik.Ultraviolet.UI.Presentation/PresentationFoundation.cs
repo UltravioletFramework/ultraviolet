@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -34,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.styleQueue = new LayoutQueue(InvalidateStyle, false);
             this.measureQueue = new LayoutQueue(InvalidateMeasure);
-            this.arrangeQueue = new LayoutQueue(InvalidateArrange);
+            this.arrangeQueue = new LayoutQueue(InvalidateArrange);          
         }
 
         /// <summary>
@@ -183,27 +182,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, nameof(root));
-            
+
             LoadBindingExpressionCompiler();
 
             var options = new BindingExpressionCompilerOptions();
+            options.GenerateInMemory = (flags & CompileExpressionsFlags.GenerateInMemory) == CompileExpressionsFlags.GenerateInMemory;
             options.WriteErrorsToFile = true;
             options.Input = root;
             options.Output = CompiledExpressionsAssemblyName;
-            options.IgnoreCache = (flags & CompileExpressionsFlags.IgnoreCache) == CompileExpressionsFlags.IgnoreCache;
+            options.IgnoreCache = options.GenerateInMemory || (flags & CompileExpressionsFlags.IgnoreCache) == CompileExpressionsFlags.IgnoreCache;
 
             try
             {
                 var result = bindingExpressionCompiler.Compile(Ultraviolet, options);
                 if (result.Failed)
                     throw new BindingExpressionCompilationFailedException(result.Message, result);
+
+                inMemoryBindingExpressionsAsm = result.Assembly;
             }
             catch (Exception e)
             {
                 var resolveContentFiles = (flags & CompileExpressionsFlags.ResolveContentFiles) == CompileExpressionsFlags.ResolveContentFiles;
                 LogExceptionToBuildOutputConsole(root, e, resolveContentFiles);
                 throw;
-            }
+            }            
 
             GC.Collect(2, GCCollectionMode.Forced);
         }
@@ -237,21 +239,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Assembly compiledExpressionsAssembly = null;
             try
             {
-                switch (Ultraviolet.Platform)
+                if (inMemoryBindingExpressionsAsm != null)
                 {
-                    case UltravioletPlatform.Windows:
-                    case UltravioletPlatform.Linux:
-                    case UltravioletPlatform.OSX:
-                        compiledExpressionsAssembly = Assembly.LoadFrom(CompiledExpressionsAssemblyName);
-                        break;
+                    compiledExpressionsAssembly = inMemoryBindingExpressionsAsm;
+                }
+                else
+                {
+                    switch (Ultraviolet.Platform)
+                    {
+                        case UltravioletPlatform.Windows:
+                        case UltravioletPlatform.Linux:
+                        case UltravioletPlatform.OSX:
+                            compiledExpressionsAssembly = Assembly.LoadFrom(CompiledExpressionsAssemblyName);
+                            break;
 
-                    case UltravioletPlatform.Android:
-                    case UltravioletPlatform.iOS:
-                        compiledExpressionsAssembly = Assembly.Load(CompiledExpressionsAssemblyName);
-                        break;
+                        case UltravioletPlatform.Android:
+                        case UltravioletPlatform.iOS:
+                            compiledExpressionsAssembly = Assembly.Load(CompiledExpressionsAssemblyName);
+                            break;
 
-                    default:
-                        throw new NotSupportedException();
+                        default:
+                            throw new NotSupportedException();
+                    }
                 }
             }
             catch (FileNotFoundException e)
@@ -1229,6 +1238,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         // The compiler used to compile the game's binding expressions.
         private const String CompiledExpressionsAssemblyName = "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll";
         private IBindingExpressionCompiler bindingExpressionCompiler;
+        private Assembly inMemoryBindingExpressionsAsm;
 
         // The identifier of the current digest cycle.
         private Int64 digestCycleID = 1;

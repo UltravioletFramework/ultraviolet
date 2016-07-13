@@ -11,12 +11,6 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
     [TestFixture]
     public class PresentationFoundationTests : PresentationFoundationTestFramework
     {
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            StandardInitialization();
-        }
-
         [Test]
         [Category("UPF"), Category("Rendering")]
         [Description("Ensures that a reasonably complex screen featuring multiple control types is correctly laid out by the Presentation Foundation.")]

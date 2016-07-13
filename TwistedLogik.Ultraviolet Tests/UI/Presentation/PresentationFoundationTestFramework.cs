@@ -15,24 +15,6 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
     public class PresentationFoundationTestFramework : UltravioletApplicationTestFramework
     {
         /// <summary>
-        /// Performs the standard initialization process for Presentation Foundation tests.
-        /// </summary>
-        protected static void StandardInitialization()
-        {
-            var application = GivenAThrowawayUltravioletApplicationWithNoWindow()
-               .WithPresentationFoundationConfigured()
-               .WithInitialization(uv =>
-               {
-                   var upf = uv.GetUI().GetPresentationFoundation();
-                   upf.CompileExpressions("Content");
-               });
-
-            application.RunForOneFrame();
-
-            DestroyUltravioletApplication(application);
-        }
-
-        /// <summary>
         /// Gets the element which currently has focus.
         /// </summary>
         /// <typeparam name="T">The type of element which is expected to have focus.</typeparam>
@@ -81,6 +63,7 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
                 .WithInitialization(uv =>
                 {
                     var upf = uv.GetUI().GetPresentationFoundation();
+                    upf.CompileExpressions("Content", CompileExpressionsFlags.GenerateInMemory);
                     upf.LoadCompiledExpressions();
                 })
                 .WithContent(content =>

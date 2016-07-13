@@ -18,6 +18,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the compiler should generate its output assembly in memory
+        /// rather than writing a file to disk.
+        /// </summary>
+        public Boolean GenerateInMemory
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the compiler should work in the user's temporary directory
         /// rather than the application directory.
         /// </summary>

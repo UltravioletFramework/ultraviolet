@@ -137,9 +137,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             
             var conversionFixupPassResult =
                 PerformConversionFixupCompilationPass(state, models, referencedAssemblies, setterEliminationPassResult);
-
+            
             var finalPassResult = 
-                PerformFinalCompilationPass(state, output, models, referencedAssemblies, conversionFixupPassResult);
+                PerformFinalCompilationPass(state, state.GenerateInMemory ? null : output, models, referencedAssemblies, conversionFixupPassResult);
 
             if (finalPassResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
             {
@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     CreateBindingExpressionCompilationErrors(state, models, finalPassResult.Errors));
             }
 
-            return BindingExpressionCompilationResult.CreateSucceeded();
+            return BindingExpressionCompilationResult.CreateSucceeded(finalPassResult.CompiledAssembly);
         }
 
         /// <summary>
@@ -1053,6 +1053,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         {
             var compiler = CreateCodeProvider();
             var state = new ExpressionCompilerState(uv, compiler);
+            state.GenerateInMemory = options.GenerateInMemory;
             state.WorkInTemporaryDirectory = options.WorkInTemporaryDirectory;
             state.WriteErrorsToFile = options.WriteErrorsToFile;
 

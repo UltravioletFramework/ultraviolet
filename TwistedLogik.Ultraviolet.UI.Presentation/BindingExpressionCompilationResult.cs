@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -13,8 +14,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="message">A message clarifying why the compilation failed.</param>
         /// <param name="errors">A collection of errors which were produced during compilation.</param>
-        internal BindingExpressionCompilationResult(String message, IEnumerable<BindingExpressionCompilationError> errors)
+        /// <param name="assembly">The in-memory assembly which was produced, if any.</param>
+        internal BindingExpressionCompilationResult(String message, IEnumerable<BindingExpressionCompilationError> errors, Assembly assembly = null)
         {
+            this.assembly = assembly;
             this.message = message;
 
             if (errors != null)
@@ -26,10 +29,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Creates a new instance of the <see cref="BindingExpressionCompilationResult"/> class which represents a successful compilation.
         /// </summary>
+        /// <param name="inMemoryAssembly">The in-memory assembly which was produced, if any.</param>
         /// <returns>The <see cref="BindingExpressionCompilationResult"/> that was created.</returns>
-        public static BindingExpressionCompilationResult CreateSucceeded()
+        public static BindingExpressionCompilationResult CreateSucceeded(Assembly inMemoryAssembly = null)
         {
-            return new BindingExpressionCompilationResult(null, null);
+            return new BindingExpressionCompilationResult(null, null, inMemoryAssembly);
         }
 
         /// <summary>
@@ -41,6 +45,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static BindingExpressionCompilationResult CreateFailed(String message, IEnumerable<BindingExpressionCompilationError> errors = null)
         {
             return new BindingExpressionCompilationResult(message, errors);
+        }
+
+        /// <summary>
+        /// Gets the in-memory assembly which was produced, if any.
+        /// </summary>
+        public Assembly Assembly
+        {
+            get { return assembly; }
         }
 
         /// <summary>
@@ -76,6 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         // Property values.
+        private readonly Assembly assembly;
         private readonly String message;
         private readonly List<BindingExpressionCompilationError> errors = new List<BindingExpressionCompilationError>();
     }

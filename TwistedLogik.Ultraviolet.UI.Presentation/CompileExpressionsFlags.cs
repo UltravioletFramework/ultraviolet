@@ -26,5 +26,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// be lost when the project is recompiled.
         /// </summary>
         ResolveContentFiles = 0x00002,
+
+        /// <summary>
+        /// The expression compiler will generate its output assembly in-memory, rather than producing
+        /// a file on disk.
+        /// </summary>
+        GenerateInMemory = 0x0004,
     }
 }

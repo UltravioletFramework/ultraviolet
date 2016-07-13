@@ -8,12 +8,6 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
     [TestFixture]
     public class KeyboardNavigationTests : PresentationFoundationTestFramework
     {
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            StandardInitialization();
-        }
-
         [Test]
         [Category("UPF")]
         public void UPF_KeyNav_TabMovesToNextElement()
