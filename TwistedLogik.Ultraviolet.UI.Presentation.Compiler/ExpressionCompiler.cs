@@ -61,7 +61,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var result = CompileViewModels(state, dataSourceWrapperInfos, options.Output);
             if (result.Succeeded)
             {
-                cacheNew.Save(cacheFile);
+                if (!options.GenerateInMemory)
+                    cacheNew.Save(cacheFile);
 
                 if (!options.WriteCompiledFilesToWorkingDirectory && !options.WorkInTemporaryDirectory)
                     DeleteWorkingDirectory(state);
