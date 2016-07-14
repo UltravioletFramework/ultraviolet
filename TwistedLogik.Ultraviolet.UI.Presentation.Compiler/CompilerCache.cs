@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// </summary>
         private CompilerCache()
         {
-
+            version = typeof(CompilerCache).Assembly.GetName().Version;
         }
 
         /// <summary>
@@ -35,10 +35,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var cache = new CompilerCache();
 
             var lines = File.ReadAllLines(path);
+            var version = default(Version);
+            var revision = default(Int32);
+
             foreach (var line in lines)
             {
                 if (String.IsNullOrEmpty(line))
                     continue;
+
+                if (version == default(Version))
+                {
+                    if (!Version.TryParse(line, out version))
+                        throw new InvalidDataException();
+
+                    continue;
+                }
+
+                if (revision == default(Int32))
+                {
+                    if (!Int32.TryParse(line, out revision) || revision != CompilerRevision)
+                        throw new InvalidDataException();
+
+                    continue;
+                }
 
                 var components = line.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
                 if (components.Length != 2)
@@ -50,6 +69,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 cache.hashes[name] = hash;
             }
 
+            cache.version = version;
             return cache;
         }
 
@@ -158,6 +178,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             using (var stream = File.Open(path, FileMode.Create))
             using (var writer = new StreamWriter(stream))
             {
+                writer.WriteLine(version);
+                writer.WriteLine(CompilerRevision);
+
                 foreach (var hash in hashes)
                 {
                     writer.WriteLine("{0} {1}", hash.Key, hash.Value);
@@ -173,6 +196,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         public Boolean IsDifferentFrom(CompilerCache other)
         {
             Contract.Require(other, nameof(other));
+
+            if (!version.Equals(other.version))
+                return true;
 
             var keys = Enumerable.Union(this.hashes.Keys, other.hashes.Keys).ToList();
             foreach (var key in keys)
@@ -194,5 +220,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
         // The registry of hashes for each referenced type or view.
         private readonly Dictionary<String, String> hashes = new Dictionary<String, String>();
+
+        // Versioning information
+        private const Int32 CompilerRevision = 1;
+        private Version version;
     }
 }
