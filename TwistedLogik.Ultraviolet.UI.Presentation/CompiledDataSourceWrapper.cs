@@ -42,13 +42,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Converts the specified string to an instance of the specified type using the Nucleus deserializer.
         /// </summary>
-        /// <typeparam name="T">The type of value to produce.</typeparam>
+        /// <typeparam name="T">The type of value to convert.</typeparam>
+        /// <typeparam name="U">The type of value to produce.</typeparam>
         /// <param name="value">The string to convert.</param>
-        /// <param name="example">An example value which will cause the compiler to perform generic type inference.</param>
+        /// <param name="example">An example value which will cause the compiler to perform type inference.</param>
         /// <returns>The value that was created.</returns>
-        protected T __UPF_ConvertFromString<T>(String value, T example)
+        protected U __UPF_ConvertFromString<T, U>(T value, U example)
         {
-            return (T)BindingConversions.ConvertValue(value, typeof(String), typeof(T));
+            return (U)BindingConversions.ConvertValue(value?.ToString(), typeof(String), typeof(U));
+        }
+
+        /// <summary>
+        /// Performs a pass-through conversion for an instance of the <see cref="String"/> class.
+        /// </summary>
+        /// <param name="value">The string to convert.</param>
+        /// <param name="example">An example value which will cause the compiler to perform type inference.</param>
+        /// <returns>The value that was created.</returns>
+        protected String __UPF_ConvertFromString(String value, String example)
+        {
+            return value;
+        }
+
+        /// <summary>
+        /// Performs a pass-through conversion for an instance of the <see cref="VersionedStringSource"/> structure.
+        /// </summary>
+        /// <param name="value">The string to convert.</param>
+        /// <param name="example">An example value which will cause the compiler to perform type inference.</param>
+        /// <returns>The value that was created.</returns>
+        protected VersionedStringSource __UPF_ConvertFromString(VersionedStringSource value, VersionedStringSource example)
+        {
+            return value;
+        }
+
+        /// <summary>
+        /// Performs a pass-through conversion for an instance of the <see cref="VersionedStringBuilder"/> class.
+        /// </summary>
+        /// <param name="value">The string to convert.</param>
+        /// <param name="example">An example value which will cause the compiler to perform type inference.</param>
+        /// <returns>The value that was created.</returns>
+        protected VersionedStringBuilder __UPF_ConvertFromString(VersionedStringBuilder value, VersionedStringBuilder example)
+        {
+            return value;
         }
 
         /// <summary>

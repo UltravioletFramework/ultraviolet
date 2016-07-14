@@ -906,6 +906,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <returns><see langword="true"/> if the editor replaced the text with its own source; otherwise, <see langword="false"/>.</returns>
         internal Boolean HandleTextChanged(VersionedStringSource value)
         {
+            if (value.IsSourcedFromStringBuilder && (VersionedStringBuilder)value == bufferText)
+                return false;
+
+            var valueHasNotChanged = value.Length == bufferText.Length;
+            if (valueHasNotChanged)
+            {
+                for (int i = 0; i < bufferText.Length; i++)
+                {
+                    if (bufferText[i] != value[i])
+                    {
+                        valueHasNotChanged = false;
+                        break;
+                    }
+                }
+            }
+
+            if (valueHasNotChanged)
+                return false;
+
             if (value.IsSourcedFromStringBuilder)
             {
                 var vsb = (VersionedStringBuilder)value;
@@ -914,21 +933,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
 
             BeginTrackingSelectionChanges();
-
-            var valueLength = 0;
-            if (value.IsValid)
-            {
-                if (value.IsSourcedFromString)
-                {
-                    valueLength = ((String)value).Length;
-                }
-                else
-                {
-                    valueLength = ((VersionedStringBuilder)value).Length;
-                }
-            }
-
-            ClearBuffer(valueLength == 0);
+            
+            ClearBuffer(value.Length == 0);
             InsertIntoBuffer(value, bufferText.Length);
 
             if (caretPosition > bufferText.Length)

@@ -312,6 +312,18 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
             TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_LoadsTextFormattingParameters_AsViewResources.png");
         }
 
+        [Test]
+        [Category("UPF"), Category("Rendering")]
+        [Description("Ensures that a UPF TextBox control correctly binds to view model properties of various types.")]
+        public void UPF_TextBox_BindsCorrectlyToViewModel()
+        {
+            var result = RunPresentationTestFor(content => new UPF_TextBox_BindsCorrectlyToViewModel(content));
+
+            result.Save("C:\\test\\UPF_TextBox_BindsCorrectlyToViewModel.png", System.Drawing.Imaging.ImageFormat.Png);
+
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_TextBox_BindsCorrectlyToViewModel.png");
+        }
+
         /// <summary>
         /// Runs a standard test by spinning up an Ultraviolet application and displaying the specified UPF screen.
         /// </summary>

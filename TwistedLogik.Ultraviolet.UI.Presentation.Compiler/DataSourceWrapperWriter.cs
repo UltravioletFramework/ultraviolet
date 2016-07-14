@@ -408,7 +408,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                         WriteLine("{");
                         WriteLine("var current = {0}GetValue<{1}>({2}.{3});", 
                             expTarget, GetCSharpTypeName(dprop.PropertyType), GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
-                        WriteLine("{0}SetValue<{1}>({2}.{3}, __UPF_ConvertFromString(value.ToString(), current));",
+                        WriteLine("{0}SetValue<{1}>({2}.{3}, __UPF_ConvertFromString(value, current));",
                             expTarget, GetCSharpTypeName(dprop.PropertyType), GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
                         WriteLine("}");
                     }
@@ -434,12 +434,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 }
                 else
                 {
-                    if (expressionInfo.Type == typeof(String) || expressionInfo.Type == typeof(VersionedStringSource))
+                    if (IsStringType(expressionInfo.Type))
                     {
                         WriteLine("set");
                         WriteLine("{");
                         WriteLine("var current = {0}{1};", expTarget, expText);
-                        WriteLine("{0}{1} = __UPF_ConvertFromString(value.ToString(), current);", expTarget, expText);
+                        WriteLine("{0}{1} = __UPF_ConvertFromString(value, current);", expTarget, expText);
                         WriteLine("}");                        
                     }
                     else

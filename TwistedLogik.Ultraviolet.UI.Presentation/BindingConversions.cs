@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Text;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -37,6 +38,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return (conversionType == typeof(VersionedStringSource)) ? 
                     new VersionedStringSource((String)stringValue) : stringValue;
             }
+
+            if (conversionType == typeof(StringBuilder))
+                return new StringBuilder(value?.ToString());
+
+            if (conversionType == typeof(VersionedStringBuilder))
+                return new VersionedStringBuilder(value?.ToString());
+
             return ConvertUsingTypeConverter(value, originalType, conversionType);
         }
 

@@ -173,6 +173,8 @@
     <Compile Include="MatrixTests.cs" />
     <Compile Include="UI\Presentation\Input\KeyboardNavigationTests.cs" />
     <Compile Include="UI\Presentation\PresentationFoundationTestFramework.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_TextBox_BindsCorrectlyToViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_TextBox_BindsCorrectlyToViewModel_VM.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_LoadsTextFormattingParameters_AsViewResources.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources.cs" />
     <Compile Include="UI\Presentation\Screens\UPF_LoadsTextFormattingParameters_AsViewResources_VM.cs" />
@@ -635,6 +637,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_TextBox_BindsCorrectlyToViewModel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\UI\Presentation\UPF_LoadsTextFormattingParameters_AsViewResources.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -979,6 +984,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\UI\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources\ScreenStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_TextBox_BindsCorrectlyToViewModel\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Content\UI\Screens\UPF_LoadsTextFormattingParameters_AsViewResources\View.xml">

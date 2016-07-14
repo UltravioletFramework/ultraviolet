@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -278,28 +279,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 if (!comparerRegistry.TryGetValue(type, out typeComparer))
                 {
-                    if (type.IsClass)
-                    {
-                        typeComparer = GetReferenceComparisonFunction(type);
-                    }
-#if CODE_GEN_ENABLED
-                    else if (type.GetInterfaces().Where(x => x == typeof(IEquatable<>).MakeGenericType(type)).Any())
-                    {
-                        typeComparer = GetIEquatableComparisonFunction(type);
-                    }
-                    else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                    {
-                        typeComparer = GetNullableComparisonFunction(type);
-                    }
-#endif
-                    else if (type.IsEnum)
-                    {
-                        typeComparer = GetEnumComparisonFunction(type);
-                    }
-                    else
-                    {
-                        typeComparer = GetFallbackComparisonFunction(type);
-                    }
+                    typeComparer = CreateComparisonFunction(type);
                     comparerRegistry[type] = typeComparer;
                 }
 
@@ -357,7 +337,62 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Gets a comparison function for value types which implement <see cref="IEquatable{T}"/>.
+        /// Gets a comparison function for strings.
+        /// </summary>
+        /// <returns>The comparison function for strings.</returns>
+        public static Delegate GetStringComparisonFunction()
+        {
+            return new DataBindingComparer<String>((o1, o2) => String.Equals(o1, o2, StringComparison.Ordinal));
+        }
+
+        /// <summary>
+        /// Gets a comparison function for string builders.
+        /// </summary>
+        /// <returns>The comparison function for string builders.</returns>
+        public static Delegate GetStringBuilderComparisonFunction()
+        {
+            return new DataBindingComparer<StringBuilder>((o1, o2) =>
+            {
+                if (o1.Length != o2.Length)
+                    return false;
+
+                for (int i = 0; i < o1.Length; i++)
+                {
+                    if (o1[i] != o2[i])
+                        return false;
+                }
+
+                return true;
+            });
+        }
+        
+        /// <summary>
+        /// Creates a new comparison function delegate for the specified type.
+        /// </summary>
+        private static Delegate CreateComparisonFunction(Type type)
+        {
+            if (type == typeof(String))
+                return GetStringComparisonFunction();
+
+            if (type.IsClass)
+                return GetReferenceComparisonFunction(type);
+
+#if CODE_GEN_ENABLED
+            if (type.GetInterfaces().Where(x => x == typeof(IEquatable<>).MakeGenericType(type)).Any())
+                return GetIEquatableComparisonFunction(type);
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return GetNullableComparisonFunction(type);
+#endif
+
+            if (type.IsEnum)
+                return GetEnumComparisonFunction(type);
+
+            return GetFallbackComparisonFunction(type);
+        }
+
+        /// <summary>
+        /// Gets a comparison function for reference types.
         /// </summary>
         /// <param name="type">The type for which to create a comparison function.</param>
         /// <returns>The comparison function for the specified type.</returns>

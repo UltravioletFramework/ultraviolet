@@ -217,6 +217,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Gets the character at the specified index within the string.
+        /// </summary>
+        /// <param name="ix">The index of the character to retrieve.</param>
+        /// <returns>The character at the specified index within the string.</returns>
+        public Char this[Int32 ix]
+        {
+            get
+            {
+                if (IsSourcedFromString)
+                    return sourceString[ix];
+
+                if (IsSourcedFromStringBuilder)
+                {
+                    if (sourceStringBuilder.Version != version)
+                        throw new InvalidOperationException(PresentationStrings.VersionedStringSourceIsStale);
+
+                    return sourceStringBuilder[ix];
+                }
+
+                throw new ArgumentOutOfRangeException(nameof(ix));
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this is a valid buffer.
         /// </summary>
         public Boolean IsValid
@@ -246,6 +270,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean IsSourcedFromStringBuilder
         {
             get { return sourceStringBuilder != null; }
+        }
+
+        /// <summary>
+        /// Gets the number of characters in the string.
+        /// </summary>
+        public Int32 Length
+        {
+            get
+            {
+                if (IsSourcedFromString)
+                    return sourceString.Length;
+
+                if (IsSourcedFromStringBuilder)
+                {
+                    if (sourceStringBuilder.Version != version)
+                        throw new InvalidOperationException(PresentationStrings.VersionedStringSourceIsStale);
+
+                    return sourceStringBuilder.Length;
+                }
+
+                return 0;
+            }
         }
 
         // State values.
