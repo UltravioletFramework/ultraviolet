@@ -19,7 +19,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(element, nameof(element));
 
-            if (stream == null)
+            if (stream == null || element.View == null)
                 return;
             
             var positionDips = position;
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(element, nameof(element));
 
-            if (stream == null || !element.View.Resources.TextRenderer.ActivateLinkAtCursor(stream))
+            if (stream == null || element.View == null || !element.View.Resources.TextRenderer.ActivateLinkAtCursor(stream))
                 return false;
 
             element.Focus();
@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(element, nameof(element));
 
-            if (stream == null)
+            if (stream == null || element.View == null)
                 return false;
 
             return element.View.Resources.TextRenderer.DeactivateLink(stream);
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Contract.Require(element, nameof(element));
 
-            if (stream == null)
+            if (stream == null || element.View == null)
                 return false;
 
             if (stream.ActiveLinkIndex.HasValue)
