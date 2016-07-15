@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildWindows;BuildLinux;BuildOSX;BuildAndroid;BuildiOS">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildWindows;BuildLinux;BuildOSX">
   <PropertyGroup Condition="'$(Configuration)' == ''">
     <Configuration>Debug</Configuration>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)' == ''">
     <Platform>Any CPU</Platform>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(iOSPlatform)' == ''">
-    <iOSPlatform>iPhone</iOSPlatform>
   </PropertyGroup>
   <PropertyGroup>
     <IsMac>false</IsMac>
@@ -30,9 +27,7 @@
     <Ultraviolet_Android Include="TwistedLogik.Ultraviolet (Android).sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_Android>
-    <Ultraviolet_iOS_Bamboo Include="TwistedLogik.Ultraviolet (iOS Bamboo).sln">
-      <Properties>Configuration=$(Configuration);Platform=$(iOSPlatform);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)</Properties>
-    </Ultraviolet_iOS_Bamboo>
+    <Ultraviolet_iOS_Bamboo Include="TwistedLogik.Ultraviolet (iOS Bamboo).sln"/>
     <Ultraviolet_iOS Include="TwistedLogik.Ultraviolet (iOS).sln"/>
   </ItemGroup>
     
@@ -252,12 +247,12 @@
   
   <Target Name="BuildiOS" Condition="$(IsMac)">
     <CallTarget Targets="RestoreiOS"/>
-    <MSBuild Projects="@(Ultraviolet_iOS)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform)"/>
+    <MSBuild Projects="@(Ultraviolet_iOS)" Properties="Configuration=$(Configuration);Platform=$(Platform)"/>
     <CallTarget Targets="CopyiOSBinaries"/>
   </Target>
   <Target Name="BuildiOSBamboo" Condition="$(IsMac) Or '$(ServerAddress)'!=''">
     <CallTarget Targets="RestoreiOS"/>
-    <MSBuild Projects="@(Ultraviolet_iOS_Bamboo)"/>
+    <MSBuild Projects="@(Ultraviolet_iOS_Bamboo)" Properties="Configuration=$(Configuration);Platform=$(Platform);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)"/>
     <CallTarget Targets="CopyiOSBinaries"/>
   </Target>
         
