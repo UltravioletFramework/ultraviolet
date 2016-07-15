@@ -706,7 +706,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                         if (BindingExpressions.IsBindingExpression(elementValue))
                         {
                             String defaultProperty;
-                            if (!state.GetElementDefaultProperty(elementType, out defaultProperty))
+                            if (!state.GetElementDefaultProperty(elementType, out defaultProperty) || defaultProperty == null)
                             {
                                 throw new BindingExpressionCompilationErrorException(singleChild, dataSourceDefinition.DefinitionPath,
                                     CompilerStrings.ElementDoesNotHaveDefaultProperty.Format(elementType.Name));
