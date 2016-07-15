@@ -458,8 +458,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private static void HandleSelectedIndexChanged(DependencyObject dobj, Int32 oldValue, Int32 newValue)
         {
             var selector = (Selector)dobj;
+            selector.BeginChangeSelection();
             selector.DigestImmediately(ItemsSourceProperty);
-            
+            selector.EndChangeSelection(false);
+
             var container = selector.ItemContainerGenerator.ContainerFromIndex(newValue);
             if (container == null)
                 return;
@@ -473,7 +475,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private static void HandleSelectedItemChanged(DependencyObject dobj, Object oldValue, Object newValue)
         {
             var selector = (Selector)dobj;
+            selector.BeginChangeSelection();
             selector.DigestImmediately(ItemsSourceProperty);
+            selector.EndChangeSelection(false);
 
             var container = selector.ItemContainerGenerator.ContainerFromItem(newValue);
             if (container == null)
