@@ -319,8 +319,6 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
         {
             var result = RunPresentationTestFor(content => new UPF_TextBox_BindsCorrectlyToViewModel(content));
 
-            result.Save("C:\\test\\UPF_TextBox_BindsCorrectlyToViewModel.png", System.Drawing.Imaging.ImageFormat.Png);
-
             TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_TextBox_BindsCorrectlyToViewModel.png");
         }
 
