@@ -153,7 +153,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Creates a new <see cref="UvmlTemplate"/> from the specified XML element.
         /// </summary>
-        private static UvmlTemplate CreateTemplateFromXml(UltravioletContext uv,
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="xml">The XML element to load as a UVML template.</param>
+        /// <param name="templatedParentType">The type of the object's templated parent.</param>
+        /// <param name="templatedObjectType">The type of object which is produced by the template.</param>
+        /// <param name="cultureInfo">The <see cref="CultureInfo"/> to use when parsing values.</param>
+        internal static UvmlTemplate CreateTemplateFromXml(UltravioletContext uv,
             XElement xml, Type templatedParentType, Type templatedObjectType, CultureInfo cultureInfo)
         {
             var mutators = new List<UvmlMutator>();
@@ -354,26 +359,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var elementChildren = element.Elements().ToList();
             if (elementChildren.Any() || element.IsEmpty)
             {
-                targetKind = GetMutatorTarget(uv, 
+                targetKind = GetMutatorTarget(uv,
                     element.Name.LocalName, null, templatedObjectType, out target, out targetType);
 
-                var itemType = default(Type);
-                if (UvmlCollectionItemMutatorBase.IsSupportedCollectionType(targetType, out itemType))
-                {
-                    var items = elementChildren.Select(x => CreateTemplateFromXml(uv, x, templatedParentType, itemType, cultureInfo)).ToList();
-                    return CreateMutatorForCollection(uv, targetKind, target, items);
-                }
-                else
+                if (targetType == typeof(DataTemplate))
                 {
                     if (elementChildren.Count() > 1)
                         throw new UvmlException(PresentationStrings.InvalidChildElements.Format(name));
 
-                    value = CreateTemplateFromXml(uv, elementChildren.Single(), templatedParentType, targetType, cultureInfo);
+                    var dataTemplateElement = elementChildren.Single();
+                    if (!String.Equals(dataTemplateElement.Name.LocalName, nameof(DataTemplate), StringComparison.Ordinal))
+                        throw new UvmlException(PresentationStrings.UnrecognizedType.Format(dataTemplateElement.Name.LocalName));
+
+                    var dataTemplateChildren = dataTemplateElement.Elements().ToList();
+                    if (dataTemplateChildren.Any())
+                    {
+                        if (dataTemplateChildren.Count() > 1)
+                            throw new UvmlException(PresentationStrings.InvalidChildElements.Format(dataTemplateElement.Name));
+
+                        var templateContent = dataTemplateChildren.Single();
+                        var template = DataTemplate.FromUvml(uv, templateContent, cultureInfo);
+
+                        value = new UvmlDataTemplate(template);
+                    }
+                    else
+                    {
+                        value = new UvmlDataTemplate(null);
+                    }
+                }
+                else
+                {
+                    var itemType = default(Type);
+                    if (UvmlCollectionItemMutatorBase.IsSupportedCollectionType(targetType, out itemType))
+                    {
+                        var items = elementChildren.Select(x => CreateTemplateFromXml(uv, x, templatedParentType, itemType, cultureInfo)).ToList();
+                        return CreateMutatorForCollection(uv, targetKind, target, items);
+                    }
+                    else
+                    {
+                        if (elementChildren.Count() > 1)
+                            throw new UvmlException(PresentationStrings.InvalidChildElements.Format(name));
+
+                        value = CreateTemplateFromXml(uv, elementChildren.Single(), templatedParentType, targetType, cultureInfo);
+                    }
                 }
             }
             else
             {
-                targetKind = GetMutatorTarget(uv, 
+                targetKind = GetMutatorTarget(uv,
                     element.Name.LocalName, element.Value, templatedObjectType, out target, out targetType);
 
                 value = new UvmlLiteral(element.Value, targetType, cultureInfo);

@@ -65,6 +65,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="DataTemplate"/> used to display the control's items.
+        /// </summary>
+        /// <value>A <see cref="DataTemplate"/> which is used to display the control's items.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ItemTemplateProperty"/></dpropField>
+        ///     <dpropStylingName>item-template</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public DataTemplate ItemTemplate
+        {
+            get { return GetValue<DataTemplate>(ItemTemplateProperty); }
+            set { SetValue(ItemTemplateSelectorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the custom logic which determines which template is used to display each of the control's items.
+        /// </summary>
+        /// <value>A <see cref="DataTemplateSelector"/> which implements the control's selection logic for data templates.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ItemTemplateSelectorProperty"/></dpropField>
+        ///     <dpropStylingName>item-template-selector</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public DataTemplateSelector ItemTemplateSelector
+        {
+            get { return GetValue<DataTemplateSelector>(ItemTemplateSelectorProperty); }
+            set { SetValue(ItemTemplateSelectorProperty, value); }
+        }
+
+        /// <summary>
         /// Gets the collection that contains the control's items.
         /// </summary>
         /// <value>A <see cref="ItemCollection"/> that contains the control's items.</value>
@@ -125,6 +159,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get { return GetValue<Boolean>(HasItemsProperty); }
         }
+
+        /// <summary>
+        /// Identifies the <see cref="ItemTemplate"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ItemTemplate"/> dependency property.</value>
+        public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.RegisterAttached("ItemTemplate", typeof(DataTemplate), typeof(ItemsControl),
+            new PropertyMetadata<DataTemplate>());
+
+        /// <summary>
+        /// Identifies the <see cref="ItemTemplateSelector"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ItemTemplateSelector"/> dependency property.</value>
+        public static readonly DependencyProperty ItemTemplateSelectorProperty = DependencyProperty.Register("ItemTemplateSelector", typeof(DataTemplateSelector), typeof(ItemsControl),
+            new PropertyMetadata<DataTemplateSelector>());
 
         /// <summary>
         /// Identifies the <see cref="ItemsSource"/> dependency property.
@@ -385,7 +433,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             else
             {
                 container = GetContainerForItemOverride();
-                PrepareContainerForItemOverride(container, item);
+                
+                var template = ItemTemplateSelector?.SelectTemplate(item, container) ?? ItemTemplate;
+                if (template != null)
+                {
+                    var templateInstance = template.LoadContent(item, item?.GetType());
+                    PrepareContainerForItemOverride(container, templateInstance);
+                }
+                else
+                {
+                    PrepareContainerForItemOverride(container, item);
+                }
             }
 
             itemContainerGenerator.AssociateContainerWithItem(container, item);

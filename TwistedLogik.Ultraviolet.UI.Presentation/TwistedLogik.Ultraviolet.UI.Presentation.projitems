@@ -152,6 +152,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataBindingGetterBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataBindingSetterBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceExpressionBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataTemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataTemplateSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyBoundValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyBoundValueConverting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyBoundValueNonConverting.cs" />
@@ -179,6 +181,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FrameworkElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FrameworkElementInitializationState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FrameworkResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FrameworkTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GridLength.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GridUnitType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HorizontalAlignment.cs" />
@@ -377,6 +380,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlDependencyPropertyBindingMutator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlElementReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlEventMutator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlDataTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlMutatorTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlStandardPropertyCollectionItemMutator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlDependencyPropertyCollectionItemMutator.cs" />

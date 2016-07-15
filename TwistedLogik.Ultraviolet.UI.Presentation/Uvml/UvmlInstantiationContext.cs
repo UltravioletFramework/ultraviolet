@@ -110,6 +110,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
             var wrapperType = DataSource is PresentationFoundationView ? DataSourceType : null;
             if (wrapperType == null)
             {
+                if (TemplatedParent == null)
+                    return;
+
                 for (var templateType = TemplatedParent.GetType(); templateType != null; templateType = templateType.BaseType)
                 {
                     wrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templateType);
