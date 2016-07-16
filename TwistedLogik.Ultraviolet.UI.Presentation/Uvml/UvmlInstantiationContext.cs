@@ -26,7 +26,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
             this.TemplatedParent = templatedParent;
             this.DataSource = dataSource;
             this.DataSourceType = dataSourceType;
-
+            
             FindCompiledBindingExpressions();
         }
 
@@ -107,12 +107,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         private void FindCompiledBindingExpressions()
         {
             var wrapperName = default(String);
-            var wrapperType = DataSource is PresentationFoundationView ? DataSourceType : null;
+            var wrapperType = DataSource is PresentationFoundationView || TemplatedParent == null ? DataSourceType : null;
             if (wrapperType == null)
             {
-                if (TemplatedParent == null)
-                    return;
-
                 for (var templateType = TemplatedParent.GetType(); templateType != null; templateType = templateType.BaseType)
                 {
                     wrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templateType);

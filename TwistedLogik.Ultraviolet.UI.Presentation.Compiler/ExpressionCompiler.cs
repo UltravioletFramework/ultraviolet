@@ -411,6 +411,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     var definition = CreateDataSourceDefinitionFromFile(null, name, file);
                     if (definition != null)
                     {
+                        UvmlLoader.AddUvmlAnnotations(
+                            definition.Value.DataSourceWrapperName, definition.Value.Definition);
+
                         result.Add(definition.Value);
                     }
                 }
@@ -438,7 +441,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             var templateDefs = from template in state.ComponentTemplateManager
                                select DataSourceDefinition.FromComponentTemplate(template.Key, template.Value.Root.Element("View"));
-            return templateDefs.ToList();
+            var templateDefsList = templateDefs.ToList();
+
+            foreach (var templateDef in templateDefsList)
+                UvmlLoader.AddUvmlAnnotations(templateDef.DataSourceWrapperName, templateDef.Definition);
+
+            return templateDefsList;
         }
 
         /// <summary>
@@ -552,6 +560,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 }
             }
 
+            var frameworkTemplates = new Dictionary<String, XElement>();
+            GetFrameworkTemplateElements(dataSourceDefinition.Definition, frameworkTemplates);
+
+            var frameworkTemplateWrapperDefs = frameworkTemplates.Select(x => 
+                DataSourceDefinition.FromView(dataSourceDefinition.DataSourceWrapperNamespace, x.Key, dataSourceDefinition.DefinitionPath, x.Value)).ToList();
+
+            var frameworkTemplateWrapperInfos = frameworkTemplateWrapperDefs.Select(definition =>
+                GetDataSourceWrapperInfoForFrameworkTemplate(state, dataSourceReferences, dataSourceImports, definition)).ToList();
+
             return new DataSourceWrapperInfo()
             {
                 References = dataSourceReferences,
@@ -560,15 +577,71 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 DataSourceType = dataSourceWrappedType,
                 DataSourceWrapperName = dataSourceWrapperName,
                 Expressions = dataSourceWrapperExpressions,
+                DependentWrapperInfos = frameworkTemplateWrapperInfos
             };
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="DataSourceWrapperInfo"/> instance which represents a particular framework template.
+        /// </summary>
+        private static DataSourceWrapperInfo GetDataSourceWrapperInfoForFrameworkTemplate(ExpressionCompilerState state,
+            IEnumerable<String> references, IEnumerable<String> imports, DataSourceDefinition definition)
+        {
+            var dataSourceWrappedTypeAttr = definition.Definition.Attribute("ViewModelType");
+            if (dataSourceWrappedTypeAttr == null)
+            {
+                throw new BindingExpressionCompilationErrorException(definition.Definition, definition.DefinitionPath,
+                    PresentationStrings.TemplateMustSpecifyViewModelType);
+            }
+
+            var dataSourceWrappedType = Type.GetType(dataSourceWrappedTypeAttr.Value, false);
+            if (dataSourceWrappedType == null)
+            {
+                throw new BindingExpressionCompilationErrorException(dataSourceWrappedTypeAttr, definition.DefinitionPath,
+                    PresentationStrings.ViewModelTypeNotFound.Format(dataSourceWrappedTypeAttr.Value));
+            }
+
+            var dataSourceDefinition = definition;
+            var dataSourceWrapperName = definition.DataSourceWrapperName;
+
+            var expressions = new List<BindingExpressionInfo>();
+            foreach (var element in dataSourceDefinition.Definition.Elements())
+            {
+                FindBindingExpressionsInDataSource(state,
+                    dataSourceDefinition, dataSourceWrappedType, element, expressions);
+            }            
+            expressions = CollapseDataSourceExpressions(expressions);
+
+            return new DataSourceWrapperInfo()
+            {
+                References = references,
+                Imports = imports,
+                DataSourceDefinition = dataSourceDefinition,
+                DataSourceType = dataSourceWrappedType,
+                DataSourceWrapperName = dataSourceWrapperName,
+                Expressions = expressions
+            };
+        }
+
+        /// <summary>
+        /// Searches the specified XML tree for any elements which are annotated as framework templates.
+        /// </summary>
+        private static void GetFrameworkTemplateElements(XElement root, IDictionary<String, XElement> elements)
+        {
+            var annotation = root.Annotation<FrameworkTemplateNameAnnotation>();
+            if (annotation != null)
+                elements[annotation.Name] = root;
+
+            var children = root.Elements();
+            foreach (var child in children)
+                GetFrameworkTemplateElements(child, elements);
         }
 
         /// <summary>
         /// Writes the source code for the specified data source wrapper.
         /// </summary>
-        /// <param name="state">The expression compiler's current state.</param>
-        /// <param name="dataSourceWrapperInfo">The <see cref="DataSourceWrapperInfo"/> that describes the data source wrapper being generated.</param>
-        private static void WriteSourceCodeForDataSourceWrapper(ExpressionCompilerState state, DataSourceWrapperInfo dataSourceWrapperInfo)
+        private static void WriteSourceCodeForDataSourceWrapper(ExpressionCompilerState state, 
+            DataSourceWrapperInfo dataSourceWrapperInfo)
         {
             using (var writer = new DataSourceWrapperWriter())
             {
@@ -580,79 +653,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 }
                 writer.WriteLine();
 
-                // Namespace and class declaration
+                // Namespace declaration
                 var @namespace = dataSourceWrapperInfo.DataSourceDefinition.DataSourceWrapperNamespace;
                 writer.WriteLine("namespace " + @namespace);
                 writer.WriteLine("{");
                 writer.WriteLine("#pragma warning disable 1591");
                 writer.WriteLine("#pragma warning disable 0184");
-                writer.WriteLine("[System.CLSCompliant(false)]");
-                writer.WriteLine("[System.CodeDom.Compiler.GeneratedCode(\"UPF Binding Expression Compiler\", \"{0}\")]", FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion);
-                writer.WriteLine("public sealed partial class {0} : {1}", dataSourceWrapperInfo.DataSourceWrapperName, writer.GetCSharpTypeName(typeof(CompiledDataSourceWrapper)));
-                writer.WriteLine("{");
 
-                // Constructors
-                writer.WriteLine("#region Constructors");
-                writer.WriteConstructor(dataSourceWrapperInfo);
-                writer.WriteLine("#endregion");
-                writer.WriteLine();
+                // Data source wrapper class - main
+                WriteSourceCodeForDataSourceWrapperClass(state, dataSourceWrapperInfo, writer);
 
-                // IDataSourceWrapper
-                writer.WriteLine("#region IDataSourceWrapper");
-                writer.WriteIDataSourceWrapperImplementation(dataSourceWrapperInfo);
-                writer.WriteLine("#endregion");
-                writer.WriteLine();
+                // Data source wrapper class - dependent
+                foreach (var dependentWrapperInfo in dataSourceWrapperInfo.DependentWrapperInfos)
+                    WriteSourceCodeForDataSourceWrapperClass(state, dependentWrapperInfo, writer);
 
-                // Methods
-                writer.WriteLine("#region Methods");
-                var methods = dataSourceWrapperInfo.DataSourceType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
-                foreach (var method in methods)
-                {
-                    if (!NeedsWrapper(method))
-                        continue;
-
-                    writer.WriteWrapperMethod(method);
-                }
-                writer.WriteLine("#endregion");
-                writer.WriteLine();
-
-                // Properties
-                writer.WriteLine("#region Properties");
-                var properties = dataSourceWrapperInfo.DataSourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
-                foreach (var property in properties)
-                {
-                    if (!NeedsWrapper(property))
-                        continue;
-
-                    writer.WriteWrapperProperty(property);
-                }
-                writer.WriteLine("#endregion");
-                writer.WriteLine();
-
-                // Fields
-                writer.WriteLine("#region Fields");
-                var fields = dataSourceWrapperInfo.DataSourceType.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
-                foreach (var field in fields)
-                {
-                    if (!NeedsWrapper(field))
-                        continue;
-
-                    writer.WriteWrapperProperty(field);
-                }
-                writer.WriteLine("#endregion");
-                writer.WriteLine();
-
-                // Expressions
-                writer.WriteLine("#region Expressions");
-                for (int i = 0; i < dataSourceWrapperInfo.Expressions.Count; i++)
-                {
-                    var expressionInfo = dataSourceWrapperInfo.Expressions[i];
-                    writer.WriteExpressionProperty(state, dataSourceWrapperInfo, expressionInfo, i);
-                }
-                writer.WriteLine("#endregion");
-
-                // Source code generation complete
-                writer.WriteLine("}");
+                // Namespace complete
                 writer.WriteLine("#pragma warning restore 0184");
                 writer.WriteLine("#pragma warning restore 1591");
                 writer.WriteLine("}");
@@ -660,7 +675,83 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 dataSourceWrapperInfo.DataSourceWrapperSourceCode = writer.ToString();
             }
         }
-        
+
+        /// <summary>
+        /// Writes the source code for an individual data source wrapper class.
+        /// </summary>
+        private static void WriteSourceCodeForDataSourceWrapperClass(ExpressionCompilerState state,
+            DataSourceWrapperInfo dataSourceWrapperInfo, DataSourceWrapperWriter writer)
+        {
+            // Class declaration
+            writer.WriteLine("[System.CLSCompliant(false)]");
+            writer.WriteLine("[System.CodeDom.Compiler.GeneratedCode(\"UPF Binding Expression Compiler\", \"{0}\")]", FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion);
+            writer.WriteLine("public sealed partial class {0} : {1}", dataSourceWrapperInfo.DataSourceWrapperName, writer.GetCSharpTypeName(typeof(CompiledDataSourceWrapper)));
+            writer.WriteLine("{");
+
+            // Constructors
+            writer.WriteLine("#region Constructors");
+            writer.WriteConstructor(dataSourceWrapperInfo);
+            writer.WriteLine("#endregion");
+            writer.WriteLine();
+
+            // IDataSourceWrapper
+            writer.WriteLine("#region IDataSourceWrapper");
+            writer.WriteIDataSourceWrapperImplementation(dataSourceWrapperInfo);
+            writer.WriteLine("#endregion");
+            writer.WriteLine();
+
+            // Methods
+            writer.WriteLine("#region Methods");
+            var methods = dataSourceWrapperInfo.DataSourceType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+            foreach (var method in methods)
+            {
+                if (!NeedsWrapper(method))
+                    continue;
+
+                writer.WriteWrapperMethod(method);
+            }
+            writer.WriteLine("#endregion");
+            writer.WriteLine();
+
+            // Properties
+            writer.WriteLine("#region Properties");
+            var properties = dataSourceWrapperInfo.DataSourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+            foreach (var property in properties)
+            {
+                if (!NeedsWrapper(property))
+                    continue;
+
+                writer.WriteWrapperProperty(property);
+            }
+            writer.WriteLine("#endregion");
+            writer.WriteLine();
+
+            // Fields
+            writer.WriteLine("#region Fields");
+            var fields = dataSourceWrapperInfo.DataSourceType.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+            foreach (var field in fields)
+            {
+                if (!NeedsWrapper(field))
+                    continue;
+
+                writer.WriteWrapperProperty(field);
+            }
+            writer.WriteLine("#endregion");
+            writer.WriteLine();
+
+            // Expressions
+            writer.WriteLine("#region Expressions");
+            for (int i = 0; i < dataSourceWrapperInfo.Expressions.Count; i++)
+            {
+                var expressionInfo = dataSourceWrapperInfo.Expressions[i];
+                writer.WriteExpressionProperty(state, dataSourceWrapperInfo, expressionInfo, i);
+            }
+            writer.WriteLine("#endregion");
+
+            // Class complete
+            writer.WriteLine("}");
+        }
+
         /// <summary>
         /// Searches the specified XML element tree for binding expressions and adds them to the specified collection.
         /// </summary>
@@ -672,6 +763,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         private static void FindBindingExpressionsInDataSource(ExpressionCompilerState state, DataSourceDefinition dataSourceDefinition,
             Type dataSourceWrappedType, XElement element, List<BindingExpressionInfo> expressions)
         {
+            var templateAnnotation = element.Annotation<FrameworkTemplateNameAnnotation>();
+            if (templateAnnotation != null)
+                return;
+
             var elementName = element.Name.LocalName;
             var elementType = GetPlaceholderType(dataSourceWrappedType, elementName);            
             if (elementType != null || state.GetKnownType(elementName, out elementType))

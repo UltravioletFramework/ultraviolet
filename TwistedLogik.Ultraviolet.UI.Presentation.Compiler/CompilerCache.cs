@@ -222,7 +222,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         private readonly Dictionary<String, String> hashes = new Dictionary<String, String>();
 
         // Versioning information
-        private const Int32 CompilerRevision = 1;
+        private const Int32 CompilerRevision = 2;
         private Version version;
     }
 }

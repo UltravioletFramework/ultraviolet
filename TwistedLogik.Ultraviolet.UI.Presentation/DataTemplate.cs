@@ -18,10 +18,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="template">The UVML template that this instance represents.</param>
         /// <param name="dataSourceWrapperName">The name of the template's data source wrapper type.</param>
         public DataTemplate(UvmlTemplate template, String dataSourceWrapperName)
-            : base(template)
-        {
-            // TODO: Handle data source wrapper
-        }
+            : base(template, dataSourceWrapperName)
+        { }
 
         /// <summary>
         /// Loads a new instance of the <see cref="DataTemplate"/> class from the specified UVML element.

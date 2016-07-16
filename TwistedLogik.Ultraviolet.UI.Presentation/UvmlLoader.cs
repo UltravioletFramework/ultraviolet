@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             // Create a UVML template which will instantiate the view.
-            AddUvmlAnnotations(viewModelType, viewElement);
+            AddUvmlAnnotations(viewModelType.Name, viewElement);
             var viewTemplate = new UvmlTemplate(viewElement, typeof(PresentationFoundationView), (puv, pname) =>
             {
                 var view = new PresentationFoundationView(puv, uiPanel, viewModelType);
@@ -156,7 +156,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var cultureRequested = (String)template.Root.Attribute("Culture");
                 var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? String.Empty);
 
-                AddUvmlAnnotations(componentContext.DataSourceType, componentElement);
+                AddUvmlAnnotations(componentContext.DataSourceType.Name, componentElement);
 
                 componentTemplate = CreateTemplateFromXml(control.Ultraviolet, componentElement, control.GetType(), componentType, cultureInfo);
                 componentTemplateCache[template] = componentTemplate;
@@ -172,36 +172,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Adds UVML annotations to the specified UVML element tree.
         /// </summary>
-        /// <param name="dataSourceType">The type of data source wrapper associated with this tree.</param>
+        /// <param name="dataSourceTypeName">The name of the data source wrapper associated with this tree.</param>
         /// <param name="root">The root of the UVML element tree to annotate.</param>
-        public static void AddUvmlAnnotations(Type dataSourceType, XElement root)
+        public static void AddUvmlAnnotations(String dataSourceTypeName, XElement root)
         {
+            Contract.RequireNotEmpty(dataSourceTypeName, nameof(dataSourceTypeName));
+            Contract.Require(root, nameof(root));
+
             var templates = 0;
 
             if (root.Annotation<UvmlMetadataAnnotation>() != null)
                 return;
 
             root.AddAnnotation(new UvmlMetadataAnnotation());
-            AddUvmlAnnotations(dataSourceType, root, ref templates);
+            AddUvmlAnnotations(dataSourceTypeName, root, ref templates);
         }
 
         /// <summary>
         /// Adds UVML annotations to the specified UVML element tree.
         /// </summary>
-        /// <param name="dataSourceType">The type of data source wrapper associated with this tree.</param>
+        /// <param name="dataSourceTypeName">The name of the data source wrapper associated with this tree.</param>
         /// <param name="root">The root of the UVML element tree to annotate.</param>
         /// <param name="templates">The number of templates which have been encountered.</param>
-        public static void AddUvmlAnnotations(Type dataSourceType, XElement root, ref Int32 templates)
+        public static void AddUvmlAnnotations(String dataSourceTypeName, XElement root, ref Int32 templates)
         {
+            Contract.RequireNotEmpty(dataSourceTypeName, nameof(dataSourceTypeName));
+            Contract.Require(root, nameof(root));
+
             foreach (var child in root.Elements())
             {
                 if (String.Equals(child.Name.LocalName, nameof(FrameworkTemplate), StringComparison.Ordinal) ||
                     String.Equals(child.Name.LocalName, nameof(DataTemplate), StringComparison.Ordinal))
                 {
-                    child.AddAnnotation(new FrameworkTemplateNameAnnotation($"{dataSourceType.Name}_Tmpl{templates}"));
+                    child.AddAnnotation(new FrameworkTemplateNameAnnotation($"{dataSourceTypeName}_Tmpl{templates}"));
                     templates++;
                 }
-                AddUvmlAnnotations(dataSourceType, child, ref templates);
+                AddUvmlAnnotations(dataSourceTypeName, child, ref templates);
             }
         }
 

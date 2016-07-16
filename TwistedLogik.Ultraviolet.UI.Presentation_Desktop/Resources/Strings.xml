@@ -375,4 +375,9 @@
       <Variant>Attempted to release a pooled resource which has already been released.</Variant>
     </en-US>
   </String>
+  <String Key="TEMPLATE_MUST_SPECIFY_VIEW_MODEL_TYPE">
+    <en-US>
+      <Variant>Templates must specify a ViewModelType attribute.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

@@ -80,6 +80,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
+        /// Gets the data source's list of dependent data source wrappers.
+        /// </summary>
+        public IList<DataSourceWrapperInfo> DependentWrapperInfos
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets a value which uniquely identifies this wrapper.
         /// </summary>
         public Guid UniqueID
