@@ -30,6 +30,11 @@
     <Ultraviolet_iOS_Bamboo Include="TwistedLogik.Ultraviolet (iOS Bamboo).sln"/>
     <Ultraviolet_iOS Include="TwistedLogik.Ultraviolet (iOS).sln"/>
   </ItemGroup>
+  
+  <!-- VERSIONING -->
+  <Target Name="CopyVersionFile">
+    <Copy SourceFiles="Version.cs" DestinationFiles="Ultraviolet Framework Samples/Version.cs"/>
+  </Target>
     
   <!-- DESKTOP -->	
   <Target Name="RestoreWindows">
@@ -167,6 +172,7 @@
       <Output TaskParameter="Include" ItemName="SampleDependencies_Desktop"/>
     </CreateItem>
     <Copy SourceFiles="@(SampleDependencies_Desktop)" DestinationFiles="@(SampleDependencies_Desktop->'Ultraviolet Framework Samples/Dependencies/%(RecursiveDir)%(Filename)%(Extension)')"/>	
+    <CallTarget Targets="CopyVersionFile"/>
   </Target>
   
   <!-- ANDROID -->
@@ -235,6 +241,7 @@
       <Output TaskParameter="Include" ItemName="SampleDependencies_Android"/>
     </CreateItem>
     <Copy SourceFiles="@(SampleDependencies_Android)" DestinationFiles="@(SampleDependencies_Android->'Ultraviolet Framework Samples/Dependencies/Android/%(RecursiveDir)%(Filename)%(Extension)')"/>	
+    <CallTarget Targets="CopyVersionFile"/>
   </Target>
   
   <!-- IOS -->	
@@ -312,5 +319,6 @@
       <Output TaskParameter="Include" ItemName="SampleDependencies_iOS"/>
     </CreateItem>
     <Copy SourceFiles="@(SampleDependencies_iOS)" DestinationFiles="@(SampleDependencies_iOS->'Ultraviolet Framework Samples/Dependencies/iOS/%(RecursiveDir)%(Filename)%(Extension)')"/>	
+    <CallTarget Targets="CopyVersionFile"/>
   </Target>
 </Project>
