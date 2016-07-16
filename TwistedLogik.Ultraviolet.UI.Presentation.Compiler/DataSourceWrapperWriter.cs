@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 GetCSharpTypeName(typeof(Namescope)));
             WriteLine("{");
 
-            WriteLine("this.dataSource = dataSource;");
+            WriteLine("this.value = dataSource;");
 
             WriteLine("}");
         }
@@ -128,10 +128,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             WriteLine("public override Object WrappedDataSource");
             WriteLine("{");
 
-            WriteLine("get { return dataSource; }");
+            WriteLine("get { return value; }");
 
             WriteLine("}");
-            WriteLine("private readonly {0} dataSource;", GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType));
+
+            WriteLine("private readonly {0} value;", GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType));
         }
         
         /// <summary>
@@ -152,7 +153,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             WriteGenericMethodConstraints(method);
             WriteLine("{");
 
-            var target = isStatic ? GetCSharpTypeName(method.DeclaringType) : "dataSource";
+            var target = isStatic ? GetCSharpTypeName(method.DeclaringType) : "this.value";
             Write(method.ReturnType == typeof(void) ? String.Empty : "return ");
             WriteLine("{0}.{1}{2}({3});", target, method.Name, methodGenericArgumentsList, methodArgumentList);
 
@@ -264,7 +265,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 GetCSharpTypeName(property.PropertyType), isIndexer ? "this" : property.Name, propertyIndexerParameterList);
             WriteLine("{");
 
-            var target = isStatic ? GetCSharpTypeName(property.DeclaringType) : "dataSource";
+            var target = isStatic ? GetCSharpTypeName(property.DeclaringType) : "this.value";
 
             if (getter != null)
             {
@@ -293,7 +294,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             WriteLine("public {0}{1} {2}", propertyStaticQualifier, GetCSharpTypeName(field.FieldType), field.Name);
             WriteLine("{");
 
-            var target = isStatic ? GetCSharpTypeName(field.DeclaringType) : "dataSource";
+            var target = isStatic ? GetCSharpTypeName(field.DeclaringType) : "this.value";
 
             WriteLine("get {{ return {0}.{1}; }}", target, field.Name);
             if (!field.IsInitOnly && !field.IsLiteral)
