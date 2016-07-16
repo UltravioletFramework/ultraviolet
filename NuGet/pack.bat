@@ -1,12 +1,12 @@
-del /s *.nuspec 2>NUL
-del /s *.nupkg 2>NUL
+@del /s *.nuspec 2>NUL
+@del /s *.nupkg 2>NUL
 
-copy ../
+@if [%1]==[] (set UV_BUILD=0) else (set UV_BUILD=%1)
 
-if [%1]==[] ( set UV_BUILD=0 ) else ( set UV_BUILD=%1 )
+@for /f %%x in (../VersionString.txt) do @(set UV_VERSION_MAJOR_MINOR=%%x)
+@set UV_VERSION=%UV_VERSION_MAJOR_MINOR%.%UV_BUILD%
 
-set UV_VERSION_MAJOR_MINOR=1.3.12
-set UV_VERSION=%UV_VERSION_MAJOR_MINOR%.%UV_BUILD%
+@echo Creating NuGet packages for Ultraviolet Framework %UV_VERSION%...
 
 powershell -Command "(gc TwistedLogik.Gluon.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Gluon.nuspec"
 nuget pack TwistedLogik.Gluon.nuspec -Symbols
