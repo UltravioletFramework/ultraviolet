@@ -9,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Describes the visual structure of a data object.
     /// </summary>
+    [UvmlKnownType]
     public class DataTemplate : FrameworkTemplate
     {
         /// <summary>

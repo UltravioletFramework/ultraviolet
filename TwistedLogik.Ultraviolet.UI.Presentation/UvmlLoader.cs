@@ -362,30 +362,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 targetKind = GetMutatorTarget(uv,
                     element.Name.LocalName, null, templatedObjectType, out target, out targetType);
 
-                if (targetType == typeof(DataTemplate))
+                if (typeof(FrameworkTemplate).IsAssignableFrom(targetType))
                 {
                     if (elementChildren.Count() > 1)
                         throw new UvmlException(PresentationStrings.InvalidChildElements.Format(name));
 
-                    var dataTemplateElement = elementChildren.Single();
-                    if (!String.Equals(dataTemplateElement.Name.LocalName, nameof(DataTemplate), StringComparison.Ordinal))
-                        throw new UvmlException(PresentationStrings.UnrecognizedType.Format(dataTemplateElement.Name.LocalName));
+                    var frameworkTemplateElement = elementChildren.Single();
+                    var frameworkTemplateType = default(Type);
+                    if (!uv.GetUI().GetPresentationFoundation().GetKnownType(frameworkTemplateElement.Name.LocalName, out frameworkTemplateType))
+                        throw new UvmlException(PresentationStrings.UnrecognizedType.Format(frameworkTemplateElement.Name.LocalName));
 
-                    var dataTemplateChildren = dataTemplateElement.Elements().ToList();
-                    if (dataTemplateChildren.Any())
-                    {
-                        if (dataTemplateChildren.Count() > 1)
-                            throw new UvmlException(PresentationStrings.InvalidChildElements.Format(dataTemplateElement.Name));
+                    if (!targetType.IsAssignableFrom(frameworkTemplateType))
+                        throw new UvmlException(PresentationStrings.IncompatibleType.Format(targetType.Name, frameworkTemplateType.Name));
 
-                        var templateContent = dataTemplateChildren.Single();
-                        var template = DataTemplate.FromUvml(uv, templateContent, cultureInfo);
+                    var frameworkTemplateChildren = frameworkTemplateElement.Elements().ToList();
+                    if (frameworkTemplateChildren.Count() > 1)
+                        throw new UvmlException(PresentationStrings.InvalidChildElements.Format(frameworkTemplateElement.Name));
 
-                        value = new UvmlDataTemplate(template);
-                    }
-                    else
-                    {
-                        value = new UvmlDataTemplate(null);
-                    }
+                    var frameworkTemplateContent = frameworkTemplateChildren.SingleOrDefault();
+                    value = CreateFrameworkTemplateUvmlNode(uv, frameworkTemplateType, frameworkTemplateContent, cultureInfo);
                 }
                 else
                 {
@@ -524,6 +519,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             return type.GetCustomAttributes(typeof(UvmlDefaultPropertyAttribute), true)
                 .Cast<UvmlDefaultPropertyAttribute>().SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Creates a <see cref="FrameworkTemplate"/> instance of the appropriate derived type
+        /// from the specified UVML element.
+        /// </summary>
+        private static UvmlNode CreateFrameworkTemplateUvmlNode(UltravioletContext uv,
+            Type templateType, XElement templateContent, CultureInfo cultureInfo)
+        {
+            if (templateType == typeof(DataTemplate))
+            {
+                var template = (templateContent == null) ? null : DataTemplate.FromUvml(uv, templateContent, cultureInfo);
+                var templateNode = new UvmlDataTemplate(template);
+
+                return templateNode;
+            }
+            throw new UvmlException(PresentationStrings.UnrecognizedType.Format(templateType.Name));
         }
 
         // Caches component templates to avoid repeated parsing of UVML documents for controls

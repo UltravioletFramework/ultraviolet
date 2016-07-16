@@ -7,6 +7,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <summary>
     /// Enables the instantiation of a tree of <see cref="FrameworkElement"/> objects.
     /// </summary>
+    [UvmlKnownType]
     public abstract class FrameworkTemplate
     {
         /// <summary>
