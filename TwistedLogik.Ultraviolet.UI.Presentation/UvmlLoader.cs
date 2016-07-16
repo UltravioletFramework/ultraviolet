@@ -66,6 +66,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             // Create a UVML template which will instantiate the view.
+            AddUvmlAnnotations(viewModelType, viewElement);
             var viewTemplate = new UvmlTemplate(viewElement, typeof(PresentationFoundationView), (puv, pname) =>
             {
                 var view = new PresentationFoundationView(puv, uiPanel, viewModelType);
@@ -81,18 +82,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var rootAdornerDecorator = new AdornerDecorator(puv, null);
                 rootAdornerDecorator.BeginInit();
                 root.Child = rootAdornerDecorator;
-                
+
                 var rootGridTemplate = CreateTemplateFromXml(puv, viewElement, null, typeof(Grid), cultureInfo);
                 var rootGridContext = UvmlInstantiationContext.ForView(puv, view);
 
                 var rootGridTemplateInstance = (UvmlTemplateInstance)rootGridTemplate.Instantiate(puv, rootGridContext);
                 var rootGrid = (Grid)rootGridTemplateInstance.Finalize();
 
-                rootAdornerDecorator.Child = rootGrid;                
+                rootAdornerDecorator.Child = rootGrid;
 
                 return view;
             });
-            
+
             // Instantiate the view template.
             var viewTemplateInstance = (UvmlTemplateInstance)viewTemplate.Instantiate(uv, null);
             var viewInstance = (PresentationFoundationView)viewTemplateInstance.Finalize();
@@ -108,6 +109,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 viewInstance.Namescope.PopulateFieldsFromRegisteredElements(viewInstanceViewModel);
 
             return viewInstance;
+        }
+
+        /// <summary>
+        /// Loads the component template of the specified control.
+        /// </summary>
+        /// <param name="control">The instance of <see cref="Control"/> for which to load a component root.</param>
+        /// <returns>The <see cref="UIElement"/> which serves as the specified control's component template.</returns>
+        public static UIElement LoadComponentTemplate(Control control)
+        {
+            Contract.Require(control, nameof(control));
+
+            var template = control.Ultraviolet.GetUI().GetPresentationFoundation().ComponentTemplates.Get(control);
+            if (template == null)
+                return null;
+
+            return LoadComponentTemplate(control, template);
         }
 
         /// <summary>
@@ -139,6 +156,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var cultureRequested = (String)template.Root.Attribute("Culture");
                 var cultureInfo = CultureInfo.GetCultureInfo(cultureRequested ?? String.Empty);
 
+                AddUvmlAnnotations(componentContext.DataSourceType, componentElement);
+
                 componentTemplate = CreateTemplateFromXml(control.Ultraviolet, componentElement, control.GetType(), componentType, cultureInfo);
                 componentTemplateCache[template] = componentTemplate;
             }
@@ -149,7 +168,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return component;
         }
-        
+
+        /// <summary>
+        /// Adds UVML annotations to the specified UVML element tree.
+        /// </summary>
+        /// <param name="dataSourceType">The type of data source wrapper associated with this tree.</param>
+        /// <param name="root">The root of the UVML element tree to annotate.</param>
+        public static void AddUvmlAnnotations(Type dataSourceType, XElement root)
+        {
+            var templates = 0;
+
+            if (root.Annotation<UvmlMetadataAnnotation>() != null)
+                return;
+
+            root.AddAnnotation(new UvmlMetadataAnnotation());
+            AddUvmlAnnotations(dataSourceType, root, ref templates);
+        }
+
+        /// <summary>
+        /// Adds UVML annotations to the specified UVML element tree.
+        /// </summary>
+        /// <param name="dataSourceType">The type of data source wrapper associated with this tree.</param>
+        /// <param name="root">The root of the UVML element tree to annotate.</param>
+        /// <param name="templates">The number of templates which have been encountered.</param>
+        public static void AddUvmlAnnotations(Type dataSourceType, XElement root, ref Int32 templates)
+        {
+            foreach (var child in root.Elements())
+            {
+                if (String.Equals(child.Name.LocalName, nameof(FrameworkTemplate), StringComparison.Ordinal) ||
+                    String.Equals(child.Name.LocalName, nameof(DataTemplate), StringComparison.Ordinal))
+                {
+                    child.AddAnnotation(new FrameworkTemplateNameAnnotation($"{dataSourceType.Name}_Tmpl{templates}"));
+                    templates++;
+                }
+                AddUvmlAnnotations(dataSourceType, child, ref templates);
+            }
+        }
+
         /// <summary>
         /// Creates a new <see cref="UvmlTemplate"/> from the specified XML element.
         /// </summary>
@@ -158,7 +213,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="templatedParentType">The type of the object's templated parent.</param>
         /// <param name="templatedObjectType">The type of object which is produced by the template.</param>
         /// <param name="cultureInfo">The <see cref="CultureInfo"/> to use when parsing values.</param>
-        internal static UvmlTemplate CreateTemplateFromXml(UltravioletContext uv,
+        public static UvmlTemplate CreateTemplateFromXml(UltravioletContext uv,
             XElement xml, Type templatedParentType, Type templatedObjectType, CultureInfo cultureInfo)
         {
             var mutators = new List<UvmlMutator>();

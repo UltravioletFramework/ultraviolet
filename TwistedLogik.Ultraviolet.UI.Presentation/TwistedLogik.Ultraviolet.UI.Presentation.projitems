@@ -153,6 +153,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataBindingSetterBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceExpressionBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataTemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FrameworkTemplateNameAnnotation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataTemplateSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyBoundValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyBoundValueConverting.cs" />
@@ -374,6 +375,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvmlLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyName.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UvmlMetadataAnnotation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlPlaceholderAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Uvml\UvmlCollectionItemMutatorBase.cs" />

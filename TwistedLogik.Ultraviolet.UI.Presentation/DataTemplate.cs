@@ -1,8 +1,8 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvml;
 using System.Globalization;
 using System.Xml.Linq;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Uvml;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -16,9 +16,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Initializes a new instance of the <see cref="DataTemplate"/> class.
         /// </summary>
         /// <param name="template">The UVML template that this instance represents.</param>
-        public DataTemplate(UvmlTemplate template)
+        /// <param name="dataSourceWrapperName">The name of the template's data source wrapper type.</param>
+        public DataTemplate(UvmlTemplate template, String dataSourceWrapperName)
             : base(template)
-        { }
+        {
+            // TODO: Handle data source wrapper
+        }
 
         /// <summary>
         /// Loads a new instance of the <see cref="DataTemplate"/> class from the specified UVML element.
@@ -32,6 +35,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(uv, nameof(uv));
             Contract.Require(root, nameof(root));
 
+            var dataSourceAnnotation = root.Parent?.Annotation<FrameworkTemplateNameAnnotation>();
+            var dataSourceWrapperName = dataSourceAnnotation?.Name;
+
             var templatedParentType = default(Type);
 
             var templatedObjectName = root.Name.LocalName;
@@ -41,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new UvmlException(PresentationStrings.UnrecognizedType.Format(templatedObjectName));
 
             var template = UvmlLoader.CreateTemplateFromXml(uv, root, templatedParentType, templatedObjectType, cultureInfo);
-            var instance = new DataTemplate(template);
+            var instance = new DataTemplate(template, dataSourceWrapperName);
 
             return instance;
         }

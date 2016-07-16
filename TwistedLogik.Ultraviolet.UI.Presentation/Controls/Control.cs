@@ -371,11 +371,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (componentRoot != null)
                 throw new InvalidOperationException(PresentationStrings.ComponentRootAlreadyLoaded);
             
-            var template = Ultraviolet.GetUI().GetPresentationFoundation().ComponentTemplates.Get(this);
-            if (template == null)
-                return;
-
-            this.ComponentRoot = UvmlLoader.LoadComponentTemplate(this, template);
+            this.ComponentRoot = UvmlLoader.LoadComponentTemplate(this);
         }
 
         // The control's data source wrapper, which exposes its compiled binding expressions.
