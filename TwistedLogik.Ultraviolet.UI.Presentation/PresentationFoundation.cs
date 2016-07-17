@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             catch (MissingMethodException e)
             {
-                var dataSourceField = wrapperType.GetField("dataSource", BindingFlags.NonPublic | BindingFlags.Instance);
+                var dataSourceField = wrapperType.GetField("value", BindingFlags.NonPublic | BindingFlags.Instance);
                 if (dataSourceField != null)
                 {
                     var typeExpected = dataSourceField.FieldType;
