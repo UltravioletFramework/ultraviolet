@@ -91,6 +91,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 Matrix.Concat(ref mtxTransform, ref mtxTransformToView, out mtxTransform);
                 Matrix.Concat(ref mtxTransform, ref mtxTransformGlobal, out mtxTransform);
 
+                if (!dc.IsTransformed && !clonedElement.HasNonIdentityTransform)
+                {
+                    mtxTransform = new Matrix(
+                        mtxTransform.M11, mtxTransform.M12, mtxTransform.M13, (Single)Math.Round(mtxTransform.M14, MidpointRounding.AwayFromZero),
+                        mtxTransform.M21, mtxTransform.M22, mtxTransform.M23, (Single)Math.Round(mtxTransform.M24, MidpointRounding.AwayFromZero),
+                        mtxTransform.M31, mtxTransform.M32, mtxTransform.M33, (Single)Math.Round(mtxTransform.M34, MidpointRounding.AwayFromZero),
+                        mtxTransform.M41, mtxTransform.M42, mtxTransform.M43, mtxTransform.M44);
+                }
+
                 dc.IsOutOfBandRenderingSuppressed = true;
                 dc.GlobalTransform = mtxTransform;
 
