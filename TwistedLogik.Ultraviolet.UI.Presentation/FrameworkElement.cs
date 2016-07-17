@@ -528,6 +528,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
+        /// Gets or sets the namescope which this element provides as a result of being created
+        /// by a framework template, if it provides such a namescope.
+        /// </summary>
+        internal Namescope TemplatedNamescope
+        {
+            get { return templatedNamescope; }
+            set { templatedNamescope = value; }
+        }
+
+        /// <summary>
         /// Gets the specified logical child of this element.
         /// </summary>
         /// <param name="childIndex">The index of the logical child to retrieve.</param>
@@ -626,8 +636,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var templatedParentControl = TemplatedParent as Control;
 
-            var namescope = (templatedParentControl != null) ? templatedParentControl.ComponentTemplateNamescope :
-                (View != null) ? View.Namescope : null;
+            namescope = FindCurrentNamescope();
 
             if (namescope != null)
             {
@@ -1017,6 +1026,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
+        /// Gets the namescope which currently contains the element.
+        /// </summary>
+        protected Namescope Namescope
+        {
+            get { return namescope; }
+        }
+        
+        /// <summary>
         /// Given a pair of dimensions, this method calculates the size of the largest rectangle that will fit within
         /// those dimensions after having the specified transformation applied to it.
         /// </summary>
@@ -1231,6 +1248,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             ((FrameworkElement)dobj).OnToolTipClosing(data);
         }
 
+        /// <summary>
+        /// Finds the namescope which currently contains the element.
+        /// </summary>
+        private Namescope FindCurrentNamescope()
+        {
+            if (templatedNamescope != null)
+                return templatedNamescope;
+
+            var templatedParentControl = TemplatedParent as Control;
+            if (templatedParentControl != null)
+                return templatedParentControl.ComponentTemplateNamescope;
+
+            var current = VisualTreeHelper.GetParent(this);
+            while (current != null)
+            {
+                var currentElement = current as FrameworkElement;
+
+                if (currentElement != null && currentElement.templatedNamescope != null)
+                    return currentElement.templatedNamescope;
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+
+            return View?.Namescope;
+        }
+
         // Standard visual state groups.
         private static readonly String[] VSGFocus = new[] { "blurred", "focused" };
 
@@ -1245,5 +1288,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Matrix layoutTransformUsedDuringLayout;
         private Size2D layoutTransformSizeDesiredBeforeTransform;
         private Boolean isLayoutTransformed;
+        private Namescope templatedNamescope;
+        private Namescope namescope;
     }
 }

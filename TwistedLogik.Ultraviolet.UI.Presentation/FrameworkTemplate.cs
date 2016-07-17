@@ -32,9 +32,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public DependencyObject LoadContent(Object dataSource, Type dataSourceType)
         {
             var uv = UltravioletContext.DemandCurrent();
-            var wrapper = CreateDataSourceWrapper(dataSource, dataSourceType);
-            var context = new UvmlInstantiationContext(uv, null, wrapper, wrapper?.GetType(), null);
-            return (DependencyObject)((UvmlTemplateInstance)template.Instantiate(uv, context)).Finalize();
+            var namescope = default(Namescope);
+            var wrapper = CreateDataSourceWrapper(dataSource, dataSourceType, out namescope);
+            var context = new UvmlInstantiationContext(uv, null, wrapper, wrapper?.GetType(), namescope);
+            var dobj = (DependencyObject)((UvmlTemplateInstance)template.Instantiate(uv, context)).Finalize();
+
+            var element = dobj as FrameworkElement;
+            if (element != null)
+                element.TemplatedNamescope = namescope;
+
+            if (dataSource != null)
+                namescope.PopulateFieldsFromRegisteredElements(dataSource);
+
+            return dobj;
         }
 
         /// <summary>
@@ -43,14 +53,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="dataSource">The object's data source.</param>
         /// <param name="dataSourceType">The object's data source type.</param>
+        /// <param name="namescope">The template's namescope.</param>
         /// <returns>The wrapped data source.</returns>
-        private Object CreateDataSourceWrapper(Object dataSource, Type dataSourceType)
+        private Object CreateDataSourceWrapper(Object dataSource, Type dataSourceType, out Namescope namescope)
         {
+            namescope = new Namescope();
+
             if (String.IsNullOrEmpty(dataSourceWrapperName))
                 return dataSource;
 
             var uv = UltravioletContext.DemandCurrent();
-            var wrapper = uv.GetUI().GetPresentationFoundation().CreateDataSourceWrapperByName(dataSourceWrapperName, dataSource, new Namescope());
+            var wrapper = uv.GetUI().GetPresentationFoundation().CreateDataSourceWrapperByName(dataSourceWrapperName, dataSource, namescope);
 
             return wrapper;
         }
