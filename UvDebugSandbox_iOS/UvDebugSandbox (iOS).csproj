@@ -336,4 +336,9 @@
   </ItemGroup>
   <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'=='' ">
+    <Message Text="Copying binding expressions assembly from OS X project..." />
+    <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the OS X project has been built before building the iOS project." />
+    <Copy SourceFiles="$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
+  </Target>
 </Project>
