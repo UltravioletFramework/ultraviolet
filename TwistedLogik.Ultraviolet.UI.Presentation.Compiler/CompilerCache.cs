@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +21,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// </summary>
         private CompilerCache()
         {
-            version = typeof(CompilerCache).Assembly.GetName().Version;
+            versionUltraviolet = FileVersionInfo.GetVersionInfo(typeof(CompilerCache).Assembly.Location).FileVersion;
+            versionMscorlib = FileVersionInfo.GetVersionInfo(typeof(Object).Assembly.Location).FileVersion;
         }
 
         /// <summary>
@@ -35,30 +37,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var cache = new CompilerCache();
 
             var lines = File.ReadAllLines(path);
-            var version = default(Version);
-            var revision = default(Int32);
+            var versionUltraviolet = default(String);
+            var versionMscorlib = default(String);
 
             foreach (var line in lines)
             {
                 if (String.IsNullOrEmpty(line))
                     continue;
 
-                if (version == default(Version))
+                if (versionUltraviolet == default(String))
                 {
-                    if (!Version.TryParse(line, out version))
-                        throw new InvalidDataException();
-
+                    versionUltraviolet = line;
                     continue;
                 }
 
-                if (revision == default(Int32))
+                if (versionMscorlib == default(String))
                 {
-                    if (!Int32.TryParse(line, out revision) || revision != CompilerRevision)
-                        throw new InvalidDataException();
-
+                    versionMscorlib = line;
                     continue;
                 }
-
+                
                 var components = line.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
                 if (components.Length != 2)
                     throw new InvalidDataException();
@@ -69,7 +67,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 cache.hashes[name] = hash;
             }
 
-            cache.version = version;
+            cache.versionUltraviolet = versionUltraviolet;
+            cache.versionMscorlib = versionMscorlib;
             return cache;
         }
 
@@ -102,34 +101,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             Contract.Require(dataSourceWrappers, nameof(dataSourceWrappers));
 
             var cache = new CompilerCache();
+            var types = new HashSet<Type>();
 
             foreach (var dataSourceWrapper in dataSourceWrappers)
             {
-                if (!cache.hashes.ContainsKey(dataSourceWrapper.DataSourceType.FullName))
-                {
-                    var dataSourceHash = GenerateHashForType(dataSourceWrapper.DataSourceType);
-                    cache.hashes[dataSourceWrapper.DataSourceType.FullName] = dataSourceHash;
-                }
-
                 if (!cache.hashes.ContainsKey(dataSourceWrapper.DataSourceWrapperName))
                 {
                     var dataSourceWrapperHash = GenerateHashForXElement(dataSourceWrapper.DataSourceDefinition.Definition);
                     cache.hashes[dataSourceWrapper.DataSourceWrapperName] = dataSourceWrapperHash;
                 }
+                
+                AddTypeReferences(dataSourceWrapper.DataSourceType, types);
 
                 if (dataSourceWrapper.DependentWrapperInfos != null)
                 {
                     foreach (var dependentWrapper in dataSourceWrapper.DependentWrapperInfos)
-                    {
-                        if (!cache.hashes.ContainsKey(dependentWrapper.DataSourceType.FullName))
-                        {
-                            var dependentSourceHash = GenerateHashForType(dependentWrapper.DataSourceType);
-                            cache.hashes[dependentWrapper.DataSourceType.FullName] = dependentSourceHash;
-                        }
-
-                        // NOTE: Source code for dependent wrappers is included in parent wrappers
-                    }
+                        AddTypeReferences(dependentWrapper.DataSourceType, types);
                 }
+            }
+
+            foreach (var type in types)
+            {
+                var typeHash = GenerateHashForType(type);
+                cache.hashes[type.FullName] = typeHash;
             }
 
             return cache;
@@ -169,25 +163,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
-        /// Converts the contents of the specified <see cref="String"/> instance into a SHA1 hash string.
-        /// </summary>
-        private static String ComputeSHA1String(String input)
-        {
-            var output = new StringBuilder();
-
-            var sha = new SHA1CryptoServiceProvider();
-            var bytes = Encoding.UTF8.GetBytes(input.ToString());
-            var hashBytes = sha.ComputeHash(bytes);
-
-            foreach (var hashByte in hashBytes)
-            {
-                output.AppendFormat("{0:x2}", hashByte);
-            }
-
-            return output.ToString();
-        }
-
-        /// <summary>
         /// Saves the cache to the specified file.
         /// </summary>
         /// <param name="path">The path to the file to which to save the cache.</param>
@@ -198,8 +173,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             using (var stream = File.Open(path, FileMode.Create))
             using (var writer = new StreamWriter(stream))
             {
-                writer.WriteLine(version);
-                writer.WriteLine(CompilerRevision);
+                writer.WriteLine(versionUltraviolet);
+                writer.WriteLine(versionMscorlib);
 
                 foreach (var hash in hashes)
                 {
@@ -217,8 +192,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         {
             Contract.Require(other, nameof(other));
 
-            if (!version.Equals(other.version))
+            if (!String.Equals(versionUltraviolet, other.versionUltraviolet, StringComparison.Ordinal) ||
+                !String.Equals(versionMscorlib, other.versionMscorlib, StringComparison.Ordinal))
+            {
                 return true;
+            }
 
             var keys = Enumerable.Union(this.hashes.Keys, other.hashes.Keys).ToList();
             foreach (var key in keys)
@@ -238,11 +216,141 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             return false;
         }
 
+        /// <summary>
+        /// Converts the contents of the specified <see cref="String"/> instance into a SHA1 hash string.
+        /// </summary>
+        private static String ComputeSHA1String(String input)
+        {
+            var output = new StringBuilder();
+
+            var sha = new SHA1CryptoServiceProvider();
+            var bytes = Encoding.UTF8.GetBytes(input.ToString());
+            var hashBytes = sha.ComputeHash(bytes);
+
+            foreach (var hashByte in hashBytes)
+            {
+                output.AppendFormat("{0:x2}", hashByte);
+            }
+
+            return output.ToString();
+        }
+
+        /// <summary>
+        /// Adds the types required by the specified constructor to the list of hashed types.
+        /// </summary>
+        private static void AddConstructorReferences(ConstructorInfo info, ISet<Type> refs)
+        {
+            foreach (var parameter in info.GetParameters())
+                AddTypeReferences(parameter.ParameterType, refs);
+        }
+
+        /// <summary>
+        /// Adds the types required by the specified event to the list of hashed types.
+        /// </summary>
+        private static void AddEventReferences(EventInfo info, ISet<Type> refs)
+        {
+            AddTypeReferences(info.EventHandlerType, refs);
+        }
+
+        /// <summary>
+        /// Adds the types required by the specified field to the list of hashed types.
+        /// </summary>
+        private static void AddFieldReferences(FieldInfo info, ISet<Type> refs)
+        {
+            AddTypeReferences(info.FieldType, refs);
+        }
+
+        /// <summary>
+        /// Adds the types required by the specified method to the list of hashed types.
+        /// </summary>
+        private static void AddMethodReferences(MethodInfo info, ISet<Type> refs)
+        {
+            AddTypeReferences(info.ReturnType, refs);
+
+            foreach (var parameter in info.GetParameters())
+                AddTypeReferences(parameter.ParameterType, refs);
+        }
+
+        /// <summary>
+        /// Adds the types required by the specified property to the list of hashed types.
+        /// </summary>
+        private static void AddPropertyReferences(PropertyInfo info, ISet<Type> refs)
+        {
+            AddTypeReferences(info.PropertyType, refs);
+
+            foreach (var index in info.GetIndexParameters())
+                AddTypeReferences(index.ParameterType, refs);
+        }
+
+        /// <summary>
+        /// Adds the types required by the specified type to the list of hashed types.
+        /// </summary>
+        private static void AddTypeReferences(Type info, ISet<Type> refs)
+        {
+            if (info.FullName == null)
+                return;
+
+            if (info.Assembly == typeof(Object).Assembly ||
+                info.Assembly.FullName.StartsWith("System.") || 
+                info.Assembly.FullName.StartsWith("TwistedLogik."))
+            {
+                return;
+            }
+
+            if (info.IsByRef || info.IsArray || info.IsPointer)
+                info = info.GetElementType();
+
+            if (info.IsGenericType)
+            {
+                foreach (var argument in info.GetGenericArguments())
+                    AddTypeReferences(argument, refs);
+
+                info = info.GetGenericTypeDefinition();
+            }
+
+            if (info.IsGenericParameter || refs.Contains(info))
+                return;
+
+            refs.Add(info);
+            var members = info.GetMembers(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
+
+            foreach (var member in members)
+            {
+                switch (member.MemberType)
+                {
+                    case MemberTypes.Constructor:
+                        AddConstructorReferences((ConstructorInfo)member, refs);
+                        break;
+
+                    case MemberTypes.Event:
+                        AddEventReferences((EventInfo)member, refs);
+                        break;
+
+                    case MemberTypes.Field:
+                        AddFieldReferences((FieldInfo)member, refs);
+                        break;
+
+                    case MemberTypes.Method:
+                        AddMethodReferences((MethodInfo)member, refs);
+                        break;
+
+                    case MemberTypes.Property:
+                        AddPropertyReferences((PropertyInfo)member, refs);
+                        break;
+
+                    case MemberTypes.TypeInfo:
+                    case MemberTypes.NestedType:
+                        AddTypeReferences((Type)member, refs);
+                        break;
+                }
+            }
+        }
+
         // The registry of hashes for each referenced type or view.
         private readonly Dictionary<String, String> hashes = new Dictionary<String, String>();
 
         // Versioning information
-        private const Int32 CompilerRevision = 4;
-        private Version version;
+        private String versionUltraviolet;
+        private String versionMscorlib;
     }
 }
