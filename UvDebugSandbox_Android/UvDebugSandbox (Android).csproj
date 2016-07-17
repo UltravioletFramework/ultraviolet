@@ -199,19 +199,20 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'=='' And '$(IsMac)' == 'false' ">
-    <Message Text="Copying content archive and binding expressions assembly from Desktop project..." />
-    <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_Desktop/bin/$(ConfigurationName)/Content.uvarc')" Text="Could not locate Content.uvarc. Ensure that the Desktop project has been built before building the Android project." />
-    <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_Desktop/bin/$(ConfigurationName)/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the Desktop project has been built before building the Android project." />
-    <Copy SourceFiles="$(ProjectDir)../UvDebugSandbox_Desktop/bin/$(ConfigurationName)/Content.uvarc" DestinationFolder="$(ProjectDir)" />
-    <Copy SourceFiles="$(ProjectDir)../UvDebugSandbox_Desktop/bin/$(ConfigurationName)/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
-  </Target>
-  <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'=='' And '$(IsMac)' == 'true' ">
-    <Message Text="Copying content archive and binding expressions assembly from OSX project..." />
-    <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/Content.uvarc')" Text="Could not locate Content.uvarc. Ensure that the OSX project has been built before building the Android project." />
-    <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the OSX project has been built before building the Android project." />
-    <Copy SourceFiles="$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/Content.uvarc" DestinationFolder="$(ProjectDir)" />
-    <Copy SourceFiles="$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
+  <PropertyGroup Condition="'$(IsMac)' == 'false' ">
+    <DesktopProjectName>Desktop</DesktopProjectName>
+    <DesktopProjectDir>UvDebugSandbox_Desktop</DesktopProjectDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsMac)' == 'true' ">
+    <DesktopProjectName>OS X</DesktopProjectName>
+    <DesktopProjectDir>UvDebugSandbox_OSX</DesktopProjectDir>
+  </PropertyGroup>
+  <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'=='' ">
+    <Message Text="Copying content archive and binding expressions assembly from $(DesktopProjectName) project..." />
+    <Error Condition="!Exists('$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Content.uvarc')" Text="Could not locate Content.uvarc. Ensure that the $(DesktopProjectName) project has been built before building the Android project." />
+    <Error Condition="!Exists('$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the $(DesktopProjectName) project has been built before building the Android project." />
+    <Copy SourceFiles="$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Content.uvarc" DestinationFolder="$(ProjectDir)" />
+    <Copy SourceFiles="$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.
