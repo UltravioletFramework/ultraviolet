@@ -84,7 +84,7 @@ Known Issues
 
 * __The imported project "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\CodeSharing\Microsoft.CodeSharing.CSharp.targets" was not found...__
 
-  This was an issue with the MSBuild targets provided by the RTM version of Visual Studio 2016. This issue has been fixed in Visual Studio 2015 Update 1; please make sure you're using the latest update.
+  This was an issue with the MSBuild targets provided by the RTM version of Visual Studio 2015. This issue has been fixed in Visual Studio 2015 Update 1; please make sure you're using the latest update.
 
 Documentation
 =============
