@@ -57,11 +57,19 @@ Building
 
 __On Windows__
 
-From the Developer Command Prompt for VS2015, navigate to the root of the Ultraviolet source tree and run `msbuild Ultraviolet.proj`. This will build the Desktop version of the Framework assemblies and copy them into the `Ultraviolet Framework Samples/Dependencies` directory so that the sample projects can be built.
+From the Developer Command Prompt for VS2015, navigate to the root of the Ultraviolet source tree and run the following command:
+
+    msbuild Ultraviolet.proj
+    
+This will build the Desktop version of the Framework assemblies and copy them into the `Ultraviolet Framework Samples/Dependencies` directory so that the sample projects can be built.
 
 __On Unix__
 
-With Mono installed, navigate to the root of the Ultraviolet source tree and run `xbuild Ultraviolet.proj`. This will build the Desktop version of the Framework assemblies, plus the OS X compatibility shim if you are building on a Mac, and copy them into the `Ultraviolet Framework Samples/Dependencies` directory so that the sample projects can be built.
+With Mono installed, navigate to the root of the Ultraviolet source tree and run the following command:
+
+    xbuild Ultraviolet.proj
+    
+This will build the Desktop version of the Framework assemblies, plus the OS X compatibility shim if you are building on a Mac, and copy them into the `Ultraviolet Framework Samples/Dependencies` directory so that the sample projects can be built.
 
 __Mobile Platforms__
 
