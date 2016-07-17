@@ -2,6 +2,7 @@
 | Branch       | Integration | Release |
 |--------------|-------------|---------|
 | master       | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-INT)  | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-REL) |
+| develop      | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-INT0)  | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-REL0) |
 
 What is Ultraviolet?
 ====================
