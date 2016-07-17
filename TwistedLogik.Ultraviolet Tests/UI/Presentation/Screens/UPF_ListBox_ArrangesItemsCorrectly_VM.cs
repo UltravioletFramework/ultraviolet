@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
@@ -8,6 +7,12 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
 {
     public class UPF_ListBox_ArrangesItemsCorrectly_VM
     {
+        public class CustomItemModel
+        {
+            public String Name { get; set; }
+            public Color Color { get; set; }
+        }
+
         public void ListBoxInitialized(DependencyObject dobj)
         {
             var lb = (ListBox)dobj;
@@ -18,11 +23,13 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
             lb.SelectedIndex = 2;
         }
 
-        public static IEnumerable TestItemsSource
+        public static IEnumerable<CustomItemModel> TestItemsSource { get; } = new List<CustomItemModel>
         {
-            get { return testItemsSource; }
-        }
-
-        private static readonly List<String> testItemsSource = new List<String> { "Hello", "world!", "This is a test", "of the ItemsSource property" };
+            new CustomItemModel() { Name = "Red", Color = Color.Red },
+            new CustomItemModel() { Name = "Lime", Color = Color.Lime },
+            new CustomItemModel() { Name = "Blue", Color = Color.Blue },
+            new CustomItemModel() { Name = "Navy", Color = Color.Navy },
+            new CustomItemModel() { Name = "Snow", Color = Color.Snow }
+        };
     }
 }

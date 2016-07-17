@@ -34,7 +34,16 @@
       </ComboBox>
 
       <ComboBox VerticalAlignment="Top" SelectedIndex="1" Margin="4 8 4 8" IsDropDownOpen="true" Grid.Row="0" Grid.Column="1"
-                ItemsSource="{{TestItemsSource}}"/>
+                ItemsSource="{{TestItemsSource}}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.UPF_ComboBox_ArrangesItemsCorrectly_VM+CustomItemModel, TwistedLogik.Ultraviolet.Tests">
+            <StackPanel Orientation="Horizontal">
+              <Rectangle FillColor="{{Color}}" Width="24" Margin="0 0 8 0"/>
+              <TextBlock>{{Name}}</TextBlock>
+            </StackPanel>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
 
       <ComboBox Initialized="ComboBoxInitialized"
                 VerticalAlignment="Top" Margin="4 8 4 8" IsDropDownOpen="true" Grid.Row="0" Grid.Column="2"/>
