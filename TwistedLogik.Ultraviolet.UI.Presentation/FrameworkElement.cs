@@ -634,8 +634,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <inheritdoc/>
         protected sealed override void CacheLayoutParametersCore()
         {
-            var templatedParentControl = TemplatedParent as Control;
-
             namescope = FindCurrentNamescope();
 
             if (namescope != null)
