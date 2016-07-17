@@ -55,11 +55,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Occurs when the tab item is selected.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="SelectedEvent"/></revtField>
+        ///     <revtStylingName>selected</revtStylingName>
+        ///     <revtStrategy>Direct</revtStrategy>
+        ///     <revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
+        public event UpfRoutedEventHandler Selected
+        {
+            add { AddHandler(SelectedEvent, value); }
+            remove { RemoveHandler(SelectedEvent, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the tab item is selected as a direct result of a user interaction.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="SelectedByUserEvent"/></revtField>
+        ///     <revtStylingName>selected-by-user</revtStylingName>
+        ///     <revtStrategy>Direct</revtStrategy>
+        ///     <revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
+        public event UpfRoutedEventHandler SelectedByUser
+        {
+            add { AddHandler(SelectedByUserEvent, value); }
+            remove { RemoveHandler(SelectedByUserEvent, value); }
+        }
+
+        /// <summary>
         /// Identifies the <see cref="IsSelected"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="IsSelected"/> dependency property.</value>
         public static readonly DependencyProperty IsSelectedProperty = Selector.IsSelectedProperty.AddOwner(typeof(TabItem),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsSelectedChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Selected"/> routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Selected"/> event.</value>
+        public static readonly RoutedEvent SelectedEvent = RoutedEventSystem.Register("Selected", "selected", RoutingStrategy.Direct,
+            typeof(UpfRoutedEventHandler), typeof(TabItem));
+
+        /// <summary>
+        /// Identifies the <see cref="SelectedByUser"/> routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="SelectedByUser"/> event.</value>
+        public static readonly RoutedEvent SelectedByUserEvent = RoutedEventSystem.Register("SelectedByUser", "selected-by-user", RoutingStrategy.Direct,
+            typeof(UpfRoutedEventHandler), typeof(TabItem));
 
         /// <inheritdoc/>
         protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
@@ -67,6 +115,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (!data.Handled)
             {
                 Focus();
+                OnSelectedByUser();
+
                 data.Handled = true;
             }
             base.OnGenericInteraction(device, data);
@@ -91,6 +141,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 Select();
             }
             base.OnPreviewGotKeyboardFocus(device, oldFocus, newFocus, data);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Selected"/> event.
+        /// </summary>
+        protected virtual void OnSelected()
+        {
+            var evtData = RoutedEventData.Retrieve(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectedEvent);
+            evtDelegate(this, evtData);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="SelectedByUser"/> event.
+        /// </summary>
+        protected virtual void OnSelectedByUser()
+        {
+            var evtData = RoutedEventData.Retrieve(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectedByUserEvent);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>
@@ -129,6 +199,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (tabControl != null)
             {
                 tabControl.HandleItemClicked(this);
+                OnSelected();
             }
         }
     }

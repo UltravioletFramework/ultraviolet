@@ -456,7 +456,6 @@ ProgressBarFill!
     source-color: #ff5ea0d2;
 }
 
-
 // ============================================================================
 // LIST BOXES
 // ============================================================================
@@ -497,7 +496,7 @@ ListBoxItem!
     min-height: 25;
     content-valign: Center;
 
-    trigger event Generic.generic-interaction (handled)
+    trigger event selected-by-user
     {
         play-sfx { #Global:SoundEffects:Click1 }
     }
@@ -612,7 +611,7 @@ ComboBoxItem!
     padding: 10 1 10 1;
     content-valign: Center;
 
-    trigger event Generic.generic-interaction (handled)
+    trigger event selected-by-user
     {
         play-sfx { #Global:SoundEffects:Click1 }
     }

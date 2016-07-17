@@ -41,6 +41,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (comboBox != null)
                 {
                     comboBox.HandleItemClicked(this);
+                    OnSelected();
+                    OnSelectedByUser();
                 }
                 data.Handled = true;
             }

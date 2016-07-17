@@ -50,6 +50,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get { return GetValue<Boolean>(IsSelectedProperty); }
             set { SetValue(IsSelectedProperty, value); }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the list box item is currently highlighted.
+        /// </summary>
+        public Boolean IsHighlighted
+        {
+            get { return HighlightOpacity > 0; }
+        }
         
         /// <summary>
         /// Gets the opacity of the list box item's selection highlight.
@@ -67,6 +75,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get { return GetValue<Double>(HighlightOpacityProperty); }
             private set { SetValue(HighlightOpacityPropertyKey, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the list box item is selected.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="SelectedEvent"/></revtField>
+        ///     <revtStylingName>selected</revtStylingName>
+        ///     <revtStrategy>Direct</revtStrategy>
+        ///     <revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
+        public event UpfRoutedEventHandler Selected
+        {
+            add { AddHandler(SelectedEvent, value); }
+            remove { RemoveHandler(SelectedEvent, value); }
+        }
+
+        /// <summary>
+        /// Occurs when the list box item is selected as a direct result of a user interaction.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="SelectedByUserEvent"/></revtField>
+        ///     <revtStylingName>selected-by-user</revtStylingName>
+        ///     <revtStrategy>Direct</revtStrategy>
+        ///     <revtDelegate><see cref="UpfRoutedEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
+        public event UpfRoutedEventHandler SelectedByUser
+        {
+            add { AddHandler(SelectedByUserEvent, value); }
+            remove { RemoveHandler(SelectedByUserEvent, value); }
         }
 
         /// <summary>
@@ -88,12 +130,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <value>The identifier for the <see cref="HighlightOpacity"/> dependency property.</value>
         public static readonly DependencyProperty HighlightOpacityProperty = HighlightOpacityPropertyKey.DependencyProperty;
 
+        /// <summary>
+        /// Identifies the <see cref="Selected"/> routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Selected"/> event.</value>
+        public static readonly RoutedEvent SelectedEvent = RoutedEventSystem.Register("Selected", "selected", RoutingStrategy.Direct,
+            typeof(UpfRoutedEventHandler), typeof(ListBoxItem));
+
+        /// <summary>
+        /// Identifies the <see cref="SelectedByUser"/> routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="SelectedByUser"/> event.</value>
+        public static readonly RoutedEvent SelectedByUserEvent = RoutedEventSystem.Register("SelectedByUser", "selected-by-user", RoutingStrategy.Direct,
+            typeof(UpfRoutedEventHandler), typeof(ListBoxItem));
+
         /// <inheritdoc/>
         protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
         {
             if (!data.Handled)
             {
                 Select();
+                OnSelectedByUser();
+
                 data.Handled = true;
             }
             base.OnGenericInteraction(device, data);
@@ -130,6 +188,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             HighlightOpacity = (HighlightOnSelect && IsSelected) || (HighlightOnMouseOver && IsMouseDirectlyOver) ? 1.0 : 0.0;
             base.OnFingerUp(device, fingerID, x, y, pressure, data);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="Selected"/> event.
+        /// </summary>
+        protected virtual void OnSelected()
+        {
+            var evtData = RoutedEventData.Retrieve(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectedEvent);
+            evtDelegate(this, evtData);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="SelectedByUser"/> event.
+        /// </summary>
+        protected virtual void OnSelectedByUser()
+        {
+            var evtData = RoutedEventData.Retrieve(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(SelectedByUserEvent);
+            evtDelegate(this, evtData);
         }
 
         /// <summary>
@@ -183,6 +261,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 Focus();
                 list.HandleItemClicked(this);
+                OnSelected();
             }
         }
     }
