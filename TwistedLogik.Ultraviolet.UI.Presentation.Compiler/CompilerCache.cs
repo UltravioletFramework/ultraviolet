@@ -105,11 +105,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             foreach (var dataSourceWrapper in dataSourceWrappers)
             {
-                var dataSourceHash = GenerateHashForType(dataSourceWrapper.DataSourceType);
-                cache.hashes[dataSourceWrapper.DataSourceType.FullName] = dataSourceHash;
+                if (!cache.hashes.ContainsKey(dataSourceWrapper.DataSourceType.FullName))
+                {
+                    var dataSourceHash = GenerateHashForType(dataSourceWrapper.DataSourceType);
+                    cache.hashes[dataSourceWrapper.DataSourceType.FullName] = dataSourceHash;
+                }
 
-                var dataSourceWrapperHash = GenerateHashForXElement(dataSourceWrapper.DataSourceDefinition.Definition);
-                cache.hashes[dataSourceWrapper.DataSourceWrapperName] = dataSourceWrapperHash;
+                if (!cache.hashes.ContainsKey(dataSourceWrapper.DataSourceWrapperName))
+                {
+                    var dataSourceWrapperHash = GenerateHashForXElement(dataSourceWrapper.DataSourceDefinition.Definition);
+                    cache.hashes[dataSourceWrapper.DataSourceWrapperName] = dataSourceWrapperHash;
+                }
+
+                if (dataSourceWrapper.DependentWrapperInfos != null)
+                {
+                    foreach (var dependentWrapper in dataSourceWrapper.DependentWrapperInfos)
+                    {
+                        if (!cache.hashes.ContainsKey(dependentWrapper.DataSourceType.FullName))
+                        {
+                            var dependentSourceHash = GenerateHashForType(dependentWrapper.DataSourceType);
+                            cache.hashes[dependentWrapper.DataSourceType.FullName] = dependentSourceHash;
+                        }
+
+                        // NOTE: Source code for dependent wrappers is included in parent wrappers
+                    }
+                }
             }
 
             return cache;
