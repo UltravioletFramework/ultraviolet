@@ -256,6 +256,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void Select()
         {
+            if (IsSelected)
+                return;
+
             var list = ItemsControl.ItemsControlFromItemContainer(this) as ListBox;
             if (list != null)
             {

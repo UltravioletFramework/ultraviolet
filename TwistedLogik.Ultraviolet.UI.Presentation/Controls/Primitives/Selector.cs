@@ -512,13 +512,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleSelected(DependencyObject dobj, RoutedEventData data)
         {
-            var selector = (Selector)dobj;
-            var container = data.OriginalSource as DependencyObject;
-            if (container != null)
-            {
-                selector.selection.Add(container);
-                data.Handled = true;
-            }
+            var originalSource = data.OriginalSource as DependencyObject;
+            if (originalSource == null || LogicalTreeHelper.GetParent(originalSource) != dobj)
+                return;
+
+            ((Selector)dobj).selection.Add(originalSource);
         }
 
         /// <summary>
@@ -526,13 +524,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleUnselected(DependencyObject dobj, RoutedEventData data)
         {
-            var selector = (Selector)dobj;
-            var container = data.OriginalSource as DependencyObject;
-            if (container != null)
-            {
-                selector.selection.Remove(container);
-                data.Handled = true;
-            }
+            var originalSource = data.OriginalSource as DependencyObject;
+            if (originalSource == null || LogicalTreeHelper.GetParent(originalSource) != dobj)
+                return;
+
+            ((Selector)dobj).selection.Remove(originalSource);
         }
 
         /// <summary>
@@ -540,11 +536,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleSelectionChanged(DependencyObject dobj, RoutedEventData data)
         {
-            if (data.OriginalSource == dobj)
-            {
-                ((Selector)dobj).OnSelectionChanged();
-                data.Handled = true;
-            }
+            if (data.OriginalSource != dobj)
+                return;
+
+            ((Selector)dobj).OnSelectionChanged();
         }
 
         /// <summary>
