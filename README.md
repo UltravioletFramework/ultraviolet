@@ -2,6 +2,7 @@
 | Branch       | Integration | Release |
 |--------------|-------------|---------|
 | master       | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-INT)  | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-REL) |
+| develop      | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-INT0)  | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-REL0) |
 
 What is Ultraviolet?
 ====================
@@ -38,25 +39,62 @@ Some core features of the Ultraviolet Framework:
 
 The Ultraviolet Framework's source code is [available on GitHub](https://github.com/tlgkccampbell/ultraviolet). If you're developing on Windows, and you just want to get started making games, you can use the installer provided as part of the [latest release](https://github.com/tlgkccampbell/ultraviolet/releases). It will ensure that you have the necessary DLLs and install Visual Studio templates for developing Ultraviolet applications. 
 
+Requirements
+============
+
+Building Ultraviolet requires Visual Studio 2015 or later, or an equivalent version of Mono.
+
+Building the mobile projects requires the appropriate Xamarin tools to be installed.
+
+The following platforms are supported for building the Framework:
+* Windows
+* Linux (Ubuntu)
+* OS X
+
+Please file an issue if you encounter any difficulty building on any of these platforms. Linux distributions other than Ubuntu should work provided that they can run Mono, but only Ubuntu has been thoroughly tested.
+
+Building
+========
+
+__On Windows__
+
+From the Developer Command Prompt for VS2015, navigate to the root of the Ultraviolet source tree and run the following command:
+
+    msbuild Ultraviolet.proj
+    
+This will build the Desktop version of the Framework assemblies and copy them into the `Ultraviolet Framework Samples/Dependencies` directory so that the sample projects can be built.
+
+__On Unix__
+
+With Mono installed, navigate to the root of the Ultraviolet source tree and run the following command:
+
+    xbuild Ultraviolet.proj
+    
+This will build the Desktop version of the Framework assemblies, plus the OS X compatibility shim if you are building on a Mac, and copy them into the `Ultraviolet Framework Samples/Dependencies` directory so that the sample projects can be built.
+
+__Mobile Platforms__
+
+Building Ultraviolet for iOS and Android requires that Xamarin be installed. As with the desktop version of the Framework, you need to run either `msbuild` or `xbuild` on `Ultraviolet.proj`, but you must also explicitly specify that you want to use one of the mobile build targets, i.e.:
+
+    msbuild Ultraviolet.proj /t:BuildAndroid
+    
+or
+
+    msbuild Ultraviolet.proj /t:BuildiOS
+   
+Building the iOS version of the Framework should only be done on a Mac. While Xamarin theoretically supports building iOS assemblies remotely on Windows using a Mac as a server, in practice this doesn't work reliably (at least not for Ultraviolet).
+   
+__Sample Projects__
+
+The sample projects in the `Ultraviolet Framework Samples` directory cannot be built until the Framework itself has been built and its output files have been copied into the `Ultraviolet Framework Samples/Dependencies` directory. Once that has been done, simply run `msbuild` or `xbuild` on the appropriate solution (`.sln`) file in the samples directory.
+
 Known Issues
 ============
 
 * __The imported project "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\CodeSharing\Microsoft.CodeSharing.CSharp.targets" was not found...__
 
-  _This issue has been fixed in Visual Studio 2015 Update 1._
+  This was an issue with the MSBuild targets provided by the RTM version of Visual Studio 2015. This issue has been fixed in Visual Studio 2015 Update 1; please make sure you're using the latest update.
 
-  As of version 1.3, Ultraviolet makes use of Shared Projects in order to share code between its Desktop and Android builds (and potentially a future iOS build). This error means that Visual Studio is not configured to understand this project type, and as a result, Ultraviolet will not load or compile correctly. If you encounter this error, please consult [this blog post](http://blogs.msdn.com/b/smondal/archive/2015/08/24/the-imported-project-quot-c-program-files-x86-msbuild-microsoft-windowsxaml-v14-0-8-1-microsoft-windows-ui-xaml-csharp-targets-quot-was-not-found.aspx) for potential workarounds.
-
-  If you're using Visual Studio 2013, make sure you're using the latest update. If you continue to have issues, try installing the [Shared Project Reference Manager](https://visualstudiogallery.msdn.microsoft.com/315c13a7-2787-4f57-bdf7-adae6ed54450) extension.
-
-* __Building the Samples__
-
-  If you encounter errors when attempting to build ``Ultraviolet Framework Samples.sln``, make sure that you've previously built the corresponding configuration (i.e. ``Debug``, ``Release``, or ``Signed``) of ``TwistedLogik.Ultraviolet.sln``. The first sample project runs a script which copies the latest versions of the Ultraviolet assemblies from the ``Binaries`` folder to the ``Ultraviolet Framework Samples\Dependencies`` folder, and this script will fail if they don't exist.
-  
-* __General Compatibility__
-
-  Ultraviolet is still in the early stages of its development, and as such it has not yet been fully tested on a wide range of hardware. If you encounter compatibility issues on your machine, please [register an issue on GitHub](https://github.com/tlgkccampbell/ultraviolet/issues) so we can try to address it!
-  
 Documentation
 =============
 
