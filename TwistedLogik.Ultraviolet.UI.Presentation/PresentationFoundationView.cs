@@ -1248,11 +1248,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var input = Ultraviolet.GetInput();
             if (input.IsTouchDeviceConnected())
             {
-                var touch = input.GetTouchDevice();
-                touch.Tap += touch_Tap;
-                touch.FingerUp += touch_FingerUp;
-                touch.FingerDown += touch_FingerDown;
-                touch.FingerMotion += touch_FingerMotion;
+                // TODO
             }
         }
 
@@ -1344,11 +1340,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var input = Ultraviolet.GetInput();
             if (input.IsTouchDeviceConnected())
             {
-                var touch = input.GetTouchDevice();
-                touch.Tap -= touch_Tap;
-                touch.FingerUp -= touch_FingerUp;
-                touch.FingerDown -= touch_FingerDown;
-                touch.FingerMotion -= touch_FingerMotion;
+                // TODO
             }
         }
 
@@ -1794,7 +1786,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             elementUnderMouseBeforeValidityCheck = null;
             elementWithMouseCapture = null;
             elementWithFocus = null;
-            elementLastTouched = null;
 
             mouseCaptureMode = CaptureMode.None;
             wasInputPossibleLastFrame = false;
@@ -2241,19 +2232,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     if (mouseDownData.Handled)
                         handled = true;
 
-                    mouseDownData.Release();
-
-                    if (!Generic.IsTouchDeviceAvailable && button == MouseButton.Left)
-                    {
-                        var genericInteractionData = RoutedEventData.Retrieve(dobj, handled, autorelease: false);
-                        Generic.RaisePreviewGenericInteraction(dobj, device, genericInteractionData);
-                        Generic.RaiseGenericInteraction(dobj, device, genericInteractionData);
-                        
-                        if (genericInteractionData.Handled)
-                            handled = true;
-
-                        genericInteractionData.Release();
-                    }
+                    mouseDownData.Release();                    
                 }
 
                 if (originalFocus != elementWithFocus)
@@ -2382,131 +2361,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             Ultraviolet.GetInput().TouchDeviceConnected -= Input_TouchDeviceConnected;
             HookTouchEvents();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="TouchDevice.Tap"/> event.
-        /// </summary>
-        private void touch_Tap(TouchDevice device, Int64 fingerID, Single x, Single y)
-        {
-            if (Window == null || !IsInputEnabledAndAllowed)
-                return;
-
-            var position = GetTouchCoordinates(x, y);
-            
-            var handled = false;
-            var recipient = (Ultraviolet.GetInput().EmulateMouseWithTouchInput ? elementUnderMouse : elementLastTouched) as DependencyObject;
-            if (recipient != null)
-            {
-                var originalFocus = elementWithFocus;
-
-                var tapData = RoutedEventData.Retrieve(recipient, autorelease: false);
-                Touch.RaisePreviewTap(recipient, device, fingerID, position.X, position.Y, tapData);
-                Touch.RaiseTap(recipient, device, fingerID, position.X, position.Y, tapData);
-                tapData.Release();
-
-                if (tapData.Handled)
-                    handled = true;
-
-                if (device.GetIndexFromFingerID(fingerID) == 0)
-                {
-                    var genericInteractionData = RoutedEventData.Retrieve(recipient, handled, false);
-                    Generic.RaisePreviewGenericInteraction(recipient, device, genericInteractionData);
-                    Generic.RaiseGenericInteraction(recipient, device, genericInteractionData);
-
-                    if (genericInteractionData.Handled)
-                        handled = true;
-
-                    genericInteractionData.Release();
-                }
-
-                if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
-            }
-
-            if (!handled)
-                Ultraviolet.GetInput().HideSoftwareKeyboard();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="TouchDevice.FingerDown"/> event.
-        /// </summary>
-        private void touch_FingerDown(TouchDevice device, Int64 fingerID, Single x, Single y, Single pressure)
-        {
-            if (Window == null || !IsInputEnabledAndAllowed)
-                return;
-
-            var position = GetTouchCoordinates(x, y);
-
-            var recipient = HitTest(position) as DependencyObject;
-            if (recipient != null)
-            {
-                var originalFocus = elementWithFocus;
-
-                var fingerDownData = RoutedEventData.Retrieve(recipient, autorelease: false);
-                Touch.RaisePreviewFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, fingerDownData);
-                Touch.RaiseFingerDown(recipient, device, fingerID, position.X, position.Y, pressure, fingerDownData);
-                fingerDownData.Release();
-
-                elementLastTouched = recipient as IInputElement;
-
-                if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="TouchDevice.FingerUp"/> event.
-        /// </summary>
-        private void touch_FingerUp(TouchDevice device, Int64 fingerID, Single x, Single y, Single pressure)
-        {
-            if (Window == null || !IsInputEnabledAndAllowed)
-                return;
-
-            var position = GetTouchCoordinates(x, y);
-
-            var recipient = (Ultraviolet.GetInput().EmulateMouseWithTouchInput ? elementUnderMouse : elementLastTouched) as DependencyObject;
-            if (recipient != null)
-            {
-                var originalFocus = elementWithFocus;
-
-                var fingerUpData = RoutedEventData.Retrieve(recipient, autorelease: false);
-                Touch.RaisePreviewFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, fingerUpData);
-                Touch.RaiseFingerUp(recipient, device, fingerID, position.X, position.Y, pressure, fingerUpData);
-                fingerUpData.Release();
-
-                elementLastTouched = null;
-
-                if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="TouchDevice.FingerMotion"/> event.
-        /// </summary>
-        private void touch_FingerMotion(TouchDevice device, Int64 fingerID, Single x, Single y, Single dx, Single dy, Single pressure)
-        {
-            if (Window == null || !IsInputEnabledAndAllowed)
-                return;
-
-            var position = GetTouchCoordinates(x, y);
-
-            var recipient = (Ultraviolet.GetInput().EmulateMouseWithTouchInput ? elementUnderMouse : elementLastTouched) as DependencyObject;
-            if (recipient != null)
-            {
-                var originalFocus = elementWithFocus;
-
-                var delta = GetTouchDelta(dx, dy);
-
-                var fingerMotionData = RoutedEventData.Retrieve(recipient, autorelease: false);
-                Touch.RaisePreviewFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, fingerMotionData);
-                Touch.RaiseFingerMotion(recipient, device, fingerID, position.X, position.Y, delta.X, delta.Y, pressure, fingerMotionData);
-                fingerMotionData.Release();
-
-                if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
-            }
         }
 
         /// <summary>
@@ -2697,7 +2551,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private IInputElement elementUnderMouseBeforeValidityCheck;
         private IInputElement elementWithMouseCapture;
         private IInputElement elementWithFocus;
-        private IInputElement elementLastTouched;
         private CaptureMode mouseCaptureMode;
         private Boolean viewIsOpen;
         private Boolean hookedGlobalStyleSheetChanged;
@@ -2728,3 +2581,4 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly List<WeakReference> cancelButtons = new List<WeakReference>(0);
     }
 }
+ 

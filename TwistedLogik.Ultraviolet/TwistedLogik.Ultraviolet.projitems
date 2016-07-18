@@ -291,9 +291,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\MouseDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\MouseInputBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\NamespaceDoc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\TouchDevice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\TouchTapInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Scancode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\SoftwareKeyboardService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\TouchDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\TouchInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InvalidCompatibilityShimException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletAudio.cs" />

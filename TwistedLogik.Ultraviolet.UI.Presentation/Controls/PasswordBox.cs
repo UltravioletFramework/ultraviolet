@@ -269,18 +269,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <value>The identifier for the <see cref="PasswordChanged"/> routed event.</value>
         public static readonly RoutedEvent PasswordChangedEvent = EventManager.RegisterRoutedEvent("PasswordChanged",
             RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(PasswordBox));
-
-        /// <inheritdoc/>
-        protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
-        {
-            UpdateTextInputRegion();
-            Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode.Text);
-
-            data.Handled = true;
-
-            base.OnGenericInteraction(device, data);
-        }
-
+        
         /// <inheritdoc/>
         protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
@@ -288,6 +277,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 Focus();
                 CaptureMouse();
+
+                UpdateTextInputRegion();
+                Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode.Text);
             }
 
             if (PART_Editor != null && IsMouseWithinEditor())

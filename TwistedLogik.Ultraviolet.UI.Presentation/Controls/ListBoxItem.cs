@@ -145,18 +145,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             typeof(UpfRoutedEventHandler), typeof(ListBoxItem));
 
         /// <inheritdoc/>
-        protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            if (!data.Handled)
+            if (button == MouseButton.Left && !data.Handled)
             {
                 Select();
                 OnSelectedByUser();
 
                 data.Handled = true;
             }
-            base.OnGenericInteraction(device, data);
+            base.OnMouseDown(device, button, data);
         }
-        
+                
         /// <inheritdoc/>
         protected override void OnMouseEnter(MouseDevice device, RoutedEventData data)
         {
@@ -174,20 +174,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 HighlightOpacity = 0.0;
 
             base.OnMouseLeave(device, data);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnFingerDown(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, RoutedEventData data)
-        {
-            HighlightOpacity = 1.0;
-            base.OnFingerDown(device, fingerID, x, y, pressure, data);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, RoutedEventData data)
-        {
-            HighlightOpacity = (HighlightOnSelect && IsSelected) || (HighlightOnMouseOver && IsMouseDirectlyOver) ? 1.0 : 0.0;
-            base.OnFingerUp(device, fingerID, x, y, pressure, data);
         }
 
         /// <summary>

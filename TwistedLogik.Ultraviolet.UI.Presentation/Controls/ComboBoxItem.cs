@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -28,14 +29,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ComboBoxItem(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            HighlightOnSelect    = false;
-            HighlightOnMouseOver = !Generic.IsTouchDeviceAvailable;
+            HighlightOnSelect = false;
+            HighlightOnMouseOver = true;
         }
 
         /// <inheritdoc/>
-        protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            if (!data.Handled)
+            if (button == MouseButton.Left && !data.Handled)
             {
                 var comboBox = ItemsControl.ItemsControlFromItemContainer(this) as ComboBox;
                 if (comboBox != null)
@@ -46,7 +47,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
                 data.Handled = true;
             }
-            base.OnGenericInteraction(device, data);
+            base.OnMouseDown(device, button, data);
         }
         
         /// <inheritdoc/>

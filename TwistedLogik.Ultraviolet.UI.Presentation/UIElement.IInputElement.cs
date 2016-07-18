@@ -331,63 +331,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             add { AddHandler(Mouse.MouseWheelEvent, value); }
             remove { RemoveHandler(Mouse.MouseWheelEvent, value); }
         }
-
-        /// <inheritdoc/>
-        public event UpfTouchTapEventHandler PreviewTap
-        {
-            add { AddHandler(Touch.PreviewTapEvent, value); }
-            remove { RemoveHandler(Touch.PreviewTapEvent, value); }
-        }
         
-        /// <inheritdoc/>
-        public event UpfTouchEventHandler PreviewFingerDown
-        {
-            add { AddHandler(Touch.PreviewFingerDownEvent, value); }
-            remove { RemoveHandler(Touch.PreviewFingerDownEvent, value); }
-        }
-
-        /// <inheritdoc/>
-        public event UpfTouchEventHandler PreviewFingerUp
-        {
-            add { AddHandler(Touch.PreviewFingerUpEvent, value); }
-            remove { RemoveHandler(Touch.PreviewFingerUpEvent, value); }
-        }
-
-        /// <inheritdoc/>
-        public event UpfTouchMotionEventHandler PreviewFingerMotion
-        {
-            add { AddHandler(Touch.PreviewFingerMotionEvent, value); }
-            remove { RemoveHandler(Touch.PreviewFingerMotionEvent, value); }
-        }
-        
-        /// <inheritdoc/>
-        public event UpfTouchTapEventHandler Tap
-        {
-            add { AddHandler(Touch.TapEvent, value); }
-            remove { RemoveHandler(Touch.TapEvent, value); }
-        }
-
-        /// <inheritdoc/>
-        public event UpfTouchEventHandler FingerDown
-        {
-            add { AddHandler(Touch.FingerDownEvent, value); }
-            remove { RemoveHandler(Touch.FingerDownEvent, value); }
-        }
-
-        /// <inheritdoc/>
-        public event UpfTouchEventHandler FingerUp
-        {
-            add { AddHandler(Touch.FingerUpEvent, value); }
-            remove { RemoveHandler(Touch.FingerUpEvent, value); }
-        }
-
-        /// <inheritdoc/>
-        public event UpfTouchMotionEventHandler FingerMotion
-        {
-            add { AddHandler(Touch.FingerMotionEvent, value); }
-            remove { RemoveHandler(Touch.FingerMotionEvent, value); }
-        }
-
         /// <inheritdoc/>
         public event UpfGamePadAxisChangedEventHandler PreviewGamePadAxisChanged
         {
@@ -442,20 +386,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             add { AddHandler(GamePad.ButtonUpEvent, value); }
             remove { RemoveHandler(GamePad.ButtonUpEvent, value); }
-        }
-
-        /// <inheritdoc/>
-        public event UpfGenericInteractionEventHandler PreviewGenericInteraction
-        {
-            add { AddHandler(Generic.PreviewGenericInteractionEvent, value); }
-            remove { RemoveHandler(Generic.PreviewGenericInteractionEvent, value); }
-        }
-
-        /// <inheritdoc/>
-        public event UpfGenericInteractionEventHandler GenericInteraction
-        {
-            add { AddHandler(Generic.GenericInteractionEvent, value); }
-            remove { RemoveHandler(Generic.GenericInteractionEvent, value); }
         }
 
         /// <summary>
@@ -714,67 +644,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
 
         }
-
-        /// <summary>
-        /// Invoked by the <see cref="Touch.TapEvent"/> attached routed event.
-        /// </summary>
-        /// <param name="device">The touch device.</param>
-        /// <param name="fingerID">The identifier of the finger that caused the touch.</param>
-        /// <param name="x">The x-coordinate of the touch.</param>
-        /// <param name="y">The y-coordinate of the touch.</param>
-        /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnTap(TouchDevice device, Int64 fingerID,
-            Double x, Double y, RoutedEventData data)
-        {
-
-        }
-
-        /// <summary>
-        /// Invoked by the the <see cref="Touch.FingerDownEvent"/> attached routed event.
-        /// </summary>
-        /// <param name="device">The touch device.</param>
-        /// <param name="fingerID">The identifier of the finger that caused the touch.</param>
-        /// <param name="x">The x-coordinate of the touch.</param>
-        /// <param name="y">The y-coordinate of the touch.</param>
-        /// <param name="pressure">The normalized pressure value of the touch.</param>
-        /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnFingerDown(TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, RoutedEventData data)
-        {
-
-        }
-
-        /// <summary>
-        /// Invoked by the <see cref="Touch.FingerUpEvent"/> attached routed event.
-        /// </summary>
-        /// <param name="device">The touch device.</param>
-        /// <param name="fingerID">The identifier of the finger that caused the touch.</param>
-        /// <param name="x">The x-coordinate of the touch.</param>
-        /// <param name="y">The y-coordinate of the touch.</param>
-        /// <param name="pressure">The normalized pressure value of the touch.</param>
-        /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnFingerUp(TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, RoutedEventData data)
-        {
-        }
-
-        /// <summary>
-        /// Invoked by the <see cref="Touch.FingerMotionEvent"/> attached routed event.
-        /// </summary>
-        /// <param name="device">The touch device.</param>
-        /// <param name="fingerID">The identifier of the finger that caused the touch.</param>
-        /// <param name="x">The x-coordinate of the touch.</param>
-        /// <param name="y">The y-coordinate of the touch.</param>
-        /// <param name="dx">The amount of motion along the x-axis.</param>
-        /// <param name="dy">The amount of motion along the y-axis.</param>
-        /// <param name="pressure">The normalized pressure value of the touch.</param>
-        /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnFingerMotion(TouchDevice device, Int64 fingerID,
-            Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
-        {
-
-        }
-
+        
         /// <summary>
         /// Invokes by the <see cref="GamePad.AxisChangedEvent"/> attached routed event.
         /// </summary>
@@ -833,17 +703,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
 
         }
-
-        /// <summary>
-        /// Invoked by the <see cref="Generic.GenericInteractionEvent"/> attached routed event.
-        /// </summary>
-        /// <param name="device">The input device.</param>
-        /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
-        {
-
-        }
-
+        
         /// <summary>
         /// Registers class handlers for this type's input events.
         /// </summary>
@@ -871,18 +731,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseDoubleClickEvent, new UpfMouseButtonEventHandler(OnMouseDoubleClickProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseWheelEvent, new UpfMouseWheelEventHandler(OnMouseWheelProxy));
             
-            EventManager.RegisterClassHandler(typeof(UIElement), Touch.TapEvent, new UpfTouchTapEventHandler(OnTapProxy));
-            EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerDownEvent, new UpfTouchEventHandler(OnFingerDownProxy));
-            EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerUpEvent, new UpfTouchEventHandler(OnFingerUpProxy));
-            EventManager.RegisterClassHandler(typeof(UIElement), Touch.FingerMotionEvent, new UpfTouchMotionEventHandler(OnFingerMotionProxy));
-
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.AxisChangedEvent, new UpfGamePadAxisChangedEventHandler(OnGamePadAxisChangedProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.AxisDownEvent, new UpfGamePadAxisDownEventHandler(OnGamePadAxisDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.AxisUpEvent, new UpfGamePadAxisUpEventHandler(OnGamePadAxisUpProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.ButtonDownEvent, new UpfGamePadButtonDownEventHandler(OnGamePadButtonDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.ButtonUpEvent, new UpfGamePadButtonUpEventHandler(OnGamePadButtonUpProxy));
-            
-            EventManager.RegisterClassHandler(typeof(UIElement), Generic.GenericInteractionEvent, new UpfGenericInteractionEventHandler(OnGenericInteractionProxy));
         }
         
         /// <summary>
@@ -1030,43 +883,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             ((UIElement)element).OnMouseWheel(device, x, y, data);
         }
-
-        /// <summary>
-        /// Invokes the <see cref="OnTap"/> method.
-        /// </summary>
-        private static void OnTapProxy(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, RoutedEventData data)
-        {
-            ((UIElement)element).OnTap(device, fingerID, x, y, data);
-        }
-
-        /// <summary>
-        /// Invokes the <see cref="OnFingerDown"/> method.
-        /// </summary>
-        private static void OnFingerDownProxy(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, RoutedEventData data)
-        {
-            ((UIElement)element).OnFingerDown(device, fingerID, x, y, pressure, data);
-        }
-
-        /// <summary>
-        /// Invokes the <see cref="OnFingerUp"/> method.
-        /// </summary>
-        private static void OnFingerUpProxy(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Single pressure, RoutedEventData data)
-        {
-            ((UIElement)element).OnFingerUp(device, fingerID, x, y, pressure, data);
-        }
-
-        /// <summary>
-        /// Invokes the <see cref="OnFingerMotion"/> method.
-        /// </summary>
-        private static void OnFingerMotionProxy(DependencyObject element, TouchDevice device, Int64 fingerID,
-            Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
-        {
-            ((UIElement)element).OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, data);
-        }
-
+        
         /// <summary>
         /// Invokes the <see cref="OnGamePadAxisChanged"/> method.
         /// </summary>
@@ -1106,15 +923,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             ((UIElement)element).OnGamePadButtonUp(device, button, data);
         }
-
-        /// <summary>
-        /// Invokes the <see cref="OnGenericInteraction"/> method.
-        /// </summary>
-        private static void OnGenericInteractionProxy(DependencyObject element, UltravioletResource device, RoutedEventData data)
-        {
-            ((UIElement)element).OnGenericInteraction(device, data);
-        }
-
+        
         /// <summary>
         /// Occurs when the value of the <see cref="IsKeyboardFocused"/> dependency property changes.
         /// </summary>
