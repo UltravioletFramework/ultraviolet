@@ -73,6 +73,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     {
                         if (evt.cbutton.which == instanceID)
                         {
+                            if (!isRegistered)
+                                Register();
+
                             var button = SDLToUltravioletButton((SDL_GameControllerButton)evt.cbutton.button);
                             var buttonIndex = (int)button;
                             states[buttonIndex].OnDown(false);
@@ -87,6 +90,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     {
                         if (evt.cbutton.which == instanceID)
                         {
+                            if (!isRegistered)
+                                Register();
+
                             var button = SDLToUltravioletButton((SDL_GameControllerButton)evt.cbutton.button);
                             var buttonIndex = (int)button;
                             states[(int)button].OnUp();
@@ -101,6 +107,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     {
                         if (evt.caxis.which == instanceID)
                         {
+                            if (!isRegistered)
+                                Register();
+
                             OnAxisMotion(evt.caxis);
                         }
                     }
@@ -589,6 +598,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             }
         }
 
+        /// <inheritdoc/>
+        public override Boolean IsRegistered => isRegistered;
+
         /// <summary>
         /// Gets the SDL2 instance identifier of the game pad device.
         /// </summary>
@@ -825,6 +837,16 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             return false;
         }
 
+        /// <summary>
+        /// Flags the device as registered.
+        /// </summary>
+        private void Register()
+        {
+            var input = (SDL2UltravioletInput)Ultraviolet.GetInput();
+            if (input.RegisterGamePadDevice(this))
+                isRegistered = true;
+        }
+
         // The values of the SDL_GameControllerButton enumeration.
         private static readonly SDL_GameControllerButton[] sdlButtons;        
 
@@ -852,6 +874,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private Single prevRightJoystickX;
         private Single rightJoystickY;
         private Single prevRightJoystickY;
+        private Boolean isRegistered;
 
         // Press timers.
         private readonly Double[] timeLastPressAxis;

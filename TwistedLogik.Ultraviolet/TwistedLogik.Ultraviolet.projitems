@@ -281,6 +281,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputActionCollection.InputBindingGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputDevice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\InputDeviceOfT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\GamePadJoystick.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\GamePadJoystickDirection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Key.cs" />

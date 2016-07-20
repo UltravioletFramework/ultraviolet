@@ -38,19 +38,39 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 switch (evt.type)
                 {
                     case SDL_EventType.MOUSEMOTION:
-                        OnMouseMotion(ref evt.motion);
+                        {
+                            if (!isRegistered)
+                                Register();
+
+                            OnMouseMotion(ref evt.motion);
+                        }
                         break;
 
                     case SDL_EventType.MOUSEBUTTONDOWN:
-                        OnMouseButtonDown(ref evt.button);
+                        {
+                            if (!isRegistered)
+                                Register();
+
+                            OnMouseButtonDown(ref evt.button);
+                        }
                         break;
 
                     case SDL_EventType.MOUSEBUTTONUP:
-                        OnMouseButtonUp(ref evt.button);
+                        {
+                            if (!isRegistered)
+                                Register();
+
+                            OnMouseButtonUp(ref evt.button);
+                        }
                         break;
 
                     case SDL_EventType.MOUSEWHEEL:
-                        OnMouseWheel(ref evt.wheel);
+                        {
+                            if (!isRegistered)
+                                Register();
+
+                            OnMouseWheel(ref evt.wheel);
+                        }
                         break;
                 }
             }
@@ -203,6 +223,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 return wheelDeltaY;
             }
         }
+
+        /// <inheritdoc/>
+        public override Boolean IsRegistered => isRegistered;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
@@ -365,6 +388,16 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             OnWheelScrolled(window, evt.x, evt.y);
         }
 
+        /// <summary>
+        /// Flags the device as registered.
+        /// </summary>
+        private void Register()
+        {
+            var input = (SDL2UltravioletInput)Ultraviolet.GetInput();
+            if (input.RegisterMouseDevice(this))
+                isRegistered = true;
+        }
+
         // The device identifier of the touch-based mouse emulator.
         private const UInt32 SDL_TOUCH_MOUSEID = unchecked((UInt32)(-1));
 
@@ -373,6 +406,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private Int32 y;
         private Int32 wheelDeltaX;
         private Int32 wheelDeltaY;
+        private Boolean isRegistered;
         private IUltravioletWindow window;
 
         // State values.

@@ -63,7 +63,7 @@ namespace TwistedLogik.Ultraviolet.Input
     /// <summary>
     /// Represents a touch input device.
     /// </summary>
-    public abstract class TouchDevice : UltravioletResource
+    public abstract class TouchDevice : InputDevice
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TouchDevice"/> class.
@@ -72,13 +72,7 @@ namespace TwistedLogik.Ultraviolet.Input
         public TouchDevice(UltravioletContext uv) :
             base(uv)
         { }
-
-        /// <summary>
-        /// Updates the device's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
-        public abstract void Update(UltravioletTime time);
-
+        
         /// <summary>
         /// Converts the specified window coordinates into normalized touch coordinates.
         /// </summary>

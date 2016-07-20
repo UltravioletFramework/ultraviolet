@@ -115,6 +115,22 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <summary>
+        /// Gets the first registered game pad device.
+        /// </summary>
+        /// <returns>The first registered game pad device, or <see langword="null"/> if no game pads are registered.</returns>
+        public SDL2GamePadDevice GetFirstRegisteredGamePad()
+        {
+            for (int i = 0; i < devicesByPlayer.Length; i++)
+            {
+                if (devicesByPlayer[i]?.IsRegistered ?? false)
+                {
+                    return devicesByPlayer[i];
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Gets the number of attached game pads.
         /// </summary>
         public Int32 Count

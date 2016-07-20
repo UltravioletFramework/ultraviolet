@@ -45,6 +45,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 case SDL_EventType.FINGERDOWN:
                     if (evt.tfinger.touchId == sdlTouchID)
                     {
+                        if (!isRegistered)
+                            Register();
+
                         BeginTouch(ref evt);
                     }
                     break;
@@ -52,6 +55,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 case SDL_EventType.FINGERUP:
                     if (evt.tfinger.touchId == sdlTouchID)
                     {
+                        if (!isRegistered)
+                            Register();
+
                         EndTouch(ref evt);
                     }
                     break;
@@ -59,6 +65,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 case SDL_EventType.FINGERMOTION:
                     if (evt.tfinger.touchId == sdlTouchID)
                     {
+                        if (!isRegistered)
+                            Register();
+
                         UpdateTouch(ref evt);
                     }
                     break;
@@ -66,6 +75,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 case SDL_EventType.MULTIGESTURE:
                     if (evt.mgesture.touchId == sdlTouchID)
                     {
+                        if (!isRegistered)
+                            Register();
+
                         OnMultiGesture(evt.mgesture.x, evt.mgesture.y, 
                             evt.mgesture.dTheta, evt.mgesture.dDist, evt.mgesture.numFingers);
                     }
@@ -261,6 +273,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
+        public override Boolean IsRegistered => isRegistered;
+
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -347,12 +362,23 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 }
             }
         }
-        
+
+        /// <summary>
+        /// Flags the device as registered.
+        /// </summary>
+        private void Register()
+        {
+            var input = (SDL2UltravioletInput)Ultraviolet.GetInput();
+            if (input.RegisterTouchDevice(this))
+                isRegistered = true;
+        }
+
         // State values.
         private readonly List<TouchInfo> touches = new List<TouchInfo>(5);
         private readonly List<TouchTapInfo> taps = new List<TouchTapInfo>(5);
         private readonly Int64 sdlTouchID;
         private Int64 nextTouchID = 1;
         private Int64 timestamp;
+        private Boolean isRegistered;
     }
 }
